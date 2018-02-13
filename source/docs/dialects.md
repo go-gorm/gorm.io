@@ -1,12 +1,9 @@
-# Dialects
-
-<!-- toc -->
-
-## Dialect Specific Data Type
+title: Dialect Specific Data Type
+---
 
 Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of such types, as listed in the following sections.
 
-#### PostgreSQL
+## PostgreSQL
 
 GORM supports loading the following PostgreSQL exclusive column types:
 - jsonb

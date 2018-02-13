@@ -1,44 +1,9 @@
-# Development
-
-<!-- toc -->
-
-## Architecture
-
-Gorm use chainable API, `*gorm.DB` is the bridge of chains, for each chain API, it will create a new relation.
-
-```go
-db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
-
-// create a new relation
-db = db.Where("name = ?", "jinzhu")
-
-// filter even more
-if SomeCondition {
-    db = db.Where("age = ?", 20)
-} else {
-    db = db.Where("age = ?", 30)
-}
-if YetAnotherCondition {
-    db = db.Where("active = ?", 1)
-}
-```
-
-When we start to perform any operations, GORM will create a new `*gorm.Scope` instance based on current `*gorm.DB`
-
-```go
-// perform a querying operation
-db.First(&user)
-```
-
-And based on current operation's type, it will call registered `creating`, `updating`, `querying`, `deleting` or `row_querying` callbacks to run the operation.
-
-For above example, will call `querying` callbacks, refer [Querying Callbacks](callbacks.html#querying-an-object)
-
-## Write Plugins
+title: Write Plugins
+---
 
 GORM itself is powered by `Callbacks`, so you could fully customize GORM as you want
 
-### Register a new callback
+## Register a new callback
 
 ```go
 func updateCreated(scope *Scope) {
@@ -51,21 +16,21 @@ db.Callback().Create().Register("update_created_at", updateCreated)
 // register a callback for Create process
 ```
 
-### Delete an existing callback
+## Delete an existing callback
 
 ```go
 db.Callback().Create().Remove("gorm:create")
 // delete callback `gorm:create` from Create callbacks
 ```
 
-### Replace an existing callback
+## Replace an existing callback
 
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
 // replace callback `gorm:create` with new function `newCreateFunction` for Create process
 ```
 
-### Register callback orders
+## Register callback orders
 
 ```go
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
@@ -76,7 +41,7 @@ db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update",
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 ```
 
-### Pre-Defined Callbacks
+## Pre-Defined Callbacks
 
 GORM has defiend callbacks to perform its CRUD operations, check them out before start write your plugins
 

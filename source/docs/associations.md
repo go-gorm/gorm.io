@@ -1,8 +1,7 @@
-# Associations
+title: Associations
+---
 
-<!-- toc -->
-
-## Belongs To
+# Belongs To
 
 ```go
 // `User` belongs to `Profile`, `ProfileID` is the foreign key
@@ -52,7 +51,7 @@ type User struct {
 }
 ```
 
-## Has One
+# Has One
 
 ```go
 // User has one CreditCard, UserID is the foreign key
@@ -106,7 +105,7 @@ type User struct {
 }
 ```
 
-## Has Many
+# Has Many
 
 ```go
 // User has many emails, UserID is the foreign key
@@ -156,7 +155,7 @@ type User struct {
 }
 ```
 
-## Many To Many
+# Many To Many
 
 ```go
 // User has and belongs to many languages, use `user_languages` as join table
@@ -228,7 +227,7 @@ type CustomizeAccount struct {
 }
 ```
 
-### Self-Referencing Many To Many Relationship
+## Self-Referencing Many To Many Relationship
 
 To define a self-referencing many2many relationship, you have to change association's foreign key in the join table.
 
@@ -259,7 +258,7 @@ DB.Model(&user).Association("Friends").Clear()
 DB.Model(&user).Association("Friends").Count()
 ```
 
-## Polymorphism
+# Polymorphism
 
 Supports polymorphic has-many and has-one associations.
 
@@ -286,7 +285,7 @@ Supports polymorphic has-many and has-one associations.
 
 Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
 
-## Association Mode
+# Association Mode
 
 Association Mode contains some helper methods to handle relationship things easily.
 
