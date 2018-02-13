@@ -1,0 +1,30 @@
+docs:
+  getting_started:
+    overview: index.html
+    database: database.html
+  models:
+    model_definition: models.html#model-definition
+    conventions_and_overriding: models.html#conventions
+    associations: associations.html
+    dialect_specific_data_type: dialects.html
+  crud:
+    create: crud.html#create
+    query: crud.html#query
+    preload: crud.html#preloading-eager-loading
+    update: crud.html#update
+    delete: crud.html#delete
+    associations: crud.html#associations
+  advanced_usage:
+    callbacks: callbacks.html
+    error_handling: advanced.html#error-handling
+    transactions: advanced.html#transactions
+    raw_sql_and_builder: advanced.html#sql-builder
+    generic_interface: advanced.html#generic-database-interface-sqldb
+    composite_primary_key: advanced.html#compose-primary-key
+    logger: advanced.html#logger
+  development:
+    architecture: development.html#architecture
+    write_plugins: development.html#write-plugins
+  change_Log:
+     change_log: changelog.html
+

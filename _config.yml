@@ -37,7 +37,7 @@ filename_case: 0
 relative_link: false
 highlight:
   enable: true
-  line_number: true
+  line_number: false
   auto_detect: false
   tab_replace:
 
