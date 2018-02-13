@@ -1,0 +1,54 @@
+# Hexo Configuration
+## Docs: https://hexo.io/docs/configuration.html
+## Source: https://github.com/hexojs/hexo/
+
+# Site
+title: GORM
+subtitle: The fantastic ORM library for Golang, aims to be developer friendly.
+description: GORM is a fantastic ORM library for Golang, aims to be developer friendly.
+author: Jinzhu
+language: en
+timezone: UTC
+
+# URL
+url: http://gorm.io
+root: /
+permalink: :year/:month/:day/:title/
+permalink_defaults:
+
+# Start Guide
+start: "go get -u github.com/jinzhu/gorm"
+
+# Common Configuration
+twitter: zhangjinzhu
+github: jinzhu/gorm
+disqus_shortname:
+algolia:
+  en:
+    api_key:
+    index_name:
+google_analytics:
+carbonads_code:
+
+# Writing
+new_post_name: :title.md # File name of new posts
+external_link: true # Open external links in new tab
+filename_case: 0
+relative_link: false
+highlight:
+  enable: true
+  line_number: true
+  auto_detect: false
+  tab_replace:
+
+# Extensions
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: navy  # based from hexo offical site
+
+# Deployment
+## Docs: https://hexo.io/docs/deployment.html
+deploy:
+  type: git
+  repository: https://github.com/jinzhu/gorm.io.git
+  branch: gh-pages
