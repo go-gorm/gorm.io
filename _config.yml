@@ -9,6 +9,7 @@ description: GORM is a fantastic ORM library for Golang, aims to be developer fr
 author: Jinzhu
 language: en
 timezone: UTC
+source_dir: pages
 
 # URL
 url: http://gorm.io
