@@ -42,7 +42,7 @@ sidebar:
     tutorials: Tutorials
     method_chaining: Method Chaining
     error_handling: Error Handling
-    callbacks: Callbacks
+    hooks: Hooks
     transactions: Transactions
     migration: Migration
     raw_sql_and_builder: Raw SQL and SQL Builder

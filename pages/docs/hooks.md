@@ -1,17 +1,17 @@
-title: Callbacks
+title: Hooks
 ---
 
 ## Object Life Cycle
 
-Callbacks are functions that are called before or after creation/querying/updating/deletion.
+Hooks are functions that are called before or after creation/querying/updating/deletion.
 
 If you have defiend specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
 
-## Callbacks
+## Hooks
 
 ### Creating an object
 
-Available Callbacks for creating
+Available hooks for creating
 
 ```go
 // begin transaction
@@ -46,7 +46,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 ```
 
 **NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited.
-If you would like access those changes in your callbacks, you could accept current tranaction as argument in your callbacks, for example:
+If you would like access those changes in your hooks, you could accept current tranaction as argument in your hooks, for example:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
@@ -57,7 +57,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 
 ### Updating an object
 
-Available Callbacks for updating
+Available hooks for updating
 
 ```go
 // begin transaction
@@ -93,7 +93,7 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 
 ### Deleting an object
 
-Available Callbacks for deleting
+Available hooks for deleting
 
 ```go
 // begin transaction
@@ -117,7 +117,7 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 
 ### Querying an object
 
-Available Callbacks for querying
+Available hooks for querying
 
 ```go
 // load data from database

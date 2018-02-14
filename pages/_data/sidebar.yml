@@ -19,7 +19,7 @@ docs:
   tutorials:
     method_chaining: method_chaining.html
     error_handling: error_handling.html
-    callbacks: callbacks.html
+    hooks: hooks.html
     transactions: transactions.html
     migration: migration.html
     raw_sql_and_builder: sql_builder.html
