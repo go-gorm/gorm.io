@@ -3,25 +3,28 @@ title: Declaring Models
 
 ## Declaring Models
 
-Models usually just normal Golang structs, basic Go types and types that implement [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) should be supported.
+Models usually just normal Golang structs, basic Go types, pointer of them and [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner), [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are supported.
 
-For example:
+Model Example:
 
 ```go
 type User struct {
   gorm.Model
-  Birthday *time.Time
-  Name     string  `gorm:"not null;unique"` // name is not null and should be unique
-  Age      sql.NullInt64
-  Role     *string `gorm:"size:255"` // set field size to 255, default is 255
-  Num      int     `gorm:"AUTO_INCREMENT"`
-  Email    string  `gorm:"type:varchar(100);unique_index"`
-  Address  string  `gorm:"index:addr"`
-  IgnoreMe int     `gorm:"-"` // Ignore this field
+  Name         string
+  Age          sql.NullInt64
+  Birthday     *time.Time
+  Email        string  `gorm:"type:varchar(100);unique_index"`
+  Role         string  `gorm:"size:255"` // set field size to 255
+  MemberNumber *string `gorm:"unique;not null"` // set member number to unique and not null
+  Num          int     `gorm:"AUTO_INCREMENT"` // set num to auto incrementable
+  Address      string  `gorm:"index:addr"` // create index with name `addr` for address
+  IgnoreMe     int     `gorm:"-"` // ignore this field
 }
 ```
 
 ## Struct tags
+
+Tags are optional to use when declaring models, following are those tags that GORM supported.
 
 ### Supported Struct tags
 
