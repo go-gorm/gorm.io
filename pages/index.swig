@@ -18,4 +18,3 @@ comments: false
   <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Every feature comes with tests</li>
   <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Developer Friendly</li>
 </ul>
-</div>

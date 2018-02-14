@@ -1,9 +1,7 @@
 menu:
   docs: Docs
   api: API
-  news: News
-  plugins: Plugins
-  themes: Themes
+  source: Source of this site
   search: Search
 
 index:
