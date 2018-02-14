@@ -28,7 +28,7 @@ algolia:
   en:
     api_key: 442683d88a109de42c6d01bb0c7c4cec
     index_name: gorm
-google_analytics:
+google_analytics: UA-114129444-1
 carbonads_code:
 
 # Writing
