@@ -3,13 +3,12 @@ body {
 }
 
 #logo {
-  color: red;
-  width: 5rem;
+  color: white;
+  width: 6rem;
   line-height: 50px;
   text-indent: 0;
-  color: white;
   text-decoration: none;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 700;
 }
 
@@ -29,4 +28,26 @@ body {
   color: #fff;
   opacity: 0.85;
   font-weight: 500;
+}
+
+.features {
+  width: 80%;
+  margin: 2.5em auto;
+
+  @media mq-mobile {
+    width: 100%;
+  }
+
+  li {
+    line-height: 2em;
+    font-size: 1.2em;
+    color: #666;
+    font-weight: 700;
+
+    .fa {
+      color: #3982C7 !important;
+      font-size: 1em;
+      margin: 0 0.3em;
+    }
+  }
 }

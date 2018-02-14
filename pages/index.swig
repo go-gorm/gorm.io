@@ -4,31 +4,18 @@ subtitle: The fantastic ORM library for Golang
 comments: false
 ---
 
-<style>
-  ul {
-    margin: 2.5em 0;
-    list-style: circle;
-  }
-
-  li {
-    line-height: 2em;
-    font-size: 1.2em;
-  }
-</style>
-
-<ul>
-  <li>Full-Featured ORM (almost)</li>
-  <li>Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)</li>
-  <li>Callbacks (Before/After Create/Save/Update/Delete/Find)</li>
-  <li>Preloading (eager loading)</li>
-  <li>Transactions</li>
-  <li>Composite Primary Key</li>
-  <li>SQL Builder</li>
-  <li>Auto Migrations</li>
-  <li>Logger</li>
-  <li>Extendable, write Plugins based on GORM callbacks</li>
-  <li>Every feature comes with tests</li>
-  <li>Developer Friendly</li>
+<ul class="features">
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM (almost)</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Preloading (eager loading)</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transactions</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Composite Primary Key</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Auto Migrations</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, write Plugins based on GORM callbacks</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Every feature comes with tests</li>
+  <li><i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Developer Friendly</li>
 </ul>
-
 </div>
