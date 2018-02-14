@@ -4,10 +4,15 @@ build:
   steps:
     # A step that executes `npm install` command
     - npm-install
-    # A step that executes `npm test` command
-    - npm-test
+
+    - script:
+        name: setup git
+        code: |
+          git config --global user.email "wosmvp@gmail.com"
+          git config --global user.name "Jinzhu"
+          sed -i "s/__GITHUB_TOKEN__/${GITHUB_TOKEN}/" _config.yml
 
     - script:
         name: hexo deploy
         code: |
-          hexo deploy
+          ./node_modules/hexo/bin/hexo deploy
