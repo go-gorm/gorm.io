@@ -25,12 +25,8 @@ twitter: zhangjinzhu
 github: jinzhu/gorm
 disqus_shortname:
 algolia:
-  applicationID: 9GFTTYW0LT
-  apiKey: 01069970eb0fcca8b0edbc3b9aea4805
-  indexName: gorm
   en:
-    app_id: 9GFTTYW0LT
-    api_key: 01069970eb0fcca8b0edbc3b9aea4805
+    api_key: 442683d88a109de42c6d01bb0c7c4cec
     index_name: gorm
 google_analytics:
 carbonads_code:
