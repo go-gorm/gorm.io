@@ -35,7 +35,7 @@ db.Create(&animal)
 // animal.Name => 'galeone'
 ```
 
-**NOTE** all fields having zero value, like `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12) won't be saved into database but will use its default value, it you want to avoid this, consider to use pointer type or scaner/valuer, eg:
+**NOTE** all fields having zero value, like `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12) won't be saved into database but will use its default value, it you want to avoid this, consider to use pointer type or scaner/valuer, e.g:
 
 ```go
 // Use pointer value
@@ -53,9 +53,9 @@ type User struct {
 }
 ```
 
-## Setting Primary Key In Callbacks
+## Setting Field Values In Hooks
 
-If you want to set primary field's value in `BeforeCreate` callback, you could use `scope.SetColumn`, for example:
+If you want to update field's value in `BeforeCreate` hook, you could use `scope.SetColumn`, for example:
 
 ```go
 func (user *User) BeforeCreate(scope *gorm.Scope) error {

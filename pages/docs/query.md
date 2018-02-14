@@ -1,10 +1,16 @@
 title: Query
 ---
 
+## Query
+
 ```go
 // Get first record, order by primary key
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
+
+// Get one record, no specfied order
+db.Take(&user)
+//// SELECT * FROM users LIMIT 1;
 
 // Get last record, order by primary key
 db.Last(&user)
@@ -19,7 +25,9 @@ db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
 
-## Query With Where (Plain SQL)
+### Where
+
+#### Plain SQL
 
 ```go
 // Get first matched record
@@ -30,6 +38,7 @@ db.Where("name = ?", "jinzhu").First(&user)
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
+// <>
 db.Where("name <> ?", "jinzhu").Find(&users)
 
 // IN
@@ -44,10 +53,11 @@ db.Where("name = ? AND age >= ?", "jinzhu", "22").Find(&users)
 // Time
 db.Where("updated_at > ?", lastWeek).Find(&users)
 
+// BETWEEN
 db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 ```
 
-## Query With Where (Struct & Map)
+#### Struct & Map
 
 ```go
 // Struct
@@ -88,7 +98,9 @@ type User struct {
 }
 ```
 
-## Query With Not
+### Not
+
+Works similar like `Where`
 
 ```go
 db.Not("name", "jinzhu").First(&user)
@@ -114,9 +126,26 @@ db.Not(User{Name: "jinzhu"}).First(&user)
 //// SELECT * FROM users WHERE name <> "jinzhu";
 ```
 
-## Query With Inline Condition
+### Or
 
-**NOTE** When query with primary key, you should carefully check the value you passed is a valid primary key, to avoid SQL injection
+```go
+db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
+//// SELECT * FROM users WHERE role = 'admin' OR role = 'super_admin';
+
+// Struct
+db.Where("name = 'jinzhu'").Or(User{Name: "jinzhu 2"}).Find(&users)
+//// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
+
+// Map
+db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(&users)
+//// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
+```
+
+### Inline Condition
+
+Works similar like `Where`.
+
+When using with [Multiple Immediate Methods](/docs/method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
 
 ```go
 // Get by primary key (only works for integer primary key)
@@ -142,39 +171,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 //// SELECT * FROM users WHERE age = 20;
 ```
 
-## Query With Or
-
-```go
-db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
-//// SELECT * FROM users WHERE role = 'admin' OR role = 'super_admin';
-
-// Struct
-db.Where("name = 'jinzhu'").Or(User{Name: "jinzhu 2"}).Find(&users)
-//// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
-
-// Map
-db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(&users)
-```
-
-## Query Chains
-
-Gorm has a chainable API, you could use it like this
-
-```go
-db.Where("name <> ?","jinzhu").Where("age >= ? and role <> ?",20,"admin").Find(&users)
-//// SELECT * FROM users WHERE name <> 'jinzhu' AND age >= 20 AND role <> 'admin';
-
-db.Where("role = ?", "admin").Or("role = ?", "super_admin").Not("name = ?", "jinzhu").Find(&users)
-```
-
-## SubQuery
-
-```go
-db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?", "paid").QueryExpr()).Find(&orders)
-// SELECT * FROM "orders"  WHERE "orders"."deleted_at" IS NULL AND (amount > (SELECT AVG(amount) FROM "orders"  WHERE (state = 'paid')));
-```
-
-## Extra Querying option
+### Extra Querying option
 
 ```go
 // Add extra SQL option for selecting SQL
@@ -198,9 +195,9 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 ```
 
-## Attrs
+### Attrs
 
-Initalize struct with argument if record haven't been found
+Initalize struct with argument if record not found
 
 ```go
 // Unfound
@@ -218,9 +215,9 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 ```
 
-## Assign
+### Assign
 
-Assign argument to results regardless it is found or not
+Assign argument to struct regardless it is found or not
 
 ```go
 // Unfound
@@ -248,9 +245,9 @@ db.Where(User{Name: "Jinzhu"}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "Jinzhu"}
 ```
 
-## Attrs
+### Attrs
 
-Assgin struct with argument if record haven't been found
+Assgin struct with argument if record not found and create with those values
 
 ```go
 // Unfound
@@ -265,7 +262,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "jinzhu", Age: 20}
 ```
 
-## Assign
+### Assign
 
 Assign it to the record regardless it is found or not, and save back to database.
 
@@ -283,9 +280,20 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "jinzhu", Age: 30}
 ```
 
-## Select
+## Advanced Query
 
-Specify fields that you want to retrieve from database, by default, will select all fields;
+### SubQuery
+
+SubQuery with `*gorm.expr`
+
+```go
+db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?", "paid").QueryExpr()).Find(&orders)
+// SELECT * FROM "orders"  WHERE "orders"."deleted_at" IS NULL AND (amount > (SELECT AVG(amount) FROM "orders"  WHERE (state = 'paid')));
+```
+
+### Select
+
+Specify fields that you want to retrieve from database, by default, will select all fields
 
 ```go
 db.Select("name, age").Find(&users)
@@ -298,9 +306,9 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 //// SELECT COALESCE(age,'42') FROM users;
 ```
 
-## Order
+### Order
 
-Specify order when retrieve records from database, set reorder to `true` to overwrite defined conditions
+Specify order when retrieve records from database, set reorder (the second argument) to `true` to overwrite defined conditions
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -316,9 +324,9 @@ db.Order("age desc").Find(&users1).Order("age", true).Find(&users2)
 //// SELECT * FROM users ORDER BY age; (users2)
 ```
 
-## Limit
+### Limit
 
-Specify the number of records to be retrieved
+Specify the max number of records to retrieve
 
 ```go
 db.Limit(3).Find(&users)
@@ -330,7 +338,7 @@ db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 //// SELECT * FROM users; (users2)
 ```
 
-## Offset
+### Offset
 
 Specify the number of records to skip before starting to return the records
 
@@ -344,7 +352,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 //// SELECT * FROM users; (users2)
 ```
 
-## Count
+### Count
 
 Get how many records for a model
 
@@ -362,7 +370,7 @@ db.Table("deleted_users").Count(&count)
 
 **NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns
 
-## Group & Having
+### Group & Having
 
 ```go
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Rows()
@@ -382,7 +390,7 @@ type Result struct {
 db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
 ```
 
-## Joins
+### Joins
 
 Specify Joins conditions
 
@@ -400,7 +408,7 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ## Pluck
 
-Query single column from a model as a map, if you want to query multiple columns, you could use [`Scan`](#scan)
+Query single column from a model as a map, if you want to query multiple columns, you should use [`Scan`](#scan) instead
 
 ```go
 var ages []int64
@@ -430,18 +438,4 @@ db.Table("users").Select("name, age").Where("name = ?", 3).Scan(&result)
 
 // Raw SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
-```
-
-## Specifying The Table Name
-
-```go
-// Create `deleted_users` table with struct User's definition
-db.Table("deleted_users").CreateTable(&User{})
-
-var deleted_users []User
-db.Table("deleted_users").Find(&deleted_users)
-//// SELECT * FROM deleted_users;
-
-db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
-//// DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```

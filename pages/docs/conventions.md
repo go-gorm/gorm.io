@@ -50,6 +50,20 @@ func (u User) TableName() string {
 db.SingularTable(true) // if set this to true, `User`'s default table name will be `user`, table name setted with `TableName` won't be affected
 ```
 
+## Specifying The Table Name
+
+```go
+// Create `deleted_users` table with struct User's definition
+db.Table("deleted_users").CreateTable(&User{})
+
+var deleted_users []User
+db.Table("deleted_users").Find(&deleted_users)
+//// SELECT * FROM deleted_users;
+
+db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
+//// DELETE FROM deleted_users WHERE name = 'jinzhu';
+```
+
 ## Change default tablenames
 
 You can apply any rules on the default table name by defining the `DefaultTableNameHandler`

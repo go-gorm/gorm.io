@@ -53,7 +53,7 @@ db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "ag
 //// UPDATE users SET age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update Changed Fields Without Callbacks
+## Update Columns w/o Hooks
 
 Above updating operations will perform the model's `BeforeUpdate`, `AfterUpdate` method, update its `UpdatedAt` timestamp, save its `Associations` when updaing, if you don't want to call them, you could use `UpdateColumn`, `UpdateColumns`
 
@@ -69,7 +69,7 @@ db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 
 ## Batch Updates
 
-Callbacks won't run when do batch updates
+Hooks won't run when do batch updates
 
 ```go
 db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface{}{"name": "hello", "age": 18})
@@ -99,9 +99,9 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 //// UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
-## Change Updating Values In Callbacks
+## Change Values In Hooks
 
-If you want to change updating values in callbacks using `BeforeUpdate`, `BeforeSave`, you could use `scope.SetColumn`, for example:
+If you want to change updating values in hooks using `BeforeUpdate`, `BeforeSave`, you could use `scope.SetColumn`, for example:
 
 ```go
 func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
