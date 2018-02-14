@@ -3,7 +3,7 @@ title: SQL Builder
 
 ## Run Raw SQL
 
-Run Raw SQL
+Run Raw SQL, which is not chainable with other methods
 
 ```go
 db.Exec("DROP TABLE users;")
@@ -19,7 +19,7 @@ var result Result
 db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
 ```
 
-## sql.Row & sql.Rows
+## `sql.Row` & `sql.Rows`
 
 Get query result as `*sql.Row` or `*sql.Rows`
 
@@ -45,7 +45,7 @@ for rows.Next() {
 }
 ```
 
-## Scan sql.Rows In Iteration
+## Scan `sql.Rows` into model
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
@@ -53,7 +53,9 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
+  // ScanRows scan a row into user
   db.ScanRows(rows, &user)
+
   // do something
 }
 ```
