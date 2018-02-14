@@ -8,8 +8,12 @@ build:
     - npm-test
 
     - script:
+        name: setup git
+        code: |
+          git config user.email "wosmvp@gmail.com"
+          git config user.name "Jinzhu"
+
+    - script:
         name: hexo deploy
         code: |
-          ls
-          ls $WERCKER_CACHE_DIR/wercker/npm
           ./node_modules/hexo/bin/hexo deploy
