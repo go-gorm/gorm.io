@@ -10,8 +10,7 @@ build:
         code: |
           git config --global user.email "wosmvp@gmail.com"
           git config --global user.name "Jinzhu"
-          git config --global github.user "jinzhu"
-          git config --global url."git@github.com:".insteadOf "https://github.com/"
+          sed -i "s/__GITHUB_TOKEN__/${GITHUB_TOKEN}/" _config.yml
 
     - script:
         name: hexo deploy
