@@ -12,6 +12,7 @@ build:
         code: |
           git config --global user.email "wosmvp@gmail.com"
           git config --global user.name "Jinzhu"
+          git config --global github.user "jinzhu"
 
     - script:
         name: hexo deploy
