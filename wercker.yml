@@ -4,8 +4,6 @@ build:
   steps:
     # A step that executes `npm install` command
     - npm-install
-    # A step that executes `npm test` command
-    - npm-test
 
     - script:
         name: setup git
@@ -13,6 +11,7 @@ build:
           git config --global user.email "wosmvp@gmail.com"
           git config --global user.name "Jinzhu"
           git config --global github.user "jinzhu"
+          git config --global url."git@github.com:".insteadOf "https://github.com/"
 
     - script:
         name: hexo deploy
