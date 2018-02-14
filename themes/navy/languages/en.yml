@@ -28,7 +28,6 @@ sidebar:
     crud_interface: CRUD Interface
     create: Create
     query: Query
-    preload: Preload
     update: Update
     delete: Delete
 
@@ -37,7 +36,7 @@ sidebar:
     has_one: Has One
     has_many: Has Many
     many_to_many: Many To Many
-    associations_mode: Associations Mode
+    preload: Preloading (Eager Loading)
 
     tutorials: Tutorials
     method_chaining: Method Chaining

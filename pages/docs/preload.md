@@ -1,6 +1,8 @@
 title: Preloading (Eager loading)
 ---
 
+## Preload
+
 ```go
 db.Preload("Orders").Find(&users)
 //// SELECT * FROM users;
@@ -21,26 +23,7 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 //// SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
 ```
 
-## Custom Preloading SQL
-
-You could custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB` (same type as the one used for [Scopes](#scopes)), for example:
-
-```go
-db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
-    return db.Order("orders.amount DESC")
-}).Find(&users)
-//// SELECT * FROM users;
-//// SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.amount DESC;
-```
-
-## Nested Preloading
-
-```go
-db.Preload("Orders.OrderItems").Find(&users)
-db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
-```
-
-## Auto Preload
+## Auto Preloading
 
 Always auto preload associations
 
@@ -50,4 +33,24 @@ type User struct {
   Name       string
   CompanyID  uint
   Company    Company `gorm:"auto_preload"`
+}
+```
+
+## Nested Preloading
+
+```go
+db.Preload("Orders.OrderItems").Find(&users)
+db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
+```
+
+## Custom Preloading SQL
+
+You could custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+
+```go
+db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
+    return db.Order("orders.amount DESC")
+}).Find(&users)
+//// SELECT * FROM users;
+//// SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.amount DESC;
 ```

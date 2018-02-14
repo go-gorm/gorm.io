@@ -7,15 +7,15 @@ docs:
   crud_interface:
     create: create.html
     query: query.html
-    preload: preload.html
     update: update.html
     delete: delete.html
   associations:
-     belongs_to: associations_crud.html
-     has_one: associations_crud.html
-     has_many: associations_crud.html
-     many_to_many: associations_crud.html
-     associations_mode: associations.html
+     belongs_to: belongs_to.html
+     has_one: has_one.html
+     has_many: has_many.html
+     many_to_many: many_to_many.html
+     associations: associations.html
+     preload: preload.html
   tutorials:
     method_chaining: method_chaining.html
     error_handling: error_handling.html
