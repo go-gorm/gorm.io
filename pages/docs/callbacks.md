@@ -1,9 +1,15 @@
 title: Callbacks
 ---
 
-You could define callback methods to pointer of model struct, it will be called when creating, updating, querying, deleting, if any callback returns an error, gorm will stop future operations and rollback all changes.
+## Object Life Cycle
 
-## Creating An Object
+Callbacks are functions that are called before or after creation/querying/updating/deletion.
+
+If you have defiend specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+
+## Callbacks
+
+### Creating an object
 
 Available Callbacks for creating
 
@@ -21,7 +27,35 @@ AfterSave
 // commit or rollback transaction
 ```
 
-## Updating An Object
+Code Example:
+
+```go
+func (u *User) BeforeSave() (err error) {
+	if u.IsValid() {
+		err = errors.New("can't save invalid data")
+	}
+	return
+}
+
+func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
+	if u.ID == 1 {
+    scope.DB().Model(u).Update("role", "admin")
+  }
+	return
+}
+```
+
+**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited.
+If you would like access those changes in your callbacks, you could accept current tranaction as argument in your callbacks, for example:
+
+```go
+func (u *User) AfterCreate(tx *gorm.DB) (err error) {
+	tx.Model(u).Update("role", "admin")
+	return
+}
+```
+
+### Updating an object
 
 Available Callbacks for updating
 
@@ -38,7 +72,26 @@ AfterSave
 // commit or rollback transaction
 ```
 
-## Deleting An Object
+Code Example:
+
+```go
+func (u *User) BeforeUpdate() (err error) {
+	if u.readonly() {
+		err = errors.New("read only user")
+	}
+	return
+}
+
+// Updating data in same transaction
+func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
+  if u.Confirmed {
+    tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
+  }
+	return
+}
+```
+
+### Deleting an object
 
 Available Callbacks for deleting
 
@@ -50,7 +103,19 @@ AfterDelete
 // commit or rollback transaction
 ```
 
-## Querying An Object
+Code Example:
+
+```go
+// Updating data in same transaction
+func (u *User) AfterDelete(tx *gorm.DB) (err error) {
+  if u.Confirmed {
+    tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
+  }
+	return
+}
+```
+
+### Querying an object
 
 Available Callbacks for querying
 
@@ -60,38 +125,13 @@ Available Callbacks for querying
 AfterFind
 ```
 
-## Callback Examples
+Code Example:
 
 ```go
-func (u *User) BeforeUpdate() (err error) {
-	if u.readonly() {
-		err = errors.New("read only user")
-	}
-	return
-}
-
-// Rollback the insertion if user's id greater than 1000
-func (u *User) AfterCreate() (err error) {
-	if u.Id > 1000 {
-		err = errors.New("user id is already greater than 1000")
-	}
-	return
-}
-```
-
-Save/Delete operations in gorm are running in transactions, so changes made in that transaction are not visible unless it is commited.
-If you want to use those changes in your callbacks, you need to run your SQL in the same transaction. So you need to pass current transaction to callbacks like this:
-
-```go
-func (u *User) AfterCreate(tx *gorm.DB) (err error) {
-	tx.Model(u).Update("role", "admin")
-	return
-}
-```
-
-```go
-func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
-  scope.DB().Model(u).Update("role", "admin")
+func (u *User) AfterFind() (err error) {
+  if u.MemberShip == "" {
+    u.MemberShip = "user"
+  }
 	return
 }
 ```

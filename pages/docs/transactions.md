@@ -1,6 +1,12 @@
 title: Transactions
 ---
 
+GORM perform single `create`, `update`, `delete` operations in transactions by default to ensure database data integrity.
+
+If you want to tread multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
+
+## Transactions
+
 To perform a set of operations within a transaction, the general flow is as below.
 
 ```go
@@ -19,12 +25,17 @@ tx.Rollback()
 tx.Commit()
 ```
 
-### A Specific Example
+## A Specific Example
 
 ```go
 func CreateAnimals(db *gorm.DB) err {
-  tx := db.Begin()
   // Note the use of tx as the database handle once you are within a transaction
+  tx := db.Begin()
+  defer func() {
+    if r := recover(); r != nil {
+      tx.Rollback()
+    }
+  }()
 
   if tx.Error != nil {
     return err
