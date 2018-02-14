@@ -5,6 +5,8 @@ GORM itself is powered by `Callbacks`, so you could fully customize GORM as you 
 
 ## Register a new callback
 
+Register a callback into callbacks
+
 ```go
 func updateCreated(scope *Scope) {
     if scope.HasColumn("Created") {
@@ -18,6 +20,8 @@ db.Callback().Create().Register("update_created_at", updateCreated)
 
 ## Delete an existing callback
 
+Delete a callback from callbacks
+
 ```go
 db.Callback().Create().Remove("gorm:create")
 // delete callback `gorm:create` from Create callbacks
@@ -25,12 +29,16 @@ db.Callback().Create().Remove("gorm:create")
 
 ## Replace an existing callback
 
+Replace a callback having same name with new one
+
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
 // replace callback `gorm:create` with new function `newCreateFunction` for Create process
 ```
 
 ## Register callback orders
+
+Regiser callbacks with orders
 
 ```go
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
@@ -43,7 +51,7 @@ db.Callback().Create().Before("gorm:create").After("gorm:before_create").Registe
 
 ## Pre-Defined Callbacks
 
-GORM has defiend callbacks to perform its CRUD operations, check them out before start write your plugins
+GORM has defiend callbacks to perform CRUD operations, check them out before start write your plugins
 
 - [Create callbacks](https://github.com/jinzhu/gorm/blob/master/callback_create.go)
 
@@ -53,9 +61,9 @@ GORM has defiend callbacks to perform its CRUD operations, check them out before
 
 - [Delete callbacks](https://github.com/jinzhu/gorm/blob/master/callback_delete.go)
 
-- Row Query callbacks
+- Row Query callbacks - no callbacks registered by default
 
-Row Query callbacks will be called when run `Row` or `Rows`, by default there is no registered callbacks for it, you could register a new one like:
+Row Query callbacks will be called when perform `Row` or `Rows`, there are no registered callbacks by default, you could register a new one like:
 
 ```go
 func updateTableName(scope *gorm.Scope) {

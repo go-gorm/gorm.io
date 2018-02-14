@@ -1,8 +1,13 @@
 title: Change Log
+---
 
-# v1.0
+## v2.0
 
-## Breaking Changes
+WIP
+
+## v1.0
+
+Breaking Changes
 
 * **`gorm.Open` return type `*gorm.DB` instead of `gorm.DB`**
 

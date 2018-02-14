@@ -1,20 +1,22 @@
 title: Logger
 ---
 
-Gorm has built-in logger support, by default, it will print happened errors
+## Logger
+
+Gorm has built-in logger support, default mode, it will only print logs when there are errors happened.
 
 ```go
 // Enable Logger, show detailed log
 db.LogMode(true)
 
-// Disable Logger, don't show any log
+// Disable Logger, don't show any log even errors
 db.LogMode(false)
 
 // Debug a single operation, show detailed log for this operation
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
-#### Customize Logger
+## Customize Logger
 
 Refer GORM's default logger for how to customize it [https://github.com/jinzhu/gorm/blob/master/logger.go](https://github.com/jinzhu/gorm/blob/master/logger.go)
 
