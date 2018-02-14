@@ -1,12 +1,14 @@
 title: Conventions
 ---
 
-## `gorm.Model` struct
+## gorm.Model
 
-Base model definition `gorm.Model`, including fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`, you could embed it in your model, or only write those fields you want
+`gorm.Model` is a struct including some basic fields, which including fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
+
+It could be embeded into your model or build your own model w/o it.
 
 ```go
-// Base Model's definition
+// gorm.Model definition
 type Model struct {
   ID        uint `gorm:"primary_key"`
   CreatedAt time.Time
@@ -14,26 +16,45 @@ type Model struct {
   DeletedAt *time.Time
 }
 
-// Add fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
+// Inject fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` into model `User`
 type User struct {
   gorm.Model
   Name string
 }
 
-// Only need field `ID`, `CreatedAt`
+// Declaring model w/o gorm.Model
 type User struct {
-  ID        uint
-  CreatedAt time.Time
-  Name      string
+  ID   int
+  Name string
 }
 ```
 
-## Table name is the pluralized version of struct name
+## `ID` as Primary Key
+
+GORM use field with name `ID` as priamry key by default.
+
+```go
+type User struct {
+  ID   string // field named `ID` will be used as primary field by default
+  Name string
+}
+
+// Set field `AnimalID` as primary field
+type Animal struct {
+  AnimalID int64 `gorm:"primary_key"`
+  Name     string
+  Age      int64
+}
+```
+
+## Pluralized Table Name
+
+Table name is the pluralized version of struct name
 
 ```go
 type User struct {} // default table name is `users`
 
-// set User's table name to be `profiles`
+// Set User's table name to be `profiles`
 func (User) TableName() string {
   return "profiles"
 }
@@ -46,11 +67,11 @@ func (u User) TableName() string {
 	}
 }
 
-// Disable table name's pluralization globally
-db.SingularTable(true) // if set this to true, `User`'s default table name will be `user`, table name setted with `TableName` won't be affected
+// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
+db.SingularTable(true)
 ```
 
-## Specifying The Table Name
+### Specifying The Table Name
 
 ```go
 // Create `deleted_users` table with struct User's definition
@@ -64,7 +85,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 //// DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-## Change default tablenames
+### Change default tablenames
 
 You can apply any rules on the default table name by defining the `DefaultTableNameHandler`
 
@@ -74,14 +95,16 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 }
 ```
 
-## Column name is the snake case of field's name
+## Snake Case Column Name
+
+Column name will be the lower snake case field's name
 
 ```go
 type User struct {
-  ID uint             // column name will be `id`
-  Name string         // column name will be `name`
-  Birthday time.Time  // column name will be `birthday`
-  CreatedAt time.Time // column name will be `created_at`
+  ID        uint      // column name is `id`
+  Name      string    // column name is `name`
+  Birthday  time.Time // column name is `birthday`
+  CreatedAt time.Time // column name is `created_at`
 }
 
 // Overriding Column Name
@@ -92,25 +115,11 @@ type Animal struct {
 }
 ```
 
-## Field `ID` as primary key
+## Timestamp Tracking
 
-```go
-type User struct {
-  ID   uint  // field named `ID` will be the default primary field
-  Name string
-}
+### CreatedAt
 
-// Set a field to be primary field with tag `primary_key`
-type Animal struct {
-  AnimalId int64 `gorm:"primary_key"` // set AnimalId to be primary key
-  Name     string
-  Age      int64
-}
-```
-
-## Field `CreatedAt` used to store record's created time
-
-Create records having `CreatedAt` field will set it to current time.
+For models having `CreatedAt` field, it will be set to current time when record is first created.
 
 ```go
 db.Create(&user) // will set `CreatedAt` to current time
@@ -119,16 +128,16 @@ db.Create(&user) // will set `CreatedAt` to current time
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
-## Use `UpdatedAt` used to store record's updated time
+### UpdatedAt
 
-Save records having `UpdatedAt` field will set it to current time.
+For models having `UpdatedAt` field, it will be set to current time when record is updated.
 
 ```go
-// Whenever one or more `user` fields are edited using Save() or Update(), `UpdatedAt` will be set to current time
 db.Save(&user) // will set `UpdatedAt` to current time
+
 db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
 ```
 
-## Use `DeletedAt` to store record's deleted time if field exists
+### DeletedAt
 
-Delete records having `DeletedAt` field, it won't be deleted from database, but only set field `DeletedAt`'s value to current time, and the record is not findable when querying, refer [Soft Delete](crud.html#soft-delete)
+For models having `UpdatedAt` field, when delete their instances, they won't be deleted from database, but will set its `DeletedAt` field to current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)

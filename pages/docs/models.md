@@ -1,50 +1,62 @@
-title: Model Definition
+title: Declaring Models
 ---
+
+## Declaring Models
+
+Models usually just normal Golang structs, basic Go types and types that implement [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) should be supported.
+
+For example:
 
 ```go
 type User struct {
   gorm.Model
-  Birthday     time.Time
-  Age          int
-  Name         string  `gorm:"size:255"` // Default size for string is 255, reset it with this tag
-  Num          int     `gorm:"AUTO_INCREMENT"`
-
-  CreditCard        CreditCard      // One-To-One relationship (has one - use CreditCard's UserID as foreign key)
-  Emails            []Email         // One-To-Many relationship (has many - use Email's UserID as foreign key)
-
-  BillingAddress    Address         // One-To-One relationship (belongs to - use BillingAddressID as foreign key)
-  BillingAddressID  sql.NullInt64
-
-  ShippingAddress   Address         // One-To-One relationship (belongs to - use ShippingAddressID as foreign key)
-  ShippingAddressID int
-
-  IgnoreMe          int `gorm:"-"`   // Ignore this field
-  Languages         []Language `gorm:"many2many:user_languages;"` // Many-To-Many relationship, 'user_languages' is join table
-}
-
-type Email struct {
-  ID      int
-  UserID  int     `gorm:"index"` // Foreign key (belongs to), tag `index` will create index for this column
-  Email   string  `gorm:"type:varchar(100);unique_index"` // `type` set sql type, `unique_index` will create unique index for this column
-  Subscribed bool
-}
-
-type Address struct {
-  ID       int
-  Address1 string         `gorm:"not null;unique"` // Set field as not nullable and unique
-  Address2 string         `gorm:"type:varchar(100);unique"`
-  Post     sql.NullString `gorm:"not null"`
-}
-
-type Language struct {
-  ID   int
-  Name string `gorm:"index:idx_name_code"` // Create index with name, and will create combined index if find other fields defined same name
-  Code string `gorm:"index:idx_name_code"` // `unique_index` also works
-}
-
-type CreditCard struct {
-  gorm.Model
-  UserID  uint
-  Number  string
+  Birthday *time.Time
+  Name     string  `gorm:"not null;unique"` // name is not null and should be unique
+  Age      sql.NullInt64
+  Role     *string `gorm:"size:255"` // set field size to 255, default is 255
+  Num      int     `gorm:"AUTO_INCREMENT"`
+  Email    string  `gorm:"type:varchar(100);unique_index"`
+  Address  string  `gorm:"index:addr"`
+  IgnoreMe int     `gorm:"-"` // Ignore this field
 }
 ```
+
+## Struct tags
+
+### Supported Struct tags
+
+| Tag             | Description                                                            |
+| ---             | ---                                                                    |
+| Column          | Specifies column name                                                  |
+| Type            | Specifies column data type                                             |
+| Size            | Specifies column size, default 255                                     |
+| PRIMARY_KEY     | Specifies column as primary key                                        |
+| UNIQUE          | Specifies column as unique                                             |
+| DEFAULT         | Specifies column default value                                         |
+| PRECISION       | Specifies column precision                                             |
+| NOT NULL        | Specifies column as NOT NULL                                           |
+| AUTO_INCREMENT  | Specifies column auto incrementable or not                             |
+| INDEX           | Create index with or without name, same name creates composite indexes |
+| UNIQUE_INDEX    | Like `INDEX`, create unique index                                      |
+| EMBEDDED        | Set struct as embedded                                                 |
+| EMBEDDED_PREFIX | Set embedded struct's prefix name                                      |
+| -               | Ignore this fields                                                     |
+
+### Struct tags for Associations
+
+Check out Associations section for details
+
+| Tag                              | Description                                    |
+| ---                              | ---                                            |
+| MANY2MANY                        | Specifies join table name                      |
+| FOREIGNKEY                       | Specifies foreign key                          |
+| ASSOCIATION_FOREIGNKEY           | Specifies association foreign key              |
+| POLYMORPHIC                      | Specifies polymorphic type                     |
+| POLYMORPHIC_VALUE                | Specifies polymorphic value                    |
+| JOINTABLE_FOREIGNKEY             | Specifies foreign key of jointable             |
+| ASSOCIATION_JOINTABLE_FOREIGNKEY | Specifies association foreign key of jointable |
+| SAVE_ASSOCIATIONS                | AutoSave associations or not                   |
+| ASSOCIATION_AUTOUPDATE           | AutoUpdate associations or not                 |
+| ASSOCIATION_AUTOCREATE           | AutoCreate associations or not                 |
+| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not         |
+| Preload                          | Auto Preloading                                |

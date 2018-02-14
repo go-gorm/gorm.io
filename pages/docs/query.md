@@ -408,7 +408,7 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ## Pluck
 
-Query single column from a model as a map, if you want to query multiple columns, you should use [`Scan`](#scan) instead
+Query single column from a model as a map, if you want to query multiple columns, you should use [`Scan`](#Scan) instead
 
 ```go
 var ages []int64
