@@ -10,8 +10,8 @@ build:
     - script:
         name: setup git
         code: |
-          git config user.email "wosmvp@gmail.com"
-          git config user.name "Jinzhu"
+          git config --global user.email "wosmvp@gmail.com"
+          git config --global user.name "Jinzhu"
 
     - script:
         name: hexo deploy
