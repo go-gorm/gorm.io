@@ -10,4 +10,6 @@ build:
     - script:
         name: hexo deploy
         code: |
-          hexo deploy
+          ls
+          ls $WERCKER_CACHE_DIR/wercker/npm
+          ./node_modules/hexo/bin/hexo deploy
