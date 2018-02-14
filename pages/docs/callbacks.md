@@ -1,10 +1,9 @@
-# Callbacks
-
-<!-- toc -->
+title: Callbacks
+---
 
 You could define callback methods to pointer of model struct, it will be called when creating, updating, querying, deleting, if any callback returns an error, gorm will stop future operations and rollback all changes.
 
-### Creating An Object
+## Creating An Object
 
 Available Callbacks for creating
 
@@ -22,7 +21,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-### Updating An Object
+## Updating An Object
 
 Available Callbacks for updating
 
@@ -39,7 +38,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-### Deleting An Object
+## Deleting An Object
 
 Available Callbacks for deleting
 
@@ -51,7 +50,7 @@ AfterDelete
 // commit or rollback transaction
 ```
 
-### Querying An Object
+## Querying An Object
 
 Available Callbacks for querying
 
@@ -61,7 +60,7 @@ Available Callbacks for querying
 AfterFind
 ```
 
-### Callback Examples
+## Callback Examples
 
 ```go
 func (u *User) BeforeUpdate() (err error) {

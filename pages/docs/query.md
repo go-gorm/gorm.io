@@ -432,39 +432,6 @@ db.Table("users").Select("name, age").Where("name = ?", 3).Scan(&result)
 db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
 ```
 
-## Scopes
-
-Pass current database connection to `func(*DB) *DB`, which could be used to add conditions dynamically
-
-```go
-func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
-	return db.Where("amount > ?", 1000)
-}
-
-func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
-	return db.Where("pay_mode_sign = ?", "C")
-}
-
-func PaidWithCod(db *gorm.DB) *gorm.DB {
-	return db.Where("pay_mode_sign = ?", "C")
-}
-
-func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
-	return func (db *gorm.DB) *gorm.DB {
-		return db.Scopes(AmountGreaterThan1000).Where("status in (?)", status)
-	}
-}
-
-db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
-
-db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
-
-db.Scopes(OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders
-```
-
 ## Specifying The Table Name
 
 ```go

@@ -1,31 +1,32 @@
 docs:
   getting_started:
     overview: index.html
-    connecting_to_the_database: connecting_to_the_database.html
-    migration: migration.html
-  models:
-    declaring: models.html
+    declaring_models: models.html
     conventions: conventions.html
-    associations: associations.html
-    dialect_specific_data_type: dialects.html
-  crud:
+    connecting_to_the_database: connecting_to_the_database.html
+  crud_interface:
     create: create.html
     query: query.html
     preload: preload.html
     update: update.html
     delete: delete.html
-    associations: associations_crud.html
-  advanced_usage:
-    callbacks: callbacks.html
+  associations:
+     belongs_to: associations_crud.html
+     has_one: associations_crud.html
+     has_many: associations_crud.html
+     many_to_many: associations_crud.html
+     associations_mode: associations.html
+  tutorials:
+    method_chaining: method_chaining.html
     error_handling: error_handling.html
+    callbacks: callbacks.html
     transactions: transactions.html
+    migration: migration.html
     raw_sql_and_builder: sql_builder.html
     generic_interface: generic_interface.html
+  advanced_topics:
     composite_primary_key: composite_primary_key.html
-    logger: logger.html
-  development:
-    architecture: architecture.html
     write_plugins: write_plugins.html
-  change_log:
-     change_log: changelog.html
-
+    dialects: dialects.html
+    logger: logger.html
+    change_log: changelog.html

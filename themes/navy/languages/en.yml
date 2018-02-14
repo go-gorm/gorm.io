@@ -28,7 +28,7 @@ sidebar:
     conventions: Conventions
     associations: Associations
     dialect_specific_data_type: Dialect Specific Data Type
-    crud: CRUD
+    crud_interface: CRUD Interface
     create: Create
     query: Query
     preload: Preload
@@ -43,6 +43,6 @@ sidebar:
     composite_primary_key: Composite Primary Key
     logger: Logger
     development: Development
-    architecture: Architecture
+    method_chaining: Method Chaining
     write_plugins: Write Plugins
     change_log: ChangeLog
