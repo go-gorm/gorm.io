@@ -1,2 +1,3 @@
 docs: /docs/
 api: https://godoc.org/github.com/jinzhu/gorm
+github: https://github.com/jinzhu/gorm
