@@ -38,28 +38,85 @@ body {
 
 #banner-title {
   color: #fff;
-  opacity: 0.85;
-  font-weight: 500;
+  opacity: 0.8;
+  font-weight: 600;
 }
 
-.features {
-  width: 80%;
-  margin: 2.5em auto;
+#content-wrap {
+  .features {
+    width: 88%;
+    margin: 2.5em auto;
 
-  @media mq-mobile {
-    width: 100%;
+    @media mq-mobile {
+      width: 100%;
+    }
+
+    li {
+      line-height: 2em;
+      font-size: 1.2em;
+      color: #666;
+      font-weight: 700;
+
+      .fa {
+        color: #3982C7 !important;
+        font-size: 1em;
+        margin: 0 0.3em;
+      }
+    }
   }
 
-  li {
-    line-height: 2em;
-    font-size: 1.2em;
-    color: #666;
-    font-weight: 700;
+  .sponsors-wrapper {
+    padding: 3.5em 0;
+    background: #5EB793;
 
-    .fa {
-      color: #3982C7 !important;
-      font-size: 1em;
-      margin: 0 0.3em;
+    .inner {
+      max-width: 1280px;
+      padding: 0 20px;
+      margin: 0 auto;
     }
+
+    .sponsors {
+      width: 88%;
+      margin: 0 auto 2em;
+
+      @media mq-mobile {
+        width: 100%;
+      }
+
+      object {
+        width: 100%;
+      }
+
+      h1 {
+        margin: 1.5em 0 0.8em;
+        font-size: 2em;
+        color: white;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+#footer {
+  .inner {
+    width: 88%;
+    margin: 2.5em auto;
+
+    @media mq-mobile {
+      width: 100%;
+    }
+  }
+}
+
+.backers-list {
+  a {
+    display: inine;
+    padding: 5px;
+    img {
+      border-radius: 50%;
+    }
+  }
+  br {
+    display: none;
   }
 }

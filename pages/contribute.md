@@ -3,7 +3,7 @@ title: Contribute to GORM
 layout: page
 ---
 
-GORM is 100% open source project, If you like GORM, and would like to help its development, there are many things that you can do:
+**You can help to deliver a better GORM! there are many things that you can do:**
 
 ## Help others to know GORM
 
@@ -24,14 +24,32 @@ GORM is 100% open source project, If you like GORM, and would like to help its d
 
 ## Donations
 
-**Your donations help keep GORM great**
-
-#### One-time Donations
+### One-time Donations
 
 [One time Donations by Paypal](https://www.paypal.me/zhangjinzhu)
 [One time Donations by OpenCollective](https://opencollective.com/gorm)
 
-#### Recurring Donations
+### Recurring Donations
 
 [Recurring Donations with OpenCollective](https://opencollective.com/gorm)
 [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+
+<br>
+
+## Sponsors
+
+<object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=740"></object>
+
+## Backers
+
+<div class="backers-list">
+<a href="https://www.patreon.com/jeffprestes"><img style="width: 48px" src="http://i.imgur.com/7SPpyLw.jpg"></img></a>
+<a href="https://www.patreon.com/user/creators?u=5447334"><img style="width: 48px" src="https://c8.patreon.com/2/400/5447334"></img></a>
+<a href="https://www.patreon.com/user/creators?u=4875083"><img style="width: 48px" src="https://c8.patreon.com/2/100/4875083"></img></a>
+</div>
+
+<object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=48&width=740"></object>
+
+## Contributors
+
+<object type="image/svg+xml" data="https://opencollective.com/gorm/contributors.svg?avatarHeight=32&width=740"></object>

@@ -7,10 +7,25 @@
     <div id="banner-share">{{ partial('partial/share') }}</div>
   </div>
 </header>
+
 <div id="content-wrap">
   <div class="wrapper">
     <div class="inner">
       {{ page.content }}
+    </div>
+  </div>
+
+  <div class="sponsors-wrapper">
+    <div class="inner">
+      <div class="sponsors">
+        <h1>Our Contributors</h1>
+        <object type="image/svg+xml" data="https://opencollective.com/gorm/contributors.svg?avatarHeight=34&width=1080"></object>
+      </div>
+
+      <div class="sponsors">
+        <h1>Our Sponsors</h1>
+        <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=1080"></object>
+      </div>
     </div>
   </div>
 </div>

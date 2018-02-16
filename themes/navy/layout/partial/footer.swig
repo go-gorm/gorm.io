@@ -1,7 +1,7 @@
 <footer id="footer" class="wrapper">
   <div class="inner">
     <div id="footer-copyright">
-      &copy; 2013~{{ moment(Date.now()).year() }} <a href="https://github.com/{{ config.github }}/graphs/contributors" target="_blank">{{ config.author }}</a><br>
+      &copy; 2013~{{ moment(Date.now()).year() }} <a href="{{ config.author_url }}" target="_blank">{{ config.author }}</a><br>
       Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
       <a href="https://github.com/jinzhu/gorm.io" target="_blank">Source Code of this site</a>
     </div>
