@@ -9,7 +9,7 @@
         <div id="search-input-icon">
           <i class="fa fa-search"></i>
         </div>
-        <input type="search" id="search-input" placeholder="Search...">
+        <input type="search" id="search-input" placeholder="{{ __('menu.search') }}">
       </div>
     </nav>
     <div id="lang-select-wrap">
