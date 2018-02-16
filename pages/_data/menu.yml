@@ -1,4 +1,4 @@
 docs: /docs/
 community: /community.html
 api: https://godoc.org/github.com/jinzhu/gorm
-github: https://github.com/jinzhu/gorm
+contribute: /contribute.html
