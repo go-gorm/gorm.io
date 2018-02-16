@@ -1,8 +1,9 @@
 menu:
-  home: <i class="fa fa-home"></i>&nbsp;&nbsp;Home
-  docs: <i class="fa fa-book"></i>&nbsp;&nbsp;Docs
-  api: <i class="fa fa-cogs"></i>&nbsp;&nbsp;API
-  github: <i class="fa fa-github"></i>&nbsp;&nbsp;Github
+  home: <i class="fa fa-home"></i>&nbsp;Home
+  docs: <i class="fa fa-book"></i>&nbsp;Docs
+  api: <i class="fa fa-cogs"></i>&nbsp;API
+  github: <i class="fa fa-github"></i>&nbsp;Github
+  community: <i class="fa fa-slack"></i>&nbsp;Community
   search: Search documents...
 
 index:
