@@ -32,8 +32,11 @@ type User struct {
   gorm.Model
   Name       string
   CompanyID  uint
-  Company    Company `gorm:"auto_preload"`
+  Company    Company `gorm:"PRELOAD:false"` // not preloaded
+  Role       Role                           // preloaded
 }
+
+db.Set("gorm:auto_preload", true).Find(&users)
 ```
 
 ## Nested Preloading

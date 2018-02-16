@@ -62,4 +62,4 @@ Check out Associations section for details
 | ASSOCIATION_AUTOUPDATE           | AutoUpdate associations or not                 |
 | ASSOCIATION_AUTOCREATE           | AutoCreate associations or not                 |
 | ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not         |
-| Preload                          | Auto Preloading                                |
+| PRELOAD                          | Auto Preload associations or not               |
