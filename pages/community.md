@@ -34,6 +34,8 @@ layout: page
 * [Gormigrate - a migration helper for Gorm](https://github.com/go-gormigrate/gormigrate)
 * [Go-Mocket](https://github.com/Selvatico/go-mocket)
 * [Transition - state machine based on GORM](https://github.com/qor/transition)
+* [Validations - validate models when creating, updating](https://github.com/qor/validations)
+* [Gormstore - GORM backend for gorilla sessions](https://github.com/wader/gormstore)
 
 ## Contribue to this page
 

@@ -28,3 +28,8 @@ docsearch({
 });
 </script>
 {% endif %}
+
+{% if config.addthis %}
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="{{config.addthis}}"></script>
+{% endif %}
