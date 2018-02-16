@@ -19,15 +19,15 @@ layout: page
 
 ## Program
 
-* Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features on [Github Issues](https://github.com/jinzhu/gorm/issues)
+* Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features from [Github Issues](https://github.com/jinzhu/gorm/issues)
 * Create open source plugins for GORM. (Don't forgot to add them to [the list](/community.html#Open-Sources))
 
 ## Donations
 
 ### One-time Donations
 
-[One time Donations by Paypal](https://www.paypal.me/zhangjinzhu)
-[One time Donations by OpenCollective](https://opencollective.com/gorm)
+[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu)
+[One time Donations with OpenCollective](https://opencollective.com/gorm)
 
 ### Recurring Donations
 
