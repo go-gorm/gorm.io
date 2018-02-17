@@ -42,6 +42,6 @@
     fb_admins: config.fb_admins,
     twitter_site: config.twitter
   }) }}
-  <!-- Google Analytics -->
-  {{ partial('google_analytics') }}
+  <!-- Google Tag Manager -->
+  {{ partial('google_tag_manager') }}
 </head>

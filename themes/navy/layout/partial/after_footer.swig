@@ -29,6 +29,13 @@ docsearch({
 </script>
 {% endif %}
 
+{% if config.google_tag_manager %}
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{config.google_tag_manager}}"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+{% endif %}
+
 {% if config.addthis %}
 <!-- Go to www.addthis.com/dashboard to customize your tools -->
 <script type="text/javascript" src="{{config.addthis}}"></script>
