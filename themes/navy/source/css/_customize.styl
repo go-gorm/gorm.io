@@ -36,10 +36,19 @@ body {
   }
 }
 
-#banner-title {
-  color: #fff;
-  opacity: 0.8;
-  font-weight: 600;
+#banner {
+  #banner-title {
+    color: #fff;
+    opacity: 0.8;
+    font-weight: 600;
+  }
+
+  #banner-share {
+    .github-button, .twitter-follow-button {
+      text-decoration: none;
+      color: color-navy;
+    }
+  }
 }
 
 #content-wrap {
@@ -58,7 +67,7 @@ body {
       font-weight: 700;
 
       .fa {
-        color: #3982C7 !important;
+        color: color-link;
         font-size: 1em;
         margin: 0 0.3em;
       }
@@ -67,7 +76,7 @@ body {
 
   .sponsors-wrapper {
     padding: 3.5em 0;
-    background: #5EB793;
+    background: color-sponsors;
 
     .inner {
       max-width: 1280px;
@@ -95,6 +104,19 @@ body {
       }
     }
   }
+
+  .backers-list {
+    a {
+      display: inine;
+      padding: 5px;
+      img {
+        border-radius: 50%;
+      }
+    }
+    br {
+      display: none;
+    }
+  }
 }
 
 #footer {
@@ -105,18 +127,5 @@ body {
     @media mq-mobile {
       width: 100%;
     }
-  }
-}
-
-.backers-list {
-  a {
-    display: inine;
-    padding: 5px;
-    img {
-      border-radius: 50%;
-    }
-  }
-  br {
-    display: none;
   }
 }

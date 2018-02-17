@@ -24,12 +24,18 @@ layout: page
 
 ## Donations
 
+Many thanks to all our sponsors!
+
 ### One-time Donations
+
+Your kindness and generosity is greatly appreciated
 
 [One time Donations with Paypal](https://www.paypal.me/zhangjinzhu)
 [One time Donations with OpenCollective](https://opencollective.com/gorm)
 
 ### Recurring Donations
+
+Your kindness and generosity is greatly appreciated, and your name will be listed in this page or the home page of this website.
 
 [Recurring Donations with OpenCollective](https://opencollective.com/gorm)
 [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
