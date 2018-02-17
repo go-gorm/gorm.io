@@ -46,7 +46,7 @@ type Profile struct {
 
 ## Association ForeignKey
 
-For a belongs to relationship, GORM usually use owner's priamry key as the foreign key's value, for above example, it is `User`'s `ID`.
+For a belongs to relationship, GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
 
 When you assign a profile to a user, GORM will save user's `ID` into profile's `UserID` field.
 
