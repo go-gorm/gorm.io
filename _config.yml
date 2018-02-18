@@ -29,7 +29,6 @@ algolia:
   en:
     api_key: 442683d88a109de42c6d01bb0c7c4cec
     index_name: gorm
-addthis: //s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a8687dda6bb0b19
 google_tag_manager: GTM-WSNPD75
 carbonads_code:
 
