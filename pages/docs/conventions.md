@@ -31,7 +31,7 @@ type User struct {
 
 ## `ID` as Primary Key
 
-GORM use field with name `ID` as priamry key by default.
+GORM use field with name `ID` as primary key by default.
 
 ```go
 type User struct {

@@ -44,7 +44,7 @@ type CreditCard struct {
 
 ## Association ForeignKey
 
-GORM usually use owner's priamry key as the foreign key's value, for above example, it is `User`'s `ID`,
+GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`,
 
 When you assign credit cards to a user, GORM will save user's `ID` into credit cards' `UserID` field.
 
