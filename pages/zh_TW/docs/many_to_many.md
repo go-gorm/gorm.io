@@ -1,4 +1,8 @@
-## title: Many To Many
+* * *
+
+title: Many To Many
+
+* * *
 
 ## Many To Many
 
