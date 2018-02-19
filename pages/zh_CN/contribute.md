@@ -1,8 +1,8 @@
 ---
-title: Contribute to GORM
+title: 贡献 GORM
 layout: page
 ---
-**You can help to deliver a better GORM! there are many things that you can do:**
+**为了 GORM 更好的发展，您可以在在下面的事情上提供您的帮助：**
 
 ## 帮助他人了解 GORM
 
@@ -28,27 +28,27 @@ layout: page
 
 ## 捐献
 
-Many thanks to all our sponsors!
+十分感谢大家支持 Gorm 的发展！
 
-### One-time Donations
+### 一次性捐赠
 
-Your kindness and generosity is greatly appreciated
+十分感谢大家的捐赠
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[通过Paypal进行一次性捐赠](https://www.paypal.me/zhangjinzhu) [通过 OpenCollective 进行一次性捐赠](https://opencollective.com/gorm)
 
-### Recurring Donations
+### 定期捐赠
 
-Your kindness and generosity is greatly appreciated, and your name will be listed in this page or the home page of this website.
+十分感谢大家的捐赠，你的名字将会被列在本页面，或者本站的首页！
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[使用 OpenCollective 进行定期捐赠](https://opencollective.com/gorm) [使用 Patreon 进行定期捐赠](https://www.patreon.com/jinzhu)
 
 <br />
 
-## Sponsors
+## 赞助商
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=740"></object>
 
-## Backers
+## 支持者
 
 <div class="backers-list">
   
@@ -59,6 +59,6 @@ Your kindness and generosity is greatly appreciated, and your name will be liste
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=48&width=740"></object>
 
-## Contributors
+## 贡献者
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/contributors.svg?avatarHeight=32&width=740"></object>
