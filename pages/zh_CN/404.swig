@@ -6,9 +6,9 @@ comments: false
 
 <div class="container page-not-found">
   <h1>404</h1>
-  <p>File not found</p>
+  <p> 找不到文件 </p>
 
   <p>
-    The site configured at this address does not contain the requested file.
+    找不到请求的文件
   </p>
 <div>
