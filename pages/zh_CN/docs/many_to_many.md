@@ -1,9 +1,7 @@
-* * *
-
-title: Many To Many layout: page
-
-* * *
-
+---
+title: Many To Many
+layout: page
+---
 ## Many To Many
 
 Many to Many adds an join table between two models.
