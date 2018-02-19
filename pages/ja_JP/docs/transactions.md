@@ -1,4 +1,8 @@
-## title: Transactions
+* * *
+
+title: Transactions
+
+* * *
 
 GORM perform single `create`, `update`, `delete` operations in transactions by default to ensure database data integrity.
 
