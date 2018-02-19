@@ -1,4 +1,8 @@
-## title: Hooks
+* * *
+
+title: Hooks
+
+* * *
 
 ## Object Life Cycle
 
