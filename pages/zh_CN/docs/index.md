@@ -1,6 +1,6 @@
 * * *
 
-title: GORM Guides
+title: GORM Guides layout: page
 
 * * *
 
