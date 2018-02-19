@@ -1,6 +1,6 @@
 * * *
 
-title: Migration
+title: Migration layout: page
 
 * * *
 
