@@ -1,6 +1,6 @@
 * * *
 
-title: Has One
+title: Has One layout: page
 
 * * *
 
