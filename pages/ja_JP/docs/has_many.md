@@ -1,4 +1,8 @@
-## title: Has Many
+* * *
+
+title: Has Many
+
+* * *
 
 ## Has Many
 
