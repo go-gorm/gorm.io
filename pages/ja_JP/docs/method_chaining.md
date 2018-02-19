@@ -1,4 +1,8 @@
-## title: Method Chaining
+* * *
+
+title: Method Chaining
+
+* * *
 
 ## Method Chaining
 
