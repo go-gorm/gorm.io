@@ -1,9 +1,7 @@
-* * *
-
-title: Migration layout: page
-
-* * *
-
+---
+title: Migration
+layout: page
+---
 ## Auto Migration
 
 Automatically migrate your schema, to keep your schema update to date.
