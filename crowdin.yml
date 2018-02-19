@@ -1,3 +1,7 @@
 files:
-  - source: /pages
-    translation: /%locale_with_underscore%/%original_path%/%original_file_name%
+  - source: /pages/*.*
+    translation: /pages/%locale_with_underscore%/%original_file_name%
+  - source: /pages/docs/*.md
+    translation: /pages/%locale_with_underscore%/docs/%original_file_name%
+  - source: /themes/navy/languages/en.yml
+    translation: /themes/navy/languages/%locale_with_underscore%.yml
