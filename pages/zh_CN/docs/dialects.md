@@ -1,9 +1,7 @@
-* * *
-
-title: Dialect Specific Data Type layout: page
-
-* * *
-
+---
+title: Dialect Specific Data Type
+layout: page
+---
 ## Write new Dialect
 
 GORM provides supports for sqlite, mysql, postgres, mssql officially.
@@ -18,10 +16,7 @@ Certain dialects of SQL ship with their own custom, non-standard column types, s
 
 ### PostgreSQL
 
-GORM supports loading the following PostgreSQL exclusive column types:
-
-- jsonb
-- hstore
+GORM supports loading the following PostgreSQL exclusive column types: - jsonb - hstore
 
 Given the following Model definition:
 
