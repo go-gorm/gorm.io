@@ -1,4 +1,8 @@
-## title: Change Log
+* * *
+
+title: Change Log
+
+* * *
 
 ## v2.0
 
