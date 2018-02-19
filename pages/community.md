@@ -38,6 +38,6 @@ layout: page
 * [Validations - validate models when creating, updating](https://github.com/qor/validations)
 * [Gormstore - GORM backend for gorilla sessions](https://github.com/wader/gormstore)
 
-## Contribue to this page
+## Contribute to this page
 
 Please edit [this page](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md) and create pull request
