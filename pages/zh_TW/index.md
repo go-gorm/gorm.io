@@ -1,6 +1,8 @@
-layout: index description: The fantastic ORM library for Golang, aims to be developer friendly. subtitle: The fantastic ORM library for Golang
+* * *
 
-## comments: false
+layout: index description: The fantastic ORM library for Golang, aims to be developer friendly. subtitle: The fantastic ORM library for Golang comments: false
+
+* * *
 
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM (almost)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
