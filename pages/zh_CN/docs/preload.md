@@ -1,9 +1,7 @@
-* * *
-
-title: Preloading (Eager loading) layout: page
-
-* * *
-
+---
+title: Preloading (Eager loading)
+layout: page
+---
 ## Preload
 
 ```go
