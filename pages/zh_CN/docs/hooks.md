@@ -1,6 +1,6 @@
 * * *
 
-title: Hooks
+title: Hooks layout: page
 
 * * *
 
