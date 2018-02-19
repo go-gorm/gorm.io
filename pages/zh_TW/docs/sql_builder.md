@@ -1,4 +1,8 @@
-## title: SQL Builder
+* * *
+
+title: SQL Builder
+
+* * *
 
 ## Run Raw SQL
 
