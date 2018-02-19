@@ -1,6 +1,6 @@
 * * *
 
-title: Update
+title: Update layout: page
 
 * * *
 
