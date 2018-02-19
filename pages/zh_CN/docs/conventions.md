@@ -1,6 +1,6 @@
 * * *
 
-title: Conventions
+title: Conventions layout: page
 
 * * *
 
