@@ -4,10 +4,10 @@ layout: page
 ---
 **You can help to deliver a better GORM! there are many things that you can do:**
 
-## Help others to know GORM
+## 帮助他人了解 GORM
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
+* 通过社交渠道与世界分享 GORM, 或者告诉那些可能感兴趣的人。
+* 帮助新来者解决 [ Stack Overflow ](https://stackoverflow.com/questions/tagged/go-gorm)、[ Github Issues ](https://github.com/jinzhu/gorm/issues) 和 [ 聊天室 ](/community.html#Chat) 的问题
 * Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
 * Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
 
