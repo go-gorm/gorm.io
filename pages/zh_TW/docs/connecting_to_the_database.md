@@ -1,4 +1,8 @@
-## title: Connecting to database
+* * *
+
+title: Connecting to database
+
+* * *
 
 ## Connecting to database
 
