@@ -1,6 +1,6 @@
 * * *
 
-title: Generic database interface sql.DB
+title: Generic database interface sql.DB layout: page
 
 * * *
 
