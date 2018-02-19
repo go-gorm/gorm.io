@@ -1,15 +1,15 @@
 ---
-title: GORM Community
+title: GORM 社区
 layout: page
 ---
-## Ask
+## 提问
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[如何问一个好问题？](https://stackoverflow.com/help/how-to-ask)**
 
-* Stackoverflow - <https://stackoverflow.com/questions/tagged/go-gorm>
-* Github Issues - <https://github.com/jinzhu/gorm/issues>
+* Stackoverflow-[ https://stackoverflow.com/questions/tagged/go-gorm ](https://stackoverflow.com/questions/tagged/go-gorm)
+* Github Issues - [ https://github.com/jinzhu/gorm/issues ](https://github.com/jinzhu/gorm/issues)
 
-## Chat
+## 聊天
 
 * Slack - [https://go-gorm.slack.com](https://join.slack.com/t/go-gorm/shared_invite/enQtMzE1NDg0ODc5MjAwLTAyMDZjOGQ5MmFjYjdhN2IzNjlkZDE3MDE4ODRjY2QyNDY5N2UzZTdjM2VkMDA4Nzk3NjU4NTM5OTAzOGNkYTg)
 * Gitter - <https://gitter.im/jinzhu/gorm>
