@@ -1,3 +1,3 @@
 files:
   - source: /pages
-    translation: /pages/%locale_with_underscore%/%original_file_name%
+    translation: /pages/%locale_with_underscore%/%original_path%/%original_file_name%
