@@ -1,6 +1,6 @@
 * * *
 
-title: Change Log
+title: Change Log layout: page
 
 * * *
 
