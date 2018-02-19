@@ -4,15 +4,15 @@ description: The fantastic ORM library for Golang, aims to be developer friendly
 subtitle: The fantastic ORM library for Golang
 comments: false
 ---
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM (almost)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Preloading (eager loading)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transactions
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Composite Primary Key
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Auto Migrations
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, write Plugins based on GORM callbacks
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Every feature comes with tests
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 全功能 ORM (无限接近)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 关联（包含一个，包含多个，属于，多对多，多态）
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 钩子 (在创建/保存/更新/删除/查找之前或之后)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 预加载
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 事务
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 复合主键
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL 生成器
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 数据库自动迁移
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 自定义日志
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 可扩展性, 可基于 GORM 回调编写插件
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 所有功能都被测试覆盖
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 开发者友好
