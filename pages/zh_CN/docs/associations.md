@@ -1,8 +1,12 @@
-## title: 关联
+* * *
 
-## 自动创建/更新
+title: Associations
 
-创建/更新记录时, GORM 将自动保存关联及其引用。 如果一个关联具有主键, GORM 将调用 ` Update ` 来保存它, 否则将创建它。
+* * *
+
+## Auto Create/Update
+
+GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
 
 ```go
 user := User{
@@ -35,11 +39,11 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-## 跳过更新
+## Skip AutoUpdate
 
-如果数据库中已存在关联, 则可能不希望对其进行更新。
+If your associations is already exists in database, you might don't want to update it.
 
-可以使用 DB 设置, 将 ` gorm: association_autoupdate ` 设置为 ` false `
+You could use DB setting, set `gorm:association_autoupdate` to `false`
 
 ```go
 // Don't update associations having primary key, but will save reference
