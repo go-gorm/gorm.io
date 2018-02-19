@@ -1,6 +1,6 @@
 * * *
 
-title: Connecting to the database
+title: Connecting to the database layout: page
 
 * * *
 
