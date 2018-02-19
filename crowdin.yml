@@ -5,7 +5,3 @@ files:
     translation: /pages/%locale_with_underscore%/docs/%original_file_name%
   - source: /themes/navy/languages/en.yml
     translation: /themes/navy/languages/%locale_with_underscore%.yml
-    languages_mapping:
-      locale_with_underscore:
-        zh-CN: zh-cn
-        zh-TW: zh-tw
