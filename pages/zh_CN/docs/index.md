@@ -1,9 +1,7 @@
-* * *
-
-title: GORM Guides layout: page
-
-* * *
-
+---
+title: GORM Guides
+layout: page
+---
 The fantastic ORM library for Golang, aims to be developer friendly.
 
 ## Overview
