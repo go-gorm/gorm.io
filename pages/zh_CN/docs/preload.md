@@ -1,6 +1,6 @@
 * * *
 
-title: Preloading (Eager loading)
+title: Preloading (Eager loading) layout: page
 
 * * *
 
