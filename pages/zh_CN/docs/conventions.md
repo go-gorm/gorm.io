@@ -1,4 +1,8 @@
-## title: Conventions
+* * *
+
+title: Conventions
+
+* * *
 
 ## gorm.Model
 
