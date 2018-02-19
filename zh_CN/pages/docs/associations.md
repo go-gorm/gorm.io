@@ -1,8 +1,8 @@
 ## title: Associations
 
-## Auto Create/Update
+## 自动创建/更新
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+创建/更新记录时, GORM 将自动保存关联及其引用。 if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
 
 ```go
 user := User{
