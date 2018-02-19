@@ -1,3 +1,7 @@
+---
+title: Connecting to the database
+---
+
 # Connecting to the database
 
 In order to connect to a database, you need to import the database's driver first. For example:

@@ -1,3 +1,4 @@
+---
 title: Declaring Models
 ---
 

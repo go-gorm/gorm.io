@@ -1,3 +1,4 @@
+---
 title: Method Chaining
 ---
 
