@@ -1,9 +1,7 @@
-* * *
-
-title: Method Chaining layout: page
-
-* * *
-
+---
+title: Method Chaining
+layout: page
+---
 ## Method Chaining
 
 Gorm implements method chaining interface, so you could write code like this:
