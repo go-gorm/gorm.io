@@ -1,6 +1,6 @@
 * * *
 
-title: Belongs To
+title: Belongs To layout: page
 
 * * *
 
