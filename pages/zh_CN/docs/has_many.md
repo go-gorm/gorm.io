@@ -1,6 +1,6 @@
 * * *
 
-title: Has Many
+title: Has Many layout: page
 
 * * *
 
