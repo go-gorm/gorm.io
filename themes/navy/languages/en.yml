@@ -54,3 +54,6 @@ sidebar:
     dialects: GORM Dialects
     logger: Logger
     change_log: ChangeLog
+
+    community: Community
+    contribute: Contribute

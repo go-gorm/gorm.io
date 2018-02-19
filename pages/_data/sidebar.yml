@@ -30,3 +30,5 @@ docs:
     dialects: dialects.html
     logger: logger.html
     change_log: changelog.html
+    community: /community.html
+    contribute: /contribute.html
