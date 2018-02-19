@@ -37,6 +37,6 @@ layout: page
 * [Validations-在创建、更新时验证模型](https://github.com/qor/validations)
 * [Gormstore - gorilla sessions 的 GORM 后端](https://github.com/wader/gormstore)
 
-## Contribute to this page
+## 完善本页面
 
-Please edit [this page](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md) and create pull request
+请在[本页](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md)更改，并提交 Pull Request
