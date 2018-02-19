@@ -1,5 +1,6 @@
 ---
 title: Logger
+layout: page
 ---
 
 ## Logger

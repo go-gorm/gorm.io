@@ -1,5 +1,6 @@
 ---
 title: Hooks
+layout: page
 ---
 
 ## Object Life Cycle

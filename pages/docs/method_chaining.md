@@ -1,5 +1,6 @@
 ---
 title: Method Chaining
+layout: page
 ---
 
 ## Method Chaining

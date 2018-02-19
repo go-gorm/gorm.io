@@ -1,5 +1,6 @@
 ---
 title: Dialect Specific Data Type
+layout: page
 ---
 
 ## Write new Dialect

@@ -1,5 +1,6 @@
 ---
 title: Many To Many
+layout: page
 ---
 
 ## Many To Many

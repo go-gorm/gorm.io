@@ -1,5 +1,6 @@
 ---
 title: Create
+layout: page
 ---
 
 ## Create Record

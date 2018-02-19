@@ -1,5 +1,6 @@
 ---
 title: Delete
+layout: page
 ---
 
 ## Delete Record

@@ -1,5 +1,6 @@
 ---
 title: Has One
+layout: page
 ---
 
 ## Has One

@@ -1,5 +1,6 @@
 ---
 title: Connecting to the database
+layout: page
 ---
 
 # Connecting to the database

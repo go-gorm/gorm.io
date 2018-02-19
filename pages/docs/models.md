@@ -1,5 +1,6 @@
 ---
 title: Declaring Models
+layout: page
 ---
 
 ## Declaring Models

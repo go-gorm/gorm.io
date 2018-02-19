@@ -1,5 +1,6 @@
 ---
 title: Conventions
+layout: page
 ---
 
 ## gorm.Model

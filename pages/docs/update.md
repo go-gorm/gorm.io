@@ -1,5 +1,6 @@
 ---
 title: Update
+layout: page
 ---
 
 ## Update All Fields

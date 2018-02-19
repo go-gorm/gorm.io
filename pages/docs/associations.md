@@ -1,5 +1,6 @@
 ---
 title: Associations
+layout: page
 ---
 
 ## Auto Create/Update

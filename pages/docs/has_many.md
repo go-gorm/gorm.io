@@ -1,5 +1,6 @@
 ---
 title: Has Many
+layout: page
 ---
 
 ## Has Many

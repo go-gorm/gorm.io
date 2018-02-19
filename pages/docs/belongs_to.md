@@ -1,5 +1,6 @@
 ---
 title: Belongs To
+layout: page
 ---
 
 ## Belongs To

@@ -1,5 +1,6 @@
 ---
 title: Generic database interface sql.DB
+layout: page
 ---
 
 GORM provides method `DB` which returns generic database interface [*sql.DB](http://golang.org/pkg/database/sql/#DB) from current `*gorm.DB` connection

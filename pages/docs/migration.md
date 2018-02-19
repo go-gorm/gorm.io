@@ -1,5 +1,6 @@
 ---
 title: Migration
+layout: page
 ---
 
 ## Auto Migration
