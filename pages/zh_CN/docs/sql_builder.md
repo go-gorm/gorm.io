@@ -1,6 +1,6 @@
 * * *
 
-title: SQL Builder
+title: SQL Builder layout: page
 
 * * *
 
