@@ -1,9 +1,7 @@
-* * *
-
-title: Conventions layout: page
-
-* * *
-
+---
+title: Conventions
+layout: page
+---
 ## gorm.Model
 
 `gorm.Model` is a struct including some basic fields, which including fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
