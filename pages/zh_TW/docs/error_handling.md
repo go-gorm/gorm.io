@@ -1,4 +1,8 @@
-## title: Error Handling
+* * *
+
+title: Error Handling
+
+* * *
 
 In Go, error handling is important.
 
