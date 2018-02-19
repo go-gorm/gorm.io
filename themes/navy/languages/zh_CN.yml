@@ -4,31 +4,31 @@ menu:
   docs: <i class="fa fa-book"></i>文档
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fa fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  community: <i class="fa fa-slack"></i>社区
+  contribute: <i class="fa fa-rocket"></i>贡献
+  search: 搜索文档...
 index:
-  get_started: Get started
+  get_started: 开始使用
 page:
-  contents: Contents
-  back_to_top: Back to Top
-  improve: Improve this doc
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  contents: 内容
+  back_to_top: 回到顶部
+  improve: 改进此文档
+  prev: 上一页
+  next: 下一页
+  last_updated: "最后更新于 %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
+    getting_started: 入门指南
+    overview: 概览
     declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
+    conventions: 惯例
+    connecting_to_the_database: 连接数据库
     crud_interface: CRUD Interface
-    create: Create
-    query: Query
-    update: Update
-    delete: Delete
-    associations: Associations
+    create: 创建
+    query: 查询
+    update: 更新
+    delete: 删除
+    associations: 关联
     belongs_to: Belongs To
     has_one: Has One
     has_many: Has Many
