@@ -1,6 +1,6 @@
 * * *
 
-title: Method Chaining
+title: Method Chaining layout: page
 
 * * *
 
