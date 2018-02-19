@@ -14,7 +14,12 @@ layout: page
 ## Documentation and Writing
 
 * Make GORM's documentation better by writing new content, correcting existing material
-* Translate the site into new languages
+
+### Translate this site
+
+You can translate current site with <https://translate.gorm.io>
+
+To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
 
 ## Program
 
