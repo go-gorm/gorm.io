@@ -8,25 +8,25 @@ layout: page
 
 * 通过社交渠道与世界分享 GORM, 或者告诉那些可能感兴趣的人。
 * 帮助新来者解决 [ Stack Overflow ](https://stackoverflow.com/questions/tagged/go-gorm)、[ Github Issues ](https://github.com/jinzhu/gorm/issues) 和 [ 聊天室 ](/community.html#Chat) 的问题
-* Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
+* 编写教程、录制视频等。(不要忘记将它们添加到 [ 这个列表 ](/community.html) 中)
+* 通过 [ 加星 ](https://github.com/jinzhu/gorm/stargazers) 和 [ 关注 ](https://github.com/jinzhu/gorm/watchers) [ GORM ](https://github.com/jinzhu/gorm) 来帮助在 GitHub 推广 GORM
 
-## Documentation and Writing
+## 编写文档
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* 通过编写新内容、更正现有内容来让 GORM 的文档更好
 
-### Translate this site
+### 翻译此网站
 
-You can translate current site with <https://translate.gorm.io>
+你可以通过 <https://translate.gorm.io> 来翻译本网站
 
-To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
+如果你想将本站翻译到一个新语言，请在 [Github](https://github.com/jinzhu/gorm.io/issues) 提交一个 issue，然后我们会将其添加到 <https://translate.gorm.io> 中
 
-## Program
+## 编程
 
-* Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features from [Github Issues](https://github.com/jinzhu/gorm/issues)
-* Create open source plugins for GORM. (Don't forgot to add them to [the list](/community.html#Open-Sources))
+* 修复 [Github Issues](https://github.com/jinzhu/gorm/issues) 中的问题或完成讨论后新功能，并提交 Pull Request 到 [Github](https://github.com/jinzhu/gorm)
+* 编写开源插件。(不要忘记将它们添加到 [ 这个列表 ](/community.html#Open-Sources) 中)
 
-## Donations
+## 捐献
 
 Many thanks to all our sponsors!
 
