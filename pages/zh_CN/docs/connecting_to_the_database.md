@@ -1,9 +1,7 @@
-* * *
-
-title: Connecting to database layout: page
-
-* * *
-
+---
+title: Connecting to database
+layout: page
+---
 ## Connecting to database
 
 In order to connect to a database, you need to first import the database's driver. For example:
