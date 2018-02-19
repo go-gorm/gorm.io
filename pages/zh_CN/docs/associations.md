@@ -1,6 +1,6 @@
 * * *
 
-title: 关联
+title: Associations layout: page
 
 * * *
 
