@@ -1,6 +1,6 @@
 * * *
 
-title: Declaring Models
+title: Declaring Models layout: page
 
 * * *
 
