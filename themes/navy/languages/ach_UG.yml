@@ -1,0 +1,52 @@
+---
+menu:
+  home: crwdns979:0crwdne979:0
+  docs: crwdns980:0crwdne980:0
+  api: crwdns981:0crwdne981:0
+  github: crwdns982:0crwdne982:0
+  community: crwdns983:0crwdne983:0
+  contribute: crwdns984:0crwdne984:0
+  search: crwdns985:0crwdne985:0
+index:
+  get_started: crwdns986:0crwdne986:0
+page:
+  contents: crwdns987:0crwdne987:0
+  back_to_top: crwdns988:0crwdne988:0
+  improve: crwdns989:0crwdne989:0
+  prev: crwdns990:0crwdne990:0
+  next: crwdns991:0crwdne991:0
+  last_updated: "crwdns992:0%scrwdne992:0"
+sidebar:
+  docs:
+    getting_started: crwdns993:0crwdne993:0
+    overview: crwdns994:0crwdne994:0
+    declaring_models: crwdns995:0crwdne995:0
+    conventions: crwdns996:0crwdne996:0
+    connecting_to_the_database: crwdns997:0crwdne997:0
+    crud_interface: crwdns998:0crwdne998:0
+    create: crwdns999:0crwdne999:0
+    query: crwdns1000:0crwdne1000:0
+    update: crwdns1001:0crwdne1001:0
+    delete: crwdns1002:0crwdne1002:0
+    associations: crwdns1003:0crwdne1003:0
+    belongs_to: crwdns1004:0crwdne1004:0
+    has_one: crwdns1005:0crwdne1005:0
+    has_many: crwdns1006:0crwdne1006:0
+    many_to_many: crwdns1007:0crwdne1007:0
+    preload: crwdns1008:0crwdne1008:0
+    tutorials: crwdns1009:0crwdne1009:0
+    method_chaining: crwdns1010:0crwdne1010:0
+    error_handling: crwdns1011:0crwdne1011:0
+    hooks: crwdns1012:0crwdne1012:0
+    transactions: crwdns1013:0crwdne1013:0
+    migration: crwdns1014:0crwdne1014:0
+    raw_sql_and_builder: crwdns1015:0crwdne1015:0
+    generic_interface: crwdns1016:0crwdne1016:0
+    advanced_topics: crwdns1017:0crwdne1017:0
+    composite_primary_key: crwdns1018:0crwdne1018:0
+    write_plugins: crwdns1019:0crwdne1019:0
+    dialects: crwdns1020:0crwdne1020:0
+    logger: crwdns1021:0crwdne1021:0
+    change_log: crwdns1022:0crwdne1022:0
+    community: crwdns1023:0crwdne1023:0
+    contribute: crwdns1024:0crwdne1024:0
