@@ -1,4 +1,8 @@
-## title: Logger
+* * *
+
+title: Logger
+
+* * *
 
 ## Logger
 
