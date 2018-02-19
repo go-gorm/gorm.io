@@ -1,4 +1,8 @@
-## title: Composite Primary Key
+* * *
+
+title: Composite Primary Key
+
+* * *
 
 Set multiple fields as primary key to enable composite primary key
 
