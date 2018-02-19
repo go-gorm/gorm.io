@@ -35,8 +35,8 @@ layout: page
 * [Go-Mocket](https://github.com/Selvatico/go-mocket)
 * [Transition - 基于 GORM 的状态机](https://github.com/qor/transition)
 * [Validations-在创建、更新时验证模型](https://github.com/qor/validations)
-* [Gormstore - GORM backend for gorilla sessions](https://github.com/wader/gormstore)
+* [Gormstore - gorilla sessions 的 GORM 后端](https://github.com/wader/gormstore)
 
-## Contribue to this page
+## Contribute to this page
 
 Please edit [this page](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md) and create pull request
