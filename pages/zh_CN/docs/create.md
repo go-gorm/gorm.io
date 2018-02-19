@@ -1,9 +1,7 @@
-* * *
-
-title: Create layout: page
-
-* * *
-
+---
+title: Create
+layout: page
+---
 ## Create Record
 
 ```go
