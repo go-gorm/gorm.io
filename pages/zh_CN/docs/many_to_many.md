@@ -1,6 +1,6 @@
 * * *
 
-title: Many To Many
+title: Many To Many layout: page
 
 * * *
 
