@@ -1,6 +1,6 @@
 * * *
 
-title: Create
+title: Create layout: page
 
 * * *
 
