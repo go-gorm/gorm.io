@@ -1,9 +1,7 @@
-* * *
-
-title: Change Log layout: page
-
-* * *
-
+---
+title: Change Log
+layout: page
+---
 ## v2.0
 
 WIP
