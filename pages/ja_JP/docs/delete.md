@@ -1,4 +1,8 @@
-## title: Delete
+* * *
+
+title: Delete
+
+* * *
 
 ## Delete Record
 
