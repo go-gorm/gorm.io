@@ -17,7 +17,7 @@ db.LogMode(false)
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
-## Customize Logger
+## 自定义 Logger
 
 Refer GORM's default logger for how to customize it <https://github.com/jinzhu/gorm/blob/master/logger.go>
 

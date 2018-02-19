@@ -46,7 +46,7 @@ sidebar:
     composite_primary_key: 复合主键
     write_plugins: 创建插件
     dialects: GORM Dialects
-    logger: 自定义日志
+    logger: 自定义Logger
     change_log: 更新日志
     community: 社区
     contribute: 贡献
