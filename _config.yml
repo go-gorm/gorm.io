@@ -30,7 +30,6 @@ algolia:
     api_key: 442683d88a109de42c6d01bb0c7c4cec
     index_name: gorm
 google_tag_manager: GTM-WSNPD75
-carbonads_code:
 
 # Writing
 new_post_name: :title.md # File name of new posts
