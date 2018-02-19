@@ -10,7 +10,7 @@
 
 <div id="content-wrap">
   <div class="wrapper">
-    <div class="inner">
+    <div class="inner features">
       {{ page.content }}
     </div>
   </div>
