@@ -1,4 +1,8 @@
-## title: Declaring Models
+* * *
+
+title: Declaring Models
+
+* * *
 
 ## Declaring Models
 
