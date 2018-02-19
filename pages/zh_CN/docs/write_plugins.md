@@ -1,6 +1,6 @@
 * * *
 
-title: Write Plugins
+title: Write Plugins layout: page
 
 * * *
 
