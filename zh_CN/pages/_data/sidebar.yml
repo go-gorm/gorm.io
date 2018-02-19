@@ -1,0 +1,35 @@
+---
+docs:
+  getting_started:
+    overview: index.html
+    declaring_models: models.html
+    conventions: conventions.html
+    connecting_to_the_database: connecting_to_the_database.html
+  crud_interface:
+    create: create.html
+    query: query.html
+    update: update.html
+    delete: delete.html
+  associations:
+    belongs_to: belongs_to.html
+    has_one: has_one.html
+    has_many: has_many.html
+    many_to_many: many_to_many.html
+    associations: associations.html
+    preload: preload.html
+  tutorials:
+    method_chaining: method_chaining.html
+    error_handling: error_handling.html
+    hooks: hooks.html
+    transactions: transactions.html
+    migration: migration.html
+    raw_sql_and_builder: sql_builder.html
+    generic_interface: generic_interface.html
+  advanced_topics:
+    composite_primary_key: composite_primary_key.html
+    write_plugins: write_plugins.html
+    dialects: dialects.html
+    logger: logger.html
+    change_log: changelog.html
+    community: /community.html
+    contribute: /contribute.html
