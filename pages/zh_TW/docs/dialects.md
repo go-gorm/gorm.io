@@ -1,4 +1,8 @@
-## title: Dialect Specific Data Type
+* * *
+
+title: Dialect Specific Data Type
+
+* * *
 
 ## Write new Dialect
 
