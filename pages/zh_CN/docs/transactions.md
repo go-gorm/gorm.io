@@ -1,6 +1,6 @@
 * * *
 
-title: Transactions
+title: Transactions layout: page
 
 * * *
 
