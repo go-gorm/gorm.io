@@ -1,6 +1,6 @@
 * * *
 
-title: Query
+title: Query layout: page
 
 * * *
 
