@@ -1,9 +1,7 @@
-* * *
-
-title: Update layout: page
-
-* * *
-
+---
+title: Update
+layout: page
+---
 ## Update All Fields
 
 `Save` will include all fields when perform the Updating SQL, even it is not changed
