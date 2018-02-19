@@ -1,6 +1,6 @@
 * * *
 
-title: Composite Primary Key
+title: Composite Primary Key layout: page
 
 * * *
 
