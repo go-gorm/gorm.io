@@ -1,6 +1,6 @@
 * * *
 
-title: Delete
+title: Delete layout: page
 
 * * *
 
