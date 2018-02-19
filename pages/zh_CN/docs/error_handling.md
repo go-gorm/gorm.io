@@ -1,6 +1,6 @@
 * * *
 
-title: Error Handling
+title: Error Handling layout: page
 
 * * *
 
