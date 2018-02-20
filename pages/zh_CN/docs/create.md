@@ -2,21 +2,21 @@
 title: Create
 layout: page
 ---
-## Create Record
+## 创建记录
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-db.NewRecord(user) // => returns `true` as primary key is blank
+db.NewRecord(user) // => 主键为空返回`true`
 
 db.Create(&user)
 
-db.NewRecord(user) // => return `false` after `user` created
+db.NewRecord(user) // => 创建`user`后返回`false`
 ```
 
-## Default Values
+## 默认值
 
-You could define field's default value with tag, for example:
+您可以使用tag来定义字段的默认值，例如：
 
 ```go
 type Animal struct {
@@ -32,7 +32,7 @@ Then the inserting SQL will exclude those fields that don't have value or having
 var animal = Animal{Age: 99, Name: ""}
 db.Create(&animal)
 // INSERT INTO animals("age") values('99');
-// SELECT name from animals WHERE ID=111; // the returning primary key is 111
+// SELECT name from animals WHERE ID=111; // 返回主键为 111
 // animal.Name => 'galeone'
 ```
 
@@ -54,9 +54,9 @@ type User struct {
 }
 ```
 
-## Setting Field Values In Hooks
+## 在Hooks中设置字段值
 
-If you want to update field's value in `BeforeCreate` hook, you could use `scope.SetColumn`, for example:
+如果要在`BeforeCreate`回调中设置字段的值，可以使用`scope.SetColumn`，例如：
 
 ```go
 func (user *User) BeforeCreate(scope *gorm.Scope) error {
@@ -65,10 +65,10 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 }
 ```
 
-## Extra Creating option
+## 扩展创建选项
 
 ```go
-// Add extra SQL option for inserting SQL
+// 为Instert语句添加扩展SQL选项
 db.Set("gorm:insert_option", "ON CONFLICT").Create(&product)
 // INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
 ```
