@@ -109,16 +109,16 @@ type User struct {
     }
     
 
-## Skip Save Reference
+## 跳过引用的保存
 
-If you don't even want to save association's reference when updating/saving data, you could use below tricks
+如果你不想保存关联的引用，那么你可以使用下面的技巧
 
 ```go
 db.Set("gorm:association_save_reference", false).Save(&user)
 db.Set("gorm:association_save_reference", false).Create(&user)
 ```
 
-or use tag
+或者使用 GORM Tag
 
 ```go
 type User struct {
@@ -129,9 +129,9 @@ type User struct {
 }
 ```
 
-## Association Mode
+## 关联模式
 
-Association Mode contains some helper methods to handle relationship things easily.
+关联模式包含几个帮助方法，可以更方便的来管理关联
 
 ```go
 // Start Association Mode
@@ -143,15 +143,15 @@ db.Model(&user).Association("Languages")
 // db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### 查找关联
 
-Find matched associations
+查找匹配的关联
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Apped Associations
+### Append Associations
 
 Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
 
@@ -178,7 +178,7 @@ db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### 清空关联
 
 Remove reference between source & current associations, won't delete those associations
 
@@ -186,9 +186,9 @@ Remove reference between source & current associations, won't delete those assoc
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### 关联的数量
 
-Return the count of current associations
+返回关联的数量
 
 ```go
 db.Model(&user).Association("Languages").Count()
