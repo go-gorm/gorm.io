@@ -4,15 +4,15 @@ description: The fantastic ORM library for Golang, aims to be developer friendly
 subtitle: The fantastic ORM library for Golang
 comments: false
 ---
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM (almost)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Voll ausgestattetes ORM (fast)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Assoziationen (Has One, Has Many, Belongs To, Many To Many, Polymorphie)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Preloading (eager loading)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transactions
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Composite Primary Key
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Auto Migrations
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Vorher/Nachher Erstellen/Speichern/ Aktualisieren/Löschen/Suchen)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Preloading (Eager Loading)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transaktionen
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Zusammengesetzte Primärschlüssel
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL-Abfragegenerator
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Auto-Migrationen
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, write Plugins based on GORM callbacks
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Every feature comes with tests
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Developer Friendly
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Erweiterbar - schreibe Plugins basierend auf GORM's Rückrufen
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Alle Features sind getestet
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Entwickler-freundlich
