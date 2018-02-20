@@ -1,7 +1,7 @@
 files:
   - source: /pages/*.*
-    translation: /pages/%locale_with_underscore%/%original_file_name%
+    translation: /pages/%language%/%original_file_name%
   - source: /pages/docs/*.*
-    translation: /pages/%locale_with_underscore%/docs/%original_file_name%
+    translation: /pages/%language%/docs/%original_file_name%
   - source: /themes/navy/languages/en.yml
-    translation: /themes/navy/languages/%locale_with_underscore%.yml
+    translation: /themes/navy/languages/%language%.yml
