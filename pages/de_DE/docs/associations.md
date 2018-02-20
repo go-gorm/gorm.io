@@ -185,15 +185,15 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### Assoziationen entfernen
 
-Remove reference between source & current associations, won't delete those associations
+Entferne die Referenz zwischen quelle & der momentanen Assoziation, löscht nicht diese Assoziationen
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Assoziationen zählen
 
-Return the count of current associations
+Gibt die Anzahl der aktuellen Assoziationen zurück
 
 ```go
 db.Model(&user).Association("Languages").Count()
