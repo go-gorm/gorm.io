@@ -5,7 +5,7 @@ subtitle: The fantastic ORM library for Golang
 comments: false
 ---
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM (almost)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Assoziationen (Has One, Has Many, Belongs To, Many To Many, Polymorphie)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Preloading (eager loading)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transactions
