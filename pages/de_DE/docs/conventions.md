@@ -51,12 +51,12 @@ type Animal struct {
 
 ## Pluralisierte Tabellennamen
 
-Table name is the pluralized version of struct name
+Der Tabellen-Name ist die pluralisiert Version des Struct-Namens
 
 ```go
-type User struct {} // default table name is `users`
+type User struct {} // standardmäßiger Tabellen-Name ist `users`
 
-// Set User's table name to be `profiles`
+// Setze User's Tabellen-Name zu `profiles`
 func (User) TableName() string {
   return "profiles"
 }
@@ -69,11 +69,12 @@ func (u User) TableName() string {
     }
 }
 
-// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
+// Deaktiviere die Pluralisierung von Tabellen-Namen,
+// wenn auf `true` gesetzt wird der `User` Tabellen-Name zu `user`
 db.SingularTable(true)
 ```
 
-### Specifying The Table Name
+### Den Tabellen-Namen spezifizieren
 
 ```go
 // Create `deleted_users` table with struct User's definition
