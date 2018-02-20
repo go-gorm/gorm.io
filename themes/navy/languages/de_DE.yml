@@ -18,10 +18,10 @@ page:
   last_updated: "Last updated: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
+    getting_started: Erste Schritte
+    overview: Übersicht
     declaring_models: Declaring Models
-    conventions: Conventions
+    conventions: Konventionen
     connecting_to_the_database: Connecting to Database
     crud_interface: CRUD Interface
     create: Create
