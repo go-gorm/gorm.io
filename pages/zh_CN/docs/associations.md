@@ -49,7 +49,7 @@ db.Set("gorm:association_autoupdate", false).Create(&user)
 db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autoupdate:false"`
+或者使用 GORM tags `gorm:"association_autoupdate:false"`
 
 ```go
 type User struct {
@@ -151,27 +151,27 @@ db.Model(&user).Association("Languages")
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### 添加关联
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+为`many to many`、`has many`添加关联, 为`has one`、`belongs to`替换关联
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Replace Associations
+### 替换关联
 
-Replace current associations with new one
+将旧关联替换为新关联
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### 删除关联
 
-Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
+删除关联的引用，不会删除关联本身
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
@@ -180,7 +180,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### 清空关联
 
-Remove reference between source & current associations, won't delete those associations
+清空对关联的引用，不会删除关联本身
 
 ```go
 db.Model(&user).Association("Languages").Clear()
