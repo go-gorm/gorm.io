@@ -1,26 +1,26 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  home: <i class="fa fa-home"></i>Startseite
+  docs: <i class="fa fa-book"></i>Dokumentation
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
   community: <i class="fa fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  contribute: <i class="fa fa-rocket"></i>Mithelfen
+  search: Dokumentation durchsuchen...
 index:
   get_started: Erste Schritte
 page:
   contents: Inhalt
-  back_to_top: Back to Top
-  improve: Improve this doc
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  back_to_top: Zurück zum Seitenanfang
+  improve: Diese Dokumentation verbessern
+  prev: Vorherige Seite
+  next: Nächste Seite
+  last_updated: "Letzte Aktualisierung: %s"
 sidebar:
   docs:
     getting_started: Erste Schritte
     overview: Übersicht
-    declaring_models: Declaring Models
+    declaring_models: Deklarieren von Modellen
     conventions: Konventionen
     connecting_to_the_database: Verbindung mit der Datenbank
     crud_interface: CRUD-Interface
