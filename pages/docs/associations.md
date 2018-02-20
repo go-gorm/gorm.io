@@ -154,7 +154,7 @@ Find matched associations
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Apped Associations
+### Append Associations
 
 Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
 
