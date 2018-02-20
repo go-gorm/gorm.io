@@ -8,9 +8,9 @@ menu:
   contribute: <i class="fa fa-rocket"></i>Contribute
   search: Search documents...
 index:
-  get_started: Get started
+  get_started: Erste Schritte
 page:
-  contents: Contents
+  contents: Inhalt
   back_to_top: Back to Top
   improve: Improve this doc
   prev: Prev
@@ -22,32 +22,32 @@ sidebar:
     overview: Übersicht
     declaring_models: Declaring Models
     conventions: Konventionen
-    connecting_to_the_database: Connecting to Database
-    crud_interface: CRUD Interface
-    create: Create
-    query: Query
-    update: Update
-    delete: Delete
-    associations: Associations
+    connecting_to_the_database: Verbindung mit der Datenbank
+    crud_interface: CRUD-Interface
+    create: Erstellen
+    query: Abfragen
+    update: Aktualisieren
+    delete: Löschen
+    associations: Assoziationen
     belongs_to: Belongs To
     has_one: Has One
     has_many: Has Many
     many_to_many: Many To Many
     preload: Preloading (Eager Loading)
-    tutorials: Tutorials
-    method_chaining: Method Chaining
-    error_handling: Error Handling
+    tutorials: Anleitungen
+    method_chaining: Verketten von Methoden
+    error_handling: Fehlerbehandlung
     hooks: Hooks
-    transactions: Transactions
+    transactions: Transaktionen
     migration: Migration
-    raw_sql_and_builder: Raw SQL and SQL Builder
-    generic_interface: Generic Database Interface
-    advanced_topics: Advanced Topics
-    composite_primary_key: Composite Primary Key
-    write_plugins: Write Plugins
-    dialects: GORM Dialects
+    raw_sql_and_builder: Rohes SQL und SQL-Abfragegenerator
+    generic_interface: Generische Datenbankschnittstelle
+    advanced_topics: Fortgeschrittene Themen
+    composite_primary_key: Zusammengesetzte Primärschlüssel
+    write_plugins: Plugins schreiben
+    dialects: GORM Dialekte
     logger: Logger
-    change_log: ChangeLog
+    change_log: Änderungsprotokoll
     community: Community
-    contribute: Contribute
-    translate: Translate current site
+    contribute: Mithelfen
+    translate: Aktuelle Seite übersetzen
