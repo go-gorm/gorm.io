@@ -10,6 +10,6 @@ comments: false
   <p>Datei wurde nicht gefunden</p>
 
   <p>
-    The site configured at this address does not contain the requested file.
+    Diese Webseite enthält nicht die angeforderte Datei.
   </p>
 <div>
