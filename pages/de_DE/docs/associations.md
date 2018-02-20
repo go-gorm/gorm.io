@@ -156,7 +156,7 @@ Finde passende Assoziationen
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Assoziationen hinzufügen
+### Append Associations
 
 Fügen Sie neue Zuordnungen für `many to many` und `has many` hinzu, ersetzt die aktuelle Zuordnung für `has one`, `belongs to`
 
