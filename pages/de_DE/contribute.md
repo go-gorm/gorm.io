@@ -2,22 +2,22 @@
 title: Contribute to GORM
 layout: page
 ---
-**You can help to deliver a better GORM! there are many things that you can do:**
+**Du kannst uns dabei helfen, GORM besser zu machen! Es gibt viele dinge, die du machen kannst:**
 
-## Help others to know GORM
+## Hilf anderen dabei, GORM kennenzulernen
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
+* Teile GORM in Sozialen Netzwerken oder erzähle einfach Menschen, die es interessieren könnte, davon
+* Helfe Anfängern dabei, Fragen auf [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) und in [Chat Räumen](/community.html#Chat) zu lösen
+* Schreibe Tutorials, nehme Videos auf, etc. (Vergesse nicht, sie zu [der Liste](/community.html) hinzuzufügen!)
+* Helfe dabei, GORM auf GitHub zu bewerben, indem du die [GORM Repository](https://github.com/jinzhu/gorm) mit einem [Stern](https://github.com/jinzhu/gorm/stargazers) versiehst und sie [beobachtest](https://github.com/jinzhu/gorm/watchers)
 
-## Documentation and Writing
+## Dokumentation und Texte
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* Verbessere GORMs Dokumentation, indem du neuen Inhalte hinzufügst und existierenden verbesserst
 
-### Translate this site
+### Übersetze diese Seite
 
-You can translate current site with <https://translate.gorm.io>
+Du kannst die aktuelle Website auf <https://translate.gorm.io> übersetzen
 
 To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
 
