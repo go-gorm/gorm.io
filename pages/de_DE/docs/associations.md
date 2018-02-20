@@ -1,10 +1,10 @@
 ---
-title: Associations
+title: Assoziationen
 layout: page
 ---
-## Auto Create/Update
+## Automatisches erstellen/aktualisieren
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+GORM speichert beim erstellen / aktualisieren eines Datensatzes automatisch Assoziationen und deren Referenz. Wenn die Verknüpfung einen Primärschlüssel hat, ruft GORM `Update` auf, um es zu speichern, andernfalls wird sie erstellt.
 
 ```go
 user := User{
