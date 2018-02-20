@@ -2,3 +2,6 @@ en: English
 zh_CN:
   name: 简体中文
   disqus_lang: zh
+de_DE:
+  name: Deutsche
+  disqus_lang: de
