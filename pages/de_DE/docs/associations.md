@@ -57,7 +57,8 @@ type User struct {
   gorm.Model
   Name       string
   CompanyID  uint
-  // Don't update associations having primary key, but will save reference
+  // Aktualisiere keine Verknüpfungen mit Primärschlüssel, speichert aber
+  // die Referenz
   Company    Company `gorm:"association_autoupdate:false"`
 }
 ```
@@ -66,27 +67,29 @@ type User struct {
 
 Selbst bei deaktiviertem `AutoUpdating` werden Assoziation ohne Primärschlüssel erstellt und ihre Referenz wird gespeichert.
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
+Um dies zu deaktivieren, können Sie die Datenbank-Einstellung `gorm: association_autocreate` auf ` false ` setzen
 
 ```go
-// Don't create associations w/o primary key, WON'T save its reference
+// Erstelle keine Assoziationen ohne Primärschlüssel,
+// speichert die Referenz NICHT
 db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autocreate:false"`
+oder mit GORM tags, `gorm:"association_autocreate:false"`
 
     type User struct {
       gorm.Model
       Name       string
-      // Don't create associations w/o primary key, WON'T save its reference
-      Company1   Company `gorm:"association_autocreate:false"`
+      // Erstellen keine Assoziationen ohne Primärschlüssel,
+      // speichert die Referenz NICHT 
+     Company1   Company `gorm:"association_autocreate:false"`
     }
     
 
-## Skip AutoCreate/Update
+## AutoCreate/Update überspringen
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings togehter
+Um `AutoCreate` und `AutoUpdate` zu deaktivieren, kann man beide Einstellungen zusammen verwenden
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -98,7 +101,7 @@ type User struct {
 }
 ```
 
-Or use `gorm:save_associations`
+Oder verwende `gorm:save_associations`
 
     db.Set("gorm:save_associations", false).Create(&user)
     db.Set("gorm:save_associations", false).Save(&user)
@@ -110,16 +113,16 @@ Or use `gorm:save_associations`
     }
     
 
-## Skip Save Reference
+## Speichern der Referenz überspringen
 
-If you don't even want to save association's reference when updating/saving data, you could use below tricks
+Wenn man beim aktualisieren / apeichern von Daten nicht einmal die Assoziationsreferenz speichern möchten, kann man die folgenden Einstellungen verwenden
 
 ```go
 db.Set("gorm:association_save_reference", false).Save(&user)
 db.Set("gorm:association_save_reference", false).Create(&user)
 ```
 
-or use tag
+oder den Tag
 
 ```go
 type User struct {
@@ -130,7 +133,7 @@ type User struct {
 }
 ```
 
-## Association Mode
+## Assoziations-Modus
 
 Association Mode contains some helper methods to handle relationship things easily.
 
