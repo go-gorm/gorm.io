@@ -1,5 +1,5 @@
 ---
-title: Contribute to GORM
+title: Helfe bei GORM mit
 layout: page
 ---
 **Du kannst uns dabei helfen, GORM besser zu machen! Es gibt viele dinge, die du machen kannst:**
@@ -19,36 +19,36 @@ layout: page
 
 Du kannst die aktuelle Website auf <https://translate.gorm.io> übersetzen
 
-To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
+GORM in deine Sprache zu übersetzen, musst du einen Anfrage, sie auf [ https://translate.gorm.io](https://translate.gorm.io) hinzuzufügen in den [Github Issues](https://github.com/jinzhu/gorm.io/issues) posten.
 
-## Program
+## Programm
 
-* Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features from [Github Issues](https://github.com/jinzhu/gorm/issues)
-* Create open source plugins for GORM. (Don't forgot to add them to [the list](/community.html#Open-Sources))
+* Erstelle einen Pull Request auf [Github](https://github.com/jinzhu/gorm), um Fehler zu beheben oder um neue, vereinbarte Funktionen aus den [Github Issues](https://github.com/jinzhu/gorm/issues) hinzuzufügen
+* Erstelle Open Source Plugins für GORM. (Vergesse nicht, sie zu [der Liste](/community.html#Open-Sources) hinzuzufügen!)
 
-## Donations
+## Spenden
 
-Many thanks to all our sponsors!
+Vielen Dank an alle unsere Sponsoren!
 
-### One-time Donations
+### Einmalige Spenden
 
-Your kindness and generosity is greatly appreciated
+Deine Freundlichkeit und Großzügigkeit wird sehr geschätzt
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[Einmalige Spenden mit Paypal](https://www.paypal.me/zhangjinzhu) [Einmalige Spenden mit OpenCollective](https://opencollective.com/gorm)
 
-### Recurring Donations
+### Wiederkehrende Spenden
 
-Your kindness and generosity is greatly appreciated, and your name will be listed in this page or the home page of this website.
+Deine Freundlichkeit und Großzügigkeit wird sehr geschätzt! Dein Name wird auf dieser Seite oder auf der Startseite dieser Website angezeigt.
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[Wiederkehrende Spenden mit OpenCollective](https://opencollective.com/gorm) [Wiederkehrende Spenden mit Patreon](https://www.patreon.com/jinzhu)
 
 <br />
 
-## Sponsors
+## Sponsoren
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=740"></object>
 
-## Backers
+## Unterstützer
 
 <div class="backers-list">
   
@@ -59,6 +59,6 @@ Your kindness and generosity is greatly appreciated, and your name will be liste
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=48&width=740"></object>
 
-## Contributors
+## Mitwirkende
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/contributors.svg?avatarHeight=32&width=740"></object>
