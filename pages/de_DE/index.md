@@ -1,7 +1,7 @@
 ---
 layout: index
-description: The fantastic ORM library for Golang, aims to be developer friendly.
-subtitle: The fantastic ORM library for Golang
+description: Die fantastische, entwicklerfreundlich ORM-Bibliothek für Golang
+subtitle: Die fantastische ORM-Bibliothek für Golang
 comments: false
 ---
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Voll ausgestattetes ORM (fast)
