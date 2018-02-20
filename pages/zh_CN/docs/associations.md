@@ -4,7 +4,7 @@ layout: page
 ---
 ## 自动创建/更新
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+创建/更新记录时, GORM 将自动保存关联及其引用。如果关联具有主键, GORM 将调用 ` Update ` 来保存它, 否则将创建它。
 
 ```go
 user := User{
@@ -39,7 +39,7 @@ db.Save(&user)
 
 ## 跳过自动更新
 
-如果数据库中已存在关联, 则可能不希望对其进行更新。
+如果数据库中已存在关联, 可能你不希望对其进行更新。
 
 可以使用 DB 设置, 将 ` gorm: association_autoupdate ` 设置为 ` false `
 
@@ -61,11 +61,11 @@ type User struct {
 }
 ```
 
-## Skip AutoCreate
+## 跳过自动创建
 
-Even you disabled `AutoUpdating`, associations w/o primary key still have be created and its reference will be saved.
+即使你跳过自动更新，没有主键的关联仍然会被自动保存，所有关联的引用也会被保存、创建。
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
+如果你也想跳过，那么你可以通过 DB 的设置，将`gorm:association_autocreate`设置为`false`
 
 ```go
 // Don't create associations w/o primary key, WON'T save its reference
@@ -73,7 +73,7 @@ db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autocreate:false"`
+或使用 GORM tags ` GORM: "association_autocreate: false" `
 
     type User struct {
       gorm.Model
@@ -83,9 +83,9 @@ or use GORM tags, `gorm:"association_autocreate:false"`
     }
     
 
-## Skip AutoCreate/Update
+## 跳过自动创建及更新
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings togehter
+若要禁用 `自动创建` 及 `自动更新`, 可以将这两个设置一起使用
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -97,7 +97,7 @@ type User struct {
 }
 ```
 
-Or use `gorm:save_associations`
+或使用 GORM Tag ` gorm: save_associations `
 
     db.Set("gorm:save_associations", false).Create(&user)
     db.Set("gorm:save_associations", false).Save(&user)
