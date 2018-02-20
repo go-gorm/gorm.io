@@ -37,19 +37,20 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-## Skip AutoUpdate
+## AutoUpdate überspringen
 
-If your associations is already exists in database, you might don't want to update it.
+Wenn die Zuordnungen bereits in der Datenbank vorhanden sind, möchten man sie möglicherweise nicht aktualisieren.
 
-You could use DB setting, set `gorm:association_autoupdate` to `false`
+Hierzu kann man die Datenbank-Einstellung `gorm:association_autoupdate` zu `false` setzen:
 
 ```go
-// Don't update associations having primary key, but will save reference
+// Assoziationen mit Primärschlüssel werden nicht aktualisiert,
+// speichert aber die Referenz
 db.Set("gorm:association_autoupdate", false).Create(&user)
 db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autoupdate:false"`
+oder mit GORM tags, `gorm:"association_autoupdate:false"`
 
 ```go
 type User struct {
@@ -61,9 +62,9 @@ type User struct {
 }
 ```
 
-## Skip AutoCreate
+## AutoCreate überspringen
 
-Even you disabled `AutoUpdating`, associations w/o primary key still have be created and its reference will be saved.
+Selbst bei deaktiviertem `AutoUpdating` werden Assoziation ohne Primärschlüssel erstellt und ihre Referenz wird gespeichert.
 
 To disable this, you could set DB setting `gorm:association_autocreate` to `false`
 
