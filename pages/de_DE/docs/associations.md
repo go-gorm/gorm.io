@@ -135,54 +135,55 @@ type User struct {
 
 ## Assoziations-Modus
 
-Association Mode contains some helper methods to handle relationship things easily.
+Der Assoziations-Modus hat einige Hilfsfunktionen, um Beziehungen zu vereinfachen.
 
 ```go
-// Start Association Mode
+// Assoziations-Modus starten
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source, is must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
-// db.Model(&user).Association("Languages").Error
+// `user` ist die quelle und muss einen Primärschlüssel besitzen
+// `Languages` ist der Name von dem Feld der Quelle für die Beziehung.
+// Der Assoziations-Modus funktioniert nur,
+// wenn die oberen beiden Bedingungen übereinstimmen 
+db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Assoziationen finden
 
-Find matched associations
+Finde passende Assoziationen
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Apped Associations
+### Assoziationen hinzufügen
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+Fügen Sie neue Zuordnungen für `many to many` und `has many` hinzu, ersetzt die aktuelle Zuordnung für `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Replace Associations
+### Assoziationen ersetzen
 
-Replace current associations with new one
+Ersetze die aktuelle Assoziation mit einer neuen
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Assoziationen löschen
 
-Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
+Das Löschen von Assoziationen löscht nur die Referenz, nicht die Objekte in der Datenbank.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Assoziationen entfernen
 
 Remove reference between source & current associations, won't delete those associations
 
