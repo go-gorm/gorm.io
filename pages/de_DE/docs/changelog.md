@@ -1,5 +1,5 @@
 ---
-title: Change Log
+title: Änderungen
 layout: page
 ---
 ## v2.0

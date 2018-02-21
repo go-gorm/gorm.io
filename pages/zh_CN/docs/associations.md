@@ -4,7 +4,7 @@ layout: page
 ---
 ## 自动创建/更新
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+创建/更新记录时, GORM 将自动保存关联及其引用。如果关联具有主键, GORM 将调用 ` Update ` 来保存它, 否则将创建它。
 
 ```go
 user := User{
@@ -39,7 +39,7 @@ db.Save(&user)
 
 ## 跳过自动更新
 
-如果数据库中已存在关联, 则可能不希望对其进行更新。
+如果数据库中已存在关联, 可能你不希望对其进行更新。
 
 可以使用 DB 设置, 将 ` gorm: association_autoupdate ` 设置为 ` false `
 
@@ -49,7 +49,7 @@ db.Set("gorm:association_autoupdate", false).Create(&user)
 db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autoupdate:false"`
+或者使用 GORM tags `gorm:"association_autoupdate:false"`
 
 ```go
 type User struct {
@@ -61,11 +61,11 @@ type User struct {
 }
 ```
 
-## Skip AutoCreate
+## 跳过自动创建
 
-Even you disabled `AutoUpdating`, associations w/o primary key still have be created and its reference will be saved.
+即使你跳过自动更新，没有主键的关联仍然会被自动保存，所有关联的引用也会被保存、创建。
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
+如果你也想跳过，那么你可以通过 DB 的设置，将`gorm:association_autocreate`设置为`false`
 
 ```go
 // Don't create associations w/o primary key, WON'T save its reference
@@ -73,7 +73,7 @@ db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autocreate:false"`
+或使用 GORM tags ` GORM: "association_autocreate: false" `
 
     type User struct {
       gorm.Model
@@ -83,9 +83,9 @@ or use GORM tags, `gorm:"association_autocreate:false"`
     }
     
 
-## Skip AutoCreate/Update
+## 跳过自动创建及更新
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings togehter
+若要禁用 `自动创建` 及 `自动更新`, 可以将这两个设置一起使用
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -97,7 +97,7 @@ type User struct {
 }
 ```
 
-Or use `gorm:save_associations`
+或使用 GORM Tag ` gorm: save_associations `
 
     db.Set("gorm:save_associations", false).Create(&user)
     db.Set("gorm:save_associations", false).Save(&user)
@@ -109,16 +109,16 @@ Or use `gorm:save_associations`
     }
     
 
-## Skip Save Reference
+## 跳过引用的保存
 
-If you don't even want to save association's reference when updating/saving data, you could use below tricks
+如果你不想保存关联的引用，那么你可以使用下面的技巧
 
 ```go
 db.Set("gorm:association_save_reference", false).Save(&user)
 db.Set("gorm:association_save_reference", false).Create(&user)
 ```
 
-or use tag
+或者使用 GORM Tag
 
 ```go
 type User struct {
@@ -129,9 +129,9 @@ type User struct {
 }
 ```
 
-## Association Mode
+## 关联模式
 
-Association Mode contains some helper methods to handle relationship things easily.
+关联模式包含几个帮助方法，可以更方便的来管理关联
 
 ```go
 // Start Association Mode
@@ -143,52 +143,52 @@ db.Model(&user).Association("Languages")
 // db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### 查找关联
 
-Find matched associations
+查找匹配的关联
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Apped Associations
+### 添加关联
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+为`many to many`、`has many`添加关联, 为`has one`、`belongs to`替换关联
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Replace Associations
+### 替换关联
 
-Replace current associations with new one
+将旧关联替换为新关联
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### 删除关联
 
-Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
+删除关联的引用，不会删除关联本身
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### 清空关联
 
-Remove reference between source & current associations, won't delete those associations
+清空对关联的引用，不会删除关联本身
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### 关联的数量
 
-Return the count of current associations
+返回关联的数量
 
 ```go
 db.Model(&user).Association("Languages").Count()

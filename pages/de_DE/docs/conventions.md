@@ -1,12 +1,12 @@
 ---
-title: Conventions
+title: Konventionen
 layout: page
 ---
 ## gorm.Model
 
-`gorm.Model` is a struct including some basic fields, which including fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
+`gorm.Model` ist ein Struct, welches einige grundlegende Felder enthält, einschließlich der Felder `ID`, `CreatedAt`, `UpdatedAt` und `DeletedAt`.
 
-It could be embeded into your model or build your own model w/o it.
+Diese können in dein Modell eingebunden werden oder du kannst dein eigenes Modell ohne sie bauen.
 
 ```go
 // gorm.Model definition
@@ -17,30 +17,31 @@ type Model struct {
   DeletedAt *time.Time
 }
 
-// Inject fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` into model `User`
+// Injiziere die Felder `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` in
+// das Modell `User`
 type User struct {
   gorm.Model
   Name string
 }
 
-// Declaring model w/o gorm.Model
+// Deklariere ein Modell ohne gorm.Model
 type User struct {
   ID   int
   Name string
 }
 ```
 
-## `ID` as Primary Key
+## `ID` als Primärschlüssel
 
-GORM use field with name `ID` as primary key by default.
+GORM benutzt standardmäßig das Feld mit den Name `ID` as Primärschlüssel.
 
 ```go
 type User struct {
-  ID   string // field named `ID` will be used as primary field by default
+  ID   string //  `ID` wird standardmäßig als Primärschlüssel verwendet
   Name string
 }
 
-// Set field `AnimalID` as primary field
+// Setze das Feld `AnimalID` als Primärschlüssel
 type Animal struct {
   AnimalID int64 `gorm:"primary_key"`
   Name     string
@@ -48,14 +49,14 @@ type Animal struct {
 }
 ```
 
-## Pluralized Table Name
+## Pluralisierte Tabellennamen
 
-Table name is the pluralized version of struct name
+Der Tabellen-Name ist die pluralisiert Version des Struct-Namens
 
 ```go
-type User struct {} // default table name is `users`
+type User struct {} // standardmäßiger Tabellen-Name ist `users`
 
-// Set User's table name to be `profiles`
+// Setze User's Tabellen-Name zu `profiles`
 func (User) TableName() string {
   return "profiles"
 }
@@ -68,11 +69,12 @@ func (u User) TableName() string {
     }
 }
 
-// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
+// Deaktiviere die Pluralisierung von Tabellen-Namen,
+// wenn auf `true` gesetzt wird der `User` Tabellen-Name zu `user`
 db.SingularTable(true)
 ```
 
-### Specifying The Table Name
+### Den Tabellen-Namen spezifizieren
 
 ```go
 // Create `deleted_users` table with struct User's definition
