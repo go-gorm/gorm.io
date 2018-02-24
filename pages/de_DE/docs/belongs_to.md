@@ -4,9 +4,9 @@ layout: page
 ---
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Eine `belongs to` Assoziation stellt eine Eins-zu-Eins-Verbindung mit einem anderen Modell her, so dass jede Instanz des Deklarationsmodells zu einer Instanz des anderen Modells "gehört".
 
-For example, if your application includes users and profiles, and each profile can be assigned to exactly one user
+Zum Beispiel, wenn eine Anwendung Benutzer und Profile enthält und jedes Profil genau einem Benutzer zugewiesen werden kann
 
 ```go
 type User struct {
@@ -14,7 +14,7 @@ type User struct {
   Name string
 }
 
-// `Profile` belongs to `User`, `UserID` is the foreign key
+// `Profile` gehört zu `User`, `UserID` ist der Fremdschlüssel
 type Profile struct {
   gorm.Model
   UserID int
