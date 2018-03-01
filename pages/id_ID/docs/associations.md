@@ -4,7 +4,7 @@ layout: halaman
 ---
 ## Auto Create/Update
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+GORM akan menyimpan otomatis asosiasi dan referensi saat membuat / memperbarui rekama. Jika asosiasi memiliki kunci utama, GORM akan memanggil ` Perbarui ` untuk menyimpannya, jika tidak maka akan dibuat.
 
 ```go
 user := User{
