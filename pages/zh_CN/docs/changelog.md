@@ -1,14 +1,14 @@
 ---
-title: Change Log
+title: 更改日志
 layout: page
 ---
 ## v2.0
 
-WIP
+制作中
 
 ## v1.0 - 2016.04.27
 
-Breaking Changes
+破坏性变更
 
 * `gorm.Open`返回类型为`*gorm.DB`而不是`gorm.DB`
 
