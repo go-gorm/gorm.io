@@ -1,12 +1,12 @@
 ---
-title: Write Plugins
+title: 写插件
 layout: page
 ---
-GORM itself is powered by `Callbacks`, so you could fully customize GORM as you want
+GORM本身由`Callbacks`提供支持，因此您可以根据需要完全自定义GORM
 
-## Register a new callback
+## 注册新的callback
 
-Register a callback into callbacks
+注册新的callback到callbacks中
 
 ```go
 func updateCreated(scope *Scope) {
@@ -16,30 +16,30 @@ func updateCreated(scope *Scope) {
 }
 
 db.Callback().Create().Register("update_created_at", updateCreated)
-// register a callback for Create process
+// 注册Create进程的回调
 ```
 
-## Delete an existing callback
+## 删除现有的callback
 
-Delete a callback from callbacks
+从callbacks中删除callback
 
 ```go
 db.Callback().Create().Remove("gorm:create")
-// delete callback `gorm:create` from Create callbacks
+// 从Create回调中删除`gorm:create`回调
 ```
 
-## Replace an existing callback
+## 替换现有的callback
 
-Replace a callback having same name with new one
+替换同名callback
 
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
-// replace callback `gorm:create` with new function `newCreateFunction` for Create process
+// 使用新函数`newCreateFunction`替换回调`gorm:create`用于创建过程
 ```
 
-## Register callback orders
+## 注册callback顺序
 
-Regiser callbacks with orders
+注册callback顺序
 
 ```go
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
