@@ -1,6 +1,6 @@
 ---
-title: Associations
-layout: page
+title: Asosiasi
+layout: halaman
 ---
 ## Auto Create/Update
 
