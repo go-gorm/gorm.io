@@ -6,7 +6,7 @@ layout: page
 
 WIP
 
-## v1.0 - 2016.04.27
+## v1.0 - 27.04.2016
 
 Breaking Changes
 
