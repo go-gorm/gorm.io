@@ -40,7 +40,7 @@ db.Save(&user)
 
 ## Skip AutoUpdate
 
-If your associations is already exists in database, you might don't want to update it.
+If your association is already existing in database, you might not want to update it.
 
 You could use DB setting, set `gorm:association_autoupdate` to `false`
 
@@ -64,7 +64,7 @@ type User struct {
 
 ## Skip AutoCreate
 
-Even you disabled `AutoUpdating`, associations w/o primary key still have be created and its reference will be saved.
+Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
 
 To disable this, you could set DB setting `gorm:association_autocreate` to `false`
 
@@ -134,7 +134,7 @@ type User struct {
 
 ## Association Mode
 
-Association Mode contains some helper methods to handle relationship things easily.
+Association Mode contains some helper methods to handle relationship related things easily.
 
 ```go
 // Start Association Mode
@@ -156,7 +156,7 @@ db.Model(&user).Association("Languages").Find(&languages)
 
 ### Append Associations
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -165,7 +165,7 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 
 ### Replace Associations
 
-Replace current associations with new one
+Replace current associations with new ones
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
