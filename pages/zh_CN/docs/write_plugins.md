@@ -50,9 +50,9 @@ db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update",
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 ```
 
-## Pre-Defined Callbacks
+## 预定义回调
 
-GORM has defiend callbacks to perform CRUD operations, check them out before start write your plugins
+GORM定义了回调以执行其CRUD操作，在开始编写插件之前检查它们。
 
 - [Create callbacks](https://github.com/jinzhu/gorm/blob/master/callback_create.go)
 
