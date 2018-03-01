@@ -167,7 +167,7 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 
 ### Assoziationen ersetzen
 
-Replace current associations with new ones
+Aktuelle Assoziationen durch neue ersetzen
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
