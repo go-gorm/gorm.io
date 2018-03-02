@@ -18,7 +18,7 @@ db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email)
 
 ## Batch Delete
 
-Delete all matched records
+Hapus seluruh catatan yang cocok
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
