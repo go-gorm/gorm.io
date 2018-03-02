@@ -11,11 +11,11 @@ layout: page
 * Tulis tutorial, merekam video, dll... (Jangan lupa untuk menambahkannya ke [daftar](/community.html))
 * Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
 
-## Documentation and Writing
+## Dokumentasi dan Penulisan
 
 * Jadikan dokumentasi GORM lebih baik dengan menulis konten baru, memperbaiki materi yang ada
 
-### Translate this site
+### Terjemahkan situs ini
 
 Anda dapat menerjemahkan situs saat ini dengan <https://translate.gorm.io>
 
@@ -34,7 +34,7 @@ Many thanks to all our sponsors!
 
 Kebaikan dan kemurahan hati anda sangat dihargai
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[Sumbangan Satu Kali dengan Paypal](https://www.paypal.me/zhangjinzhu) [Sumbangan satu kali dengan OpenCollective](https://opencollective.com/gorm)
 
 ### Recurring Donations
 
@@ -44,7 +44,7 @@ Kebaikan dan kemurahan hati anda sangat dihargai, dan nama anda akan tercantum d
 
 <br />
 
-## Sponsors
+## Sponsor
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=740"></object>
 
