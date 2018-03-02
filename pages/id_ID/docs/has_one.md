@@ -4,7 +4,7 @@ layout: page
 ---
 ## Has One
 
-A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). Asosiasi ini menunjukkan bahwa setiap contoh dari model mengandung atau memiliki satu contoh model lain.
 
 For example, if your application includes users and credit card, and each user can only has one credit card.
 
@@ -47,7 +47,7 @@ type CreditCard struct {
 
 ## Association ForeignKey
 
-By default, the owner will save the `belogns to model`'s primary into foreign key, you could change to save another field, like use `Number` for below example.
+Secara bawaan, pemilik akan menyimpan `milik model`'s primer menjadi kunci asing, anda bisa mengubah untuk menyimpan bidang lain, seperti penggunaan `Nomor` untuk contoh di bawah ini.
 
 ```go
 type User struct {
@@ -87,7 +87,7 @@ Supports polymorphic has-many and has-one associations.
   }
 ```
 
-Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
+Catatan: polimorfik milik-ke dan banyak-ke-banyak secara eksplisit TIDAK didukung, dan akan membuang kesalahan.
 
 ## Working with Has One
 
