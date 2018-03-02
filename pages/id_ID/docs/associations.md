@@ -110,7 +110,7 @@ Atau gunakan `gorm:save_associations`
     }
     
 
-## Skip Save Reference
+## Lewati Penyimpanan Referensi
 
 Jika anda bahkan tidak ingin menyimpan referensi asosiasi ketika memperbarui / menyimpan data, anda bisa menggunakan trik di bawah ini
 
@@ -119,7 +119,7 @@ db.Set("gorm:association_save_reference", false).Save(&user)
 db.Set("gorm:association_save_reference", false).Create(&user)
 ```
 
-or use tag
+atau gunakan tanda
 
 ```go
 type User struct {
@@ -130,7 +130,7 @@ type User struct {
 }
 ```
 
-## Association Mode
+## Mode Asosiasi
 
 Asosiasi motede berisi beberapa metode penolong untuk menangani hal-hal yang berhubungan dengan hubungan dengan mudah.
 
@@ -144,9 +144,9 @@ db.Model(&user).Association("Languages")
 // db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Temukan Asosiasi
 
-Find matched associations
+Temukan asosiasi yang sesuai
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
@@ -179,7 +179,7 @@ db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Asosiasi yang Jelas
 
 Hapus referensi antara sumber & asosiasi saat ini, tidak akan menghapus asosiasi tersebut
 
