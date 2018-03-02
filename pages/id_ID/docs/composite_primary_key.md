@@ -1,8 +1,8 @@
 ---
-title: Composite Primary Key
-layout: page
+title: Kunci Utama Komposit
+layout: halaman
 ---
-Set multiple fields as primary key to enable composite primary key
+Menetapkan beberapa bidang sebagai kunci utama untuk memungkinkan kunci utama komposit
 
 ```go
 type Product struct {
