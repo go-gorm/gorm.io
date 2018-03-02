@@ -1,5 +1,5 @@
 ---
-title: Connecting to the database
+title: Menghubungkan ke basis data
 layout: page
 ---
 # Connecting to the database
@@ -79,8 +79,8 @@ func main() {
 }
 ```
 
-## Write Dialect for unsupported databases
+## Tulis Dialek untuk basis data yang tidak didukung
 
 GORM secara resmi mendukung database di atas, tapi anda bisa menulis dialek untuk database yang tidak didukung.
 
-To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
+Untuk menulis dialek anda sendiri, lihat: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
