@@ -152,7 +152,7 @@ Find matched associations
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Tambahkan Asosiasi
 
 Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
 
@@ -163,16 +163,16 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 
 ### Replace Associations
 
-Replace current associations with new ones
+Ganti asosiasi saat ini dengan yang baru
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Hapus Asosiasi
 
-Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
+Hapus hubungan antara sumber & obyek argumen, hanya menghapus referensi, tidak akan menghapus objek dari DB.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
