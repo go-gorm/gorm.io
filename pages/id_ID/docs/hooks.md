@@ -6,13 +6,13 @@ layout: page
 
 Hooks are functions that are called before or after creation/querying/updating/deletion.
 
-If you have defiend specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+Jika anda memiliki metode definisi yang ditentukan untuk model, maka akan dipanggil secara otomatis saat membuat, memperbarui, pertanyaan, menghapus, dan jika ada callback yang mengembalikan kesalahan, GORM akan menghentikan operasi masa depan dan meneruskan transaksi saat ini.
 
-## Hooks
+## Kaitan
 
-### Creating an object
+### Buat sebuah objek
 
-Available hooks for creating
+Tersedia kaitan untuk membuat
 
 ```go
 // begin transaction
@@ -55,7 +55,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### Memperbarui objek
 
 Available hooks for updating
 
