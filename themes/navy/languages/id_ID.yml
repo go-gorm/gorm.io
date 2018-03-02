@@ -23,7 +23,7 @@ sidebar:
     declaring_models: Declaring Models
     conventions: Konvensi
     connecting_to_the_database: Menghubungkan ke Basis Data
-    crud_interface: CRUD Interface
+    crud_interface: Antarmuka CRUD
     create: Buat
     query: Kueri
     update: Perbarui
