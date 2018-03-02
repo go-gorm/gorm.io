@@ -81,7 +81,7 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 //// SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You could consider to use pointer type or scanner/valuer to avoid this.
+Anda bisa mempertimbangkan untuk menggunakan jenis pointer atau pemindai / penilai untuk menghindari hal ini.
 
 ```go
 // Use pointer value
@@ -218,7 +218,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 
 ### Assign
 
-Assign argument to struct regardless it is found or not
+Menetapkan argumen untuk struct tanpa itu ditemukan atau tidak
 
 ```go
 // Unfound
@@ -294,7 +294,7 @@ db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?
 
 ### Select
 
-Specify fields that you want to retrieve from database, by default, will select all fields
+Tentukan bidang yang ingin anda ambil dari database, secara bawaan, akan memilih semua bidang
 
 ```go
 db.Select("name, age").Find(&users)
