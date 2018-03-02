@@ -1,14 +1,14 @@
 ---
 title: Dialect Specific Data Type
-layout: page
+layout: halaman
 ---
-## Write new Dialect
+## Tulis Dialek baru
 
-GORM provides supports for sqlite, mysql, postgres, mssql officially.
+GORM menyediakan dukungan untuk sqlite, mysql, postgres, mssql secara resmi.
 
-You could add other database support by creating a new dialect, need to implement [the dialect interface](https://godoc.org/github.com/jinzhu/gorm#Dialect).
+Anda bisa menambahkan dukungan database lainnya dengan membuat dialek baru, perlu diimplementasikan [antarmuka dialek](https://godoc.org/github.com/jinzhu/gorm#Dialect).
 
-Some databases might compatible with mysql or postgres dialect, then you could just use the dialect for those databases.
+Beberapa database mungkin kompatibel dengan dialek mysql atau postgres, maka anda bisa menggunakan dialek untuk database tersebut.
 
 ## Dialect Specific Data Type
 
