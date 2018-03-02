@@ -22,26 +22,26 @@ user := User{
 }
 
 db.Create(&user)
-//// BEGIN TRANSACTION;
-//// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1");
-//// INSERT INTO "addresses" (address1) VALUES ("Shipping Address - Address 1");
-//// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
-//// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com");
-//// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu-2@example.com");
-//// INSERT INTO "languages" ("name") VALUES ('ZH');
-//// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 1);
-//// INSERT INTO "languages" ("name") VALUES ('EN');
-//// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 2);
-//// COMMIT;
+//// INIZIO TRANSAZIONE;
+//// INSERISCI IN "addresses" (address1) IL VALORE ("Billing Address - Address 1");
+//// INSERISCI IN "addresses" (address1) IL VALORE ("Shipping Address - Address 1");
+//// INSERISCI IN "users" (name,billing_address_id,shipping_address_id) IL VALORE ("jinzhu", 1, 2);
+//// INSERISCI IN "emails" (user_id,email) IL VALORE (111, "jinzhu@example.com");
+//// INSERISCI IN "emails" (user_id,email) IL VALORE (111, "jinzhu-2@example.com");
+//// INSERISCI IN "languages" ("name") IL VALORE ('ZH');
+//// INSERISCI IN user_languages ("user_id","language_id") IL VALORE (111, 1);
+//// INSERISCI IN "languages" ("name") IL VALORE ('EN');
+//// INSERISCI IN user_languages ("user_id","language_id") IL VALORE (111, 2);
+//// CONSEGNA;
 
 db.Save(&user)
 ```
 
-## Skip AutoUpdate
+## Salta aggiornamento automatico
 
-If your association is already existing in database, you might not want to update it.
+Se la sua associazione è già esistente nel database, potresti non volerla aggiornare.
 
-You could use DB setting, set `gorm:association_autoupdate` to `false`
+Puoi usare le impostazioni del Database, imposta `gorm:association_autoupdate` a `false`
 
 ```go
 // Don't update associations having primary key, but will save reference
