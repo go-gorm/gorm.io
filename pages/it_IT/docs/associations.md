@@ -83,9 +83,9 @@ oppure usa le tag di GORM, `gorm:"association_autocreate:false"`
     }
     
 
-## Skip AutoCreate/Update
+## Salta la Creazione/Aggiornamento automatico
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings togehter
+Per disabilitare entrambi `AutoCreate` e l'`AutoUpdate`, puoi usare questi due impostazioni insieme
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -97,7 +97,7 @@ type User struct {
 }
 ```
 
-Or use `gorm:save_associations`
+Oppure usa `gorm:save_associations`
 
     db.Set("gorm:save_associations", false).Create(&user)
     db.Set("gorm:save_associations", false).Save(&user)
@@ -134,18 +134,18 @@ type User struct {
 La modalità associazione contiene alcuni metodi di supporto per gestire facilmente la correlazione alle relazioni.
 
 ```go
-// Start Association Mode
+// Inizia la modalità associazione
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source, is must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
+// `user` nella sorgente deve contenere la chiave primaria
+// `Languages`è il nome del campo sorgente per la relazione 
+// La modalità associazione funziona solo se entrambe le condizioni sono verificate, controlla se è ok o no:
 // db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Trova le associazioni
 
-Find matched associations
+Trova le associazioni abbinate
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
