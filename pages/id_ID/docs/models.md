@@ -25,15 +25,15 @@ type User struct {
 
 ## Struct tags
 
-Tags are optional to use when declaring models, following are those tags that GORM supported.
+Tanda opsional untuk digunakan saat mendeklarasikan model, berikut adalah tanda yang didukung GORM.
 
 ### Supported Struct tags
 
-| Tag             | Description                                                            |
+| Label           | Keterangan                                                             |
 | --------------- | ---------------------------------------------------------------------- |
-| Column          | Specifies column name                                                  |
-| Type            | Specifies column data type                                             |
-| Size            | Specifies column size, default 255                                     |
+| Kolom           | Menentukan nama kolom                                                  |
+| Jenis           | Menentukan tipe data kolom                                             |
+| Ukuran          | Specifies column size, default 255                                     |
 | PRIMARY_KEY     | Specifies column as primary key                                        |
 | UNIQUE          | Specifies column as unique                                             |
 | DEFAULT         | Specifies column default value                                         |
@@ -48,19 +48,19 @@ Tags are optional to use when declaring models, following are those tags that GO
 
 ### Struct tags for Associations
 
-Check out Associations section for details
+Periksa bagian Asosiasi untuk rinciannya
 
-| Tag                                | Description                                    |
-| ---------------------------------- | ---------------------------------------------- |
-| MANY2MANY                          | Specifies join table name                      |
-| FOREIGNKEY                         | Specifies foreign key                          |
-| ASSOCIATION_FOREIGNKEY             | Specifies association foreign key              |
-| POLYMORPHIC                        | Specifies polymorphic type                     |
-| POLYMORPHIC_VALUE                  | Specifies polymorphic value                    |
-| JOINTABLE_FOREIGNKEY               | Specifies foreign key of jointable             |
-| ASSOCIATION_JOINTABLE_FOREIGNKEY | Specifies association foreign key of jointable |
-| SAVE_ASSOCIATIONS                  | AutoSave associations or not                   |
-| ASSOCIATION_AUTOUPDATE             | AutoUpdate associations or not                 |
-| ASSOCIATION_AUTOCREATE             | AutoCreate associations or not                 |
-| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not         |
-| PRELOAD                            | Auto Preload associations or not               |
+| Label                              | Keterangan                                           |
+| ---------------------------------- | ---------------------------------------------------- |
+| MANY2MANY                          | Specifies join table name                            |
+| FOREIGNKEY                         | Specifies foreign key                                |
+| ASSOCIATION_FOREIGNKEY             | Specifies association foreign key                    |
+| POLYMORPHIC                        | Specifies polymorphic type                           |
+| POLYMORPHIC_VALUE                  | Specifies polymorphic value                          |
+| JOINTABLE_FOREIGNKEY               | Specifies foreign key of jointable                   |
+| ASSOCIATION_JOINTABLE_FOREIGNKEY | Tentukan asosiasi kunci asing yang dapat digabungkan |
+| SAVE_ASSOCIATIONS                  | AutoSave associations or not                         |
+| ASSOCIATION_AUTOUPDATE             | AutoUpdate associations or not                       |
+| ASSOCIATION_AUTOCREATE             | AutoCreate associations or not                       |
+| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not               |
+| PRELOAD                            | Auto Preload associations or not                     |
