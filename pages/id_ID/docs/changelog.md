@@ -22,7 +22,7 @@ Breaking Changes
     
     But for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it.
 
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
+* Kesalahan `RecordNotFound` telah diubah namanya menjadi `ErrRecordNotFound`
 
 * `mssql` dialect has been renamed to "github.com/jinzhu/gorm/dialects/mssql"
 
