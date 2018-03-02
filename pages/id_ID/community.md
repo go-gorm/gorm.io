@@ -39,4 +39,4 @@ layout: halaman
 
 ## Berkontribusi untuk halaman ini
 
-Please edit [this page](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md) and create pull request
+Silahkan sunting [halaman ini](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md)dan buat permintaan tarik
