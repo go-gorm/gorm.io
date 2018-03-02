@@ -16,7 +16,7 @@ db.NewRecord(user) // => return `false` after `user` created
 
 ## Default Values
 
-You could define field's default value with tag, for example:
+tag を使ってデフォルト値を設定することができます。
 
 ```go
 type Animal struct {
@@ -26,7 +26,7 @@ type Animal struct {
 }
 ```
 
-Then the inserting SQL will exclude those fields that don't have value or having [zero values](https://tour.golang.org/basics/12), after insert the record into database, gorm will load those fields's value from database.
+値を持たないか [zero values](https://tour.golang.org/basics/12) のフィールドは INSERT 文実行後にデータベースから取得した値が格納されます。
 
 ```go
 var animal = Animal{Age: 99, Name: ""}
