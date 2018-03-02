@@ -14,9 +14,9 @@ db.Create(&user)
 db.NewRecord(user) // => return `false` after `user` created
 ```
 
-## Default Values
+## Nilai Bawaan
 
-You could define field's default value with tag, for example:
+Anda dapat menetapkan nilai bidang bawaan dengan label, sebagai contoh:
 
 ```go
 type Animal struct {
