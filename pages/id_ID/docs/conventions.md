@@ -88,7 +88,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 
 ### Ubah nama tabel bawaan
 
-You can apply any rules on the default table name by defining the `DefaultTableNameHandler`
+Anda dapat menerapkan aturan pada nama tabel bawaan dengan menetapkan `DefaultTableNameHandler`
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
