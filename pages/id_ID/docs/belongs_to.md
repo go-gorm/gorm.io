@@ -51,7 +51,7 @@ Untuk hubungan, GORM biasanya menggunakan kunci utama pemilik sebagai nilai kunc
 
 Ketika anda menetapkan profil untuk pengguna, GORM akan menghemat pengguna `ID` ke profil `Identitas pengguna` bidang.
 
-You are able to change it with tag `association_foreignkey`, e.g:
+Anda dapat mengubahnya dengan tanda ` association_foreign_key `, misal:
 
 ```go
 type User struct {
