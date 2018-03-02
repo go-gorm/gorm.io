@@ -65,7 +65,7 @@ type User struct {
 
 Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
+Untuk menonaktifkan ini, anda dapat mengatur pengaturan DB `gorm:association_autocreate` ke `false`
 
 ```go
 // Don't create associations w/o primary key, WON'T save its reference
@@ -73,7 +73,8 @@ db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autocreate:false"`
+atau gunakan label GORM, `gorm:"association_autocreate:false"
+`
 
     type User struct {
       gorm.Model
