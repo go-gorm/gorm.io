@@ -2,7 +2,7 @@
 title: Contribute to GORM
 layout: page
 ---
-**You can help to deliver a better GORM! there are many things that you can do:**
+**Anda dapat membantu memberikan GORM yang lebih baik! Ada banyak hal yang dapat Anda lakukan:**
 
 ## Help others to know GORM
 
