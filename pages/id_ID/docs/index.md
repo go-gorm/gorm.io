@@ -2,16 +2,16 @@
 title: GORM Guides
 layout: page
 ---
-The fantastic ORM library for Golang, aims to be developer friendly.
+Perpustakaan ORM yang fantastis untuk Golang, bertujuan untuk menjadi pengembang yang ramah.
 
 ## Overview
 
 * Full-Featured ORM (almost)
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
+* Asosiasi (Memiliki Satu, Memiliki Banyak, Milik Banyak, Banyaknya Polimorfisme)
 * Hooks (Before/After Create/Save/Update/Delete/Find)
 * Preloading (eager loading)
-* Transactions
-* Composite Primary Key
+* Transaksi
+* Kunci Utama Komposit
 * SQL Builder
 * Auto Migrations
 * Logger
