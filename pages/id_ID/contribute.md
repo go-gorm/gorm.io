@@ -1,6 +1,6 @@
 ---
 title: Contribute to GORM
-layout: page
+layout: halaman
 ---
 **Anda dapat membantu memberikan GORM yang lebih baik! Ada banyak hal yang dapat Anda lakukan:**
 
@@ -28,9 +28,9 @@ To translate GORM in your language you will need to post a request in the [Githu
 
 ## Donasi
 
-Many thanks to all our sponsors!
+Banyak terima kasih untuk semua sponsor kami!
 
-### One-time Donations
+### Sumbangan satu kali
 
 Kebaikan dan kemurahan hati anda sangat dihargai
 
