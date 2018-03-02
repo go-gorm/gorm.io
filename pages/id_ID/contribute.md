@@ -4,16 +4,16 @@ layout: page
 ---
 **Anda dapat membantu memberikan GORM yang lebih baik! Ada banyak hal yang dapat Anda lakukan:**
 
-## Help others to know GORM
+## Bantu orang lain untuk mengetahui GORM
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
+* Bagikan GORM dengan dunia melalui saluran sosial, atau hanya memberitahu orang-orang yang mungkin tertarik
+* Bantu pendatang baru untuk memecahkan pertanyaan di [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [masalah github](https://github.com/jinzhu/gorm/issues) dan [Ruang Obrolan](/community.html#Chat)
 * Tulis tutorial, merekam video, dll... (Jangan lupa untuk menambahkannya ke [daftar](/community.html))
 * Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
 
 ## Documentation and Writing
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* Jadikan dokumentasi GORM lebih baik dengan menulis konten baru, memperbaiki materi yang ada
 
 ### Translate this site
 
