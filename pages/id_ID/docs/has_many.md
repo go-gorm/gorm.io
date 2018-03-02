@@ -6,7 +6,7 @@ layout: page
 
 A `has many` association also sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
 
-For example, if your application includes users and credit card, and each user can has many credit cards.
+Misalnya, jika aplikasi anda menyertakan pengguna dan kartu kredit, dan setiap pengguna dapat memiliki banyak kartu kredit.
 
 ```go
 // User has many emails, UserID is the foreign key
@@ -90,9 +90,9 @@ Supports polymorphic has-many and has-one associations.
   }
 ```
 
-Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
+Catatan: polimorfik milik-ke dan banyak-ke-banyak secara eksplisit TIDAK didukung, dan akan membuang kesalahan.
 
-## Working with Has Many
+## Bekerja dengan Memiliki Banyak
 
 You could find `has many` assciations with `Related`
 
