@@ -39,41 +39,41 @@ db.Save(&user)
 
 ## Salta aggiornamento automatico
 
-Se la sua associazione è già esistente nel database, potresti non volerla aggiornare.
+Se la tua associazione è già esistente nel database, potresti non volerla aggiornare.
 
 Puoi usare le impostazioni del Database, imposta `gorm:association_autoupdate` a `false`
 
 ```go
-// Don't update associations having primary key, but will save reference
+// Non aggiorna le associazioni che hanno la chiave primaria, ma salverà il riferimento
 db.Set("gorm:association_autoupdate", false).Create(&user)
 db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autoupdate:false"`
+oppure usa le tag di GORM `gorm:"association_autoupdate:false"`
 
 ```go
 type User struct {
   gorm.Model
   Name       string
   CompanyID  uint
-  // Don't update associations having primary key, but will save reference
+  // Non aggiorna le associazioni che hanno la chiave primaria, ma salverà il riferimento
   Company    Company `gorm:"association_autoupdate:false"`
 }
 ```
 
-## Skip AutoCreate
+## Salta la creazione automatica
 
-Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
+Anche se si disattiva l'`AutoUpdating`, le associazioni senza chiave primaria devono ancora essere create e il suo riferimento verrà salvato.
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
+Per disabilitare questo, puoi farlo dalle impostazioni del database `gorm:association_autocreate` a `false`
 
 ```go
-// Don't create associations w/o primary key, WON'T save its reference
+// Non creare associazioni con la chiave primaria. NON VERRA' salvato il riferimento
 db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autocreate:false"`
+oppure usa le tag di GORM, `gorm:"association_autocreate:false"`
 
     type User struct {
       gorm.Model
@@ -109,7 +109,7 @@ Or use `gorm:save_associations`
     }
     
 
-## Salta il salvataggio delle referenze
+## Salta il salvataggio dei riferimenti
 
 Se non si desidera salvare il riferimento dell'associazione durante l'aggiornamento/salvataggio dei dati, è possibile utilizzare i seguenti trucchetti
 
@@ -129,9 +129,9 @@ type User struct {
 }
 ```
 
-## Association Mode
+## Modalità associazione
 
-Association Mode contains some helper methods to handle relationship related things easily.
+La modalità associazione contiene alcuni metodi di supporto per gestire facilmente la correlazione alle relazioni.
 
 ```go
 // Start Association Mode
@@ -151,9 +151,9 @@ Find matched associations
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Aggiungi le associazioni
 
-Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
+Aggiungi nuove associazioni per `many to many`, `has many`, sostituisci le associazioni per `has one`, `belong to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -171,16 +171,16 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 
 ### Cancella le associazioni
 
-Rimuove la relazione tra la fonte & e l'argomento oggetto, rimuove solo il riferimento non cancella l'oggetto dal database.
+Rimuove il riferimento tra la fonte & l'argomento oggetto, rimuove solo il riferimento non cancella l'oggetto dal database.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Libera le associazioni
 
-Remove reference between source & current associations, won't delete those associations
+Rimuove il riferimento tra fonte & l'associazione corrente, non cancellerà le associzioni
 
 ```go
 db.Model(&user).Association("Languages").Clear()
