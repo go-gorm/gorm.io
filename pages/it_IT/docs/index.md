@@ -7,7 +7,7 @@ La fantastica libreria ORM per Goland, mira ad essere di semplice utilizzo per g
 ## Panoramica
 
 * Full-optional ORM (quasi)
-* Associazioni (ha uno, ha molte, appartiene a, molti a molti, polimorfismi)
+* Associazioni (a uno, a molte, appartiene a, molti a molti, polimorfismi)
 * Agganci (Prima/Dopo Crea/Salva/Aggiorna/Cancella/Trova)
 * Pre-caricamento (caricamento rapido)
 * Transazioni
