@@ -1,31 +1,31 @@
 ---
 title: Guida GORM
-layout: page
+layout: pagina
 ---
 La fantastica libreria ORM per Goland, mira ad essere di semplice utilizzo per gli sviluppatori.
 
-## Overview
+## Panoramica
 
-* Full-Featured ORM (almost)
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
-* Hooks (Before/After Create/Save/Update/Delete/Find)
-* Preloading (eager loading)
-* Transactions
-* Composite Primary Key
+* Full-optional ORM (quasi)
+* Associazioni (ha uno, ha molte, appartiene a, molti a molti, polimorfismi)
+* Agganci (Prima/Dopo Crea/Salva/Aggiorna/Cancella/Trova)
+* Pre-caricamento (caricamento rapido)
+* Transazioni
+* Chiave primaria composita
 * SQL Builder
-* Auto Migrations
+* Migrazione automatica
 * Logger
-* Extendable, write Plugins based on GORM callbacks
-* Every feature comes with tests
-* Developer Friendly
+* Estendibile, crea dei Plugins basati sui callbacks di GORM
+* Ogni funzione viene prima testata
+* Facile da utilizzare
 
-## Install
+## Per installare
 
 ```sh
 go get -u github.com/jinzhu/gorm
 ```
 
-## Quick Start
+## Guida Rapida
 
 ```go
 package main
