@@ -1,10 +1,10 @@
 ---
-title: Associations
-layout: page
+title: Associazioni
+layout: pagina
 ---
-## Auto Create/Update
+## Crea/Aggiorna automaticamente
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+GORM salverà automaticamente le associazioni e i relativi riferimenti durante la creazione/aggiornamento di un record. Se l'associazione ha una chiave primaria, GORM chiamerà `Update` per salvarlo, altrimenti verrà creato.
 
 ```go
 user := User{
@@ -109,16 +109,16 @@ Or use `gorm:save_associations`
     }
     
 
-## Skip Save Reference
+## Salta il salvataggio delle referenze
 
-If you don't even want to save association's reference when updating/saving data, you could use below tricks
+Se non si desidera salvare il riferimento dell'associazione durante l'aggiornamento/salvataggio dei dati, è possibile utilizzare i seguenti trucchetti
 
 ```go
 db.Set("gorm:association_save_reference", false).Save(&user)
 db.Set("gorm:association_save_reference", false).Create(&user)
 ```
 
-or use tag
+oppure usa i tag
 
 ```go
 type User struct {
@@ -160,18 +160,18 @@ db.Model(&user).Association("Languages").Append([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Replace Associations
+### Sostituisci le associazioni
 
-Replace current associations with new ones
+Sostituisci le associazioni correnti con delle nuove
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Cancella le associazioni
 
-Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
+Rimuove la relazione tra la fonte & e l'argomento oggetto, rimuove solo il riferimento non cancella l'oggetto dal database.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
@@ -186,9 +186,9 @@ Remove reference between source & current associations, won't delete those assoc
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Conta le associazioni
 
-Return the count of current associations
+Restituisce il conteggio delle associazioni attuali
 
 ```go
 db.Model(&user).Association("Languages").Count()
