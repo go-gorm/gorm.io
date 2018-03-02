@@ -1,12 +1,12 @@
 ---
 title: Many To Many
-layout: page
+layout: halaman
 ---
 ## Many To Many
 
-Many to Many adds an join table between two models.
+Banyak ke Banyak menambahkan sebuah tabel gabungan antara dua model.
 
-For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specfied language.
+Misalnya, jika aplikasi anda mencakup pengguna dan bahasa, dan pengguna dapat berbicara banyak bahasa, dan banyak pengguna dapat mengucapkan bahasa tertentu.
 
 ```go
 // User has and belongs to many languages, use `user_languages` as join table
@@ -76,7 +76,7 @@ type CustomizeAccount struct {
 
 To define a self-referencing many2many relationship, you have to change association's foreign key in the join table.
 
-to make it different with source's foreign key, which is generated using struct's name and its primary key, for example:
+untuk membuatnya berbeda dengan kunci asing sumber ini, yang dihasilkan menggunakan nama struct dan kunci utama, misalnya:
 
 ```go
 type User struct {
@@ -87,7 +87,7 @@ type User struct {
 
 GORM will create a join table with foreign key `user_id` and `friend_id`, and use it to save user's self-reference relationship.
 
-Then you can operate it like normal relations, e.g:
+Kemudian anda dapat mengoperasikannya seperti hubungan normal, misalnya:
 
 ```go
 DB.Preload("Friends").First(&user, "id = ?", 1)
@@ -103,7 +103,7 @@ DB.Model(&user).Association("Friends").Clear()
 DB.Model(&user).Association("Friends").Count()
 ```
 
-## Working with Many To Many
+## Bekerja dengan Banyak Untuk Banyak
 
 ```go
 db.Model(&user).Related(&languages, "Languages")
