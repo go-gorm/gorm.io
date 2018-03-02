@@ -1,12 +1,12 @@
 ---
-title: Belongs To
+title: Milik
 layout: halaman
 ---
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Sebuah `milik asosiasi` membuat koneksi satu-ke-satu dengan model lain, sehingga setiap contoh dari model deklarasi "termasuk" satu contoh dari model lainnya.
 
-For example, if your application includes users and profiles, and each profile can be assigned to exactly one user
+Misalnya, jika aplikasi anda menyertakan pengguna dan profil, dan setiap profil dapat diberikan ke satu pengguna saja
 
 ```go
 type User struct {
@@ -25,11 +25,11 @@ type Profile struct {
 
 ## Foreign Key
 
-To define a belongs to relationship, the foreign key must exists, default foreign key uses owner's type name plus its primary key.
+Untuk menentukan milik hubungan, kunci asing harus ada, kunci asing default menggunakan nama jenis pemilik ditambah kunci utamanya.
 
-For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+Untuk contoh di atas, untuk menentukan model yang dimiliki`Pengguna`, kunci asing seharusnya `Identitas Pengguna`.
 
-GORM provides a way to customzie the foreign key, for example:
+GORM menyediakan cara untuk menyesuaikan kunci asing, misalnya:
 
 ```go
 type User struct {
