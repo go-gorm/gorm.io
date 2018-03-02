@@ -45,11 +45,11 @@ type Profile struct {
 }
 ```
 
-## Association ForeignKey
+## Kunci Asing Asosiasi
 
-For a belongs to relationship, GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+Untuk hubungan, GORM biasanya menggunakan kunci utama pemilik sebagai nilai kunci asing, untuk contoh di atas, itu `Pengguna`'s `ID`.
 
-When you assign a profile to a user, GORM will save user's `ID` into profile's `UserID` field.
+Ketika anda menetapkan profil untuk pengguna, GORM akan menghemat pengguna `ID` ke profil `Identitas pengguna` bidang.
 
 You are able to change it with tag `association_foreignkey`, e.g:
 
