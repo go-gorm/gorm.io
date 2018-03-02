@@ -1,6 +1,6 @@
 ---
-title: Conventions
-layout: page
+title: Konvensi
+layout: halaman
 ---
 ## gorm.Model
 
@@ -48,9 +48,9 @@ type Animal struct {
 }
 ```
 
-## Pluralized Table Name
+## Nama Tabel Pluralised
 
-Table name is the pluralized version of struct name
+Nama tabel adalah versi jamak dari nama struct
 
 ```go
 type User struct {} // default table name is `users`
@@ -72,7 +72,7 @@ func (u User) TableName() string {
 db.SingularTable(true)
 ```
 
-### Specifying The Table Name
+### Menentukan nama tabel
 
 ```go
 // Create `deleted_users` table with struct User's definition
@@ -86,7 +86,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 //// DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-### Change default tablenames
+### Ubah nama tabel bawaan
 
 You can apply any rules on the default table name by defining the `DefaultTableNameHandler`
 
@@ -98,7 +98,7 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ## Snake Case Column Name
 
-Column name will be the lower snake case field's name
+Nama kolom akan menjadi nama kotak ular yang lebih rendah
 
 ```go
 type User struct {
