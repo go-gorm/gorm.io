@@ -1,6 +1,6 @@
 ---
-title: Composite Primary Key
-layout: page
+title: Chiave primaria composita
+layout: pagina
 ---
 Set multiple fields as primary key to enable composite primary key
 
