@@ -1,16 +1,16 @@
 ---
-title: Connecting to database
+title: Menghubungkan ke database
 layout: page
 ---
-## Connecting to database
+## Menghubungkan ke database
 
-In order to connect to a database, you need to first import the database's driver. For example:
+Agar bisa terhubung ke database, anda harus terlebih dahulu mengimpor driver database. Sebagai contoh:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers, to make easier to remember their import path, so you could import the mysql driver with
+GORM telah membungkus beberapa driver, untuk mempermudah mengingat jalur impor mereka, sehingga anda bisa mengimpor driver mysql dengan
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -83,4 +83,4 @@ func main() {
 
 ## Unsupported Databases
 
-GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
+GORM secara resmi mendukung di atas empat database, anda bisa menulis dialek untuk database yang tidak didukung, lihat [Dialek GORM](/docs/dialects.html)
