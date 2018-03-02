@@ -8,7 +8,7 @@ You are encouraged to do error check after any [Immediate Methods](/docs/method_
 
 ## Error Handling
 
-Error handling in GORM is different with idiomatic Go code because of its chainable API, but it is still fairly easy to do that.
+Kesalahan penanganan di GORM berbeda dengan kode Go idiomat karena API berantai, namun masih cukup mudah untuk melakukannya.
 
 If there are any error happened, GORm will set it to `*gorm.DB`'s `Error` field, you could check it like this:
 
@@ -18,7 +18,7 @@ if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
 }
 ```
 
-Or
+Atau
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
@@ -26,9 +26,9 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 }
 ```
 
-## Errors
+## Kesalahan
 
-It is common several errors happend during processing data, GORM provides an API to return all happened errors as a slice
+Ini adalah beberapa kesalahan yang sering terjadi selama memproses data, GORM menyediakan API untuk mengembalikan semua kesalahan yang terjadi sebagai irisana
 
 ```go
 // If there are more than one error happened, `GetErrors` returns them as `[]error`
