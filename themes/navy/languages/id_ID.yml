@@ -6,29 +6,29 @@ menu:
   github: <i class="fa fa-github"></i>Github
   community: <i class="fa fa-slack"></i>Community
   contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  search: Mencari dokumen...
 index:
-  get_started: Get started
+  get_started: Memulai
 page:
-  contents: Contents
-  back_to_top: Back to Top
+  contents: Konten
+  back_to_top: Kembali ke Atas
   improve: Improve this doc
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  prev: Sebelumnya
+  next: Selanjutnya
+  last_updated: "Terakhir diperbarui: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
+    getting_started: Memulai
+    overview: Ikhtisar
     declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
+    conventions: Konvensi
+    connecting_to_the_database: Menghubungkan ke Basis Data
     crud_interface: CRUD Interface
-    create: Create
-    query: Query
-    update: Update
-    delete: Delete
-    associations: Associations
+    create: Buat
+    query: Kueri
+    update: Perbarui
+    delete: Hapus
+    associations: Asosiasi
     belongs_to: Belongs To
     has_one: Has One
     has_many: Has Many
