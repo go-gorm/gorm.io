@@ -39,9 +39,9 @@ db.Save(&user)
 
 ## Skip AutoUpdate
 
-If your association is already existing in database, you might not want to update it.
+Jika asosiasi anda telah ada di basis data, anda mungkin tidak ingin memperbaruinya.
 
-You could use DB setting, set `gorm:association_autoupdate` to `false`
+Anda dapat menggunakan pengaturan DB, atur `gorm:association_autoupdate` ke `false`
 
 ```go
 // Don't update associations having primary key, but will save reference
@@ -132,7 +132,7 @@ type User struct {
 
 ## Association Mode
 
-Association Mode contains some helper methods to handle relationship related things easily.
+Asosiasi motede berisi beberapa metode penolong untuk menangani hal-hal yang berhubungan dengan hubungan dengan mudah.
 
 ```go
 // Start Association Mode
