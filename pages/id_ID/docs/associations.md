@@ -63,7 +63,7 @@ type User struct {
 
 ## Skip AutoCreate
 
-Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
+Meskipun Anda menonaktifkan `MemperbaruiOtomatis `, asosiasi w / o kunci utama masih harus dibuat dan referensi akan disimpan.
 
 Untuk menonaktifkan ini, anda dapat mengatur pengaturan DB `gorm:association_autocreate` ke `false`
 
@@ -112,7 +112,7 @@ Atau gunakan `gorm:save_associations`
 
 ## Skip Save Reference
 
-If you don't even want to save association's reference when updating/saving data, you could use below tricks
+Jika anda bahkan tidak ingin menyimpan referensi asosiasi ketika memperbarui / menyimpan data, anda bisa menggunakan trik di bawah ini
 
 ```go
 db.Set("gorm:association_save_reference", false).Save(&user)
@@ -181,7 +181,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### Clear Associations
 
-Remove reference between source & current associations, won't delete those associations
+Hapus referensi antara sumber & asosiasi saat ini, tidak akan menghapus asosiasi tersebut
 
 ```go
 db.Model(&user).Association("Languages").Clear()
@@ -189,7 +189,7 @@ db.Model(&user).Association("Languages").Clear()
 
 ### Count Associations
 
-Return the count of current associations
+Kembali hitungan asosiasi saat ini
 
 ```go
 db.Model(&user).Association("Languages").Count()
