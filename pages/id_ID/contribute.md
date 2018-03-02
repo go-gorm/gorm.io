@@ -8,7 +8,7 @@ layout: page
 
 * Share GORM with the world by social channels, or simply tell people who might be interested
 * Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
+* Tulis tutorial, merekam video, dll... (Jangan lupa untuk menambahkannya ke [daftar](/community.html))
 * Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
 
 ## Documentation and Writing
@@ -17,7 +17,7 @@ layout: page
 
 ### Translate this site
 
-You can translate current site with <https://translate.gorm.io>
+Anda dapat menerjemahkan situs saat ini dengan <https://translate.gorm.io>
 
 To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
 
@@ -26,19 +26,19 @@ To translate GORM in your language you will need to post a request in the [Githu
 * Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features from [Github Issues](https://github.com/jinzhu/gorm/issues)
 * Create open source plugins for GORM. (Don't forgot to add them to [the list](/community.html#Open-Sources))
 
-## Donations
+## Donasi
 
 Many thanks to all our sponsors!
 
 ### One-time Donations
 
-Your kindness and generosity is greatly appreciated
+Kebaikan dan kemurahan hati anda sangat dihargai
 
 [One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
 
 ### Recurring Donations
 
-Your kindness and generosity is greatly appreciated, and your name will be listed in this page or the home page of this website.
+Kebaikan dan kemurahan hati anda sangat dihargai, dan nama anda akan tercantum di halaman ini atau beranda situs web ini.
 
 [Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
 
@@ -59,6 +59,6 @@ Your kindness and generosity is greatly appreciated, and your name will be liste
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=48&width=740"></object>
 
-## Contributors
+## Kontributor
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/contributors.svg?avatarHeight=32&width=740"></object>
