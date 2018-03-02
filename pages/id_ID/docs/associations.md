@@ -86,7 +86,7 @@ atau gunakan label GORM, `gorm:"association_autocreate:false"
 
 ## Skip AutoCreate/Update
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings togehter
+Untuk menonaktifkan `AutoCreate` dan `AutoUpdate`, anda dapat menggunakan dua pengaturan itu secara bersamaan
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -98,7 +98,7 @@ type User struct {
 }
 ```
 
-Or use `gorm:save_associations`
+Atau gunakan `gorm:save_associations`
 
     db.Set("gorm:save_associations", false).Create(&user)
     db.Set("gorm:save_associations", false).Save(&user)
