@@ -1,6 +1,6 @@
 ---
 title: Migration
-layout: page
+layout: halaman
 ---
 ## Auto Migration
 
