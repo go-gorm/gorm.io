@@ -1,8 +1,8 @@
 ---
-title: GORM Guides
+title: Guida GORM
 layout: page
 ---
-The fantastic ORM library for Golang, aims to be developer friendly.
+La fantastica libreria ORM per Goland, mira ad essere di semplice utilizzo per gli sviluppatori.
 
 ## Overview
 
