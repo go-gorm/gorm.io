@@ -2,7 +2,7 @@
 title: Chiave primaria composita
 layout: pagina
 ---
-Set multiple fields as primary key to enable composite primary key
+Imposta più campi come chiave primaria per attivare la chiave primaria composita
 
 ```go
 type Product struct {
