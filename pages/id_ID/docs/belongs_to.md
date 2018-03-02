@@ -1,6 +1,6 @@
 ---
 title: Belongs To
-layout: page
+layout: halaman
 ---
 ## Belongs To
 
