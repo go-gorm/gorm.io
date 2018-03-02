@@ -99,4 +99,4 @@ SELECT count(*) FROM users WHERE name LIKE 'jinzhu%'
 
 ## Thread Safety
 
-All Chain Methods will clone and create a new DB object (shares one connection pool), GORM is safe for concurrent use by multiple goroutines.
+Semua Metode Rantai akan mengkloning dan membuat objek DB baru (berbagi satu kolam koneksi), GORM aman untuk digunakan bersamaan oleh beberapa goroutines.
