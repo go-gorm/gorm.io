@@ -39,7 +39,7 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 
 ## Register callback orders
 
-Regiser callbacks with orders
+Mendaftar panggilanbalik dengan perintah
 
 ```go
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
@@ -54,13 +54,13 @@ db.Callback().Create().Before("gorm:create").After("gorm:before_create").Registe
 
 GORM telah menolak panggilan balik untuk melakukan operasi CRUD, memeriksa mereka sebelum mulai menulis plugin Anda
 
-- [Create callbacks](https://github.com/jinzhu/gorm/blob/master/callback_create.go)
+- [Buat panggilanbalik](https://github.com/jinzhu/gorm/blob/master/callback_create.go)
 
-- [Update callbacks](https://github.com/jinzhu/gorm/blob/master/callback_update.go)
+- [Memperbarui panggilanbalik](https://github.com/jinzhu/gorm/blob/master/callback_update.go)
 
 - [Query callbacks](https://github.com/jinzhu/gorm/blob/master/callback_query.go)
 
-- [Delete callbacks](https://github.com/jinzhu/gorm/blob/master/callback_delete.go)
+- [Menghapus panggilanbalik](https://github.com/jinzhu/gorm/blob/master/callback_delete.go)
 
 - Row Query callbacks - no callbacks registered by default
 
