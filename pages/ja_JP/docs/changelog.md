@@ -16,14 +16,14 @@ Breaking Changes
 
 * Soft Delete's will only check `deleted_at IS NULL`
 
-* New ToDBName logic
+* 新しい ToDBName ロジック
     
     When GORM convert struct, field name to db name, only common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` were handled, so `HTTP`'s db name is `http`, but not `h_t_t_p`.
     
-    But for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it.
+    しかし、 `SKU`のように一覧ではなく、他のドイツ語のそれの db 名は `s_k_u`、この変更は、それを修正します。
 
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
+* エラー `RecordNotFound` `ErrRecordNotFound` に改名します。
 
 * `mssql` dialect has been renamed to "github.com/jinzhu/gorm/dialects/mssql"
 
-* `Hstore` has been moved to package "github.com/jinzhu/gorm/dialects/postgres"
+* `Hstore` 「github.com/jinzhu/gorm/dialects/postgres」パッケージに移動しました
