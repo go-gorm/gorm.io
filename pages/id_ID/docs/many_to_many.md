@@ -72,9 +72,9 @@ type CustomizeAccount struct {
 }
 ```
 
-## Self-Referencing
+## Referensi-Diri
 
-To define a self-referencing many2many relationship, you have to change association's foreign key in the join table.
+Untuk menentukan referensi-diri banyak2banyak hubungan, Anda harus mengubah kunci asing asosiasi di tabel bergabung.
 
 untuk membuatnya berbeda dengan kunci asing sumber ini, yang dihasilkan menggunakan nama struct dan kunci utama, misalnya:
 
