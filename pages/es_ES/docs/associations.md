@@ -63,7 +63,7 @@ type User struct {
 
 ## Saltar Creación Automática
 
-Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
+Aún cuando haya deshabilitado `AutoUpdating`, asociaciones sin clave principal aún deben ser creadas y su referencia será guardada.
 
 To disable this, you could set DB setting `gorm:association_autocreate` to `false`
 
