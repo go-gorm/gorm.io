@@ -44,7 +44,7 @@ db.Model(&user).Updates(User{Name: "", Age: 0, Actived: false})
 
 ## Perbarui Bidang yang Dipilih
 
-If you only want to update or ignore some fields when updating, you could use `Select`, `Omit`
+Jika anda hanya ingin memperbarui atau mengabaikan beberapa bidang ketika sedang memperbarui, anda dapat menggunakan `Pilih`, `Menghilangkan`
 
 ```go
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
@@ -84,7 +84,7 @@ db.Model(User{}).Updates(User{Name: "hello", Age: 18})
 db.Model(User{}).Updates(User{Name: "hello", Age: 18}).RowsAffected
 ```
 
-## Update with SQL Expression
+## Perbarui dengan Ekspresi SQL
 
 ```go
 DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
