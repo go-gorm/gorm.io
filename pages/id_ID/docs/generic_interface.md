@@ -1,23 +1,23 @@
 ---
-title: Generic database interface sql.DB
-layout: page
+title: Antarmuka basisdata generik sql.DB
+layout: halaman
 ---
-GORM provides method `DB` which returns generic database interface [*sql.DB](http://golang.org/pkg/database/sql/#DB) from current `*gorm.DB` connection
+GORM menyediakan metode `DB` yang mengembalikan antarmuka basisdata generik [*sql.DB](http://golang.org/pkg/database/sql/#DB) dari koneksi `*gorm.DB` saat ini
 
 ```go
-// Get generic database object sql.DB to use its functions
+// Dapatkan objek basisdata generik sql.DB untuk menggunakan fungsinya
 db.DB()
 
 // Ping
 db.DB().Ping()
 ```
 
-**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns nil
+**CATATAN** Jika koneksi basisdata yang mendasarinya bukan sebuah `*sql.DB`, seperti dalam sebuah transaksi, ia akan kembali nihil
 
-## Connection Pool
+## Kelompok Koneksi
 
 ```go
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleConns tetapkan jumlah maksimum dari koneksi dalam kelompok koneksi diam.
 db.DB().SetMaxIdleConns(10)
 
 // SetMaxOpenConns atur jumlah maksimum koneksi terbuka ke basis data.
