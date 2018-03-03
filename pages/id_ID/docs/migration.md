@@ -47,17 +47,17 @@ db.CreateTable(&Pengguna{})
 db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Pengguna{})
 ```
 
-### Drop table
+### Penurunan tabel
 
 ```go
-// Drop model `User`'s table
-db.DropTable(&User{})
+// Penurunan model tabel `Pengguna`
+db.DropTable(&Pengguna{})
 
-// Drop table `users`
-db.DropTable("users")
+// Penurunan `Pengguna`
+db.DropTable("pengguna")
 
-// Drop model's `User`'s table and table `products`
-db.DropTableIfExists(&User{}, "products")
+// Penurunan model tabel `Pengguna` dan tabel `produk`
+db.DropTableIfExists(&Pengguna{}, "produk")
 ```
 
 ### ModifikasiKolom
@@ -72,31 +72,31 @@ db.Model (&Pengguna{}).ModifikasiKolom("deskripsi", "teks")
 ### DropColumn
 
 ```go
-// Drop column description from model `User`
-db.Model(&User{}).DropColumn("description")
+// Deskripsi penurunan kolom dari model `Pengguna`
+db.Model(&Pengguna{}).DropColumn("deskripsi")
 ```
 
-### Add Indexes
+### Tambahkan Indeks
 
 ```go
-// Add index for columns `name` with given name `idx_user_name`
-db.Model(&User{}).AddIndex("idx_user_name", "name")
+// Tambahkan indeks untuk `nama` kolom dengan nama yang diberikan`idx_user_name`
+db.Model(&Pengguna{}).AddIndex("idx_user_name", "nama")
 
-// Add index for columns `name`, `age` with given name `idx_user_name_age`
-db.Model(&User{}).AddIndex("idx_user_name_age", "name", "age")
+// Tambahkan indeks untuk `nama`, `umur` kolom dengan nama yang diberikan `idx_user_name_age`
+db.Model(&Pengguna{}).AddIndex("idx_user_name_age", "nama", "umur")
 
-// Add unique index
-db.Model(&User{}).AddUniqueIndex("idx_user_name", "name")
+// Tambahkan indeks unik
+db.Model(&Pengguna{}).AddUniqueIndex("idx_user_name", "nama")
 
-// Add unique index for multiple columns
-db.Model(&User{}).AddUniqueIndex("idx_user_name_age", "name", "age")
+// Tambahkan indeks unik untuk kolom banyak
+db.Model(&Pengguna{}).AddUniqueIndex("idx_user_name_age", "nama", "umur")
 ```
 
-### Remove Index
+### Hapus Indeks
 
 ```go
-// Remove index
-db.Model(&User{}).RemoveIndex("idx_user_name")
+// Hapus indeks
+db.Model(&Pengguna{}).RemoveIndex("idx_user_name")
 ```
 
 ### Add Foreign Key
