@@ -9,12 +9,12 @@ Secara otomatis skema Anda berpindah tempat, untuk memperbarui skema Anda sampai
 **PERINGATAN:** AutoMigrate akan **HANYA** membuat tabel, kolom yang hilang dan indeks yang hilang, dan **TIDAK AKAN** mengubah jenis kolom yang sudah ada atau menghapus kolom yang tidak dipakai untuk melindungi data anda.
 
 ```go
-db.AutoMigrate(&Pengguna{})
+db.AutoMigrate(&User{})
 
-db.AutoMigrate(&Pengguna{}, &Produk{}, &Pesanan{})
+db.AutoMigrate(&User{}, &Product{}, &Order{})
 
-// Tambahkan tabel akhiran ketika membuat tabel
-db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Pengguna{})
+// Add table suffix when create tables
+db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
 ## Peralatan Migari Lainnya
@@ -40,24 +40,24 @@ db.HasTable(&Pengguna{})
 ### Membuat Tabel
 
 ```go
-// Membuat tabel untuk model `Pengguna`
-db.CreateTable(&Pengguna{})
+// Create table for model `User`
+db.CreateTable(&User{})
 
-// akan menambahkan "ENGINE=InnoDB" ke pernyataan SQL ketika membuat tabel `pengguna`
-db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Pengguna{})
+// will append "ENGINE=InnoDB" to the SQL statement when creating table `users`
+db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
 ```
 
 ### Penurunan tabel
 
 ```go
-// Penurunan model tabel `Pengguna`
-db.DropTable(&Pengguna{})
+// Drop model `User`'s table
+db.DropTable(&User{})
 
-// Penurunan `Pengguna`
-db.DropTable("pengguna")
+// Drop table `users`
+db.DropTable("users")
 
-// Penurunan model tabel `Pengguna` dan tabel `produk`
-db.DropTableIfExists(&Pengguna{}, "produk")
+// Drop model's `User`'s table and table `products`
+db.DropTableIfExists(&User{}, "products")
 ```
 
 ### ModifikasiKolom
@@ -79,24 +79,24 @@ db.Model(&Pengguna{}).DropColumn("deskripsi")
 ### Tambahkan Indeks
 
 ```go
-// Tambahkan indeks untuk `nama` kolom dengan nama yang diberikan`idx_user_name`
-db.Model(&Pengguna{}).AddIndex("idx_user_name", "nama")
+// Add index for columns `name` with given name `idx_user_name`
+db.Model(&User{}).AddIndex("idx_user_name", "name")
 
-// Tambahkan indeks untuk `nama`, `umur` kolom dengan nama yang diberikan `idx_user_name_age`
-db.Model(&Pengguna{}).AddIndex("idx_user_name_age", "nama", "umur")
+// Add index for columns `name`, `age` with given name `idx_user_name_age`
+db.Model(&User{}).AddIndex("idx_user_name_age", "name", "age")
 
-// Tambahkan indeks unik
-db.Model(&Pengguna{}).AddUniqueIndex("idx_user_name", "nama")
+// Add unique index
+db.Model(&User{}).AddUniqueIndex("idx_user_name", "name")
 
-// Tambahkan indeks unik untuk kolom banyak
-db.Model(&Pengguna{}).AddUniqueIndex("idx_user_name_age", "nama", "umur")
+// Add unique index for multiple columns
+db.Model(&User{}).AddUniqueIndex("idx_user_name_age", "name", "age")
 ```
 
 ### Hapus Indeks
 
 ```go
-// Hapus indeks
-db.Model(&Pengguna{}).RemoveIndex("idx_user_name")
+// Remove index
+db.Model(&User{}).RemoveIndex("idx_user_name")
 ```
 
 ### Add Foreign Key
