@@ -1,23 +1,23 @@
 ---
-title: Migration
+title: Migrasi
 layout: halaman
 ---
-## Auto Migration
+## Migrasi Otomatis
 
 Secara otomatis skema Anda berpindah tempat, untuk memperbarui skema Anda sampai saat ini.
 
-**WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data.
+**PERINGATAN:** AutoMigrate akan **HANYA** membuat tabel, kolom yang hilang dan indeks yang hilang, dan **TIDAK AKAN** mengubah jenis kolom yang sudah ada atau menghapus kolom yang tidak dipakai untuk melindungi data anda.
 
 ```go
-db.AutoMigrate(&User{})
+db.AutoMigrate(&Pengguna{})
 
-db.AutoMigrate(&User{}, &Product{}, &Order{})
+db.AutoMigrate(&Pengguna{}, &Produk{}, &Pesanan{})
 
-// Add table suffix when create tables
-db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
+// Tambahkan tabel akhiran ketika membuat tabel
+db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Pengguna{})
 ```
 
-## Other Migration Tools
+## Peralatan Migari Lainnya
 
 Migrasi Otomatis GORM bekerja dengan baik untuk sebagian besar kasus, tetapi jika Anda mencari alat migrasi yang lebih serius, GORM menyediakan antarmuka genric DB yang mungkin bisa membantu Anda.
 
