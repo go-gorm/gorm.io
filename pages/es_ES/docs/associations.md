@@ -109,16 +109,16 @@ O utilice `gorm:save_associations`
     }
     
 
-## Skip Save Reference
+## Saltar Guardado de Referencia
 
-If you don't even want to save association's reference when updating/saving data, you could use below tricks
+Si no desea guardar la referencia de asociación cuando actualiza/guarda datos, puede utilizar los siguientes trucos
 
 ```go
 db.Set("gorm:association_save_reference", false).Save(&user)
 db.Set("gorm:association_save_reference", false).Create(&user)
 ```
 
-or use tag
+o usar la etiqueta
 
 ```go
 type User struct {
@@ -129,9 +129,9 @@ type User struct {
 }
 ```
 
-## Association Mode
+## Modo de Asociación
 
-Association Mode contains some helper methods to handle relationship related things easily.
+El Modo de Asociación contiene métodos de ayuda para manejar cosas relativas con relaciones fácilmente.
 
 ```go
 // Start Association Mode
@@ -143,33 +143,33 @@ db.Model(&user).Association("Languages")
 // db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Buscar Asociaciones
 
-Find matched associations
+Encontrar asociaciones compatibles
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Añadir Asociaciones
 
-Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
+Añadir nuevas asociaciones para `numerosas`, `tiene numerosas`, reemplazar asociaciones actuales por `tiene una`,`pertenece a`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Replace Associations
+### Reemplazar Asociaciones
 
-Replace current associations with new ones
+Reemplazar asociaciones actuales con otras nuevas
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Eliminar Asociaciones
 
 Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
 
