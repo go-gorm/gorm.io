@@ -72,34 +72,35 @@ db.Dimana ([]int64{20, 21, 22}).Temukan(&pengguna)
 //// PILIH * DARI Di mana id pengguna DI (20, 21, 22);
 ```
 
-**NOTE** When query with struct, GORM will only query with those fields has non-zero value, that means if your field's value is ``, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**Perhatikan**Ketika query dengan struct, GORM hanya akan query dengan bidang tersebut memiliki nilai non-nol, Itu berarti jika nilai bidang anda adalah ``, `''`,`Salah`atau lainnya[nilai nol](https://tour.golang.org/basics/12),itu tidak akan digunakan untuk membangun kondisi query, sebagai contoh:
 
 ```go
-db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
-//// SELECT * FROM users WHERE name = "jinzhu";
+db.Di mana (&pengguna{Nama: "jinzhu", Umur: 0}).Temukan (& pengguna)
+//// PILIH * DARI DI MANA nama pengguna = "jinzhu";
 ```
 
 Anda bisa mempertimbangkan untuk menggunakan jenis pointer atau pemindai / penilai untuk menghindari hal ini.
 
 ```go
-// Use pointer value
-type User struct {
-  gorm.Model
-  Name string
-  Age  *int
+// Gunakan nilai petunjuk
+ketik Pengguna
+struct {
+   gorm. Model
+   Nama string
+   Umur * int
 }
 
-// Use scanner/valuer
-type User struct {
-  gorm.Model
-  Name string
-  Age  sql.NullInt64
+// Gunakan pemindai/penilai
+ketik struct pengguna{
+   gorm.Model
+   Nama string
+   Umur sql.NullInt64
 }
 ```
 
-### Not
+### Tidak
 
-Works similar like `Where`
+Bekerja mirip seperti `Di mana`
 
 ```go
 db.Not("name", "jinzhu").First(&user)
