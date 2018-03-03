@@ -26,15 +26,15 @@ if yetAnotherCondition {
 
 Permintaan tidak akan dihasilkan sampai metode langsung, yang bisa berguna dalam beberapa kasus.
 
-Like you could extract a wrapper to handle some common logic
+Seperti Anda bisa mengekstrak pembungkusnya untuk menangani beberapa logika umum
 
 ## Immediate Methods
 
-Immediate methods are those methods that will generate SQL query and send it to database, usually it is those CRUD methods, like:
+Metode segera adalah metode tersebut yang akan menghasilkan query SQL dan mengirimkannya ke database, Biasanya metode CRUD tersebut, seperti:
 
 `Create`, `First`, `Find`, `Take`, `Save`, `UpdateXXX`, `Delete`, `Scan`, `Row`, `Rows`...
 
-Here is an immediate methods example based on above chain:
+Berikut adalah contoh metode langsung berdasarkan rantai di atas:
 
 ```go
 tx.Find(&user)
@@ -50,7 +50,7 @@ SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
 
 Scope is build based on the method chaining theory.
 
-With it, you could extract some generic logics, to write more reusable libraries.
+Dengan itu, Anda bisa mengekstrak beberapa logika generik, untuk menulis lebih banyak perpustakaan dapat digunakan kembali.
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
