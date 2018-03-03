@@ -26,7 +26,7 @@ type Animal struct {
 }
 ```
 
-Then the inserting SQL will exclude those fields that don't have value or having [zero values](https://tour.golang.org/basics/12), after insert the record into database, gorm will load those fields's value from database.
+Kemudian memasukkan SQL akan mengecualikan bidang tersebut yang tidak memiliki nilai atau memiliki [nilai nol](https://tour.golang.org/basics/12), setelah memasukkan record ke dalam database, gorm akan memuat nilai field tersebut dari database.
 
 ```go
 var animal = Animal{Age: 99, Name: ""}
