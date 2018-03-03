@@ -4,7 +4,7 @@ layout: halaman
 ---
 ## Logger
 
-Gorm has built-in logger support, default mode, it will only print logs when there are errors happened.
+Gorm telah memiliki dukungan logger built-in, mode bawaan, itu hanya akan mencetak log Bila ada kesalahan terjadi.
 
 ```go
 // Enable Logger, show detailed log
