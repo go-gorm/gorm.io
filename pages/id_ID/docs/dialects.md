@@ -12,7 +12,7 @@ Beberapa database mungkin kompatibel dengan dialek mysql atau postgres, maka and
 
 ## Dialect Specific Data Type
 
-Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of such types, as listed in the following sections.
+Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM mendukung pemuatan beberapa tipe seperti itu, seperti yang tercantum di bagian berikut.
 
 ### PostgreSQL
 
