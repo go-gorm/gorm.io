@@ -5,3 +5,15 @@ zh_CN:
 de_DE:
   name: Deutsch
   disqus_lang: de
+es_ES:
+  name: Español
+  disqus_lang: es
+id_ID:
+  name: bahasa Indonesia
+  disqus_lang: id
+it_IT:
+  name: Italiano
+  disqus_lang: it
+ja_JP:
+  name: 日本語
+  disqus_lang: jp
