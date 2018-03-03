@@ -30,7 +30,7 @@ db.Callback().Create().Remove("gorm:create")
 
 ## Replace an existing callback
 
-Replace a callback having same name with new one
+Ganti panggilan balik dengan nama yang sama dengan yang baru
 
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
@@ -52,7 +52,7 @@ db.Callback().Create().Before("gorm:create").After("gorm:before_create").Registe
 
 ## Pre-Defined Callbacks
 
-GORM has defiend callbacks to perform CRUD operations, check them out before start write your plugins
+GORM telah menolak panggilan balik untuk melakukan operasi CRUD, memeriksa mereka sebelum mulai menulis plugin Anda
 
 - [Create callbacks](https://github.com/jinzhu/gorm/blob/master/callback_create.go)
 
