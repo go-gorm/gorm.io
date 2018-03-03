@@ -9,16 +9,16 @@ A`memiliki satu`asosiasi juga membuat koneksi satu -lawan-satu dengan model lain
 Sebagai contoh, jika aplikasi anda menyertakan pengguna dan kartu kredit, dan setiap pengguna hanya dapat memiliki satu kartu kredit.
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
-type User struct {
-    gorm.Model
-    CreditCard   CreditCard
-  CreditCardID uint
+// Pengguna memiliki satu KartuKredit, Id Kartu Kredit adalah kunci asing
+ketik struct pengguna {
+gorm.Model 
+KartuKredit KartuKredit
+Id KartuKredit uint
 }
 
-type CreditCard struct {
-    gorm.Model
-    Number   string
+Ketik struct kartu kredit {
+     gorm. Model
+     Nomor string
 }
 ```
 
