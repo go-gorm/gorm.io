@@ -91,7 +91,7 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### Menghapus sebuah obyek
 
 Available hooks for deleting
 
@@ -103,7 +103,7 @@ AfterDelete
 // commit or rollback transaction
 ```
 
-Code Example:
+Contoh Kode:
 
 ```go
 // Updating data in same transaction
