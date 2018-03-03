@@ -5,28 +5,26 @@ layout: page
 ## Query
 
 ```go
-// Get first record, order by primary key
-db.First(&user)
-//// SELECT * FROM users ORDER BY id LIMIT 1;
+// Dapatkan rekaman pertama, pesan menurut kunci utama db.Pertama(&pengguna)
+//// PILIH * DARI pengguna MEMESAN Oleh BATAS id 1;
 
-// Get one record, no specfied order
-db.Take(&user)
-//// SELECT * FROM users LIMIT 1;
+// Dapatkan satu rekaman, tidak ada perintah ditentukan db.Mengambil(&pengguna) 
+//// PILIH *DARI BATAS pengguna LIMIT 1;
 
-// Get last record, order by primary key
-db.Last(&user)
-//// SELECT * FROM users ORDER BY id DESC LIMIT 1;
+// Dapatkan rekaman terakhir, pesan menurut kunci utama 
+db.Terakhir (& pengguna)
+//// PILIH * DARI pesanan pengguna OLEH Batas id DESC 1;
 
-// Get all records
-db.Find(&users)
-//// SELECT * FROM users;
+// Dapatkan semua rekaman
+db. Temukan (&pengguna)
+//// PILIH * DARI pengguna;
 
-// Get record with primary key (only works for integer primary key)
-db.First(&user, 10)
-//// SELECT * FROM users WHERE id = 10;
+// Dapatkan rekaman dengan kunci utama (hanya bekerja untuk kunci utama bilangan bulat) 
+db.Pertama(&Pengguna, 10)
+//// PILIH * DARI DIMANA id pengguna= 10;
 ```
 
-### Where
+### Dimana
 
 #### Plain SQL
 
