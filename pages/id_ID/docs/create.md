@@ -1,8 +1,8 @@
 ---
-title: Create
-layout: page
+title: Membuat
+layout: halaman
 ---
-## Create Record
+## Buat Catatan
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
@@ -65,7 +65,7 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 }
 ```
 
-## Extra Creating option
+## Pilihan Membuat Tambahan
 
 ```go
 // Add extra SQL option for inserting SQL
