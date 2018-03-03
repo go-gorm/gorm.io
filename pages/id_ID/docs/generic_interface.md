@@ -20,7 +20,7 @@ db.DB().Ping()
 // SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
 db.DB().SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns atur jumlah maksimum koneksi terbuka ke basis data.
 db.DB().SetMaxOpenConns(100)
 
 // SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
