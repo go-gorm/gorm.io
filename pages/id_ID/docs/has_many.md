@@ -2,9 +2,9 @@
 title: Memiliki Banyak
 layout: halaman
 ---
-## Memiliki Banyak
+## Has Many
 
-A `has many` association also sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+`memiliki banyak` asosiasi juga menetapkan satu ke banyak koneksi dengan model lain, tidak seperti ` memiliki satu`, pemilik tersebut dapat memiliki nol atau banyak contoh model.
 
 Misalnya, jika aplikasi anda menyertakan pengguna dan kartu kredit, dan setiap pengguna dapat memiliki banyak kartu kredit.
 
@@ -22,11 +22,11 @@ type CreditCard struct {
 }
 ```
 
-## Foreign Key
+## Kunci Asing
 
 Untuk menentukan memiliki banyak hubungan, kunci asing harus ada, nama kunci asing default adalah nama tipe pemilik ditambah kunci utamanya.
 
-For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+Untuk sebuah contoh di atas, untuk menentukan sebuah model yang menjadi milik `Pengguna`, kunci asing seharusnya `Id Pengguna`.
 
 Untuk menggunakan bidang lain sebagai kunci tamu, anda dapat mengkustomisasinya dengan label `foreignkey`, misalnya:
 
@@ -65,9 +65,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## Asosiasi Polimorfisme
 
-Supports polymorphic has-many and has-one associations.
+Mendukung polimorfik memiliki banyak dan memiliki satu asosiasi.
 
 ```go
   type Cat struct {
@@ -94,7 +94,7 @@ Catatan: polimorfik milik-ke dan banyak-ke-banyak secara eksplisit TIDAK didukun
 
 ## Bekerja dengan Memiliki Banyak
 
-You could find `has many` assciations with `Related`
+Anda dapat menemukan `memiliki banyak` asosiasi dengan `Terkait`
 
 ```go
 db.Model(&user).Related(&emails)
