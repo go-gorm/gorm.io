@@ -30,7 +30,7 @@ layout: halaman
 ## Open Sources
 
 * [QOR Admin - Langsung buat antarmuka Admin dalam hitungan menit](http://getqor.com)
-* [Pencocok Gorm untuk Casbin](https://github.com/casbin/gorm-adapter)
+* [Adaptor Gorm untuk Casbin](https://github.com/casbin/gorm-adapter)
 * [Gormigrate - pembantu berpindah tempat untuk Gorm](https://github.com/go-gormigrate/gormigrate)
 * [Go-Mocket](https://github.com/Selvatico/go-mocket)
 * [Transition - state machine based on GORM](https://github.com/qor/transition)
