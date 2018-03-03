@@ -1,5 +1,5 @@
 ---
-title: Has One
+title: Memiliki Satu
 layout: page
 ---
 ## Has One
@@ -26,7 +26,7 @@ Ketik struct kartu kredit {
 
 Untuk memiliki satu hubungan, Bidang kunci asing harus ada juga, pemilik akan menyimpan primary key dari model itu termasuk ke dalam bidang ini.
 
-The field's name usually is generated with `belongs to model`'s type plus its `primary key`, for above example, it is `CreditCardID`
+Nama bidang biasanya dihasilkan dengan jenis `milik model` ditambah `kunci utama`, untuk contoh di atas adalah `CreditCardID`
 
 Saat anda memberikan kartu kredit kepada pengguna, itu akan menyimpan `ID` kartu kredit kedalam bidang `CreditCardID`.
 
@@ -62,7 +62,7 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## Asosiasi Polimorfisme
 
 Supports polymorphic has-many and has-one associations.
 
@@ -91,7 +91,7 @@ Catatan: polimorfik milik-ke dan banyak-ke-banyak secara eksplisit TIDAK didukun
 
 ## Working with Has One
 
-You could find `has one` assciations with `Related`
+Anda dapat menemukan ` memiliki satu` asosiasi dengan `terkait`
 
 ```go
 var card CreditCard
@@ -102,4 +102,4 @@ db.Model(&user).Related(&card, "CreditCard")
 db.Model(&user).Related(&card)
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Untuk penggunaan lanjutan, lihat [Mode Asosiasi](/docs/associations.html#Association-Mode)
