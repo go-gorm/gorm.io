@@ -103,27 +103,27 @@ ketik struct pengguna{
 Bekerja mirip seperti `Di mana`
 
 ```go
-db.Not("name", "jinzhu").First(&user)
-//// SELECT * FROM users WHERE name <> "jinzhu" LIMIT 1;
+db.Tidak("nama", "jinzhu").Pertama(&pengguna)
+//// PILIH * DARI DI MANA nama pengguna <> "jinzhu" BATAS 1;
 
-// Not In
-db.Not("name", []string{"jinzhu", "jinzhu 2"}).Find(&users)
-//// SELECT * FROM users WHERE name NOT IN ("jinzhu", "jinzhu 2");
+// Tidak masuk
+db.Not ("nama", []string {"jinzhu", "jinzhu 2"}).Temukan(&pengguna)
+//// PILIH * DARI DI MANA nama pengguna tidak masuk ("jinzhu", "jinzhu 2");
 
-// Not In slice of primary keys
-db.Not([]int64{1,2,3}).First(&user)
-//// SELECT * FROM users WHERE id NOT IN (1,2,3);
+// Tidak dalam irisan kunci utama
+db.Tidak ([]int64 {1,2,3})Pertama(&pengguna)
+//// PILIH * DARI DI MANA id pengguna TIDAK DI (1,2,3);
 
-db.Not([]int64{}).First(&user)
-//// SELECT * FROM users;
+db.Tidak([]int64{}).Pertama(&pengguna)
+//// PILIH * DARI pengguna;
 
-// Plain SQL
-db.Not("name = ?", "jinzhu").First(&user)
-//// SELECT * FROM users WHERE NOT(name = "jinzhu");
+// SQL Sederhana
+db.Tidak("nama = ?", "jinzhu").pertama(&pengguna)
+//// PILIH * DARI DI MANA pengguna tidak (nama = "jinzhu");
 
 // Struct
-db.Not(User{Name: "jinzhu"}).First(&user)
-//// SELECT * FROM users WHERE name <> "jinzhu";
+db.tidak(pengguna{Nama: "jinzhu"}).Pertama(&pengguna)
+//// PILIH * DARI DI MANA nama pengguna <> "jinzhu";
 ```
 
 ### Or
