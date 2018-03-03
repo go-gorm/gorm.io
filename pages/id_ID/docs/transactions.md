@@ -6,27 +6,27 @@ GORM perform single `create`, `update`, `delete` operations in transactions by d
 
 If you want to tread multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
 
-## Transactions
+## Transaksi
 
-To perform a set of operations within a transaction, the general flow is as below.
+Untuk melakukan serangkaian operasi dalam suatu transaksi, arus umum adalah sebagai berikut.
 
 ```go
-// begin a transaction
-tx := db.Begin()
+// Mulai transaksi
+tx := db.Mulai()
 
-// do some database operations in the transaction (use 'tx' from this point, not 'db')
-tx.Create(...)
+// lakukan beberapa operasi database dalam transaksi (gunakan 'tx' dari poin ini, tidak 'db')
+tx.buat(...)
 
 // ...
 
-// rollback the transaction in case of error
-tx.Rollback()
+// kembalikan transaksi jika terjadi kesalahan
+tx.kembalikan()
 
-// Or commit the transaction
-tx.Commit()
+// Atau lakukan transaksi
+tx.Melakukan()
 ```
 
-## A Specific Example
+## Sebuah contoh khusus
 
 ```go
 func CreateAnimals(db *gorm.DB) err {
