@@ -59,17 +59,17 @@ db.Dimana("dibuat _di ANTARA? DAN ?", Minggulalu, hari ini).Temukan(&pengguna)
 #### Struktur & Peta
 
 ```go
-// Struct
-db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
-//// SELECT * FROM users WHERE name = "jinzhu" AND age = 20 LIMIT 1;
+// Struktur
+db.Dimana(&Pengguna{Nama: "jinzhu", Umur: 20}).Pertama(&pengguna)
+//// PILIH * DARI DIMANA nama pengguna = "jinzhu" DAN umur = 20 batas 1;
 
-// Map
-db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
-//// SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
+// Peta
+db.Di mana(peta[string]antarmuka{}{"nama": "jinzhu", "umur": 20}).Temukan(&pengguna)
+//// PILIH * DARI DIMANA nama pengguna = "jinzhu" DAN usia = 20;
 
-// Slice of primary keys
-db.Where([]int64{20, 21, 22}).Find(&users)
-//// SELECT * FROM users WHERE id IN (20, 21, 22);
+// Irisan kunci utama
+db.Dimana ([]int64{20, 21, 22}).Temukan(&pengguna)
+//// PILIH * DARI Di mana id pengguna DI (20, 21, 22);
 ```
 
 **NOTE** When query with struct, GORM will only query with those fields has non-zero value, that means if your field's value is ``, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
