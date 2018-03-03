@@ -1,10 +1,10 @@
 ---
-title: Connecting to database
-layout: page
+title: データベースへの接続
+layout: ページ
 ---
-## Connecting to database
+## データベースへの接続
 
-In order to connect to a database, you need to first import the database's driver. For example:
+データベースに接続するために最初にデータベースのドライバーをインポートする必要があります。例えば：
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
@@ -19,7 +19,7 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 // import _ "github.com/jinzhu/gorm/dialects/mssql"
 ```
 
-## Supported Databases
+## データベースをサポート
 
 ### MySQL
 
@@ -65,7 +65,7 @@ func main() {
 }
 ```
 
-### SQL Server
+### SQL サーバー
 
 [Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
@@ -81,6 +81,6 @@ func main() {
 }
 ```
 
-## Unsupported Databases
+## データベースをサポート
 
 GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
