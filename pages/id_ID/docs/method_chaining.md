@@ -48,7 +48,7 @@ SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
 
 ## Scopes
 
-Scope is build based on the method chaining theory.
+Ruang lingkup dibangun berdasarkan metode rantai teori.
 
 Dengan itu, Anda bisa mengekstrak beberapa logika generik, untuk menulis lebih banyak perpustakaan dapat digunakan kembali.
 
@@ -83,7 +83,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 
 ## Multiple Immediate Methods
 
-When using multiple immediate methods with GORM, later immediate method will reuse before immediate methods's query conditions (excluding inline conditions)
+Bila menggunakan beberapa metode langsung dengan GORM, kemudian segera metode akan digunakan kembali sebelum kondisi kueri metode langsung (tidak termasuk dalam kondisi dalamgaris)
 
 ```go
 db.Where("name LIKE ?", "jinzhu%").Find(&users, "id IN (?)", []int{1, 2, 3}).Count(&count)
