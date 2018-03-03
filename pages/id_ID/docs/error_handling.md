@@ -1,5 +1,5 @@
 ---
-title: Error Handling
+title: Penanganan Kesalahan
 layout: page
 ---
 In Go, error handling is important.
