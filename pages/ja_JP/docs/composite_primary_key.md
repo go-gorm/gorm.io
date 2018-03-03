@@ -1,14 +1,9 @@
 ---
-title: Composite Primary Key
-layout: page
+title: 複合主キー
+layout: ページ
 ---
-Set multiple fields as primary key to enable composite primary key
+複合主キーを有効にする主キーとして複数のフィールドを設定します。
 
 ```go
-type Product struct {
-    ID           string `gorm:"primary_key"`
-    LanguageCode string `gorm:"primary_key"`
-  Code         string
-  Name         string
-}
+製品構造体を入力 {ID 文字列 'gorm:"primary_key"' LanguageCode 文字列' gorm:"primary_key"' コードの文字列名}
 ```
