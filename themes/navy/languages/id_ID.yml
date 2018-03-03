@@ -20,7 +20,7 @@ sidebar:
   docs:
     getting_started: Memulai
     overview: Ikhtisar
-    declaring_models: Declaring Models
+    declaring_models: Mendeklarasikan Model
     conventions: Konvensi
     connecting_to_the_database: Menghubungkan ke Basis Data
     crud_interface: Antarmuka CRUD
@@ -30,9 +30,9 @@ sidebar:
     delete: Hapus
     associations: Asosiasi
     belongs_to: Belongs To
-    has_one: Has One
-    has_many: Has Many
-    many_to_many: Many To Many
+    has_one: Memiliki satu
+    has_many: Memiliki banyak
+    many_to_many: Banyak ke banyak
     preload: Preloading (Eager Loading)
     tutorials: Tutorials
     method_chaining: Method Chaining
@@ -49,5 +49,5 @@ sidebar:
     logger: Logger
     change_log: ChangeLog
     community: Community
-    contribute: Contribute
+    contribute: Menyumbangkan
     translate: Terjemahkan situs yang sekarang
