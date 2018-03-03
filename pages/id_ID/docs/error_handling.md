@@ -2,7 +2,7 @@
 title: Penanganan Kesalahan
 layout: page
 ---
-In Go, error handling is important.
+Sebagai Gantinya, penanganan kesalahan itu penting.
 
 You are encouraged to do error check after any [Immediate Methods](/docs/method_chaining.html#Immediate-Methods)
 
