@@ -4,7 +4,7 @@ layout: halaman
 ---
 ## Auto Migration
 
-Automatically migrate your schema, to keep your schema update to date.
+Secara otomatis skema Anda berpindah tempat, untuk memperbarui skema Anda sampai saat ini.
 
 **WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data.
 
@@ -19,7 +19,7 @@ db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 
 ## Other Migration Tools
 
-GORM's AutoMigrate works well for mostly cases, but if you are looking more seriously migration tools, GORM provides genric DB interface which might be helpful for you.
+Migrasi Otomatis GORM bekerja dengan baik untuk sebagian besar kasus, tetapi jika Anda mencari alat migrasi yang lebih serius, GORM menyediakan antarmuka genric DB yang mungkin bisa membantu Anda.
 
 ```go
 // returns `*sql.DB`
@@ -63,13 +63,13 @@ db.DropTable("users")
 db.DropTableIfExists(&User{}, "products")
 ```
 
-### ModifyColumn
+### ModifikasiKolom
 
-Modify column's type to given value
+Ubah jenis kolom untuk diberi nilai
 
 ```go
-// change column description's data type to `text` for model `User`
-db.Model(&User{}).ModifyColumn("description", "text")
+// ubah tipe data deskripsi kolom ke `text` untuk model` User`
+db.Model (&Pengguna{}).ModifikasiKolom("deskripsi", "teks")
 ```
 
 ### DropColumn
