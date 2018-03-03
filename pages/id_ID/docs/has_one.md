@@ -4,7 +4,7 @@ layout: page
 ---
 ## Has One
 
-A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). Asosiasi ini menunjukkan bahwa setiap contoh dari model mengandung atau memiliki satu contoh model lain.
+A`memiliki satu`asosiasi juga membuat koneksi satu -lawan-satu dengan model lain, tapi dengan beberapa semantik yang berbeda (dan konsekuensinya). Asosiasi ini menunjukkan bahwa setiap contoh dari model mengandung atau memiliki satu contoh model lain.
 
 Sebagai contoh, jika aplikasi anda menyertakan pengguna dan kartu kredit, dan setiap pengguna hanya dapat memiliki satu kartu kredit.
 
@@ -24,7 +24,7 @@ type CreditCard struct {
 
 ## Foreign Key
 
-For a has one relationship, a foreign key field must exists also, the owner will saved the primary key of the model belongs to it into this field.
+Untuk memiliki satu hubungan, Bidang kunci asing harus ada juga, pemilik akan menyimpan primary key dari model itu termasuk ke dalam bidang ini.
 
 The field's name usually is generated with `belongs to model`'s type plus its `primary key`, for above example, it is `CreditCardID`
 
