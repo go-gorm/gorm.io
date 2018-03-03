@@ -154,7 +154,7 @@ db.Model(&user).Association("Languages").Find(&languages)
 
 ### Tambahkan Asosiasi
 
-Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
+Tambahkan asosiasi baru untuk `banyak ke banyak`, `memiliki banyak`, ganti asosiasi saat ini untuk`memiliki satu`, `milik`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
