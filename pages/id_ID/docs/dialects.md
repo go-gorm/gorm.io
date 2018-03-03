@@ -18,7 +18,7 @@ Certain dialects of SQL ship with their own custom, non-standard column types, s
 
 GORM supports loading the following PostgreSQL exclusive column types: - jsonb - hstore
 
-Given the following Model definition:
+Diberikan definisi Model berikut:
 
 ```go
 import (
@@ -34,7 +34,7 @@ type Document struct {
 }
 ```
 
-You may use the model like so:
+Kamu bisa menggunakan model seperti:
 
 ```go
 password := "0654857340"
