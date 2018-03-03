@@ -30,7 +30,7 @@ The field's name usually is generated with `belongs to model`'s type plus its `p
 
 Saat anda memberikan kartu kredit kepada pengguna, itu akan menyimpan `ID` kartu kredit kedalam bidang `CreditCardID`.
 
-If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
+Jika anda ingin menggunakan bidang lain untuk menyimpan hubungan, anda dapat mengubahnya dengan label `foreignkey`, e.g:
 
 ```go
 type User struct {
