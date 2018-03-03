@@ -26,4 +26,4 @@ Breaking Changes
 
 * `mssql` dialect has been renamed to "github.com/jinzhu/gorm/dialects/mssql"
 
-* `Hstore` has been moved to package "github.com/jinzhu/gorm/dialects/postgres"
+* `Hstore` telah dipindahkan ke paket "github.com/jinzhu/gorm/dialects/postgres"
