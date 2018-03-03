@@ -1,39 +1,25 @@
 ---
-title: Create
-layout: page
+title: 作成します。
+layout: ページ
 ---
-## Create Record
+## レコードを作成します。
 
 ```go
-user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
-
-db.NewRecord(user) // => returns `true` as primary key is blank
-
-db.Create(&user)
-
-db.NewRecord(user) // => return `false` after `user` created
+ユーザー: ユーザーを = {名前:"Jinzhu"、年齢: 18、誕生日: 時間。Now()} db。NewRecord(user)//主キーは空白 db> 'true' 返しますを =。(&ユーザー) db を作成します。NewRecord(user)/> 戻り値 'false' を 'ユーザー' が作成した後 =/
 ```
 
-## Default Values
+## 既定値
 
-tag を使ってデフォルト値を設定することができます。
+たとえば、タグのフィールドの既定値を定義できます。
 
 ```go
-type Animal struct {
-    ID   int64
-    Name string `gorm:"default:'galeone'"`
-    Age  int64
-}
+構造体の動物を入力 {ID int64 名文字列 ' gorm:"既定: 'galeone'"' 年齢 int64}
 ```
 
-値を持たないか [zero values](https://tour.golang.org/basics/12) のフィールドは INSERT 文実行後にデータベースから取得した値が格納されます。
+その後、挿入の SQL しない値を持つまたは [0 値](https://tour.golang.org/basics/12)、データベースにレコードを挿入した後、gorm はこれらのフィールドの値をデータベースから読み込むフィールドが除外されます。
 
 ```go
-var animal = Animal{Age: 99, Name: ""}
-db.Create(&animal)
-// INSERT INTO animals("age") values('99');
-// SELECT name from animals WHERE ID=111; // the returning primary key is 111
-// animal.Name => 'galeone'
+var 動物動物 = {年齢: 99、名:""} db。(&動物) を作成/animals("age") values('99'); を挿入/動物 ID どこから選択して名前 = 111;返される主キーは 111/動物/。名前 => 'galeone'
 ```
 
 **NOTE** all fields having zero value, like ``, `''`, `false` or other [zero values](https://tour.golang.org/basics/12) won't be saved into database but will use its default value, it you want to avoid this, consider to use pointer type or scaner/valuer, e.g:
