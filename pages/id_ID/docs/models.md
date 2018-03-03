@@ -29,22 +29,22 @@ Tanda opsional untuk digunakan saat mendeklarasikan model, berikut adalah tanda 
 
 ### Supported Struct tags
 
-| Label           | Keterangan                                                             |
-| --------------- | ---------------------------------------------------------------------- |
-| Kolom           | Menentukan nama kolom                                                  |
-| Jenis           | Menentukan tipe data kolom                                             |
-| Ukuran          | Menentukan ukuran kolom, bawaan 255                                    |
-| Kunci_Utama     | Menentukan kolom sebagai kunci utama                                   |
-| UNIK            | Menentukan kolom sebagai unik                                          |
-| BAWAAN          | Menentukan nilai kolom bawaan                                          |
-| KESEKSAMAAN     | Menentukan keseksamaan kolom                                           |
-| NOT NULL        | Specifies column as NOT NULL                                           |
-| AUTO_INCREMENT  | Specifies column auto incrementable or not                             |
-| INDEX           | Create index with or without name, same name creates composite indexes |
-| UNIQUE_INDEX    | Like `INDEX`, create unique index                                      |
-| EMBEDDED        | Set struct as embedded                                                 |
-| EMBEDDED_PREFIX | Set embedded struct's prefix name                                      |
-| -               | Ignore this fields                                                     |
+| Label           | Keterangan                                                                     |
+| --------------- | ------------------------------------------------------------------------------ |
+| Kolom           | Menentukan nama kolom                                                          |
+| Jenis           | Menentukan tipe data kolom                                                     |
+| Ukuran          | Menentukan ukuran kolom, bawaan 255                                            |
+| Kunci_Utama     | Menentukan kolom sebagai kunci utama                                           |
+| UNIK            | Menentukan kolom sebagai unik                                                  |
+| BAWAAN          | Menentukan nilai kolom bawaan                                                  |
+| KESEKSAMAAN     | Menentukan keseksamaan kolom                                                   |
+| NOT NULL        | Specifies column as NOT NULL                                                   |
+| AUTO_INCREMENT  | Specifies column auto incrementable or not                                     |
+| INDEX           | Buat indeks dengan atau tanpa nama, nama yang sama menciptakan indeks komposit |
+| UNIQUE_INDEX    | Like `INDEX`, create unique index                                              |
+| EMBEDDED        | Tetapkan struct sebagai tertanam                                               |
+| EMBEDDED_PREFIX | Tetapkan nama awalan struct terstruktur                                        |
+| -               | Abaikan bidang ini                                                             |
 
 ### Struct tags for Associations
 
@@ -52,15 +52,15 @@ Periksa bagian Asosiasi untuk rinciannya
 
 | Label                              | Keterangan                                           |
 | ---------------------------------- | ---------------------------------------------------- |
-| MANY2MANY                          | Specifies join table name                            |
+| MANY2MANY                          | Menentukan ikut nama tabel                           |
 | FOREIGNKEY                         | Specifies foreign key                                |
-| ASSOCIATION_FOREIGNKEY             | Specifies association foreign key                    |
+| ASSOCIATION_FOREIGNKEY             | Menentukan asosiasi kunci asing                      |
 | POLYMORPHIC                        | Specifies polymorphic type                           |
-| POLYMORPHIC_VALUE                  | Specifies polymorphic value                          |
-| JOINTABLE_FOREIGNKEY               | Specifies foreign key of jointable                   |
+| POLYMORPHIC_VALUE                  | Menentukan nilai polimorfik                          |
+| JOINTABLE_FOREIGNKEY               | Menentukan kunci asing yang bisa digabungkan         |
 | ASSOCIATION_JOINTABLE_FOREIGNKEY | Tentukan asosiasi kunci asing yang dapat digabungkan |
-| SAVE_ASSOCIATIONS                  | AutoSave associations or not                         |
-| ASSOCIATION_AUTOUPDATE             | AutoUpdate associations or not                       |
-| ASSOCIATION_AUTOCREATE             | AutoCreate associations or not                       |
-| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not               |
+| SAVE_ASSOCIATIONS                  | Penyimpanan otomatis asosiasi atau tidak             |
+| ASSOCIATION_AUTOUPDATE             | PembaruanOtomatis asosiasi atau tidak                |
+| ASSOCIATION_AUTOCREATE             | Buat asosiasi otomatis atau tidak                    |
+| ASSOCIATION_SAVE_REFERENCE       | Penyimpanan otomatis asosiasi referensi atau tidak   |
 | PRELOAD                            | Auto Preload associations or not                     |
