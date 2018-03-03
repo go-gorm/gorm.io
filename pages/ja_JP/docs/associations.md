@@ -83,7 +83,7 @@ or use GORM tags, `gorm:"association_autocreate:false"`
     }
     
 
-## Skip AutoCreate/Update
+## 自動作成/更新
 
 To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings togehter
 
@@ -129,7 +129,7 @@ type User struct {
 }
 ```
 
-## Association Mode
+## 関連タイプ
 
 Association Mode contains some helper methods to handle relationship related things easily.
 
