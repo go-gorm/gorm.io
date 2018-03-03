@@ -22,32 +22,29 @@ db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&Pengguna{})
 Migrasi Otomatis GORM bekerja dengan baik untuk sebagian besar kasus, tetapi jika Anda mencari alat migrasi yang lebih serius, GORM menyediakan antarmuka genric DB yang mungkin bisa membantu Anda.
 
 ```go
-// returns `*sql.DB`
+// kembali `*sql.DB`
 db.DB()
 ```
 
-Refer [Generic Interface](/docs/generic_interface.html) for more details.
+Lihat [ Antarmuka Generik](/docs/generic_interface.html) untuk rincian lebih lanjut.
 
-## Schema Methods
+## Metode Skema
 
-### Has Table
+### Memiliki Tabel
 
 ```go
-// Check model `User`'s table exists or not
-db.HasTable(&User{})
-
-// Check table `users` exists or not
-db.HasTable("users")
+// Periksa model tabel `Pengguna`ada atau tidak
+db.HasTable(&Pengguna{})
 ```
 
-### Create Table
+### Membuat Tabel
 
 ```go
-// Create table for model `User`
-db.CreateTable(&User{})
+// Membuat tabel untuk model `Pengguna`
+db.CreateTable(&Pengguna{})
 
-// will append "ENGINE=InnoDB" to the SQL statement when creating table `users`
-db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
+// akan menambahkan "ENGINE=InnoDB" ke pernyataan SQL ketika membuat tabel `pengguna`
+db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&Pengguna{})
 ```
 
 ### Drop table
