@@ -1,8 +1,8 @@
 ---
-title: Query
+title: Pertanyaan
 layout: halaman
 ---
-## Query
+## Pertanyaan
 
 ```go
 // Dapatkan rekaman pertama, pesan menurut kunci utama db.Pertama(&pengguna)
@@ -26,7 +26,7 @@ db.Pertama(&Pengguna, 10)
 
 ### Dimana
 
-#### Plain SQL
+#### SQL biasa
 
 ```go
 // Dapatkan rekaman pertama yang cocok
@@ -126,7 +126,7 @@ db.tidak(pengguna{Nama: "jinzhu"}).Pertama(&pengguna)
 //// PILIH * DARI DI MANA nama pengguna <> "jinzhu";
 ```
 
-### Or
+### Atau
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -141,9 +141,9 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 //// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-### Inline Condition
+### Kondisi di barisan
 
-Works similar like `Where`.
+Bekerja mirip seperti`Dimana`.
 
 When using with [Multiple Immediate Methods](/docs/method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
 
@@ -171,7 +171,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 //// SELECT * FROM users WHERE age = 20;
 ```
 
-### Extra Querying option
+### Pilihan Pertanyaan Tambahan
 
 ```go
 // Add extra SQL option for selecting SQL
@@ -181,7 +181,7 @@ db.Set("gorm:query_option", "FOR UPDATE").First(&user, 10)
 
 ## FirstOrInit
 
-Get first matched record, or initalize a new one with given conditions (only works with struct, map conditions)
+Dapatkan catatan pertama yang cocok, atau inisialisasi yang baru dengan kondisi tertentu (hanya bekerja dengan struktur, kondisi peta)
 
 ```go
 // Unfound
