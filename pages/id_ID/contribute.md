@@ -1,5 +1,5 @@
 ---
-title: Contribute to GORM
+title: Berkontribusi untuk GORM
 layout: halaman
 ---
 **Anda dapat membantu memberikan GORM yang lebih baik! Ada banyak hal yang dapat Anda lakukan:**
@@ -36,7 +36,7 @@ Kebaikan dan kemurahan hati anda sangat dihargai
 
 [Sumbangan Satu Kali dengan Paypal](https://www.paypal.me/zhangjinzhu) [Sumbangan satu kali dengan OpenCollective](https://opencollective.com/gorm)
 
-### Recurring Donations
+### Sumbangan Berulang
 
 Kebaikan dan kemurahan hati anda sangat dihargai, dan nama anda akan tercantum di halaman ini atau beranda situs web ini.
 
