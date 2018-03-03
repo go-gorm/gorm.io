@@ -1,10 +1,10 @@
 ---
-title: Associations
-layout: page
+title: アソシエーション
+layout: ページ
 ---
-## Auto Create/Update
+## 自動作成/更新
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+GORM は自動の関連付けとその参照保存記録を作成/更新するとき。協会に主キーがある場合 GORM はそれを保存する `更新` を呼び出すが、それ以外の場合は、作成されます。
 
 ```go
 user := User{
