@@ -15,9 +15,9 @@ Perpustakaan ORM yang fantastis untuk Golang, bertujuan untuk menjadi pengembang
 * SQL Builder
 * Auto Migrations
 * Logger
-* Extendable, write Plugins based on GORM callbacks
+* Dapat diperpanjang, tulis Plugin berdasarkan panggilanbalik GORM
 * Setiap fitur dilengkapi dengan pengujian
-* Developer Friendly
+* Pengembang Ramah
 
 ## Pasang
 
