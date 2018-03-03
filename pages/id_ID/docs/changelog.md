@@ -12,7 +12,7 @@ Breaking Changes
 
 * `gorm.Open` return type `*gorm.DB` instead of `gorm.DB`
 
-* Updating will only update changed fields
+* Memperbarui hanya akan memperbarui bidang yang berubah
 
 * Soft Delete's will only check `deleted_at IS NULL`
 
