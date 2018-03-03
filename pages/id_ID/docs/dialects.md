@@ -1,5 +1,5 @@
 ---
-title: Dialect Specific Data Type
+title: Jenis Data Spesifik Dialek
 layout: halaman
 ---
 ## Tulis Dialek baru
@@ -12,11 +12,11 @@ Beberapa database mungkin kompatibel dengan dialek mysql atau postgres, maka and
 
 ## Dialect Specific Data Type
 
-Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM mendukung pemuatan beberapa tipe seperti itu, seperti yang tercantum di bagian berikut.
+Dialek tertentu dari mengirimkan SQL dengan kebiasaan mereka sendiri, jenis kolom bukan-standar, seperti kolom `jsonb` dalam PostgreSQL. GORM mendukung pemuatan beberapa tipe seperti itu, seperti yang tercantum di bagian berikut.
 
 ### PostgreSQL
 
-GORM supports loading the following PostgreSQL exclusive column types: - jsonb - hstore
+GORM mendukung pemuatan jenis kolom khusus PostgreSQL berikut: - jsonb - hstore
 
 Diberikan definisi Model berikut:
 
