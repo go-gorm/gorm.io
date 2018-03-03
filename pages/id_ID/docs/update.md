@@ -42,7 +42,7 @@ db.Model(&user).Updates(User{Name: "hello", Age: 18})
 db.Model(&user).Updates(User{Name: "", Age: 0, Actived: false})
 ```
 
-## Update Selected Fields
+## Perbarui Bidang yang Dipilih
 
 If you only want to update or ignore some fields when updating, you could use `Select`, `Omit`
 
