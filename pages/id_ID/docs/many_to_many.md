@@ -40,7 +40,7 @@ db.Model(&language).Related(&users)
 //// SELECT * FROM "users" INNER JOIN "user_languages" ON "user_languages"."user_id" = "users"."id" WHERE  ("user_languages"."language_id" IN ('111'))
 ```
 
-## Foreign Keys
+## Kunci asing
 
 ```go
 type CustomizePerson struct {
