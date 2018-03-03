@@ -217,7 +217,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 
 ### Menetapkan
 
-Menetapkan argumen untuk struct tanpa itu ditemukan atau tidak
+Menetapkan argumen untuk struktur tanpa peduli itu ditemukan atau tidak
 
 ```go
 // Unfound
@@ -308,7 +308,7 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 
 ### Urutan
 
-Specify order when retrieve records from database, set reorder (the second argument) to `true` to overwrite defined conditions
+Tentukan urutan ketika mengambil catatan dari basisdata, menetapkan urutan ulang (argumen kedua) ke `benar` untuk menimpa kondisi yang didefinisikan
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -324,9 +324,9 @@ db.Order("age desc").Find(&users1).Order("age", true).Find(&users2)
 //// SELECT * FROM users ORDER BY age; (users2)
 ```
 
-### Limit
+### Batas
 
-Specify the max number of records to retrieve
+Tentukan jumlah maksimum dari catatan untuk mengambil kembali
 
 ```go
 db.Limit(3).Find(&users)
@@ -340,7 +340,7 @@ db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 
 ### Offset
 
-Specify the number of records to skip before starting to return the records
+Tentukan jumlah dari catatan untuk melewati sebelum memulai untuk mengembalikan catatan
 
 ```go
 db.Offset(3).Find(&users)
@@ -352,9 +352,9 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 //// SELECT * FROM users; (users2)
 ```
 
-### Count
+### Hitungan
 
-Get how many records for a model
+Dapatkan seberapa banyak catatan untuk sebuah model
 
 ```go
 db.Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Find(&users).Count(&count)
@@ -368,9 +368,9 @@ db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
 ```
 
-**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns
+**CATATAN** Ketika menggunakan `Hitungan` dalam rantai pertanyaan, itu harus menjadi yang terakhir, karena akan menimpa `PILIH` kolom
 
-### Group & Having
+### Kelompok & Memiliki
 
 ```go
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Rows()
