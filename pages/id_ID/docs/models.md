@@ -46,7 +46,7 @@ Tanda opsional untuk digunakan saat mendeklarasikan model, berikut adalah tanda 
 | EMBEDDED_PREFIX | Tetapkan nama awalan struct terstruktur                                        |
 | -               | Abaikan bidang ini                                                             |
 
-### Struct tags for Associations
+### Tag struktur untuk Asosiasi
 
 Periksa bagian Asosiasi untuk rinciannya
 
