@@ -4,7 +4,7 @@ layout: page
 ---
 ## Method Chaining
 
-Gorm implements method chaining interface, so you could write code like this:
+Gorm menerapkan metode antarmuka rantai, jadi anda bisa menulis kode seperti ini:
 
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
@@ -24,7 +24,7 @@ if yetAnotherCondition {
 }
 ```
 
-Query won't be generated until a immediate method, which could be useful in some cases.
+Permintaan tidak akan dihasilkan sampai metode langsung, yang bisa berguna dalam beberapa kasus.
 
 Like you could extract a wrapper to handle some common logic
 
