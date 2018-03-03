@@ -293,7 +293,7 @@ db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?
 
 ### Pilih
 
-Tentukan bidang yang ingin anda ambil dari database, secara bawaan, akan memilih semua bidang
+Tentukan bidang yang ingin anda ambil kembali dari basisdata, secara default, akan memilih semua bidang
 
 ```go
 db.Select("name, age").Find(&users)
