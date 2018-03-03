@@ -1,6 +1,6 @@
 ---
 title: Query
-layout: page
+layout: halaman
 ---
 ## Query
 
