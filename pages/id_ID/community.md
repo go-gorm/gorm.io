@@ -29,9 +29,9 @@ layout: halaman
 
 ## Open Sources
 
-* [QOR Admin - instantly create an Admin interface in minutes](http://getqor.com)
-* [Gorm adapter for Casbin](https://github.com/casbin/gorm-adapter)
-* [Gormigrate - a migration helper for Gorm](https://github.com/go-gormigrate/gormigrate)
+* [QOR Admin - Langsung buat antarmuka Admin dalam hitungan menit](http://getqor.com)
+* [Pencocok Gorm untuk Casbin](https://github.com/casbin/gorm-adapter)
+* [Gormigrate - pembantu berpindah tempat untuk Gorm](https://github.com/go-gormigrate/gormigrate)
 * [Go-Mocket](https://github.com/Selvatico/go-mocket)
 * [Transition - state machine based on GORM](https://github.com/qor/transition)
 * [Validasi - memvalidasi model saat membuat, memperbarui](https://github.com/qor/validations)
