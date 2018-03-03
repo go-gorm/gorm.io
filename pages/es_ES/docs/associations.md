@@ -1,6 +1,6 @@
 ---
-title: Associations
-layout: page
+title: Asociaciones
+layout: página
 ---
 ## Auto Create/Update
 
