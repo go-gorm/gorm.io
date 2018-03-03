@@ -1,10 +1,10 @@
 ---
-title: Connecting to the database
-layout: page
+title: 共有データベースを開く
+layout: ページ
 ---
-# Connecting to the database
+# 共有データベースを開く
 
-In order to connect to a database, you need to import the database's driver first. For example:
+データベースに接続するために最初にデータベースのドライバーをインポートする必要があります。例えば：
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
@@ -53,8 +53,8 @@ func main() {
 
 ```go
 import (
-    "github.com/jinzhu/gorm"
-    _ "github.com/jinzhu/gorm/dialects/sqlite"
+  "github.com/jinzhu/gorm"
+  _ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 func main() {
@@ -63,18 +63,18 @@ func main() {
 }
 ```
 
-## SQL Server
+## SQL サーバー
 
 [Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
 ```go
 import (
-    "github.com/jinzhu/gorm"
-    _ "github.com/jinzhu/gorm/dialects/mssql"
+  "github.com/jinzhu/gorm"
+  _ "github.com/jinzhu/gorm/dialects/mssql"
 )
 
 func main() {
-  db, err = gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
+  db, err := gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
   defer db.Close()
 }
 ```
