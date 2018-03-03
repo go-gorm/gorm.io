@@ -101,4 +101,4 @@ db.Model(&user).Related(&emails)
 //// SELECT * FROM emails WHERE user_id = 111; // 111 is user's primary key
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Untuk penggunaan lanjutan, lihat [Mode Asosiasi](/docs/associations.html#Association-Mode)
