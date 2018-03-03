@@ -65,15 +65,15 @@ type User struct {
 
 Aún cuando haya deshabilitado `AutoUpdating`, asociaciones sin clave principal aún deben ser creadas y su referencia será guardada.
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
+Para deshabilitar esto, puede establecer la configuración DB `gorm:association_autocreate` a `falso`
 
 ```go
-// Don't create associations w/o primary key, WON'T save its reference
+//No crear asociaciones sin la clave principal, NO guardará su referencia
 db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autocreate:false"`
+o use etiquetas GORM, `gorm:"association_autocreate:false"`
 
     type User struct {
       gorm.Model
@@ -83,7 +83,7 @@ or use GORM tags, `gorm:"association_autocreate:false"`
     }
     
 
-## Skip AutoCreate/Update
+## Saltar Creación/Actualización Automática
 
 To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings togehter
 
@@ -97,7 +97,7 @@ type User struct {
 }
 ```
 
-Or use `gorm:save_associations`
+O utilice `gorm:save_associations`
 
     db.Set("gorm:save_associations", false).Create(&user)
     db.Set("gorm:save_associations", false).Save(&user)
