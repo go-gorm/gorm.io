@@ -6,7 +6,7 @@ layout: halaman
 
 `gorm.Model` is a struct including some basic fields, which including fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
 
-It could be embeded into your model or build your own model w/o it.
+Itu bisa ditanam ke dalam model anda atau bangun model anda sendiri tanpa itu.
 
 ```go
 // gorm.Model definition
@@ -30,7 +30,7 @@ type User struct {
 }
 ```
 
-## `ID` as Primary Key
+## `ID` sebagai Kunci Utama
 
 GORM menggunakan bidang dengan nama `ID` sebagai kunci primer secara bawaan.
 
@@ -96,7 +96,7 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 }
 ```
 
-## Snake Case Column Name
+## Nama Kolom Kasus Ular
 
 Nama kolom akan menjadi nama kotak ular yang lebih rendah
 
