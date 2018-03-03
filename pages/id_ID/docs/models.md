@@ -33,11 +33,11 @@ Tanda opsional untuk digunakan saat mendeklarasikan model, berikut adalah tanda 
 | --------------- | ---------------------------------------------------------------------- |
 | Kolom           | Menentukan nama kolom                                                  |
 | Jenis           | Menentukan tipe data kolom                                             |
-| Ukuran          | Specifies column size, default 255                                     |
-| PRIMARY_KEY     | Specifies column as primary key                                        |
-| UNIQUE          | Specifies column as unique                                             |
-| DEFAULT         | Specifies column default value                                         |
-| PRECISION       | Specifies column precision                                             |
+| Ukuran          | Menentukan ukuran kolom, bawaan 255                                    |
+| Kunci_Utama     | Menentukan kolom sebagai kunci utama                                   |
+| UNIK            | Menentukan kolom sebagai unik                                          |
+| BAWAAN          | Menentukan nilai kolom bawaan                                          |
+| KESEKSAMAAN     | Menentukan keseksamaan kolom                                           |
 | NOT NULL        | Specifies column as NOT NULL                                           |
 | AUTO_INCREMENT  | Specifies column auto incrementable or not                             |
 | INDEX           | Create index with or without name, same name creates composite indexes |
