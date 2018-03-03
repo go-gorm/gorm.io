@@ -4,7 +4,7 @@ layout: página
 ---
 ## Auto Create/Update
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+GORM guardará automáticamente asociaciones y su referencia cuando crea/actualiza un registro. Si una asociación tiene una clave principal, GORM pedirá `Actualizar` para guardarla, de lo contrario será creado.
 
 ```go
 user := User{
@@ -39,7 +39,7 @@ db.Save(&user)
 
 ## Skip AutoUpdate
 
-If your association is already existing in database, you might not want to update it.
+Si su asociación ya existe en la base de datos, podría no querer actualizarla.
 
 You could use DB setting, set `gorm:association_autoupdate` to `false`
 
