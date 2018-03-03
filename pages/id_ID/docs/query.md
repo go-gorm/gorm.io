@@ -29,34 +29,34 @@ db.Pertama(&Pengguna, 10)
 #### Plain SQL
 
 ```go
-// Get first matched record
-db.Where("name = ?", "jinzhu").First(&user)
-//// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
+// Dapatkan rekaman pertama yang cocok
+db. Dimana ("nama =?", "Jinzhu").Pertama (&pengguna)
+//// PILIH * DARI DI MANA nama pengguna= 'jinzhu' batas 1;
 
-// Get all matched records
-db.Where("name = ?", "jinzhu").Find(&users)
-//// SELECT * FROM users WHERE name = 'jinzhu';
+// Dapatkan semua rekaman yang cocok
+db.Dimana ("nama =?", "Jinzhu").Temukan (& pengguna)
+//// PILIH * DARI DI MANA nama pengguna = 'jinzhu';
 
 // <>
-db.Where("name <> ?", "jinzhu").Find(&users)
+db.Dimana ("nama <>?", "Jinzhu").Temukan (&pengguna)
 
-// IN
-db.Where("name in (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
+// DI
+db. Dimana ("nama dalam (?)", []tali{"jinzhu", "jinzhu 2"}).Temukan(&pengguna)
 
-// LIKE
-db.Where("name LIKE ?", "%jin%").Find(&users)
+// SEPERTI
+db. Dimana ("nama SEPERTI?", "%jin%").Temukan(&pengguna)
 
-// AND
-db.Where("name = ? AND age >= ?", "jinzhu", "22").Find(&users)
+// DAN
+db.Di mana("nama = ? DAN usia >=? "," Jinzhu "," 22 ").Temukan(&pengguna)
 
-// Time
-db.Where("updated_at > ?", lastWeek).Find(&users)
+// Waktu
+db.Dimana("diperbarui_at > ? ", minggulalu).Temukan (&pengguna)
 
-// BETWEEN
-db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
+// ANTARA
+db.Dimana("dibuat _di ANTARA? DAN ?", Minggulalu, hari ini).Temukan(&pengguna)
 ```
 
-#### Struct & Map
+#### Struktur & Peta
 
 ```go
 // Struct
