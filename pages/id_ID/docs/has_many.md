@@ -28,7 +28,7 @@ Untuk menentukan memiliki banyak hubungan, kunci asing harus ada, nama kunci asi
 
 Untuk sebuah contoh di atas, untuk menentukan sebuah model yang menjadi milik `Pengguna`, kunci asing seharusnya `Id Pengguna`.
 
-Untuk menggunakan bidang lain sebagai kunci tamu, anda dapat mengkustomisasinya dengan label `foreignkey`, misalnya:
+Untuk menggunakan bidang lain sebagai kunci asing, anda dapat menyesuaikannya dengan label `foreignkey`, misalnya:
 
 ```go
 type User struct {
@@ -45,7 +45,7 @@ type CreditCard struct {
 
 ## Association ForeignKey
 
-GORM biasanya menggunakan kunci primer pemilik sebagai nilai kunci tamu, untuk contoh diatas, itu adalah `User` `ID`,
+GORM biasanya menggunakan kunci utama pemilik sebagai nilai kunci asing, untuk contoh diatas, itu adalah `Pengguna` `ID`,
 
 Saat anda menetapkan kartu kredit ke pengguna, GORM akan menyimpan `ID` pengguna kedalam bidang `UserID` kartu kredit.
 
