@@ -1,6 +1,6 @@
 ---
 title: Menghubungkan ke database
-layout: page
+layout: halaman
 ---
 ## Menghubungkan ke database
 
@@ -19,7 +19,7 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 // import _ "github.com/jinzhu/gorm/dialects/mssql"
 ```
 
-## Supported Databases
+## Basisdata yang didukung
 
 ### MySQL
 
@@ -65,7 +65,7 @@ func main() {
 }
 ```
 
-### SQL Server
+### Server SQL
 
 [Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
@@ -81,6 +81,6 @@ func main() {
 }
 ```
 
-## Unsupported Databases
+## Basisdata tidak didukung
 
 GORM secara resmi mendukung di atas empat database, anda bisa menulis dialek untuk database yang tidak didukung, lihat [Dialek GORM](/docs/dialects.html)
