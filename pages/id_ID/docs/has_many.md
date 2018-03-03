@@ -1,8 +1,8 @@
 ---
-title: Has Many
-layout: page
+title: Memiliki Banyak
+layout: halaman
 ---
-## Has Many
+## Memiliki Banyak
 
 A `has many` association also sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
 
