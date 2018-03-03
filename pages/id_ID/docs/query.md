@@ -197,7 +197,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 
 ### Attrs
 
-Initalize struct with argument if record not found
+Inisialisasi struktur dengan argumen jika catatan tidak ditemukan
 
 ```go
 // Unfound
@@ -215,7 +215,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 ```
 
-### Assign
+### Menetapkan
 
 Menetapkan argumen untuk struct tanpa itu ditemukan atau tidak
 
@@ -232,7 +232,7 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record, or create a new one with given conditions (only works with struct, map conditions)
+Dapatkan catatan pertama yang cocok, atau membuat yang baru dengan kondisi tertentu (hanya bekerja dengan struktur, kondisi peta)
 
 ```go
 // Unfound
@@ -247,7 +247,7 @@ db.Where(User{Name: "Jinzhu"}).FirstOrCreate(&user)
 
 ### Attrs
 
-Assign struct with argument if record not found and create with those values
+Menetapkan struktur dengan argumen jika catatan tidak ditemukan dan buat dengan nilai-nilai tersebut
 
 ```go
 // Unfound
@@ -264,7 +264,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 
 ### Assign
 
-Assign it to the record regardless it is found or not, and save back to database.
+Menetapkannya untuk mencatat tanpa peduli itu ditemukan atau tidak, dan simpan kembali ke basisdata.
 
 ```go
 // Unfound
@@ -280,7 +280,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "jinzhu", Age: 30}
 ```
 
-## Advanced Query
+## Pertanyaan Lanjutan
 
 ### SubQuery
 
@@ -291,7 +291,7 @@ db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?
 // SELECT * FROM "orders"  WHERE "orders"."deleted_at" IS NULL AND (amount > (SELECT AVG(amount) FROM "orders"  WHERE (state = 'paid')));
 ```
 
-### Select
+### Pilih
 
 Tentukan bidang yang ingin anda ambil dari database, secara bawaan, akan memilih semua bidang
 
@@ -306,7 +306,7 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 //// SELECT COALESCE(age,'42') FROM users;
 ```
 
-### Order
+### Urutan
 
 Specify order when retrieve records from database, set reorder (the second argument) to `true` to overwrite defined conditions
 
