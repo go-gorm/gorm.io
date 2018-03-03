@@ -6,7 +6,7 @@ layout: page
 
 A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). Asosiasi ini menunjukkan bahwa setiap contoh dari model mengandung atau memiliki satu contoh model lain.
 
-For example, if your application includes users and credit card, and each user can only has one credit card.
+Sebagai contoh, jika aplikasi anda menyertakan pengguna dan kartu kredit, dan setiap pengguna hanya dapat memiliki satu kartu kredit.
 
 ```go
 // User has one CreditCard, CreditCardID is the foreign key
@@ -28,7 +28,7 @@ For a has one relationship, a foreign key field must exists also, the owner will
 
 The field's name usually is generated with `belongs to model`'s type plus its `primary key`, for above example, it is `CreditCardID`
 
-When you give a credit card to the user, its will save the credit card's `ID` into its `CreditCardID` field.
+Saat anda memberikan kartu kredit kepada pengguna, itu akan menyimpan `ID` kartu kredit kedalam bidang `CreditCardID`.
 
 If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
 
