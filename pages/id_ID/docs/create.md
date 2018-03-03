@@ -56,7 +56,7 @@ type User struct {
 
 ## Setting Field Values In Hooks
 
-If you want to update field's value in `BeforeCreate` hook, you could use `scope.SetColumn`, for example:
+Jika Anda ingin memperbarui nilai bidang di hook `BeforeCreate`, Anda bisa menggunakan `scope.SetColumn`, misalnya:
 
 ```go
 func (user *User) BeforeCreate(scope *gorm.Scope) error {
