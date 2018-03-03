@@ -76,7 +76,7 @@ import (
 )
 
 func main() {
-  db, err = gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
+  db, err := gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
   defer db.Close()
 }
 ```

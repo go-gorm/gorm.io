@@ -39,7 +39,7 @@ db.Save(&user)
 
 ## 跳过自动更新
 
-如果数据库中已存在关联, 可能你不希望对其进行更新。
+If your association is already existing in database, you might not want to update it.
 
 可以使用 DB 设置, 将 ` gorm: association_autoupdate ` 设置为 ` false `
 
@@ -63,7 +63,7 @@ type User struct {
 
 ## 跳过自动创建
 
-即使你跳过自动更新，没有主键的关联仍然会被自动保存，所有关联的引用也会被保存、创建。
+Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
 
 如果你也想跳过，那么你可以通过 DB 的设置，将`gorm:association_autocreate`设置为`false`
 
@@ -131,7 +131,7 @@ type User struct {
 
 ## 关联模式
 
-关联模式包含几个帮助方法，可以更方便的来管理关联
+Association Mode contains some helper methods to handle relationship related things easily.
 
 ```go
 // Start Association Mode
@@ -153,7 +153,7 @@ db.Model(&user).Association("Languages").Find(&languages)
 
 ### 添加关联
 
-为`many to many`、`has many`添加关联, 为`has one`、`belongs to`替换关联
+Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -162,7 +162,7 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 
 ### 替换关联
 
-将旧关联替换为新关联
+Replace current associations with new ones
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
