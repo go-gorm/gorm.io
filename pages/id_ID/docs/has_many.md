@@ -45,11 +45,11 @@ type CreditCard struct {
 
 ## Association ForeignKey
 
-GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`,
+GORM biasanya menggunakan kunci primer pemilik sebagai nilai kunci tamu, untuk contoh diatas, itu adalah `User` `ID`,
 
 When you assign credit cards to a user, GORM will save user's `ID` into credit cards' `UserID` field.
 
-You are able to change it with tag `association_foreignkey`, e.g:
+Anda dapat mengubahnya dengan label `association_foreignkey`, misalnya:
 
 ```go
 type User struct {
