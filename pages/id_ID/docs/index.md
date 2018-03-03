@@ -1,5 +1,5 @@
 ---
-title: GORM Guides
+title: Panduan GORM
 layout: page
 ---
 Perpustakaan ORM yang fantastis untuk Golang, bertujuan untuk menjadi pengembang yang ramah.
@@ -16,10 +16,10 @@ Perpustakaan ORM yang fantastis untuk Golang, bertujuan untuk menjadi pengembang
 * Auto Migrations
 * Logger
 * Extendable, write Plugins based on GORM callbacks
-* Every feature comes with tests
+* Setiap fitur dilengkapi dengan pengujian
 * Developer Friendly
 
-## Install
+## Pasang
 
 ```sh
 go get -u github.com/jinzhu/gorm
