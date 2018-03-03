@@ -1,10 +1,10 @@
 ---
-title: Update
-layout: page
+title: Perbarui
+layout: halaman
 ---
 ## Perbarui Semua Bidang
 
-`Save` will include all fields when perform the Updating SQL, even it is not changed
+`Simpan` akan mencakup semua bidang ketika melakukan Pembaruan SQL, bahkan itu tidak berubah
 
 ```go
 db.First(&user)
@@ -16,9 +16,9 @@ db.Save(&user)
 //// UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update Changed Fields
+## Memperbarui bidang yang diubah
 
-If you only want to update changed Fields, you could use `Update`, `Updates`
+Jika anda hanya ingin memperbarui Bidang yang diubah, anda dapat menggunakan `Memperbarui`, `Pembaruan`
 
 ```go
 // Update single attribute if it is changed
