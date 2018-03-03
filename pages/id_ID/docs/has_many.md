@@ -47,7 +47,7 @@ type CreditCard struct {
 
 GORM biasanya menggunakan kunci primer pemilik sebagai nilai kunci tamu, untuk contoh diatas, itu adalah `User` `ID`,
 
-When you assign credit cards to a user, GORM will save user's `ID` into credit cards' `UserID` field.
+Saat anda menetapkan kartu kredit ke pengguna, GORM akan menyimpan `ID` pengguna kedalam bidang `UserID` kartu kredit.
 
 Anda dapat mengubahnya dengan label `association_foreignkey`, misalnya:
 
