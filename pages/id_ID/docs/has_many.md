@@ -28,7 +28,7 @@ Untuk menentukan memiliki banyak hubungan, kunci asing harus ada, nama kunci asi
 
 For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
-To use another field as foreign key, you can customize it with tag `foreignkey`, e.g:
+Untuk menggunakan bidang lain sebagai kunci tamu, anda dapat mengkustomisasinya dengan label `foreignkey`, misalnya:
 
 ```go
 type User struct {
