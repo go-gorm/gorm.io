@@ -2,7 +2,7 @@
 title: Update
 layout: page
 ---
-## Update All Fields
+## Perbarui Semua Bidang
 
 `Save` will include all fields when perform the Updating SQL, even it is not changed
 
