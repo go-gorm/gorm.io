@@ -23,6 +23,6 @@ db.DB().SetMaxIdleConns(10)
 // SetMaxOpenConns atur jumlah maksimum koneksi terbuka ke basis data.
 db.DB().SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime tetapkan nilai maksimum dari waktu sebuah koneksi mungkin digunakan kembali.
 db.DB().SetConnMaxLifetime(time.Hour)
 ```
