@@ -1,6 +1,6 @@
 ---
-title: Transactions
-layout: page
+title: Transaktionen
+layout: seite
 ---
 GORM perform single `create`, `update`, `delete` operations in transactions by default to ensure database data integrity.
 
