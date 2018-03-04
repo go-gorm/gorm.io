@@ -2,11 +2,11 @@
 title: Escribir Plugins
 layout: página
 ---
-GORM itself is powered by `Callbacks`, so you could fully customize GORM as you want
+GORM está respaldado por `Callbacks`, así que puede editar GORM completamente como lo desee
 
-## Register a new callback
+## Registrar un nuevo callback
 
-Register a callback into callbacks
+Registrar un callback en callbaks
 
 ```go
 func updateCreated(scope *Scope) {
@@ -19,25 +19,25 @@ db.Callback().Create().Register("update_created_at", updateCreated)
 // register a callback for Create process
 ```
 
-## Delete an existing callback
+## Eliminar un callback existente
 
-Delete a callback from callbacks
+Eliminar un callback de callbaks
 
 ```go
 db.Callback().Create().Remove("gorm:create")
 // delete callback `gorm:create` from Create callbacks
 ```
 
-## Replace an existing callback
+## Reemplazar un callback existente
 
-Replace a callback having same name with new one
+Reemplazar un callback con uno nuevo del mismo nombre
 
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
 // replace callback `gorm:create` with new function `newCreateFunction` for Create process
 ```
 
-## Register callback orders
+## Registrar órdenes de callback
 
 Regiser callbacks with orders
 
@@ -50,17 +50,17 @@ db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update",
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 ```
 
-## Pre-Defined Callbacks
+## Callbacks Predefinidos
 
-GORM has defiend callbacks to perform CRUD operations, check them out before start write your plugins
+GORM tiene callbacks definidos para realizar operaciones CRUD, revíselos antes de escribir sus plugins
 
-- [Create callbacks](https://github.com/jinzhu/gorm/blob/master/callback_create.go)
+- [Crear callbacks](https://github.com/jinzhu/gorm/blob/master/callback_create.go)
 
-- [Update callbacks](https://github.com/jinzhu/gorm/blob/master/callback_update.go)
+- [Actualizar callbacks](https://github.com/jinzhu/gorm/blob/master/callback_update.go)
 
 - [Query callbacks](https://github.com/jinzhu/gorm/blob/master/callback_query.go)
 
-- [Delete callbacks](https://github.com/jinzhu/gorm/blob/master/callback_delete.go)
+- [Eliminar callbacks](https://github.com/jinzhu/gorm/blob/master/callback_delete.go)
 
 - Row Query callbacks - no callbacks registered by default
 
