@@ -55,7 +55,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### Actualizando un objeto
 
 Available hooks for updating
 
