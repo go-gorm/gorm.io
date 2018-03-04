@@ -1,10 +1,10 @@
 ---
-title: アソシエーション
-layout: ページ
+title: Associations
+layout: page
 ---
-## 自動作成/更新
+## Auto Create/Update
 
-GORM は自動の関連付けとその参照保存記録を作成/更新するとき。協会に主キーがある場合 GORM はそれを保存する `更新` を呼び出すが、それ以外の場合は、作成されます。
+GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
 
 ```go
 user := User{
@@ -83,7 +83,7 @@ or use GORM tags, `gorm:"association_autocreate:false"`
     }
     
 
-## 自動作成/更新
+## Skip AutoCreate/Update
 
 To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings togehter
 
@@ -129,7 +129,7 @@ type User struct {
 }
 ```
 
-## 関連タイプ
+## Association Mode
 
 Association Mode contains some helper methods to handle relationship related things easily.
 
