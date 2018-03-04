@@ -4,7 +4,7 @@ layout: page
 ---
 ## Has One
 
-A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+Una asociación `has one` también establece una conexión uno a uno con otro modelo, pero con semántica (y consecuencias) diferentes. This association indicates that each instance of a model contains or possesses one instance of another model.
 
 For example, if your application includes users and credit card, and each user can only has one credit card.
 
