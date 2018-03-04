@@ -4,7 +4,7 @@ layout: page
 ---
 ## Ciclo de Vida del Objeto
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+Los hooks son funciones que se llaman antes o después de la creación/consulta/actualización/eliminación.
 
 If you have defiend specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
 
