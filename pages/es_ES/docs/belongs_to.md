@@ -9,27 +9,16 @@ Una asociación `belongs to` establece una conexión uno a uno con otro modelo, 
 Por ejemplo, si su aplicación incluye usuarios y perfiles, y cada perfil puede asignarse exactamente a un usuario
 
 ```go
-type User struct {
-  gorm.Model
-  Name string
-}
-
-// `Profile` belongs to `User`, `UserID` is the foreign key
-type Profile struct {
-  gorm.Model
-  UserID int
-  User   User
-  Name   string
-}
+type User struct {   gorm.Model   Name string } // `Profile` pertenece a `User`, `UserID` es la clave foránea type Profile struct {   gorm.Model   UserID int   User User   Name string }
 ```
 
-## Foreign Key
+## Clave Foránea
 
-To define a belongs to relationship, the foreign key must exists, default foreign key uses owner's type name plus its primary key.
+Para definir una relación de pertenencia, la clave foránea debe existir, la clave foránea predeterminada usa el nombre de tipo más su clave principal.
 
-For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+Para el ejemplo anterior, para definir un modelo que pertenece a `User`, la clave foránea debe ser `UserID`.
 
-GORM provides a way to customzie the foreign key, for example:
+GORM proporciona una manera de personalizar la clave foránea, por ejemplo:
 
 ```go
 type User struct {
