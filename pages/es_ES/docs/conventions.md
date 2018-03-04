@@ -25,26 +25,10 @@ type User struct {   ID string // el campo llamado `ID` se utilizará como campo
 El nombre de la tabla es la versión pluralizada del nombre de la estructura
 
 ```go
-type User struct {} // default table name is `users`
-
-// Set User's table name to be `profiles`
-func (User) TableName() string {
-  return "profiles"
-}
-
-func (u User) TableName() string {
-    if u.Role == "admin" {
-        return "admin_users"
-    } else {
-        return "users"
-    }
-}
-
-// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
-db.SingularTable(true)
+type User struct {} // el nombre de la tabla por defecto es `users` // Establecer el nombre de la tabla de Usuario para ser `profiles` func (User) TableName() string {   return "profiles" } func (u User) TableName() string {     if u.Role == "admin" {         return "admin_users"     } else {         return "users"     } } // Deshabilita la pluralización del nombre de la tabla, si se establece en verdadero, el nombre de la tabla `User` será `user` db.SingularTable(true)
 ```
 
-### Specifying The Table Name
+### Especificando el Nombre de la Tabla
 
 ```go
 // Create `deleted_users` table with struct User's definition
