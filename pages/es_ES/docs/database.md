@@ -83,4 +83,4 @@ func main() {
 
 GORM admite oficialmente las bases de datos anteriores, pero puede escribir un dialecto para bases de datos no compatibles.
 
-To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
+Para escribir su propio dialecto, consulte: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
