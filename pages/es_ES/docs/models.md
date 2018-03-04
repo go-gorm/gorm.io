@@ -41,10 +41,10 @@ Las etiquetas son opcionales para usar al declarar modelos, las siguientes son l
 | NOT NULL        | Especifica la columna como no nula                                     |
 | AUTO_INCREMENT  | Especifica la columna como auto incrementable o no                     |
 | INDEX           | Crear índice con o sin nombre, el mismo nombre crea índices compuestos |
-| UNIQUE_INDEX    | Like `INDEX`, create unique index                                      |
-| EMBEDDED        | Set struct as embedded                                                 |
-| EMBEDDED_PREFIX | Set embedded struct's prefix name                                      |
-| -               | Ignore this fields                                                     |
+| UNIQUE_INDEX    | Al igual que `INDEX`, crea un índice único                             |
+| EMBEDDED        | Establece la estructura como integrada                                 |
+| EMBEDDED_PREFIX | Establece el prefijo del nombre de la estructura integrada             |
+| -               | Ignore estos campos                                                    |
 
 ### Struct tags for Associations
 
