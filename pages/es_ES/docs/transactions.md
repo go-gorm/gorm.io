@@ -1,6 +1,6 @@
 ---
 title: Transacciones
-layout: página
+layout: page
 ---
 GORM realiza operaciones `create`, `update`, `delete` simples en transacciones por defecto para asegurar la integridad de la base de datos.
 
