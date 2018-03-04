@@ -1,6 +1,6 @@
 ---
 title: Membuat
-layout: halaman
+layout: page
 ---
 ## Buat Catatan
 
