@@ -6,7 +6,7 @@ layout: page
 
 Models usually just normal Golang structs, basic Go types, pointer of them and [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner), [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are supported.
 
-Model Example:
+Ejemplo de Modelo:
 
 ```go
 type User struct {
@@ -23,24 +23,24 @@ type User struct {
 }
 ```
 
-## Struct tags
+## Etiquetas de estructura
 
-Tags are optional to use when declaring models, following are those tags that GORM supported.
+Las etiquetas son opcionales para usar al declarar modelos, las siguientes son las etiquetas que GORM admite.
 
-### Supported Struct tags
+### Etiquetas de Estructuración admitidas
 
-| Tag             | Description                                                            |
+| Etiqueta        | Descripción                                                            |
 | --------------- | ---------------------------------------------------------------------- |
-| Column          | Specifies column name                                                  |
-| Type            | Specifies column data type                                             |
-| Size            | Specifies column size, default 255                                     |
-| PRIMARY_KEY     | Specifies column as primary key                                        |
-| UNIQUE          | Specifies column as unique                                             |
-| DEFAULT         | Specifies column default value                                         |
-| PRECISION       | Specifies column precision                                             |
-| NOT NULL        | Specifies column as NOT NULL                                           |
-| AUTO_INCREMENT  | Specifies column auto incrementable or not                             |
-| INDEX           | Create index with or without name, same name creates composite indexes |
+| Column          | Especifica el nombre de la columna                                     |
+| Type            | Especifica el tipo de dato de la columna                               |
+| Size            | Especifica el tamaño de la columna, el predeterminado es 255           |
+| PRIMARY_KEY     | Especifica la columna como clave principal                             |
+| UNIQUE          | Especifica la columna como única                                       |
+| DEFAULT         | Especifica el valor predeterminado de la columna                       |
+| PRECISION       | Especifica la precision de la columna                                  |
+| NOT NULL        | Especifica la columna como no nula                                     |
+| AUTO_INCREMENT  | Especifica la columna como auto incrementable o no                     |
+| INDEX           | Crear índice con o sin nombre, el mismo nombre crea índices compuestos |
 | UNIQUE_INDEX    | Like `INDEX`, create unique index                                      |
 | EMBEDDED        | Set struct as embedded                                                 |
 | EMBEDDED_PREFIX | Set embedded struct's prefix name                                      |
