@@ -20,46 +20,22 @@ import _ "github.com/jinzhu/gorm/dialects/mysql" // import _ "github.com/jinzhu/
 
 ### MySQL
 
-**NOTA:** para manejar `time.Time` correctamente, necesita incluir `parseTime` como parámetro. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**NOTA:** para manejar `time.Time` correctamente, necesita incluir `parseTime` como parámetro. ([Más parámetros compatibles](https://github.com/go-sql-driver/mysql#parameters))
 
 ```go
-import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/mysql"
-)
-
-func main() {
-  db, err := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
-  defer db.Close()
-}
+import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/mysql" ) func main() {   db, err := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")   defer db.Close() }
 ```
 
 ### PostgreSQL
 
 ```go
-import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/postgres"
-)
-
-func main() {
-  db, err := gorm.Open("postgres", "host=myhost port=myport user=gorm dbname=gorm password=mypassword")
-  defer db.Close()
-}
+import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/postgres" ) func main() {   db, err := gorm.Open("postgres", "host=myhost port=myport user=gorm dbname=gorm password=mypassword")   defer db.Close() }
 ```
 
 ### Sqlite3
 
 ```go
-import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/sqlite"
-)
-
-func main() {
-  db, err := gorm.Open("sqlite3", "/tmp/gorm.db")
-  defer db.Close()
-}
+import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/sqlite" ) func main() {   db, err := gorm.Open("sqlite3", "/tmp/gorm.db")   defer db.Close() }
 ```
 
 ### SQL Server
