@@ -1,8 +1,8 @@
 ---
 layout: raw
-deskripsi: Perpustakaan ORM yang fantastis untuk Golang, bertujuan untuk menjadi pengembang yang ramah.
-sub judul: Perpustakaan ORM yang fantastis untuk Golang
-komentar: salah
+description: Perpustakaan ORM yang fantastis untuk Golang, bertujuan untuk menjadi pengembang yang ramah.
+subject: Perpustakaan ORM yang fantastis untuk Golang
+comments: false
 ---
 
 <div class="container page-not-found">
