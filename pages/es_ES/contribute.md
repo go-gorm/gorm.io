@@ -1,12 +1,12 @@
 ---
-title: Contribute to GORM
-layout: page
+title: Contribuir a GORM
+layout: página
 ---
-**You can help to deliver a better GORM! there are many things that you can do:**
+**¡Puedes ayudar a entregar un GORM mejorado! hay muchas cosas que puedes hacer:**
 
-## Help others to know GORM
+## Ayudar a otros a conocer GORM
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
+* Compartir GORM con el mundo a través de canales sociales, o simplemente informarle a las personas que podrían estar interesadas
 * Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
 * Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
 * Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
