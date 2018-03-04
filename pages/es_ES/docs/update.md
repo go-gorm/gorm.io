@@ -1,8 +1,8 @@
 ---
-title: Update
-layout: page
+title: Actualizar
+layout: página
 ---
-## Update All Fields
+## Actualizar Todos los Campos
 
 `Save` will include all fields when perform the Updating SQL, even it is not changed
 
