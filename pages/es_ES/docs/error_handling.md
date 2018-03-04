@@ -36,17 +36,8 @@ Es común que se hayan producido varios errores durante el procesamiento de dato
 
 ## Error RecordNotFound
 
-GORM provides a shortcut to handle `RecordNotFound` error, if there are several errors happened, it will check each error if any of them is `RecordNotFound` error.
+GORM proporciona un acceso directo para manejar el error `RecordNotFound`, si se producen varios errores, comprobará cada error por si alguno de ellos es el error `RecordNotFound`.
 
 ```go
-// Check if returns RecordNotFound error
-db.Where("name = ?", "hello world").First(&user).RecordNotFound()
-
-if db.Model(&user).Related(&credit_card).RecordNotFound() {
-  // record not found
-}
-
-if err := db.Where("name = ?", "jinzhu").First(&user).Error; gorm.IsRecordNotFoundError(err) {
-  // record not found
-}
+// Comprueba si retorna un error RecordNotFound db.Where("name = ?", "hello world").First(&user).RecordNotFound() if db.Model(&user).Related(&credit_card).RecordNotFound() {   // registro no encontrado } if err := db.Where("name = ?", "jinzhu").First(&user).Error; gorm.IsRecordNotFoundError(err) {   // registro no encontrado }
 ```
