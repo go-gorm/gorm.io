@@ -20,9 +20,9 @@ GORM usa el campo con el nombre `ID` como clave principal por defecto.
 type User struct {   ID string // el campo llamado `ID` se utilizará como campo primario por defecto   Name string } // Establecer campo `AnimalID` como campo primario type Animal struct {   AnimalID int64 `gorm:"primary_key"`   Name string   Age int64 }
 ```
 
-## Pluralized Table Name
+## Nombre de la Tabla Pluralizada
 
-Table name is the pluralized version of struct name
+El nombre de la tabla es la versión pluralizada del nombre de la estructura
 
 ```go
 type User struct {} // default table name is `users`
