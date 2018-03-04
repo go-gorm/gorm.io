@@ -1,6 +1,6 @@
 ---
 title: Pertanyaan
-layout: halaman
+layout: page
 ---
 ## Pertanyaan
 
