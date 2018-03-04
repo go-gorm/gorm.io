@@ -4,7 +4,7 @@ layout: page
 ---
 GORM itself is powered by `Callbacks`, so you could fully customize GORM as you want
 
-## Register a new callback
+## Neues Rennen registrieren
 
 Register a callback into callbacks
 
@@ -19,7 +19,7 @@ db.Callback().Create().Register("update_created_at", updateCreated)
 // register a callback for Create process
 ```
 
-## Delete an existing callback
+## Löscht einen existierenden Alias
 
 Delete a callback from callbacks
 
@@ -28,7 +28,7 @@ db.Callback().Create().Remove("gorm:create")
 // delete callback `gorm:create` from Create callbacks
 ```
 
-## Replace an existing callback
+## Löscht einen existierenden Alias
 
 Replace a callback having same name with new one
 
