@@ -1,10 +1,10 @@
 ---
-title: Transactions
+title: Transaksi
 layout: page
 ---
-GORM perform single `create`, `update`, `delete` operations in transactions by default to ensure database data integrity.
+GORM melakukan operasi tunggal `membuat`, `perbarui`, `hapus` dalam transaksi secara default untuk memastikan integritas data basisdata.
 
-If you want to tread multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
+Jika anda ingin langkah banyak `membuat`, `perbarui`, `hapus` sebagai satu operasi atomik, `Transaksi` dibuat untuk itu.
 
 ## Transaksi
 
