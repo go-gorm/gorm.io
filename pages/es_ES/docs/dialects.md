@@ -16,9 +16,9 @@ Ciertos dialectos de SQL se envían con sus propios tipos de columna personaliza
 
 ### PostgreSQL
 
-GORM supports loading the following PostgreSQL exclusive column types: - jsonb - hstore
+GORM admite la carga de los siguientes tipos de columnas exclusivas de PostgreSQL: -jsonb -hstore
 
-Given the following Model definition:
+Dada la siguiente definición de modelo:
 
 ```go
 import (
@@ -34,7 +34,7 @@ type Document struct {
 }
 ```
 
-You may use the model like so:
+Puede utilizar el modelo de la siguiente forma:
 
 ```go
 password := "0654857340"
