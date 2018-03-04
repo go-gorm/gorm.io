@@ -1,6 +1,6 @@
 ---
 title: Perbarui
-layout: halaman
+layout: page
 ---
 ## Perbarui Semua Bidang
 
