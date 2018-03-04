@@ -1,10 +1,10 @@
 ---
-title: Conventions
+title: Convenciones
 layout: page
 ---
 ## gorm.Model
 
-`gorm.Model` is a struct including some basic fields, which including fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
+`gorm.Model` es una estructura que incluye algunos campos básicos, que incluyen los campos `ID`, `CreatedAt`, `UpdateAt`, `DeletedAt`.
 
 It could be embeded into your model or build your own model w/o it.
 
