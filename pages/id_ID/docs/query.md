@@ -390,7 +390,7 @@ type Result struct {
 db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
 ```
 
-### Joins
+### Gabung
 
 Specify Joins conditions
 
@@ -408,7 +408,7 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ## Pluck
 
-Query single column from a model as a map, if you want to query multiple columns, you should use [`Scan`](#Scan) instead
+Permintaan kolom tunggal dari sebuah model sebagai peta, jika anda ingin permintaan kolom ganda, anda harus menggunakan [`Pindai`](#Scan) sebagai gantinya
 
 ```go
 var ages []int64
@@ -423,9 +423,9 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Select("name, age").Find(&users)
 ```
 
-## Scan
+## Pindai
 
-Scan results into another struct.
+Pindai hasil ke dalam struktur lain.
 
 ```go
 type Result struct {
