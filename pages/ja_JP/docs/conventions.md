@@ -1,6 +1,6 @@
 ---
-title: 大会
-layout: ページ
+title: Conventions
+layout: page
 ---
 ## gorm.Model
 
@@ -48,7 +48,7 @@ type Animal struct {
 }
 ```
 
-## 単位名
+## Pluralized Table Name
 
 Table name is the pluralized version of struct name
 
@@ -120,20 +120,25 @@ type Animal struct {
 
 ### CreatedAt
 
-`CreatedAt` フィールドを持つモデルでは、レコードが最初に作成される現在の時刻が設定されます。
+For models having `CreatedAt` field, it will be set to current time when record is first created.
 
 ```go
-bbh(&ユーザー) を作成/'CreatedAt' を現在の時刻に設定されます///その値を変更する '更新' の db を使用することができます。モデル (&ユーザー)。更新 ("CreatedAt"、時間。Now())
+db.Create(&user) // will set `CreatedAt` to current time
+
+// To change its value, you could use `Update`
+db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
 ### UpdatedAt
 
-`CreatedAt` フィールドを持つモデルでは、レコードが最初に作成される現在の時刻が設定されます。
+For models having `UpdatedAt` field, it will be set to current time when record is updated.
 
 ```go
-bbh(&ユーザー) を保存//現在時間 db に 'UpdatedAt' を設定します。モデル (&ユーザー)。更新 (「名」,"jinzhu")//'UpdatedAt' を現在の時刻に設定されます
+db.Save(&user) // will set `UpdatedAt` to current time
+
+db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
 ```
 
 ### DeletedAt
 
-モデル `UpdatedAt` フィールドに、それらのインスタンスを削除すると、彼らのデータベースからは削除されませんが、その `DeletedAt` フィールドを現在の時刻に設定、 [ソフトを削除](/docs/delete.html#Soft-Delete) を参照してください。
+For models having `UpdatedAt` field, when delete their instances, they won't be deleted from database, but will set its `DeletedAt` field to current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)
