@@ -1,8 +1,8 @@
 ---
-title: 削除
-layout: ページ
+title: Delete
+layout: page
 ---
-## レコードを削除する
+## Delete Record
 
 **WARNING** When delete a record, you need to ensure it's primary field has value, and GORM will use the primary key to delete the record, if primary field's blank, GORM will delete all records for the model
 
@@ -16,9 +16,9 @@ db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email)
 //// DELETE from emails where id=10 OPTION (OPTIMIZE FOR UNKNOWN);
 ```
 
-## バッチの削除
+## Batch Delete
 
-充電のすべての履歴を削除します
+Delete all matched records
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
