@@ -13,11 +13,11 @@ layout: página
 
 ## Documentación y Escritura
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* Haga la documentación de GORM mejor escribiendo contenido novedoso, corrigiendo material existente
 
-### Translate this site
+### Traducir este sitio
 
-You can translate current site with <https://translate.gorm.io>
+Puede traducir el sitio actual con <https://translate.gorm.io>
 
 To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
 
