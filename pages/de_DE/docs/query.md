@@ -1,8 +1,8 @@
 ---
-title: Query
-layout: page
+title: Abfragen
+layout: seite
 ---
-## Query
+## Abfragen
 
 ```go
 // Get first record, order by primary key
@@ -26,7 +26,7 @@ db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
 
-### Where
+### Wo[de-De]
 
 #### Plain SQL
 
@@ -127,7 +127,7 @@ db.Not(User{Name: "jinzhu"}).First(&user)
 //// SELECT * FROM users WHERE name <> "jinzhu";
 ```
 
-### Or
+### Oder
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -142,7 +142,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 //// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-### Inline Condition
+### Inline-Notation
 
 Works similar like `Where`.
 
@@ -216,7 +216,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 ```
 
-### Assign
+### Zuordnen
 
 Assign argument to struct regardless it is found or not
 
@@ -292,7 +292,7 @@ db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?
 // SELECT * FROM "orders"  WHERE "orders"."deleted_at" IS NULL AND (amount > (SELECT AVG(amount) FROM "orders"  WHERE (state = 'paid')));
 ```
 
-### Select
+### Auswählen
 
 Specify fields that you want to retrieve from database, by default, will select all fields
 
@@ -307,7 +307,7 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 //// SELECT COALESCE(age,'42') FROM users;
 ```
 
-### Order
+### Auftrag
 
 Specify order when retrieve records from database, set reorder (the second argument) to `true` to overwrite defined conditions
 
@@ -353,7 +353,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 //// SELECT * FROM users; (users2)
 ```
 
-### Count
+### Anzahl
 
 Get how many records for a model
 
@@ -424,7 +424,7 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Select("name, age").Find(&users)
 ```
 
-## Scan
+## Scannen
 
 Scan results into another struct.
 
