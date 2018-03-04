@@ -2,7 +2,7 @@
 title: Hooks
 layout: page
 ---
-## Object Life Cycle
+## Ciclo de Vida del Objeto
 
 Hooks are functions that are called before or after creation/querying/updating/deletion.
 
