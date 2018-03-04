@@ -6,31 +6,13 @@ layout: page
 
 `gorm.Model` es una estructura que incluye algunos campos básicos, que incluyen los campos `ID`, `CreatedAt`, `UpdateAt`, `DeletedAt`.
 
-It could be embeded into your model or build your own model w/o it.
+Puede estar integrado en su modelo o construir su propio modelo sin él.
 
 ```go
-// gorm.Model definition
-type Model struct {
-  ID        uint `gorm:"primary_key"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt *time.Time
-}
-
-// Inject fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` into model `User`
-type User struct {
-  gorm.Model
-  Name string
-}
-
-// Declaring model w/o gorm.Model
-type User struct {
-  ID   int
-  Name string
-}
+// Definición de gorm.Model type Model struct {   ID uint `gorm:"primary_key"`   CreatedAt time.Time   UpdatedAt time.Time   DeletedAt *time.Time } // Inyectar campos `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` en el modelo `User` type User struct {   gorm.Model   Name string } // Declarando el modelo sin gorm.Model type User struct {   ID int   Name string }
 ```
 
-## `ID` as Primary Key
+## `ID` como Clave Primaria
 
 GORM use field with name `ID` as primary key by default.
 
