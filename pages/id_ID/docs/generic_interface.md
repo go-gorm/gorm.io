@@ -1,6 +1,6 @@
 ---
 title: Antarmuka basisdata generik sql.DB
-layout: halaman
+layout: page
 ---
 GORM menyediakan metode `DB` yang mengembalikan antarmuka basisdata generik [*sql.DB](http://golang.org/pkg/database/sql/#DB) dari koneksi `*gorm.DB` saat ini
 
