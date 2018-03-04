@@ -1,6 +1,6 @@
 ---
 title: Comunidad GORM
-layout: página
+layout: page
 ---
 ## Preguntar
 
