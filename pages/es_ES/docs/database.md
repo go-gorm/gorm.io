@@ -2,15 +2,15 @@
 title: Connecting to the database
 layout: page
 ---
-# Connecting to the database
+# Conectándose a la Base de Datos
 
-In order to connect to a database, you need to import the database's driver first. For example:
+Para conectarse a una base de datos, necesita importar primero el controlador de la base de datos. Por ejemplo:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers, for easier to remember the import path, so you could import the mysql driver with
+GORM ha envuelto algunos controladores, para que sea más fácil recordar su ruta de importación, por lo que podría importar el controlador de mysql con
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -21,7 +21,7 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ## MySQL
 
-**NOTE:** In order to handle `time.Time`, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**NOTA:** para manejar `time.Time`, necesita incluir `parseTime` como parámetro. ([Más parámetros compatibles](https://github.com/go-sql-driver/mysql#parameters))
 
 ```go
 import (
@@ -65,7 +65,7 @@ func main() {
 
 ## SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[Comenzando con SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), puede ejecutarse en su [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) con Docker
 
 ```go
 import (
@@ -79,8 +79,8 @@ func main() {
 }
 ```
 
-## Write Dialect for unsupported databases
+## Escribir Dialectos para bases de datos no compatibles
 
-GORM officially supports the above databases, but you could write a dialect for unsupported databases.
+GORM admite oficialmente las bases de datos anteriores, pero puede escribir un dialecto para bases de datos no compatibles.
 
 To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
