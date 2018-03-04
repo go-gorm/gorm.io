@@ -1,5 +1,5 @@
 ---
-title: Convenciones
+title: Conventions
 layout: page
 ---
 ## gorm.Model
@@ -54,13 +54,10 @@ type User struct {   ID uint // el nombre de la columna es `id`   Name string //
 
 ### CreatedAt
 
-For models having `CreatedAt` field, it will be set to current time when record is first created.
+Para los modelos que tienen el campo `CreatedAt`, se establecerá en la hora actual cuando se cree un registro por primera vez.
 
 ```go
-db.Create(&user) // will set `CreatedAt` to current time
-
-// To change its value, you could use `Update`
-db.Model(&user).Update("CreatedAt", time.Now())
+db.Create(&user) // se establecerá `CreatedAt` a la hora actual // Para cambiar su valor, puede usar `Update` db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
 ### UpdatedAt
