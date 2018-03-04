@@ -1,6 +1,6 @@
 ---
 title: Konvensi
-layout: halaman
+layout: page
 ---
 ## gorm.Model
 
