@@ -4,7 +4,7 @@ layout: página
 ---
 ## Actualizar Todos los Campos
 
-`Save` will include all fields when perform the Updating SQL, even it is not changed
+`Save` incluirá todos los campos al realizar la Actualización SQL, aún cuando no es cambiado
 
 ```go
 db.First(&user)
@@ -16,9 +16,9 @@ db.Save(&user)
 //// UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update Changed Fields
+## Actualizar Campos Editados
 
-If you only want to update changed Fields, you could use `Update`, `Updates`
+Si sólo quiere actualizar los Campos editados, puede utilizar `Update`, `Updates`
 
 ```go
 // Update single attribute if it is changed
@@ -42,9 +42,9 @@ db.Model(&user).Updates(User{Name: "hello", Age: 18})
 db.Model(&user).Updates(User{Name: "", Age: 0, Actived: false})
 ```
 
-## Update Selected Fields
+## Actualizar Campos Seleccionados
 
-If you only want to update or ignore some fields when updating, you could use `Select`, `Omit`
+Si solo desea actualizar o ignorar algunos campos al actualizar, puede utilizar `Select`, `Omit`
 
 ```go
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
