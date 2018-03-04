@@ -1,6 +1,6 @@
 ---
 title: Menghubungkan ke database
-layout: halaman
+layout: page
 ---
 ## Menghubungkan ke database
 
