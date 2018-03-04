@@ -37,7 +37,7 @@ type CreditCard struct {
 
 ## Asociación ForeignKey
 
-By default, the owner will save the `belogns to model`'s primary into foreign key, you could change to save another field, like use `Number` for below example.
+Por defecto, el usuario guardará la asociación `belogns to model` en una clave foránea, puede cambiarla para guardar en otro campo, tal como `Number` para el siguiente ejemplo.
 
 ```go
 type User struct {
@@ -52,9 +52,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## Asociación de Polimorfismo
 
-Supports polymorphic has-many and has-one associations.
+Admite asociaciones polimórficas para has-many y has-one.
 
 ```go
   type Cat struct {
