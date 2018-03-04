@@ -77,19 +77,14 @@ Admite asociaciones polimórficas para has-many y has-one.
   }
 ```
 
-Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
+Nota: las asociaciones polimórficas belongs-to y many-to-many NO son compatibles y producirán errores.
 
-## Working with Has One
+## Trabajando con Has One
 
-You could find `has one` assciations with `Related`
+Puede encontrar asociaciones `has one` con `Related`
 
 ```go
-var card CreditCard
-db.Model(&user).Related(&card, "CreditCard")
-//// SELECT * FROM credit_cards WHERE user_id = 123; // 123 is user's primary key
-// CreditCard is user's field name, it means get user's CreditCard relations and fill it into variable card
-// If the field name is same as the variable's type name, like above example, it could be omitted, like:
-db.Model(&user).Related(&card)
+var card CreditCard db.Model(&user).Related(&card, "CreditCard") //// SELECT * FROM credit_cards WHERE user_id = 123; // 123 es la clave principal del usuario // CreditCard es el nombre del campo del usuario, es decir obtener las relaciones CreditCard del usuario y llenar en una tarjeta variable // si es igual que el nombre de tipo de la variable, como en el ejemplo anterior, podría omitirse, tal como: db.Model(&user).Related(&card)
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Para un uso avanzado, consulte [Modo de Asociación](/docs/associations.html#Association-Mode)
