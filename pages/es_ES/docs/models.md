@@ -1,5 +1,5 @@
 ---
-title: Declaring Models
+title: Declarando Modelos
 layout: page
 ---
 ## Declaring Models
