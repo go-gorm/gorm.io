@@ -39,10 +39,10 @@ Tanda opsional untuk digunakan saat mendeklarasikan model, berikut adalah tanda 
 | BAWAAN          | Menentukan nilai kolom bawaan                                                  |
 | KESEKSAMAAN     | Menentukan keseksamaan kolom                                                   |
 | TIDAK BATAL     | Menentukan kolom sebagai TIDAK BATAL                                           |
-| AUTO_INCREMENT  | Specifies column auto incrementable or not                                     |
-| INDEX           | Buat indeks dengan atau tanpa nama, nama yang sama menciptakan indeks komposit |
-| UNIQUE_INDEX    | Like `INDEX`, create unique index                                              |
-| EMBEDDED        | Tetapkan struct sebagai tertanam                                               |
+| AUTO_INCREMENT  | Tentukan kolom yang bisa kenaikan otomatis atau tidak                          |
+| INDEKS          | Buat indeks dengan atau tanpa nama, nama yang sama menciptakan indeks komposit |
+| UNIQUE_INDEX    | Seperti `INDEKS`, membuat indeks unik                                          |
+| TERTANAM        | Tetapkan struct sebagai tertanam                                               |
 | EMBEDDED_PREFIX | Tetapkan nama awalan struct terstruktur                                        |
 | -               | Abaikan bidang ini                                                             |
 
@@ -53,9 +53,9 @@ Periksa bagian Asosiasi untuk rinciannya
 | Label                              | Keterangan                                           |
 | ---------------------------------- | ---------------------------------------------------- |
 | MANY2MANY                          | Menentukan ikut nama tabel                           |
-| FOREIGNKEY                         | Specifies foreign key                                |
+| FOREIGNKEY                         | Menentukan kunci asing                               |
 | ASSOCIATION_FOREIGNKEY             | Menentukan asosiasi kunci asing                      |
-| POLYMORPHIC                        | Specifies polymorphic type                           |
+| POLYMORPHIC                        | Menentukan jenis polimorfik                          |
 | POLYMORPHIC_VALUE                  | Menentukan nilai polimorfik                          |
 | JOINTABLE_FOREIGNKEY               | Menentukan kunci asing yang bisa digabungkan         |
 | ASSOCIATION_JOINTABLE_FOREIGNKEY | Tentukan asosiasi kunci asing yang dapat digabungkan |
