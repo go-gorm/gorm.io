@@ -2,7 +2,7 @@
 title: Menghubungkan ke basis data
 layout: page
 ---
-# Connecting to the database
+# Menghubungkan ke basisdata
 
 Agar bisa terhubung ke database, anda perlu mengimpor driver database terlebih dahulu. Sebagai contoh:
 
@@ -63,7 +63,7 @@ func main() {
 }
 ```
 
-## SQL Server
+## Server SQL
 
 [Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 

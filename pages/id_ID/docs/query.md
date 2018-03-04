@@ -1,8 +1,8 @@
 ---
-title: Query
+title: Pertanyaan
 layout: page
 ---
-## Query
+## Pertanyaan
 
 ```go
 // Dapatkan rekaman pertama, pesan menurut kunci utama db.Pertama(&pengguna)
@@ -26,7 +26,7 @@ db.Pertama(&Pengguna, 10)
 
 ### Dimana
 
-#### Plain SQL
+#### SQL biasa
 
 ```go
 // Dapatkan rekaman pertama yang cocok
@@ -126,7 +126,7 @@ db.tidak(pengguna{Nama: "jinzhu"}).Pertama(&pengguna)
 //// PILIH * DARI DI MANA nama pengguna <> "jinzhu";
 ```
 
-### Or
+### Atau
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -141,9 +141,9 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 //// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-### Inline Condition
+### Kondisi di barisan
 
-Works similar like `Where`.
+Bekerja mirip seperti`Dimana`.
 
 When using with [Multiple Immediate Methods](/docs/method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
 
@@ -171,7 +171,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 //// SELECT * FROM users WHERE age = 20;
 ```
 
-### Extra Querying option
+### Pilihan Pertanyaan Tambahan
 
 ```go
 // Add extra SQL option for selecting SQL
@@ -181,7 +181,7 @@ db.Set("gorm:query_option", "FOR UPDATE").First(&user, 10)
 
 ## FirstOrInit
 
-Get first matched record, or initalize a new one with given conditions (only works with struct, map conditions)
+Dapatkan catatan pertama yang cocok, atau inisialisasi yang baru dengan kondisi tertentu (hanya bekerja dengan struktur, kondisi peta)
 
 ```go
 // Unfound
@@ -197,7 +197,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 
 ### Attrs
 
-Initalize struct with argument if record not found
+Inisialisasi struktur dengan argumen jika catatan tidak ditemukan
 
 ```go
 // Unfound
@@ -215,9 +215,9 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 ```
 
-### Assign
+### Menetapkan
 
-Menetapkan argumen untuk struct tanpa itu ditemukan atau tidak
+Menetapkan argumen untuk struktur tanpa peduli itu ditemukan atau tidak
 
 ```go
 // Unfound
@@ -232,7 +232,7 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record, or create a new one with given conditions (only works with struct, map conditions)
+Dapatkan catatan pertama yang cocok, atau membuat yang baru dengan kondisi tertentu (hanya bekerja dengan struktur, kondisi peta)
 
 ```go
 // Unfound
@@ -247,7 +247,7 @@ db.Where(User{Name: "Jinzhu"}).FirstOrCreate(&user)
 
 ### Attrs
 
-Assign struct with argument if record not found and create with those values
+Menetapkan struktur dengan argumen jika catatan tidak ditemukan dan buat dengan nilai-nilai tersebut
 
 ```go
 // Unfound
@@ -264,7 +264,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 
 ### Assign
 
-Assign it to the record regardless it is found or not, and save back to database.
+Menetapkannya untuk mencatat tanpa peduli itu ditemukan atau tidak, dan simpan kembali ke basisdata.
 
 ```go
 // Unfound
@@ -280,7 +280,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "jinzhu", Age: 30}
 ```
 
-## Advanced Query
+## Pertanyaan Lanjutan
 
 ### SubQuery
 
@@ -291,9 +291,9 @@ db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?
 // SELECT * FROM "orders"  WHERE "orders"."deleted_at" IS NULL AND (amount > (SELECT AVG(amount) FROM "orders"  WHERE (state = 'paid')));
 ```
 
-### Select
+### Pilih
 
-Tentukan bidang yang ingin anda ambil dari database, secara bawaan, akan memilih semua bidang
+Tentukan bidang yang ingin anda ambil kembali dari basisdata, secara default, akan memilih semua bidang
 
 ```go
 db.Select("name, age").Find(&users)
@@ -306,9 +306,9 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 //// SELECT COALESCE(age,'42') FROM users;
 ```
 
-### Order
+### Urutan
 
-Specify order when retrieve records from database, set reorder (the second argument) to `true` to overwrite defined conditions
+Tentukan urutan ketika mengambil catatan dari basisdata, menetapkan urutan ulang (argumen kedua) ke `benar` untuk menimpa kondisi yang didefinisikan
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -324,9 +324,9 @@ db.Order("age desc").Find(&users1).Order("age", true).Find(&users2)
 //// SELECT * FROM users ORDER BY age; (users2)
 ```
 
-### Limit
+### Batas
 
-Specify the max number of records to retrieve
+Tentukan jumlah maksimum dari catatan untuk mengambil kembali
 
 ```go
 db.Limit(3).Find(&users)
@@ -340,7 +340,7 @@ db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 
 ### Offset
 
-Specify the number of records to skip before starting to return the records
+Tentukan jumlah dari catatan untuk melewati sebelum memulai untuk mengembalikan catatan
 
 ```go
 db.Offset(3).Find(&users)
@@ -352,9 +352,9 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 //// SELECT * FROM users; (users2)
 ```
 
-### Count
+### Hitungan
 
-Get how many records for a model
+Dapatkan seberapa banyak catatan untuk sebuah model
 
 ```go
 db.Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Find(&users).Count(&count)
@@ -368,9 +368,9 @@ db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
 ```
 
-**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns
+**CATATAN** Ketika menggunakan `Hitungan` dalam rantai pertanyaan, itu harus menjadi yang terakhir, karena akan menimpa `PILIH` kolom
 
-### Group & Having
+### Kelompok & Memiliki
 
 ```go
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Rows()
@@ -390,7 +390,7 @@ type Result struct {
 db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
 ```
 
-### Joins
+### Gabung
 
 Specify Joins conditions
 
@@ -408,7 +408,7 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ## Pluck
 
-Query single column from a model as a map, if you want to query multiple columns, you should use [`Scan`](#Scan) instead
+Permintaan kolom tunggal dari sebuah model sebagai peta, jika anda ingin permintaan kolom ganda, anda harus menggunakan [`Pindai`](#Scan) sebagai gantinya
 
 ```go
 var ages []int64
@@ -423,9 +423,9 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Select("name, age").Find(&users)
 ```
 
-## Scan
+## Pindai
 
-Scan results into another struct.
+Pindai hasil ke dalam struktur lain.
 
 ```go
 type Result struct {

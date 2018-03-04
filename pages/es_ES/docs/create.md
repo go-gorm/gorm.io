@@ -2,21 +2,15 @@
 title: Create
 layout: page
 ---
-## Create Record
+## Crear un Registro
 
 ```go
-user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
-
-db.NewRecord(user) // => returns `true` as primary key is blank
-
-db.Create(&user)
-
-db.NewRecord(user) // => return `false` after `user` created
+user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()} db.NewRecord(user) // => retorna `true` como clave primaria en blanco db.Create(&user) db.NewRecord(user) // => retorna `false` después de crear `user`
 ```
 
-## Default Values
+## Valores por Defecto
 
-You could define field's default value with tag, for example:
+Puede definir el valor predeterninado del campo con una etiqueta, por ejemplo:
 
 ```go
 type Animal struct {
@@ -26,32 +20,16 @@ type Animal struct {
 }
 ```
 
-Then the inserting SQL will exclude those fields that don't have value or having [zero values](https://tour.golang.org/basics/12), after insert the record into database, gorm will load those fields's value from database.
+A continuación, la inserción de SQL excluirá aquellos campos que no tienen valor o que no tienen [valores en cero](https://tour.golang.org/basics/12), después de insertar el registro en la base de datos, gorm cargará el valor de esos campos de la base de datos.
 
 ```go
-var animal = Animal{Age: 99, Name: ""}
-db.Create(&animal)
-// INSERT INTO animals("age") values('99');
-// SELECT name from animals WHERE ID=111; // the returning primary key is 111
-// animal.Name => 'galeone'
+var animal = Animal{Age: 99, Name: ""} db.Create(&animal) // INSERT INTO animals("age") values('99'); // SELECT name from animals WHERE ID=111; // el retorno de la clave primaria es 111 // animal.Name => 'galeone'
 ```
 
-**NOTE** all fields having zero value, like ``, `''`, `false` or other [zero values](https://tour.golang.org/basics/12) won't be saved into database but will use its default value, it you want to avoid this, consider to use pointer type or scaner/valuer, e.g:
+**NOTA** todos los campos tienen valor cero, como ``, `"`, `false` u otro [valor cero](https://tour.golang.org/basics/12) no se guardarán en la base de datos pero usarán su valor por defecto, si desea evitar esto, considere usar el tipo de puntero o scaner/valuer, por ejemplo:
 
 ```go
-// Use pointer value
-type User struct {
-  gorm.Model
-  Name string
-  Age  *int `gorm:"default:18"`
-}
-
-// Use scanner/valuer
-type User struct {
-  gorm.Model
-  Name string
-  Age  sql.NullInt64 `gorm:"default:18"`
-}
+// Usar valor de puntero type User struct {   gorm.Model   Name string   Age *int `gorm:"default:18"` } // Usar scanner/valuer type User struct {   gorm.Model   Name string   Age sql.NullInt64 `gorm:"default:18"` }
 ```
 
 ## Setting Field Values In Hooks
@@ -65,10 +43,8 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 }
 ```
 
-## Extra Creating option
+## Opción de Creación Adicional
 
 ```go
-// Add extra SQL option for inserting SQL
-db.Set("gorm:insert_option", "ON CONFLICT").Create(&product)
-// INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
+// Agregar una opción SQL adicional para insertar SQL db.Set("gorm:insert_option", "ON CONFLICT").Create(&product) // INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
 ```

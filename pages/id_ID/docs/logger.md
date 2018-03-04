@@ -1,6 +1,6 @@
 ---
 title: Logger
-layout: halaman
+layout: page
 ---
 ## Logger
 

@@ -1,53 +1,53 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  home: <i class="fa fa-home"></i>Inicio
+  docs: <i class="fa fa-book"></i>Documentos
   api: <i class="fa fa-cogs"></i>API
-  github: <i class="fa fa-github"></i>Github
-  community: <i class="fa fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  github: <i class="fa fa-github"></i>GitHub
+  community: <i class="fa fa-slack"></i>Comunidad
+  contribute: <i class="fa fa-rocket"></i>Contribuir
+  search: Buscar documentos...
 index:
-  get_started: Get started
+  get_started: Empezar
 page:
-  contents: Contents
-  back_to_top: Back to Top
-  improve: Improve this doc
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  contents: Contenidos
+  back_to_top: Volver al principio
+  improve: Mejorar este documento
+  prev: Anterior
+  next: Siguiente
+  last_updated: "Última actualización: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
+    getting_started: Empezando
+    overview: Información General
     declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
+    conventions: Convenciones
+    connecting_to_the_database: Conectando a Base de Datos
     crud_interface: CRUD Interface
-    create: Create
+    create: Crear
     query: Query
-    update: Update
-    delete: Delete
-    associations: Associations
-    belongs_to: Belongs To
+    update: Actualizar
+    delete: Eliminar
+    associations: Asociaciones
+    belongs_to: Pertenece A
     has_one: Has One
     has_many: Has Many
     many_to_many: Many To Many
     preload: Preloading (Eager Loading)
-    tutorials: Tutorials
+    tutorials: Tutoriales
     method_chaining: Method Chaining
-    error_handling: Error Handling
-    hooks: Hooks
-    transactions: Transactions
-    migration: Migration
+    error_handling: Manejo de Errores
+    hooks: Ganchos
+    transactions: Transacciones
+    migration: Migración
     raw_sql_and_builder: Raw SQL and SQL Builder
-    generic_interface: Generic Database Interface
-    advanced_topics: Advanced Topics
+    generic_interface: Interface de Base de Datos Genérica
+    advanced_topics: Tópicos Avanzados
     composite_primary_key: Composite Primary Key
     write_plugins: Write Plugins
     dialects: GORM Dialects
     logger: Logger
     change_log: ChangeLog
     community: Community
-    contribute: Contribute
-    translate: Translate current site
+    contribute: Contribuir
+    translate: Traducir sitio actual

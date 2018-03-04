@@ -1,54 +1,54 @@
 ---
-title: Contribute to GORM
+title: Contribuir a GORM
 layout: page
 ---
-**You can help to deliver a better GORM! there are many things that you can do:**
+**¡Puedes ayudar a entregar un GORM mejorado! hay muchas cosas que puedes hacer:**
 
-## Help others to know GORM
+## Ayudar a otros a conocer GORM
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
+* Compartir GORM con el mundo a través de canales sociales, o simplemente informarle a las personas que podrían estar interesadas
+* Ayudar a los recién llegados a resolver preguntas sobre [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Problemas de Github](https://github.com/jinzhu/gorm/issues) y [Salas de Chat](/community.html#Chat)
+* Escribir tutoriales, grabar videos, etc... (No se olvide de añadirlos a [la lista](/community.html))
+* Ayudar a promover GORM en Github [Protagonizando](https://github.com/jinzhu/gorm/stargazers) y [Observando](https://github.com/jinzhu/gorm/watchers) el [Repositorio de GORM](https://github.com/jinzhu/gorm)
 
-## Documentation and Writing
+## Documentación y Escritura
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* Haga la documentación de GORM mejor escribiendo contenido novedoso, corrigiendo material existente
 
-### Translate this site
+### Traducir este sitio
 
-You can translate current site with <https://translate.gorm.io>
+Puede traducir el sitio actual con <https://translate.gorm.io>
 
-To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
+Para traducir GORM en su idioma debe publicar una solicitud en [Github issues](https://github.com/jinzhu/gorm.io/issues) para que sea añadido a <https://translate.gorm.io>.
 
-## Program
+## Programa
 
 * Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features from [Github Issues](https://github.com/jinzhu/gorm/issues)
-* Create open source plugins for GORM. (Don't forgot to add them to [the list](/community.html#Open-Sources))
+* Crear plugings open source para GORM. (No se olvide de añadirlos a [la lista](/community.html#Open-Sources))
 
-## Donations
+## Donaciones
 
-Many thanks to all our sponsors!
+¡Muchas gracias a todos nuestros patrocinadores!
 
-### One-time Donations
+### Donaciones Únicas
 
-Your kindness and generosity is greatly appreciated
+Su bondad y generosidad es muy apreciada
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[Donaciones Únicas con PayPal](https://www.paypal.me/zhangjinzhu) [Donaciones únicas con OpenCollective](https://opencollective.com/gorm)
 
-### Recurring Donations
+### Donaciones Recurrentes
 
-Your kindness and generosity is greatly appreciated, and your name will be listed in this page or the home page of this website.
+Su bondad y generosidad es muy apreciada, y su nombre será listado en esta página o en la página de inicio de este sitio web.
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[Donaciones Recurrentes con OpenCollective](https://opencollective.com/gorm) [Donaciones Recurrentes con Patreon](https://www.patreon.com/jinzhu)
 
 <br />
 
-## Sponsors
+## Patrocinadores
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=740"></object>
 
-## Backers
+## Colaboradores
 
 <div class="backers-list">
   
@@ -59,6 +59,6 @@ Your kindness and generosity is greatly appreciated, and your name will be liste
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=48&width=740"></object>
 
-## Contributors
+## Contribuyentes
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/contributors.svg?avatarHeight=32&width=740"></object>

@@ -1,8 +1,8 @@
 ---
-title: SQL Builder
+title: Pembangun SQL
 layout: page
 ---
-## Run Raw SQL
+## Jalankan SQL Mentah
 
 Jalankan Raw SQL, yang tidak berantai dengan metode lain
 
@@ -22,7 +22,7 @@ db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
 
 ## `sql.Row` & `sql.Rows`
 
-Get query result as `*sql.Row` or `*sql.Rows`
+Dapatkan permintaan hasil sebagai `*sql.Row` atau `*sql.Rows`
 
 ```go
 row := db.Table("users").Where("name = ?", "jinzhu").Select("name, age").Row() // (*sql.Row)
@@ -46,7 +46,7 @@ for rows.Next() {
 }
 ```
 
-## Scan `sql.Rows` into model
+## Pindai `sql.Rows` ke dalam model
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)

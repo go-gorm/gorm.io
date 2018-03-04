@@ -4,7 +4,7 @@ layout: page
 ---
 Perpustakaan ORM yang fantastis untuk Golang, bertujuan untuk menjadi pengembang yang ramah.
 
-## Overview
+## Ikhtisar
 
 * Full-Featured ORM (almost)
 * Asosiasi (Memiliki Satu, Memiliki Banyak, Milik Banyak, Banyaknya Polimorfisme)
@@ -12,7 +12,7 @@ Perpustakaan ORM yang fantastis untuk Golang, bertujuan untuk menjadi pengembang
 * Preloading (eager loading)
 * Transaksi
 * Kunci Utama Komposit
-* SQL Builder
+* Pembangun SQL
 * Auto Migrations
 * Logger
 * Dapat diperpanjang, tulis Plugin berdasarkan panggilanbalik GORM
@@ -25,7 +25,7 @@ Perpustakaan ORM yang fantastis untuk Golang, bertujuan untuk menjadi pengembang
 go get -u github.com/jinzhu/gorm
 ```
 
-## Quick Start
+## Mulai Cepat
 
 ```go
 package main

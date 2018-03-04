@@ -1,5 +1,5 @@
 ---
-title: SQL Builder
+title: Constructor SQL
 layout: page
 ---
 ## Run Raw SQL

@@ -1,6 +1,6 @@
 ---
 title: Milik
-layout: halaman
+layout: page
 ---
 ## Belongs To
 

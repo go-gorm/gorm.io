@@ -4,54 +4,33 @@ layout: page
 ---
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Una asociación `belongs to` establece una conexión uno a uno con otro modelo, de modo que cada instancia del modelo de declaración "pertenece a" una instancia del otro modelo.
 
-For example, if your application includes users and profiles, and each profile can be assigned to exactly one user
+Por ejemplo, si su aplicación incluye usuarios y perfiles, y cada perfil puede asignarse exactamente a un usuario
 
 ```go
-type User struct {
-  gorm.Model
-  Name string
-}
-
-// `Profile` belongs to `User`, `UserID` is the foreign key
-type Profile struct {
-  gorm.Model
-  UserID int
-  User   User
-  Name   string
-}
+type User struct {   gorm.Model   Name string } // `Profile` pertenece a `User`, `UserID` es la clave foránea type Profile struct {   gorm.Model   UserID int   User User   Name string }
 ```
 
 ## Foreign Key
 
-To define a belongs to relationship, the foreign key must exists, default foreign key uses owner's type name plus its primary key.
+Para definir una relación de pertenencia, la clave foránea debe existir, la clave foránea predeterminada usa el nombre de tipo más su clave principal.
 
-For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+Para el ejemplo anterior, para definir un modelo que pertenece a `User`, la clave foránea debe ser `UserID`.
 
-GORM provides a way to customzie the foreign key, for example:
+GORM proporciona una manera de personalizar la clave foránea, por ejemplo:
 
 ```go
-type User struct {
-    gorm.Model
-    Name string
-}
-
-type Profile struct {
-    gorm.Model
-  Name      string
-  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
-  UserRefer string
-}
+type User struct {     gorm.Model     Name string } type Profile struct {     gorm.Model   Name string   User User `gorm:"foreignkey:UserRefer"` // usa UserRefer como clave foránea  UserRefer string }
 ```
 
-## Association ForeignKey
+## Asociación ForeignKey
 
-For a belongs to relationship, GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+Para una relación de pertenencia, GORM suele usar la clave primaria del usuario como el valor de la clave foránea, por ejemplo, es `User`'s `ID`.
 
-When you assign a profile to a user, GORM will save user's `ID` into profile's `UserID` field.
+Cuando asigna un perfil a un usuario, GORM guardará el `ID` del usuario en el campo `UserID`.
 
-You are able to change it with tag `association_foreignkey`, e.g:
+Puede cambiarlo con la etiqueta `association_foreignkey`, por ejemplo:
 
 ```go
 type User struct {
@@ -63,18 +42,17 @@ type User struct {
 type Profile struct {
     gorm.Model
   Name      string
-  User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
+  User      User `gorm:"association_foreignkey:Refer"` // usa Refer como clave foránea de asociación
   UserRefer string
 }
 ```
 
-## Working with Belongs To
+## Trabajando con Belongs To
 
-You could find `belongs to` assciations with `Related`
+Puede encontrar la asociación `belongs to`con `Related`
 
 ```go
-db.Model(&user).Related(&profile)
-//// SELECT * FROM profiles WHERE user_id = 111; // 111 is user's ID
+db.Model(&user).Related(&profile) //// SELECT * FROM profiles WHERE user_id = 111; // 111 es el ID de usuario
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Para un uso avanzado, consulte [Modo de Asociación](/docs/associations.html#Association-Mode)

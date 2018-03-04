@@ -1,6 +1,6 @@
 ---
 title: Guida GORM
-layout: pagina
+layout: page
 ---
 La fantastica libreria ORM per Goland, mira ad essere di semplice utilizzo per gli sviluppatori.
 

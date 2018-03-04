@@ -19,10 +19,10 @@ layout: halaman
 * [Gorm Gotchas](https://blog.depado.eu/post/gorm-gotchas)
 * [Bagaimana Saya Membangun API dengan Mux, Go, PostgreSQL, dan GORM](https://dev.to/aspittel/how-i-built-an-api-with-mux-go-postgresql-and-gorm-5ah8)
 * [Go with GORM](http://mindbowser.com/golang-go-with-gorm-2/)
-* [Data consistency, gorm and CockroachDB](http://callistaenterprise.se/blogg/teknik/2018/02/14/go-blog-series-part13/)
-* [GORM Chinese Documents / GORM 中文文档](https://jasperxu.github.io/gorm-zh/)
+* [Konsistensi data, gorm dan CockroachDB](http://callistaenterprise.se/blogg/teknik/2018/02/14/go-blog-series-part13/)
+* [Dokumen GORM Berbahasa China / GORM 中文文档](https://jasperxu.github.io/gorm-zh/)
 
-## Videos
+## Video
 
 * [Gambaran dari GORM objek mapper relasional](https://www.youtube.com/watch?v=nVD9acHituc)
 * [GORM: An Object Relational Mapper for Go](https://www.pluralsight.com/courses/gorm-go-object-relational-mapper)
@@ -30,10 +30,10 @@ layout: halaman
 ## Open Sources
 
 * [QOR Admin - Langsung buat antarmuka Admin dalam hitungan menit](http://getqor.com)
-* [Pencocok Gorm untuk Casbin](https://github.com/casbin/gorm-adapter)
+* [Adaptor Gorm untuk Casbin](https://github.com/casbin/gorm-adapter)
 * [Gormigrate - pembantu berpindah tempat untuk Gorm](https://github.com/go-gormigrate/gormigrate)
 * [Go-Mocket](https://github.com/Selvatico/go-mocket)
-* [Transition - state machine based on GORM](https://github.com/qor/transition)
+* [Transisi - mesin negara yang berdasar pada GORM](https://github.com/qor/transition)
 * [Validasi - memvalidasi model saat membuat, memperbarui](https://github.com/qor/validations)
 * [Gormstore - GORM backend for gorilla sessions](https://github.com/wader/gormstore)
 

@@ -1,10 +1,10 @@
 ---
-title: Update
+title: Perbarui
 layout: page
 ---
 ## Perbarui Semua Bidang
 
-`Save` will include all fields when perform the Updating SQL, even it is not changed
+`Simpan` akan mencakup semua bidang ketika melakukan Pembaruan SQL, bahkan itu tidak berubah
 
 ```go
 db.First(&user)
@@ -16,9 +16,9 @@ db.Save(&user)
 //// UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update Changed Fields
+## Memperbarui bidang yang diubah
 
-If you only want to update changed Fields, you could use `Update`, `Updates`
+Jika anda hanya ingin memperbarui Bidang yang diubah, anda dapat menggunakan `Memperbarui`, `Pembaruan`
 
 ```go
 // Update single attribute if it is changed
@@ -44,7 +44,7 @@ db.Model(&user).Updates(User{Name: "", Age: 0, Actived: false})
 
 ## Perbarui Bidang yang Dipilih
 
-If you only want to update or ignore some fields when updating, you could use `Select`, `Omit`
+Jika anda hanya ingin memperbarui atau mengabaikan beberapa bidang ketika sedang memperbarui, anda dapat menggunakan `Pilih`, `Menghilangkan`
 
 ```go
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
@@ -84,7 +84,7 @@ db.Model(User{}).Updates(User{Name: "hello", Age: 18})
 db.Model(User{}).Updates(User{Name: "hello", Age: 18}).RowsAffected
 ```
 
-## Update with SQL Expression
+## Perbarui dengan Ekspresi SQL
 
 ```go
 DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))

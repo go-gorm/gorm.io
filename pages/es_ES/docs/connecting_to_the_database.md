@@ -2,85 +2,50 @@
 title: Connecting to database
 layout: page
 ---
-## Connecting to database
+## Conexión a la base de datos
 
-In order to connect to a database, you need to first import the database's driver. For example:
+Para conectarse a una base de datos, necesita importar primero el controlador de la base de datos. Por ejemplo:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers, to make easier to remember their import path, so you could import the mysql driver with
+GORM ha envuelto algunos controladores, para que sea más fácil recordar su ruta de importación, por lo que podría importar el controlador de mysql con
 
 ```go
-import _ "github.com/jinzhu/gorm/dialects/mysql"
-// import _ "github.com/jinzhu/gorm/dialects/postgres"
-// import _ "github.com/jinzhu/gorm/dialects/sqlite"
-// import _ "github.com/jinzhu/gorm/dialects/mssql"
+import _ "github.com/jinzhu/gorm/dialects/mysql" // import _ "github.com/jinzhu/gorm/dialects/postgres" // import _ "github.com/jinzhu/gorm/dialects/sqlite" // import _ "github.com/jinzhu/gorm/dialects/mssql"
 ```
 
-## Supported Databases
+## Bases de Datos Compatibles
 
 ### MySQL
 
-**NOTE:** In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**NOTA:** para manejar `time.Time` correctamente, necesita incluir `parseTime` como parámetro. ([Más parámetros compatibles](https://github.com/go-sql-driver/mysql#parameters))
 
 ```go
-import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/mysql"
-)
-
-func main() {
-  db, err := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
-  defer db.Close()
-}
+import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/mysql" ) func main() {   db, err := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")   defer db.Close() }
 ```
 
 ### PostgreSQL
 
 ```go
-import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/postgres"
-)
-
-func main() {
-  db, err := gorm.Open("postgres", "host=myhost port=myport user=gorm dbname=gorm password=mypassword")
-  defer db.Close()
-}
+import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/postgres" ) func main() {   db, err := gorm.Open("postgres", "host=myhost port=myport user=gorm dbname=gorm password=mypassword")   defer db.Close() }
 ```
 
 ### Sqlite3
 
 ```go
-import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/sqlite"
-)
-
-func main() {
-  db, err := gorm.Open("sqlite3", "/tmp/gorm.db")
-  defer db.Close()
-}
+import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/sqlite" ) func main() {   db, err := gorm.Open("sqlite3", "/tmp/gorm.db")   defer db.Close() }
 ```
 
 ### SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[Comenzando con SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), puede ejecutarse en su [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) con Docker
 
 ```go
-import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/mssql"
-)
-
-func main() {
-  db, err := gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
-  defer db.Close()
-}
+import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/mssql" ) func main() {   db, err := gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")   defer db.Close() }
 ```
 
-## Unsupported Databases
+## Bases de Datos no Compatibles
 
-GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
+GORM admite oficialmente las cuatro bases de datos anteriores, puede escribir dialectos para bases de datos no compatibles, consulte [Dialectos GORM](/docs/dialects.html)

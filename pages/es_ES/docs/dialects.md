@@ -2,23 +2,23 @@
 title: Dialect Specific Data Type
 layout: page
 ---
-## Write new Dialect
+## Escribir Nuevo Dialecto
 
-GORM provides supports for sqlite, mysql, postgres, mssql officially.
+Gorm proporciona soporte para sqlite, mysql, postgres, mssql oficialmente.
 
-You could add other database support by creating a new dialect, need to implement [the dialect interface](https://godoc.org/github.com/jinzhu/gorm#Dialect).
+Puede agregar otro soporte de base de datos creando un nuevo dialecto, necesita implementar [la interfaz del dialecto](https://godoc.org/github.com/jinzhu/gorm#Dialect).
 
-Some databases might compatible with mysql or postgres dialect, then you could just use the dialect for those databases.
+Algunas bases de datos pueden ser compatibles con el dialecto mysql o postgres, entonces usted podría usar el dialecto para esas bases de datos.
 
-## Dialect Specific Data Type
+## Tipo de Dato Específico de Dialecto
 
-Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of such types, as listed in the following sections.
+Ciertos dialectos de SQL se envían con sus propios tipos de columna personalizados, no estándar, como la columna `jsonb` en PostgreSQL. GORM admite la carga de varios de estos tipos, como se detalla en las siguientes secciones.
 
 ### PostgreSQL
 
-GORM supports loading the following PostgreSQL exclusive column types: - jsonb - hstore
+GORM admite la carga de los siguientes tipos de columnas exclusivas de PostgreSQL: -jsonb -hstore
 
-Given the following Model definition:
+Dada la siguiente definición de modelo:
 
 ```go
 import (
@@ -34,27 +34,8 @@ type Document struct {
 }
 ```
 
-You may use the model like so:
+Puede utilizar el modelo de la siguiente forma:
 
 ```go
-password := "0654857340"
-metadata := json.RawMessage(`{"is_archived": 0}`)
-sampleDoc := Document{
-  Body: "This is a test document",
-  Metadata: postgres.Jsonb{ metadata },
-  Secrets: postgres.Hstore{"password": &password},
-}
-
-//insert sampleDoc into the database
-db.Create(&sampleDoc)
-
-//retrieve the fields again to confirm if they were inserted correctly
-resultDoc := Document{}
-db.Where("id = ?", sampleDoc.ID).First(&resultDoc)
-
-metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata)
-secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, resultDoc.Secrets)
-
-// this should print "true"
-fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
+password := "0654857340" metadata := json.RawMessage(`{"is_archived": 0}`) sampleDoc := Document{   Body: "This is a test document",   Metadata: postgres.Jsonb{ metadata },   Secrets: postgres.Hstore{"password": &password}, } //inserta sampleDoc en la base de datos db.Create(&sampleDoc) //recuperar los datos nuevamente para confirmar si se insertaron correctamente resultDoc := Document{} db.Where("id = ?", sampleDoc.ID).First(&resultDoc) metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata) secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, resultDoc.Secrets) // esto debería imprimir "verdadero" fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
 ```
