@@ -87,7 +87,7 @@ type User struct {
 
 ## Skip AutoCreate/Update
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings togehter
+To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
