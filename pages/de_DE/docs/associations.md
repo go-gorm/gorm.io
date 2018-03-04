@@ -89,7 +89,7 @@ oder mit GORM tags, `gorm:"association_autocreate:false"`
 
 ## AutoCreate/Update überspringen
 
-Um `AutoCreate` und `AutoUpdate` zu deaktivieren, kann man beide Einstellungen zusammen verwenden
+To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
