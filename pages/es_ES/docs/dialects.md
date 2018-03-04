@@ -12,7 +12,7 @@ Algunas bases de datos pueden ser compatibles con el dialecto mysql o postgres, 
 
 ## Tipo de Dato Específico de Dialecto
 
-Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of such types, as listed in the following sections.
+Ciertos dialectos de SQL se envían con sus propios tipos de columna personalizados, no estándar, como la columna `jsonb` en PostgreSQL. GORM admite la carga de varios de estos tipos, como se detalla en las siguientes secciones.
 
 ### PostgreSQL
 
