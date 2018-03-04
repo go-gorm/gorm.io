@@ -16,7 +16,7 @@ Por ejemplo, si su aplicación incluye usuarios y tarjetas de crédito, y cada u
 
 Para una relación has one, también debe existir un campo de clave foránea, el usuario guardará la clave primaria del modelo que le pertenece en este campo.
 
-The field's name usually is generated with `belongs to model`'s type plus its `primary key`, for above example, it is `CreditCardID`
+El nombre del campo generalmente se genera con `belongs to model`'s más su `primary key`, para el ejemplo anterior, es `CreditCardID`
 
 When you give a credit card to the user, its will save the credit card's `ID` into its `CreditCardID` field.
 
