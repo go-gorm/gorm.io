@@ -6,11 +6,11 @@ layout: page
 
 Gorm proporciona soporte para sqlite, mysql, postgres, mssql oficialmente.
 
-You could add other database support by creating a new dialect, need to implement [the dialect interface](https://godoc.org/github.com/jinzhu/gorm#Dialect).
+Puede agregar otro soporte de base de datos creando un nuevo dialecto, necesita implementar [la interfaz del dialecto](https://godoc.org/github.com/jinzhu/gorm#Dialect).
 
-Some databases might compatible with mysql or postgres dialect, then you could just use the dialect for those databases.
+Algunas bases de datos pueden ser compatibles con el dialecto mysql o postgres, entonces usted podría usar el dialecto para esas bases de datos.
 
-## Dialect Specific Data Type
+## Tipo de Dato Específico de Dialecto
 
 Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of such types, as listed in the following sections.
 
