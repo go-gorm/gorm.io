@@ -12,7 +12,7 @@ Por ejemplo, si su aplicación incluye usuarios y perfiles, y cada perfil puede 
 type User struct {   gorm.Model   Name string } // `Profile` pertenece a `User`, `UserID` es la clave foránea type Profile struct {   gorm.Model   UserID int   User User   Name string }
 ```
 
-## Clave Foránea
+## Foreign Key
 
 Para definir una relación de pertenencia, la clave foránea debe existir, la clave foránea predeterminada usa el nombre de tipo más su clave principal.
 
@@ -24,7 +24,7 @@ GORM proporciona una manera de personalizar la clave foránea, por ejemplo:
 type User struct {     gorm.Model     Name string } type Profile struct {     gorm.Model   Name string   User User `gorm:"foreignkey:UserRefer"` // usa UserRefer como clave foránea  UserRefer string }
 ```
 
-## Association ForeignKey
+## Asociación ForeignKey
 
 Para una relación de pertenencia, GORM suele usar la clave primaria del usuario como el valor de la clave foránea, por ejemplo, es `User`'s `ID`.
 
@@ -47,13 +47,12 @@ type Profile struct {
 }
 ```
 
-## Working with Belongs To
+## Trabajando con Belongs To
 
-You could find `belongs to` assciations with `Related`
+Puede encontrar la asociación `belongs to`con `Related`
 
 ```go
-db.Model(&user).Related(&profile)
-//// SELECT * FROM profiles WHERE user_id = 111; // 111 is user's ID
+db.Model(&user).Related(&profile) //// SELECT * FROM profiles WHERE user_id = 111; // 111 es el ID de usuario
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Para un uso avanzado, consulte [Modo de Asociación](/docs/associations.html#Association-Mode)
