@@ -1,6 +1,6 @@
 ---
 title: Hapus
-layout: halaman
+layout: page
 ---
 ## Hapus catatan
 
