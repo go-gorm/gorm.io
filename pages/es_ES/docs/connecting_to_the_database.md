@@ -40,20 +40,12 @@ import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/sqlite"
 
 ### SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[Comenzando con SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), puede ejecutarse en su [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) con Docker
 
 ```go
-import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/mssql"
-)
-
-func main() {
-  db, err := gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
-  defer db.Close()
-}
+import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/mssql" ) func main() {   db, err := gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")   defer db.Close() }
 ```
 
-## Unsupported Databases
+## Bases de Datos no Compatibles
 
-GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
+GORM admite oficialmente las cuatro bases de datos anteriores, puede escribir dialectos para bases de datos no compatibles, consulte [Dialectos GORM](/docs/dialects.html)
