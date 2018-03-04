@@ -2,13 +2,13 @@
 title: Error Handling
 layout: page
 ---
-In Go, error handling is important.
+En Go, el manejo de errores es importante.
 
-You are encouraged to do error check after any [Immediate Methods](/docs/method_chaining.html#Immediate-Methods)
+Se recomienda hacer una comprobación de errores después de cualquier [Métodos Inmediatos](/docs/method_chaining.html#Immediate-Methods)
 
-## Error Handling
+## Manejo de Errores
 
-Error handling in GORM is different with idiomatic Go code because of its chainable API, but it is still fairly easy to do that.
+El manejo de errores en GORM es diferente con el código Go idiomático debido a su API, pero todavía es bastante fácil hacerlo.
 
 If there are any error happened, GORm will set it to `*gorm.DB`'s `Error` field, you could check it like this:
 
