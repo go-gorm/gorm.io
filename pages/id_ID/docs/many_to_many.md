@@ -1,6 +1,6 @@
 ---
 title: Many To Many
-layout: halaman
+layout: page
 ---
 ## Many To Many
 
