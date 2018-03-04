@@ -31,25 +31,15 @@ type User struct {} // el nombre de la tabla por defecto es `users` // Establece
 ### Especificando el Nombre de la Tabla
 
 ```go
-// Create `deleted_users` table with struct User's definition
-db.Table("deleted_users").CreateTable(&User{})
-
-var deleted_users []User
-db.Table("deleted_users").Find(&deleted_users)
-//// SELECT * FROM deleted_users;
-
-db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
-//// DELETE FROM deleted_users WHERE name = 'jinzhu';
+// Crear la tabla `deleted_users` con la definición struct Usuario db.Table("deleted_users").CreateTable(&User{}) var deleted_users []User db.Table("deleted_users").Find(&deleted_users) //// SELECT * FROM deleted_users; db.Table("deleted_users").Where("name = ?", "jinzhu").Delete() //// DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-### Change default tablenames
+### Cambiar nombre de tablas predeterminados
 
-You can apply any rules on the default table name by defining the `DefaultTableNameHandler`
+Puede aplicar cualquier regla sobre el nombre predeterminado de la tabla definiendo el `DefaultTableNameHandler`
 
 ```go
-gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
-    return "prefix_" + defaultTableName;
-}
+gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string {     return "prefix_" + defaultTableName; }
 ```
 
 ## Snake Case Column Name
