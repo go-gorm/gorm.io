@@ -31,18 +31,18 @@ Tanda opsional untuk digunakan saat mendeklarasikan model, berikut adalah tanda 
 
 | Label           | Keterangan                                                                     |
 | --------------- | ------------------------------------------------------------------------------ |
-| Kolom           | Menentukan nama kolom                                                          |
-| Jenis           | Menentukan tipe data kolom                                                     |
-| Ukuran          | Menentukan ukuran kolom, bawaan 255                                            |
-| Kunci_Utama     | Menentukan kolom sebagai kunci utama                                           |
-| UNIK            | Menentukan kolom sebagai unik                                                  |
+| Column          | Menentukan nama kolom                                                          |
+| Type            | Menentukan tipe data kolom                                                     |
+| Size            | Menentukan ukuran kolom, bawaan 255                                            |
+| PRIMARY_KEY     | Menentukan kolom sebagai kunci utama                                           |
+| UNIQUE          | Menentukan kolom sebagai unik                                                  |
 | BAWAAN          | Menentukan nilai kolom bawaan                                                  |
-| KESEKSAMAAN     | Menentukan keseksamaan kolom                                                   |
-| TIDAK BATAL     | Menentukan kolom sebagai TIDAK BATAL                                           |
+| PRECISION       | Menentukan keseksamaan kolom                                                   |
+| NOT NULL        | Menentukan kolom sebagai TIDAK BATAL                                           |
 | AUTO_INCREMENT  | Tentukan kolom yang bisa kenaikan otomatis atau tidak                          |
-| INDEKS          | Buat indeks dengan atau tanpa nama, nama yang sama menciptakan indeks komposit |
+| INDEX           | Buat indeks dengan atau tanpa nama, nama yang sama menciptakan indeks komposit |
 | UNIQUE_INDEX    | Seperti `INDEKS`, membuat indeks unik                                          |
-| TERTANAM        | Tetapkan struct sebagai tertanam                                               |
+| EMBEDDED        | Tetapkan struct sebagai tertanam                                               |
 | EMBEDDED_PREFIX | Tetapkan nama awalan struct terstruktur                                        |
 | -               | Abaikan bidang ini                                                             |
 
@@ -62,5 +62,5 @@ Periksa bagian Asosiasi untuk rinciannya
 | SAVE_ASSOCIATIONS                  | Penyimpanan otomatis asosiasi atau tidak             |
 | ASSOCIATION_AUTOUPDATE             | PembaruanOtomatis asosiasi atau tidak                |
 | ASSOCIATION_AUTOCREATE             | Buat asosiasi otomatis atau tidak                    |
-| ASSOCIATION_SAVE_REFERENCE       | Penyimpanan otomatis asosiasi referensi atau tidak   |
+| ASSOCIATION_AUTOCREATE             | Penyimpanan otomatis asosiasi referensi atau tidak   |
 | PRELOAD                            | Auto Preload associations or not                     |
