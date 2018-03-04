@@ -42,7 +42,7 @@ Puede aplicar cualquier regla sobre el nombre predeterminado de la tabla definie
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string {     return "prefix_" + defaultTableName; }
 ```
 
-## Snake Case Column Name
+## Nombre de la Columna usando Snake Case
 
 El nombre de la columna será el nombre del campo usando snake case en minúscula
 
@@ -62,14 +62,12 @@ db.Create(&user) // se establecerá `CreatedAt` a la hora actual // Para cambiar
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, it will be set to current time when record is updated.
+Para los modelos que tienen el campo `UpdateAt`, se establecerá en la hora actual cuando se actualice un registro.
 
 ```go
-db.Save(&user) // will set `UpdatedAt` to current time
-
-db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+db.Save(&user) // se establecerá `UpdatedAt` a la hora actual db.Model(&user).Update("name", "jinzhu") // se establecerá `UpdatedAt` a la hora actual
 ```
 
 ### DeletedAt
 
-For models having `UpdatedAt` field, when delete their instances, they won't be deleted from database, but will set its `DeletedAt` field to current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)
+Para los modelos que tienen el campo `UpdateAt`, cuando se eliminen sus instancias, no se eliminarán de la base de datos, sino que establecerán su campo `DeletedAt` en la hora actual, consulte [Soft Delete](/docs/delete.html#Soft-Delete)
