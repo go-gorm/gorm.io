@@ -9,20 +9,10 @@ Una asociación `has many` también establece una conexión de uno a muchos con 
 Por ejemplo, si su aplicación incluye usuarios y tarjetas de crédito, y cada usuario puede tener muchas tarjetas de crédito.
 
 ```go
-// User has many emails, UserID is the foreign key
-type User struct {
-    gorm.Model
-    CreditCards []CreditCard
-}
-
-type CreditCard struct {
-    gorm.Model
-    Number   string
-    UserID  uint
-}
+// El Usuario tiene muchos correos electrónicos, UserID es la clave foránea type User struct {     gorm.Model     CreditCards []CreditCard } type CreditCard struct {     gorm.Model     Number string     UserID uint }
 ```
 
-## Foreign Key
+## Clave Foránea
 
 To define a has many relatinship, foreign key must exists, default foreign key's name is owner's type name plus its primary key.
 
