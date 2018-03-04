@@ -26,22 +26,10 @@ A continuación, la inserción de SQL excluirá aquellos campos que no tienen va
 var animal = Animal{Age: 99, Name: ""} db.Create(&animal) // INSERT INTO animals("age") values('99'); // SELECT name from animals WHERE ID=111; // el retorno de la clave primaria es 111 // animal.Name => 'galeone'
 ```
 
-**NOTE** all fields having zero value, like ``, `''`, `false` or other [zero values](https://tour.golang.org/basics/12) won't be saved into database but will use its default value, it you want to avoid this, consider to use pointer type or scaner/valuer, e.g:
+**NOTA** todos los campos tienen valor cero, como ``, `"`, `false` u otro [valor cero](https://tour.golang.org/basics/12) no se guardarán en la base de datos pero usarán su valor por defecto, si desea evitar esto, considere usar el tipo de puntero o scaner/valuer, por ejemplo:
 
 ```go
-// Use pointer value
-type User struct {
-  gorm.Model
-  Name string
-  Age  *int `gorm:"default:18"`
-}
-
-// Use scanner/valuer
-type User struct {
-  gorm.Model
-  Name string
-  Age  sql.NullInt64 `gorm:"default:18"`
-}
+// Usar valor de puntero type User struct {   gorm.Model   Name string   Age *int `gorm:"default:18"` } // Usar scanner/valuer type User struct {   gorm.Model   Name string   Age sql.NullInt64 `gorm:"default:18"` }
 ```
 
 ## Setting Field Values In Hooks
@@ -55,10 +43,8 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 }
 ```
 
-## Extra Creating option
+## Opción de Creación Adicional
 
 ```go
-// Add extra SQL option for inserting SQL
-db.Set("gorm:insert_option", "ON CONFLICT").Create(&product)
-// INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
+// Agregar una opción SQL adicional para insertar SQL db.Set("gorm:insert_option", "ON CONFLICT").Create(&product) // INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
 ```
