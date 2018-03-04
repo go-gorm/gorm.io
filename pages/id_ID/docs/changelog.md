@@ -14,7 +14,7 @@ Melanggar perubahan
 
 * Membarui hanya akan memperbarui bidang yang berubah
 
-* Soft Delete's will only check `deleted_at IS NULL`
+* Hapus lembut hanya akan memeriksa ` dihapus di ` adalah batal
 
 * New ToDBName logic
     
