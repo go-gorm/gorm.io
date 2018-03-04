@@ -148,18 +148,18 @@ Bekerja mirip seperti`Dimana`.
 Bila menggunakan dengan [Segera Beberapa Metode](/docs/method_chaining.html#Multiple-Immediate-Methods), kemudian tidak akan melewati metode langsung untuk kondisi tersebut.
 
 ```go
-// Get by primary key (only works for integer primary key)
-db.First(&user, 23)
-//// SELECT * FROM users WHERE id = 23 LIMIT 1;
-// Get by primary key if it were a non-integer type
-db.First(&user, "id = ?", "string_primary_key")
-//// SELECT * FROM users WHERE id = 'string_primary_key' LIMIT 1;
+// Dapatkan dengan kunci primer (hanya bekerja untuk kunci primer bilangan bulat)
+db.Pertama(&pengguna, 23)
+//// SELECT * DARI pengguna id DI MANA = 23 BATAS 1;
+// Dapatkan dengan kunci primer jika itu adalah jenis bukan bilangan bulat
+db.Pertama(&pengguna, "id = ?", "string_primary_key")
+//// SELECT * DARI pengguna id DI MANA = 'string_primary_key' BATAS 1;
 
-// Plain SQL
-db.Find(&user, "name = ?", "jinzhu")
-//// SELECT * FROM users WHERE name = "jinzhu";
+// SQL biasa
+db.Menemukan(&pengguna, "name = ?", "jinzhu")
+//// PILIH * DARI DI MANA nama pengguna = "jinzhu";
 
-db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
+db.Menemukan(&pengguna, "name <> ? AND age > ?", "jinzhu", 20)
 //// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
 
 // Struct
