@@ -7,11 +7,11 @@ layout: página
 ## Ayudar a otros a conocer GORM
 
 * Compartir GORM con el mundo a través de canales sociales, o simplemente informarle a las personas que podrían estar interesadas
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
+* Ayudar a los recién llegados a resolver preguntas sobre [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Problemas de Github](https://github.com/jinzhu/gorm/issues) y [Salas de Chat](/community.html#Chat)
+* Escribir tutoriales, grabar videos, etc... (No se olvide de añadirlos a [la lista](/community.html))
+* Ayudar a promover GORM en Github [Protagonizando](https://github.com/jinzhu/gorm/stargazers) y [Observando](https://github.com/jinzhu/gorm/watchers) el [Repositorio de GORM](https://github.com/jinzhu/gorm)
 
-## Documentation and Writing
+## Documentación y Escritura
 
 * Make GORM's documentation better by writing new content, correcting existing material
 
