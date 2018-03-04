@@ -24,25 +24,8 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ## Borrado Rápido
 
-If model has `DeletedAt` field, it will get soft delete ability automatically! then it won't be deleted from database permanently when call `Delete`, but only set field `DeletedAt`'s value to current time
+Si el modelo tiene el campo `DeletedAt`, ¡Tendrá la posibilidad de borrar automáticamente! luego no se eliminará de la base de datos permanentemente cuando se llame a `Eliminar`, sino que solo configure el valor del campo `DeletedAt` a la hora actual
 
 ```go
-db.Delete(&user)
-//// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
-
-// Batch Delete
-db.Where("age = ?", 20).Delete(&User{})
-//// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
-
-// Soft deleted records will be ignored when query them
-db.Where("age = 20").Find(&user)
-//// SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
-
-// Find soft deleted records with Unscoped
-db.Unscoped().Where("age = 20").Find(&users)
-//// SELECT * FROM users WHERE age = 20;
-
-// Delete record permanently with Unscoped
-db.Unscoped().Delete(&order)
-//// DELETE FROM orders WHERE id=10;
+db.Delete(&user) //// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111; // Eliminación por lote db.Where("age = ?", 20).Delete(&User{}) //// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20; // Los registros eliminados se ignorarán cuando se los consulte them db.Where("age = 20").Find(&user) //// SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL; // Encuentra registros borrados por Unscope db.Unscoped().Where("age = 20").Find(&users) //// SELECT * FROM users WHERE age = 20; // Delete record permanently with Unscoped db.Unscoped().Delete(&order) //// DELETE FROM orders WHERE id=10;
 ```
