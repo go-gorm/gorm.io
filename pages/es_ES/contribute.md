@@ -36,19 +36,19 @@ Su bondad y generosidad es muy apreciada
 
 [Donaciones Únicas con PayPal](https://www.paypal.me/zhangjinzhu) [Donaciones únicas con OpenCollective](https://opencollective.com/gorm)
 
-### Recurring Donations
+### Donaciones Recurrentes
 
-Your kindness and generosity is greatly appreciated, and your name will be listed in this page or the home page of this website.
+Su bondad y generosidad es muy apreciada, y su nombre será listado en esta página o en la página de inicio de este sitio web.
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[Donaciones Recurrentes con OpenCollective](https://opencollective.com/gorm) [Donaciones Recurrentes con Patreon](https://www.patreon.com/jinzhu)
 
 <br />
 
-## Sponsors
+## Patrocinadores
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=740"></object>
 
-## Backers
+## Colaboradores
 
 <div class="backers-list">
   
@@ -59,6 +59,6 @@ Your kindness and generosity is greatly appreciated, and your name will be liste
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=48&width=740"></object>
 
-## Contributors
+## Contribuyentes
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/contributors.svg?avatarHeight=32&width=740"></object>
