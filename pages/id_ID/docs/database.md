@@ -1,6 +1,6 @@
 ---
 title: Menghubungkan ke basis data
-layout: halaman
+layout: page
 ---
 # Menghubungkan ke basisdata
 
