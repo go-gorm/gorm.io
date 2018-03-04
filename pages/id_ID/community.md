@@ -1,6 +1,6 @@
 ---
 title: Komunitas GORM
-layout: halaman
+layout: page
 ---
 ## Meminta
 
