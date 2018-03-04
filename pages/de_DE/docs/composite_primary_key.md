@@ -1,14 +1,9 @@
 ---
-title: Composite Primary Key
-layout: page
+title: Zusammengesetzten Primärschlüssel
+layout: seite
 ---
-Set multiple fields as primary key to enable composite primary key
+Setzen Sie mehrere Felder als Primärschlüssel zusammengesetzten Primärschlüssel aktivieren
 
 ```go
-type Product struct {
-    ID           string `gorm:"primary_key"`
-    LanguageCode string `gorm:"primary_key"`
-  Code         string
-  Name         string
-}
+geben Sie Produkt Struct {ID-Zeichenfolge "Gorm:"Primary_key"" LanguageCode Zeichenfolge ' Gorm: "Primary_key" "Code-String-Zeichenfolge}
 ```
