@@ -1,6 +1,6 @@
 ---
-layout: index
-description: The fantastic ORM library for Golang, aims to be developer friendly.
+layout: indeks
+description: Perpustakaan ORM yang fantastis untuk Golang, bertujuan menjadi pengembang yang bersahabat.
 subtitle: The fantastic ORM library for Golang
 comments: false
 ---
