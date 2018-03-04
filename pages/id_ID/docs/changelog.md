@@ -12,7 +12,7 @@ Melanggar perubahan
 
 * `gorm.Open` return type `*gorm.DB` instead of `gorm.DB`
 
-* Memperbarui hanya akan memperbarui bidang yang berubah
+* Membarui hanya akan memperbarui bidang yang berubah
 
 * Soft Delete's will only check `deleted_at IS NULL`
 
