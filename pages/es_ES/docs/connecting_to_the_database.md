@@ -16,11 +16,11 @@ GORM ha envuelto algunos controladores, para que sea más fácil recordar su rut
 import _ "github.com/jinzhu/gorm/dialects/mysql" // import _ "github.com/jinzhu/gorm/dialects/postgres" // import _ "github.com/jinzhu/gorm/dialects/sqlite" // import _ "github.com/jinzhu/gorm/dialects/mssql"
 ```
 
-## Supported Databases
+## Bases de Datos Compatibles
 
 ### MySQL
 
-**NOTE:** In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**NOTA:** para manejar `time.Time` correctamente, necesita incluir `parseTime` como parámetro. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
 
 ```go
 import (
