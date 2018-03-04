@@ -2,19 +2,13 @@
 title: Create
 layout: page
 ---
-## Create Record
+## Crear un Registro
 
 ```go
-user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
-
-db.NewRecord(user) // => returns `true` as primary key is blank
-
-db.Create(&user)
-
-db.NewRecord(user) // => return `false` after `user` created
+user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()} db.NewRecord(user) // => retorna `true` como clave primaria en blanco db.Create(&user) db.NewRecord(user) // => retorna `false` después de crear `user`
 ```
 
-## Default Values
+## Valores por Defecto
 
 You could define field's default value with tag, for example:
 
