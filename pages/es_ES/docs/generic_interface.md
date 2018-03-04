@@ -8,7 +8,7 @@ GORM proporciona el método `DB` que devuelve la interfaz de base de datos gené
 // Obtenga el objeto de base de datos genérico sql.DB para usar sus funciones db.DB() // Ping db.DB().Ping()
 ```
 
-**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns nil
+**NOTA** Si la conexión de base de datos subyacente no es un `*sql.DB`, como en una transacción, devolverá null
 
 ## Connection Pool
 
