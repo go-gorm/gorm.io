@@ -96,9 +96,9 @@ Ejemplo de Código:
 // Actualización de datos en la misma transacción func (u *User) AfterDelete(tx *gorm.DB) (err error) {   if u.Confirmed {     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)   }     return }
 ```
 
-### Querying an object
+### Consultando un objeto
 
-Available hooks for querying
+Hooks disponibles para consultar
 
 ```go
 // load data from database
@@ -106,7 +106,7 @@ Available hooks for querying
 AfterFind
 ```
 
-Code Example:
+Ejemplo de Código:
 
 ```go
 func (u *User) AfterFind() (err error) {
