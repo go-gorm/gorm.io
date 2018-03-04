@@ -28,7 +28,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-Code Example:
+Ejemplo de Código:
 
 ```go
 func (u *User) BeforeSave() (err error) {
@@ -46,7 +46,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited. If you would like access those changes in your hooks, you could accept current tranaction as argument in your hooks, for example:
+**NOTA** Las operaciones de Guardar/Eliminar en GORM se ejecutan en las transacciones de forma predeterminada, por lo que los cambios realizados en esa transacción no estarán visibles hasta que se haya confirmado. Si desea acceder a esos cambios en sus hooks, puede aceptar la transacción actual como argumento en sus hooks, por ejemplo:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
