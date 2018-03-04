@@ -1,6 +1,6 @@
 ---
 title: Escribir Plugins
-layout: página
+layout: page
 ---
 GORM está respaldado por `Callbacks`, así que puede editar GORM completamente como lo desee
 
