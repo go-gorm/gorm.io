@@ -1,6 +1,6 @@
 ---
 title: Logger
-layout: page
+layout: seite
 ---
 ## Logger
 
@@ -19,7 +19,7 @@ db.Debug().Where("name = ?", "jinzhu").First(&User{})
 
 ## Customize Logger
 
-Refer GORM's default logger for how to customize it <https://github.com/jinzhu/gorm/blob/master/logger.go>
+Github Issues - <https://github.com/jinzhu/gorm/blob/master/logger.go>
 
 For example, using [Revel](https://revel.github.io/)'s Logger as the backend for GORM
 
