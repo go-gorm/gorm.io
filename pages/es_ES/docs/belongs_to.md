@@ -21,26 +21,16 @@ Para el ejemplo anterior, para definir un modelo que pertenece a `User`, la clav
 GORM proporciona una manera de personalizar la clave foránea, por ejemplo:
 
 ```go
-type User struct {
-    gorm.Model
-    Name string
-}
-
-type Profile struct {
-    gorm.Model
-  Name      string
-  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
-  UserRefer string
-}
+type User struct {     gorm.Model     Name string } type Profile struct {     gorm.Model   Name string   User User `gorm:"foreignkey:UserRefer"` // usa UserRefer como clave foránea  UserRefer string }
 ```
 
 ## Association ForeignKey
 
-For a belongs to relationship, GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+Para una relación de pertenencia, GORM suele usar la clave primaria del usuario como el valor de la clave foránea, por ejemplo, es `User`'s `ID`.
 
-When you assign a profile to a user, GORM will save user's `ID` into profile's `UserID` field.
+Cuando asigna un perfil a un usuario, GORM guardará el `ID` del usuario en el campo `UserID`.
 
-You are able to change it with tag `association_foreignkey`, e.g:
+Puede cambiarlo con la etiqueta `association_foreignkey`, por ejemplo:
 
 ```go
 type User struct {
@@ -52,7 +42,7 @@ type User struct {
 type Profile struct {
     gorm.Model
   Name      string
-  User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
+  User      User `gorm:"association_foreignkey:Refer"` // usa Refer como clave foránea de asociación
   UserRefer string
 }
 ```
