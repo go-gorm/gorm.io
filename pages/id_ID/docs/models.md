@@ -1,12 +1,12 @@
 ---
-title: Declaring Models
+title: Mendeklarasikan Model
 layout: page
 ---
 ## Declaring Models
 
 Models usually just normal Golang structs, basic Go types, pointer of them and [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner), [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are supported.
 
-Model Example:
+Contoh Model:
 
 ```go
 type User struct {
@@ -23,11 +23,11 @@ type User struct {
 }
 ```
 
-## Struct tags
+## Label Strukur
 
 Tanda opsional untuk digunakan saat mendeklarasikan model, berikut adalah tanda yang didukung GORM.
 
-### Supported Struct tags
+### Label Struktur yang didukung
 
 | Label           | Keterangan                                                                     |
 | --------------- | ------------------------------------------------------------------------------ |
@@ -38,7 +38,7 @@ Tanda opsional untuk digunakan saat mendeklarasikan model, berikut adalah tanda 
 | UNIK            | Menentukan kolom sebagai unik                                                  |
 | BAWAAN          | Menentukan nilai kolom bawaan                                                  |
 | KESEKSAMAAN     | Menentukan keseksamaan kolom                                                   |
-| NOT NULL        | Specifies column as NOT NULL                                                   |
+| TIDAK BATAL     | Menentukan kolom sebagai TIDAK BATAL                                           |
 | AUTO_INCREMENT  | Specifies column auto incrementable or not                                     |
 | INDEX           | Buat indeks dengan atau tanpa nama, nama yang sama menciptakan indeks komposit |
 | UNIQUE_INDEX    | Like `INDEX`, create unique index                                              |
