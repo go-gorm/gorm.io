@@ -4,25 +4,15 @@ layout: page
 ---
 ## Has One
 
-Una asociación `has one` también establece una conexión uno a uno con otro modelo, pero con semántica (y consecuencias) diferentes. This association indicates that each instance of a model contains or possesses one instance of another model.
+Una asociación `has one` también establece una conexión uno a uno con otro modelo, pero con semántica (y consecuencias) diferentes. Esta asociación indica que cada instancia de un modelo contiene o posee una instancia de otro modelo.
 
-For example, if your application includes users and credit card, and each user can only has one credit card.
+Por ejemplo, si su aplicación incluye usuarios y tarjetas de crédito, y cada usuario sólo puede tener una tarjeta de crédito.
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
-type User struct {
-    gorm.Model
-    CreditCard   CreditCard
-  CreditCardID uint
-}
-
-type CreditCard struct {
-    gorm.Model
-    Number   string
-}
+// El usuario tiene una tarjeta de crédito, CreditCardID es la clave foránea type User struct {     gorm.Model     CreditCard CreditCard   CreditCardID uint } type CreditCard struct {     gorm.Model     Number string }
 ```
 
-## Foreign Key
+## Clave Foránea
 
 For a has one relationship, a foreign key field must exists also, the owner will saved the primary key of the model belongs to it into this field.
 
