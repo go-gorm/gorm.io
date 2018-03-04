@@ -10,7 +10,7 @@ user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()} db.NewRecord(user) /
 
 ## Valores por Defecto
 
-You could define field's default value with tag, for example:
+Puede definir el valor predeterninado del campo con una etiqueta, por ejemplo:
 
 ```go
 type Animal struct {
@@ -20,14 +20,10 @@ type Animal struct {
 }
 ```
 
-Then the inserting SQL will exclude those fields that don't have value or having [zero values](https://tour.golang.org/basics/12), after insert the record into database, gorm will load those fields's value from database.
+A continuación, la inserción de SQL excluirá aquellos campos que no tienen valor o que no tienen [valores en cero](https://tour.golang.org/basics/12), después de insertar el registro en la base de datos, gorm cargará el valor de esos campos de la base de datos.
 
 ```go
-var animal = Animal{Age: 99, Name: ""}
-db.Create(&animal)
-// INSERT INTO animals("age") values('99');
-// SELECT name from animals WHERE ID=111; // the returning primary key is 111
-// animal.Name => 'galeone'
+var animal = Animal{Age: 99, Name: ""} db.Create(&animal) // INSERT INTO animals("age") values('99'); // SELECT name from animals WHERE ID=111; // el retorno de la clave primaria es 111 // animal.Name => 'galeone'
 ```
 
 **NOTE** all fields having zero value, like ``, `''`, `false` or other [zero values](https://tour.golang.org/basics/12) won't be saved into database but will use its default value, it you want to avoid this, consider to use pointer type or scaner/valuer, e.g:
