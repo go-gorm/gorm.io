@@ -73,8 +73,7 @@ db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-atau gunakan label GORM, `gorm:"association_autocreate:false"
-`
+atau gunakan label GORM, `gorm:"association_autocreate:false"`
 
     type User struct {
       gorm.Model
