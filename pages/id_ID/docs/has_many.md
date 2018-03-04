@@ -1,6 +1,6 @@
 ---
 title: Memiliki Banyak
-layout: halaman
+layout: page
 ---
 ## Has Many
 
