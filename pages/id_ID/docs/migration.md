@@ -99,7 +99,7 @@ db.Model(&User{}).AddUniqueIndex("idx_user_name_age", "name", "age")
 db.Model(&User{}).RemoveIndex("idx_user_name")
 ```
 
-### Add Foreign Key
+### Tambahkan Kunci Asing
 
 ```go
 // Add foreign key
@@ -110,7 +110,7 @@ db.Model(&User{}).RemoveIndex("idx_user_name")
 db.Model(&User{}).AddForeignKey("city_id", "cities(id)", "RESTRICT", "RESTRICT")
 ```
 
-### Remove ForeignKey
+### Hapus Kunci Asing
 
 ```go
 db.Model(&User{}).RemoveForeignKey("city_id", "cities(id)")
