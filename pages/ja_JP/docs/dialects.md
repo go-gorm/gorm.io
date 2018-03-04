@@ -1,6 +1,6 @@
 ---
 title: Dialect Specific Data Type
-layout: ページ
+layout: page
 ---
 ## Write new Dialect
 
