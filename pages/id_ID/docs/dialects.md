@@ -1,6 +1,6 @@
 ---
 title: Jenis Data Spesifik Dialek
-layout: halaman
+layout: page
 ---
 ## Tulis Dialek baru
 
