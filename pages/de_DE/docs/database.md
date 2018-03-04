@@ -63,7 +63,7 @@ func main() {
 }
 ```
 
-## SQL Server
+## Fehlerbehebung
 
 [Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
@@ -83,4 +83,4 @@ func main() {
 
 GORM officially supports the above databases, but you could write a dialect for unsupported databases.
 
-To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
+Github Issues - <https://github.com/jinzhu/gorm/blob/master/dialect.go>
