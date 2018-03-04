@@ -44,25 +44,13 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ## Snake Case Column Name
 
-Column name will be the lower snake case field's name
+El nombre de la columna será el nombre del campo usando snake case en minúscula
 
 ```go
-type User struct {
-  ID        uint      // column name is `id`
-  Name      string    // column name is `name`
-  Birthday  time.Time // column name is `birthday`
-  CreatedAt time.Time // column name is `created_at`
-}
-
-// Overriding Column Name
-type Animal struct {
-    AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
-    Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
-    Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
-}
+type User struct {   ID uint // el nombre de la columna es `id`   Name string // el nombre de la columna es `name`   Birthday time.Time // el nombre de la columna es `birthday`   CreatedAt time.Time // el nombre de la columna es `created_at` } // Sobreescribiendo el nombre de columna type Animal struct {     AnimalId int64 `gorm:"column:beast_id"` // establecer el nombre de la columna a `beast_id`     Birthday time.Time `gorm:"column:day_of_the_beast"` // establecer el nombre de la columna a `day_of_the_beast`     Age int64 `gorm:"column:age_of_the_beast"` // establecer el nombre de la columna a `age_of_the_beast` }
 ```
 
-## Timestamp Tracking
+## Seguimiento de Marca de Tiempo
 
 ### CreatedAt
 
