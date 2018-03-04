@@ -1,6 +1,6 @@
 ---
 title: Asosiasi
-layout: halaman
+layout: page
 ---
 ## Buat/Perbarui Otomatis
 
