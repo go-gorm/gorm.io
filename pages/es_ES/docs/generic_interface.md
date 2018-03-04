@@ -2,14 +2,10 @@
 title: Generic database interface sql.DB
 layout: page
 ---
-GORM provides method `DB` which returns generic database interface [*sql.DB](http://golang.org/pkg/database/sql/#DB) from current `*gorm.DB` connection
+GORM proporciona el método `DB` que devuelve la interfaz de base de datos genérica [*sql.DB](http://golang.org/pkg/database/sql/#DB) de la conexión actuall `*gorm.DB`
 
 ```go
-// Get generic database object sql.DB to use its functions
-db.DB()
-
-// Ping
-db.DB().Ping()
+// Obtenga el objeto de base de datos genérico sql.DB para usar sus funciones db.DB() // Ping db.DB().Ping()
 ```
 
 **NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns nil
