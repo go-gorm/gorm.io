@@ -88,7 +88,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 //// DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-### Change default tablenames
+### Standardzahlung ändern
 
 You can apply any rules on the default table name by defining the `DefaultTableNameHandler`
 
