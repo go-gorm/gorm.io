@@ -1,6 +1,6 @@
 ---
 title: Has One
-layout: page
+layout: seite
 ---
 ## Has One
 
@@ -22,7 +22,7 @@ type CreditCard struct {
 }
 ```
 
-## Foreign Key
+## Fremdschlüssel
 
 For a has one relationship, a foreign key field must exists also, the owner will saved the primary key of the model belongs to it into this field.
 
@@ -45,7 +45,7 @@ type CreditCard struct {
 }
 ```
 
-## Association ForeignKey
+## Assoziations-Fremdschlüssel
 
 By default, the owner will save the `belogns to model`'s primary into foreign key, you could change to save another field, like use `Number` for below example.
 
@@ -91,7 +91,7 @@ Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and 
 
 ## Working with Has One
 
-You could find `has one` assciations with `Related`
+Man kann `belongs to` Assoziationen mit `Related` finden
 
 ```go
 var card CreditCard
@@ -102,4 +102,4 @@ db.Model(&user).Related(&card, "CreditCard")
 db.Model(&user).Related(&card)
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Für erweiterte Verwendung verweisen wir auf den [Assoziationsmodus](/docs/associations.html#Association-Mode)
