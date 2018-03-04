@@ -1,6 +1,6 @@
 ---
-title: Change Log
-layout: page
+title: Ubah log
+layout: halaman
 ---
 ## v2.0
 
@@ -8,7 +8,7 @@ WIP
 
 ## v1.0 - 2016.04.27
 
-Breaking Changes
+Melanggar perubahan
 
 * `gorm.Open` return type `*gorm.DB` instead of `gorm.DB`
 
