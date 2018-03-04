@@ -1,5 +1,5 @@
 ---
-title: Method Chaining
+title: Metode Rantai
 layout: page
 ---
 ## Method Chaining
@@ -28,7 +28,7 @@ Permintaan tidak akan dihasilkan sampai metode langsung, yang bisa berguna dalam
 
 Seperti Anda bisa mengekstrak pembungkusnya untuk menangani beberapa logika umum
 
-## Immediate Methods
+## Metode Langsung
 
 Metode segera adalah metode tersebut yang akan menghasilkan query SQL dan mengirimkannya ke database, Biasanya metode CRUD tersebut, seperti:
 
@@ -40,13 +40,13 @@ Berikut adalah contoh metode langsung berdasarkan rantai di atas:
 tx.Find(&user)
 ```
 
-Generates
+Menghasilkan
 
 ```sql
-SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
+PILIH * DARI pengguna yang bernama = 'jinzhu' DAN umur = 30 DAN aktif = 1;
 ```
 
-## Scopes
+## Cakupan
 
 Ruang lingkup dibangun berdasarkan metode rantai teori.
 
@@ -81,7 +81,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Find all paid, shipped orders that amount greater than 1000
 ```
 
-## Multiple Immediate Methods
+## Metode Langsung Ganda
 
 Bila menggunakan beberapa metode langsung dengan GORM, kemudian segera metode akan digunakan kembali sebelum kondisi kueri metode langsung (tidak termasuk dalam kondisi dalamgaris)
 
