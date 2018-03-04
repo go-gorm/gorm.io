@@ -1,6 +1,6 @@
 ---
 title: Kunci Utama Komposit
-layout: halaman
+layout: page
 ---
 Menetapkan beberapa bidang sebagai kunci utama untuk memungkinkan kunci utama komposit
 
