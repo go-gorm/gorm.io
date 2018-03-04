@@ -14,20 +14,10 @@ Puede estar integrado en su modelo o construir su propio modelo sin él.
 
 ## `ID` como Clave Primaria
 
-GORM use field with name `ID` as primary key by default.
+GORM usa el campo con el nombre `ID` como clave principal por defecto.
 
 ```go
-type User struct {
-  ID   string // field named `ID` will be used as primary field by default
-  Name string
-}
-
-// Set field `AnimalID` as primary field
-type Animal struct {
-  AnimalID int64 `gorm:"primary_key"`
-  Name     string
-  Age      int64
-}
+type User struct {   ID string // el campo llamado `ID` se utilizará como campo primario por defecto   Name string } // Establecer campo `AnimalID` como campo primario type Animal struct {   AnimalID int64 `gorm:"primary_key"`   Name string   Age int64 }
 ```
 
 ## Pluralized Table Name
