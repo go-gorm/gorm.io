@@ -1,12 +1,12 @@
 ---
-title: Error Handling
-layout: page
+title: Fehlerbehandlung
+layout: seite
 ---
 In Go, error handling is important.
 
 You are encouraged to do error check after any [Immediate Methods](/docs/method_chaining.html#Immediate-Methods)
 
-## Error Handling
+## Fehlerbehandlung
 
 Error handling in GORM is different with idiomatic Go code because of its chainable API, but it is still fairly easy to do that.
 
@@ -18,7 +18,7 @@ if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
 }
 ```
 
-Or
+Oder
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
