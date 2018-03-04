@@ -2,9 +2,9 @@
 title: Dialect Specific Data Type
 layout: page
 ---
-## Write new Dialect
+## Escribir Nuevo Dialecto
 
-GORM provides supports for sqlite, mysql, postgres, mssql officially.
+Gorm proporciona soporte para sqlite, mysql, postgres, mssql oficialmente.
 
 You could add other database support by creating a new dialect, need to implement [the dialect interface](https://godoc.org/github.com/jinzhu/gorm#Dialect).
 
