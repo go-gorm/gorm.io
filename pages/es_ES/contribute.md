@@ -1,6 +1,6 @@
 ---
 title: Contribuir a GORM
-layout: página
+layout: page
 ---
 **¡Puedes ayudar a entregar un GORM mejorado! hay muchas cosas que puedes hacer:**
 
