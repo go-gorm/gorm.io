@@ -4,9 +4,9 @@ layout: page
 ---
 ## Has Many
 
-A `has many` association also sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+Una asociación `has many` también establece una conexión de uno a muchos con otro modelo, a diferencia de `has one`, el propietario podría tener cero o muchas instancias de modelos.
 
-For example, if your application includes users and credit card, and each user can has many credit cards.
+Por ejemplo, si su aplicación incluye usuarios y tarjetas de crédito, y cada usuario puede tener muchas tarjetas de crédito.
 
 ```go
 // User has many emails, UserID is the foreign key
