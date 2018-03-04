@@ -1,6 +1,6 @@
 ---
 title: Actualizar
-layout: página
+layout: page
 ---
 ## Actualizar Todos los Campos
 
