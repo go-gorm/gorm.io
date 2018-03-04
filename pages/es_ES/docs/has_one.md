@@ -18,9 +18,9 @@ Para una relación has one, también debe existir un campo de clave foránea, el
 
 El nombre del campo generalmente se genera con `belongs to model`'s más su `primary key`, para el ejemplo anterior, es `CreditCardID`
 
-When you give a credit card to the user, its will save the credit card's `ID` into its `CreditCardID` field.
+Cuando se le da una tarjeta de crédito al usuario, guardará el `ID` de la tarjeta de crédito en su campo `CreditCardID`.
 
-If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
+Si desea usar otro campo para guardar la relación, puede cambiarlo con la etiqueta `foreignkey`, por ejemplo:
 
 ```go
 type User struct {
@@ -35,7 +35,7 @@ type CreditCard struct {
 }
 ```
 
-## Association ForeignKey
+## Asociación ForeignKey
 
 By default, the owner will save the `belogns to model`'s primary into foreign key, you could change to save another field, like use `Number` for below example.
 
