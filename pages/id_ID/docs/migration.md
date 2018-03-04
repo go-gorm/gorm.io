@@ -1,6 +1,6 @@
 ---
 title: Migrasi
-layout: halaman
+layout: page
 ---
 ## Migrasi Otomatis
 
