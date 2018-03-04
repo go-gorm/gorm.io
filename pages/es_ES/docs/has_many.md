@@ -39,7 +39,7 @@ GORM generalmente utiliza la clave principal del usuario como el valor de la cla
 
 Cuando asigna tarjetas de crédito a un usuario, GORM guardará el `ID` del usuario en el campo `UserID` de las tarjetas de crédito.
 
-You are able to change it with tag `association_foreignkey`, e.g:
+Puede cambiarlo con la etiqueta `association_foreignkey`, por ejemplo:
 
 ```go
 type User struct {
@@ -55,9 +55,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## Asociación de Polimorfismo
 
-Supports polymorphic has-many and has-one associations.
+Admite asociaciones polimórficas para has-many y has-one.
 
 ```go
   type Cat struct {
