@@ -14,7 +14,7 @@ Por ejemplo, si su aplicación incluye usuarios y tarjetas de crédito, y cada u
 
 ## Clave Foránea
 
-For a has one relationship, a foreign key field must exists also, the owner will saved the primary key of the model belongs to it into this field.
+Para una relación has one, también debe existir un campo de clave foránea, el usuario guardará la clave primaria del modelo que le pertenece en este campo.
 
 The field's name usually is generated with `belongs to model`'s type plus its `primary key`, for above example, it is `CreditCardID`
 
