@@ -4,9 +4,9 @@ layout: page
 ---
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Una asociación `belongs to` establece una conexión uno a uno con otro modelo, de modo que cada instancia del modelo de declaración "pertenece a" una instancia del otro modelo.
 
-For example, if your application includes users and profiles, and each profile can be assigned to exactly one user
+Por ejemplo, si su aplicación incluye usuarios y perfiles, y cada perfil puede asignarse exactamente a un usuario
 
 ```go
 type User struct {
