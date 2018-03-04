@@ -4,31 +4,21 @@ layout: page
 ---
 ## Has Many
 
-A `has many` association also sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+Una asociación `has many` también establece una conexión de uno a muchos con otro modelo, a diferencia de `has one`, el propietario podría tener cero o muchas instancias de modelos.
 
-For example, if your application includes users and credit card, and each user can has many credit cards.
+Por ejemplo, si su aplicación incluye usuarios y tarjetas de crédito, y cada usuario puede tener muchas tarjetas de crédito.
 
 ```go
-// User has many emails, UserID is the foreign key
-type User struct {
-    gorm.Model
-    CreditCards []CreditCard
-}
-
-type CreditCard struct {
-    gorm.Model
-    Number   string
-    UserID  uint
-}
+// El Usuario tiene muchos correos electrónicos, UserID es la clave foránea type User struct {     gorm.Model     CreditCards []CreditCard } type CreditCard struct {     gorm.Model     Number string     UserID uint }
 ```
 
-## Foreign Key
+## Clave Foránea
 
-To define a has many relatinship, foreign key must exists, default foreign key's name is owner's type name plus its primary key.
+Para definir una relación a muchos, debe existir una clave foránea, el nombre predeterminado de la clave foránea es el nombre del tipo más su clave principal.
 
-For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+Para el ejemplo anterior, para definir un modelo que pertenece a `User`, la clave foránea debe ser `UserID`.
 
-To use another field as foreign key, you can customize it with tag `foreignkey`, e.g:
+Para usar otro campo como clave foránea, puede personalizarlo con la etiqueta `foreignkey`, por ejemplo:
 
 ```go
 type User struct {
@@ -43,13 +33,13 @@ type CreditCard struct {
 }
 ```
 
-## Association ForeignKey
+## Asociación ForeignKey
 
-GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`,
+GORM generalmente utiliza la clave principal del usuario como el valor de la clave foránea, para el ejemplo anterior, es `User`'s `ID`,
 
-When you assign credit cards to a user, GORM will save user's `ID` into credit cards' `UserID` field.
+Cuando asigna tarjetas de crédito a un usuario, GORM guardará el `ID` del usuario en el campo `UserID` de las tarjetas de crédito.
 
-You are able to change it with tag `association_foreignkey`, e.g:
+Puede cambiarlo con la etiqueta `association_foreignkey`, por ejemplo:
 
 ```go
 type User struct {
@@ -65,9 +55,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## Asociación de Polimorfismo
 
-Supports polymorphic has-many and has-one associations.
+Admite asociaciones polimórficas para has-many y has-one.
 
 ```go
   type Cat struct {

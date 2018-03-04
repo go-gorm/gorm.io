@@ -85,7 +85,7 @@ db.Set("gorm:association_autocreate", false).Save(&user)
 
 ## 跳过自动创建及更新
 
-若要禁用 `自动创建` 及 `自动更新`, 可以将这两个设置一起使用
+To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
