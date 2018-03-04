@@ -145,7 +145,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 
 Bekerja mirip seperti`Dimana`.
 
-When using with [Multiple Immediate Methods](/docs/method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
+Bila menggunakan dengan [Segera Beberapa Metode](/docs/method_chaining.html#Multiple-Immediate-Methods), kemudian tidak akan melewati metode langsung untuk kondisi tersebut.
 
 ```go
 // Get by primary key (only works for integer primary key)
