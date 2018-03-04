@@ -19,22 +19,22 @@ layout: página
 
 Puede traducir el sitio actual con <https://translate.gorm.io>
 
-To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
+Para traducir GORM en su idioma debe publicar una solicitud en [Github issues](https://github.com/jinzhu/gorm.io/issues) para que sea añadido a <https://translate.gorm.io>.
 
-## Program
+## Programa
 
 * Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features from [Github Issues](https://github.com/jinzhu/gorm/issues)
-* Create open source plugins for GORM. (Don't forgot to add them to [the list](/community.html#Open-Sources))
+* Crear plugings open source para GORM. (No se olvide de añadirlos a [la lista](/community.html#Open-Sources))
 
-## Donations
+## Donaciones
 
-Many thanks to all our sponsors!
+¡Muchas gracias a todos nuestros patrocinadores!
 
-### One-time Donations
+### Donaciones Únicas
 
-Your kindness and generosity is greatly appreciated
+Su bondad y generosidad es muy apreciada
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[Donaciones Únicas con PayPal](https://www.paypal.me/zhangjinzhu) [Donaciones únicas con OpenCollective](https://opencollective.com/gorm)
 
 ### Recurring Donations
 
