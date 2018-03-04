@@ -1,8 +1,8 @@
 ---
 title: Migration
-layout: page
+layout: seite
 ---
-## Auto Migration
+## Auto-Migrationen
 
 Automatically migrate your schema, to keep your schema update to date.
 
@@ -17,7 +17,7 @@ db.AutoMigrate(&User{}, &Product{}, &Order{})
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
-## Other Migration Tools
+## Migrations-Tools
 
 GORM's AutoMigrate works well for mostly cases, but if you are looking more seriously migration tools, GORM provides genric DB interface which might be helpful for you.
 
@@ -30,7 +30,7 @@ Refer [Generic Interface](/docs/generic_interface.html) for more details.
 
 ## Schema Methods
 
-### Has Table
+### Loch-Tabelle
 
 ```go
 // Check model `User`'s table exists or not
@@ -40,7 +40,7 @@ db.HasTable(&User{})
 db.HasTable("users")
 ```
 
-### Create Table
+### Neue Tabellen erstellen
 
 ```go
 // Create table for model `User`
@@ -50,7 +50,7 @@ db.CreateTable(&User{})
 db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
 ```
 
-### Drop table
+### Löschen von Tabellen
 
 ```go
 // Drop model `User`'s table
@@ -95,14 +95,14 @@ db.Model(&User{}).AddUniqueIndex("idx_user_name", "name")
 db.Model(&User{}).AddUniqueIndex("idx_user_name_age", "name", "age")
 ```
 
-### Remove Index
+### Index neu laden
 
 ```go
 // Remove index
 db.Model(&User{}).RemoveIndex("idx_user_name")
 ```
 
-### Add Foreign Key
+### Lösche Fremdschlüssel
 
 ```go
 // Add foreign key
