@@ -1,6 +1,6 @@
 ---
 title: Penanganan Kesalahan
-layout: halaman
+layout: page
 ---
 Sebagai Gantinya, penanganan kesalahan itu penting.
 
