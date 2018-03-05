@@ -1,8 +1,8 @@
 ---
-title: Verketten von Methoden
-layout: seite
+title: Method Chaining
+layout: page
 ---
-## Verketten von Methoden
+## Method Chaining
 
 Gorm implements method chaining interface, so you could write code like this:
 
@@ -89,7 +89,7 @@ When using multiple immediate methods with GORM, later immediate method will reu
 db.Where("name LIKE ?", "jinzhu%").Find(&users, "id IN (?)", []int{1, 2, 3}).Count(&count)
 ```
 
-Erstellen
+Generates
 
 ```sql
 SELECT * FROM users WHERE name LIKE 'jinzhu%' AND id IN (1, 2, 3)
