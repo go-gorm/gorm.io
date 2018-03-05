@@ -1,8 +1,8 @@
 ---
-title: Aktualisieren
-layout: seite
+title: Update
+layout: page
 ---
-## Alle Felder löschen
+## Update All Fields
 
 `Save` will include all fields when perform the Updating SQL, even it is not changed
 
@@ -42,7 +42,7 @@ db.Model(&user).Updates(User{Name: "hello", Age: 18})
 db.Model(&user).Updates(User{Name: "", Age: 0, Actived: false})
 ```
 
-## Ausgewählte Felder Löschen
+## Update Selected Fields
 
 If you only want to update or ignore some fields when updating, you could use `Select`, `Omit`
 
