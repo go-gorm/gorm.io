@@ -1,6 +1,6 @@
 ---
 title: Many To Many
-layout: seite
+layout: page
 ---
 ## Many To Many
 
@@ -40,7 +40,7 @@ db.Model(&language).Related(&users)
 //// SELECT * FROM "users" INNER JOIN "user_languages" ON "user_languages"."user_id" = "users"."id" WHERE  ("user_languages"."language_id" IN ('111'))
 ```
 
-## Fremdschlüssel
+## Foreign Keys
 
 ```go
 type CustomizePerson struct {
@@ -113,4 +113,4 @@ db.Model(&user).Related(&languages, "Languages")
 db.Preload("Languages").First(&user)
 ```
 
-Für erweiterte Verwendung verweisen wir auf den [Assoziationsmodus](/docs/associations.html#Association-Mode)
+For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
