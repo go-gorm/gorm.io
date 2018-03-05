@@ -2,7 +2,7 @@
 title: Preloading (Eager loading)
 layout: page
 ---
-## Preload
+## Pramuat
 
 ```go
 db.Preload("Orders").Find(&users)
