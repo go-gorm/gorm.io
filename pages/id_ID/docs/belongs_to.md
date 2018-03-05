@@ -44,17 +44,17 @@ Ketika anda menetapkan profil untuk pengguna, GORM akan menghemat pengguna `ID` 
 Anda dapat mengubahnya dengan tanda ` association_foreign_key `, misal:
 
 ```go
-type User struct {
-    gorm.Model
-  Refer int
-    Name string
+ketik User struct {
+     gorm.Model
+   Lihat int
+     Nama string
 }
 
-type Profile struct {
-    gorm.Model
-  Name      string
-  User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
-  UserRefer string
+ketik profil struct {
+     gorm.Model
+   Nama string
+   Pengguna Pengguna `gorm:" association_foreignkey: Rujuk "` // gunakan Rujuk sebagai kunci asing asosiasi
+   String UserRefer
 }
 ```
 
