@@ -93,7 +93,7 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 
 ### Deleting an object
 
-Verfügbare Zimmer für Ihre Buchung
+Available hooks for deleting
 
 ```go
 // begin transaction
@@ -115,9 +115,9 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Hinzufügen eines Objekts
+### Querying an object
 
-Verfügbare Zimmer für Ihre Buchung
+Available hooks for querying
 
 ```go
 // load data from database
