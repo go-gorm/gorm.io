@@ -1,10 +1,10 @@
 ---
-title: Hooks
+title: Kait
 layout: page
 ---
 ## Siklus Hidup Objek
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+Kait adalah fungsi yang dipanggil sebelum atau sesudah penciptaan.
 
 Jika anda memiliki metode definisi yang ditentukan untuk model, maka akan dipanggil secara otomatis saat membuat, memperbarui, pertanyaan, menghapus, dan jika ada callback yang mengembalikan kesalahan, GORM akan menghentikan operasi masa depan dan meneruskan transaksi saat ini.
 
