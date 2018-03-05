@@ -2,25 +2,15 @@
 title: Milik
 layout: page
 ---
-## Belongs To
+## Kunci asing
 
 Sebuah `milik asosiasi` membuat koneksi satu-ke-satu dengan model lain, sehingga setiap contoh dari model deklarasi "termasuk" satu contoh dari model lainnya.
 
 Misalnya, jika aplikasi anda menyertakan pengguna dan profil, dan setiap profil dapat diberikan ke satu pengguna saja
 
 ```go
-type User struct {
-  gorm.Model
-  Name string
-}
 
-// `Profile` belongs to `User`, `UserID` is the foreign key
-type Profile struct {
-  gorm.Model
-  UserID int
-  User   User
-  Name   string
-}
+Kunci asing
 ```
 
 ## Foreign Key
