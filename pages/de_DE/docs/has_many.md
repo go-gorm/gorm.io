@@ -1,6 +1,6 @@
 ---
 title: Has Many
-layout: seite
+layout: page
 ---
 ## Has Many
 
@@ -22,11 +22,11 @@ type CreditCard struct {
 }
 ```
 
-## Fremdschlüssel
+## Foreign Key
 
-Um eine zu einer Beziehung gehörende Eigenschaft zu definieren, muss der Fremdschlüssel vorhanden sein. Der Standard-Fremdschlüssel verwendet den Typnamen des Eigentümers und seinen Primärschlüssel.
+To define a has many relatinship, foreign key must exists, default foreign key's name is owner's type name plus its primary key.
 
-Um beispielsweise ein Modell zu definieren, das zu ` User ` gehört, sollte der Fremdschlüssel ` UserID ` lauten.
+For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
 To use another field as foreign key, you can customize it with tag `foreignkey`, e.g:
 
@@ -43,13 +43,13 @@ type CreditCard struct {
 }
 ```
 
-## Assoziations-Fremdschlüssel
+## Association ForeignKey
 
-Bei einer `belongs to` Beziehung verwendet GORM normalerweise den Primärschlüssel des Eigentümers als Wert des Fremdschlüssels, im obigen Beispiel `User`'s `ID`,
+GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`,
 
-Wenn man einem Benutzer ein Profil zuweist, speichert GORM die `ID` des Benutzers im Feld `UserID` des Profils.
+When you assign credit cards to a user, GORM will save user's `ID` into credit cards' `UserID` field.
 
-Man kann es mit dem Tag `association_foreignkey` ändern, e.g:
+You are able to change it with tag `association_foreignkey`, e.g:
 
 ```go
 type User struct {
@@ -94,11 +94,11 @@ Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and 
 
 ## Working with Has Many
 
-Man kann `belongs to` Assoziationen mit `Related` finden
+You could find `has many` assciations with `Related`
 
 ```go
-db.Model(&user).Related(&profile)
-//// SELECT * FROM profiles WHERE user_id = 111; // 111 ist die ID des Nutzers
+db.Model(&user).Related(&emails)
+//// SELECT * FROM emails WHERE user_id = 111; // 111 is user's primary key
 ```
 
-Für erweiterte Verwendung verweisen wir auf den [Assoziationsmodus](/docs/associations.html#Association-Mode)
+For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
