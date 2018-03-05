@@ -2,7 +2,7 @@
 title: Dialect Specific Data Type
 layout: page
 ---
-## Neuen Kommentar schreiben
+## Write new Dialect
 
 GORM provides supports for sqlite, mysql, postgres, mssql officially.
 
