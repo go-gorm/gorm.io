@@ -1,8 +1,8 @@
 ---
-title: Deklarieren von Modellen
-layout: seite
+title: Declaring Models
+layout: page
 ---
-## Deklarieren von Modellen
+## Declaring Models
 
 Models usually just normal Golang structs, basic Go types, pointer of them and [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner), [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are supported.
 
@@ -29,11 +29,11 @@ Tags are optional to use when declaring models, following are those tags that GO
 
 ### Supported Struct tags
 
-| Markierung      | Description                                                            |
+| Tag             | Description                                                            |
 | --------------- | ---------------------------------------------------------------------- |
-| Spalte          | Specifies column name                                                  |
-| Typ             | Specifies column data type                                             |
-| Größe           | Specifies column size, default 255                                     |
+| Column          | Specifies column name                                                  |
+| Type            | Specifies column data type                                             |
+| Size            | Specifies column size, default 255                                     |
 | PRIMARY_KEY     | Specifies column as primary key                                        |
 | UNIQUE          | Specifies column as unique                                             |
 | DEFAULT         | Specifies column default value                                         |
@@ -44,13 +44,13 @@ Tags are optional to use when declaring models, following are those tags that GO
 | UNIQUE_INDEX    | Like `INDEX`, create unique index                                      |
 | EMBEDDED        | Set struct as embedded                                                 |
 | EMBEDDED_PREFIX | Set embedded struct's prefix name                                      |
-| -               | Diese Warnung ignorieren                                               |
+| -               | Ignore this fields                                                     |
 
 ### Struct tags for Associations
 
 Check out Associations section for details
 
-| Markierung                         | Description                                    |
+| Tag                                | Description                                    |
 | ---------------------------------- | ---------------------------------------------- |
 | MANY2MANY                          | Specifies join table name                      |
 | FOREIGNKEY                         | Specifies foreign key                          |
