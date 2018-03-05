@@ -1,22 +1,25 @@
 ---
-title: Verbindung zur Datenbank
-layout: seite
+title: Connecting to database
+layout: page
 ---
-## Verbindung zur Datenbank
+## Connecting to database
 
-Um die Verbindung zu einer Datenbank, müssen Sie zuerst den Datenbank-Treiber importieren. Zum Beispiel:
-
-```go
-importieren Sie _ "github.com/go-sql-driver/mysql"
-```
-
-GORM hat einige Treiber, um leichter zu ihrer Importpfad erinnern, so dass Sie den Mysql-Treiber mit importieren könnte gewickelt
+In order to connect to a database, you need to first import the database's driver. For example:
 
 ```go
-_ "github.com/jinzhu/gorm/dialects/mysql" importieren / / import _ "github.com/jinzhu/gorm/dialects/postgres" / / import _ "github.com/jinzhu/gorm/dialects/sqlite" / / import _ "github.com/jinzhu/gorm/dialects/mssql"
+import _ "github.com/go-sql-driver/mysql"
 ```
 
-## Unterstützte Datenbanken
+GORM has wrapped some drivers, to make easier to remember their import path, so you could import the mysql driver with
+
+```go
+import _ "github.com/jinzhu/gorm/dialects/mysql"
+// import _ "github.com/jinzhu/gorm/dialects/postgres"
+// import _ "github.com/jinzhu/gorm/dialects/sqlite"
+// import _ "github.com/jinzhu/gorm/dialects/mssql"
+```
+
+## Supported Databases
 
 ### MySQL
 
@@ -62,7 +65,7 @@ func main() {
 }
 ```
 
-### Fehlerbehebung
+### SQL Server
 
 [Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
@@ -78,6 +81,6 @@ func main() {
 }
 ```
 
-## Unterstützte Datenbanken
+## Unsupported Databases
 
 GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
