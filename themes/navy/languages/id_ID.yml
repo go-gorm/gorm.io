@@ -33,7 +33,7 @@ sidebar:
     has_one: Memiliki satu
     has_many: Memiliki banyak
     many_to_many: Banyak ke banyak
-    preload: Preloading (Eager Loading)
+    preload: Pramuat (Loading Eager)
     tutorials: Tutorial
     method_chaining: Metode Rantai
     error_handling: Penanganan Kesalahan
