@@ -5,23 +5,23 @@ layout: page
 ## Query
 
 ```go
-// Get first record, order by primary key
+// 主キーでソートされた最初のレコードを取得します
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specfied order
+// ソートなしでレコードを1行取得します
 db.Take(&user)
 //// SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key
+// 主キーでソートされた最後のレコードを取得します
 db.Last(&user)
 //// SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
-// Get all records
+// すべてのレコードを取得します
 db.Find(&users)
 //// SELECT * FROM users;
 
-// Get record with primary key (only works for integer primary key)
+// 主キーを指定してレコードを取得します (integer 型の主キーでのみ動作します)
 db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
@@ -31,11 +31,11 @@ db.First(&user, 10)
 #### Plain SQL
 
 ```go
-// Get first matched record
+// 条件に一致した最初のレコードを取得します
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Get all matched records
+// 条件に一致したすべてのレコードを取得します
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
@@ -74,14 +74,14 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 //// SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**NOTE** When query with struct, GORM will only query with those fields has non-zero value, that means if your field's value is ``, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**NOTE** Where 句に struct を指定した場合、GORM はゼロ値のフィールドのみ利用してクエリを実行します。これは、``, `''`, `false`, その他 [zero values](https://tour.golang.org/basics/12) は Where 句に反映されないことを意味します。例:
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 //// SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You could consider to use pointer type or scanner/valuer to avoid this.
+ポインタか scanner/valuer を利用することで回避することができます。
 
 ```go
 // Use pointer value
@@ -101,7 +101,7 @@ type User struct {
 
 ### Not
 
-Works similar like `Where`
+`Where` と同様に利用できます。
 
 ```go
 db.Not("name", "jinzhu").First(&user)
