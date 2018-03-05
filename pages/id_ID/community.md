@@ -18,7 +18,7 @@ layout: page
 
 * [Gorm Gotchas](https://blog.depado.eu/post/gorm-gotchas)
 * [Bagaimana Saya Membangun API dengan Mux, Go, PostgreSQL, dan GORM](https://dev.to/aspittel/how-i-built-an-api-with-mux-go-postgresql-and-gorm-5ah8)
-* [Go with GORM](http://mindbowser.com/golang-go-with-gorm-2/)
+* [Pergilah dengan GORM](http://mindbowser.com/golang-go-with-gorm-2/)
 * [Konsistensi data, gorm dan CockroachDB](http://callistaenterprise.se/blogg/teknik/2018/02/14/go-blog-series-part13/)
 * [Dokumen GORM Berbahasa China / GORM 中文文档](https://jasperxu.github.io/gorm-zh/)
 
@@ -27,7 +27,7 @@ layout: page
 * [Gambaran dari GORM objek mapper relasional](https://www.youtube.com/watch?v=nVD9acHituc)
 * [GORM: An Object Relational Mapper for Go](https://www.pluralsight.com/courses/gorm-go-object-relational-mapper)
 
-## Open Sources
+## Sumber Terbuka
 
 * [QOR Admin - Langsung buat antarmuka Admin dalam hitungan menit](http://getqor.com)
 * [Adaptor Gorm untuk Casbin](https://github.com/casbin/gorm-adapter)
@@ -35,7 +35,7 @@ layout: page
 * [Go-Mocket](https://github.com/Selvatico/go-mocket)
 * [Transisi - mesin negara yang berdasar pada GORM](https://github.com/qor/transition)
 * [Validasi - memvalidasi model saat membuat, memperbarui](https://github.com/qor/validations)
-* [Gormstore - GORM backend for gorilla sessions](https://github.com/wader/gormstore)
+* [ Gormstore - GORM backend untuk sesi gorila](https://github.com/wader/gormstore)
 
 ## Berkontribusi untuk halaman ini
 
