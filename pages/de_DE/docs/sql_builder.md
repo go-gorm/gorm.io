@@ -1,6 +1,6 @@
 ---
-title: SQL-Abfragegenerator
-layout: seite
+title: SQL Builder
+layout: page
 ---
 ## Run Raw SQL
 
