@@ -1,8 +1,8 @@
 ---
-title: Preloading (Eager Loading)
-layout: seite
+title: Preloading (Eager loading)
+layout: page
 ---
-## Vordefiniert
+## Preload
 
 ```go
 db.Preload("Orders").Find(&users)
