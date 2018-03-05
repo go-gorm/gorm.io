@@ -49,7 +49,7 @@ db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&use
 
 ## Custom Preloading SQL
 
-You could custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+Anda dapat mengkustom prapembebanan SQL dengan melewati `func(db *gorm.DB) *gorm.DB`, sebagai contoh:
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
