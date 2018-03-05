@@ -68,7 +68,7 @@ type Profile struct {
 }
 ```
 
-## Working with Belongs To
+## Bekerja dengan Milik
 
 You could find `belongs to` assciations with `Related`
 
