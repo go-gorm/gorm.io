@@ -16,7 +16,7 @@ Melanggar perubahan
 
 * Hapus lembut hanya akan memeriksa ` dihapus di ` adalah batal
 
-* New ToDBName logic
+* Logika untukDBNama baru
     
     When GORM convert struct, field name to db name, only common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` were handled, so `HTTP`'s db name is `http`, but not `h_t_t_p`.
     
