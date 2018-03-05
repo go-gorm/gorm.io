@@ -39,7 +39,7 @@ db.Save(&user)
 
 ## AutoUpdate überspringen
 
-Wenn die Zuordnungen bereits in der Datenbank vorhanden sind, möchten man sie möglicherweise nicht aktualisieren.
+If your association is already existing in database, you might not want to update it.
 
 Hierzu kann man die Datenbank-Einstellung `gorm:association_autoupdate` zu `false` setzen:
 
@@ -65,7 +65,7 @@ type User struct {
 
 ## AutoCreate überspringen
 
-Selbst bei deaktiviertem `AutoUpdating` werden Assoziation ohne Primärschlüssel erstellt und ihre Referenz wird gespeichert.
+Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
 
 Um dies zu deaktivieren, können Sie die Datenbank-Einstellung `gorm: association_autocreate` auf ` false ` setzen
 
@@ -89,7 +89,7 @@ oder mit GORM tags, `gorm:"association_autocreate:false"`
 
 ## AutoCreate/Update überspringen
 
-Um `AutoCreate` und `AutoUpdate` zu deaktivieren, kann man beide Einstellungen zusammen verwenden
+To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -135,7 +135,7 @@ type User struct {
 
 ## Assoziations-Modus
 
-Der Assoziations-Modus hat einige Hilfsfunktionen, um Beziehungen zu vereinfachen.
+Association Mode contains some helper methods to handle relationship related things easily.
 
 ```go
 // Assoziations-Modus starten
@@ -158,7 +158,7 @@ db.Model(&user).Association("Languages").Find(&languages)
 
 ### Assoziationen hinzufügen
 
-Füge neue Zuordnungen für `many to many` und `has many` hinzu, ersetzt die aktuelle Zuordnung für `has one`, `belongs to`
+Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
