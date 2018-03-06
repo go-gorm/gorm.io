@@ -9,7 +9,17 @@ Una asociación `has one` también establece una conexión uno a uno con otro mo
 Por ejemplo, si su aplicación incluye usuarios y tarjetas de crédito, y cada usuario sólo puede tener una tarjeta de crédito.
 
 ```go
-// El usuario tiene una tarjeta de crédito, CreditCardID es la clave foránea type User struct {     gorm.Model     CreditCard CreditCard   CreditCardID uint } type CreditCard struct {     gorm.Model     Number string }
+// El usuario tiene una tarjeta de crédito, CreditCardID es la clave foránea
+type User struct {
+    gorm.Model
+    CreditCard   CreditCard
+   CreditCardID uint
+}
+
+type CreditCard struct {
+    gorm.Model
+    Number   string
+}
 ```
 
 ## Clave Foránea
@@ -84,7 +94,13 @@ Nota: las asociaciones polimórficas belongs-to y many-to-many NO son compatible
 Puede encontrar asociaciones `has one` con `Related`
 
 ```go
-var card CreditCard db.Model(&user).Related(&card, "CreditCard") //// SELECT * FROM credit_cards WHERE user_id = 123; // 123 es la clave principal del usuario // CreditCard es el nombre del campo del usuario, es decir obtener las relaciones CreditCard del usuario y llenar en una tarjeta variable // si es igual que el nombre de tipo de la variable, como en el ejemplo anterior, podría omitirse, tal como: db.Model(&user).Related(&card)
+var card CreditCard
+db.Model(&user).Related(&card, "CreditCard")
+//// SELECT * FROM credit_cards WHERE user_id = 123;
+// 123 es la clave principal del usuario
+// CreditCard es el nombre del campo del usuario, es decir obtener las relaciones CreditCard del usuario y llenar en una tarjeta variable
+// si es igual que el nombre de tipo de la variable, como en el ejemplo anterior, podría omitirse, tal como:
+db.Model(&user).Related(&card)
 ```
 
 Para un uso avanzado, consulte [Modo de Asociación](/docs/associations.html#Association-Mode)
