@@ -85,17 +85,16 @@ atau gunakan label GORM, `gorm:"association_autocreate:false"`
 
 ## Lewati buat mobil /perbaharui
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
+Untuk menonaktifkan `` Buat Otomotis </ code> dan <code> Buat Perbaharui </ code>, Anda dapat menggunakan kedua pengaturan tersebut bersama-sama</p>
 
-```go
-db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
+<pre><code class="go">db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
 
 type User struct {
   gorm.Model
   Name    string
   Company Company `gorm:"association_autoupdate:false;association_autocreate:false"`
 }
-```
+``</pre> 
 
 Atau gunakan `gorm:save_associations`
 
