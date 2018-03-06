@@ -75,7 +75,20 @@ AfterSave
 Ejemplo de Código:
 
 ```go
-func (u *User) BeforeUpdate() (err error) {     if u.readonly() {         err = errors.New("read only user")     }     return } // Actualización de datos en la misma transacción func (u *User) AfterUpdate(tx *gorm.DB) (err error) {   if u.Confirmed {     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)   }     return }
+func (u *User) BeforeUpdate() (err error) {
+    if u.readonly() {
+        err = errors.New("read only user")
+    }
+    return
+}
+
+// Updating data in same transaction
+func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
+  if u.Confirmed {
+    tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
+  }
+    return
+}
 ```
 
 ### Eliminando un objeto
@@ -93,7 +106,13 @@ AfterDelete
 Ejemplo de Código:
 
 ```go
-// Actualización de datos en la misma transacción func (u *User) AfterDelete(tx *gorm.DB) (err error) {   if u.Confirmed {     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)   }     return }
+// Actualización de datos en la misma transacción
+func (u *User) AfterDelete(tx *gorm.DB) (err error) {
+  if u.Confirmed {
+    tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
+  }
+    return
+}
 ```
 
 ### Consultando un objeto
