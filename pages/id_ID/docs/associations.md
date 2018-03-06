@@ -83,7 +83,7 @@ atau gunakan label GORM, `gorm:"association_autocreate:false"`
     }
     
 
-## Skip AutoCreate/Update
+## Lewati buat mobil /perbaharui
 
 To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
 
