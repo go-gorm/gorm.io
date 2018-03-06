@@ -80,15 +80,14 @@ Admite asociaciones polimórficas para has-many y has-one.
   }
 ```
 
-Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
+Nota: las asociaciones polimórficas belongs-to y many-to-many NO son compatibles y producirán errores.
 
-## Working with Has Many
+## Trabajando con Has Many
 
-You could find `has many` assciations with `Related`
+Puede encontrar asociaciones `has many` con `Related`
 
 ```go
-db.Model(&user).Related(&emails)
-//// SELECT * FROM emails WHERE user_id = 111; // 111 is user's primary key
+db.Model(&user).Related(&emails) //// SELECT * FROM emails WHERE user_id = 111; // 111 es la clave principal del usuario
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Para un uso avanzado, consulte [Modo de Asociación](/docs/associations.html#Association-Mode)

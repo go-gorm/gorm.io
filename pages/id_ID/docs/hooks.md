@@ -1,10 +1,10 @@
 ---
-title: Hooks
+title: Kait
 layout: page
 ---
 ## Siklus Hidup Objek
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+Kait adalah fungsi yang dipanggil sebelum atau sesudah penciptaan.
 
 Jika anda memiliki metode definisi yang ditentukan untuk model, maka akan dipanggil secara otomatis saat membuat, memperbarui, pertanyaan, menghapus, dan jika ada callback yang mengembalikan kesalahan, GORM akan menghentikan operasi masa depan dan meneruskan transaksi saat ini.
 
@@ -15,17 +15,17 @@ Jika anda memiliki metode definisi yang ditentukan untuk model, maka akan dipang
 Tersedia kaitan untuk membuat
 
 ```go
-// begin transaction
-BeforeSave
-BeforeCreate
-// save before associations
-// update timestamp `CreatedAt`, `UpdatedAt`
-// save self
-// reload fields that have default value and its value is blank
-// save after associations
-AfterCreate
-AfterSave
-// commit or rollback transaction
+// mulai transaksi
+Sebelum Menyimpan
+Sebelum membuat
+// simpan sebelum asosiasi
+// update timestamp `CreatedAt`,` UpdatedAt`
+// simpan diri
+// muatkan bidang yang memiliki nilai default dan nilainya kosong
+// simpan setelah asosiasi
+Setelah membuat
+Setelah menyimpan
+// melakukan atau transaksi rollback
 ```
 
 Contoh Kode:

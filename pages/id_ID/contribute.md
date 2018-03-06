@@ -9,7 +9,7 @@ layout: page
 * Bagikan GORM dengan dunia melalui saluran sosial, atau hanya memberitahu orang-orang yang mungkin tertarik
 * Bantu pendatang baru untuk memecahkan pertanyaan di [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [masalah github](https://github.com/jinzhu/gorm/issues) dan [Ruang Obrolan](/community.html#Chat)
 * Tulis tutorial, merekam video, dll... (Jangan lupa untuk menambahkannya ke [daftar](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
+* Gormstore - GORM backend untuk sesi gorila
 
 ## Dokumentasi dan Penulisan
 

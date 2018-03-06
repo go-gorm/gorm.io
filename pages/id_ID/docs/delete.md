@@ -16,7 +16,7 @@ db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email)
 //// DELETE from emails where id=10 OPTION (OPTIMIZE FOR UNKNOWN);
 ```
 
-## Batch Delete
+## Batch Hapus
 
 Hapus seluruh catatan yang cocok
 
@@ -28,7 +28,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 //// DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-## Soft Delete
+## Hapus lembut
 
 If model has `DeletedAt` field, it will get soft delete ability automatically! then it won't be deleted from database permanently when call `Delete`, but only set field `DeletedAt`'s value to current time
 

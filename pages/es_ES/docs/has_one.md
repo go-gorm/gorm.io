@@ -4,16 +4,16 @@ layout: page
 ---
 ## Has One
 
-A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+Una asociación `has one` también establece una conexión uno a uno con otro modelo, pero con semántica (y consecuencias) diferentes. Esta asociación indica que cada instancia de un modelo contiene o posee una instancia de otro modelo.
 
-For example, if your application includes users and credit card, and each user can only has one credit card.
+Por ejemplo, si su aplicación incluye usuarios y tarjetas de crédito, y cada usuario sólo puede tener una tarjeta de crédito.
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+// El usuario tiene una tarjeta de crédito, CreditCardID es la clave foránea
 type User struct {
     gorm.Model
     CreditCard   CreditCard
-  CreditCardID uint
+   CreditCardID uint
 }
 
 type CreditCard struct {
@@ -22,15 +22,15 @@ type CreditCard struct {
 }
 ```
 
-## Foreign Key
+## Clave Foránea
 
-For a has one relationship, a foreign key field must exists also, the owner will saved the primary key of the model belongs to it into this field.
+Para una relación has one, también debe existir un campo de clave foránea, el usuario guardará la clave primaria del modelo que le pertenece en este campo.
 
-The field's name usually is generated with `belongs to model`'s type plus its `primary key`, for above example, it is `CreditCardID`
+El nombre del campo generalmente se genera con `belongs to model`'s más su `primary key`, para el ejemplo anterior, es `CreditCardID`
 
-When you give a credit card to the user, its will save the credit card's `ID` into its `CreditCardID` field.
+Cuando se le da una tarjeta de crédito al usuario, guardará el `ID` de la tarjeta de crédito en su campo `CreditCardID`.
 
-If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
+Si desea usar otro campo para guardar la relación, puede cambiarlo con la etiqueta `foreignkey`, por ejemplo:
 
 ```go
 type User struct {
@@ -45,9 +45,9 @@ type CreditCard struct {
 }
 ```
 
-## Association ForeignKey
+## Asociación ForeignKey
 
-By default, the owner will save the `belogns to model`'s primary into foreign key, you could change to save another field, like use `Number` for below example.
+Por defecto, el usuario guardará la asociación `belogns to model` en una clave foránea, puede cambiarla para guardar en otro campo, tal como `Number` para el siguiente ejemplo.
 
 ```go
 type User struct {
@@ -62,9 +62,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## Asociación de Polimorfismo
 
-Supports polymorphic has-many and has-one associations.
+Admite asociaciones polimórficas para has-many y has-one.
 
 ```go
   type Cat struct {
@@ -87,19 +87,20 @@ Supports polymorphic has-many and has-one associations.
   }
 ```
 
-Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
+Nota: las asociaciones polimórficas belongs-to y many-to-many NO son compatibles y producirán errores.
 
-## Working with Has One
+## Trabajando con Has One
 
-You could find `has one` assciations with `Related`
+Puede encontrar asociaciones `has one` con `Related`
 
 ```go
 var card CreditCard
 db.Model(&user).Related(&card, "CreditCard")
-//// SELECT * FROM credit_cards WHERE user_id = 123; // 123 is user's primary key
-// CreditCard is user's field name, it means get user's CreditCard relations and fill it into variable card
-// If the field name is same as the variable's type name, like above example, it could be omitted, like:
+//// SELECT * FROM credit_cards WHERE user_id = 123;
+// 123 es la clave principal del usuario
+// CreditCard es el nombre del campo del usuario, es decir obtener las relaciones CreditCard del usuario y llenar en una tarjeta variable
+// si es igual que el nombre de tipo de la variable, como en el ejemplo anterior, podría omitirse, tal como:
 db.Model(&user).Related(&card)
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Para un uso avanzado, consulte [Modo de Asociación](/docs/associations.html#Association-Mode)

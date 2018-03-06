@@ -54,7 +54,7 @@ type User struct {
 }
 ```
 
-## Setting Field Values In Hooks
+## Menetapkan Nilai Bidang Dalam Hooks
 
 Jika Anda ingin memperbarui nilai bidang di hook `BeforeCreate`, Anda bisa menggunakan `scope.SetColumn`, misalnya:
 

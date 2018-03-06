@@ -2,17 +2,17 @@
 title: Hooks
 layout: page
 ---
-## Object Life Cycle
+## Ciclo de Vida del Objeto
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+Los hooks son funciones que se llaman antes o después de la creación/consulta/actualización/eliminación.
 
-If you have defiend specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+Si ha definido los métodos especificados para un modelo, se llamará automáticamente al crear, actualizar, consultar, eliminar, y si alguna devolución de llamada devuelve un error, GORM detendrá las operaciones futuras y revertirá la transacción actual.
 
 ## Hooks
 
-### Creating an object
+### Creando un objeto
 
-Available hooks for creating
+Hooks disponibles para crear
 
 ```go
 // begin transaction
@@ -28,7 +28,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-Code Example:
+Ejemplo de Código:
 
 ```go
 func (u *User) BeforeSave() (err error) {
@@ -46,7 +46,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited. If you would like access those changes in your hooks, you could accept current tranaction as argument in your hooks, for example:
+**NOTA** Las operaciones de Guardar/Eliminar en GORM se ejecutan en las transacciones de forma predeterminada, por lo que los cambios realizados en esa transacción no estarán visibles hasta que se haya confirmado. Si desea acceder a esos cambios en sus hooks, puede aceptar la transacción actual como argumento en sus hooks, por ejemplo:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
@@ -55,9 +55,9 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### Actualizando un objeto
 
-Available hooks for updating
+Hooks disponibles para actualizar
 
 ```go
 // begin transaction
@@ -72,7 +72,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-Code Example:
+Ejemplo de Código:
 
 ```go
 func (u *User) BeforeUpdate() (err error) {
@@ -91,9 +91,9 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### Eliminando un objeto
 
-Available hooks for deleting
+Hooks disponibles para eliminar
 
 ```go
 // begin transaction
@@ -103,10 +103,10 @@ AfterDelete
 // commit or rollback transaction
 ```
 
-Code Example:
+Ejemplo de Código:
 
 ```go
-// Updating data in same transaction
+// Actualización de datos en la misma transacción
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
@@ -115,9 +115,9 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Querying an object
+### Consultando un objeto
 
-Available hooks for querying
+Hooks disponibles para consultar
 
 ```go
 // load data from database
@@ -125,7 +125,7 @@ Available hooks for querying
 AfterFind
 ```
 
-Code Example:
+Ejemplo de Código:
 
 ```go
 func (u *User) AfterFind() (err error) {
