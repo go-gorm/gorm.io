@@ -116,7 +116,7 @@ type Animal struct {
 }
 ```
 
-## Timestamp Tracking
+## Pelacakan Waktu
 
 ### CreatedAt
 
