@@ -19,7 +19,7 @@ layout: page
 
 Anda dapat menerjemahkan situs saat ini dengan <https://translate.gorm.io>
 
-To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
+Untuk menerjemahkan GORM dalam bahasa Anda, Anda perlu mengeposkan permintaan di [ masalah Github ](https://github.com/jinzhu/gorm.io/issues) untuk itu ditambahkan ke <a href = "https://translate.gorm.io"> https://translate.gorm.io </a>.
 
 ## Program
 
