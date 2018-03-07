@@ -159,7 +159,7 @@ db.Model(&user).Association("Languages").Append([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Replace Associations
+### Ganti Asosiasi
 
 Ganti asosiasi saat ini dengan yang baru
 
@@ -185,10 +185,10 @@ Hapus referensi antara sumber & asosiasi saat ini, tidak akan menghapus asosiasi
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Menghitung asosiasi
 
 Kembali hitungan asosiasi saat ini
 
 ```go
-db.Model(&user).Association("Languages").Count()
+db.Model (& amp; pengguna).Asosiasi ("Bahasa"). Menghitung ()
 ```
