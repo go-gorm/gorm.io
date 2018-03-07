@@ -36,13 +36,12 @@ db.Create (& amp; hewan)
 // heean.Nama = & gt; 'galeone'
 ```
 
-**NOTE** all fields having zero value, like ``, `''`, `false` or other [zero values](https://tour.golang.org/basics/12) won't be saved into database but will use its default value, it you want to avoid this, consider to use pointer type or scaner/valuer, e.g:
+** Perhatikan </ strong> semua bidang yang memiliki nilai nol, seperti `` 0 </ code>, <code> '' </ code>, <code> false </ code> atau lainnya <a href = "https: //tour.golang.org/basics/12 "> nilai nol ​​</a> tidak akan disimpan ke dalam database namun akan menggunakan nilai defaultnya, Anda ingin menghindari hal ini, pertimbangkan untuk menggunakan tipe pointer atau pemindai / penilai, misal:</p>
 
-```go
-// Gunakan nilai pointer ketik User struct {   gorm.Model   Nama string   Umur * int `gorm:" default: 18 "` }
+<pre><code class="go">// Gunakan nilai pointer ketik User struct {   gorm.Model   Nama string   Umur * int `gorm:" default: 18 "` }
 
  // Gunakan pemindai / penilai ketik User struct {   gorm.Model   Nama string   Umur sql.NullInt64 `gorm:" default: 18 "` }
-```
+``</pre> 
 
 ## Menetapkan Nilai Bidang Dalam Hooks
 
