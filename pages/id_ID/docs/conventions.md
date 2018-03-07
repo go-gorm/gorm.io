@@ -131,7 +131,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, it will be set to current time when record is updated.
+Untuk model yang memiliki kode ` UpdatedAt `, maka akan disetel ke waktu saat rekaman diperbarui.
 
 ```go
 db.Save(&user) // will set `UpdatedAt` to current time
