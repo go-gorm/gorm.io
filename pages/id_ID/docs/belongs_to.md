@@ -13,7 +13,7 @@ Misalnya, jika aplikasi anda menyertakan pengguna dan profil, dan setiap profil 
 Kunci asing
 ```
 
-## Foreign Key
+## Kunci asing
 
 Untuk menentukan milik hubungan, kunci asing harus ada, kunci asing default menggunakan nama jenis pemilik ditambah kunci utamanya.
 
