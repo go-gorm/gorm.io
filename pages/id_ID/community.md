@@ -25,7 +25,7 @@ layout: page
 ## Video
 
 * [Gambaran dari GORM objek mapper relasional](https://www.youtube.com/watch?v=nVD9acHituc)
-* [GORM: An Object Relational Mapper for Go](https://www.pluralsight.com/courses/gorm-go-object-relational-mapper)
+* [GORM: Object Relational Mapper untuk Go](https://www.pluralsight.com/courses/gorm-go-object-relational-mapper)
 
 ## Sumber Terbuka
 
