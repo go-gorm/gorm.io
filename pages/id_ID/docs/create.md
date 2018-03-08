@@ -19,29 +19,40 @@ db.NewRecord(user) // => return `false` after `user` created
 Anda dapat menetapkan nilai bidang bawaan dengan label, sebagai contoh:
 
 ```go
-jenis hewan struct {
-    ID int64
-    Nama string `gorm:" default: 'galeone' "`
-    Umur int64
+type Animal struct {
+    ID   int64
+    Name string `gorm:"default:'galeone'"`
+    Age  int64
 }
 ```
 
 Kemudian memasukkan SQL akan mengecualikan bidang tersebut yang tidak memiliki nilai atau memiliki [nilai nol](https://tour.golang.org/basics/12), setelah memasukkan record ke dalam database, gorm akan memuat nilai field tersebut dari database.
 
 ```go
-var animal = Hewan {Umur: 99, Nama: ""}
-db.Create (& amp; hewan)
-// INSERT INTO nilai hewan ("usia") ('99 ');
-// PILIH nama dari hewan WHERE ID = 111; // kunci utama yang kembali adalah 111
-// heean.Nama = & gt; 'galeone'
+var animal = Animal{Age: 99, Name: ""}
+db.Create(&animal)
+// INSERT INTO animals("age") values('99');
+// SELECT name from animals WHERE ID=111; // the returning primary key is 111
+// animal.Name => 'galeone'
 ```
 
-** Perhatikan </ strong> semua bidang yang memiliki nilai nol, seperti `` 0 </ code>, <code> '' </ code>, <code> false </ code> atau lainnya <a href = "https: //tour.golang.org/basics/12 "> nilai nol ​​</a> tidak akan disimpan ke dalam database namun akan menggunakan nilai defaultnya, Anda ingin menghindari hal ini, pertimbangkan untuk menggunakan tipe pointer atau pemindai / penilai, misal:</p>
+**NOTE** all fields having zero value, like ``, `''`, `false` or other [zero values](https://tour.golang.org/basics/12) won't be saved into database but will use its default value, it you want to avoid this, consider to use pointer type or scaner/valuer, e.g:
 
-<pre><code class="go">// Gunakan nilai pointer ketik User struct {   gorm.Model   Nama string   Umur * int `gorm:" default: 18 "` }
+```go
+// Use pointer value
+type User struct {
+  gorm.Model
+  Name string
+  Age  *int `gorm:"default:18"`
+}
 
- // Gunakan pemindai / penilai ketik User struct {   gorm.Model   Nama string   Umur sql.NullInt64 `gorm:" default: 18 "` }
-``</pre> 
+// Use scanner/valuer
+type User struct {
+  gorm.Model
+  Name string
+  Age  sql.NullInt64 `gorm:"default:18"`
+}
+```
 
 ## Menetapkan Nilai Bidang Dalam Hooks
 
