@@ -10,7 +10,7 @@ Gorm implements method chaining interface, so you could write code like this:
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 
 // create a new relation
-tx := tx.Where("name = ?", "jinzhu")
+tx := db.Where("name = ?", "jinzhu")
 
 // add more filter
 if someCondition {
