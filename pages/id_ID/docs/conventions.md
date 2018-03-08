@@ -116,7 +116,7 @@ type Animal struct {
 }
 ```
 
-## Pelacakan Waktu
+## Timestamp Tracking
 
 ### CreatedAt
 
@@ -131,7 +131,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-Untuk model yang memiliki kode ` UpdatedAt `, maka akan disetel ke waktu saat rekaman diperbarui.
+For models having `UpdatedAt` field, it will be set to current time when record is updated.
 
 ```go
 db.Save(&user) // will set `UpdatedAt` to current time
