@@ -13,7 +13,7 @@ Misalnya, jika aplikasi anda menyertakan pengguna dan profil, dan setiap profil 
 Kunci asing
 ```
 
-## Kunci asing
+## Foreign Key
 
 Untuk menentukan milik hubungan, kunci asing harus ada, kunci asing default menggunakan nama jenis pemilik ditambah kunci utamanya.
 
@@ -67,4 +67,4 @@ db.Model(&user).Related(&profile)
 //// SELECT * FROM profiles WHERE user_id = 111; // 111 is user's ID
 ```
 
-Untuk penggunaan lanjutan, lihat [ Mode Asosiasi ](/docs/associations.html#Asosiasi-Mode)
+For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
