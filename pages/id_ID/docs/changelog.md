@@ -14,7 +14,7 @@ Melanggar perubahan
 
 * Membarui hanya akan memperbarui bidang yang berubah
 
-* Hapus lembut hanya akan memeriksa ` dihapus di ` adalah batal
+* Hapus lembut hanya akan memeriksa ` deleted_at IS NULL ` adalah batal
 
 * Logika untukDBNama baru
     

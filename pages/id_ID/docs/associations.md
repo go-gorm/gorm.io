@@ -37,7 +37,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-## Skip AutoUpdate
+## Lewati AutoUpdate
 
 Jika asosiasi anda telah ada di basis data, anda mungkin tidak ingin memperbaruinya.
 
@@ -61,7 +61,7 @@ type User struct {
 }
 ```
 
-## Skip AutoCreate
+## Lewati AutoUpdate
 
 Meskipun Anda menonaktifkan `MemperbaruiOtomatis `, asosiasi w / o kunci utama masih harus dibuat dan referensi akan disimpan.
 
@@ -159,7 +159,7 @@ db.Model(&user).Association("Languages").Append([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Replace Associations
+### Menggantikan Asosiasi
 
 Ganti asosiasi saat ini dengan yang baru
 
@@ -185,7 +185,7 @@ Hapus referensi antara sumber & asosiasi saat ini, tidak akan menghapus asosiasi
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Count Asosiasi
 
 Kembali hitungan asosiasi saat ini
 
