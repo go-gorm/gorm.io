@@ -26,7 +26,7 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 
 ## Auto Preloading
 
-Always auto preload associations
+常に association を preload します
 
 ```go
 type User struct {
@@ -49,7 +49,7 @@ db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&use
 
 ## Custom Preloading SQL
 
-You could custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+Preload SQL をカスタマイズする場合は `func(db *gorm.DB) *gorm.DB` を例のように実装してください:
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
