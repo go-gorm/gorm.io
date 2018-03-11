@@ -1,5 +1,5 @@
 ---
-title: Update
+title: Aktualisieren
 layout: page
 ---
 ## Aktualisieren alle Felder
@@ -44,7 +44,7 @@ db.Model(&user).Updates(User{Name: "", Age: 0, Actived: false})
 
 ## Aktualisieren von ausgewählten Feldern
 
-If you only want to update or ignore some fields when updating, you could use `Select`, `Omit`
+Wenn man nur ausgewählte Felder aktualisieren oder ignorieren will, kann man `Select`oder `Omit` verwenden
 
 ```go
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
@@ -54,9 +54,9 @@ db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "ag
 //// UPDATE users SET age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update Columns w/o Hooks
+## Spalten ohne Hooks aktualisieren
 
-Above updating operations will perform the model's `BeforeUpdate`, `AfterUpdate` method, update its `UpdatedAt` timestamp, save its `Associations` when updaing, if you don't want to call them, you could use `UpdateColumn`, `UpdateColumns`
+Die oberen Operationen führen alle außerdem die `BeforeUpdate`, `AfterUpdate` Methoden aus, aktualisieren den `UpdatedAt` timestamp und speichern die `Associations` beim Aktualisieren. Wenn man diese Methoden nicht ausführen will, kann man `UpdateColumn` oder `UpdateColumns` verwenden
 
 ```go
 // Update single attribute, similar with `Update`
@@ -68,9 +68,9 @@ db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 //// UPDATE users SET name='hello', age=18 WHERE id = 111;
 ```
 
-## Batch Updates
+## Batch-Aktualisierungen
 
-Hooks won't run when do batch updates
+Hooks werden bei Batch-Aktualisierungen nicht ausgeführt
 
 ```go
 db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface{}{"name": "hello", "age": 18})
@@ -84,7 +84,7 @@ db.Model(User{}).Updates(User{Name: "hello", Age: 18})
 db.Model(User{}).Updates(User{Name: "hello", Age: 18}).RowsAffected
 ```
 
-## Update with SQL Expression
+## Aktualisieren mit SQL-Ausdrücken
 
 ```go
 DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
@@ -100,9 +100,9 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 //// UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
-## Change Values In Hooks
+## Werte in Hooks verändern
 
-If you want to change updating values in hooks using `BeforeUpdate`, `BeforeSave`, you could use `scope.SetColumn`, for example:
+Wenn man in zum Beispiel `BeforeUpdate` oder `BeforeSave` Werte verändern will, kann man `scope.SetColumn` verwenden:
 
 ```go
 func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
@@ -112,7 +112,7 @@ func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
 }
 ```
 
-## Extra Updating option
+## Zusätzliche Aktualisierungsoption
 
 ```go
 // Add extra SQL option for updating SQL
