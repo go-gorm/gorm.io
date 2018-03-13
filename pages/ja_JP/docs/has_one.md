@@ -1,8 +1,8 @@
 ---
 title: Has One
-layout: 0x41211f133bb7356c897a279830ef92d2e7711bd2
+layout: page
 ---
-## Имеет один
+## Has One
 
 A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
 
@@ -67,8 +67,24 @@ type CreditCard struct {
 Supports polymorphic has-many and has-one associations.
 
 ```go
-  
+  type Cat struct {
+    ID    int
+    Name  string
+    Toy   Toy `gorm:"polymorphic:Owner;"`
+  }
 
+  type Dog struct {
+    ID   int
+    Name string
+    Toy  Toy `gorm:"polymorphic:Owner;"`
+  }
+
+  type Toy struct {
+    ID        int
+    Name      string
+    OwnerID   int
+    OwnerType string
+  }
 ```
 
 Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
@@ -78,7 +94,12 @@ Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and 
 You could find `has one` assciations with `Related`
 
 ```go
-var カード クレジット カード db。モデル (&ユーザー)。(&カードは、「クレジット カード」) を関連///選択 * credit_cards からどこ user_id = 123;123 はユーザーのプライマリ キー//クレジット カードはユーザーのフィールド名、ユーザーのクレジット カード関係を取得し、変数のカードにそれを埋めるという//フィールド名は、変数の型名と同じように上記の例では、これは省略できますが場合のような: db。モデル (&ユーザー)。(&カード) を関連
+var card CreditCard
+db.Model(&user).Related(&card, "CreditCard")
+//// SELECT * FROM credit_cards WHERE user_id = 123; // 123 is user's primary key
+// CreditCard is user's field name, it means get user's CreditCard relations and fill it into variable card
+// If the field name is same as the variable's type name, like above example, it could be omitted, like:
+db.Model(&user).Related(&card)
 ```
 
 For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
