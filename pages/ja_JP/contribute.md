@@ -1,13 +1,13 @@
 ---
-title: Contribute to GORM
+title: GORMにコントリビュートする
 layout: page
 ---
-**You can help to deliver a better GORM! there are many things that you can do:**
+**より良いGORMを提供する手助けをすることが可能です！あながができることはたくさんあります：**
 
-## Help others to know GORM
+## GORMをほかの人達に知らせる：
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
+* GORMをソーシャルなチャネルから世界にシェアする、もしくは単純に興味がありそうな人に教える
+* [ Stack Overflow ](https://stackoverflow.com/questions/tagged/go-gorm)、[ Github Issues ](https://github.com/jinzhu/gorm/issues) Github Issues [ そしてチャットルーム ](/community.html#Chat) 上での新参者の疑問を解決するのを助ける
 * Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
 * Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
 
