@@ -1,5 +1,5 @@
 ---
-layout: index
+layout: 目次
 description: デベロッパーフレンドリーを目指した、素晴らしいGolang用ORMライブラリ。
 subtitle: 素晴らしいGolang用ORMライブラリ
 comments: false
@@ -14,5 +14,5 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> オートマイグレーション
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> ロガー
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> GORMのコールバックベースのプラグイン記述で拡張可能
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Every feature comes with tests
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Developer Friendly
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 各機能ごとに付属するテストコード
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> デベロッパーフレンドリー
