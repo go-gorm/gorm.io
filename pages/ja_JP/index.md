@@ -1,5 +1,5 @@
 ---
-layout: 目次
+layout: index
 description: デベロッパーフレンドリーを目指した、素晴らしいGolang用ORMライブラリ。
 subtitle: 素晴らしいGolang用ORMライブラリ
 comments: false
