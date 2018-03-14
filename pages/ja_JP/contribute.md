@@ -8,14 +8,14 @@ layout: page
 
 * GORMをソーシャルなチャネルから世界にシェアする、もしくは単純に興味がありそうな人に教える
 * [ Stack Overflow ](https://stackoverflow.com/questions/tagged/go-gorm)、[ Github Issues ](https://github.com/jinzhu/gorm/issues) Github Issues [ そしてチャットルーム ](/community.html#Chat) 上での新参者の疑問を解決するのを助ける
-* Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
+* チュートリアルを書く、ビデオを撮る、等...([リスト](/community.html)に追加するのをお忘れなく)
+* GitHub上で[GORMのリポジトリ](https://github.com/jinzhu/gorm)に[Star](https://github.com/jinzhu/gorm/stargazers)を付けたり [Watch](https://github.com/jinzhu/gorm/watchers)することでGORMを宣伝するのを助ける
 
-## Documentation and Writing
+## ドキュメントを書く、執筆する
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* 新しいコンテンツを書いたり、既存の情報を修正することで、GORMのドキュメントをより良くする
 
-### Translate this site
+### このサイトを翻訳する
 
 You can translate current site with <https://translate.gorm.io>
 
