@@ -23,12 +23,12 @@ GORMをあなたの言語に翻訳するには、 <https://translate.gorm.io>に
 
 ## プログラム
 
-* Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features from [Github Issues](https://github.com/jinzhu/gorm/issues)
-* Create open source plugins for GORM. (Don't forgot to add them to [the list](/community.html#Open-Sources))
+* 問題や[Github Issues](https://github. com/jinzhu/gorm/issues)で同意を得た機能を修正するために、[Github](https://github. com/jinzhu/gorm)にプルリクエストを作成します
+* GORM用のオープンソースのプラグインを作成します。 (それらを[the list](/community.html#Open-Sources)に追加するのをお忘れなく)
 
-## Donations
+## 寄付
 
-Many thanks to all our sponsors!
+私達の多くのスポンサー達に感謝します！
 
 ### One-time Donations
 
