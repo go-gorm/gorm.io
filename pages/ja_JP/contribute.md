@@ -1,6 +1,6 @@
 ---
 title: GORMにコントリビュートする
-layout: page
+layout: ページ
 ---
 **より良いGORMを提供する手助けをすることが可能です！あながができることはたくさんあります：**
 
@@ -17,11 +17,11 @@ layout: page
 
 ### このサイトを翻訳する
 
-You can translate current site with <https://translate.gorm.io>
+<https://translate.gorm.io>を使ってこのサイトを翻訳することが可能です
 
-To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
+GORMをあなたの言語に翻訳するには、 <https://translate.gorm.io>に追加するための[Github issues](https://github.com/jinzhu/gorm.io/issues)への投稿が必要です。
 
-## Program
+## プログラム
 
 * Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features from [Github Issues](https://github.com/jinzhu/gorm/issues)
 * Create open source plugins for GORM. (Don't forgot to add them to [the list](/community.html#Open-Sources))
