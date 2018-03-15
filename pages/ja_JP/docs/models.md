@@ -1,12 +1,12 @@
 ---
-title: Declaring Models
+title: モデルの宣言
 layout: page
 ---
-## Declaring Models
+## モデルの宣言
 
-Models usually just normal Golang structs, basic Go types, pointer of them and [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner), [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are supported.
+モデルは通常、単なる普通のGolangの構造体、Goの基本的な型、それらのポインタ、[`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner)、[`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer)インタフェースをサポートします。
 
-Model Example:
+モデル例:
 
 ```go
 type User struct {
@@ -15,52 +15,52 @@ type User struct {
   Age          sql.NullInt64
   Birthday     *time.Time
   Email        string  `gorm:"type:varchar(100);unique_index"`
-  Role         string  `gorm:"size:255"` // set field size to 255
-  MemberNumber *string `gorm:"unique;not null"` // set member number to unique and not null
-  Num          int     `gorm:"AUTO_INCREMENT"` // set num to auto incrementable
-  Address      string  `gorm:"index:addr"` // create index with name `addr` for address
-  IgnoreMe     int     `gorm:"-"` // ignore this field
+  Role         string  `gorm:"size:255"` // フィールドサイズを255にセットします
+  MemberNumber *string `gorm:"unique;not null"` // MemberNumberをuniqueかつnot nullにセットします
+  Num          int     `gorm:"AUTO_INCREMENT"` // Numを自動インクリメントにセットします
+  Address      string  `gorm:"index:addr"` // `addr`という名前のインデックスを作ります
+  IgnoreMe     int     `gorm:"-"` // このフィールドは無視します
 }
 ```
 
-## Struct tags
+## 構造体のタグ
 
-Tags are optional to use when declaring models, following are those tags that GORM supported.
+タグはモデル宣言時に任意で使用します。GORMがサポートするタグは以下の通りです。
 
-### Supported Struct tags
+### サポートされている構造体タグ
 
-| Tag             | Description                                                            |
-| --------------- | ---------------------------------------------------------------------- |
-| Column          | Specifies column name                                                  |
-| Type            | Specifies column data type                                             |
-| Size            | Specifies column size, default 255                                     |
-| PRIMARY_KEY     | Specifies column as primary key                                        |
-| UNIQUE          | Specifies column as unique                                             |
-| DEFAULT         | Specifies column default value                                         |
-| PRECISION       | Specifies column precision                                             |
-| NOT NULL        | Specifies column as NOT NULL                                           |
-| AUTO_INCREMENT  | Specifies column auto incrementable or not                             |
-| INDEX           | Create index with or without name, same name creates composite indexes |
-| UNIQUE_INDEX    | Like `INDEX`, create unique index                                      |
-| EMBEDDED        | Set struct as embedded                                                 |
-| EMBEDDED_PREFIX | Set embedded struct's prefix name                                      |
-| -               | Ignore this fields                                                     |
+| タグ              | 説明                                              |
+| --------------- | ----------------------------------------------- |
+| Column          | カラム名を指定します                                      |
+| Type            | カラムのデータ型を指定します                                  |
+| Size            | カラムサイズのサイズを指定します。デフォルトは255です                    |
+| PRIMARY_KEY     | カラムを主キーに指定します                                   |
+| UNIQUE          | カラムにユニーク制約を指定します                                |
+| DEFAULT         | カラムのデフォルト値を指定します                                |
+| PRECISION       | カラムの精度を指定します                                    |
+| NOT NULL        | カラムにNOT NULL制約を指定します                            |
+| AUTO_INCREMENT  | カラムに自動インクリメントかそうでないかを指定します                      |
+| INDEX           | 名前有りか名前無しでインデックスを作成します。同名のインデックスは複合インデックスになります。 |
+| UNIQUE_INDEX    | `INDEX`と同様にユニークインデックスを作成します                     |
+| EMBEDDED        | 埋め込み構造体に設定します                                   |
+| EMBEDDED_PREFIX | 埋め込み構造体のプレフィックス名を設定します                          |
+| -               | このフィールドを無視します                                   |
 
-### Struct tags for Associations
+### 関連のための構造体のタグ
 
-Check out Associations section for details
+関連についての詳細を確認してください
 
-| Tag                                | Description                                    |
-| ---------------------------------- | ---------------------------------------------- |
-| MANY2MANY                          | Specifies join table name                      |
-| FOREIGNKEY                         | Specifies foreign key                          |
-| ASSOCIATION_FOREIGNKEY             | Specifies association foreign key              |
-| POLYMORPHIC                        | Specifies polymorphic type                     |
-| POLYMORPHIC_VALUE                  | Specifies polymorphic value                    |
-| JOINTABLE_FOREIGNKEY               | Specifies foreign key of jointable             |
-| ASSOCIATION_JOINTABLE_FOREIGNKEY | Specifies association foreign key of jointable |
-| SAVE_ASSOCIATIONS                  | AutoSave associations or not                   |
-| ASSOCIATION_AUTOUPDATE             | AutoUpdate associations or not                 |
-| ASSOCIATION_AUTOCREATE             | AutoCreate associations or not                 |
-| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not         |
-| PRELOAD                            | Auto Preload associations or not               |
+| タグ                                 | 説明                      |
+| ---------------------------------- | ----------------------- |
+| MANY2MANY                          | joinするテーブル名を指定します       |
+| FOREIGNKEY                         | 外部キーを指定します              |
+| ASSOCIATION_FOREIGNKEY             | 関連する外部キーを指定します          |
+| POLYMORPHIC                        | ポリモーフィック型を指定します         |
+| POLYMORPHIC_VALUE                  | ポリモーフィック値を指定します         |
+| JOINTABLE_FOREIGNKEY               | joinするテーブルの外部キーを指定します   |
+| ASSOCIATION_JOINTABLE_FOREIGNKEY | joinするテーブルの関連外部キーを指定します |
+| SAVE_ASSOCIATIONS                  | 関連を自動保存するか否か            |
+| ASSOCIATION_AUTOUPDATE             | 関連を自動更新するか否か            |
+| ASSOCIATION_AUTOCREATE             | 関連を自動生成するか否か            |
+| ASSOCIATION_SAVE_REFERENCE       | 関連の参照を自動保存するか否か         |
+| PRELOAD                            | 関連を自動プリロードするか否か         |
