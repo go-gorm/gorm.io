@@ -1,15 +1,15 @@
 ---
-title: Conventions
+title: 慣例
 layout: page
 ---
 ## gorm.Model
 
-`gorm.Model` is a struct including some basic fields, which including fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
+`gorm.Model`はいくつかの基本的なフィールドを持った構造体であり、`ID`、`CreatedAt`、`UpdatedAt`、`DeletedAt`を持っています。
 
-It could be embeded into your model or build your own model w/o it.
+`gorm.Model`をあなたのモデルに埋め込んだり、それを使わずに自分用のモデルを構築できます。
 
 ```go
-// gorm.Model definition
+// gorm.Modelの定義
 type Model struct {
   ID        uint `gorm:"primary_key"`
   CreatedAt time.Time
@@ -17,20 +17,20 @@ type Model struct {
   DeletedAt *time.Time
 }
 
-// Inject fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` into model `User`
+// `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`フィールドを`User`モデルに注入します
 type User struct {
   gorm.Model
   Name string
 }
 
-// Declaring model w/o gorm.Model
+// gorm.Model無しにモデルを宣言します
 type User struct {
   ID   int
   Name string
 }
 ```
 
-## `ID` as Primary Key
+## 主キーとしての`ID`
 
 GORM use field with name `ID` as primary key by default.
 
