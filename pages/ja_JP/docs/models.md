@@ -1,5 +1,5 @@
 ---
-title: Declaring Models
+title: モデルの宣言
 layout: page
 ---
 ## モデルの宣言
@@ -33,7 +33,7 @@ type User struct {
 | --------------- | ----------------------------------------------- |
 | Column          | カラム名を指定します                                      |
 | Type            | カラムのデータ型を指定します                                  |
-| Size            | カラムサイズのデフォルトサイズを255に指定します                       |
+| Size            | カラムサイズのサイズを指定します。デフォルトは255です                    |
 | PRIMARY_KEY     | カラムを主キーに指定します                                   |
 | UNIQUE          | カラムにユニーク制約を指定します                                |
 | DEFAULT         | カラムのデフォルト値を指定します                                |
@@ -42,7 +42,7 @@ type User struct {
 | AUTO_INCREMENT  | カラムに自動インクリメントかそうでないかを指定します                      |
 | INDEX           | 名前有りか名前無しでインデックスを作成します。同名のインデックスは複合インデックスになります。 |
 | UNIQUE_INDEX    | `INDEX`と同様にユニークインデックスを作成します                     |
-| EMBEDDED        | 埋め込む構造体を設定します                                   |
+| EMBEDDED        | 埋め込み構造体に設定します                                   |
 | EMBEDDED_PREFIX | 埋め込み構造体のプレフィックス名を設定します                          |
 | -               | このフィールドを無視します                                   |
 
@@ -50,17 +50,17 @@ type User struct {
 
 関連についての詳細を確認してください
 
-| タグ                                 | 説明                                             |
-| ---------------------------------- | ---------------------------------------------- |
-| MANY2MANY                          | Specifies join table name                      |
-| FOREIGNKEY                         | Specifies foreign key                          |
-| ASSOCIATION_FOREIGNKEY             | Specifies association foreign key              |
-| POLYMORPHIC                        | Specifies polymorphic type                     |
-| POLYMORPHIC_VALUE                  | Specifies polymorphic value                    |
-| JOINTABLE_FOREIGNKEY               | Specifies foreign key of jointable             |
-| ASSOCIATION_JOINTABLE_FOREIGNKEY | Specifies association foreign key of jointable |
-| SAVE_ASSOCIATIONS                  | AutoSave associations or not                   |
-| ASSOCIATION_AUTOUPDATE             | AutoUpdate associations or not                 |
-| ASSOCIATION_AUTOCREATE             | AutoCreate associations or not                 |
-| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not         |
-| PRELOAD                            | Auto Preload associations or not               |
+| タグ                                 | 説明                      |
+| ---------------------------------- | ----------------------- |
+| MANY2MANY                          | joinするテーブル名を指定します       |
+| FOREIGNKEY                         | 外部キーを指定します              |
+| ASSOCIATION_FOREIGNKEY             | 関連する外部キーを指定します          |
+| POLYMORPHIC                        | ポリモーフィック型を指定します         |
+| POLYMORPHIC_VALUE                  | ポリモーフィック値を指定します         |
+| JOINTABLE_FOREIGNKEY               | joinするテーブルの外部キーを指定します   |
+| ASSOCIATION_JOINTABLE_FOREIGNKEY | joinするテーブルの関連外部キーを指定します |
+| SAVE_ASSOCIATIONS                  | 関連を自動保存するか否か            |
+| ASSOCIATION_AUTOUPDATE             | 関連を自動更新するか否か            |
+| ASSOCIATION_AUTOCREATE             | 関連を自動生成するか否か            |
+| ASSOCIATION_SAVE_REFERENCE       | 関連の参照を自動保存するか否か         |
+| PRELOAD                            | 関連を自動プリロードするか否か         |
