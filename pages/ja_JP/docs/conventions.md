@@ -86,9 +86,9 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 //// DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-### Change default tablenames
+### デフォルトのテーブル名の変更
 
-You can apply any rules on the default table name by defining the `DefaultTableNameHandler`
+`DefaultTableNameHandler`を使ってデフォルトのテーブル名に任意のルールを適用できます
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
@@ -96,42 +96,42 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 }
 ```
 
-## Snake Case Column Name
+## スネークケースのカラム名
 
-Column name will be the lower snake case field's name
+カラム名は小文字のスネークケースのフィールド名になります
 
 ```go
 type User struct {
-  ID        uint      // column name is `id`
-  Name      string    // column name is `name`
-  Birthday  time.Time // column name is `birthday`
-  CreatedAt time.Time // column name is `created_at`
+  ID        uint      // カラム名は`id`
+  Name      string    // カラム名は`name`
+  Birthday  time.Time // カラム名は`birthday`
+  CreatedAt time.Time // カラム名は`created_at`
 }
 
-// Overriding Column Name
+// カラム名の上書き
 type Animal struct {
-    AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
-    Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
-    Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
+    AnimalId    int64     `gorm:"column:beast_id"`         // カラム名を`beast_id`に設定します
+    Birthday    time.Time `gorm:"column:day_of_the_beast"` // カラム名を`day_of_the_beast`に設定します
+    Age         int64     `gorm:"column:age_of_the_beast"` // カラム名を`age_of_the_beast`に設定します
 }
 ```
 
-## Timestamp Tracking
+## タイムスタンプの追跡
 
 ### CreatedAt
 
-For models having `CreatedAt` field, it will be set to current time when record is first created.
+`CreatedAt`フィールドの持つモデルでは、レコードの初回生成時に現在時刻が設定されます。
 
 ```go
-db.Create(&user) // will set `CreatedAt` to current time
+db.Create(&user) // `CreatedAt`には現在時刻が設定されます
 
-// To change its value, you could use `Update`
+// 値を変更するには`Update`を使います
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, it will be set to current time when record is updated.
+`UpdatedAt`フィールドを持つモデルでは、レコード保存時に現在時刻が設定されます
 
 ```go
 db.Save(&user) // will set `UpdatedAt` to current time
