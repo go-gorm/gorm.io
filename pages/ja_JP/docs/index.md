@@ -1,31 +1,31 @@
 ---
-title: GORM Guides
+title: GORM ガイド
 layout: page
 ---
 The fantastic ORM library for Golang, aims to be developer friendly.
 
-## Overview
+## 概要
 
-* Full-Featured ORM (almost)
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
-* Hooks (Before/After Create/Save/Update/Delete/Find)
-* Preloading (eager loading)
-* Transactions
-* Composite Primary Key
-* SQL Builder
-* Auto Migrations
-* Logger
-* Extendable, write Plugins based on GORM callbacks
-* Every feature comes with tests
-* Developer Friendly
+* （ほぼ）フル機能を備えたORM
+* アソシエーション(Has One, Has Many, Belongs To, Many To Many, Polymorphism)
+* フック(Before/After Create/Save/Update/Delete/Find)
+* プリローディング(eager loading)
+* トランザクション
+* 複合主キー
+* SQLビルダー
+* オートマイグレーション
+* ロガー
+* GORMのコールバックベースのプラグイン記述で拡張可能
+* 各機能ごとに付属するテストコード
+* デベロッパーフレンドリー
 
-## Install
+## インストール
 
 ```sh
 go get -u github.com/jinzhu/gorm
 ```
 
-## Quick Start
+## クイックスタート
 
 ```go
 package main
