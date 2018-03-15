@@ -16,8 +16,7 @@ type User struct {
   Birthday     *time.Time
   Email        string  `gorm:"type:varchar(100);unique_index"`
   Role         string  `gorm:"size:255"` // フィールドサイズを255にセットします
-  MemberNumber *string `gorm:"unique;not null"` // MemberNumberをuniqueかつnot
- nullにセットします
+  MemberNumber *string `gorm:"unique;not null"` // MemberNumberをuniqueかつnot nullにセットします
   Num          int     `gorm:"AUTO_INCREMENT"` // Numを自動インクリメントにセットします
   Address      string  `gorm:"index:addr"` // `addr`という名前のインデックスを作ります
   IgnoreMe     int     `gorm:"-"` // このフィールドは無視します
@@ -30,28 +29,28 @@ type User struct {
 
 ### サポートされている構造体タグ
 
-| タグ              | 説明                                                                     |
-| --------------- | ---------------------------------------------------------------------- |
-| Column          | カラム名を指定します                                                             |
-| Type            | カラムのデータ型を指定します                                                         |
-| Size            | カラムサイズのデフォルトサイズを255に指定します                                              |
-| PRIMARY_KEY     | カラムを主キーに指定します                                                          |
-| UNIQUE          | Specifies column as unique                                             |
-| DEFAULT         | Specifies column default value                                         |
-| PRECISION       | Specifies column precision                                             |
-| NOT NULL        | Specifies column as NOT NULL                                           |
-| AUTO_INCREMENT  | Specifies column auto incrementable or not                             |
-| INDEX           | Create index with or without name, same name creates composite indexes |
-| UNIQUE_INDEX    | Like `INDEX`, create unique index                                      |
-| EMBEDDED        | Set struct as embedded                                                 |
-| EMBEDDED_PREFIX | Set embedded struct's prefix name                                      |
-| -               | Ignore this fields                                                     |
+| タグ              | 説明                                              |
+| --------------- | ----------------------------------------------- |
+| Column          | カラム名を指定します                                      |
+| Type            | カラムのデータ型を指定します                                  |
+| Size            | カラムサイズのデフォルトサイズを255に指定します                       |
+| PRIMARY_KEY     | カラムを主キーに指定します                                   |
+| UNIQUE          | カラムにユニーク制約を指定します                                |
+| DEFAULT         | カラムのデフォルト値を指定します                                |
+| PRECISION       | カラムの精度を指定します                                    |
+| NOT NULL        | カラムにNOT NULL制約を指定します                            |
+| AUTO_INCREMENT  | カラムに自動インクリメントかそうでないかを指定します                      |
+| INDEX           | 名前有りか名前無しでインデックスを作成します。同名のインデックスは複合インデックスになります。 |
+| UNIQUE_INDEX    | `INDEX`と同様にユニークインデックスを作成します                     |
+| EMBEDDED        | 埋め込む構造体を設定します                                   |
+| EMBEDDED_PREFIX | 埋め込み構造体のプレフィックス名を設定します                          |
+| -               | このフィールドを無視します                                   |
 
-### Struct tags for Associations
+### 関連のための構造体のタグ
 
-Check out Associations section for details
+関連についての詳細を確認してください
 
-| Tag                                | Description                                    |
+| タグ                                 | 説明                                             |
 | ---------------------------------- | ---------------------------------------------- |
 | MANY2MANY                          | Specifies join table name                      |
 | FOREIGNKEY                         | Specifies foreign key                          |
