@@ -134,11 +134,11 @@ db.Model(&user).Update("CreatedAt", time.Now())
 `UpdatedAt`フィールドを持つモデルでは、レコード保存時に現在時刻が設定されます
 
 ```go
-db.Save(&user) // will set `UpdatedAt` to current time
+db.Save(&user) // `UpdatedAt`に現在時刻を設定します
 
-db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+db.Model(&user).Update("name", "jinzhu") // `UpdatedAt`に現在時刻を設定します
 ```
 
 ### DeletedAt
 
-For models having `UpdatedAt` field, when delete their instances, they won't be deleted from database, but will set its `DeletedAt` field to current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)
+`UpdatedAt`フィールドを持つモデルでは、インスタンス削除時にデータベースからは削除されず、`DeletedAt`フィールドに現在時刻が設定されます。[論理削除](/docs/delete.html#Soft-Delete)を参照してください。
