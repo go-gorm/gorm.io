@@ -2,11 +2,11 @@
 title: Declaring Models
 layout: page
 ---
-## Declaring Models
+## モデルの宣言
 
-Models usually just normal Golang structs, basic Go types, pointer of them and [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner), [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are supported.
+モデルは通常、単なる普通のGolangの構造体、Goの基本的な型、それらのポインタ、[`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner)、[`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer)インタフェースをサポートします。
 
-Model Example:
+モデル例:
 
 ```go
 type User struct {
@@ -15,26 +15,27 @@ type User struct {
   Age          sql.NullInt64
   Birthday     *time.Time
   Email        string  `gorm:"type:varchar(100);unique_index"`
-  Role         string  `gorm:"size:255"` // set field size to 255
-  MemberNumber *string `gorm:"unique;not null"` // set member number to unique and not null
-  Num          int     `gorm:"AUTO_INCREMENT"` // set num to auto incrementable
-  Address      string  `gorm:"index:addr"` // create index with name `addr` for address
-  IgnoreMe     int     `gorm:"-"` // ignore this field
+  Role         string  `gorm:"size:255"` // フィールドサイズを255にセットします
+  MemberNumber *string `gorm:"unique;not null"` // MemberNumberをuniqueかつnot
+ nullにセットします
+  Num          int     `gorm:"AUTO_INCREMENT"` // Numを自動インクリメントにセットします
+  Address      string  `gorm:"index:addr"` // `addr`という名前のインデックスを作ります
+  IgnoreMe     int     `gorm:"-"` // このフィールドは無視します
 }
 ```
 
-## Struct tags
+## 構造体のタグ
 
-Tags are optional to use when declaring models, following are those tags that GORM supported.
+タグはモデル宣言時に任意で使用します。GORMがサポートするタグは以下の通りです。
 
-### Supported Struct tags
+### サポートされている構造体タグ
 
-| Tag             | Description                                                            |
+| タグ              | 説明                                                                     |
 | --------------- | ---------------------------------------------------------------------- |
-| Column          | Specifies column name                                                  |
-| Type            | Specifies column data type                                             |
-| Size            | Specifies column size, default 255                                     |
-| PRIMARY_KEY     | Specifies column as primary key                                        |
+| Column          | カラム名を指定します                                                             |
+| Type            | カラムのデータ型を指定します                                                         |
+| Size            | カラムサイズのデフォルトサイズを255に指定します                                              |
+| PRIMARY_KEY     | カラムを主キーに指定します                                                          |
 | UNIQUE          | Specifies column as unique                                             |
 | DEFAULT         | Specifies column default value                                         |
 | PRECISION       | Specifies column precision                                             |
