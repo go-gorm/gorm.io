@@ -44,11 +44,11 @@ type Product struct {
 func main() {
   db, err := gorm.Open("sqlite3", "test.db")
   if err != nil {
-    panic("failed to connect database")
+    panic("データベースへの接続に失敗しました")
   }
   defer db.Close()
 
-  // Migrate the schema
+  // スキーマのマイグレーション
   db.AutoMigrate(&Product{})
 
   // Create
@@ -56,13 +56,13 @@ func main() {
 
   // Read
   var product Product
-  db.First(&product, 1) // find product with id 1
-  db.First(&product, "code = ?", "L1212") // find product with code l1212
+  db.First(&product, 1) // idが1の製品を探します
+  db.First(&product, "code = ?", "L1212") // codeがL1212の製品を探します
 
-  // Update - update product's price to 2000
+  // Update - 製品価格を2,000に更新します
   db.Model(&product).Update("Price", 2000)
 
-  // Delete - delete product
+  // Delete - 製品を削除します
   db.Delete(&product)
 }
 ```
