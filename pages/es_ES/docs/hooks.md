@@ -121,7 +121,7 @@ Hooks disponibles para consultar
 
 ```go
 // load data from database
-// Preloading (edger loading)
+// Preloading (eager loading)
 AfterFind
 ```
 
