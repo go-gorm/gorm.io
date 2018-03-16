@@ -2,7 +2,7 @@
 title: Composite Primary Key
 layout: page
 ---
-Set multiple fields as primary key to enable composite primary key
+複数のフィールドに primary key を指定すると composite primary key (複合主キー)にすることができます
 
 ```go
 type Product struct {
