@@ -121,7 +121,7 @@ Available hooks for querying
 
 ```go
 // load data from database
-// Preloading (edger loading)
+// Preloading (eager loading)
 AfterFind
 ```
 
