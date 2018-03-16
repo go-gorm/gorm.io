@@ -198,7 +198,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 
 ### Attrs
 
-Initalize struct with argument if record not found
+レコードが取得できたかどうかによって初期化するかどうかが決まります
 
 ```go
 // Unfound
@@ -218,7 +218,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 
 ### Assign
 
-Assign argument to struct regardless it is found or not
+Assign はレコードが取得できたかどうかにかかわらず値を設定します
 
 ```go
 // Unfound
