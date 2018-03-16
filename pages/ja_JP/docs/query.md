@@ -248,7 +248,7 @@ db.Where(User{Name: "Jinzhu"}).FirstOrCreate(&user)
 
 ### Attrs
 
-Assign struct with argument if record not found and create with those values
+レコードが取得できなかった場合、指定された値で生成します
 
 ```go
 // Unfound
@@ -265,7 +265,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 
 ### Assign
 
-Assign it to the record regardless it is found or not, and save back to database.
+Assign はレコードが取得できたかどうかにかかわらず値を設定します、同時にデータベースにも反映します
 
 ```go
 // Unfound
