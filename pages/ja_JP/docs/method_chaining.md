@@ -1,5 +1,5 @@
 ---
-title: Method Chaining
+title: メソッドチェーン
 layout: page
 ---
 ## メソッドチェーン
