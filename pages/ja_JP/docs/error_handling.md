@@ -1,12 +1,12 @@
 ---
-title: Error Handling
+title: エラーハンドリング
 layout: page
 ---
-In Go, error handling is important.
+Goではエラーハンドリングが重要です。
 
-You are encouraged to do error check after any [Immediate Methods](/docs/method_chaining.html#Immediate-Methods)
+[即時メソッド](/docs/method_chaining.html#Immediate-Methods)の後ではエラーチェックを行ったほうが良いです。
 
-## Error Handling
+## エラーハンドリング
 
 Error handling in GORM is different with idiomatic Go code because of its chainable API, but it is still fairly easy to do that.
 
