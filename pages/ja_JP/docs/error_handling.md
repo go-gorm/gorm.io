@@ -8,7 +8,7 @@ Goではエラーハンドリングが重要です。
 
 ## エラーハンドリング
 
-Error handling in GORM is different with idiomatic Go code because of its chainable API, but it is still fairly easy to do that.
+GORMにおけるエラーハンドリングは慣用的なGoのコードとは少し異なります。チェーン可能なAPIなためですが、それでもエラーハンドリングはとても簡単です。
 
 If there are any error happened, GORm will set it to `*gorm.DB`'s `Error` field, you could check it like this:
 
