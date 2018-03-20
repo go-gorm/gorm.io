@@ -40,10 +40,12 @@ if yetAnotherCondition {
 tx.Find(&user)
 ```
 
-Generates
+は
 
 ```sql
 SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
+
+を生成します
 ```
 
 ## スコープ
