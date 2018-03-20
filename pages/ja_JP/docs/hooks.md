@@ -60,16 +60,16 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 更新に使えるフック
 
 ```go
-// begin transaction
+// トランザクション開始
 BeforeSave
 BeforeUpdate
-// save before associations
-// update timestamp `UpdatedAt`
-// save self
-// save after associations
+// 関連の保存前
+// `UpdatedAt`のタイムスタンプ更新
+// 自身の保存
+// 関連の保存後
 AfterUpdate
 AfterSave
-// commit or rollback transaction
+// トランザクションのコミットもしくはロールバック
 ```
 
 コード例:
@@ -77,7 +77,7 @@ AfterSave
 ```go
 func (u *User) BeforeUpdate() (err error) {
     if u.readonly() {
-        err = errors.New("read only user")
+        err = errors.New("読み出し専用ユーザーです")
     }
     return
 }
@@ -91,22 +91,22 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### オブジェクトの削除
 
-Available hooks for deleting
+削除に使えるフック
 
 ```go
-// begin transaction
+// トランザクション開始
 BeforeDelete
-// delete self
+// 自身の削除
 AfterDelete
-// commit or rollback transaction
+// トランザクションのコミットもしくはロールバック
 ```
 
-Code Example:
+コード例:
 
 ```go
-// Updating data in same transaction
+// 複数トランザクション内でデータを更新します
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
@@ -115,20 +115,20 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Querying an object
+### オブジェクトの参照
 
-Available hooks for querying
+参照に使えるフック
 
 ```go
-// load data from database
-// Preloading (eager loading)
+// データベースからのデータロード
+// プリロード(eager loading)
 AfterFind
 ```
 
-Code Example:
+コード例:
 
 ```go
-func (u *User) AfterFind() (err error) {
+unc (u *User) AfterFind() (err error) {
   if u.MemberShip == "" {
     u.MemberShip = "user"
   }
