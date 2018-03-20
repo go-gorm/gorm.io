@@ -83,13 +83,13 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 
 ## 複数の即時メソッド
 
-When using multiple immediate methods with GORM, later immediate method will reuse before immediate methods's query conditions (excluding inline conditions)
+GORMで複数の即時メソッドを扱う場合、後方の即時メソッドは前方の即時メソッドのクエリ条件を再利用します(インライン条件は除きます)
 
 ```go
 db.Where("name LIKE ?", "jinzhu%").Find(&users, "id IN (?)", []int{1, 2, 3}).Count(&count)
 ```
 
-Generates
+生成
 
 ```sql
 SELECT * FROM users WHERE name LIKE 'jinzhu%' AND id IN (1, 2, 3)
@@ -97,6 +97,6 @@ SELECT * FROM users WHERE name LIKE 'jinzhu%' AND id IN (1, 2, 3)
 SELECT count(*) FROM users WHERE name LIKE 'jinzhu%'
 ```
 
-## Thread Safety
+## スレッドセーフ
 
-All Chain Methods will clone and create a new DB object (shares one connection pool), GORM is safe for concurrent use by multiple goroutines.
+全てのチェーンメソッドは複製され新規DBオブジェクトを作成します(1つのコネクションプールを共有します)。GORMは複数のgoroutineでの並行利用に対して安全です。
