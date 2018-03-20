@@ -1,10 +1,10 @@
 ---
-title: Hooks
+title: フック
 layout: page
 ---
-## Object Life Cycle
+## オブジェクトのライフサイクル
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+フックとは生成/参照/更新/削除の前後に呼ばれる関数のことです。
 
 If you have defiend specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
 
