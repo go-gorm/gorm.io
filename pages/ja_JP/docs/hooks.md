@@ -6,34 +6,34 @@ layout: page
 
 フックとは生成/参照/更新/削除の前後に呼ばれる関数のことです。
 
-If you have defiend specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+モデルに特定のメソッドを定義すると、生成、更新、参照、削除の時に自動的に呼ばれます。コールバックからエラーを返した場合、GORMはそれ以降の操作を停止して現在のトランザクションをロールバックします。
 
-## Hooks
+## フック
 
-### Creating an object
+### オブジェクトの生成
 
-Available hooks for creating
+生成に使えるフック
 
 ```go
-// begin transaction
+// トランザクションの開始
 BeforeSave
 BeforeCreate
-// save before associations
-// update timestamp `CreatedAt`, `UpdatedAt`
-// save self
-// reload fields that have default value and its value is blank
-// save after associations
+// 関連の保存前
+// `CreatedAt`と`UpdatedAt`のタイムスタンプ更新
+// 自身の保存
+// デフォルト値か空値のフィールドの再ロード
+// 関連の保存後
 AfterCreate
 AfterSave
-// commit or rollback transaction
+// トランザクションのコミットもしくはロールバック
 ```
 
-Code Example:
+コード例:
 
 ```go
 func (u *User) BeforeSave() (err error) {
     if u.IsValid() {
-        err = errors.New("can't save invalid data")
+        err = errors.New("不正な値を保存できません")
     }
     return
 }
@@ -46,7 +46,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited. If you would like access those changes in your hooks, you could accept current tranaction as argument in your hooks, for example:
+**メモ** GORMにおける保存と削除の操作はデフォルトでトランザクション内で実行されます。そのため、トランザクション内での変更はコミットするまで可視化されません。 フック内からこれらの変更にアクセスしたい場合は、現在のトランザクションをフックの引数として受け入れます。例:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
@@ -55,9 +55,9 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### オブジェクトの更新
 
-Available hooks for updating
+更新に使えるフック
 
 ```go
 // begin transaction
@@ -72,7 +72,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-Code Example:
+コード例:
 
 ```go
 func (u *User) BeforeUpdate() (err error) {
