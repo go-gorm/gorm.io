@@ -106,7 +106,7 @@ AfterDelete
 コード例:
 
 ```go
-// 複数トランザクション内でデータを更新します
+// 同一トランザクション内でデータを更新します
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
