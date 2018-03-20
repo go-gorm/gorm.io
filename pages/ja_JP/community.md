@@ -4,7 +4,7 @@ layout: page
 ---
 ## 質問
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[質問をするには?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - <https://stackoverflow.com/questions/tagged/go-gorm>
 * Github Issues - <https://github.com/jinzhu/gorm/issues>
