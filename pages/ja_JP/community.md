@@ -1,8 +1,8 @@
 ---
-title: GORM Community
+title: GORM コミュニティ
 layout: page
 ---
-## Ask
+## 質問
 
 **[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
 
