@@ -1,8 +1,8 @@
 ---
-title: Declaring Models
+title: 模型定义
 layout: page
 ---
-## Declaring Models
+## 模型定义
 
 Models usually just normal Golang structs, basic Go types, pointer of them and [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner), [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are supported.
 
