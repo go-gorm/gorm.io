@@ -30,7 +30,7 @@ tx.Commit()
 
 ```go
 func CreateAnimals(db *gorm.DB) err {
-  // 一度トランザクション内に入るとtxをデータベースハンドラとして使いましょう
+  // 一度トランザクション内に入ったらtxをデータベースハンドラとして使いましょう
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
