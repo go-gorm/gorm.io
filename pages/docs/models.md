@@ -5,7 +5,7 @@ layout: page
 
 ## Declaring Models
 
-Models usually just normal Golang structs, basic Go types, pointer of them and [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner), [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are supported.
+Models are usually just normal Golang structs, basic Go types, or pointers of them. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are also supported.
 
 Model Example:
 
@@ -26,7 +26,7 @@ type User struct {
 
 ## Struct tags
 
-Tags are optional to use when declaring models, following are those tags that GORM supported.
+Tags are optional to use when declaring models. GORM supports the following tags:
 
 ### Supported Struct tags
 
@@ -49,7 +49,7 @@ Tags are optional to use when declaring models, following are those tags that GO
 
 ### Struct tags for Associations
 
-Check out Associations section for details
+Check out the Associations section for details
 
 | Tag                              | Description                                    |
 | ---                              | ---                                            |
