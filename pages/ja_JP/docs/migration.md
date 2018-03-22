@@ -6,7 +6,7 @@ layout: page
 
 スキーマを最新に保つため、自動的に移行します。
 
-**警告:**自動マイグレーションはテーブルや不足しているカラムとインデックス**のみ**生成します。データ保護のため、既存のカラム型を変更したり未使用のカラムを削除**しません**。
+**警告:**自動マイグレーションはテーブルや不足しているカラムとインデックス**のみ**生成します。データ保護のため、既存のカラム型の変更や未使用のカラムの削除は**しません**。
 
 ```go
 db.AutoMigrate(&User{})
@@ -19,63 +19,63 @@ db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 
 ## その他マイグレーションツール
 
-GORM's AutoMigrate works well for mostly cases, but if you are looking more seriously migration tools, GORM provides genric DB interface which might be helpful for you.
+GORMの自動マイグレーションはたいていうまく機能しますが、よりしっかりしたマイグレーションツールを求めるのであれば、GORMはあなたに役立つであろう一般的なDBインタフェースを提供します。
 
 ```go
-// returns `*sql.DB`
+// `*sql.DB`を返します
 db.DB()
 ```
 
-Refer [Generic Interface](/docs/generic_interface.html) for more details.
+詳しくは[一般的なインタフェース](/docs/generic_interface.html)を参照してください。
 
-## Schema Methods
+## スキーマメソッド
 
 ### Has Table
 
 ```go
-// Check model `User`'s table exists or not
+// `User`モデルのテーブルが存在するかどうか確認します
 db.HasTable(&User{})
 
-// Check table `users` exists or not
+// `usersテーブルが存在するかどうか確認します
 db.HasTable("users")
 ```
 
 ### Create Table
 
 ```go
-// Create table for model `User`
+// `User`モデルのテーブルを作成します
 db.CreateTable(&User{})
 
-// will append "ENGINE=InnoDB" to the SQL statement when creating table `users`
+// `users`テーブル作成時に、SQL文に`ENGINE=InnoDB`を付与します
 db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
 ```
 
 ### Drop table
 
 ```go
-// Drop model `User`'s table
+// `User`モデルのテーブルを削除します
 db.DropTable(&User{})
 
-// Drop table `users`
+// `users`テーブルを削除します
 db.DropTable("users")
 
-// Drop model's `User`'s table and table `products`
+// `User`モデルのテーブルと`products`テーブルを削除します
 db.DropTableIfExists(&User{}, "products")
 ```
 
 ### ModifyColumn
 
-Modify column's type to given value
+カラムの型を指定した値に変更します
 
 ```go
-// change column description's data type to `text` for model `User`
+// `User`モデルのdescriptionカラムのデータ型を`text`に変更します
 db.Model(&User{}).ModifyColumn("description", "text")
 ```
 
 ### DropColumn
 
 ```go
-// Drop column description from model `User`
+// `User`モデルのdescriptionカラムを削除します
 db.Model(&User{}).DropColumn("description")
 ```
 
