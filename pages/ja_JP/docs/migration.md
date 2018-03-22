@@ -30,7 +30,7 @@ db.DB()
 
 ## スキーマメソッド
 
-### Has Table
+### テーブルの存在
 
 ```go
 // `User`モデルのテーブルが存在するかどうか確認します
@@ -40,7 +40,7 @@ db.HasTable(&User{})
 db.HasTable("users")
 ```
 
-### Create Table
+### テーブルの作成
 
 ```go
 // `User`モデルのテーブルを作成します
@@ -82,34 +82,34 @@ db.Model(&User{}).DropColumn("description")
 ### Add Indexes
 
 ```go
-// Add index for columns `name` with given name `idx_user_name`
+// `name`カラムのインデックスを`idx_user_name`という名前で追加します
 db.Model(&User{}).AddIndex("idx_user_name", "name")
 
-// Add index for columns `name`, `age` with given name `idx_user_name_age`
+// `name`,`age`のインデックスを`idx_user_name_age`という名前で追加します
 db.Model(&User{}).AddIndex("idx_user_name_age", "name", "age")
 
-// Add unique index
+// ユニークインデックスを追加します
 db.Model(&User{}).AddUniqueIndex("idx_user_name", "name")
 
-// Add unique index for multiple columns
+// 複数カラムのユニークインデックスを追加します
 db.Model(&User{}).AddUniqueIndex("idx_user_name_age", "name", "age")
 ```
 
 ### Remove Index
 
 ```go
-// Remove index
+// インデックスを削除します
 db.Model(&User{}).RemoveIndex("idx_user_name")
 ```
 
 ### Add Foreign Key
 
 ```go
-// Add foreign key
-// 1st param : foreignkey field
-// 2nd param : destination table(id)
-// 3rd param : ONDELETE
-// 4th param : ONUPDATE
+// 外部キーを追加します
+// パラメータ1 : 外部キー
+// パラメータ2 : 対象のテーブル(id)
+// パラメータ3 : ONDELETE
+// パラメータ4 : ONUPDATE
 db.Model(&User{}).AddForeignKey("city_id", "cities(id)", "RESTRICT", "RESTRICT")
 ```
 
