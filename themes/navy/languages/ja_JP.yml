@@ -20,9 +20,9 @@ sidebar:
   docs:
     getting_started: Getting Started
     overview: 概要
-    declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
+    declaring_models: モデルの宣言
+    conventions: 規則
+    connecting_to_the_database: データベースへの接続
     crud_interface: CRUD Interface
     create: Create
     query: Query
