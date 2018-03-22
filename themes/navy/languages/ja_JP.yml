@@ -18,7 +18,7 @@ page:
   last_updated: "Last updated: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
+    getting_started: はじめに
     overview: 概要
     declaring_models: モデルの宣言
     conventions: 規則
