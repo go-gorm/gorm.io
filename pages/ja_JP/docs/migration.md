@@ -1,5 +1,5 @@
 ---
-title: Migration
+title: マイグレーション
 layout: page
 ---
 ## 自動マイグレーション
@@ -40,7 +40,7 @@ db.HasTable(&User{})
 db.HasTable("users")
 ```
 
-### テーブルの作成
+### CreateTable
 
 ```go
 // `User`モデルのテーブルを作成します
@@ -50,7 +50,7 @@ db.CreateTable(&User{})
 db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
 ```
 
-### Drop table
+### DropTable
 
 ```go
 // `User`モデルのテーブルを削除します
@@ -79,7 +79,7 @@ db.Model(&User{}).ModifyColumn("description", "text")
 db.Model(&User{}).DropColumn("description")
 ```
 
-### Add Indexes
+### AddIndexes
 
 ```go
 // `name`カラムのインデックスを`idx_user_name`という名前で追加します
@@ -95,14 +95,14 @@ db.Model(&User{}).AddUniqueIndex("idx_user_name", "name")
 db.Model(&User{}).AddUniqueIndex("idx_user_name_age", "name", "age")
 ```
 
-### Remove Index
+### RemoveIndex
 
 ```go
 // インデックスを削除します
 db.Model(&User{}).RemoveIndex("idx_user_name")
 ```
 
-### Add Foreign Key
+### AddForeignKey
 
 ```go
 // 外部キーを追加します
@@ -113,7 +113,7 @@ db.Model(&User{}).RemoveIndex("idx_user_name")
 db.Model(&User{}).AddForeignKey("city_id", "cities(id)", "RESTRICT", "RESTRICT")
 ```
 
-### Remove ForeignKey
+### RemoveForeignKey
 
 ```go
 db.Model(&User{}).RemoveForeignKey("city_id", "cities(id)")
