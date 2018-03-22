@@ -2,22 +2,22 @@
 title: Migration
 layout: page
 ---
-## Auto Migration
+## 自動マイグレーション
 
-Automatically migrate your schema, to keep your schema update to date.
+スキーマを最新に保つため、自動的に移行します。
 
-**WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data.
+**警告:**自動マイグレーションはテーブルや不足しているカラムとインデックス**のみ**生成します。データ保護のため、既存のカラム型を変更したり未使用のカラムを削除**しません**。
 
 ```go
 db.AutoMigrate(&User{})
 
 db.AutoMigrate(&User{}, &Product{}, &Order{})
 
-// Add table suffix when create tables
+// テーブル作成時にテーブルのサフィックスを追加します
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
-## Other Migration Tools
+## その他マイグレーションツール
 
 GORM's AutoMigrate works well for mostly cases, but if you are looking more seriously migration tools, GORM provides genric DB interface which might be helpful for you.
 
