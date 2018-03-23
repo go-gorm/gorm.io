@@ -1,10 +1,10 @@
 ---
-title: SQL Builder
+title: SQLビルダー
 layout: page
 ---
-## 生のSQLを実行する
+## 素のSQLを実行する
 
-生のSQLを実行します。これは他のメソッドとつなげることはできません。
+素のSQLを実行します。これは他のメソッドとつなげることはできません。
 
 ```go
 db.Exec("DROP TABLE users;")
@@ -22,7 +22,7 @@ db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
 
 ## `sql.Row` & `sql.Rows`
 
-Get query result as `*sql.Row` or `*sql.Rows`
+クエリ結果を`*sql.Row`や`*sql.Rows`として取得します
 
 ```go
 row := db.Table("users").Where("name = ?", "jinzhu").Select("name, age").Row() // (*sql.Row)
@@ -36,7 +36,7 @@ for rows.Next() {
     ...
 }
 
-// Raw SQL
+// 素のSQL
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows() // (*sql.Rows, error)
 defer rows.Close()
 for rows.Next() {
@@ -46,7 +46,7 @@ for rows.Next() {
 }
 ```
 
-## Scan `sql.Rows` into model
+## `sql.Rows`をモデルに変換します
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
@@ -54,9 +54,9 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows scan a row into user
+  // ScanRowsは1行をuserに変換します
   db.ScanRows(rows, &user)
 
-  // do something
+  // 何らかの処理を行います
 }
 ```
