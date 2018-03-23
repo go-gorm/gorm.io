@@ -2,9 +2,9 @@
 title: SQL Builder
 layout: page
 ---
-## Run Raw SQL
+## 生のSQLを実行する
 
-Run Raw SQL, which is not chainable with other methods
+生のSQLを実行します。これは他のメソッドとつなげることはできません。
 
 ```go
 db.Exec("DROP TABLE users;")
