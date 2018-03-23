@@ -1,11 +1,11 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  home: <i class="fa fa-home"></i>ホーム
+  docs: <i class="fa fa-book"></i>ドキュメント
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fa fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
+  community: <i class="fa fa-slack"></i>コミュニティ
+  contribute: <i class="fa fa-rocket"></i>コントリビュート
   search: Search documents...
 index:
   get_started: Get started
@@ -50,4 +50,4 @@ sidebar:
     change_log: ChangeLog
     community: コミュニティ
     contribute: コントリビュート
-    translate: Translate current site
+    translate: このサイトを翻訳する
