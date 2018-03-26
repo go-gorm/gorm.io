@@ -4,7 +4,7 @@ layout: page
 ---
 ## Declaring Models
 
-Models usually just normal Golang structs, basic Go types, pointer of them and [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner), [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are supported.
+Models are usually just normal Golang structs, basic Go types, or pointers of them. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are also supported.
 
 Contoh Model:
 
@@ -25,7 +25,7 @@ type User struct {
 
 ## Label Strukur
 
-Tanda opsional untuk digunakan saat mendeklarasikan model, berikut adalah tanda yang didukung GORM.
+Tags are optional to use when declaring models. GORM supports the following tags:
 
 ### Label Struktur yang didukung
 
@@ -48,7 +48,7 @@ Tanda opsional untuk digunakan saat mendeklarasikan model, berikut adalah tanda 
 
 ### Tag struktur untuk Asosiasi
 
-Periksa bagian Asosiasi untuk rinciannya
+Check out the Associations section for details
 
 | Label                              | Keterangan                                           |
 | ---------------------------------- | ---------------------------------------------------- |
