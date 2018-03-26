@@ -1,37 +1,37 @@
 ---
-title: Error Handling
+title: エラーハンドリング
 layout: page
 ---
-In Go, error handling is important.
+Goではエラーハンドリングが重要です。
 
-You are encouraged to do error check after any [Immediate Methods](/docs/method_chaining.html#Immediate-Methods)
+[即時メソッド](/docs/method_chaining.html#Immediate-Methods)の後ではエラーチェックを行ったほうが良いです。
 
-## Error Handling
+## エラーハンドリング
 
-Error handling in GORM is different with idiomatic Go code because of its chainable API, but it is still fairly easy to do that.
+GORMにおけるエラーハンドリングは慣用的なGoのコードとは少し異なります。チェーン可能なAPIなためですが、それでもエラーハンドリングはとても簡単です。
 
-If there are any error happened, GORm will set it to `*gorm.DB`'s `Error` field, you could check it like this:
+何らかのエラーが起きた場合、GORMはそれを`*gorm.DB`の`Error`フィールドにセットするので、このようにチェックを行うことができます:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-    // error handling...
+    // エラーハンドリング...
 }
 ```
 
-Or
+もしくは
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-    // error handling...
+    // エラーハンドリング...
 }
 ```
 
-## Errors
+## エラー
 
-It is common several errors happend during processing data, GORM provides an API to return all happened errors as a slice
+データ処理中に複数のエラーが生じるというのは一般的であり、GORMは生じた全てのエラーをエラーのスライスとして返すAPIを提供しています。
 
 ```go
-// If there are more than one error happened, `GetErrors` returns them as `[]error`
+// 1つ以上のエラーが起きた場合、`GetErrors`は`[]error`を返します
 db.First(&user).Limit(10).Find(&users).GetErrors()
 
 fmt.Println(len(errors))
@@ -41,19 +41,19 @@ for _, err := range errors {
 }
 ```
 
-## RecordNotFound Error
+## RecordNotFoundエラー
 
-GORM provides a shortcut to handle `RecordNotFound` error, if there are several errors happened, it will check each error if any of them is `RecordNotFound` error.
+GORMは`RecordNotFound`エラーを扱うためのショートカットを提供しており、複数のエラーが生じた場合はその中に`RecordNotFound`エラーが含まれているかチェックします。
 
 ```go
-// Check if returns RecordNotFound error
+// RecordNotFoundエラーを返すかチェックします
 db.Where("name = ?", "hello world").First(&user).RecordNotFound()
 
 if db.Model(&user).Related(&credit_card).RecordNotFound() {
-  // record not found
+  // レコードが見つかりません
 }
 
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; gorm.IsRecordNotFoundError(err) {
-  // record not found
+  // レコードが見つかりません
 }
 ```

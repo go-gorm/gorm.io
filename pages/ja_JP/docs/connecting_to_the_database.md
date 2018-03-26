@@ -1,5 +1,5 @@
 ---
-title: Connecting to database
+title: データベースへの接続
 layout: page
 ---
 ## データベースへの接続

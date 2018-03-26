@@ -1,18 +1,18 @@
 ---
-title: Method Chaining
+title: メソッドチェーン
 layout: page
 ---
-## Method Chaining
+## メソッドチェーン
 
-Gorm implements method chaining interface, so you could write code like this:
+Gormはメソッドチェーンのインタフェースを実装しているため、このようなコードを書くことができます:
 
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 
-// create a new relation
+// 新規リレーションを作成します
 tx := db.Where("name = ?", "jinzhu")
 
-// add more filter
+// さらにフィルタを追加します
 if someCondition {
     tx = tx.Where("age = ?", 20)
 } else {
@@ -24,33 +24,35 @@ if yetAnotherCondition {
 }
 ```
 
-Query won't be generated until a immediate method, which could be useful in some cases.
+クエリは即時メソッドまで生成されず、それはいくつかの場面で有効です。
 
-Like you could extract a wrapper to handle some common logic
+共通ロジックを扱うためのラッパーへ抽出するといったような場面で。
 
-## Immediate Methods
+## 即時メソッド
 
-Immediate methods are those methods that will generate SQL query and send it to database, usually it is those CRUD methods, like:
+即時メソッドはSQLクエリを生成してデータベースに送信するメソッドのことです。たいていはCRUDメソッドのことであり、
 
-`Create`, `First`, `Find`, `Take`, `Save`, `UpdateXXX`, `Delete`, `Scan`, `Row`, `Rows`...
+`Create`, `First`, `Find`, `Take`, `Save`, `UpdateXXX`, `Delete`, `Scan`, `Row`, `Rows`... 等を指します。
 
-Here is an immediate methods example based on above chain:
+上記チェーンに基づく即時メソッドの例を示します:
 
 ```go
 tx.Find(&user)
 ```
 
-Generates
+は
 
 ```sql
 SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
+
+を生成します
 ```
 
-## Scopes
+## スコープ
 
-Scope is build based on the method chaining theory.
+スコープはメソッドチェーンの理論に基づいて構築されます。
 
-With it, you could extract some generic logics, to write more reusable libraries.
+これにより、汎用ロジックへの抽出が可能になり、より再利用しやすいライブラリを記述することができます。
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -72,24 +74,24 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// クレジットカードの注文かつ1000件以上の注文を取得します
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// CODによる注文かつ1000件以上の注文を取得します
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// 支払い済みで発送済みの注文かつ1000件以上の注文を取得します
 ```
 
-## Multiple Immediate Methods
+## 複数の即時メソッド
 
-When using multiple immediate methods with GORM, later immediate method will reuse before immediate methods's query conditions (excluding inline conditions)
+GORMで複数の即時メソッドを扱う場合、後方の即時メソッドは前方の即時メソッドのクエリ条件を再利用します(インライン条件は除きます)
 
 ```go
 db.Where("name LIKE ?", "jinzhu%").Find(&users, "id IN (?)", []int{1, 2, 3}).Count(&count)
 ```
 
-Generates
+生成
 
 ```sql
 SELECT * FROM users WHERE name LIKE 'jinzhu%' AND id IN (1, 2, 3)
@@ -97,6 +99,6 @@ SELECT * FROM users WHERE name LIKE 'jinzhu%' AND id IN (1, 2, 3)
 SELECT count(*) FROM users WHERE name LIKE 'jinzhu%'
 ```
 
-## Thread Safety
+## スレッドセーフ
 
-All Chain Methods will clone and create a new DB object (shares one connection pool), GORM is safe for concurrent use by multiple goroutines.
+全てのチェーンメソッドは複製され新規DBオブジェクトを作成します(1つのコネクションプールを共有します)。GORMは複数のgoroutineでの並行利用に対して安全です。

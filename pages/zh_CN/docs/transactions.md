@@ -1,36 +1,36 @@
 ---
-title: Transactions
+title: 事务
 layout: page
 ---
-GORM perform single `create`, `update`, `delete` operations in transactions by default to ensure database data integrity.
+GORM 默认会将单个的 `create`, `update`, `delete`操作封装在事务内进行处理，以确保数据的完整性。
 
-If you want to tread multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
+如果你希望原子化的执行多个 `create`, `update`, `delete` 操作, 您可以采用 `事务` 来实现。
 
-## Transactions
+## 事务
 
-To perform a set of operations within a transaction, the general flow is as below.
+要在事务中执行一系列操作，通常您可以参照下面的流程来执行。
 
 ```go
-// begin a transaction
+// 开启事务
 tx := db.Begin()
 
-// do some database operations in the transaction (use 'tx' from this point, not 'db')
+// 在事务中执行具体的数据库操作 (事务内的操作使用 'tx' 执行，而不是 'db')
 tx.Create(...)
 
 // ...
 
-// rollback the transaction in case of error
+// 如果发生错误则执行回滚
 tx.Rollback()
 
-// Or commit the transaction
+// 或者（未发生错误时）提交事务
 tx.Commit()
 ```
 
-## A Specific Example
+## 一个具体的例子
 
 ```go
 func CreateAnimals(db *gorm.DB) err {
-  // Note the use of tx as the database handle once you are within a transaction
+  // 注意：一旦开始事务的处理，请使用tx作为数据库处理器，而不是db
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {

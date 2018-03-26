@@ -4,7 +4,7 @@ layout: page
 ---
 ## モデルの宣言
 
-モデルは通常、単なる普通のGolangの構造体、Goの基本的な型、それらのポインタ、[`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner)、[`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer)インタフェースをサポートします。
+Models are usually just normal Golang structs, basic Go types, or pointers of them. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are also supported.
 
 モデル例:
 
@@ -25,7 +25,7 @@ type User struct {
 
 ## 構造体のタグ
 
-タグはモデル宣言時に任意で使用します。GORMがサポートするタグは以下の通りです。
+Tags are optional to use when declaring models. GORM supports the following tags:
 
 ### サポートされている構造体タグ
 
@@ -48,7 +48,7 @@ type User struct {
 
 ### 関連のための構造体のタグ
 
-関連についての詳細を確認してください
+Check out the Associations section for details
 
 | タグ                                 | 説明                      |
 | ---------------------------------- | ----------------------- |

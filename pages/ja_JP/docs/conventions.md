@@ -1,5 +1,5 @@
 ---
-title: 慣例
+title: 規則
 layout: page
 ---
 ## gorm.Model
