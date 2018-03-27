@@ -18,12 +18,12 @@ WIP
 
 * 新ロジック ToDBName
     
-    When GORM convert struct, field name to db name, only common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` were handled, so `HTTP`'s db name is `http`, but not `h_t_t_p`.
+    GORMを型やフィールド名からdb名に変換する際、[golint](https://github.com/golang/lint/blob/master/lint.go#L702)の`HTTP`や`URI`に対する処理と同様の短縮形を採用します。 よって、`HTTP`のdb名は`h_t_t_p`ではなく`http`となります。
     
-    But for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it.
+    しかし`SKU`のようなリストにないその他の省略形においては、db名は`s_k_u`となります。この変更はそれを修正します。
 
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
+* `RecordNotFound`エラーは`ErrRecordNotFound`にリネームされました
 
-* `mssql` dialect has been renamed to "github.com/jinzhu/gorm/dialects/mssql"
+* `mssql`の方言は"github.com/jinzhu/gorm/dialects/mssql"にリネームされました
 
-* `Hstore` has been moved to package "github.com/jinzhu/gorm/dialects/postgres"
+* `Hstore`は"github.com/jinzhu/gorm/dialects/postgres"パッケージに移動しました
