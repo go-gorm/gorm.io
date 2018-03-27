@@ -59,6 +59,6 @@ GORMをあなたの言語に翻訳するには、 <https://translate.gorm.io>に
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=48&width=740"></object>
 
-## Contributors
+## コントリビュータ
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/contributors.svg?avatarHeight=32&width=740"></object>
