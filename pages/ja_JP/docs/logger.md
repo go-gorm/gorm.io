@@ -2,9 +2,9 @@
 title: Logger
 layout: page
 ---
-## Logger
+## ロガー
 
-Gorm has built-in logger support, default mode, it will only print logs when there are errors happened.
+Gormはビルトインのロガーサポートをしていますが、デフォルトモードではエラーが起きた場合のみ出力します。
 
 ```go
 // Enable Logger, show detailed log
