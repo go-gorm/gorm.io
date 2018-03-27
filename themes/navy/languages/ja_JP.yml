@@ -47,7 +47,7 @@ sidebar:
     write_plugins: Write Plugins
     dialects: GORM Dialects
     logger: Logger
-    change_log: ChangeLog
+    change_log: 更新履歴
     community: コミュニティ
     contribute: コントリビュート
     translate: このサイトを翻訳する
