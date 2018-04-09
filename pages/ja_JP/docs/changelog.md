@@ -1,5 +1,5 @@
 ---
-title: Change Log
+title: 変更履歴
 layout: page
 ---
 ## v2.0
@@ -8,22 +8,22 @@ WIP
 
 ## v1.0 - 2016.04.27
 
-Breaking Changes
+破壊的変更
 
-* `gorm.Open` return type `*gorm.DB` instead of `gorm.DB`
+* `gorm.Open`は`gorm.DB`ではなく`*gorm.DB` 型を返します
 
-* Updating will only update changed fields
+* 更新は変更したフィールドのみ反映されます
 
-* Soft Delete's will only check `deleted_at IS NULL`
+* 論理削除は`deleted_at IS NULL`のチェックのみ行います
 
-* New ToDBName logic
+* 新ロジック ToDBName
     
-    When GORM convert struct, field name to db name, only common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` were handled, so `HTTP`'s db name is `http`, but not `h_t_t_p`.
+    GORMを型やフィールド名からdb名に変換する際、[golint](https://github.com/golang/lint/blob/master/lint.go#L702)の`HTTP`や`URI`に対する処理と同様の短縮形を採用します。 よって、`HTTP`のdb名は`h_t_t_p`ではなく`http`となります。
     
-    But for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it.
+    しかし`SKU`のようなリストにないその他の省略形においては、db名は`s_k_u`となります。この変更はそれを修正します。
 
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
+* `RecordNotFound`エラーは`ErrRecordNotFound`にリネームされました
 
-* `mssql` dialect has been renamed to "github.com/jinzhu/gorm/dialects/mssql"
+* `mssql`の方言は"github.com/jinzhu/gorm/dialects/mssql"にリネームされました
 
-* `Hstore` has been moved to package "github.com/jinzhu/gorm/dialects/postgres"
+* `Hstore`は"github.com/jinzhu/gorm/dialects/postgres"パッケージに移動しました

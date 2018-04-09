@@ -30,25 +30,25 @@ GORMをあなたの言語に翻訳するには、 <https://translate.gorm.io>に
 
 私達の多くのスポンサー達に感謝します！
 
-### One-time Donations
+### 寄付者
 
-Your kindness and generosity is greatly appreciated
+親切さと寛大さに大変感謝します
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[Paypalで寄付する](https://www.paypal.me/zhangjinzhu) [OpenCollectiveで寄付する](https://opencollective.com/gorm)
 
-### Recurring Donations
+### 定期的な寄付
 
-Your kindness and generosity is greatly appreciated, and your name will be listed in this page or the home page of this website.
+親切さと寛大さに大変感謝します。あなた方の名前はこのページやこのウェブサイトのトップページに掲載されます。
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[OpenCollectiveで定期的寄付をする](https://opencollective.com/gorm) [Paypalで定期的寄付をする](https://www.patreon.com/jinzhu)
 
 <br />
 
-## Sponsors
+## スポンサー
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=740"></object>
 
-## Backers
+## 支持者
 
 <div class="backers-list">
   
@@ -59,6 +59,6 @@ Your kindness and generosity is greatly appreciated, and your name will be liste
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=48&width=740"></object>
 
-## Contributors
+## コントリビュータ
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/contributors.svg?avatarHeight=32&width=740"></object>

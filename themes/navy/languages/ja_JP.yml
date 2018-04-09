@@ -46,8 +46,8 @@ sidebar:
     composite_primary_key: Composite Primary Key
     write_plugins: Write Plugins
     dialects: GORM Dialects
-    logger: Logger
-    change_log: ChangeLog
+    logger: ロガー
+    change_log: 更新履歴
     community: コミュニティ
     contribute: コントリビュート
     translate: このサイトを翻訳する
