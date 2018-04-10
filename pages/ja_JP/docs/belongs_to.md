@@ -4,9 +4,9 @@ layout: page
 ---
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+`belongs to` は、1 対 1 での他 model との関連を、model が他 modelに属する関係として定義します。
 
-For example, if your application includes users and profiles, and each profile can be assigned to exactly one user
+アプリケーションに users と profiles があり、ひとつの user にひとつの profile を割り当てることができる場合の例は以下です。
 
 ```go
 type User struct {
