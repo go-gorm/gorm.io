@@ -14,7 +14,7 @@ type User struct {
   Name string
 }
 
-// `Profile` belongs to `User`, `UserID` is the foreign key
+// `Profile` は `User` に属しています, `UserID` は外部キーです
 type Profile struct {
   gorm.Model
   UserID int
