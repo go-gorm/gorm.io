@@ -1,10 +1,10 @@
 ---
-title: Connecting to the database
+title: 连接数据库
 layout: page
 ---
-# Connecting to the database
+# 连接数据库
 
-In order to connect to a database, you need to import the database's driver first. For example:
+要连接到数据库，首先应该导入数据库驱动．例如：
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
