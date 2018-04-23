@@ -5,25 +5,7 @@ layout: page
 ## Query
 
 ```go
-// Get first record, order by primary key
-db.First(&user)
-//// SELECT * FROM users ORDER BY id LIMIT 1;
-
-// Get one record, no specfied order
-db.Take(&user)
-//// SELECT * FROM users LIMIT 1;
-
-// Get last record, order by primary key
-db.Last(&user)
-//// SELECT * FROM users ORDER BY id DESC LIMIT 1;
-
-// Get all records
-db.Find(&users)
-//// SELECT * FROM users;
-
-// Get record with primary key (only works for integer primary key)
-db.First(&user, 10)
-//// SELECT * FROM users WHERE id = 10;
+//通过主键查询第一条记录
 ```
 
 ### Where
