@@ -11,7 +11,7 @@ You are encouraged to do error check after any [Immediate Methods](/docs/method_
 
 Error handling in GORM is different with idiomatic Go code because of its chainable API, but it is still fairly easy to do that.
 
-If there are any error happened, GORm will set it to `*gorm.DB`'s `Error` field, you could check it like this:
+If there are any error happened, GORM will set it to `*gorm.DB`'s `Error` field, you could check it like this:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
