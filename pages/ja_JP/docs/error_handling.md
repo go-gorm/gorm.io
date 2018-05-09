@@ -10,7 +10,7 @@ Goではエラーハンドリングが重要です。
 
 GORMにおけるエラーハンドリングは慣用的なGoのコードとは少し異なります。チェーン可能なAPIなためですが、それでもエラーハンドリングはとても簡単です。
 
-何らかのエラーが起きた場合、GORMはそれを`*gorm.DB`の`Error`フィールドにセットするので、このようにチェックを行うことができます:
+If there are any error happened, GORM will set it to `*gorm.DB`'s `Error` field, you could check it like this:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
