@@ -10,7 +10,7 @@ Se recomienda hacer una comprobación de errores después de cualquier [Métodos
 
 El manejo de errores en GORM es diferente con el código Go idiomático debido a su API, pero todavía es bastante fácil hacerlo.
 
-Si se produce algún error, GORM lo configurará en el campo `*gorm.DB`'s `Error`, puede comprobarlo así:
+If there are any error happened, GORM will set it to `*gorm.DB`'s `Error` field, you could check it like this:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {

@@ -5,7 +5,7 @@ layout: page
 ## Query
 
 ```go
-//通过主键查询第一条记录
+// Get first record, order by primary key
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 

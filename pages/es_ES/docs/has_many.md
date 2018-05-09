@@ -6,10 +6,20 @@ layout: page
 
 Una asociación `has many` también establece una conexión de uno a muchos con otro modelo, a diferencia de `has one`, el propietario podría tener cero o muchas instancias de modelos.
 
-Por ejemplo, si su aplicación incluye usuarios y tarjetas de crédito, y cada usuario puede tener muchas tarjetas de crédito.
+For example, if your application includes users and credit card, and each user can have many credit cards.
 
 ```go
-// El Usuario tiene muchos correos electrónicos, UserID es la clave foránea type User struct {     gorm.Model     CreditCards []CreditCard } type CreditCard struct {     gorm.Model     Number string     UserID uint }
+// User has many CraditCards, UserID is the foreign key
+type User struct {
+    gorm.Model
+    CreditCards []CreditCard
+}
+
+type CreditCard struct {
+    gorm.Model
+    Number   string
+    UserID  uint
+}
 ```
 
 ## Clave Foránea

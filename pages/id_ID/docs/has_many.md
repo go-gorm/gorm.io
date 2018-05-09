@@ -6,10 +6,10 @@ layout: page
 
 `memiliki banyak` asosiasi juga menetapkan satu ke banyak koneksi dengan model lain, tidak seperti ` memiliki satu`, pemilik tersebut dapat memiliki nol atau banyak contoh model.
 
-Misalnya, jika aplikasi anda menyertakan pengguna dan kartu kredit, dan setiap pengguna dapat memiliki banyak kartu kredit.
+For example, if your application includes users and credit card, and each user can have many credit cards.
 
 ```go
-// User has many emails, UserID is the foreign key
+// User has many CraditCards, UserID is the foreign key
 type User struct {
     gorm.Model
     CreditCards []CreditCard
