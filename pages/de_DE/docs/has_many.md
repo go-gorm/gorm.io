@@ -55,7 +55,7 @@ You are able to change it with tag `association_foreignkey`, e.g:
 type User struct {
     gorm.Model
   MemberNumber string
-    CreditCards  []CreditCard `gorm:"foreignkey:UserMemberNumber,association_foreignkey:MemberNumber"`
+    CreditCards  []CreditCard `gorm:"foreignkey:UserMemberNumber;association_foreignkey:MemberNumber"`
 }
 
 type CreditCard struct {
