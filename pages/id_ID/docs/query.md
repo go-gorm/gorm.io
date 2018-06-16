@@ -72,7 +72,7 @@ db.Dimana ([]int64{20, 21, 22}).Temukan(&pengguna)
 //// PILIH * DARI Di mana id pengguna DI (20, 21, 22);
 ```
 
-**Perhatikan**Ketika query dengan struct, GORM hanya akan query dengan bidang tersebut memiliki nilai non-nol, Itu berarti jika nilai bidang anda adalah ``, `''`,`Salah`atau lainnya[nilai nol](https://tour.golang.org/basics/12),itu tidak akan digunakan untuk membangun kondisi query, sebagai contoh:
+**Perhatikan**Ketika query dengan struct, GORM hanya akan query dengan bidang tersebut memiliki nilai non-nol, Itu berarti jika nilai bidang anda adalah `0`, `''`,`Salah`atau lainnya[nilai nol](https://tour.golang.org/basics/12),itu tidak akan digunakan untuk membangun kondisi query, sebagai contoh:
 
 ```go
 db.Di mana (&pengguna{Nama: "jinzhu", Umur: 0}).Temukan (& pengguna)
