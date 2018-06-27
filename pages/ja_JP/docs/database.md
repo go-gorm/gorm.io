@@ -2,9 +2,9 @@
 title: Connecting to the database
 layout: page
 ---
-# Connecting to the database
+# データベースへの接続
 
-In order to connect to a database, you need to import the database's driver first. For example:
+データベースに接続するために、データベースのドライバを最初に import する必要があります: 
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
