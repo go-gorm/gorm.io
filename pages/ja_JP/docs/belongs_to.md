@@ -25,7 +25,7 @@ type Profile struct {
 
 ## Foreign Key
 
-To define a belongs to relationship, the foreign key must exists, default foreign key uses owner's type name plus its primary key.
+belongs to を定義する場合、外部キーは必ず存在しなければならず、デフォルトの外部キーは所有側の型名と主キーを連結したものになります。
 
 For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
