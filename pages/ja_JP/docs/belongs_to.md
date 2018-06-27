@@ -27,9 +27,9 @@ type Profile struct {
 
 belongs to を定義する場合、外部キーは必ず存在しなければならず、デフォルトの外部キーは所有側の型名と主キーを連結したものになります。
 
-For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+上述の例では、`User` に属するモデルを定義する場合、外部キーは `UserID` にします。
 
-GORM provides a way to customzie the foreign key, for example:
+GORM は外部キーをカスタマイズする手段を提供しています: 
 
 ```go
 type User struct {
@@ -40,7 +40,7 @@ type User struct {
 type Profile struct {
     gorm.Model
   Name      string
-  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
+  User      User `gorm:"foreignkey:UserRefer"` // UserRefer を外部キーとして使用します
   UserRefer string
 }
 ```
