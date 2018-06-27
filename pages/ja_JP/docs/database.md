@@ -10,7 +10,7 @@ layout: page
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers, for easier to remember the import path, so you could import the mysql driver with
+GORM はいくつかのドライバをラップしており、import パスを思い出しやすくするために以下のように import できるようにしています(mysql ドライバの例): 
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
