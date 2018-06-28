@@ -2,15 +2,15 @@
 title: Connecting to the database
 layout: page
 ---
-# Connecting to the database
+# データベースへの接続
 
-In order to connect to a database, you need to import the database's driver first. For example:
+データベースに接続するために、データベースのドライバを最初に import する必要があります: 
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers, for easier to remember the import path, so you could import the mysql driver with
+GORM はいくつかのドライバをラップしており、import パスを思い出しやすくするために以下のように import できるようにしています(mysql ドライバの例): 
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"

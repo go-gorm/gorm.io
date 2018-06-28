@@ -74,7 +74,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 //// SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**NOTE** Where 句に struct を指定した場合、GORM はゼロ値のフィールドのみ利用してクエリを実行します。これは、``, `''`, `false`, その他 [zero values](https://tour.golang.org/basics/12) は Where 句に反映されないことを意味します。例:
+**NOTE** Where 句に struct を指定した場合、GORM はゼロ値のフィールドのみ利用してクエリを実行します。これは、`0`, `''`, `false`, その他 [zero values](https://tour.golang.org/basics/12) は Where 句に反映されないことを意味します。例:
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)

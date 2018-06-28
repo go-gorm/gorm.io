@@ -9,7 +9,7 @@ layout: page
 For example, if your application includes users and credit card, and each user can have many credit cards.
 
 ```go
-// User has many CraditCards, UserID is the foreign key
+// User has many CreditCards, UserID is the foreign key
 type User struct {
     gorm.Model
     CreditCards []CreditCard
