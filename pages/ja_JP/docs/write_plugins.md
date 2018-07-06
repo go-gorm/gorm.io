@@ -2,9 +2,9 @@
 title: Write Plugins
 layout: page
 ---
-GORM itself is powered by `Callbacks`, so you could fully customize GORM as you want
+GORM は `Callbacks` によってフルカスタマイズすることができます
 
-## Register a new callback
+## 新たに callback を登録します
 
 Register a callback into callbacks
 
@@ -19,7 +19,7 @@ db.Callback().Create().Register("update_created_at", updateCreated)
 // register a callback for Create process
 ```
 
-## Delete an existing callback
+## callback を削除します
 
 Delete a callback from callbacks
 
@@ -28,7 +28,7 @@ db.Callback().Create().Remove("gorm:create")
 // delete callback `gorm:create` from Create callbacks
 ```
 
-## Replace an existing callback
+## callback を置き換えます
 
 Replace a callback having same name with new one
 
@@ -37,7 +37,7 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 // replace callback `gorm:create` with new function `newCreateFunction` for Create process
 ```
 
-## Register callback orders
+## 順序付きで callback を登録します
 
 Regiser callbacks with orders
 
@@ -50,7 +50,7 @@ db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update",
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 ```
 
-## Pre-Defined Callbacks
+## 定義済みの Callback
 
 GORM has defiend callbacks to perform CRUD operations, check them out before start write your plugins
 
