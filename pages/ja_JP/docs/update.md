@@ -2,9 +2,9 @@
 title: Update
 layout: page
 ---
-## Update All Fields
+## 全フィールドの更新
 
-`Save` will include all fields when perform the Updating SQL, even it is not changed
+`Save` は SQL を実行する際にすべてのフィールドを含みます
 
 ```go
 db.First(&user)
@@ -16,7 +16,7 @@ db.Save(&user)
 //// UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update Changed Fields
+## フィールドの更新
 
 If you only want to update changed Fields, you could use `Update`, `Updates`
 
