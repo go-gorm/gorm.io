@@ -294,7 +294,7 @@ db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?
 
 ### Select
 
-Specify fields that you want to retrieve from database, by default, will select all fields
+データベースから取得したいフィールドを指定します。デフォルトではすべてのフィールドが指定されます。
 
 ```go
 db.Select("name, age").Find(&users)
@@ -309,7 +309,7 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 
 ### Order
 
-Specify order when retrieve records from database, set reorder (the second argument) to `true` to overwrite defined conditions
+データベースからのデータ取得時に順序を指定するには, 第2引数のreorderを `true` に設定し、定義され得た条件の上書きをしてください。
 
 ```go
 db.Order("age desc, name").Find(&users)
