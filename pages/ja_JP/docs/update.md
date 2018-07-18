@@ -40,7 +40,7 @@ db.Model(&user).Updates(User{Name: "hello", Age: 18})
 
 ## 更新するフィールドを指定
 
-If you only want to update or ignore some fields when updating, you could use `Select`, `Omit`
+もしupdate時に特定のフィールドのみを更新する、もしくは無視する時に、`select`と`omit`が使えます。
 
 ```go
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
@@ -52,7 +52,7 @@ db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "ag
 
 ## Hook なしでの更新
 
-Above updating operations will perform the model's `BeforeUpdate`, `AfterUpdate` method, update its `UpdatedAt` timestamp, save its `Associations` when updaing, if you don't want to call them, you could use `UpdateColumn`, `UpdateColumns`
+上記の更新処理は、`BeforeUpdate`, `AfterUpdate`メソッドを実行します。その結果更新時に`UpdatedAt`のタイムスタンプや 持っている `Associations` が更新されます。もしそれらのメソッドを呼びたくない場合は`UpdateColumn`と`UpdateColumns`が使えます。
 
 ```go
 // Update single attribute, similar with `Update`
@@ -66,7 +66,7 @@ db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 
 ## バッチでの更新
 
-Hooks won't run when do batch updates
+フックはバッチアップデート時は実行されません。
 
 ```go
 db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface{}{"name": "hello", "age": 18})
@@ -98,7 +98,7 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 
 ## Hook での値変更
 
-If you want to change updating values in hooks using `BeforeUpdate`, `BeforeSave`, you could use `scope.SetColumn`, for example:
+`BeforeUpdate`, `BeforeSave`を使ってフック時に値を更新したい場合には`scope.SetColumn`が使えます。例えば
 
 ```go
 func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
