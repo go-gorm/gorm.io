@@ -281,7 +281,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "jinzhu", Age: 30}
 ```
 
-## Advanced Query
+## 高度なクエリ
 
 ### SubQuery
 
@@ -426,7 +426,7 @@ db.Select("name, age").Find(&users)
 
 ## Scan
 
-Scan results into another struct.
+スキャンは結果を別の構造体にマッピングします。
 
 ```go
 type Result struct {
