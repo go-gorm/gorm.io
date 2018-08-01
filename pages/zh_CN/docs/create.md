@@ -68,7 +68,7 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 ## 扩展创建选项
 
 ```go
-// 为Instert语句添加扩展SQL选项
+// 为Insert语句添加扩展SQL选项
 db.Set("gorm:insert_option", "ON CONFLICT").Create(&product)
 // INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
 ```
