@@ -4,7 +4,7 @@ layout: page
 ---
 ## Has Many
 
-A `has many` association also sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+`has many`アソシエーションは他のモデルとのone-to-manyなつながりを表します。`has one`とは異なり、親は0もしくは多のモデルのインスタンスを持ちます。
 
 For example, if your application includes users and credit card, and each user can have many credit cards.
 

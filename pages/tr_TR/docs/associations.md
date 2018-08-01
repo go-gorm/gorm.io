@@ -1,8 +1,8 @@
 ---
-title: Associations
-layout: page
+title: İlişkilendirmeler
+layout: sayfa
 ---
-## Auto Create/Update
+## Otomatik Oluştur/Güncelleştir
 
 GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
 

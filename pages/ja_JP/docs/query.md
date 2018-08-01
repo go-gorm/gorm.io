@@ -74,7 +74,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 //// SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**NOTE** Where 句に struct を指定した場合、GORM はゼロ値のフィールドのみ利用してクエリを実行します。これは、`0`, `''`, `false`, その他 [zero values](https://tour.golang.org/basics/12) は Where 句に反映されないことを意味します。例:
+**NOTE** Where 句に struct を指定した場合、GORM はゼロ値ではないフィールドのみ利用してクエリを実行します。これは、`0`, `''`, `false`, その他 [zero values](https://tour.golang.org/basics/12) は Where 句に反映されないことを意味します。例:
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
@@ -281,7 +281,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "jinzhu", Age: 30}
 ```
 
-## Advanced Query
+## 高度なクエリ
 
 ### SubQuery
 
@@ -294,7 +294,7 @@ db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?
 
 ### Select
 
-Specify fields that you want to retrieve from database, by default, will select all fields
+データベースから取得したいフィールドを指定します。デフォルトではすべてのフィールドが指定されます。
 
 ```go
 db.Select("name, age").Find(&users)
@@ -309,7 +309,7 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 
 ### Order
 
-Specify order when retrieve records from database, set reorder (the second argument) to `true` to overwrite defined conditions
+データベースからのデータ取得時に順序を指定するには, 第2引数のreorderを `true` に設定し、定義され得た条件の上書きをしてください。
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -426,7 +426,7 @@ db.Select("name, age").Find(&users)
 
 ## Scan
 
-Scan results into another struct.
+スキャンは結果を別の構造体にマッピングします。
 
 ```go
 type Result struct {
