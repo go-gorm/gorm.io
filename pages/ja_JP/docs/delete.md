@@ -16,7 +16,7 @@ db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email)
 //// DELETE from emails where id=10 OPTION (OPTIMIZE FOR UNKNOWN);
 ```
 
-## Batch Delete
+## Batch Record
 
 条件に合致するすべてのレコードを削除する
 
