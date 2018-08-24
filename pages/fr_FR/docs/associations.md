@@ -134,16 +134,16 @@ type User struct {
 Le mode association contient des méthodes d'assistance pour gérer les relations facilement.
 
 ```go
-// Start Association Mode
+// Débuter le mode association
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source, must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
+// `user` est la source, doit contenir une clé primaire
+// `Languages` est le nom du champ de la source pour une relation
+// AssociationMode fonctionne seulement si les deux conditions plus haut sont remplies, vérifie si c'est le cas ou pas:
 // db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Trouver des associations
 
 Trouvé les associations correspondantes
 
@@ -160,7 +160,7 @@ db.Model(&user).Association("Languages").Append([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Remplacer les associations
+### Remplacer des associations
 
 Remplace les associations actuelles par de nouvelles associations
 
@@ -169,7 +169,7 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Supprimer les associations
+### Supprimer des associations
 
 Retire la relation entre la source les objets en paramètre, supprime seulement la référence, ne supprimera pas ces objets de la BDD.
 
@@ -178,7 +178,7 @@ db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Réinitialiser des associations
 
 Retire la référence entre la source et les associations actuelles, ne supprimera pas ces associations
 
