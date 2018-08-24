@@ -44,7 +44,7 @@ Si votre association existe déjà dans la base de données, vous ne voudrez peu
 Vous pouvez définir le paramètre DB `gorm:association_autoupdate` à `false`
 
 ```go
-// Don't update associations having primary key, but will save reference
+// Ne mettra pas à jour les associations ayant une clé primaire, mais sauvera la référence
 db.Set("gorm:association_autoupdate", false).Create(&user)
 db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
@@ -56,7 +56,7 @@ type User struct {
   gorm.Model
   Name       string
   CompanyID  uint
-  // Don't update associations having primary key, but will save reference
+  // Ne mettra pas à jour les associations ayant une clé primaire, mais sauvera la référence
   Company    Company `gorm:"association_autoupdate:false"`
 }
 ```
@@ -68,7 +68,7 @@ Même si vous avez désactivé `AutoUpdating`, les associations sans clé primai
 Pour désactiver cela, vous pouvez définir le paramètre DB `gorm:association_autocreate` à `false`
 
 ```go
-// Don't create associations w/o primary key, WON'T save its reference
+// Ne pas créer d'associations sans clé primaire, NE sauve PAS sa référence
 db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
@@ -111,14 +111,14 @@ Ou utiliser `gorm:save_associations`
 
 ## Sauter l'enregistrement de la référence
 
-If you don't even want to save association's reference when updating/saving data, you could use below tricks
+Si vous ne voulez même pas enregister la référence d'une association lors de la mise à jour ou de l'enregistrement de données, vous pouvez utiliser les trucs suivants
 
 ```go
 db.Set("gorm:association_save_reference", false).Save(&user)
 db.Set("gorm:association_save_reference", false).Create(&user)
 ```
 
-or use tag
+ou utiliser le tag
 
 ```go
 type User struct {
@@ -129,9 +129,9 @@ type User struct {
 }
 ```
 
-## Association Mode
+## Mode association
 
-Association Mode contains some helper methods to handle relationship related things easily.
+Le mode association contient des méthodes d'assistance pour gérer les relations facilement.
 
 ```go
 // Start Association Mode
@@ -145,33 +145,33 @@ db.Model(&user).Association("Languages")
 
 ### Find Associations
 
-Find matched associations
+Trouvé les associations correspondantes
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Joindre les associations
 
-Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
+Joint de nouvelles associations pour `many to many`, `has many`, remplace les associations actuelles pour `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Replace Associations
+### Remplacer les associations
 
-Replace current associations with new ones
+Remplace les associations actuelles par de nouvelles associations
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Supprimer les associations
 
-Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
+Retire la relation entre la source les objets en paramètre, supprime seulement la référence, ne supprimera pas ces objets de la BDD.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
@@ -180,15 +180,15 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### Clear Associations
 
-Remove reference between source & current associations, won't delete those associations
+Retire la référence entre la source et les associations actuelles, ne supprimera pas ces associations
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Compter les associations
 
-Return the count of current associations
+Retourne le compte des associations actuelles
 
 ```go
 db.Model(&user).Association("Languages").Count()
