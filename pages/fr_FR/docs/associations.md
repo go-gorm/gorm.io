@@ -39,9 +39,9 @@ db.Save(&user)
 
 ## Sauter la mise à jour automatique
 
-If your association is already existing in database, you might not want to update it.
+Si votre association existe déjà dans la base de données, vous ne voudrez peut-être pas la mettre à jour.
 
-You could use DB setting, set `gorm:association_autoupdate` to `false`
+Vous pouvez définir le paramètre DB `gorm:association_autoupdate` à `false`
 
 ```go
 // Don't update associations having primary key, but will save reference
@@ -49,7 +49,7 @@ db.Set("gorm:association_autoupdate", false).Create(&user)
 db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autoupdate:false"`
+ou utiliser les tags GORM, `gorm:"association_autoupdate:false"`
 
 ```go
 type User struct {
@@ -61,11 +61,11 @@ type User struct {
 }
 ```
 
-## Skip AutoCreate
+## Sauter la création automatique
 
-Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
+Même si vous avez désactivé `AutoUpdating`, les associations sans clé primaire doivent quand même être créées et leur référence enregistrée.
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
+Pour désactiver cela, vous pouvez définir le paramètre DB `gorm:association_autocreate` à `false`
 
 ```go
 // Don't create associations w/o primary key, WON'T save its reference
@@ -73,7 +73,7 @@ db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autocreate:false"`
+ou utiliser les tags GORM, `gorm:"association_autocreate:false"`
 
     type User struct {
       gorm.Model
@@ -83,9 +83,9 @@ or use GORM tags, `gorm:"association_autocreate:false"`
     }
     
 
-## Skip AutoCreate/Update
+## Sauter la création & la mise à jour automatique
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
+Pour désactiver `AutoCreate` et `AutoUpdate`, vous pouvez utiliser ces deux paramètres ensemble
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -97,7 +97,7 @@ type User struct {
 }
 ```
 
-Or use `gorm:save_associations`
+Ou utiliser `gorm:save_associations`
 
     db.Set("gorm:save_associations", false).Create(&user)
     db.Set("gorm:save_associations", false).Save(&user)
@@ -109,7 +109,7 @@ Or use `gorm:save_associations`
     }
     
 
-## Skip Save Reference
+## Sauter l'enregistrement de la référence
 
 If you don't even want to save association's reference when updating/saving data, you could use below tricks
 
