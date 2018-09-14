@@ -1,14 +1,14 @@
 ---
-title: Transacciones
+title: Transactions
 layout: page
 ---
-GORM realiza operaciones `create`, `update`, `delete` simples en transacciones por defecto para asegurar la integridad de la base de datos.
+GORM perform single `create`, `update`, `delete` operations in transactions by default to ensure database data integrity.
 
 If you want to tread multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
 
-## Transacciones
+## Transactions
 
-Para realizar una serie de operaciones en una transacción, el flujo general es como el siguiente.
+To perform a set of operations within a transaction, the general flow is as below.
 
 ```go
 // begin a transaction
@@ -26,7 +26,7 @@ tx.Rollback()
 tx.Commit()
 ```
 
-## Un Ejemplo Específico
+## A Specific Example
 
 ```go
 func CreateAnimals(db *gorm.DB) err {

@@ -138,14 +138,13 @@ type User struct {
 Der Assoziations-Modus hat einige Hilfsfunktionen, um Beziehungen zu vereinfachen.
 
 ```go
-// Assoziations-Modus starten
+// Start Association Mode
 var user User
 db.Model(&user).Association("Languages")
-// `user` ist die quelle und muss einen Primärschlüssel besitzen
-// `Languages` ist der Name von dem Feld der Quelle für die Beziehung.
-// Der Assoziations-Modus funktioniert nur,
-// wenn die oberen beiden Bedingungen übereinstimmen 
-db.Model(&user).Association("Languages").Error
+// `user` is the source, must contains primary key
+// `Languages` is source's field name for a relationship
+// AssociationMode can only works if above two conditions both matched, check it ok or not:
+// db.Model(&user).Association("Languages").Error
 ```
 
 ### Assoziationen finden

@@ -134,12 +134,12 @@ type User struct {
 La modalità associazione contiene alcuni metodi di supporto per gestire facilmente la correlazione alle relazioni.
 
 ```go
-// Inizia la modalità associazione
+// Start Association Mode
 var user User
 db.Model(&user).Association("Languages")
-// `user` nella sorgente deve contenere la chiave primaria
-// `Languages`è il nome del campo sorgente per la relazione 
-// La modalità associazione funziona solo se entrambe le condizioni sono verificate, controlla se è ok o no:
+// `user` is the source, must contains primary key
+// `Languages` is source's field name for a relationship
+// AssociationMode can only works if above two conditions both matched, check it ok or not:
 // db.Model(&user).Association("Languages").Error
 ```
 

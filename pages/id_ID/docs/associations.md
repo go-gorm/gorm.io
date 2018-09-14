@@ -136,7 +136,7 @@ Asosiasi motede berisi beberapa metode penolong untuk menangani hal-hal yang ber
 // Start Association Mode
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source, is must contains primary key
+// `user` is the source, must contains primary key
 // `Languages` is source's field name for a relationship
 // AssociationMode can only works if above two conditions both matched, check it ok or not:
 // db.Model(&user).Association("Languages").Error

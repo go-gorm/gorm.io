@@ -1,10 +1,10 @@
 ---
-title: İlişkilendirmeler
-layout: sayfa
+title: Associations
+layout: page
 ---
-## Otomatik Oluştur/Güncelleştir
+## Création/Mise à jour automatique
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+GORM enregistre automatiquement les associations et leurs référence lors de la création/mise à jour d'un enregistrement. Si une association a une clé primaire, GORM appellera `Update` pour l'enregister. Sinon, l'association sera crée.
 
 ```go
 user := User{
@@ -37,43 +37,43 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-## Skip AutoUpdate
+## Sauter la mise à jour automatique
 
-If your association is already existing in database, you might not want to update it.
+Si votre association existe déjà dans la base de données, vous ne voudrez peut-être pas la mettre à jour.
 
-You could use DB setting, set `gorm:association_autoupdate` to `false`
+Vous pouvez définir le paramètre DB `gorm:association_autoupdate` à `false`
 
 ```go
-// Don't update associations having primary key, but will save reference
+// Ne mettra pas à jour les associations ayant une clé primaire, mais sauvera la référence
 db.Set("gorm:association_autoupdate", false).Create(&user)
 db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autoupdate:false"`
+ou utiliser les tags GORM, `gorm:"association_autoupdate:false"`
 
 ```go
 type User struct {
   gorm.Model
   Name       string
   CompanyID  uint
-  // Don't update associations having primary key, but will save reference
+  // Ne mettra pas à jour les associations ayant une clé primaire, mais sauvera la référence
   Company    Company `gorm:"association_autoupdate:false"`
 }
 ```
 
-## Skip AutoCreate
+## Sauter la création automatique
 
-Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
+Même si vous avez désactivé `AutoUpdating`, les associations sans clé primaire doivent quand même être créées et leur référence enregistrée.
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
+Pour désactiver cela, vous pouvez définir le paramètre DB `gorm:association_autocreate` à `false`
 
 ```go
-// Don't create associations w/o primary key, WON'T save its reference
+// Ne pas créer d'associations sans clé primaire, NE sauve PAS sa référence
 db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autocreate:false"`
+ou utiliser les tags GORM, `gorm:"association_autocreate:false"`
 
     type User struct {
       gorm.Model
@@ -83,9 +83,9 @@ or use GORM tags, `gorm:"association_autocreate:false"`
     }
     
 
-## Skip AutoCreate/Update
+## Sauter la création & la mise à jour automatique
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
+Pour désactiver `AutoCreate` et `AutoUpdate`, vous pouvez utiliser ces deux paramètres ensemble
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -97,7 +97,7 @@ type User struct {
 }
 ```
 
-Or use `gorm:save_associations`
+Ou utiliser `gorm:save_associations`
 
     db.Set("gorm:save_associations", false).Create(&user)
     db.Set("gorm:save_associations", false).Save(&user)
@@ -109,16 +109,16 @@ Or use `gorm:save_associations`
     }
     
 
-## Skip Save Reference
+## Sauter l'enregistrement de la référence
 
-If you don't even want to save association's reference when updating/saving data, you could use below tricks
+Si vous ne voulez même pas enregister la référence d'une association lors de la mise à jour ou de l'enregistrement de données, vous pouvez utiliser les trucs suivants
 
 ```go
 db.Set("gorm:association_save_reference", false).Save(&user)
 db.Set("gorm:association_save_reference", false).Create(&user)
 ```
 
-or use tag
+ou utiliser le tag
 
 ```go
 type User struct {
@@ -129,66 +129,66 @@ type User struct {
 }
 ```
 
-## Association Mode
+## Mode association
 
-Association Mode contains some helper methods to handle relationship related things easily.
+Le mode association contient des méthodes d'assistance pour gérer les relations facilement.
 
 ```go
-// Start Association Mode
+// Débuter le mode association
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source, must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
+// `user` est la source, doit contenir une clé primaire
+// `Languages` est le nom du champ de la source pour une relation
+// AssociationMode fonctionne seulement si les deux conditions plus haut sont remplies, vérifie si c'est le cas ou pas:
 // db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Trouver des associations
 
-Find matched associations
+Trouvé les associations correspondantes
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Joindre les associations
 
-Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
+Joint de nouvelles associations pour `many to many`, `has many`, remplace les associations actuelles pour `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Replace Associations
+### Remplacer des associations
 
-Replace current associations with new ones
+Remplace les associations actuelles par de nouvelles associations
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Supprimer des associations
 
-Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
+Retire la relation entre la source les objets en paramètre, supprime seulement la référence, ne supprimera pas ces objets de la BDD.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Réinitialiser des associations
 
-Remove reference between source & current associations, won't delete those associations
+Retire la référence entre la source et les associations actuelles, ne supprimera pas ces associations
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Compter les associations
 
-Return the count of current associations
+Retourne le compte des associations actuelles
 
 ```go
 db.Model(&user).Association("Languages").Count()
