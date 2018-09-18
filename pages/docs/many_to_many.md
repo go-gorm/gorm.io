@@ -37,7 +37,12 @@ type Language struct {
 	Users         	  []*User     `gorm:"many2many:user_languages;"`
 }
 
-db.Model(&language).Related(&users)
+var users []User
+language := Language{}
+
+db.First(&language, "id = ?", 111)
+
+db.Model(&language).Related(&users,  "Languages")
 //// SELECT * FROM "users" INNER JOIN "user_languages" ON "user_languages"."user_id" = "users"."id" WHERE  ("user_languages"."language_id" IN ('111'))
 ```
 
