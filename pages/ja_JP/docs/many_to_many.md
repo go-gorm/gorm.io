@@ -24,7 +24,7 @@ type Language struct {
 ## Back-Reference
 
 ```go
-// Userは複数のlanguageをもつとき、`user_languages`をjoinするために使います。
+// User has and belongs to many languages, use `user_languages` as join table
 type User struct {
     gorm.Model
     Languages         []*Language `gorm:"many2many:user_languages;"`
@@ -36,7 +36,12 @@ type Language struct {
     Users             []*User     `gorm:"many2many:user_languages;"`
 }
 
-db.Model(&language).Related(&users)
+var users []User
+language := Language{}
+
+db.First(&language, "id = ?", 111)
+
+db.Model(&language).Related(&users,  "Languages")
 //// SELECT * FROM "users" INNER JOIN "user_languages" ON "user_languages"."user_id" = "users"."id" WHERE  ("user_languages"."language_id" IN ('111'))
 ```
 
