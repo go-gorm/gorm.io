@@ -1,12 +1,12 @@
 ---
-title: GORM Guides
-layout: page
+title: Guías de GORM
+layout: página
 ---
-The fantastic ORM library for Golang, aims to be developer friendly.
+La fantástica biblioteca ORM de Golang, aspira a ser desarrollador amigable.
 
-## Overview
+## Información General
 
-* Full-Featured ORM (almost)
+* Características completas ORM (al menos)
 * Asociaciones (Tiene uno, Tiene algunos, pertenece a, muchos a muchos, polimorfismo)
 * Ganchos (antes/después Crear/guardar/actualizar/eliminar/buscar)
 * Precarga (carga impaciente)
@@ -14,18 +14,18 @@ The fantastic ORM library for Golang, aims to be developer friendly.
 * Clave primaria compuesta
 * Constructor SQL
 * Migraciones automaticas
-* Logger
-* Extendable, write Plugins based on GORM callbacks
-* Every feature comes with tests
-* Developer Friendly
+* Registrador
+* Extensible, escribir Plugins basado en callbacks GORM
+* Cada característica viene con pruebas
+* Desarrollador amigable
 
-## Install
+## Instalar
 
 ```sh
 go get -u github.com/jinzhu/gorm
 ```
 
-## Quick Start
+## Inicio Rápido
 
 ```go
 package main
