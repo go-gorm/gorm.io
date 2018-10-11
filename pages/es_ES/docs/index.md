@@ -7,13 +7,13 @@ The fantastic ORM library for Golang, aims to be developer friendly.
 ## Overview
 
 * Full-Featured ORM (almost)
-* Asociaciones (Tiene uno, Tiene algunos, pertenece a, muchos para muchos, polimorfismo)
-* Hooks (Before/After Create/Save/Update/Delete/Find)
-* Preloading (eager loading)
-* Transactions
-* Composite Primary Key
-* SQL Builder
-* Auto Migrations
+* Asociaciones (Tiene uno, Tiene algunos, pertenece a, muchos a muchos, polimorfismo)
+* Ganchos (antes/después Crear/guardar/actualizar/eliminar/buscar)
+* Precarga (carga impaciente)
+* Transacciones
+* Clave primaria compuesta
+* Constructor SQL
+* Migraciones automaticas
 * Logger
 * Extendable, write Plugins based on GORM callbacks
 * Every feature comes with tests
