@@ -7,7 +7,7 @@ The fantastic ORM library for Golang, aims to be developer friendly.
 ## Overview
 
 * Full-Featured ORM (almost)
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
+* Asociaciones (Tiene uno, Tiene algunos, pertenece a, muchos para muchos, polimorfismo)
 * Hooks (Before/After Create/Save/Update/Delete/Find)
 * Preloading (eager loading)
 * Transactions
