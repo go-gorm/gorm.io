@@ -63,14 +63,12 @@ type User struct {
 
 ## Skip AutoCreate
 
-Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
+自動更新を無効にしたにもかかわらず、主キーなしの関連付けを作成しなければならず、その参照も保存されます。
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
+これを無効にするには、DB設定のgorm:association_autocreateをfalseに設定します
 
 ```go
-// Don't create associations w/o primary key, WON'T save its reference
-db.Set("gorm:association_autocreate", false).Create(&user)
-db.Set("gorm:association_autocreate", false).Save(&user)
+それかGORMタグのgorm:"association_autocreate:false"を使用します。
 ```
 
 or use GORM tags, `gorm:"association_autocreate:false"`
