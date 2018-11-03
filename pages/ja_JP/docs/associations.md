@@ -68,10 +68,12 @@ type User struct {
 これを無効にするには、DB設定のgorm:association_autocreateをfalseに設定します
 
 ```go
-それかGORMタグのgorm:"association_autocreate:false"を使用します。
+// 主キーがあっても関連を更新しませんが、参照は保存します
+db.Set("gorm:association_autoupdate", false).Create(&user)
+db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autocreate:false"`
+または、GORMタグのgorm:"association_autocreate:false"を使用します。
 
     type User struct {
       gorm.Model
