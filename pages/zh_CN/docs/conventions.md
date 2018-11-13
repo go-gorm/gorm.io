@@ -6,7 +6,7 @@ layout: page
 
 `gorm.Model </0 > 是一个包含了基本字段的结构（struct）, 其中包括字段： <code>ID`、`CreatedAt`、`UpdatedAt`、`DeletedAt` 。
 
-It could be embeded into your model or build your own model w/o it.
+它可以嵌入到您的模型中, 也可以不用它来构建您自己的模型。
 
 ```go
 // gorm.Model definition
@@ -30,7 +30,7 @@ type User struct {
 }
 ```
 
-## `ID` as Primary Key
+## `ID` 作为主键
 
 GORM use field with name `ID` as primary key by default.
 
@@ -48,7 +48,7 @@ type Animal struct {
 }
 ```
 
-## Pluralized Table Name
+## 多元化的表名（Table Name）
 
 Table name is the pluralized version of struct name
 
@@ -72,7 +72,7 @@ func (u User) TableName() string {
 db.SingularTable(true)
 ```
 
-### Specifying The Table Name
+### 指定表名称
 
 ```go
 // Create `deleted_users` table with struct User's definition
@@ -86,9 +86,9 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 //// DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-### Change default tablenames
+### 更改默认表名称（table name）
 
-You can apply any rules on the default table name by defining the `DefaultTableNameHandler`
+您可以通过定义 `DefaultTableNameHandler` 对默认表名应用任何规则
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
