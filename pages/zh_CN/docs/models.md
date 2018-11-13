@@ -24,7 +24,7 @@ type User struct {
 
 ## 结构体标记（tags）
 
-标记是在声明模型时是可选项。gorm 支持以下标记:
+标记（tags）在声明模型时是可选项。gorm 支持以下标记:
 
 ### 支持的结构体标记（Struct tags）
 
