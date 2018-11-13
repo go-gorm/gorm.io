@@ -1,10 +1,10 @@
 ---
-title: Conventions
+title: 约定
 layout: page
 ---
 ## gorm.Model
 
-`gorm.Model` is a struct including some basic fields, which including fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
+`gorm.Model </0 > 是一个包含了基本字段的结构（struct）, 其中包括字段： <code>ID`、`CreatedAt`、`UpdatedAt`、`DeletedAt` 。
 
 It could be embeded into your model or build your own model w/o it.
 
