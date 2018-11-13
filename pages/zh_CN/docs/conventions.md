@@ -4,7 +4,7 @@ layout: page
 ---
 ## gorm.Model
 
-`gorm.Model </0 > 是一个包含了基本字段的结构（struct）, 其中包括字段： <code>ID`、`CreatedAt`、`UpdatedAt`、`DeletedAt` 。
+`gorm.Model ` 是一个包含了基本字段的结构（struct）, 其中包括字段： `ID`、`CreatedAt`、`UpdatedAt`、`DeletedAt` 。
 
 它可以嵌入到您的模型中, 也可以不用它来构建您自己的模型。
 
@@ -32,7 +32,7 @@ type User struct {
 
 ## `ID` 作为主键
 
-GORM use field with name `ID` as primary key by default.
+默认情况下, gorm 使用名称为 `ID` 的字段作为主键。
 
 ```go
 type User struct {
@@ -141,4 +141,4 @@ db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
 
 ### DeletedAt
 
-For models having `DeletedAt` field, when delete their instances, they won't be deleted from database, but will set its `DeletedAt` field to current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)
+对于具有 `DeletedAt` 字段的模型, 当删除其实例时, 不会从数据库中删除它们, 而是将其 `DeletedAt` 字段设置为当前时间, 请参阅 [Soft delete](/docs/delete.html#Soft-Delete)
