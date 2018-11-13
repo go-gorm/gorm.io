@@ -96,9 +96,9 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 }
 ```
 
-## Snake Case Column Name
+## 下划线分割命名（Snake Case）的列名
 
-Column name will be the lower snake case field's name
+列名将是小写下划线命名的字段名称
 
 ```go
 type User struct {
@@ -116,11 +116,11 @@ type Animal struct {
 }
 ```
 
-## Timestamp Tracking
+## 时间点（Timestamp）跟踪
 
 ### CreatedAt
 
-For models having `CreatedAt` field, it will be set to current time when record is first created.
+对于具有 `CreatedAt` 字段的模型，当记录被首次创建时，它将被设置为当前时间。
 
 ```go
 db.Create(&user) // will set `CreatedAt` to current time
@@ -131,7 +131,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, it will be set to current time when record is updated.
+对于具有 `UpdateAt` 字段的模型，当记录被更新时，它将被设置为当前时间。
 
 ```go
 db.Save(&user) // will set `UpdatedAt` to current time
