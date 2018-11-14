@@ -1,16 +1,16 @@
 ---
-title: Connecting to database
+title: 连接数据库
 layout: page
 ---
-## Connecting to database
+## 连接数据库
 
-In order to connect to a database, you need to first import the database's driver. For example:
+要连接到一个数据库，首先应该导入对应的数据库驱动．例如：
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers, to make easier to remember their import path, so you could import the mysql driver with
+GORM 已经包装了一些驱动程序, 使得更容易记住他们的导入路径, 所以你可以这样导入 mysql 驱动程序
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -19,11 +19,11 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 // import _ "github.com/jinzhu/gorm/dialects/mssql"
 ```
 
-## Supported Databases
+## 所支持的数据库
 
 ### MySQL
 
-**NOTE:** In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**注意:**为了正确处理 `time.Time `, 您需要将 `parseTime` 作为参数。 ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
 
 ```go
 import (
