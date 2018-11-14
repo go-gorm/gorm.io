@@ -83,4 +83,4 @@ func main() {
 
 ## 不支持的数据库
 
-GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
+GORM 正式支持上述四个数据库, 您可以为不受支持的数据库编写方言(Dialects), 请参阅 [GORM Dialects ](/docs/dialects.html)
