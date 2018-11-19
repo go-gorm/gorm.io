@@ -2,9 +2,9 @@
 title: Connecting to database
 layout: page
 ---
-## Connecting to database
+## Verbindung zur Datenbank aufbauen
 
-In order to connect to a database, you need to first import the database's driver. For example:
+Um eine Verbindung zur Datenbank herzustellen, muss zunächst der Datenbanktreiber importiert werden. Zum Beispiel:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
