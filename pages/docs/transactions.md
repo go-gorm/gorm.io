@@ -30,7 +30,7 @@ tx.Commit()
 ## A Specific Example
 
 ```go
-func CreateAnimals(db *gorm.DB) err {
+func CreateAnimals(db *gorm.DB) error {
   // Note the use of tx as the database handle once you are within a transaction
   tx := db.Begin()
   defer func() {
@@ -40,7 +40,7 @@ func CreateAnimals(db *gorm.DB) err {
   }()
 
   if tx.Error != nil {
-    return err
+    return tx.Error
   }
 
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
