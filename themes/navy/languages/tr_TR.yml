@@ -1,26 +1,26 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  home: <i class="fa fa-home"></i>Ana Sayfa
+  docs: <i class="fa fa-book"></i>Dokümanlar
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fa fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  community: <i class="fa fa-slack"></i>Topluluk
+  contribute: <i class="fa fa-rocket"></i>Katkıda Bulun
+  search: Dokümanları ara...
 index:
-  get_started: Get started
+  get_started: Başlarken
 page:
-  contents: Contents
-  back_to_top: Back to Top
-  improve: Improve this doc
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  contents: İçindekiler
+  back_to_top: Başa Dön
+  improve: Bu dokümanı geliştir
+  prev: Önceki
+  next: Sonraki
+  last_updated: "Son güncelleme: %s"
 sidebar:
   docs:
     getting_started: Getting Started
-    overview: Overview
-    declaring_models: Declaring Models
+    overview: Genel bakış
+    declaring_models: Model Oluşturma
     conventions: Conventions
     connecting_to_the_database: Connecting to Database
     crud_interface: CRUD Interface
