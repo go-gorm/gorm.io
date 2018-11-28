@@ -35,8 +35,8 @@ layout: page
 * [Go-Mocket](https://github.com/Selvatico/go-mocket)
 * [Transition - GORM tabanlı bir sonlu otomat (state machine)](https://github.com/qor/transition)
 * [Validations - Modelleri oluştururken ve güncellerken doğrulayın](https://github.com/qor/validations)
-* [Gormstore - GORM backend for gorilla sessions](https://github.com/wader/gormstore)
+* [Gormstore - gorilla oturumları için GORM arka ucu (backend)](https://github.com/wader/gormstore)
 
-## Contribute to this page
+## Katkıda bulunun
 
-Please edit [this page](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md) and create pull request
+Katkıda bulunmak için [bu sayfayı](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md) düzeltin ve pull request oluşturun
