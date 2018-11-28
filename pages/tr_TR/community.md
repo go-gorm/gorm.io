@@ -1,5 +1,5 @@
 ---
-title: GORM Community
+title: GORM Topluluğu
 layout: page
 ---
 ## Ask
@@ -25,7 +25,7 @@ layout: page
 ## Videos
 
 * [Overview of the GORM object relational mapper](https://www.youtube.com/watch?v=nVD9acHituc)
-* [GORM: An Object Relational Mapper for Go](https://www.pluralsight.com/courses/gorm-go-object-relational-mapper)
+* [GORM: Go için bir Object Relational Mapper (ORM)](https://www.pluralsight.com/courses/gorm-go-object-relational-mapper)
 
 ## Open Sources
 
