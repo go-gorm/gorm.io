@@ -15,4 +15,4 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extend edilebilir, GORM'un geri çağırma fonksiyonları üzerine eklentiler geliştirilebilir
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Tüm yeni özellikler test edilerek eklenir
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Developer Friendly
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Geliştirici dostudur
