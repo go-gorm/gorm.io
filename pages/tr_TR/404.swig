@@ -1,6 +1,6 @@
 ---
 layout: raw
-description: The fantastic ORM library for Golang, aims to be developer friendly.
+description: Golang için geliştirici dostu olmayı hedefleyen fantastik bir ORM kütüphanesi.
 subtitle: The fantastic ORM library for Golang
 comments: false
 ---
