@@ -4,7 +4,7 @@ layout: page
 ---
 ## Eliminar Registro
 
-**ADVERTENCIA** Cuando elimine un registro, debe asegurarse de que el campo primario tenga un valor, y GORM utilizará la clave primaria para eliminarlo, si el campo primario está en blanco, GORM eliminará todos los registros del modelo
+**WARNING** When deleting a record, you need to ensure its primary field has value, and GORM will use the primary key to delete the record, if the primary key field is blank, GORM will delete all records for the model
 
 ```go
 // Eliminar un registro existente db.Delete(&email) //// DELETE from emails where id=10; // Agregar una opción de SQL adicional para eliminar SQL db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email) //// DELETE from emails where id=10 OPTION (OPTIMIZE FOR UNKNOWN);
