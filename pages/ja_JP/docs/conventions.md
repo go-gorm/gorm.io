@@ -4,9 +4,9 @@ layout: page
 ---
 ## gorm.Model
 
-`gorm.Model`はいくつかの基本的なフィールドを持った構造体であり、`ID`、`CreatedAt`、`UpdatedAt`、`DeletedAt`を持っています。
+`gorm.Model` is a basic GoLang struct which includes the following fields: `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
 
-`gorm.Model`をあなたのモデルに埋め込んだり、それを使わずに自分用のモデルを構築できます。
+It may be embeded into your model or you may build your own model without it.
 
 ```go
 // gorm.Modelの定義
@@ -32,7 +32,7 @@ type User struct {
 
 ## 主キーとしての`ID`
 
-GORMはデフォルトで`ID`という名前のフィールドを主キーとして扱います
+GORM uses any field with the name `ID` as the table's primary key by default.
 
 ```go
 type User struct {
@@ -50,7 +50,7 @@ type Animal struct {
 
 ## 複数形のテーブル名
 
-テーブル名は構造体名の複数形になります
+Table name is the pluralized version of struct name.
 
 ```go
 type User struct {} // `デフォルトのテーブル名は`users`です
@@ -88,7 +88,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 
 ### デフォルトのテーブル名の変更
 
-`DefaultTableNameHandler`を使ってデフォルトのテーブル名に任意のルールを適用できます
+You can apply any rules on the default table name by defining the `DefaultTableNameHandler`.
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
@@ -98,7 +98,7 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ## スネークケースのカラム名
 
-カラム名は小文字のスネークケースのフィールド名になります
+Column names will be the field's name is lower snake case.
 
 ```go
 type User struct {
@@ -120,7 +120,7 @@ type Animal struct {
 
 ### CreatedAt
 
-`CreatedAt`フィールドの持つモデルでは、レコードの初回生成時に現在時刻が設定されます。
+For models having a `CreatedAt` field, it will be set to current time when record is first created.
 
 ```go
 db.Create(&user) // `CreatedAt`には現在時刻が設定されます
@@ -131,7 +131,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-`UpdatedAt`フィールドを持つモデルでは、レコード保存時に現在時刻が設定されます
+For models having an `UpdatedAt` field, it will be set to current time when record is updated.
 
 ```go
 db.Save(&user) // `UpdatedAt`に現在時刻を設定します
@@ -141,4 +141,4 @@ db.Model(&user).Update("name", "jinzhu") // `UpdatedAt`に現在時刻を設定�
 
 ### DeletedAt
 
-`DeletedAt`フィールドを持つモデルでは、インスタンス削除時にデータベースからは削除されず、`DeletedAt`フィールドに現在時刻が設定されます。[論理削除](/docs/delete.html#Soft-Delete)を参照してください。
+For any models having a `DeletedAt` field, when `Delete` is called on that instance it won't truly be deleted from database, but will set its `DeletedAt` field to the current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)
