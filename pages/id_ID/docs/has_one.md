@@ -6,7 +6,7 @@ layout: page
 
 A`memiliki satu`asosiasi juga membuat koneksi satu -lawan-satu dengan model lain, tapi dengan beberapa semantik yang berbeda (dan konsekuensinya). Asosiasi ini menunjukkan bahwa setiap contoh dari model mengandung atau memiliki satu contoh model lain.
 
-Sebagai contoh, jika aplikasi anda menyertakan pengguna dan kartu kredit, dan setiap pengguna hanya dapat memiliki satu kartu kredit.
+For example, if your application includes users and credit card, and each user can only have one credit card.
 
 ```go
 // Pengguna memiliki satu KartuKredit, Id Kartu Kredit adalah kunci asing
@@ -24,9 +24,9 @@ Ketik struct kartu kredit {
 
 ## Foreign Key
 
-Untuk memiliki satu hubungan, Bidang kunci asing harus ada juga, pemilik akan menyimpan primary key dari model itu termasuk ke dalam bidang ini.
+For a has one relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
 
-Nama bidang biasanya dihasilkan dengan jenis `milik model` ditambah `kunci utama`, untuk contoh di atas adalah `CreditCardID`
+The field's name is usually generated with `belongs to model`'s type plus its `primary key`, for the above example it is `CreditCardID`
 
 Saat anda memberikan kartu kredit kepada pengguna, itu akan menyimpan `ID` kartu kredit kedalam bidang `CreditCardID`.
 
@@ -47,7 +47,7 @@ type CreditCard struct {
 
 ## Association ForeignKey
 
-Secara bawaan, pemilik akan menyimpan `milik model`'s primer menjadi kunci asing, anda bisa mengubah untuk menyimpan bidang lain, seperti penggunaan `Nomor` untuk contoh di bawah ini.
+By default, the owner will save the `belongs to model`'s primary into a foreign key, you could change to save another field, like use `Number` for below example.
 
 ```go
 type User struct {
@@ -91,7 +91,7 @@ Catatan: polimorfik milik-ke dan banyak-ke-banyak secara eksplisit TIDAK didukun
 
 ## Working with Has One
 
-Anda dapat menemukan ` memiliki satu` asosiasi dengan `terkait`
+You could find `has one` associations with `Related`
 
 ```go
 var card CreditCard
