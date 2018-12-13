@@ -51,6 +51,8 @@ func main() {
 
 ## Sqlite3
 
+**NOTE:** You can also use `:memory:` for the connection, which will use sqlite in temporary system memory, this is especially useful when writing tests for your application against GORM.
+
 ```go
 import (
     "github.com/jinzhu/gorm"
@@ -65,7 +67,7 @@ func main() {
 
 ## SQL Server
 
-[Comenzando con SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), puede ejecutarse en su [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) con Docker
+[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
 ```go
 import (
@@ -81,6 +83,6 @@ func main() {
 
 ## Escribir Dialectos para bases de datos no compatibles
 
-GORM admite oficialmente las bases de datos anteriores, pero puede escribir un dialecto para bases de datos no compatibles.
+GORM officially supports the above databases, but you could write a dialect for unsupported databases.
 
-Para escribir su propio dialecto, consulte: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
+To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
