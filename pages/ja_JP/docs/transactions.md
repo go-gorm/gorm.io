@@ -30,7 +30,7 @@ tx.Commit()
 
 ```go
 func CreateAnimals(db *gorm.DB) err {
-  // 一度トランザクション内に入ったらtxをデータベースハンドラとして使いましょう
+  // Note the use of tx as the database handle once you are within a transaction
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
@@ -38,16 +38,16 @@ func CreateAnimals(db *gorm.DB) err {
     }
   }()
 
-  if tx.Error != nil {
+  if err := tx.Error; err != nil {
     return err
   }
 
-  if err := tx.Create(&Animal{Name: "キリン"}).Error; err != nil {
+  if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
      tx.Rollback()
      return err
   }
 
-  if err := tx.Create(&Animal{Name: "ライオン"}).Error; err != nil {
+  if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
      tx.Rollback()
      return err
   }
