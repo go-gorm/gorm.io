@@ -24,7 +24,7 @@ type CreditCard struct {
 
 ## Kunci Asing
 
-Untuk menentukan memiliki banyak hubungan, kunci asing harus ada, nama kunci asing default adalah nama tipe pemilik ditambah kunci utamanya.
+To define a has many relationship, a foreign key must exists. The default foreign key's name is owner's type name plus its primary key.
 
 Untuk sebuah contoh di atas, untuk menentukan sebuah model yang menjadi milik ` User `, kunci asing seharusnya `UserID `.
 
