@@ -6,7 +6,7 @@ layout: page
 
 Los hooks son funciones que se llaman antes o después de la creación/consulta/actualización/eliminación.
 
-Si ha definido los métodos especificados para un modelo, se llamará automáticamente al crear, actualizar, consultar, eliminar, y si alguna devolución de llamada devuelve un error, GORM detendrá las operaciones futuras y revertirá la transacción actual.
+If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
 
 ## Hooks
 
