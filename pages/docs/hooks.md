@@ -7,7 +7,7 @@ layout: page
 
 Hooks are functions that are called before or after creation/querying/updating/deletion.
 
-If you have defiend specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
 
 ## Hooks
 
