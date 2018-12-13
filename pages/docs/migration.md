@@ -20,7 +20,7 @@ db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 
 ## Other Migration Tools
 
-GORM's AutoMigrate works well for mostly cases, but if you are looking more seriously migration tools, GORM provides generic DB interface which might be helpful for you.
+GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides generic DB interface which might be helpful for you.
 
 ```go
 // returns `*sql.DB`
