@@ -6,7 +6,7 @@ layout: page
 
 フックとは生成/参照/更新/削除の前後に呼ばれる関数のことです。
 
-モデルに特定のメソッドを定義すると、生成、更新、参照、削除の時に自動的に呼ばれます。コールバックからエラーを返した場合、GORMはそれ以降の操作を停止して現在のトランザクションをロールバックします。
+If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
 
 ## フック
 
