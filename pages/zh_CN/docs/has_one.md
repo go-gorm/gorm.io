@@ -6,7 +6,7 @@ layout: page
 
 A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
 
-For example, if your application includes users and credit card, and each user can only has one credit card.
+For example, if your application includes users and credit card, and each user can only have one credit card.
 
 ```go
 // User has one CreditCard, CreditCardID is the foreign key
@@ -24,9 +24,9 @@ type CreditCard struct {
 
 ## Foreign Key
 
-For a has one relationship, a foreign key field must exists also, the owner will saved the primary key of the model belongs to it into this field.
+For a has one relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
 
-The field's name usually is generated with `belongs to model`'s type plus its `primary key`, for above example, it is `CreditCardID`
+The field's name is usually generated with `belongs to model`'s type plus its `primary key`, for the above example it is `CreditCardID`
 
 When you give a credit card to the user, its will save the credit card's `ID` into its `CreditCardID` field.
 
@@ -47,7 +47,7 @@ type CreditCard struct {
 
 ## Association ForeignKey
 
-By default, the owner will save the `belogns to model`'s primary into foreign key, you could change to save another field, like use `Number` for below example.
+By default, the owner will save the `belongs to model`'s primary into a foreign key, you could change to save another field, like use `Number` for below example.
 
 ```go
 type User struct {
@@ -91,7 +91,7 @@ Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and 
 
 ## Working with Has One
 
-You could find `has one` assciations with `Related`
+You could find `has one` associations with `Related`
 
 ```go
 var card CreditCard
