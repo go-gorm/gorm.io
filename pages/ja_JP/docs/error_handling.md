@@ -28,7 +28,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 
 ## エラー
 
-データ処理中に複数のエラーが生じるというのは一般的であり、GORMは生じた全てのエラーをエラーのスライスとして返すAPIを提供しています。
+It is common several errors happened during processing data, GORM provides an API to return all happened errors as a slice
 
 ```go
 // 1つ以上のエラーが起きた場合、`GetErrors`は`[]error`を返します
