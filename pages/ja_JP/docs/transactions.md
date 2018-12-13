@@ -38,7 +38,7 @@ func CreateAnimals(db *gorm.DB) err {
     }
   }()
 
-  if tx.Error != nil {
+  if err := tx.Error; err != nil {
     return err
   }
 
