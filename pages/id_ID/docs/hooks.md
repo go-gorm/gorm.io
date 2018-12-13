@@ -6,7 +6,7 @@ layout: page
 
 Kait adalah fungsi yang dipanggil sebelum atau sesudah penciptaan.
 
-Jika anda memiliki metode definisi yang ditentukan untuk model, maka akan dipanggil secara otomatis saat membuat, memperbarui, pertanyaan, menghapus, dan jika ada callback yang mengembalikan kesalahan, GORM akan menghentikan operasi masa depan dan meneruskan transaksi saat ini.
+If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
 
 ## Kaitan
 
