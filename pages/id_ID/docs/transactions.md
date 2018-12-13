@@ -4,7 +4,7 @@ layout: page
 ---
 GORM melakukan operasi tunggal `membuat`, `perbarui`, `hapus` dalam transaksi secara default untuk memastikan integritas data basisdata.
 
-Jika anda ingin langkah banyak `membuat`, `perbarui`, `hapus` sebagai satu operasi atomik, `Transaksi` dibuat untuk itu.
+If you want to treat multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
 
 ## Transaksi
 
