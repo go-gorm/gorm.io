@@ -29,7 +29,7 @@ tx.Melakukan()
 ## Sebuah contoh khusus
 
 ```go
-func CreateAnimals(db *gorm.DB) err {
+func CreateAnimals(db *gorm.DB) error {
   // Note the use of tx as the database handle once you are within a transaction
   tx := db.Begin()
   defer func() {
