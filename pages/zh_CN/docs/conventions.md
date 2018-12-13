@@ -4,9 +4,9 @@ layout: page
 ---
 ## gorm.Model
 
-`gorm.Model ` 是一个包含了基本字段的结构（struct）, 其中包括字段： `ID`、`CreatedAt`、`UpdatedAt`、`DeletedAt` 。
+`gorm.Model` is a basic GoLang struct which includes the following fields: `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
 
-它可以嵌入到您的模型中, 也可以不用它来构建您自己的模型。
+It may be embeded into your model or you may build your own model without it.
 
 ```go
 // gorm.Model definition
@@ -32,7 +32,7 @@ type User struct {
 
 ## `ID` 作为主键
 
-默认情况下, gorm 使用名称为 `ID` 的字段作为主键。
+GORM uses any field with the name `ID` as the table's primary key by default.
 
 ```go
 type User struct {
@@ -50,7 +50,7 @@ type Animal struct {
 
 ## 多元化的表名（Table Name）
 
-Table name is the pluralized version of struct name
+Table name is the pluralized version of struct name.
 
 ```go
 type User struct {} // default table name is `users`
@@ -88,7 +88,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 
 ### 更改默认表名称（table name）
 
-您可以通过定义 `DefaultTableNameHandler` 对默认表名应用任何规则
+You can apply any rules on the default table name by defining the `DefaultTableNameHandler`.
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
@@ -98,7 +98,7 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ## 下划线分割命名（Snake Case）的列名
 
-列名将是小写下划线命名的字段名称
+Column names will be the field's name is lower snake case.
 
 ```go
 type User struct {
@@ -120,7 +120,7 @@ type Animal struct {
 
 ### CreatedAt
 
-对于具有 `CreatedAt` 字段的模型，当记录被首次创建时，它将被设置为当前时间。
+For models having a `CreatedAt` field, it will be set to current time when record is first created.
 
 ```go
 db.Create(&user) // will set `CreatedAt` to current time
@@ -131,7 +131,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-对于具有 `UpdateAt` 字段的模型，当记录被更新时，它将被设置为当前时间。
+For models having an `UpdatedAt` field, it will be set to current time when record is updated.
 
 ```go
 db.Save(&user) // will set `UpdatedAt` to current time
@@ -141,4 +141,4 @@ db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
 
 ### DeletedAt
 
-对于具有 `DeletedAt` 字段的模型, 当删除其实例时, 不会从数据库中删除它们, 而是将其 `DeletedAt` 字段设置为当前时间, 请参阅 [Soft delete](/docs/delete.html#Soft-Delete)
+For any models having a `DeletedAt` field, when `Delete` is called on that instance it won't truly be deleted from database, but will set its `DeletedAt` field to the current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)
