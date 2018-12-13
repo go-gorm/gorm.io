@@ -23,7 +23,11 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ### MySQL
 
-**NOTE:** In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**NOTE:**
+
+In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+
+In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
 
 ```go
 import (
@@ -83,4 +87,4 @@ func main() {
 
 ## Basisdata tidak didukung
 
-GORM secara resmi mendukung di atas empat database, anda bisa menulis dialek untuk database yang tidak didukung, lihat [Dialek GORM](/docs/dialects.html)
+GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
