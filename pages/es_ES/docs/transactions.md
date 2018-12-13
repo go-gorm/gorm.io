@@ -4,7 +4,7 @@ layout: page
 ---
 GORM realiza operaciones `create`, `update`, `delete` simples en transacciones por defecto para asegurar la integridad de la base de datos.
 
-If you want to tread multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
+If you want to treat multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
 
 ## Transacciones
 
