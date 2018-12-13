@@ -4,7 +4,7 @@ layout: page
 ---
 ## Hapus catatan
 
-**PERINGATAN** Saat menghapus catatan, anda harus memastikan bidang utama itu memiliki nilai, dan GORM akan menggunakan kunci utama untuk menghapus catatan, jika bidang utama kosong, GORM akan menghapus semua catatan untuk model tersebut
+**WARNING** When deleting a record, you need to ensure its primary field has value, and GORM will use the primary key to delete the record, if the primary key field is blank, GORM will delete all records for the model
 
 ```go
 // Delete an existing record
