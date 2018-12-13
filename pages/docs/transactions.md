@@ -39,8 +39,8 @@ func CreateAnimals(db *gorm.DB) error {
     }
   }()
 
-  if tx.Error != nil {
-    return tx.Error
+  if err := tx.Error; err != nil {
+    return err
   }
 
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {

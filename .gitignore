@@ -3,3 +3,4 @@ public
 db.json
 .env
 .deploy_git
+.idea
