@@ -28,7 +28,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 
 ## Kesalahan
 
-Ini adalah beberapa kesalahan yang sering terjadi selama memproses data, GORM menyediakan API untuk mengembalikan semua kesalahan yang terjadi sebagai irisana
+It is common several errors happened during processing data, GORM provides an API to return all happened errors as a slice
 
 ```go
 // If there are more than one error happened, `GetErrors` returns them as `[]error`
