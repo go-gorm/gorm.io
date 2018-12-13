@@ -23,7 +23,11 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ### MySQL
 
-**注意:**为了正确处理 `time.Time `, 您需要将 `parseTime` 作为参数。 ([更多支持的参数 ](https://github.com/go-sql-driver/mysql#parameters))
+**NOTE:**
+
+In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+
+In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
 
 ```go
 import (
@@ -67,7 +71,7 @@ func main() {
 
 ### SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), 它可以在您的 [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/) 和 [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) 上与 docker 一起运行
+[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
 ```go
 import (
@@ -83,4 +87,4 @@ func main() {
 
 ## 不支持的数据库
 
-GORM 正式支持上述四个数据库, 您可以为不受支持的数据库编写方言(Dialects), 请参阅 [GORM Dialects ](/docs/dialects.html)
+GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
