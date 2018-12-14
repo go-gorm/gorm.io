@@ -20,7 +20,11 @@ import _ "github.com/jinzhu/gorm/dialects/mysql" // import _ "github.com/jinzhu/
 
 ### MySQL
 
-**NOTA:** para manejar `time.Time` correctamente, necesita incluir `parseTime` como parámetro. ([Más parámetros compatibles](https://github.com/go-sql-driver/mysql#parameters))
+**NOTE:**
+
+In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+
+In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
 
 ```go
 import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/mysql" ) func main() {   db, err := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")   defer db.Close() }
@@ -48,4 +52,4 @@ import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/mssql" 
 
 ## Bases de Datos no Compatibles
 
-GORM admite oficialmente las cuatro bases de datos anteriores, puede escribir dialectos para bases de datos no compatibles, consulte [Dialectos GORM](/docs/dialects.html)
+GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)

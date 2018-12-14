@@ -4,7 +4,7 @@ layout: page
 ---
 GORMはデフォルトで1つの`create`, `update`, `delete`操作をトランザクション内で行います。これはデータベース上のデータ整合性を確保するためです。
 
-複数の `create`, `update`, `delete`を1つのアトミック操作として扱いたい場合には、` Transaction`が使えます。
+If you want to treat multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
 
 ## トランザクション
 
@@ -29,8 +29,8 @@ tx.Commit()
 ## 具体例
 
 ```go
-func CreateAnimals(db *gorm.DB) err {
-  // 一度トランザクション内に入ったらtxをデータベースハンドラとして使いましょう
+func CreateAnimals(db *gorm.DB) error {
+  // Note the use of tx as the database handle once you are within a transaction
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
@@ -42,12 +42,12 @@ func CreateAnimals(db *gorm.DB) err {
     return err
   }
 
-  if err := tx.Create(&Animal{Name: "キリン"}).Error; err != nil {
+  if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
      tx.Rollback()
      return err
   }
 
-  if err := tx.Create(&Animal{Name: "ライオン"}).Error; err != nil {
+  if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
      tx.Rollback()
      return err
   }

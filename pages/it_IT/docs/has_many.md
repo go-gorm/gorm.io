@@ -24,7 +24,7 @@ type CreditCard struct {
 
 ## Foreign Key
 
-To define a has many relatinship, foreign key must exists, default foreign key's name is owner's type name plus its primary key.
+To define a has many relationship, a foreign key must exists. The default foreign key's name is owner's type name plus its primary key.
 
 For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 

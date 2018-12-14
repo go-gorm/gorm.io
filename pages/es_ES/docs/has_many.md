@@ -24,7 +24,7 @@ type CreditCard struct {
 
 ## Clave Foránea
 
-Para definir una relación a muchos, debe existir una clave foránea, el nombre predeterminado de la clave foránea es el nombre del tipo más su clave principal.
+To define a has many relationship, a foreign key must exists. The default foreign key's name is owner's type name plus its primary key.
 
 Para el ejemplo anterior, para definir un modelo que pertenece a `User`, la clave foránea debe ser `UserID`.
 

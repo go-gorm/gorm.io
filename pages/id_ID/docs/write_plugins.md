@@ -39,7 +39,7 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 
 ## Register callback orders
 
-Mendaftar panggilanbalik dengan perintah
+Register callbacks with orders
 
 ```go
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)

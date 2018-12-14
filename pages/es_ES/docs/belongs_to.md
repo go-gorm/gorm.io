@@ -49,7 +49,7 @@ type Profile struct {
 
 ## Trabajando con Belongs To
 
-Puede encontrar la asociación `belongs to`con `Related`
+You could find `belongs to` associations with `Related`
 
 ```go
 db.Model(&user).Related(&profile) //// SELECT * FROM profiles WHERE user_id = 111; // 111 es el ID de usuario

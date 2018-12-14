@@ -28,7 +28,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 
 ## Errores
 
-Es común que se hayan producido varios errores durante el procesamiento de datos, GORM proporciona una API para devolver todos los errores pasados como un segmento
+It is common several errors happened during processing data, GORM provides an API to return all happened errors as a slice
 
 ```go
 // Si hay más de un error, `GetErrors` los devuelve como `[]error` db.First(&user).Limit(10).Find(&users).GetErrors() fmt.Println(len(errors)) for _, err := range errors {   fmt.Println(err) }

@@ -6,7 +6,7 @@ layout: page
 
 Una asociación `has one` también establece una conexión uno a uno con otro modelo, pero con semántica (y consecuencias) diferentes. Esta asociación indica que cada instancia de un modelo contiene o posee una instancia de otro modelo.
 
-Por ejemplo, si su aplicación incluye usuarios y tarjetas de crédito, y cada usuario sólo puede tener una tarjeta de crédito.
+For example, if your application includes users and credit card, and each user can only have one credit card.
 
 ```go
 // El usuario tiene una tarjeta de crédito, CreditCardID es la clave foránea
@@ -24,9 +24,9 @@ type CreditCard struct {
 
 ## Clave Foránea
 
-Para una relación has one, también debe existir un campo de clave foránea, el usuario guardará la clave primaria del modelo que le pertenece en este campo.
+For a has one relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
 
-El nombre del campo generalmente se genera con `belongs to model`'s más su `primary key`, para el ejemplo anterior, es `CreditCardID`
+The field's name is usually generated with `belongs to model`'s type plus its `primary key`, for the above example it is `CreditCardID`
 
 Cuando se le da una tarjeta de crédito al usuario, guardará el `ID` de la tarjeta de crédito en su campo `CreditCardID`.
 
@@ -47,7 +47,7 @@ type CreditCard struct {
 
 ## Asociación ForeignKey
 
-Por defecto, el usuario guardará la asociación `belogns to model` en una clave foránea, puede cambiarla para guardar en otro campo, tal como `Number` para el siguiente ejemplo.
+By default, the owner will save the `belongs to model`'s primary into a foreign key, you could change to save another field, like use `Number` for below example.
 
 ```go
 type User struct {
@@ -91,7 +91,7 @@ Nota: las asociaciones polimórficas belongs-to y many-to-many NO son compatible
 
 ## Trabajando con Has One
 
-Puede encontrar asociaciones `has one` con `Related`
+You could find `has one` associations with `Related`
 
 ```go
 var card CreditCard

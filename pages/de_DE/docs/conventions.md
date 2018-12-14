@@ -4,9 +4,9 @@ layout: page
 ---
 ## gorm.Model
 
-`gorm.Model` ist ein Struct, welches einige grundlegende Felder enthält, einschließlich der Felder `ID`, `CreatedAt`, `UpdatedAt` und `DeletedAt`.
+`gorm.Model` is a basic GoLang struct which includes the following fields: `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
 
-Diese können in dein Modell eingebunden werden oder du kannst dein eigenes Modell ohne sie bauen.
+It may be embeded into your model or you may build your own model without it.
 
 ```go
 // gorm.Model definition
@@ -33,7 +33,7 @@ type User struct {
 
 ## `ID` als Primärschlüssel
 
-GORM benutzt standardmäßig das Feld mit den Name `ID` as Primärschlüssel.
+GORM uses any field with the name `ID` as the table's primary key by default.
 
 ```go
 type User struct {
@@ -51,7 +51,7 @@ type Animal struct {
 
 ## Pluralisierte Tabellennamen
 
-Der Tabellen-Name ist die pluralisiert Version des Struct-Namens
+Table name is the pluralized version of struct name.
 
 ```go
 type User struct {} // standardmäßiger Tabellen-Name ist `users`
@@ -90,7 +90,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 
 ### Change default tablenames
 
-You can apply any rules on the default table name by defining the `DefaultTableNameHandler`
+You can apply any rules on the default table name by defining the `DefaultTableNameHandler`.
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
@@ -100,7 +100,7 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ## Snake Case Column Name
 
-Column name will be the lower snake case field's name
+Column names will be the field's name is lower snake case.
 
 ```go
 type User struct {
@@ -122,7 +122,7 @@ type Animal struct {
 
 ### CreatedAt
 
-For models having `CreatedAt` field, it will be set to current time when record is first created.
+For models having a `CreatedAt` field, it will be set to current time when record is first created.
 
 ```go
 db.Create(&user) // will set `CreatedAt` to current time
@@ -133,7 +133,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, it will be set to current time when record is updated.
+For models having an `UpdatedAt` field, it will be set to current time when record is updated.
 
 ```go
 db.Save(&user) // will set `UpdatedAt` to current time
@@ -143,4 +143,4 @@ db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
 
 ### DeletedAt
 
-For models having `DeletedAt` field, when delete their instances, they won't be deleted from database, but will set its `DeletedAt` field to current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)
+For any models having a `DeletedAt` field, when `Delete` is called on that instance it won't truly be deleted from database, but will set its `DeletedAt` field to the current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)

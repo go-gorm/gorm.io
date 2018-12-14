@@ -4,7 +4,7 @@ layout: page
 ---
 ## Delete Record
 
-**Warning** レコードを削除する際、主キーが値を持っているかを確認してください。GORMはレコードを削除する際に主キーを使うので、もし主キーが空の場合GORMはそのモデルの全レコードを削除してします。
+**WARNING** When deleting a record, you need to ensure its primary field has value, and GORM will use the primary key to delete the record, if the primary key field is blank, GORM will delete all records for the model
 
 ```go
 // 存在するレコードを削除する

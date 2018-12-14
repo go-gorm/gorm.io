@@ -51,6 +51,8 @@ func main() {
 
 ## Sqlite3
 
+**NOTE:** You can also use `:memory:` for the connection, which will use sqlite in temporary system memory, this is especially useful when writing tests for your application against GORM.
+
 ```go
 import (
     "github.com/jinzhu/gorm"

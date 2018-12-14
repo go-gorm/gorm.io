@@ -70,7 +70,7 @@ type Profile struct {
 
 ## Arbeiten mit Belongs To
 
-Man kann `belongs to` Assoziationen mit `Related` finden
+You could find `belongs to` associations with `Related`
 
 ```go
 db.Model(&user).Related(&profile)

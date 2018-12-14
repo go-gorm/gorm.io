@@ -4,7 +4,7 @@ layout: page
 ---
 ## 模型定义
 
-Models are usually just normal Golang structs, basic Go types, or pointers of them. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are also supported.
+模型（Models）通常只是正常的 golang structs、基本的 go 类型或它们的指针。 同时也支持[`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner)及[`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) 接口（interfaces）。
 
 模型（Model）示例:
 
@@ -24,7 +24,7 @@ type User struct {
 
 ## 结构体标记（tags）
 
-Tags are optional to use when declaring models. GORM supports the following tags:
+标记（tags）在声明模型时是可选项。gorm 支持以下标记:
 
 ### 支持的结构体标记（Struct tags）
 

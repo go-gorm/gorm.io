@@ -60,7 +60,7 @@ type Profile struct {
 
 ## Bekerja dengan Milik
 
-You could find `belongs to` assciations with `Related`
+You could find `belongs to` associations with `Related`
 
 ```go
 db.Model(&user).Related(&profile)

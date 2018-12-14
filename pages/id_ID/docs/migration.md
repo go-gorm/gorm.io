@@ -19,7 +19,7 @@ db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 
 ## Peralatan Migari Lainnya
 
-Migrasi Otomatis GORM bekerja dengan baik untuk sebagian besar kasus, tetapi jika Anda mencari alat migrasi yang lebih serius, GORM menyediakan antarmuka genric DB yang mungkin bisa membantu Anda.
+GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides generic DB interface which might be helpful for you.
 
 ```go
 // kembali `*sql.DB`

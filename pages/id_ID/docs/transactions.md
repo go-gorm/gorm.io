@@ -4,7 +4,7 @@ layout: page
 ---
 GORM melakukan operasi tunggal `membuat`, `perbarui`, `hapus` dalam transaksi secara default untuk memastikan integritas data basisdata.
 
-Jika anda ingin langkah banyak `membuat`, `perbarui`, `hapus` sebagai satu operasi atomik, `Transaksi` dibuat untuk itu.
+If you want to treat multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
 
 ## Transaksi
 
@@ -29,7 +29,7 @@ tx.Melakukan()
 ## Sebuah contoh khusus
 
 ```go
-func CreateAnimals(db *gorm.DB) err {
+func CreateAnimals(db *gorm.DB) error {
   // Note the use of tx as the database handle once you are within a transaction
   tx := db.Begin()
   defer func() {

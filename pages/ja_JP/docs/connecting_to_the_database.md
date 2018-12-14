@@ -23,7 +23,11 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ### MySQL
 
-**注意:** `time.Time`を正しく扱うためには、`parseTime`をパラメータに含める必要があります。 ([それ以外にサポートされているパラメータ](https://github.com/go-sql-driver/mysql#parameters))
+**NOTE:**
+
+In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+
+In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
 
 ```go
 import (
@@ -67,7 +71,7 @@ func main() {
 
 ### SQL Server
 
-[SQLサーバで始めてみましょう。](https://www.microsoft.com/en-us/sql-server/developer-get-started/go) Dockerを使えば、[Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/)上でも動きます。
+[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
 ```go
 import (
@@ -83,4 +87,4 @@ func main() {
 
 ## サポートされていないデータベース
 
-GORMは公式に上記4つのデータベースをサポートしていて、サポート外のデータベースの方言も書くことができます。[GORM Dialects](/docs/dialects.html)を参照してください。
+GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
