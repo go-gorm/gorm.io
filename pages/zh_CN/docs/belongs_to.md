@@ -6,7 +6,7 @@ layout: page
 
 A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
 
-For example, if your application includes users and profiles, and each profile can be assigned to exactly one user
+例如, 如果您的应用程序包含用户和配置文件, 并且可以将每个配置文件分配给一个用户
 
 ```go
 type User struct {
@@ -25,7 +25,7 @@ type Profile struct {
 
 ## Foreign Key
 
-To define a belongs to relationship, the foreign key must exists, default foreign key uses owner's type name plus its primary key.
+若要定义属于关系的外键必须存在, 默认外键使用所有者的类型名称及其主键。
 
 For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
