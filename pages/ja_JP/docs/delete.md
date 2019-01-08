@@ -30,7 +30,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ## Soft Delete
 
-モデルが`DeletedAt` フィールドを持っている場合、自動的にソフトデリートの機能を有することになります。 その場合、`Delete`を実行したとしてもデータベースから消えることはありません。`DeletedAt`フィールドに現在時刻がセットされるだけです。
+If a model has a `DeletedAt` field, it will get a soft delete ability automatically! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
 
 ```go
 db.Delete(&user)
