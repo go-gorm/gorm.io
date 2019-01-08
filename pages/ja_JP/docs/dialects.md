@@ -4,15 +4,15 @@ layout: page
 ---
 ## 新しい方言を書く
 
-GORMはsqlite, mysql, postgres, mssqlを公式にサポートします。
+GORM provides official support for `sqlite`, `mysql`, `postgres`, `mssql`.
 
-新しい方言を追加することで、それ以外のデータベースサポートを追加することができます。[Diarectインタフェース](https://godoc.org/github.com/jinzhu/gorm#Dialect)を実装する必要があります。
+You can add support for additional databases by creating a new dialect. When creating a new dialect, you must implement [the dialect interface](https://godoc.org/github.com/jinzhu/gorm#Dialect).
 
-データベースによってはmysqlやpostgresの方言と互換性があるかもしれませんが、その場合はそれらのデータベース用の方言を使うことができます。
+Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
 ## 方言に特化したデータ型
 
-Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of such types, as listed in the following sections.
+Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of these types, as listed in the following sections.
 
 ### PostgreSQL
 
