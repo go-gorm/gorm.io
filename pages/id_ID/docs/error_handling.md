@@ -8,9 +8,9 @@ Anda disarankan untuk melakukan pengecekan kesalahan setelah setiap [Metode Lang
 
 ## Penanganan Kesalahan
 
-Kesalahan penanganan di GORM berbeda dengan kode Go idiomat karena API berantai, namun masih cukup mudah untuk melakukannya.
+Error handling in GORM is different than idiomatic Go code because of its chainable API, but still easy to implement.
 
-If there are any error happened, GORM will set it to `*gorm.DB`'s `Error` field, you could check it like this:
+If any error occurs, GORM will set `*gorm.DB`'s `Error` field, which you can check like this:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
@@ -28,7 +28,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 
 ## Kesalahan
 
-It is common several errors happened during processing data, GORM provides an API to return all happened errors as a slice
+When processing data, it is common for multiple errors to occur. GORM provides an API to return all errors as a slice:
 
 ```go
 // If there are more than one error happened, `GetErrors` returns them as `[]error`
@@ -43,7 +43,7 @@ for _, err := range errors {
 
 ## RecordNotFound Error
 
-GORM provides a shortcut to handle `RecordNotFound` error, if there are several errors happened, it will check each error if any of them is `RecordNotFound` error.
+GORM provides a shortcut to handle `RecordNotFound` errors. If there are several errors, it will check if any of them is a `RecordNotFound` error.
 
 ```go
 // Check if returns RecordNotFound error
