@@ -31,7 +31,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ## Soft Delete
 
-If model has `DeletedAt` field, it will get soft delete ability automatically! then it won't be deleted from database permanently when call `Delete`, but only set field `DeletedAt`'s value to current time
+If a model has a `DeletedAt` field, it will get a soft delete ability automatically! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
 
 ```go
 db.Delete(&user)
