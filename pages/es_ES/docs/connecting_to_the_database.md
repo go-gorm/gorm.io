@@ -4,13 +4,13 @@ layout: page
 ---
 ## Conexión a la base de datos
 
-Para conectarse a una base de datos, necesita importar primero el controlador de la base de datos. Por ejemplo:
+In order to connect to a database, you need to import the database's driver first. For example:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM ha envuelto algunos controladores, para que sea más fácil recordar su ruta de importación, por lo que podría importar el controlador de mysql con
+GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql" // import _ "github.com/jinzhu/gorm/dialects/postgres" // import _ "github.com/jinzhu/gorm/dialects/sqlite" // import _ "github.com/jinzhu/gorm/dialects/mssql"
