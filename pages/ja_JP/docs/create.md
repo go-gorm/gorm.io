@@ -16,7 +16,7 @@ db.NewRecord(user) // => return `false` after `user` created
 
 ## Default Values
 
-tag を使ってデフォルト値を設定することができます。
+You can define a field's default value with a tag. For example:
 
 ```go
 type Animal struct {
@@ -26,7 +26,7 @@ type Animal struct {
 }
 ```
 
-値を持たないか [zero values](https://tour.golang.org/basics/12) のフィールドは INSERT 文実行後にデータベースから取得した値が格納されます。
+Then the inserting SQL will exclude those fields that have no value or [zero values](https://tour.golang.org/basics/12). After inserting the record into the database, gorm will load those fields' value from the database.
 
 ```go
 var animal = Animal{Age: 99, Name: ""}
@@ -36,7 +36,7 @@ db.Create(&animal)
 // animal.Name => 'galeone'
 ```
 
-**NOTE** all fields having zero value, like `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12) won't be saved into database but will use its default value, if you want to avoid this, consider to use pointer type or scanner/valuer, e.g:
+**NOTE** all fields having a zero value, like `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), won't be saved into the database but will use its default value. If you want to avoid this, consider using a pointer type or scanner/valuer, e.g:
 
 ```go
 // Use pointer value
@@ -56,7 +56,7 @@ type User struct {
 
 ## Setting Field Values In Hooks
 
-If you want to update field's value in `BeforeCreate` hook, you could use `scope.SetColumn`, for example:
+If you want to update a field's value in `BeforeCreate` hook, you can use `scope.SetColumn`, for example:
 
 ```go
 func (user *User) BeforeCreate(scope *gorm.Scope) error {
