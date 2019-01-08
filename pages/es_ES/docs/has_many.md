@@ -24,11 +24,11 @@ type CreditCard struct {
 
 ## Clave Foránea
 
-To define a has many relationship, a foreign key must exists. The default foreign key's name is owner's type name plus its primary key.
+To define a has many relationship, a foreign key must exist. The default foreign key's name is the owner's type name plus the name of its primary key field (e.g. UserID, CardID, etc).
 
-Para el ejemplo anterior, para definir un modelo que pertenece a `User`, la clave foránea debe ser `UserID`.
+For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
-Para usar otro campo como clave foránea, puede personalizarlo con la etiqueta `foreignkey`, por ejemplo:
+To use another field as foreign key, you can customize it with a `foreignkey` tag, e.g:
 
 ```go
 type User struct {
@@ -45,9 +45,9 @@ type CreditCard struct {
 
 ## Asociación ForeignKey
 
-GORM generalmente utiliza la clave principal del usuario como el valor de la clave foránea, para el ejemplo anterior, es `User`'s `ID`,
+GORM usually uses the owner's primary key as the foreign key's value, for above example, it is the `User`'s `ID`,
 
-Cuando asigna tarjetas de crédito a un usuario, GORM guardará el `ID` del usuario en el campo `UserID` de las tarjetas de crédito.
+When you assign credit cards to a user, GORM will save the user's `ID` into credit cards' `UserID` field.
 
 Puede cambiarlo con la etiqueta `association_foreignkey`, por ejemplo:
 
@@ -67,7 +67,7 @@ type CreditCard struct {
 
 ## Asociación de Polimorfismo
 
-Admite asociaciones polimórficas para has-many y has-one.
+GORM supports polymorphic has-many and has-one associations.
 
 ```go
   type Cat struct {
@@ -100,4 +100,4 @@ Puede encontrar asociaciones `has many` con `Related`
 db.Model(&user).Related(&emails) //// SELECT * FROM emails WHERE user_id = 111; // 111 es la clave principal del usuario
 ```
 
-Para un uso avanzado, consulte [Modo de Asociación](/docs/associations.html#Association-Mode)
+For advanced usage, refer to [Association Mode](/docs/associations.html#Association-Mode)
