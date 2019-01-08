@@ -120,7 +120,7 @@ type Animal struct {
 
 ### CreatedAt
 
-For models having a `CreatedAt` field, it will be set to current time when record is first created.
+For models having a `CreatedAt` field, it will be set to the time when the record is first created.
 
 ```go
 db.Create(&user) // `CreatedAt`には現在時刻が設定されます
@@ -131,7 +131,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-For models having an `UpdatedAt` field, it will be set to current time when record is updated.
+For models having an `UpdatedAt` field, it will be set to time when the record is updated.
 
 ```go
 db.Save(&user) // `UpdatedAt`に現在時刻を設定します
@@ -141,4 +141,4 @@ db.Model(&user).Update("name", "jinzhu") // `UpdatedAt`に現在時刻を設定�
 
 ### DeletedAt
 
-For any models having a `DeletedAt` field, when `Delete` is called on that instance it won't truly be deleted from database, but will set its `DeletedAt` field to the current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)
+For models with a `DeletedAt` field, when `Delete` is called on that instance, it won't truly be deleted from database, but will set its `DeletedAt` field to the current time. Refer to [Soft Delete](/docs/delete.html#Soft-Delete)
