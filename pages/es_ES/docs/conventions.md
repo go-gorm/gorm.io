@@ -54,7 +54,7 @@ type User struct {   ID uint // el nombre de la columna es `id`   Name string //
 
 ### CreatedAt
 
-For models having a `CreatedAt` field, it will be set to current time when record is first created.
+For models having a `CreatedAt` field, it will be set to the time when the record is first created.
 
 ```go
 db.Create(&user) // se establecerá `CreatedAt` a la hora actual // Para cambiar su valor, puede usar `Update` db.Model(&user).Update("CreatedAt", time.Now())
@@ -62,7 +62,7 @@ db.Create(&user) // se establecerá `CreatedAt` a la hora actual // Para cambiar
 
 ### UpdatedAt
 
-For models having an `UpdatedAt` field, it will be set to current time when record is updated.
+For models having an `UpdatedAt` field, it will be set to time when the record is updated.
 
 ```go
 db.Save(&user) // se establecerá `UpdatedAt` a la hora actual db.Model(&user).Update("name", "jinzhu") // se establecerá `UpdatedAt` a la hora actual
@@ -70,4 +70,4 @@ db.Save(&user) // se establecerá `UpdatedAt` a la hora actual db.Model(&user).U
 
 ### DeletedAt
 
-For any models having a `DeletedAt` field, when `Delete` is called on that instance it won't truly be deleted from database, but will set its `DeletedAt` field to the current time, refer [Soft Delete](/docs/delete.html#Soft-Delete)
+For models with a `DeletedAt` field, when `Delete` is called on that instance, it won't truly be deleted from database, but will set its `DeletedAt` field to the current time. Refer to [Soft Delete](/docs/delete.html#Soft-Delete)
