@@ -4,13 +4,13 @@ layout: page
 ---
 ## Menghubungkan ke database
 
-Agar bisa terhubung ke database, anda harus terlebih dahulu mengimpor driver database. Sebagai contoh:
+In order to connect to a database, you need to import the database's driver first. For example:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM telah membungkus beberapa driver, untuk mempermudah mengingat jalur impor mereka, sehingga anda bisa mengimpor driver mysql dengan
+GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
