@@ -4,13 +4,13 @@ layout: page
 ---
 ## Connecting to database
 
-In order to connect to a database, you need to first import the database's driver. For example:
+In order to connect to a database, you need to import the database's driver first. For example:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers, to make easier to remember their import path, so you could import the mysql driver with
+GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
