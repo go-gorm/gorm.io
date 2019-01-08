@@ -2,7 +2,7 @@
 title: Antarmuka basisdata generik sql.DB
 layout: page
 ---
-GORM menyediakan metode `DB` yang mengembalikan antarmuka basisdata generik [*sql.DB](http://golang.org/pkg/database/sql/#DB) dari koneksi `*gorm.DB` saat ini
+GORM provides the method `DB` which returns a generic database interface [*sql.DB](http://golang.org/pkg/database/sql/#DB) from the current `*gorm.DB` connection
 
 ```go
 // Dapatkan objek basisdata generik sql.DB untuk menggunakan fungsinya
@@ -12,7 +12,7 @@ db.DB()
 db.DB().Ping()
 ```
 
-**CATATAN** Jika koneksi basisdata yang mendasarinya bukan sebuah `*sql.DB`, seperti dalam sebuah transaksi, ia akan kembali nihil
+**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns `nil`
 
 ## Kelompok Koneksi
 
