@@ -48,7 +48,7 @@ db.Where("age = 20").Find(&user)
 db.Unscoped().Where("age = 20").Find(&users)
 //// SELECT * FROM users WHERE age = 20;
 
-// Unscopedを使うことでソフトデリートされたレコードを完全に削除できます。
+// Unscopedを使うことでいきなりレコードを物理削除できます。
 db.Unscoped().Delete(&order)
 //// DELETE FROM orders WHERE id=10;
 ```
