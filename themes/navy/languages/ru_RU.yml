@@ -45,9 +45,9 @@ sidebar:
     advanced_topics: Дополнительные возможности
     composite_primary_key: Составной первичный ключ
     write_plugins: Плагины (Колбеки) 
-    dialects: GORM Dialects
-    logger: Logger
-    change_log: ChangeLog
-    community: Community
-    contribute: Contribute
-    translate: Translate current site
+    dialects: Поддерживаемые БД
+    logger: Логирование
+    change_log: История изменений
+    community: Сообщество
+    contribute: Сделать вклад
+    translate: Перевод текущего сайта
