@@ -4,51 +4,51 @@ layout: page
 ---
 **С вашей помощью GORM станет лучше! Вот несколько вещей, которые вы можете сделать:**
 
-## Поделитесь информацией о GORM с другими Golang разработчиками.
+## Делиться информацией о GORM с другими Golang разработчиками.
 
 * Распространяйте информацию через социальные каналы, или просто расскажите о GORM людям, которые могли бы быть заинтересованы
 * Помогите начинающим разобраться в GORM, отвечая на вопросы в [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
 * Пишите статьи, записывайте видео, и т.д.... (Не забывайте добавить ссылку на [комьюнити](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
+* Помогайте [GORM репозиторию](https://github.com/jinzhu/gorm) стать популярнее на GitHub [Starring](https://github.com/jinzhu/gorm/stargazers) и [Watching](https://github.com/jinzhu/gorm/watchers)
 
-## Documentation and Writing
+## Писать документацию
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* Сделайте документацию GORM лучше, путем написания нового содержания или исправления существующего материала
 
-### Translate this site
+### Переводить этот сайт
 
-You can translate current site with <https://translate.gorm.io>
+Вы можете перевести текущий сайт здесь <https://translate.gorm.io>
 
-To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
+Чтобы перевести GORM на ваш язык, вам нужно будет отправить запрос в [Github issues](https://github.com/jinzhu/gorm.io/issues), после того как перевод будет добавлен в <https://translate.gorm.io>.
 
-## Program
+## Пишите код
 
-* Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features from [Github Issues](https://github.com/jinzhu/gorm/issues)
-* Create open source plugins for GORM. (Don't forgot to add them to [the list](/community.html#Open-Sources))
+* Создайте pull request on [Github](https://github.com/jinzhu/gorm) на устранение багов, опубликованных на [Github Issues](https://github.com/jinzhu/gorm/issues)
+* Пишите open source плагины для GORM. (Не забывайте добавлять ссылку на [комьюнити](/community.html#Open-Sources))
 
-## Donations
+## Пожертвования
 
-Many thanks to all our sponsors!
+Большое спасибо нашим спонсорам!
 
-### One-time Donations
+### Одноразовое пожертвование
 
-Your kindness and generosity is greatly appreciated
+Мы высоко ценим вашу доброту и щедрость
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[Одноразовое пожертвование через Paypal](https://www.paypal.me/zhangjinzhu) [Одноразовое пожертвование через OpenCollective](https://opencollective.com/gorm)
 
-### Recurring Donations
+### Стать спонсором
 
-Your kindness and generosity is greatly appreciated, and your name will be listed in this page or the home page of this website.
+Мы высоко ценим вашу доброту и щедрость, и укажем ваше имя на этой странице или домашней странице этого веб-сайта.
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[Оформить ежемесячную подписку через OpenCollective](https://opencollective.com/gorm) [Оформить ежемесячную подписку через Patreon](https://www.patreon.com/jinzhu)
 
 <br />
 
-## Sponsors
+## Спонсоры
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=740"></object>
 
-## Backers
+## Поддержавшие
 
 <div class="backers-list">
   
@@ -59,6 +59,6 @@ Your kindness and generosity is greatly appreciated, and your name will be liste
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=48&width=740"></object>
 
-## Contributors
+## Участники
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/contributors.svg?avatarHeight=32&width=740"></object>
