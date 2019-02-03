@@ -1,10 +1,10 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  home: <i class="fa fa-home"></I>Главная
+  docs: <i class="fa fa-book"></I>Документация
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fa fa-slack"></i>Community
+  community: <i class="fa fa-slack"></I>Сообщество
   contribute: <i class="fa fa-rocket"></i>Contribute
   search: Search documents...
 index:
