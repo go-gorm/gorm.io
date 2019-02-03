@@ -15,4 +15,4 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Логирование
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Расширяемые функционал плагины, на основе колбеков
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Полное покрытие тестами
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Developer Friendly
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Простой для разработчиков Golang
