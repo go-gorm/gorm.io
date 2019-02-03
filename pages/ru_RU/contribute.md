@@ -2,13 +2,13 @@
 title: Contribute to GORM
 layout: page
 ---
-**You can help to deliver a better GORM! there are many things that you can do:**
+**С вашей помощью GORM станет лучше! Вот несколько вещей, которые вы можете сделать:**
 
-## Help others to know GORM
+## Поделитесь информацией о GORM с другими Golang разработчиками.
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
+* Распространяйте информацию через социальные каналы, или просто расскажите о GORM людям, которые могли бы быть заинтересованы
+* Помогите начинающим разобраться в GORM, отвечая на вопросы в [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
+* Пишите статьи, записывайте видео, и т.д.... (Не забывайте добавить ссылку на [комьюнити](/community.html))
 * Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
 
 ## Documentation and Writing
