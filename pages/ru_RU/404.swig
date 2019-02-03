@@ -1,15 +1,15 @@
 ---
 layout: raw
-description: The fantastic ORM library for Golang, aims to be developer friendly.
-subtitle: The fantastic ORM library for Golang
+description: Фантастически-простой ORM фреймворк, для Golang разработчиков.
+subtitle: Простой и быстрый ORM фреймворк для Golang
 comments: false
 ---
 
 <div class="container page-not-found">
   <h1>404</h1>
-  <p>File not found</p>
+  <p>Файл не найден</p>
 
   <p>
-    The site configured at this address does not contain the requested file.
+    Сайт не содержит запрашиваемого файла.
   </p>
 <div>
