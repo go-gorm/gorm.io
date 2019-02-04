@@ -57,6 +57,8 @@ func main() {
 
 ### Sqlite3
 
+**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
+
 ```go
 import (
   "github.com/jinzhu/gorm"
