@@ -4,15 +4,15 @@ layout: page
 ---
 ## Write new Dialect
 
-GORM provides supports for sqlite, mysql, postgres, mssql officially.
+GORM provides official support for `sqlite`, `mysql`, `postgres`, `mssql`.
 
-You could add other database support by creating a new dialect, need to implement [the dialect interface](https://godoc.org/github.com/jinzhu/gorm#Dialect).
+You can add support for additional databases by creating a new dialect. When creating a new dialect, you must implement [the dialect interface](https://godoc.org/github.com/jinzhu/gorm#Dialect).
 
-Some databases might compatible with mysql or postgres dialect, then you could just use the dialect for those databases.
+Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
 ## Dialect Specific Data Type
 
-Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of such types, as listed in the following sections.
+Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of these types, as listed in the following sections.
 
 ### PostgreSQL
 

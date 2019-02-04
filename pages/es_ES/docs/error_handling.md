@@ -8,9 +8,9 @@ Se recomienda hacer una comprobación de errores después de cualquier [Métodos
 
 ## Manejo de Errores
 
-El manejo de errores en GORM es diferente con el código Go idiomático debido a su API, pero todavía es bastante fácil hacerlo.
+Error handling in GORM is different than idiomatic Go code because of its chainable API, but still easy to implement.
 
-If there are any error happened, GORM will set it to `*gorm.DB`'s `Error` field, you could check it like this:
+If any error occurs, GORM will set `*gorm.DB`'s `Error` field, which you can check like this:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
@@ -28,7 +28,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 
 ## Errores
 
-It is common several errors happened during processing data, GORM provides an API to return all happened errors as a slice
+When processing data, it is common for multiple errors to occur. GORM provides an API to return all errors as a slice:
 
 ```go
 // Si hay más de un error, `GetErrors` los devuelve como `[]error` db.First(&user).Limit(10).Find(&users).GetErrors() fmt.Println(len(errors)) for _, err := range errors {   fmt.Println(err) }
@@ -36,7 +36,7 @@ It is common several errors happened during processing data, GORM provides an AP
 
 ## Error RecordNotFound
 
-GORM proporciona un acceso directo para manejar el error `RecordNotFound`, si se producen varios errores, comprobará cada error por si alguno de ellos es el error `RecordNotFound`.
+GORM provides a shortcut to handle `RecordNotFound` errors. If there are several errors, it will check if any of them is a `RecordNotFound` error.
 
 ```go
 // Comprueba si retorna un error RecordNotFound db.Where("name = ?", "hello world").First(&user).RecordNotFound() if db.Model(&user).Related(&credit_card).RecordNotFound() {   // registro no encontrado } if err := db.Where("name = ?", "jinzhu").First(&user).Error; gorm.IsRecordNotFoundError(err) {   // registro no encontrado }

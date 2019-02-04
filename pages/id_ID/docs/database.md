@@ -10,7 +10,7 @@ Agar bisa terhubung ke database, anda perlu mengimpor driver database terlebih d
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM telah membungkus beberapa driver, agar lebih mudah mengingat jalur impor, sehingga anda bisa mengimpor driver mysql dengan
+GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -51,7 +51,7 @@ func main() {
 
 ## Sqlite3
 
-**NOTE:** You can also use `:memory:` for the connection, which will use sqlite in temporary system memory, this is especially useful when writing tests for your application against GORM.
+**NOTE:** You can also use `:memory:` for the connection, which will use sqlite in temporary system memory. This is especially useful when writing tests for your application against GORM.
 
 ```go
 import (

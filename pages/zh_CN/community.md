@@ -21,7 +21,6 @@ layout: page
 * [Go with GORM](http://mindbowser.com/golang-go-with-gorm-2/)
 * [Data consistency, gorm and CockroachDB](http://callistaenterprise.se/blogg/teknik/2018/02/14/go-blog-series-part13/)
 * [GORM 中文文档](https://jasperxu.github.io/gorm-zh/)
-* [GORM 源码解读](https://zhuanlan.zhihu.com/p/42480289)
 
 ## 视频
 

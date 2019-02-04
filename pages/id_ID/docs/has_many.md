@@ -24,11 +24,11 @@ type CreditCard struct {
 
 ## Kunci Asing
 
-To define a has many relationship, a foreign key must exists. The default foreign key's name is owner's type name plus its primary key.
+To define a has many relationship, a foreign key must exist. The default foreign key's name is the owner's type name plus the name of its primary key field (e.g. UserID, CardID, etc).
 
-Untuk sebuah contoh di atas, untuk menentukan sebuah model yang menjadi milik ` User `, kunci asing seharusnya `UserID `.
+For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
-Untuk menggunakan bidang lain sebagai kunci asing, anda dapat menyesuaikannya dengan label `foreignkey`, misalnya:
+To use another field as foreign key, you can customize it with a `foreignkey` tag, e.g:
 
 ```go
 type User struct {
@@ -45,9 +45,9 @@ type CreditCard struct {
 
 ## Association ForeignKey
 
-GORM biasanya menggunakan kunci utama pemilik sebagai nilai kunci asing, untuk contoh diatas, itu adalah `Pengguna` `ID`,
+GORM usually uses the owner's primary key as the foreign key's value, for above example, it is the `User`'s `ID`,
 
-Saat anda menetapkan kartu kredit ke pengguna, GORM akan menyimpan `ID` pengguna kedalam bidang `UserID` kartu kredit.
+When you assign credit cards to a user, GORM will save the user's `ID` into credit cards' `UserID` field.
 
 Anda dapat mengubahnya dengan label `association_foreignkey`, misalnya:
 
@@ -67,7 +67,7 @@ type CreditCard struct {
 
 ## Asosiasi Polimorfisme
 
-Mendukung polimorfik memiliki banyak dan memiliki satu asosiasi.
+GORM supports polymorphic has-many and has-one associations.
 
 ```go
   type Cat struct {
@@ -101,4 +101,4 @@ db.Model(&user).Related(&emails)
 //// SELECT * FROM emails WHERE user_id = 111; // 111 is user's primary key
 ```
 
-Untuk penggunaan lanjutan, lihat [Mode Asosiasi](/docs/associations.html#Association-Mode)
+For advanced usage, refer to [Association Mode](/docs/associations.html#Association-Mode)

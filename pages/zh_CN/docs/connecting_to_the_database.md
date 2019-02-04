@@ -4,13 +4,13 @@ layout: page
 ---
 ## 连接数据库
 
-要连接到一个数据库，首先应该导入对应的数据库驱动．例如：
+In order to connect to a database, you need to import the database's driver first. For example:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM 已经包装了一些驱动程序, 使得更容易记住他们的导入路径, 所以你可以这样导入 mysql 驱动程序
+GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -56,6 +56,8 @@ func main() {
 ```
 
 ### Sqlite3
+
+**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
 
 ```go
 import (
