@@ -48,7 +48,10 @@ db.Where("age = 20").Find(&user)
 // Find soft deleted records with Unscoped
 db.Unscoped().Where("age = 20").Find(&users)
 //// SELECT * FROM users WHERE age = 20;
+```
 
+## Delete record permanently
+```
 // Delete record permanently with Unscoped
 db.Unscoped().Delete(&order)
 //// DELETE FROM orders WHERE id=10;
