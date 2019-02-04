@@ -36,19 +36,21 @@ If a model has a `DeletedAt` field, it will get a soft delete ability automatica
 db.Delete(&user)
 //// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// バッチデリート
+// Batch Delete
 db.Where("age = ?", 20).Delete(&User{})
 //// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// ソフトデリートされたレコードはクエリ実行時に無視されます
+// Soft deleted records will be ignored when query them
 db.Where("age = 20").Find(&user)
 //// SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 
-// Unscopedを使うことでソフトデリートされたレコードを取得できます。
+// Find soft deleted records with Unscoped
 db.Unscoped().Where("age = 20").Find(&users)
 //// SELECT * FROM users WHERE age = 20;
-
-// Unscopedを使うことでソフトデリートされたレコードを完全に削除できます。
-db.Unscoped().Delete(&order)
-//// DELETE FROM orders WHERE id=10;
 ```
+
+## Delete record permanently
+
+    // Delete record permanently with Unscoped
+    db.Unscoped().Delete(&order)
+    //// DELETE FROM orders WHERE id=10;
