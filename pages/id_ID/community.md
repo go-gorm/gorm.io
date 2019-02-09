@@ -36,6 +36,7 @@ layout: page
 * [Transisi - mesin negara yang berdasar pada GORM](https://github.com/qor/transition)
 * [Validasi - memvalidasi model saat membuat, memperbarui](https://github.com/qor/validations)
 * [ Gormstore - GORM backend untuk sesi gorila](https://github.com/wader/gormstore)
+* [go-oauth2-gorm - GORM adapter for go-oauth2](https://github.com/techknowlogick/go-oauth2-gorm)
 
 ## Berkontribusi untuk halaman ini
 
