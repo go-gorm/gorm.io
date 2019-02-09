@@ -36,6 +36,7 @@ layout: page
 * [Transition - state machine based on GORM](https://github.com/qor/transition)
 * [Validations - validate models when creating, updating](https://github.com/qor/validations)
 * [Gormstore - GORM backend for gorilla sessions](https://github.com/wader/gormstore)
+* [go-oauth2-gorm - GORM adapter for go-oauth2](https://github.com/techknowlogick/go-oauth2-gorm)
 
 ## Сделать эту страницу лучше
 
