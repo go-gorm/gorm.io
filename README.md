@@ -24,5 +24,6 @@ This site is built with [hexo](http://hexo.io)
 
 ```
 $ npm install
+$ npm install hexo -g
 $ hexo serve
 ```
