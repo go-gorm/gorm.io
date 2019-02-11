@@ -37,19 +37,19 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-## Skip AutoUpdate
+## Отключение авто обновления
 
-If your association is already existing in database, you might not want to update it.
+Если связанная модель уже существует в базе данных и вы не хотите ее обновлять.
 
-You could use DB setting, set `gorm:association_autoupdate` to `false`
+Вы можете использовать настройки БД, установив `gorm:association_autoupdate` в `false`
 
 ```go
-// Don't update associations having primary key, but will save reference
+// Не обновлять связь, с основным ключом, но сохранить ссылку
 db.Set("gorm:association_autoupdate", false).Create(&user)
 db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autoupdate:false"`
+или используйте GORM теги, `gorm:"association_autoupdate:false"`
 
 ```go
 type User struct {
@@ -61,19 +61,19 @@ type User struct {
 }
 ```
 
-## Skip AutoCreate
+## Отключение авто создания
 
-Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
+Несмотря на то, что вы отключили `AutoUpdating`, связи без первичного ключа все еще будут создаваться и их ссылка будет сохранена.
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
+Для отключения авто создания, вы можете установить параметр БД `gorm:association_autocreate` в `false`
 
 ```go
-// Don't create associations w/o primary key, WON'T save its reference
+// Не создавать связи без первичного ключ
 db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autocreate:false"`
+или используйте GORM тег, `gorm:"association_autocreate:false"`
 
     type User struct {
       gorm.Model
@@ -83,9 +83,9 @@ or use GORM tags, `gorm:"association_autocreate:false"`
     }
     
 
-## Skip AutoCreate/Update
+## Отключение авто создания/обновления
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
+Чтобы отключить вместе `AutoCreate` и `AutoUpdate`, вы можете использовать эти две настройки вместе
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -97,7 +97,7 @@ type User struct {
 }
 ```
 
-Or use `gorm:save_associations`
+Или использовать `gorm:save_associations`
 
     db.Set("gorm:save_associations", false).Create(&user)
     db.Set("gorm:save_associations", false).Save(&user)
