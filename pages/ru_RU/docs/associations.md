@@ -1,10 +1,10 @@
 ---
-title: Associations
+title: Связи
 layout: page
 ---
-## Auto Create/Update
+## Авто Создание/Обновление
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+GORM будет автоматически сохранять связь и ее ссылку при создании/обновлении записи. Если связь имеет основной ключ, GORM `Обновит` запись, чтобы сохранить ее, иначе модель будет создана.
 
 ```go
 user := User{
