@@ -109,16 +109,16 @@ type User struct {
     }
     
 
-## Skip Save Reference
+## Отключение сохранения ссылки
 
-If you don't even want to save association's reference when updating/saving data, you could use below tricks
+Если вы даже не хотите сохранять ссылку связи при обновлении/сохранении данных, вы можете использовать настройку ниже
 
 ```go
 db.Set("gorm:association_save_reference", false).Save(&user)
 db.Set("gorm:association_save_reference", false).Create(&user)
 ```
 
-or use tag
+или использовать тег
 
 ```go
 type User struct {
@@ -129,9 +129,9 @@ type User struct {
 }
 ```
 
-## Association Mode
+## Связь моделей
 
-Association Mode contains some helper methods to handle relationship related things easily.
+GORM поддерживает следующие методы для получения связей модели.
 
 ```go
 // Start Association Mode
