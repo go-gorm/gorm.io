@@ -1,6 +1,6 @@
 ---
-title: 关联
-layout: page
+title: 查找关联
+layout: 页面
 ---
 ## 自动创建/更新
 
