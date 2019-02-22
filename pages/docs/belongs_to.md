@@ -30,7 +30,7 @@ To define a belongs to relationship, the foreign key must exists, default foreig
 
 For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
-GORM provides a way to customzie the foreign key, for example:
+GORM provides a way to customize the foreign key, for example:
 
 ```go
 type User struct {
