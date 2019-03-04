@@ -108,7 +108,7 @@ db.Set("gorm:save_associations", false).Save(&user)
 type User struct {
   gorm.Model
   Name    string
-  Company Company `gorm:"association_autoupdate:false"`
+  Company Company `gorm:"save_associations:false"`
 }
 ```
 
