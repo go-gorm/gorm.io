@@ -153,7 +153,7 @@ db.Model(&user).Association("Languages").Find(&languages)
 
 ### 添加关联
 
-Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
+为`many to many`，`has many`添加新的关联关系代替当前的关联关系`has one`，`belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
