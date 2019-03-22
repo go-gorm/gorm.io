@@ -58,23 +58,23 @@ db.Where("updated_at > ?", lastWeek).Find(&users)
 db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 ```
 
-#### Struct & Map
+#### Структура "struct" & Карта
 
 ```go
-// Struct
+// Структура "struct"
 db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 //// SELECT * FROM users WHERE name = "jinzhu" AND age = 20 LIMIT 1;
 
-// Map
+// Карта
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 //// SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice of primary keys
+// Срез первичных ключей
 db.Where([]int64{20, 21, 22}).Find(&users)
 //// SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**NOTE** When query with struct, GORM will only query with those fields has non-zero value, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**Примечание** когда запрос с использованием структуры "struct", GORM будет делать запрос только полями у которых ненулевое значение, это означает, если ваши поля равны `0`, `''`, `false` или другие [нулевые значения](https://tour.golang.org/basics/12), он не будет использоваться для построения условий запроса, например:
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
@@ -99,7 +99,7 @@ type User struct {
 }
 ```
 
-### Not
+### НЕ "Not"
 
 Работает также как `Где`
 
@@ -107,44 +107,44 @@ type User struct {
 db.Not("name", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name <> "jinzhu" LIMIT 1;
 
-// Not In
+// Не входит в
 db.Not("name", []string{"jinzhu", "jinzhu 2"}).Find(&users)
 //// SELECT * FROM users WHERE name NOT IN ("jinzhu", "jinzhu 2");
 
-// Not In slice of primary keys
+// Не входит в срез первичных ключей
 db.Not([]int64{1,2,3}).First(&user)
 //// SELECT * FROM users WHERE id NOT IN (1,2,3);
 
 db.Not([]int64{}).First(&user)
 //// SELECT * FROM users;
 
-// Plain SQL
+// Ообычный SQL
 db.Not("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE NOT(name = "jinzhu");
 
-// Struct
+// Структура "struct"
 db.Not(User{Name: "jinzhu"}).First(&user)
 //// SELECT * FROM users WHERE name <> "jinzhu";
 ```
 
-### Or
+### ИЛИ "Or"
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
 //// SELECT * FROM users WHERE role = 'admin' OR role = 'super_admin';
 
-// Struct
+// Структура "struct"
 db.Where("name = 'jinzhu'").Or(User{Name: "jinzhu 2"}).Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 
-// Map
+// Карта
 db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-### Inline Condition
+### Строковые условия
 
-Works similar like `Where`.
+Работает также как и `Where`.
 
 When using with [Multiple Immediate Methods](/docs/method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
 
