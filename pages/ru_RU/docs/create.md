@@ -26,27 +26,27 @@ type Animal struct {
 }
 ```
 
-Then the inserting SQL will exclude those fields that have no value or [zero values](https://tour.golang.org/basics/12). After inserting the record into the database, gorm will load those fields' value from the database.
+В таком случае SQL исключает эти поля, как не имеющие значения или [нулевые значения](https://tour.golang.org/basics/12). После вставки записи в базу данных, GORM загрузит в эти поля значения из базы данных.
 
 ```go
 var animal = Animal{Age: 99, Name: ""}
 db.Create(&animal)
 // INSERT INTO animals("age") values('99');
-// SELECT name from animals WHERE ID=111; // the returning primary key is 111
+// SELECT name from animals WHERE ID=111; // возвращаемый первичный ключ 111
 // animal.Name => 'galeone'
 ```
 
-**NOTE** all fields having a zero value, like `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), won't be saved into the database but will use its default value. If you want to avoid this, consider using a pointer type or scanner/valuer, e.g:
+**Примечание** все поля, имеющие нулевые значения, такие как `0`, `''`, `false` или другие [нулевые значения](https://tour.golang.org/basics/12), не сохраняются в базу данных, но будет использовать его значение по умолчанию. Если вы хотите избежать этого, рассмотрите использование типа указателя или сканера/оценщика, например:
 
 ```go
-// Use pointer value
+// Использование типа указателя
 type User struct {
   gorm.Model
   Name string
   Age  *int `gorm:"default:18"`
 }
 
-// Use scanner/valuer
+// Использовать сканер/оценщик
 type User struct {
   gorm.Model
   Name string
@@ -54,9 +54,9 @@ type User struct {
 }
 ```
 
-## Setting Field Values In Hooks
+## Установка значений полей в хуках
 
-If you want to update a field's value in `BeforeCreate` hook, you can use `scope.SetColumn`, for example:
+Если вы хотите обновить значение поля в `BeforeCreate` хуке, вы можете использовать `scope.SetColumn`, например:
 
 ```go
 func (user *User) BeforeCreate(scope *gorm.Scope) error {
@@ -65,10 +65,10 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 }
 ```
 
-## Extra Creating option
+## Дополнительные опции создания
 
 ```go
-// Add extra SQL option for inserting SQL
+// Добавление дополнительных SQL опций при создании записи
 db.Set("gorm:insert_option", "ON CONFLICT").Create(&product)
 // INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
 ```
