@@ -20,10 +20,10 @@ layout: страница
     
     When GORM convert struct, field name to db name, only common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` were handled, so `HTTP`'s db name is `http`, but not `h_t_t_p`.
     
-    But for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it.
+    Но для некоторых других инициализаторов не в списке, например, `SKU`, это имя db было `s_k_u`, это изменение исправлено.
 
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
+* Ошибка `RecordNotFound` была переименована в `ErrRecordNotFound`
 
-* `mssql` dialect has been renamed to "github.com/jinzhu/gorm/dialects/mssql"
+* `mssql` диалект был переименован в "github.com/jinzhu/gorm/dialects/mssql"
 
-* `Hstore` has been moved to package "github.com/jinzhu/gorm/dialects/postgres"
+* `Hstore` был перемещен в пакет "github.com/jinzhu/gorm/dialects/postgres"
