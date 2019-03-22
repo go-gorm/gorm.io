@@ -1,6 +1,6 @@
 ---
 title: Many To Many
-layout: page
+layout: страница
 ---
 ## Many To Many
 
