@@ -28,14 +28,14 @@ db.First(&user, 10)
 
 ### Where
 
-#### Plain SQL
+#### Ообычный SQL
 
 ```go
-// Get first matched record
+// Получить первую запись по совпадению
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Get all matched records
+// Получить все записи по совпадению
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
@@ -81,7 +81,7 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 //// SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You could consider to use pointer type or scanner/valuer to avoid this.
+Чтобы избежать этого, можно было бы использовать тип указателя или сканер/оценщик.
 
 ```go
 // Use pointer value
@@ -101,7 +101,7 @@ type User struct {
 
 ### Not
 
-Works similar like `Where`
+Работает также как `Где`
 
 ```go
 db.Not("name", "jinzhu").First(&user)
