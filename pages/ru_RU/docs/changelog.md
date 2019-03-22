@@ -1,22 +1,22 @@
 ---
-title: Change Log
-layout: page
+title: Список изменений
+layout: страница
 ---
 ## v2.0
 
-WIP
+В разработке
 
 ## v1.0 - 2016.04.27
 
-Breaking Changes
+Критические изменения
 
-* `gorm.Open` return type `*gorm.DB` instead of `gorm.DB`
+* `gorm.Open` возвращает тип `*gorm.DB` вместо `gorm.DB`
 
-* Updating will only update changed fields
+* Обновление будет обновлять только измененные поля
 
-* Soft Delete's will only check `deleted_at IS NULL`
+* Мягкое удаление проверит `deleted_at IS NULL`
 
-* New ToDBName logic
+* Новая логика ToDBName
     
     When GORM convert struct, field name to db name, only common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` were handled, so `HTTP`'s db name is `http`, but not `h_t_t_p`.
     
