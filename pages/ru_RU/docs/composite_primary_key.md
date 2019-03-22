@@ -2,7 +2,7 @@
 title: Составной первичный ключ
 layout: страница
 ---
-Set multiple fields as primary key to enable composite primary key
+Установите несколько полей как первичный ключ для включения композитного первичного ключа
 
 ```go
 type Product struct {
