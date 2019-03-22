@@ -1,18 +1,18 @@
 ---
-title: Method Chaining
-layout: page
+title: Цепочка вызовов
+layout: страница
 ---
-## Method Chaining
+## Цепочка вызовов
 
-Gorm implements method chaining interface, so you could write code like this:
+Gorm реализует метод цепочки интерфейса, так что вы можете писать код так:
 
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 
-// create a new relation
+// создать новую связь
 tx := db.Where("name = ?", "jinzhu")
 
-// add more filter
+// добавить вильтер
 if someCondition {
     tx = tx.Where("age = ?", 20)
 } else {
@@ -24,33 +24,33 @@ if yetAnotherCondition {
 }
 ```
 
-Query won't be generated until a immediate method, which could be useful in some cases.
+Запрос не будет сгенерирован до тех пор, пока не будет применен немедленный метод, что может быть полезно в некоторых случаях.
 
-Like you could extract a wrapper to handle some common logic
+Как вы можете извлечь обертку для обработки какой-либо общей логики
 
-## Immediate Methods
+## Немедленные методы
 
-Immediate methods are those methods that will generate SQL query and send it to database, usually it is those CRUD methods, like:
+Немедленные методы - это те методы, которые сгенерируют SQL запрос и отправляют его в базу данных, обычно это такие CRUD методы, как:
 
 `Create`, `First`, `Find`, `Take`, `Save`, `UpdateXXX`, `Delete`, `Scan`, `Row`, `Rows`...
 
-Here is an immediate methods example based on above chain:
+Вот пример немедленных методов, основанный на вышеупомянутой цепи:
 
 ```go
 tx.Find(&user)
 ```
 
-Generates
+Генерирует
 
 ```sql
 SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
 ```
 
-## Scopes
+## Области
 
-Scope is build based on the method chaining theory.
+Область строится на основе теории цепи метода.
 
-With it, you could extract some generic logics, to write more reusable libraries.
+С ним можно извлечь некоторые общие логики, чтобы написать более многоразовые библиотеки.
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -72,24 +72,24 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// Найти все заказы по кредитной карте, стоимостью более 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// Найти все заказы за наличные, стоимостью более 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// Найти все оплаченные и отправленные заказы, стоимостью более1000
 ```
 
-## Multiple Immediate Methods
+## Несколько немедленных методов
 
-When using multiple immediate methods with GORM, later immediate method will reuse before immediate methods's query conditions (excluding inline conditions)
+При использовании нескольких немедленных методов с GORM, поздний немедленный метод будет повторно использован перед условиями запроса немедленных методов (исключая условия внутреннего доступа)
 
 ```go
 db.Where("name LIKE ?", "jinzhu%").Find(&users, "id IN (?)", []int{1, 2, 3}).Count(&count)
 ```
 
-Generates
+Генерирует
 
 ```sql
 SELECT * FROM users WHERE name LIKE 'jinzhu%' AND id IN (1, 2, 3)
@@ -97,6 +97,6 @@ SELECT * FROM users WHERE name LIKE 'jinzhu%' AND id IN (1, 2, 3)
 SELECT count(*) FROM users WHERE name LIKE 'jinzhu%'
 ```
 
-## Thread Safety
+## Безопасность
 
-All Chain Methods will clone and create a new DB object (shares one connection pool), GORM is safe for concurrent use by multiple goroutines.
+Все методы цепочки будут клонировать и создавать новый объект DB (делится одним пулом подключения), GORM безопасен для одновременного использования несколькими потоками.
