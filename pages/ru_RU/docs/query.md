@@ -1,27 +1,27 @@
 ---
 title: Query
-layout: page
+layout: страница
 ---
 ## Query
 
 ```go
-// Get first record, order by primary key
+// Получить первую запись, сортировка по первичному ключу
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specfied order
+// Получить одну запись без указания сортировки
 db.Take(&user)
 //// SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key
+// Получить последнюю запись, сортировка по первичному ключу
 db.Last(&user)
 //// SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
-// Get all records
+// Получить все записи
 db.Find(&users)
 //// SELECT * FROM users;
 
-// Get record with primary key (only works for integer primary key)
+// Получить запись с первичным ключом (работает только если первичный ключ число)
 db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
