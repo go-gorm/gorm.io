@@ -1,24 +1,24 @@
 ---
-title: Delete
-layout: page
+title: Удаление
+layout: страница
 ---
-## Delete Record
+## Удаление записи
 
-**WARNING** When deleting a record, you need to ensure its primary field has value, and GORM will use the primary key to delete the record, if the primary key field is blank, GORM will delete all records for the model
+**ВНИМАНИЕ** При удалении записи, необходимо убедиться, что ее первичный ключ не пуст, и GORM будет использовать первичный ключ для удаления записи, если поле первичного ключа пусто, GORM удалит все записи для модели
 
 ```go
-// Delete an existing record
+// Удаление существующей записи
 db.Delete(&email)
 //// DELETE from emails where id=10;
 
-// Add extra SQL option for deleting SQL
+// Добавление SQL опции при удалении
 db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email)
 //// DELETE from emails where id=10 OPTION (OPTIMIZE FOR UNKNOWN);
 ```
 
-## Batch Delete
+## Пакетное удаление
 
-Delete all matched records
+Удаление всех подходящих записей
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -28,7 +28,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 //// DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-## Soft Delete
+## Мягкое удаление
 
 If a model has a `DeletedAt` field, it will get a soft delete ability automatically! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
 
