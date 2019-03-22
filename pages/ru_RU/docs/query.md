@@ -146,62 +146,62 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 
 Работает также как и `Where`.
 
-When using with [Multiple Immediate Methods](/docs/method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
+При использовании [Нескольких быстрых методов](/docs/method_chaining.html#Multiple-Immediate-Methods), эти условия будут переданы в следующие быстрые методы.
 
 ```go
-// Get by primary key (only works for integer primary key)
+// Получить по первичному ключу (работает только если первичный ключ число)
 db.First(&user, 23)
 //// SELECT * FROM users WHERE id = 23 LIMIT 1;
-// Get by primary key if it were a non-integer type
+// Получить по первичному ключу если это не числовой формат "int"
 db.First(&user, "id = ?", "string_primary_key")
 //// SELECT * FROM users WHERE id = 'string_primary_key' LIMIT 1;
 
-// Plain SQL
+// Обычный SQL
 db.Find(&user, "name = ?", "jinzhu")
 //// SELECT * FROM users WHERE name = "jinzhu";
 
 db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
 //// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
 
-// Struct
+// Структура "struct"
 db.Find(&users, User{Age: 20})
 //// SELECT * FROM users WHERE age = 20;
 
-// Map
+// Карта
 db.Find(&users, map[string]interface{}{"age": 20})
 //// SELECT * FROM users WHERE age = 20;
 ```
 
-### Extra Querying option
+### Дополнительные параметры запроса
 
 ```go
-// Add extra SQL option for selecting SQL
+// Добавить дополнительный параметр SQL для фильтрации
 db.Set("gorm:query_option", "FOR UPDATE").First(&user, 10)
 //// SELECT * FROM users WHERE id = 10 FOR UPDATE;
 ```
 
-## FirstOrInit
+## ПервыйИлиИнициировать "FirstOrInit"
 
-Get first matched record, or initalize a new one with given conditions (only works with struct, map conditions)
+Получить первую совпадающую запись или инициализировать новую с заданными условиями (работает только с структурой, картой условий)
 
 ```go
-// Unfound
+// Не найдено
 db.FirstOrInit(&user, User{Name: "non_existing"})
 //// user -> User{Name: "non_existing"}
 
-// Found
+// Найдено
 db.Where(User{Name: "Jinzhu"}).FirstOrInit(&user)
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 ```
 
-### Attrs
+### Атрибуты
 
-Initalize struct with argument if record not found
+Создать структуру с аргументом, если запись не найдена
 
 ```go
-// Unfound
+// Не найдено
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = 'non_existing';
 //// user -> User{Name: "non_existing", Age: 20}
@@ -210,82 +210,82 @@ db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = 'non_existing';
 //// user -> User{Name: "non_existing", Age: 20}
 
-// Found
+// Найдено
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = jinzhu';
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 ```
 
-### Assign
+### Присвоить
 
-Assign argument to struct regardless it is found or not
+Назначить аргумент структуре независимо от того, найден он или нет
 
 ```go
-// Unfound
+// Не найдено
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 //// user -> User{Name: "non_existing", Age: 20}
 
-// Found
+// Найдено
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = jinzhu';
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 30}
 ```
 
-## FirstOrCreate
+## ПервыйИлиСоздать "FirstOrCreate"
 
-Get first matched record, or create a new one with given conditions (only works with struct, map conditions)
+Получить первую совпадающую запись или инициализировать новую с заданными условиями (работает только с структурой, картой условий)
 
 ```go
-// Unfound
+// Не найдено
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 //// INSERT INTO "users" (name) VALUES ("non_existing");
 //// user -> User{Id: 112, Name: "non_existing"}
 
-// Found
+// Найдено
 db.Where(User{Name: "Jinzhu"}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "Jinzhu"}
 ```
 
-### Attrs
+### Атрибуты
 
-Assign struct with argument if record not found and create with those values
+Назначить структуру с аргументом, если запись не найдена и создать с этими значениями
 
 ```go
-// Unfound
+// Не найдено
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'non_existing';
 //// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 //// user -> User{Id: 112, Name: "non_existing", Age: 20}
 
-// Found
+// Найдено
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 //// user -> User{Id: 111, Name: "jinzhu", Age: 20}
 ```
 
-### Assign
+### Присвоить
 
-Assign it to the record regardless it is found or not, and save back to database.
+Назначить его записи независимо от того, что она найдена или нет, и сохранить обратно в базу данных.
 
 ```go
-// Unfound
+// Не найдено
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'non_existing';
 //// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 //// user -> User{Id: 112, Name: "non_existing", Age: 20}
 
-// Found
+// Найдено
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 //// UPDATE users SET age=30 WHERE id = 111;
 //// user -> User{Id: 111, Name: "jinzhu", Age: 30}
 ```
 
-## Advanced Query
+## Расширенный запрос "Advanced Query"
 
-### SubQuery
+### Подзапрос "SubQuery"
 
-SubQuery with `*gorm.expr`
+Подзапрос с помощью `*gorm.expr`
 
 ```go
 db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?", "paid").QueryExpr()).Find(&orders)
@@ -294,7 +294,7 @@ db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?
 
 ### Select
 
-Specify fields that you want to retrieve from database, by default, will select all fields
+Укажите поля, которые вы хотите получить из базы данных, по умолчанию, будут выбраны все поля
 
 ```go
 db.Select("name, age").Find(&users)
