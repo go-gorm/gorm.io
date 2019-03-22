@@ -33,76 +33,76 @@ db.DB()
 ### Has Table
 
 ```go
-// Check model `User`'s table exists or not
+// Проверить существует или нет модель таблицы `User`'s
 db.HasTable(&User{})
 
-// Check table `users` exists or not
+// Проверить существует или нет таблица `users`
 db.HasTable("users")
 ```
 
-### Create Table
+### Создание таблиц
 
 ```go
-// Create table for model `User`
+// Создать таблицу для модели `User`
 db.CreateTable(&User{})
 
-// will append "ENGINE=InnoDB" to the SQL statement when creating table `users`
+// добавит "ENGINE=InnoDB" в запрос при создании таблицы `users`
 db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
 ```
 
-### Drop table
+### Удалить таблицу
 
 ```go
-// Drop model `User`'s table
+// Удалить модель `User`'s table
 db.DropTable(&User{})
 
-// Drop table `users`
+// Удалить таблицу `users`
 db.DropTable("users")
 
-// Drop model's `User`'s table and table `products`
+// Удалить таблицу модели `User`'s и таблицу `products`
 db.DropTableIfExists(&User{}, "products")
 ```
 
-### ModifyColumn
+### Изменить столбец
 
-Modify column's type to given value
+Изменить тип столбца на заданное значение
 
 ```go
-// change column description's data type to `text` for model `User`
+// изменяет тип колонки description на `text` для модели `User`
 db.Model(&User{}).ModifyColumn("description", "text")
 ```
 
-### DropColumn
+### Удаление столбца
 
 ```go
-// Drop column description from model `User`
+// Удаляет столбец description для модели `User`
 db.Model(&User{}).DropColumn("description")
 ```
 
-### Add Indexes
+### Добавить индексы
 
 ```go
-// Add index for columns `name` with given name `idx_user_name`
+// Добавление индекса для столбца `name` с названием `idx_user_name`
 db.Model(&User{}).AddIndex("idx_user_name", "name")
 
-// Add index for columns `name`, `age` with given name `idx_user_name_age`
+// Добавление индекса для столбцов `name`, `age` с названием `idx_user_name_age`
 db.Model(&User{}).AddIndex("idx_user_name_age", "name", "age")
 
-// Add unique index
+// Добавление уникального индекса
 db.Model(&User{}).AddUniqueIndex("idx_user_name", "name")
 
-// Add unique index for multiple columns
+// Добавление составного уникального индекса
 db.Model(&User{}).AddUniqueIndex("idx_user_name_age", "name", "age")
 ```
 
-### Remove Index
+### Удаление индекса
 
 ```go
-// Remove index
+// Удаление индекса
 db.Model(&User{}).RemoveIndex("idx_user_name")
 ```
 
-### Add Foreign Key
+### Добавить внешний ключ
 
 ```go
 // Add foreign key
