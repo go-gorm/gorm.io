@@ -1,8 +1,8 @@
 ---
-title: Preloading (Eager loading)
-layout: page
+title: Предзагрузка данных (Жадная загрузка)
+layout: страница
 ---
-## Preload
+## Предзагрузка
 
 ```go
 db.Preload("Orders").Find(&users)
@@ -19,37 +19,37 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 
 db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 //// SELECT * FROM users;
-//// SELECT * FROM orders WHERE user_id IN (1,2,3,4); // has many
-//// SELECT * FROM profiles WHERE user_id IN (1,2,3,4); // has one
-//// SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
+//// SELECT * FROM orders WHERE user_id IN (1,2,3,4); // имеет много
+//// SELECT * FROM profiles WHERE user_id IN (1,2,3,4); // имеет один
+//// SELECT * FROM roles WHERE id IN (4,5,6); // принадлежит
 ```
 
-## Auto Preloading
+## Авто предзагрузка
 
-Always auto preload associations
+Всегда автоматически загружать ассоциации
 
 ```go
 type User struct {
   gorm.Model
   Name       string
   CompanyID  uint
-  Company    Company `gorm:"PRELOAD:false"` // not preloaded
-  Role       Role                           // preloaded
+  Company    Company `gorm:"PRELOAD:false"` // не предзагружать
+  Role       Role                           // предзагружать
 }
 
 db.Set("gorm:auto_preload", true).Find(&users)
 ```
 
-## Nested Preloading
+## Вложенная предзагрузка
 
 ```go
 db.Preload("Orders.OrderItems").Find(&users)
 db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
 ```
 
-## Custom Preloading SQL
+## Предзагрузка пользовательского SQL
 
-You could custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+Вы можете настроить предзагрузку пользовательского SQL, с помощью `func(db *gorm.DB) *gorm.DB`, например:
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
