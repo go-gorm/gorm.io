@@ -40,26 +40,26 @@ type User struct {
 | NOT NULL        | Определяет столбец как NOT NULL                                           |
 | AUTO_INCREMENT  | Указывает столбец как автоинкрементный или нет                            |
 | INDEX           | Создать индекс с именем или без него, то же имя создает составные индексы |
-| UNIQUE_INDEX    | Like `INDEX`, create unique index                                         |
-| EMBEDDED        | Set struct as embedded                                                    |
-| EMBEDDED_PREFIX | Set embedded struct's prefix name                                         |
-| -               | Ignore this fields                                                        |
+| UNIQUE_INDEX    | Как и `INDEX`, создает уникальный индекс                                  |
+| EMBEDDED        | Установить структуру как встроенную                                       |
+| EMBEDDED_PREFIX | Установить префикс для встроенной структуры                               |
+| -               | Игнорировать эти поля                                                     |
 
-### Struct tags for Associations
+### Теги структуры для ассоциаций
 
 Check out the Associations section for details
 
-| Tag                                | Description                                    |
-| ---------------------------------- | ---------------------------------------------- |
-| MANY2MANY                          | Specifies join table name                      |
-| FOREIGNKEY                         | Specifies foreign key                          |
-| ASSOCIATION_FOREIGNKEY             | Specifies association foreign key              |
-| POLYMORPHIC                        | Specifies polymorphic type                     |
-| POLYMORPHIC_VALUE                  | Specifies polymorphic value                    |
-| JOINTABLE_FOREIGNKEY               | Specifies foreign key of jointable             |
-| ASSOCIATION_JOINTABLE_FOREIGNKEY | Specifies association foreign key of jointable |
-| SAVE_ASSOCIATIONS                  | AutoSave associations or not                   |
-| ASSOCIATION_AUTOUPDATE             | AutoUpdate associations or not                 |
-| ASSOCIATION_AUTOCREATE             | AutoCreate associations or not                 |
-| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not         |
-| PRELOAD                            | Auto Preload associations or not               |
+| Тег                                | Описание                                          |
+| ---------------------------------- | ------------------------------------------------- |
+| MANY2MANY                          | Указывает имя таблицы объединения                 |
+| FOREIGNKEY                         | Определяет внешний ключ                           |
+| ASSOCIATION_FOREIGNKEY             | Определяет ассоциативный внешний ключ             |
+| POLYMORPHIC                        | Определяет полиморфический тип                    |
+| POLYMORPHIC_VALUE                  | Определяет полиморфическое значение               |
+| JOINTABLE_FOREIGNKEY               | Определяет внешний ключ подключения               |
+| ASSOCIATION_JOINTABLE_FOREIGNKEY | Определяет ассоциативный внешний ключ подключения |
+| SAVE_ASSOCIATIONS                  | Автосохранение ассоциаций или нет                 |
+| ASSOCIATION_AUTOUPDATE             | Автообновление ассоциаций или нет                 |
+| ASSOCIATION_AUTOCREATE             | Автосоздание ассоциаций или нет                   |
+| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not            |
+| PRELOAD                            | Предзагрузка ассоциаций или нет                   |
