@@ -4,33 +4,33 @@ layout: страница
 ---
 GORM выполняет одиночный `create`, `update`, `delete` в транзакциях по умолчанию, чтобы гарантировать целостность данных базы данных.
 
-If you want to treat multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
+Если вы хотите обработать несколько `create`, `update`, `delete` в качестве одной операции, `Transaction` сделана для этого.
 
-## Transactions
+## Транзакции
 
-To perform a set of operations within a transaction, the general flow is as below.
+Для выполнения набора операций в рамках транзакции, выполняйте запросы как указано ниже.
 
 ```go
-// begin a transaction
+// начать транзакцию
 tx := db.Begin()
 
-// do some database operations in the transaction (use 'tx' from this point, not 'db')
+// работа с базой Данных в транзакции (используйте 'tx', не 'db')
 tx.Create(...)
 
 // ...
 
-// rollback the transaction in case of error
+// откат транзакции в случае ошибки
 tx.Rollback()
 
-// Or commit the transaction
+// Или фиксировать транзакцию
 tx.Commit()
 ```
 
-## A Specific Example
+## Конкретный пример
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
-  // Note the use of tx as the database handle once you are within a transaction
+  // Используете только tx в качестве объекта БД пока вы в транзакции
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
