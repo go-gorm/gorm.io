@@ -12,7 +12,7 @@ layout: страница
 
 ### Создание объекта
 
-Доступные хуки для создания
+Доступные хуки при создании
 
 ```go
 // начало транзакции
@@ -57,7 +57,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 
 ### Обновление объекта
 
-Доступные хуки для обновления
+Доступные хуки при обновлении
 
 ```go
 // начало транзакции
@@ -93,7 +93,7 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 
 ### Удаление объекта
 
-Доступные хуки для удаления
+Доступные хуки при удалении
 
 ```go
 // начало транзакции
@@ -106,7 +106,7 @@ AfterDelete
 Примеры кода:
 
 ```go
-// Updating data in same transaction
+// Обновление данных в той же транзакции 
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
@@ -115,17 +115,17 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Querying an object
+### Запрос объекта
 
-Available hooks for querying
+Доступные хуки при запросе
 
 ```go
-// load data from database
-// Preloading (eager loading)
+// получение данных из базы данных
+// Предзагрузка
 AfterFind
 ```
 
-Code Example:
+Примеры кода:
 
 ```go
 func (u *User) AfterFind() (err error) {
