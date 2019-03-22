@@ -1,5 +1,5 @@
 ---
-title: Удаление
+title: Delete
 layout: страница
 ---
 ## Удаление записи
@@ -30,27 +30,27 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ## Мягкое удаление
 
-If a model has a `DeletedAt` field, it will get a soft delete ability automatically! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
+Если модель имеет поле `DeletedAt`, она автоматически получит возможность мягкого удаления! При вызове `Delete`запись не будет навсегда удалена из базы данных; вместо этого, значение поля `DeletedAt` будет установлено на текущее unix время
 
 ```go
 db.Delete(&user)
 //// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// Пакетное удаление
 db.Where("age = ?", 20).Delete(&User{})
 //// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when query them
+// Мягко удаленные записи будут проигнорированы при выборке
 db.Where("age = 20").Find(&user)
 //// SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 
-// Find soft deleted records with Unscoped
+// Поиск мягко удаленных записей производится с использованием Unscoped метода
 db.Unscoped().Where("age = 20").Find(&users)
 //// SELECT * FROM users WHERE age = 20;
 ```
 
-## Delete record permanently
+## Удалить запись навсегда
 
-    // Delete record permanently with Unscoped
+    // Удалить запись навсегда через Unscoped метод
     db.Unscoped().Delete(&order)
     //// DELETE FROM orders WHERE id=10;
