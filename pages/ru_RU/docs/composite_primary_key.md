@@ -1,6 +1,6 @@
 ---
-title: Composite Primary Key
-layout: page
+title: Составной первичный ключ
+layout: страница
 ---
 Set multiple fields as primary key to enable composite primary key
 
