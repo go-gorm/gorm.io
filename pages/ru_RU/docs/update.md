@@ -76,15 +76,15 @@ db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface{}{"name": "hello", "age": 18})
 //// UPDATE users SET name='hello', age=18 WHERE id IN (10, 11);
 
-// Update with struct only works with none zero values, or use map[string]interface{}
+// Обновление с помощью структуры работает только с не нулевыми значениями, используйте map[string]interface{}
 db.Model(User{}).Updates(User{Name: "hello", Age: 18})
 //// UPDATE users SET name='hello', age=18;
 
-// Get updated records count with `RowsAffected`
+// Получить количество обновленных записей с помощью `RowsAffected`
 db.Model(User{}).Updates(User{Name: "hello", Age: 18}).RowsAffected
 ```
 
-## Update with SQL Expression
+## Обновить при помощи SQL выражения
 
 ```go
 DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
@@ -100,9 +100,9 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 //// UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
-## Change Values In Hooks
+## Изменить значения в хуках
 
-If you want to change updating values in hooks using `BeforeUpdate`, `BeforeSave`, you could use `scope.SetColumn`, for example:
+Если вы хотите изменить значения обновления в хуках с помощью `BeforeUpdate`, `BeforeSave`, вы можете использовать `scope.SetColumn`, например:
 
 ```go
 func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
@@ -112,10 +112,10 @@ func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
 }
 ```
 
-## Extra Updating option
+## Дополнительные опции обновления
 
 ```go
-// Add extra SQL option for updating SQL
+// Добавить строковый SQL для обновления
 db.Model(&user).Set("gorm:update_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Update("name", "hello")
 //// UPDATE users SET name='hello', updated_at = '2013-11-17 21:34:10' WHERE id=111 OPTION (OPTIMIZE FOR UNKNOWN);
 ```
