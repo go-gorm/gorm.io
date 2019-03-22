@@ -4,12 +4,12 @@ layout: страница
 ---
 ## Has One
 
-A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+Связь `has one` "имеет одну" также делает связь один к одному с другой моделью, но с несколько разными семантиками (и последствиями). Эта ассоциация указывает, что каждый экземпляр модели содержит или обладает одним из экземпляров другой модели.
 
-For example, if your application includes users and credit card, and each user can only have one credit card.
+Например, если ваше приложение включает в себя пользователей и кредитную карту, и каждый пользователь может иметь одну кредитную карту.
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+// User имеет одну CreditCard, CreditCardID это внешний ключ
 type User struct {
     gorm.Model
     CreditCard   CreditCard
@@ -24,13 +24,13 @@ type CreditCard struct {
 
 ## Foreign Key
 
-For a has one relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
+Для связи has one "имеет одну", поле внешнего ключа должно существовать, владелец будет сохранять первичный ключ принадлежащей поделив это поле.
 
-The field's name is usually generated with `belongs to model`'s type plus its `primary key`, for the above example it is `CreditCardID`
+Имя поля обычно генерируется из типа поля `принадлежит к модели` плюс его `первичный ключ`, например `CreditCardID`
 
-When you give a credit card to the user, its will save the credit card's `ID` into its `CreditCardID` field.
+Когда вы задаете кредитную карту модели пользователя, она сохранит `ID` кредитной карты в поле `CreditCardID`.
 
-If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
+Если вы хотите использовать другое поле для сохранения отношений, вы можете изменить его с тегом `foreignkey`, например:
 
 ```go
 type User struct {
