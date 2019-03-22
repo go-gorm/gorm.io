@@ -1,22 +1,22 @@
 ---
-title: Create
-layout: page
+title: Создание
+layout: страница
 ---
-## Create Record
+## Создать запись
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-db.NewRecord(user) // => returns `true` as primary key is blank
+db.NewRecord(user) // => вернет `true` пока первичный ключ пуст
 
 db.Create(&user)
 
-db.NewRecord(user) // => return `false` after `user` created
+db.NewRecord(user) // => вернет `false` после создания `user`
 ```
 
-## Default Values
+## Значения по умолчанию
 
-You can define a field's default value with a tag. For example:
+Вы можете определить значения поля по умолчанию при помощи тегов. Например:
 
 ```go
 type Animal struct {
