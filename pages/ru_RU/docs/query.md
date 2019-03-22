@@ -263,7 +263,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "jinzhu", Age: 20}
 ```
 
-### Присвоить
+### Assign
 
 Назначить его записи независимо от того, что она найдена или нет, и сохранить обратно в базу данных.
 
