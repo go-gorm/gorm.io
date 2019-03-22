@@ -145,7 +145,7 @@ db.Model(&user).Association("Languages")
 
 ### Найти связи
 
-Find matched associations
+Найти соответствующие связи
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
