@@ -143,7 +143,7 @@ db.Model(&user).Association("Languages")
 // db.Model(&user).Association("Languages").Error
 ```
 
-### Найти связи
+### Поиск связей
 
 Найти соответствующие связи
 
@@ -151,25 +151,25 @@ db.Model(&user).Association("Languages")
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Добавление связей
 
-Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
+Добавление новых связей для `многие ко многим`, `один ко многим`, заменяет текущие связи вида `один к одному`, `принадлежит`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 ```
 
-### Replace Associations
+### Замена связей
 
-Replace current associations with new ones
+Заменить текущие связи новыми
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Удаление связей
 
 Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
 
@@ -178,7 +178,7 @@ db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Очистить связи
 
 Remove reference between source & current associations, won't delete those associations
 
@@ -186,9 +186,9 @@ Remove reference between source & current associations, won't delete those assoc
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Подсчет количества связей
 
-Return the count of current associations
+Возвращает количество текущих связей
 
 ```go
 db.Model(&user).Association("Languages").Count()
