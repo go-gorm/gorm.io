@@ -1,10 +1,10 @@
 ---
 title: Update
-layout: page
+layout: страница
 ---
-## Update All Fields
+## Обновить все поля
 
-`Save` will include all fields when perform the Updating SQL, even it is not changed
+`Save` будет включать все поля при вызове Update, даже если ничего не изменено
 
 ```go
 db.First(&user)
@@ -16,9 +16,9 @@ db.Save(&user)
 //// UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update Changed Fields
+## Обновить измененные поля
 
-If you only want to update changed Fields, you could use `Update`, `Updates`
+Если вы хотите обновить только измененные поля, вы можете использовать `Update`, `Updates`
 
 ```go
 // Update single attribute if it is changed
