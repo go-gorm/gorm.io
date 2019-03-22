@@ -2,7 +2,7 @@
 title: Предзагрузка данных (Жадная загрузка)
 layout: страница
 ---
-## Предзагрузка
+## Preload
 
 ```go
 db.Preload("Orders").Find(&users)
