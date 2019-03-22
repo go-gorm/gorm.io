@@ -141,4 +141,4 @@ db.Model(&user).Update("name", "jinzhu") // установит `UpdatedAt` на 
 
 ### DeletedAt
 
-Для моделей с полем `DeletedAt`, когда вызывается метод экземпляра `Delete`, он не будет по-настоящему удален из базы данных, а установит поле `DeletedAt` на текущее unix время. Refer to [Soft Delete](/docs/delete.html#Soft-Delete)
+Для моделей с полем `DeletedAt`, когда вызывается метод экземпляра `Delete`, он не будет по-настоящему удален из базы данных, а установит поле `DeletedAt` на текущее unix время. Ссылка на [Мягкое удаление](/docs/delete.html#Soft-Delete)
