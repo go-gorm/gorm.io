@@ -6,29 +6,29 @@ layout: страница
 
 Хуки - это функции, которые вызываются до или после создания/выборки/обновления/удаления.
 
-If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+Если вы определили специальные методы для модели, то они будут вызываться автоматически при создании, обновлении, запросе, удалении, а если какой-либо из вызовов возвращает ошибку, GORM остановит обработку и откатит текущую транзакцию.
 
-## Hooks
+## Хуки
 
-### Creating an object
+### Создание объекта
 
-Available hooks for creating
+Доступные хуки для создания
 
 ```go
-// begin transaction
+// начало транзакции
 BeforeSave
 BeforeCreate
-// save before associations
-// update timestamp `CreatedAt`, `UpdatedAt`
-// save self
-// reload fields that have default value and its value is blank
-// save after associations
+// сохранение перед связями
+// обновление unix времени `CreatedAt`, `UpdatedAt`
+// сохранение себя
+// перезагрузка полей имеющие значения по умолчанию и их значения пусты
+// сохранение после связей
 AfterCreate
 AfterSave
-// commit or rollback transaction
+// фиксирование или откат транзакции
 ```
 
-Code Example:
+Примеры кода:
 
 ```go
 func (u *User) BeforeSave() (err error) {
@@ -46,7 +46,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited. If you would like access those changes in your hooks, you could accept current tranaction as argument in your hooks, for example:
+**ПРИМЕЧАНИЕ** Save/Delete в GORM выполняются в транзакции по умолчанию, поэтому изменения, внесенные в этой транзакции не будут видны пока она будет зафиксирована. Если вы хотите получить доступ к этим изменениям в хуках, вы можете принять текущую транзакцию в качестве аргумента в ваших хуках, например:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
@@ -55,24 +55,24 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### Обновление объекта
 
-Available hooks for updating
+Доступные хуки для обновления
 
 ```go
-// begin transaction
+// начало транзакции
 BeforeSave
 BeforeUpdate
-// save before associations
-// update timestamp `UpdatedAt`
-// save self
-// save after associations
+// сохранение перед связями
+// обновление unixtime времени `UpdatedAt`
+// сохранение себя
+// сохранение после связей
 AfterUpdate
 AfterSave
-// commit or rollback transaction
+// фиксация или откат транзакции
 ```
 
-Code Example:
+Примеры кода:
 
 ```go
 func (u *User) BeforeUpdate() (err error) {
@@ -82,7 +82,7 @@ func (u *User) BeforeUpdate() (err error) {
     return
 }
 
-// Updating data in same transaction
+// Обновление данных с этой же транзакции
 func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
@@ -91,19 +91,19 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### Удаление объекта
 
-Available hooks for deleting
+Доступные хуки для удаления
 
 ```go
-// begin transaction
+// начало транзакции
 BeforeDelete
-// delete self
+// удаление себя
 AfterDelete
-// commit or rollback transaction
+// фиксирование или откат транзакции
 ```
 
-Code Example:
+Примеры кода:
 
 ```go
 // Updating data in same transaction
