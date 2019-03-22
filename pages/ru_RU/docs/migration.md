@@ -105,15 +105,15 @@ db.Model(&User{}).RemoveIndex("idx_user_name")
 ### Добавить внешний ключ
 
 ```go
-// Add foreign key
-// 1st param : foreignkey field
-// 2nd param : destination table(id)
-// 3rd param : ONDELETE
-// 4th param : ONUPDATE
+// Добавление внешнего ключа
+// 1ый параметр : foreignkey field "поле внешнего ключа"
+// 2ой параметр : destination table(id) "таблица названичения"
+// 3ий параметр : ONDELETE "при удалении"
+// 4ый параметр : ONUPDATE "при обновлении"
 db.Model(&User{}).AddForeignKey("city_id", "cities(id)", "RESTRICT", "RESTRICT")
 ```
 
-### Remove ForeignKey
+### Удалить внешний ключ
 
 ```go
 db.Model(&User{}).RemoveForeignKey("city_id", "cities(id)")
