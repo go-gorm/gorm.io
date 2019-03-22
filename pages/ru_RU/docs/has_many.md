@@ -1,15 +1,15 @@
 ---
 title: Has Many
-layout: page
+layout: страница
 ---
 ## Has Many
 
-A `has many` association also sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+Связь `has many` устанавливают соединение один ко многим с другой моделью, в отличие от `has one`, владелец может иметь нулевую или много экземпляров моделей.
 
-For example, if your application includes users and credit card, and each user can have many credit cards.
+Например, если ваше приложение включает в себя пользователей и кредитную карту, и каждый пользователь может иметь много кредитных карт.
 
 ```go
-// User has many CreditCards, UserID is the foreign key
+// Пользователи имеют много кредитных карт, UserID является внешним ключом
 type User struct {
     gorm.Model
     CreditCards []CreditCard
@@ -24,11 +24,11 @@ type CreditCard struct {
 
 ## Foreign Key
 
-To define a has many relationship, a foreign key must exist. The default foreign key's name is the owner's type name plus the name of its primary key field (e.g. UserID, CardID, etc).
+Для определения связи has many, должен существовать внешний ключ. Имя внешнего ключа по умолчанию является именем владельца, плюс имя основного ключа (например, UserID, CardID и т.д.).
 
-For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+Например, для определения модели, которая принадлежит `User`, внешний ключ должен быть `UserID`.
 
-To use another field as foreign key, you can customize it with a `foreignkey` tag, e.g:
+Чтобы использовать другое поле как внешний ключ, вы можете настроить его с помощью `foreignkey` тега, например:
 
 ```go
 type User struct {
@@ -45,11 +45,11 @@ type CreditCard struct {
 
 ## Association ForeignKey
 
-GORM usually uses the owner's primary key as the foreign key's value, for above example, it is the `User`'s `ID`,
+Для принадлежности к отношениям, GORM обычно использует первичный ключ владельца как значение внешнего ключа, например, модель `User` с полем `ID`,
 
-When you assign credit cards to a user, GORM will save the user's `ID` into credit cards' `UserID` field.
+Когда вы привязываете кредитную карту к пользователю, GORM сохранит пользовательский `ID` в поле кредитных карт `UserID`.
 
-You are able to change it with tag `association_foreignkey`, e.g:
+Вы можете изменить это тэгом `association_foreignkey`, пример:
 
 ```go
 type User struct {
@@ -67,7 +67,7 @@ type CreditCard struct {
 
 ## Polymorphism Association
 
-GORM supports polymorphic has-many and has-one associations.
+GORM поддерживает полиморфический has-many "имеет много" и has-one "имеет одно" объединение.
 
 ```go
   type Cat struct {
@@ -90,15 +90,15 @@ GORM supports polymorphic has-many and has-one associations.
   }
 ```
 
-Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
+Примечание: полиморфический belongs-to "принадлежит к" и many-to-many "многие ко многим" не поддерживаются, и будут выводить ошибки.
 
-## Working with Has Many
+## Работа с Has Many
 
-You could find `has many` assciations with `Related`
+Вы можете найти `has many` связи с помощью `Related`
 
 ```go
 db.Model(&user).Related(&emails)
 //// SELECT * FROM emails WHERE user_id = 111; // 111 is user's primary key
 ```
 
-For advanced usage, refer to [Association Mode](/docs/associations.html#Association-Mode)
+Для расширенного использования, смотрите [Режим связей](/docs/associations.html#Association-Mode)
