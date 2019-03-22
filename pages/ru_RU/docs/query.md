@@ -99,7 +99,7 @@ type User struct {
 }
 ```
 
-### НЕ "Not"
+### Not
 
 Работает также как `Где`
 
@@ -127,7 +127,7 @@ db.Not(User{Name: "jinzhu"}).First(&user)
 //// SELECT * FROM users WHERE name <> "jinzhu";
 ```
 
-### ИЛИ "Or"
+### Or
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -309,17 +309,17 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 
 ### Order
 
-Specify order when retrieve records from database, set reorder (the second argument) to `true` to overwrite defined conditions
+Укажите сортировку при получении записей из базы данных, установить пересортировку (второй аргумент) на `true` для перезаписи определенных условий
 
 ```go
 db.Order("age desc, name").Find(&users)
 //// SELECT * FROM users ORDER BY age desc, name;
 
-// Multiple orders
+// Несколько сортировок
 db.Order("age desc").Order("name").Find(&users)
 //// SELECT * FROM users ORDER BY age desc, name;
 
-// ReOrder
+// пересортировка
 db.Order("age desc").Find(&users1).Order("age", true).Find(&users2)
 //// SELECT * FROM users ORDER BY age desc; (users1)
 //// SELECT * FROM users ORDER BY age; (users2)
@@ -327,13 +327,13 @@ db.Order("age desc").Find(&users1).Order("age", true).Find(&users2)
 
 ### Limit
 
-Specify the max number of records to retrieve
+Укажите максимальное количество записей для получения
 
 ```go
 db.Limit(3).Find(&users)
 //// SELECT * FROM users LIMIT 3;
 
-// Cancel limit condition with -1
+// Отменить ограничение количества выбранных записей с помощью -1
 db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 //// SELECT * FROM users LIMIT 10; (users1)
 //// SELECT * FROM users; (users2)
@@ -341,13 +341,13 @@ db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 
 ### Offset
 
-Specify the number of records to skip before starting to return the records
+Указывает количество записей, которые будут пропущены от начала списка результатов выборки
 
 ```go
 db.Offset(3).Find(&users)
 //// SELECT * FROM users OFFSET 3;
 
-// Cancel offset condition with -1
+// Отменить пропуск записей с помощью -1
 db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 //// SELECT * FROM users OFFSET 10; (users1)
 //// SELECT * FROM users; (users2)
@@ -355,7 +355,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 
 ### Count
 
-Get how many records for a model
+Получить количество записей для модели
 
 ```go
 db.Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Find(&users).Count(&count)
@@ -369,7 +369,7 @@ db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
 ```
 
-**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns
+**ПРИМЕЧАНИЕ** При использовании `Count` в цепочке запросов, он должно быть последним, так как он перезапишет `SELECT` столбцов
 
 ### Group & Having
 
@@ -393,7 +393,7 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ### Joins
 
-Specify Joins conditions
+Указывает условия присоединения
 
 ```go
 rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
@@ -403,13 +403,13 @@ for rows.Next() {
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// multiple joins with parameter
+// множественное присоединение с параметрами
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
 ## Pluck
 
-Query single column from a model as a map, if you want to query multiple columns, you should use [`Scan`](#Scan) instead
+Запросить один столбец из модели как карту, если вы хотите запросить несколько столбцов, вы должны использовать [`Scan`](#Scan) вместо этого
 
 ```go
 var ages []int64
@@ -420,13 +420,13 @@ db.Model(&User{}).Pluck("name", &names)
 
 db.Table("deleted_users").Pluck("name", &names)
 
-// Requesting more than one column? Do it like this:
+// Запрос более чем одного столбца? Делайте это вот так:
 db.Select("name, age").Find(&users)
 ```
 
 ## Scan
 
-Scan results into another struct.
+Сканирование результатов в другую структуру.
 
 ```go
 type Result struct {
@@ -437,6 +437,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name, age").Where("name = ?", 3).Scan(&result)
 
-// Raw SQL
+// Сырой SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
 ```
