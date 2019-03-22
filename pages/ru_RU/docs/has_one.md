@@ -1,6 +1,6 @@
 ---
 title: Has One
-layout: page
+layout: страница
 ---
 ## Has One
 
