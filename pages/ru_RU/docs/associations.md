@@ -129,21 +129,21 @@ type User struct {
 }
 ```
 
-## Режим объединения
+## Связь моделей
 
 GORM поддерживает следующие методы для получения связей модели.
 
 ```go
-// Start Association Mode
+// Начать связь моделей
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source, must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
+// `user` это источник, должен содержать первичный ключ
+// `Languages` имя поля источника для связи
+// Связь моделей может работать только если два выше указанных условия совпадают, это можно проверять так:
 // db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Найти связи
 
 Find matched associations
 
