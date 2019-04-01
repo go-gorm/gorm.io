@@ -29,7 +29,7 @@ Um eine zu einer Beziehung gehörende Eigenschaft zu definieren, muss der Fremds
 
 Um beispielsweise ein Modell zu definieren, das zu ` User ` gehört, sollte der Fremdschlüssel ` UserID ` lauten.
 
-GORM bietet auch eine Möglichkeit zur Anpassen des Fremdschlüssels:
+GORM provides a way to customize the foreign key, for example:
 
 ```go
 type User struct {
@@ -47,7 +47,7 @@ type Profile struct {
 
 ## Assoziations-Fremdschlüssel
 
-Bei einer `belongs to` Beziehung verwendet GORM normalerweise den Primärschlüssel des Eigentümers als Wert des Fremdschlüssels, im obigen Beispiel `User`'s `ID`.
+For a belongs to relationship, GORM usually uses the owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
 
 Wenn man einem Benutzer ein Profil zuweist, speichert GORM die `ID` des Benutzers im Feld `UserID` des Profils.
 
