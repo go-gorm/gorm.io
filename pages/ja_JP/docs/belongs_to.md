@@ -29,7 +29,7 @@ belongs to を定義する場合、外部キーは必ず存在しなければな
 
 上述の例では、`User` に属するモデルを定義する場合、外部キーは `UserID` にします。
 
-GORM は外部キーをカスタマイズする手段を提供しています: 
+GORM provides a way to customize the foreign key, for example:
 
 ```go
 type User struct {
@@ -47,7 +47,7 @@ type Profile struct {
 
 ## Association ForeignKey
 
-For a belongs to relationship, GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+For a belongs to relationship, GORM usually uses the owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
 
 When you assign a profile to a user, GORM will save user's `ID` into profile's `UserID` field.
 
