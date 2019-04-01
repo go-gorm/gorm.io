@@ -52,7 +52,7 @@ db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "ag
 
 ## Hook なしでの更新
 
-上記の更新処理は、`BeforeUpdate`, `AfterUpdate`メソッドを実行します。その結果更新時に`UpdatedAt`のタイムスタンプや 持っている `Associations` が更新されます。もしそれらのメソッドを呼びたくない場合は`UpdateColumn`と`UpdateColumns`が使えます。
+Above updating operations will perform the model's `BeforeUpdate`, `AfterUpdate` method, update its `UpdatedAt` timestamp, save its `Associations` when updating, if you don't want to call them, you could use `UpdateColumn`, `UpdateColumns`
 
 ```go
 // Update single attribute, similar with `Update`
