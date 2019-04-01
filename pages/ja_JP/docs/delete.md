@@ -51,8 +51,6 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ## Delete record permanently
 
-```go
-// Unscopedを使うことでいきなりレコードを物理削除できます。
-db.Unscoped().Delete(&order)
-//// DELETE FROM orders WHERE id=10;
-```
+    // Delete record permanently with Unscoped
+    db.Unscoped().Delete(&order)
+    //// DELETE FROM orders WHERE id=10;

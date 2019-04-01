@@ -1,15 +1,15 @@
 ---
-title: Conventions
-layout: page
+title: Определения
+layout: страница
 ---
 ## gorm.Model
 
-`gorm.Model` is a basic GoLang struct which includes the following fields: `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
+`gorm.Model` является базовой структурой GoLang, которая включает следующие поля: `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
 
-It may be embeded into your model or you may build your own model without it.
+Она может быть встроена в вашу модель или вы можете построить свою собственную модель без нее.
 
 ```go
-// gorm.Model definition
+// Определение gorm.Model
 type Model struct {
   ID        uint `gorm:"primary_key"`
   CreatedAt time.Time
@@ -17,30 +17,30 @@ type Model struct {
   DeletedAt *time.Time
 }
 
-// Inject fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` into model `User`
+// Добавление полей `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` в модель `User`
 type User struct {
   gorm.Model
   Name string
 }
 
-// Declaring model w/o gorm.Model
+// Обявление модели w/o gorm.Model
 type User struct {
   ID   int
   Name string
 }
 ```
 
-## `ID` as Primary Key
+## `ID` это первичный ключ
 
-GORM uses any field with the name `ID` as the table's primary key by default.
+GORM использует любое поле с именем `ID` как первичный ключ таблицы по умолчанию.
 
 ```go
 type User struct {
-  ID   string // field named `ID` will be used as primary field by default
+  ID   string // поле с название `ID` будет использовано как первичный ключ по умолчанию
   Name string
 }
 
-// Set field `AnimalID` as primary field
+// Установить поле `AnimalID` как первичный ключ
 type Animal struct {
   AnimalID int64 `gorm:"primary_key"`
   Name     string
@@ -48,14 +48,14 @@ type Animal struct {
 }
 ```
 
-## Pluralized Table Name
+## Плюрализированное имя таблицы
 
-Table name is the pluralized version of struct name.
+Название таблицы - плюралистическая версия структурного имени.
 
 ```go
-type User struct {} // default table name is `users`
+type User struct {} // название таблицы по умолчанию `users`
 
-// Set User's table name to be `profiles`
+// Установить название таблицы `profiles` для User's
 func (User) TableName() string {
   return "profiles"
 }
@@ -68,14 +68,14 @@ func (u User) TableName() string {
     }
 }
 
-// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
+// Отключить плюрализирование имени таблицы, если выставлено в true, название таблицы для модели `User`'s будет `user`
 db.SingularTable(true)
 ```
 
-### Specifying The Table Name
+### Указание названия таблицы
 
 ```go
-// Create `deleted_users` table with struct User's definition
+// Создать таблицу `deleted_users` со структурой User's
 db.Table("deleted_users").CreateTable(&User{})
 
 var deleted_users []User
@@ -86,9 +86,9 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 //// DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-### Change default tablenames
+### Изменение названий полей по умолчанию
 
-You can apply any rules on the default table name by defining the `DefaultTableNameHandler`.
+Вы можете применить любые правила по умолчанию, определив `DefaultTableNameHandler`.
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
@@ -102,43 +102,43 @@ Column names will be the field's name is lower snake case.
 
 ```go
 type User struct {
-  ID        uint      // column name is `id`
-  Name      string    // column name is `name`
-  Birthday  time.Time // column name is `birthday`
-  CreatedAt time.Time // column name is `created_at`
+  ID        uint      // название колонки `id`
+  Name      string    // название колонки `name`
+  Birthday  time.Time // название колонки `birthday`
+  CreatedAt time.Time // название колонки `created_at`
 }
 
 // Overriding Column Name
 type Animal struct {
-    AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
-    Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
-    Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
+    AnimalId    int64     `gorm:"column:beast_id"`         // установить название колонки `beast_id`
+    Birthday    time.Time `gorm:"column:day_of_the_beast"` // установить название колонки `day_of_the_beast`
+    Age         int64     `gorm:"column:age_of_the_beast"` // установить название колонки `age_of_the_beast`
 }
 ```
 
-## Timestamp Tracking
+## Отслеживание метки времени
 
 ### CreatedAt
 
-For models having a `CreatedAt` field, it will be set to the time when the record is first created.
+Для моделей, имеющих поле `CreatedAt`, оно будет установлено в момент, когда запись будет создана.
 
 ```go
-db.Create(&user) // will set `CreatedAt` to current time
+db.Create(&user) // установит `CreatedAt` на текущее unix время
 
-// To change its value, you could use `Update`
+// Для изменения его значения, вы должны использовать `Update`
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
 ### UpdatedAt
 
-For models having an `UpdatedAt` field, it will be set to time when the record is updated.
+Для моделей, имеющих поле `UpdatedAt`, оно будет изменяться в момент, когда запись будет изменена.
 
 ```go
-db.Save(&user) // will set `UpdatedAt` to current time
+db.Save(&user) // установит `UpdatedAt` на текущее unix время
 
-db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+db.Model(&user).Update("name", "jinzhu") // установит `UpdatedAt` на текущее unix время
 ```
 
 ### DeletedAt
 
-For models with a `DeletedAt` field, when `Delete` is called on that instance, it won't truly be deleted from database, but will set its `DeletedAt` field to the current time. Refer to [Soft Delete](/docs/delete.html#Soft-Delete)
+Для моделей с полем `DeletedAt`, когда вызывается метод экземпляра `Delete`, он не будет по-настоящему удален из базы данных, а установит поле `DeletedAt` на текущее unix время. Ссылка на [Мягкое удаление](/docs/delete.html#Soft-Delete)

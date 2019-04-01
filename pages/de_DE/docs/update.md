@@ -56,7 +56,7 @@ db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "ag
 
 ## Spalten ohne Hooks aktualisieren
 
-Die oberen Operationen führen alle außerdem die `BeforeUpdate`, `AfterUpdate` Methoden aus, aktualisieren den `UpdatedAt` timestamp und speichern die `Associations` beim Aktualisieren. Wenn man diese Methoden nicht ausführen will, kann man `UpdateColumn` oder `UpdateColumns` verwenden
+Above updating operations will perform the model's `BeforeUpdate`, `AfterUpdate` method, update its `UpdatedAt` timestamp, save its `Associations` when updating, if you don't want to call them, you could use `UpdateColumn`, `UpdateColumns`
 
 ```go
 // Update single attribute, similar with `Update`

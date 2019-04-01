@@ -4,7 +4,7 @@ layout: page
 ---
 ## Many To Many
 
-Many to Many は2つのモデル間のjoinを提供します
+Many to Many adds a join table between two models.
 
 例えば、アプリケーションにusersとlanguagesというモデルがある場合を考えます。 userは複数のlanguageをもち、複数のuserがあるlanguageを話せるとします。
 

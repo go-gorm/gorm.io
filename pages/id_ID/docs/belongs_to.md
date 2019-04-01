@@ -19,7 +19,7 @@ Untuk menentukan milik hubungan, kunci asing harus ada, kunci asing default meng
 
 Untuk contoh di atas, untuk menentukan model yang dimiliki`Pengguna`, kunci asing seharusnya `Identitas Pengguna`.
 
-GORM menyediakan cara untuk menyesuaikan kunci asing, misalnya:
+GORM provides a way to customize the foreign key, for example:
 
 ```go
 type User struct {
@@ -37,7 +37,7 @@ type Profile struct {
 
 ## Kunci Asing Asosiasi
 
-Untuk hubungan, GORM biasanya menggunakan kunci utama pemilik sebagai nilai kunci asing, untuk contoh di atas, itu `Pengguna`'s `ID`.
+For a belongs to relationship, GORM usually uses the owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
 
 Ketika anda menetapkan profil untuk pengguna, GORM akan menghemat pengguna `ID` ke profil `Identitas pengguna` bidang.
 

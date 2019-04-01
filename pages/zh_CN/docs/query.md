@@ -1,27 +1,27 @@
 ---
-title: Query
+title: 查询
 layout: page
 ---
-## Query
+## 查询
 
 ```go
 //通过主键查询第一条记录
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specfied order
+// 随机取一条记录
 db.Take(&user)
 //// SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key
+// 通过主键查询最后一条记录
 db.Last(&user)
 //// SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
-// Get all records
+// 拿到所有的记录
 db.Find(&users)
 //// SELECT * FROM users;
 
-// Get record with primary key (only works for integer primary key)
+// 查询指定的某条记录(只可在主键为整数型时使用)
 db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```

@@ -29,7 +29,7 @@ type Profile struct {
 
 For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
-GORM provides a way to customzie the foreign key, for example:
+GORM provides a way to customize the foreign key, for example:
 
 ```go
 type User struct {
@@ -47,7 +47,7 @@ type Profile struct {
 
 ## Association ForeignKey
 
-For a belongs to relationship, GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+For a belongs to relationship, GORM usually uses the owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
 
 When you assign a profile to a user, GORM will save user's `ID` into profile's `UserID` field.
 

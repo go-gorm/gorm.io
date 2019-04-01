@@ -1,5 +1,5 @@
 ---
-title: Delete
+title: 删除
 layout: page
 ---
 ## Delete Record

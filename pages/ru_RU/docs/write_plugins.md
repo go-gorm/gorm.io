@@ -1,12 +1,12 @@
 ---
-title: Write Plugins
-layout: page
+title: Написание плагинов
+layout: страница
 ---
-GORM itself is powered by `Callbacks`, so you could fully customize GORM as you want
+Сам GORM работает на `Callbacks`, чтобы вы могли полностью настроить GORM как вы хотите
 
-## Register a new callback
+## Зарегистрировать новый callback
 
-Register a callback into callbacks
+Зарегистрировать новый callback в callback
 
 ```go
 func updateCreated(scope *Scope) {
@@ -16,30 +16,30 @@ func updateCreated(scope *Scope) {
 }
 
 db.Callback().Create().Register("update_created_at", updateCreated)
-// register a callback for Create process
+// регистрация callback для Create процесса
 ```
 
-## Delete an existing callback
+## Удалить существующий callback
 
-Delete a callback from callbacks
+Удалить callback из callback
 
 ```go
 db.Callback().Create().Remove("gorm:create")
-// delete callback `gorm:create` from Create callbacks
+// удаляет callback `gorm:create` из Create callbacks
 ```
 
-## Replace an existing callback
+## Заменить существующий callback
 
-Replace a callback having same name with new one
+Заменить callback с таким же именем на новый
 
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
-// replace callback `gorm:create` with new function `newCreateFunction` for Create process
+// заменяет callback `gorm:create` на новую функцию `newCreateFunction` для Create процесса
 ```
 
-## Register callback orders
+## Регистрация очереди callback
 
-Register callbacks with orders
+Регистрация callback с очередью
 
 ```go
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
@@ -50,9 +50,9 @@ db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update",
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 ```
 
-## Pre-Defined Callbacks
+## Предустановленные callbacks
 
-GORM has defiend callbacks to perform CRUD operations, check them out before start write your plugins
+GORM имеет установленные callback для реализации CRUD операций, проверьте их названия перед созданием своих плагинов
 
 - [Create callbacks](https://github.com/jinzhu/gorm/blob/master/callback_create.go)
 

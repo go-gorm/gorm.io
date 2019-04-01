@@ -1,16 +1,16 @@
 ---
-title: Connecting to the database
-layout: page
+title: Подключение к базе данных
+layout: страница
 ---
-# Connecting to the database
+# Подключение к базе данных
 
-In order to connect to a database, you need to import the database's driver first. For example:
+Для подключения к базе данных необходимо сначала импортировать драйвер базы данных. Например:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
+GORM содержит некоторые драйверы, чтобы облегчить запоминание пути импорта. Так что вы можете импортировать драйвер mysql с помощью:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -21,7 +21,7 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ## MySQL
 
-**NOTE:** In order to handle `time.Time`, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**ПРИМЕЧАНИЕ:** Для правильной работы `time.Time`, вам нужно включить `parseTime` в качестве параметра. ([Больше поддерживаемых параметров](https://github.com/go-sql-driver/mysql#parameters))
 
 ```go
 import (
@@ -51,7 +51,7 @@ func main() {
 
 ## Sqlite3
 
-**NOTE:** You can also use `:memory:` for the connection, which will use sqlite in temporary system memory. This is especially useful when writing tests for your application against GORM.
+**ПРИМЕЧАНИЕ:** Вы также можете использовать `:memory:` для подключения, которое будет использовать sqlite во временной системной памяти. Это особенно полезно при написании тестов для вашего приложения с использованием GORM.
 
 ```go
 import (
@@ -65,9 +65,9 @@ func main() {
 }
 ```
 
-## SQL Server
+## MS SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[Начните с MS SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), он может работать на вашем [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) с использованием Docker
 
 ```go
 import (
@@ -81,8 +81,8 @@ func main() {
 }
 ```
 
-## Write Dialect for unsupported databases
+## Написание Диалекта для неподдерживаемых баз данных
 
-GORM officially supports the above databases, but you could write a dialect for unsupported databases.
+GORM официально поддерживает вышеперечисленные базы данных, но вы можете написать диалект для неподдерживаемых баз данных.
 
-To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
+Чтобы написать свой собственный диалект, обратитесь к: <https://github.com/jinzhu/gorm/blob/master/dialect.go>

@@ -1,12 +1,12 @@
 ---
 title: Belongs To
-layout: page
+layout: страница
 ---
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Связь `принадлежит к "belongs to"` устанавливает связь один к одному с другой моделью, каждый экземпляр текущей модели "принадлежит" экземпляру другой модели.
 
-For example, if your application includes users and profiles, and each profile can be assigned to exactly one user
+Для примера, если ваше приложение содержит пользователей и профили, и каждый профиль может быть присвоен одному пользователю
 
 ```go
 type User struct {
@@ -14,7 +14,7 @@ type User struct {
   Name string
 }
 
-// `Profile` belongs to `User`, `UserID` is the foreign key
+// `Profile` принадлежит к `User`, где `UserID` это внешний ключ
 type Profile struct {
   gorm.Model
   UserID int
@@ -25,11 +25,11 @@ type Profile struct {
 
 ## Foreign Key
 
-To define a belongs to relationship, the foreign key must exists, default foreign key uses owner's type name plus its primary key.
+Для определения принадлежности к отношениям, внешний ключ должен существовать, по умолчанию внешний ключ использует имя типа владельца плюс его первичный ключ.
 
-For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+Например, для определения модели, которая принадлежит `User`, внешний ключ должен быть `UserID`.
 
-GORM provides a way to customzie the foreign key, for example:
+GORM дает возможность настроить внешний ключ, например:
 
 ```go
 type User struct {
@@ -40,18 +40,18 @@ type User struct {
 type Profile struct {
     gorm.Model
   Name      string
-  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
+  User      User `gorm:"foreignkey:UserRefer"` // использовать UserRefer как внешний ключ
   UserRefer string
 }
 ```
 
 ## Association ForeignKey
 
-For a belongs to relationship, GORM usually use owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+Для принадлежности к отношениям, GORM обычно использует первичный ключ владельца как значение внешнего ключа, например, модель `User` с полем `ID`.
 
-When you assign a profile to a user, GORM will save user's `ID` into profile's `UserID` field.
+Когда вы привязываете профиль к пользователю, GORM сохранит пользовательский `ID` в поле профиля `UserID`.
 
-You are able to change it with tag `association_foreignkey`, e.g:
+Вы можете изменить это тэгом `association_foreignkey`, пример:
 
 ```go
 type User struct {
@@ -63,12 +63,12 @@ type User struct {
 type Profile struct {
     gorm.Model
   Name      string
-  User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
+  User      User `gorm:"association_foreignkey:Refer"` // использовать Refer как связь внешнего ключа
   UserRefer string
 }
 ```
 
-## Working with Belongs To
+## Работа с Принадлежит к
 
 You could find `belongs to` associations with `Related`
 
@@ -77,4 +77,4 @@ db.Model(&user).Related(&profile)
 //// SELECT * FROM profiles WHERE user_id = 111; // 111 is user's ID
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Для расширенного использования, смотрите [Режим связей](/docs/associations.html#Association-Mode)

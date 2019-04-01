@@ -1,24 +1,24 @@
 ---
-title: Dialect Specific Data Type
-layout: page
+title: Тип данных Диалект
+layout: страница
 ---
-## Write new Dialect
+## Создать новый диалект
 
-GORM provides official support for `sqlite`, `mysql`, `postgres`, `mssql`.
+GORM предоставляет официальную поддержку `sqlite`, `mysql`, `postgres`, `mssql`.
 
-You can add support for additional databases by creating a new dialect. When creating a new dialect, you must implement [the dialect interface](https://godoc.org/github.com/jinzhu/gorm#Dialect).
+Вы можете добавить поддержку дополнительных баз данных, создав новый диалект. При создании нового диалекта необходимо применить [интерфейс диалекта](https://godoc.org/github.com/jinzhu/gorm#Dialect).
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Некоторые базы данных могут быть совместимы с `mysql` или `postgres` диалектом, в этом случае вы можете просто использовать диалект для этих баз данных.
 
-## Dialect Specific Data Type
+## Тип данных Диалект
 
-Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of these types, as listed in the following sections.
+Некоторые диалекты SQL с собственными пользовательскими, нестандартными типами столбцов, такими как `jsonb` столбец в PostgreSQL. GORM поддерживает загрузку нескольких типов, как указано в следующих разделах.
 
 ### PostgreSQL
 
-GORM supports loading the following PostgreSQL exclusive column types: - jsonb - hstore
+GORM поддерживает загрузку следующих типов эксклюзивных столбцов PostgreSQL: - jsonb - hstore
 
-Given the following Model definition:
+С учетом следующего определения модели:
 
 ```go
 import (
@@ -34,7 +34,7 @@ type Document struct {
 }
 ```
 
-You may use the model like so:
+Вы можете использовать такую модель:
 
 ```go
 password := "0654857340"
@@ -45,16 +45,16 @@ sampleDoc := Document{
   Secrets: postgres.Hstore{"password": &password},
 }
 
-//insert sampleDoc into the database
+//добавить sampleDoc в базу данных
 db.Create(&sampleDoc)
 
-//retrieve the fields again to confirm if they were inserted correctly
+//получить поля для подтверждения корректного добавления
 resultDoc := Document{}
 db.Where("id = ?", sampleDoc.ID).First(&resultDoc)
 
 metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata)
 secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, resultDoc.Secrets)
 
-// this should print "true"
+// это должно вывести "true"
 fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
 ```

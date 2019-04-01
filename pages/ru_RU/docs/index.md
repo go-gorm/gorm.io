@@ -1,31 +1,31 @@
 ---
-title: GORM Guides
-layout: page
+title: Руководство GORM
+layout: страница
 ---
-The fantastic ORM library for Golang, aims to be developer friendly.
+Фантастически-простой ORM фреймворк, для Golang разработчиков.
 
-## Overview
+## Обзор
 
-* Full-Featured ORM (almost)
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
-* Hooks (Before/After Create/Save/Update/Delete/Find)
-* Preloading (eager loading)
-* Transactions
-* Composite Primary Key
-* SQL Builder
-* Auto Migrations
-* Logger
-* Extendable, write Plugins based on GORM callbacks
-* Every feature comes with tests
-* Developer Friendly
+* Полнофункциональный ORM (ну почти)
+* Связи (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
+* Хуки (Before/After Create/Save/Update/Delete/Find)
+* Предварительная загрузка (загрузка пробега)
+* Транзакции
+* Составной первичный ключ
+* Конструктор SQL "SQL Builder"
+* Автоматические миграции
+* Логирование
+* Расширяемые функционал плагины, на основе колбеков
+* Каждая функция поставляется с тестами
+* Дружественная для разработчиков
 
-## Install
+## Установка
 
 ```sh
 go get -u github.com/jinzhu/gorm
 ```
 
-## Quick Start
+## Быстрый старт
 
 ```go
 package main
@@ -48,21 +48,21 @@ func main() {
   }
   defer db.Close()
 
-  // Migrate the schema
+  // Миграция схем
   db.AutoMigrate(&Product{})
 
-  // Create
+  // Соаздние
   db.Create(&Product{Code: "L1212", Price: 1000})
 
-  // Read
+  // Чтение
   var product Product
   db.First(&product, 1) // find product with id 1
   db.First(&product, "code = ?", "L1212") // find product with code l1212
 
-  // Update - update product's price to 2000
+  // Правка - обновление цены на 2000
   db.Model(&product).Update("Price", 2000)
 
-  // Delete - delete product
+  // Удаление - удалить продкут
   db.Delete(&product)
 }
 ```

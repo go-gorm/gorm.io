@@ -36,6 +36,7 @@ layout: page
 * [Transition - GORM tabanlı bir sonlu otomat (state machine)](https://github.com/qor/transition)
 * [Validations - Modelleri oluştururken ve güncellerken doğrulayın](https://github.com/qor/validations)
 * [Gormstore - gorilla oturumları için GORM arka ucu (backend)](https://github.com/wader/gormstore)
+* [go-oauth2-gorm - GORM adapter for go-oauth2](https://github.com/techknowlogick/go-oauth2-gorm)
 
 ## Katkıda bulunun
 

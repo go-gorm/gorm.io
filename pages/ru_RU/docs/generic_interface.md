@@ -1,28 +1,28 @@
 ---
-title: Generic database interface sql.DB
-layout: page
+title: Нативный интерфейс базы данных sql.DB
+layout: страница
 ---
-GORM provides the method `DB` which returns a generic database interface [*sql.DB](http://golang.org/pkg/database/sql/#DB) from the current `*gorm.DB` connection
+GORM предоставляет метод `DB`, который возвращает нативный интерфейс базы данных [*sql.DB](http://golang.org/pkg/database/sql/#DB) из текущего `*gorm.DB` соединения
 
 ```go
-// Get generic database object sql.DB to use its functions
+// Получение нативного объекта базы данных sql.DB для использования его функций
 db.DB()
 
-// Ping
+// Пинг
 db.DB().Ping()
 ```
 
-**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns `nil`
+**ПРИМЕЧАНИЕ** Если соединение с базой данных не является `*sql.DB`, как например в транзакции, возвращается `nil`
 
-## Connection Pool
+## Пул подключений
 
 ```go
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleConns устанавливает максимальное количество соединений в пуле соединений.
 db.DB().SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns устанавливает максимальное количество открытых соединений к базе данных.
 db.DB().SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime устанавливает максимальное количество времени, за которое подключение может быть повторно использовано.
 db.DB().SetConnMaxLifetime(time.Hour)
 ```

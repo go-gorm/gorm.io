@@ -4,7 +4,7 @@ layout: page
 ---
 ## Many To Many
 
-Banyak ke Banyak menambahkan sebuah tabel gabungan antara dua model.
+Many to Many adds a join table between two models.
 
 Misalnya, jika aplikasi anda mencakup pengguna dan bahasa, dan pengguna dapat berbicara banyak bahasa, dan banyak pengguna dapat mengucapkan bahasa tertentu.
 

@@ -36,6 +36,7 @@ layout: page
 * [Transition - 基于 GORM 的状态机](https://github.com/qor/transition)
 * [Validations-在创建、更新时验证模型](https://github.com/qor/validations)
 * [Gormstore - gorilla sessions 的 GORM 后端](https://github.com/wader/gormstore)
+* [go-oauth2-gorm - GORM adapter for go-oauth2](https://github.com/techknowlogick/go-oauth2-gorm)
 
 ## 完善本页面
 

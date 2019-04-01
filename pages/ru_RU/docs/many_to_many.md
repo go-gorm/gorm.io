@@ -1,10 +1,10 @@
 ---
 title: Many To Many
-layout: page
+layout: страница
 ---
 ## Many To Many
 
-Many to Many adds an join table between two models.
+Многие ко многим добавляет join таблицы между двумя моделями.
 
 For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specfied language.
 
