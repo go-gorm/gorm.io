@@ -29,7 +29,7 @@ type Profile struct {
 
 Например, для определения модели, которая принадлежит `User`, внешний ключ должен быть `UserID`.
 
-GORM provides a way to customize the foreign key, for example:
+GORM дает возможность настроить внешний ключ, например:
 
 ```go
 type User struct {
@@ -47,7 +47,7 @@ type Profile struct {
 
 ## Association ForeignKey
 
-For a belongs to relationship, GORM usually uses the owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+Для принадлежности к отношениям, GORM обычно использует первичный ключ владельца как значение внешнего ключа, например, модель `User` с полем `ID`.
 
 Когда вы привязываете профиль к пользователю, GORM сохранит пользовательский `ID` в поле профиля `UserID`.
 
