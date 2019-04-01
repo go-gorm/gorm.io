@@ -10,7 +10,7 @@ layout: страница
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remember the import path. So you could import the mysql driver with:
+GORM содержит некоторые драйверы, чтобы облегчить запоминание пути импорта. Так что вы можете импортировать драйвер mysql с помощью:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
