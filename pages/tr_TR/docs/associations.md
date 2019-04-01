@@ -105,7 +105,7 @@ Or use `gorm:save_associations`
     type User struct {
       gorm.Model
       Name    string
-      Company Company `gorm:"association_autoupdate:false"`
+      Company Company `gorm:"save_associations:false"`
     }
     
 
