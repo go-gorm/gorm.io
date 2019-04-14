@@ -14,12 +14,12 @@ For example, if your application includes users and credit card, and each user c
 type User struct {
 	gorm.Model
 	CreditCard   CreditCard
-  CreditCardID uint
 }
 
 type CreditCard struct {
 	gorm.Model
 	Number   string
+	UserID   uint
 }
 ```
 
