@@ -6,65 +6,66 @@ layout: page
 
 A`memiliki satu`asosiasi juga membuat koneksi satu -lawan-satu dengan model lain, tapi dengan beberapa semantik yang berbeda (dan konsekuensinya). Asosiasi ini menunjukkan bahwa setiap contoh dari model mengandung atau memiliki satu contoh model lain.
 
-For example, if your application includes users and credit card, and each user can only have one credit card.
+For example, if your application includes users and credit cards, and each user can only have one credit card.
 
 ```go
-// Pengguna memiliki satu KartuKredit, Id Kartu Kredit adalah kunci asing
-ketik struct pengguna {
-gorm.Model 
-KartuKredit KartuKredit
-Id KartuKredit uint
+// User has one CreditCard, CreditCardID is the foreign key
+type CreditCard struct {
+    gorm.Model
+    Number   string
+    UserID   uint
 }
 
-Ketik struct kartu kredit {
-     gorm. Model
-     Nomor string
+type User struct {
+    gorm.Model
+    CreditCard   CreditCard
 }
 ```
 
 ## Foreign Key
 
-For a has one relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
+For a `has one` relationship, a foreign key field must also exist, the owned will save the primary key of the model belongs to it into this field.
 
-The field's name is usually generated with `belongs to model`'s type plus its `primary key`, for the above example it is `CreditCardID`
+The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
 
-Saat anda memberikan kartu kredit kepada pengguna, itu akan menyimpan `ID` kartu kredit kedalam bidang `CreditCardID`.
+When you give a credit card to the user, its will save the User's `ID` into its `UserID` field.
 
-Jika anda ingin menggunakan bidang lain untuk menyimpan hubungan, anda dapat mengubahnya dengan label `foreignkey`, e.g:
+If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
 
 ```go
-type User struct {
-  gorm.Model
-  CreditCard CreditCard `gorm:"foreignkey:CardRefer"`
-  CardRefer uint
-}
-
 type CreditCard struct {
     gorm.Model
-    Number string
+    Number   string
+    UserName string
+}
+
+type User struct {
+    gorm.Model
+    CreditCard CreditCard `gorm:"foreignkey:UserName"`
 }
 ```
 
 ## Association ForeignKey
 
-By default, the owner will save the `belongs to model`'s primary into a foreign key, you could change to save another field, like use `Number` for below example.
+By default, the owned entity will save the `has one` model's primary into a foreign key, you could change to save another field, like use `Name` for below example.
 
 ```go
-type User struct {
-  gorm.Model
-  CreditCard CreditCard `gorm:"association_foreignkey:Number"`
-  CardRefer uint
-}
-
 type CreditCard struct {
     gorm.Model
     Number string
+    UID    string
+}
+
+type User struct {
+    gorm.Model
+    Name       `sql:"index"`
+    CreditCard CreditCard `gorm:"foreignkey:uid;association_foreignkey:name"`
 }
 ```
 
 ## Asosiasi Polimorfisme
 
-Supports polymorphic has-many and has-one associations.
+Supports polymorphic `has many` and `has one` associations.
 
 ```go
   type Cat struct {
