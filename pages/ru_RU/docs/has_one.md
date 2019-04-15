@@ -6,10 +6,10 @@ layout: страница
 
 Связь `has one` "имеет одну" также делает связь один к одному с другой моделью, но с несколько разными семантиками (и последствиями). Эта ассоциация указывает, что каждый экземпляр модели содержит или обладает одним из экземпляров другой модели.
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+Например, если ваше приложение включает в себя пользователей и кредитные карты, и каждый пользователь может иметь одну кредитную карту.
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+// User имеет одну CreditCard, CreditCardID это внешний ключ
 type CreditCard struct {
     gorm.Model
     Number   string
@@ -24,7 +24,7 @@ type User struct {
 
 ## Foreign Key
 
-For a `has one` relationship, a foreign key field must also exist, the owned will save the primary key of the model belongs to it into this field.
+Для связи has one "имеет одну", поле внешнего ключа должно существовать, владелец будет сохранять первичный ключ принадлежащей поделив это поле.
 
 The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
 
