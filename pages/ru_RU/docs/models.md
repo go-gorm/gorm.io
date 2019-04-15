@@ -47,7 +47,7 @@ type User struct {
 
 ### Теги структуры для ассоциаций
 
-Check out the Associations section for details
+Подробнее о разделе "Связи"
 
 | Тег                                | Описание                                          |
 | ---------------------------------- | ------------------------------------------------- |
@@ -61,5 +61,5 @@ Check out the Associations section for details
 | SAVE_ASSOCIATIONS                  | Автосохранение ассоциаций или нет                 |
 | ASSOCIATION_AUTOUPDATE             | Автообновление ассоциаций или нет                 |
 | ASSOCIATION_AUTOCREATE             | Автосоздание ассоциаций или нет                   |
-| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not            |
+| ASSOCIATION_SAVE_REFERENCE       | Автосохранение ассоциаций или нет                 |
 | PRELOAD                            | Предзагрузка ассоциаций или нет                   |
