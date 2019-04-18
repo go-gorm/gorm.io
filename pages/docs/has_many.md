@@ -95,7 +95,7 @@ Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and 
 
 ## Working with Has Many
 
-You could find `has many` assciations with `Related`
+You could find `has many` associations with `Related`
 
 ```go
 db.Model(&user).Related(&emails)
