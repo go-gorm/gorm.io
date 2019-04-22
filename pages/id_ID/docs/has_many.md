@@ -94,7 +94,7 @@ Catatan: polimorfik milik-ke dan banyak-ke-banyak secara eksplisit TIDAK didukun
 
 ## Bekerja dengan Memiliki Banyak
 
-Anda dapat menemukan `memiliki banyak` asosiasi dengan `Terkait`
+You could find `has many` associations with `Related`
 
 ```go
 db.Model(&user).Related(&emails)
