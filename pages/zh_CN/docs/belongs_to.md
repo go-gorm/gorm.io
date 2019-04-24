@@ -2,6 +2,7 @@
 title: Belongs To
 layout: page
 ---
+
 ## Belongs To
 
 A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
@@ -27,7 +28,7 @@ type Profile struct {
 
 若要定义属于关系的外键必须存在, 默认外键使用所有者的类型名称及其主键。
 
-For a above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+对于上述例子，为了定义属于`User`的模型，外鍵必须是`UserID`。
 
 GORM provides a way to customize the foreign key, for example:
 
