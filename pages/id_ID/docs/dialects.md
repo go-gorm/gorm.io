@@ -2,6 +2,7 @@
 title: Jenis Data Spesifik Dialek
 layout: page
 ---
+
 ## Tulis Dialek baru
 
 GORM provides official support for `sqlite`, `mysql`, `postgres`, `mssql`.
@@ -53,7 +54,7 @@ resultDoc := Document{}
 db.Where("id = ?", sampleDoc.ID).First(&resultDoc)
 
 metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata)
-secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, resultDoc.Secrets)
+secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, sampleDoc.Secrets)
 
 // this should print "true"
 fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
