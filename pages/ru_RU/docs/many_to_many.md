@@ -2,6 +2,7 @@
 title: Many To Many
 layout: страница
 ---
+
 ## Many To Many
 
 Многие ко многим добавляет join таблицы между двумя моделями.
