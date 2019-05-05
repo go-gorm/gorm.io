@@ -2,6 +2,7 @@
 title: 删除
 layout: page
 ---
+
 ## 删除记录
 
 **WARNING** When deleting a record, you need to ensure its primary field has value, and GORM will use the primary key to delete the record, if the primary key field is blank, GORM will delete all records for the model
