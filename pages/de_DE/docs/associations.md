@@ -2,6 +2,7 @@
 title: Assoziationen
 layout: page
 ---
+
 ## Automatisches erstellen/aktualisieren
 
 GORM speichert beim erstellen / aktualisieren eines Datensatzes automatisch Assoziationen und deren Referenz. Wenn die Verknüpfung einen Primärschlüssel hat, ruft GORM `Update` auf, um es zu speichern, andernfalls wird sie erstellt.
