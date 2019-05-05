@@ -41,7 +41,7 @@ language := Language{}
 
 db.First(&language, "id = ?", 111)
 
-db.Model(&language).Related(&users,  "Languages")
+db.Model(&language).Related(&users,  "Users")
 //// SELECT * FROM "users" INNER JOIN "user_languages" ON "user_languages"."user_id" = "users"."id" WHERE  ("user_languages"."language_id" IN ('111'))
 ```
 
@@ -114,8 +114,8 @@ DB.Model(&user).Association("Friends").Count()
 db.Model(&user).Related(&languages, "Languages")
 //// SELECT * FROM "languages" INNER JOIN "user_languages" ON "user_languages"."language_id" = "languages"."id" WHERE "user_languages"."user_id" = 111
 
-// Preload Languages when query user
+// Предварительно загрузить Languages при запросе user
 db.Preload("Languages").First(&user)
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Для расширенного использования, смотрите [Режим связей](/docs/associations.html#Association-Mode)

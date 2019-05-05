@@ -31,11 +31,11 @@ db.First(&user, 10)
 #### Plain SQL
 
 ```go
-// Get first matched record
+// 获取第一个匹配的记录
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Get all matched records
+// 获取所有匹配的记录
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
@@ -74,7 +74,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 //// SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**NOTE** When query with struct, GORM will only query with those fields has non-zero value, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**提示** 当通过结构体进行查询时，GORM将会只通过非零值字段查询，这意味着如果你的字段值为`0`，`''`， `false` 或者其他 [零值](https://tour.golang.org/basics/12)时，将不会被用于构建查询条件，例如：
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)

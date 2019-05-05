@@ -94,7 +94,7 @@ Nota: las asociaciones polimórficas belongs-to y many-to-many NO son compatible
 
 ## Trabajando con Has Many
 
-Puede encontrar asociaciones `has many` con `Related`
+You could find `has many` associations with `Related`
 
 ```go
 db.Model(&user).Related(&emails) //// SELECT * FROM emails WHERE user_id = 111; // 111 es la clave principal del usuario

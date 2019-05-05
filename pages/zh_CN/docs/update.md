@@ -1,10 +1,10 @@
 ---
-title: Update
+title: 更新
 layout: page
 ---
-## Update All Fields
+## 更新所有字段
 
-`Save` will include all fields when perform the Updating SQL, even it is not changed
+<cdoe>Save</code>会更新所有字段，即使你没有赋值
 
 ```go
 db.First(&user)
@@ -16,9 +16,9 @@ db.Save(&user)
 //// UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update Changed Fields
+## 更新修改字段
 
-If you only want to update changed Fields, you could use `Update`, `Updates`
+如果你只希望更新指定字段，可以使用`Update`或者`Updates`
 
 ```go
 // Update single attribute if it is changed

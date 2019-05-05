@@ -1,6 +1,6 @@
 ---
-title: Contribute to GORM
-layout: page
+title: Вклад в GORM
+layout: страница
 ---
 **С вашей помощью GORM станет лучше! Вот несколько вещей, которые вы можете сделать:**
 

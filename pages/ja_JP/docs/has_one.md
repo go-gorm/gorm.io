@@ -6,65 +6,66 @@ layout: page
 
 A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
 
-For example, if your application includes users and credit card, and each user can only have one credit card.
+For example, if your application includes users and credit cards, and each user can only have one credit card.
 
 ```go
 // User has one CreditCard, CreditCardID is the foreign key
-type User struct {
-    gorm.Model
-    CreditCard   CreditCard
-  CreditCardID uint
-}
-
 type CreditCard struct {
     gorm.Model
     Number   string
+    UserID   uint
+}
+
+type User struct {
+    gorm.Model
+    CreditCard   CreditCard
 }
 ```
 
 ## Foreign Key
 
-For a has one relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
+For a `has one` relationship, a foreign key field must also exist, the owned will save the primary key of the model belongs to it into this field.
 
-The field's name is usually generated with `belongs to model`'s type plus its `primary key`, for the above example it is `CreditCardID`
+The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
 
-When you give a credit card to the user, its will save the credit card's `ID` into its `CreditCardID` field.
+When you give a credit card to the user, its will save the User's `ID` into its `UserID` field.
 
 If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
 
 ```go
-type User struct {
-  gorm.Model
-  CreditCard CreditCard `gorm:"foreignkey:CardRefer"`
-  CardRefer uint
-}
-
 type CreditCard struct {
     gorm.Model
-    Number string
+    Number   string
+    UserName string
+}
+
+type User struct {
+    gorm.Model
+    CreditCard CreditCard `gorm:"foreignkey:UserName"`
 }
 ```
 
 ## Association ForeignKey
 
-By default, the owner will save the `belongs to model`'s primary into a foreign key, you could change to save another field, like use `Number` for below example.
+By default, the owned entity will save the `has one` model's primary into a foreign key, you could change to save another field, like use `Name` for below example.
 
 ```go
-type User struct {
-  gorm.Model
-  CreditCard CreditCard `gorm:"association_foreignkey:Number"`
-  CardRefer uint
-}
-
 type CreditCard struct {
     gorm.Model
     Number string
+    UID    string
+}
+
+type User struct {
+    gorm.Model
+    Name       `sql:"index"`
+    CreditCard CreditCard `gorm:"foreignkey:uid;association_foreignkey:name"`
 }
 ```
 
 ## Polymorphism Association
 
-Supports polymorphic has-many and has-one associations.
+Supports polymorphic `has many` and `has one` associations.
 
 ```go
   type Cat struct {

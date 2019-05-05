@@ -94,7 +94,7 @@ GORM поддерживает полиморфический has-many "имее�
 
 ## Работа с Has Many
 
-Вы можете найти `has many` связи с помощью `Related`
+You could find `has many` associations with `Related`
 
 ```go
 db.Model(&user).Related(&emails)
