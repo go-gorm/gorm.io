@@ -2,6 +2,7 @@
 title: Milik
 layout: page
 ---
+
 ## Kunci asing
 
 Sebuah `milik asosiasi` membuat koneksi satu-ke-satu dengan model lain, sehingga setiap contoh dari model deklarasi "termasuk" satu contoh dari model lainnya.
