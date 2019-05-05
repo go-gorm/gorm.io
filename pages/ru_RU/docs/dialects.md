@@ -2,6 +2,7 @@
 title: Тип данных Диалект
 layout: страница
 ---
+
 ## Создать новый диалект
 
 GORM предоставляет официальную поддержку `sqlite`, `mysql`, `postgres`, `mssql`.
@@ -45,16 +46,16 @@ sampleDoc := Document{
   Secrets: postgres.Hstore{"password": &password},
 }
 
-//добавить sampleDoc в базу данных
+//insert sampleDoc into the database
 db.Create(&sampleDoc)
 
-//получить поля для подтверждения корректного добавления
+//retrieve the fields again to confirm if they were inserted correctly
 resultDoc := Document{}
 db.Where("id = ?", sampleDoc.ID).First(&resultDoc)
 
 metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata)
-secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, resultDoc.Secrets)
+secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, sampleDoc.Secrets)
 
-// это должно вывести "true"
+// this should print "true"
 fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
 ```
