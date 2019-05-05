@@ -2,6 +2,7 @@
 title: Associazioni
 layout: page
 ---
+
 ## Crea/Aggiorna automaticamente
 
 GORM salverà automaticamente le associazioni e i relativi riferimenti durante la creazione/aggiornamento di un record. Se l'associazione ha una chiave primaria, GORM chiamerà `Update` per salvarlo, altrimenti verrà creato.
