@@ -2,6 +2,7 @@
 title: GORM 指南
 layout: page
 ---
+
 The fantastic ORM library for Golang, aims to be developer friendly.
 
 ## 概览
