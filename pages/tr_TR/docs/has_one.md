@@ -2,6 +2,7 @@
 title: Has One
 layout: page
 ---
+
 ## Has One
 
 A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
