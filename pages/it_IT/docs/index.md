@@ -2,6 +2,7 @@
 title: Guida GORM
 layout: page
 ---
+
 La fantastica libreria ORM per Goland, mira ad essere di semplice utilizzo per gli sviluppatori.
 
 ## Panoramica

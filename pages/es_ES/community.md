@@ -2,6 +2,7 @@
 title: Comunidad GORM
 layout: page
 ---
+
 ## Preguntar
 
 **[¿Cómo hago una buena pregunta?](https://stackoverflow.com/help/how-to-ask)**

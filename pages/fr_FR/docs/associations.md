@@ -2,6 +2,7 @@
 title: Associations
 layout: page
 ---
+
 ## Création/Mise à jour automatique
 
 GORM enregistre automatiquement les associations et leurs référence lors de la création/mise à jour d'un enregistrement. Si une association a une clé primaire, GORM appellera `Update` pour l'enregister. Sinon, l'association sera crée.

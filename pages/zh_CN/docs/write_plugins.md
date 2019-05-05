@@ -2,6 +2,7 @@
 title: 写插件
 layout: page
 ---
+
 GORM本身由`Callbacks`提供支持，因此您可以根据需要完全自定义GORM
 
 ## 注册新的callback

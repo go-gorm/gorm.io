@@ -2,6 +2,7 @@
 title: GORM сообщество
 layout: page
 ---
+
 ## Задайте вопрос
 
 **[Где можно задать вопрос?](https://stackoverflow.com/help/how-to-ask)**

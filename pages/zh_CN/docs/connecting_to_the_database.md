@@ -2,6 +2,7 @@
 title: 连接数据库
 layout: page
 ---
+
 ## 连接数据库
 
 In order to connect to a database, you need to import the database's driver first. For example:

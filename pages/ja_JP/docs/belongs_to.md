@@ -2,6 +2,7 @@
 title: Belongs To
 layout: page
 ---
+
 ## Belongs To
 
 `belongs to` は、1 対 1 での他 model との関連を、model が他 modelに属する関係として定義します。

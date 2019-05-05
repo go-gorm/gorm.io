@@ -2,6 +2,7 @@
 title: Asosiasi
 layout: page
 ---
+
 ## Buat/Perbarui Otomatis
 
 GORM akan menyimpan otomatis asosiasi dan referensi saat membuat / memperbarui rekama. Jika asosiasi memiliki kunci utama, GORM akan memanggil ` Perbarui ` untuk menyimpannya, jika tidak maka akan dibuat.

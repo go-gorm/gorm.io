@@ -2,6 +2,7 @@
 title: Mucho a Mucho
 layout: page
 ---
+
 ## Many To Many
 
 Many to Many adds a join table between two models.

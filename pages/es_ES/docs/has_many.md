@@ -2,6 +2,7 @@
 title: Has Many
 layout: page
 ---
+
 ## Has Many
 
 Una asociación `has many` también establece una conexión de uno a muchos con otro modelo, a diferencia de `has one`, el propietario podría tener cero o muchas instancias de modelos.

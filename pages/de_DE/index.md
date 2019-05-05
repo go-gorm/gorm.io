@@ -4,6 +4,7 @@ description: Die fantastische, entwicklerfreundlich ORM-Bibliothek für Golang
 subtitle: Die fantastische ORM-Bibliothek für Golang
 comments: false
 ---
+
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Voll ausgestattetes ORM (fast)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Assoziationen (Has One, Has Many, Belongs To, Many To Many, Polymorphie)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Vorher/Nachher Erstellen/Speichern/ Aktualisieren/Löschen/Suchen)

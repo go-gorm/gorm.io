@@ -2,6 +2,7 @@
 title: Logger
 layout: page
 ---
+
 ## Logger
 
 Gorm telah memiliki dukungan logger built-in, mode bawaan, itu hanya akan mencetak log Bila ada kesalahan terjadi.

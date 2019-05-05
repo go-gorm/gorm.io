@@ -2,6 +2,7 @@
 title: Contribute to GORM
 layout: page
 ---
+
 **You can help to deliver a better GORM! there are many things that you can do:**
 
 ## Help others to know GORM

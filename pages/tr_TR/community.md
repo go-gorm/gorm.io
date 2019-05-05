@@ -2,6 +2,7 @@
 title: GORM Topluluğu
 layout: page
 ---
+
 ## Sorular
 
 **[Nasıl soru sorabilirim?](https://stackoverflow.com/help/how-to-ask)**

@@ -2,6 +2,7 @@
 title: Connecting to the database
 layout: page
 ---
+
 # データベースへの接続
 
 データベースに接続するために、データベースのドライバを最初に import する必要があります: 

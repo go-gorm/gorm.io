@@ -2,6 +2,7 @@
 title: Create
 layout: page
 ---
+
 ## Crear un Registro
 
 ```go

@@ -2,6 +2,7 @@
 title: Escribir Plugins
 layout: page
 ---
+
 GORM está respaldado por `Callbacks`, así que puede editar GORM completamente como lo desee
 
 ## Registrar un nuevo callback

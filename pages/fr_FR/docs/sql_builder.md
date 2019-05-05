@@ -2,6 +2,7 @@
 title: SQL Builder
 layout: page
 ---
+
 ## Run Raw SQL
 
 Run Raw SQL, which is not chainable with other methods

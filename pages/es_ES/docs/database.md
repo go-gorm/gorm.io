@@ -2,6 +2,7 @@
 title: Connecting to the database
 layout: page
 ---
+
 # Conectándose a la Base de Datos
 
 Para conectarse a una base de datos, necesita importar primero el controlador de la base de datos. Por ejemplo:

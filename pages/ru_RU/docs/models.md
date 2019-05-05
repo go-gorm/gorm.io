@@ -2,6 +2,7 @@
 title: Объявление моделей
 layout: страница
 ---
+
 ## Объявление моделей
 
 Модели обычно являются обычными Golang структурами, основными типами Go или указателями. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) и [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) интерфейсы также поддерживаются.

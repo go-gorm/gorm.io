@@ -2,6 +2,7 @@
 title: Kait
 layout: page
 ---
+
 ## Siklus Hidup Objek
 
 Kait adalah fungsi yang dipanggil sebelum atau sesudah penciptaan.

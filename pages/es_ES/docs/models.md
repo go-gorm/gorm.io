@@ -2,6 +2,7 @@
 title: Declarando Modelos
 layout: page
 ---
+
 ## Declaring Models
 
 Los modelos generalmente son estructuras normales de Golang, tipos de Go básicos o punteros de ellos. Las interfaces sql.Scanner y driver.Valuer también son compatibles.

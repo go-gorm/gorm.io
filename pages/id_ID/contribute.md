@@ -2,6 +2,7 @@
 title: Berkontribusi untuk GORM
 layout: page
 ---
+
 **Anda dapat membantu memberikan GORM yang lebih baik! Ada banyak hal yang dapat Anda lakukan:**
 
 ## Bantu orang lain untuk mengetahui GORM

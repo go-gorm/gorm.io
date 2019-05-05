@@ -2,6 +2,7 @@
 title: Perbarui
 layout: page
 ---
+
 ## Perbarui Semua Bidang
 
 `Simpan` akan mencakup semua bidang ketika melakukan Pembaruan SQL, bahkan itu tidak berubah

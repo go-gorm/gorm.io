@@ -2,6 +2,7 @@
 title: Has One
 layout: page
 ---
+
 ## Has One
 
 Una asociación `has one` también establece una conexión uno a uno con otro modelo, pero con semántica (y consecuencias) diferentes. Esta asociación indica que cada instancia de un modelo contiene o posee una instancia de otro modelo.

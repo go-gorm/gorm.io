@@ -2,6 +2,7 @@
 title: Write Plugins
 layout: page
 ---
+
 GORM は `Callbacks` によってフルカスタマイズすることができます
 
 ## 新たに callback を登録します

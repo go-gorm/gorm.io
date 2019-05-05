@@ -2,6 +2,7 @@
 title: Memiliki Satu
 layout: page
 ---
+
 ## Has One
 
 A`memiliki satu`asosiasi juga membuat koneksi satu -lawan-satu dengan model lain, tapi dengan beberapa semantik yang berbeda (dan konsekuensinya). Asosiasi ini menunjukkan bahwa setiap contoh dari model mengandung atau memiliki satu contoh model lain.

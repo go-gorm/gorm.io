@@ -2,6 +2,7 @@
 title: 事务
 layout: page
 ---
+
 GORM 默认会将单个的 `create`, `update`, `delete`操作封装在事务内进行处理，以确保数据的完整性。
 
 If you want to treat multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.

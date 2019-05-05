@@ -2,6 +2,7 @@
 title: Composite Primary Key
 layout: page
 ---
+
 複数のフィールドに primary key を指定すると composite primary key (複合主キー)にすることができます
 
 ```go

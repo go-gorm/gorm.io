@@ -2,6 +2,7 @@
 title: Write Plugins
 layout: page
 ---
+
 GORM itself is powered by `Callbacks`, so you could fully customize GORM as you want
 
 ## Register a new callback

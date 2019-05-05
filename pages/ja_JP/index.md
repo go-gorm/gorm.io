@@ -4,6 +4,7 @@ description: デベロッパーフレンドリーを目指した、素晴らし�
 subtitle: 素晴らしいGolang用ORMライブラリ
 comments: false
 ---
+
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> （ほぼ）フル機能を備えたORM
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> アソシエーション(Has One, Has Many, Belongs To, Many To Many, Polymorphism)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> フック(Before/After Create/Save/Update/Delete/Find)

@@ -2,6 +2,7 @@
 title: Membuat
 layout: page
 ---
+
 ## Buat Catatan
 
 ```go

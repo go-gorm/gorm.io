@@ -2,6 +2,7 @@
 title: Belongs To
 layout: page
 ---
+
 ## Belongs To
 
 Una asociación `belongs to` establece una conexión uno a uno con otro modelo, de modo que cada instancia del modelo de declaración "pertenece a" una instancia del otro modelo.

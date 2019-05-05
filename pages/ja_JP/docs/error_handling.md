@@ -2,6 +2,7 @@
 title: エラーハンドリング
 layout: page
 ---
+
 Goではエラーハンドリングが重要です。
 
 [即時メソッド](/docs/method_chaining.html#Immediate-Methods)の後ではエラーチェックを行ったほうが良いです。

@@ -2,6 +2,7 @@
 title: Declaring Models
 layout: page
 ---
+
 ## Declaring Models
 
 Models are usually just normal Golang structs, basic Go types, or pointers of them. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are also supported.

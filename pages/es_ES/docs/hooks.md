@@ -2,6 +2,7 @@
 title: Hooks
 layout: page
 ---
+
 ## Ciclo de Vida del Objeto
 
 Los hooks son funciones que se llaman antes o después de la creación/consulta/actualización/eliminación.

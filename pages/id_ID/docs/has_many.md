@@ -2,6 +2,7 @@
 title: Memiliki Banyak
 layout: page
 ---
+
 ## Has Many
 
 `memiliki banyak` asosiasi juga menetapkan satu ke banyak koneksi dengan model lain, tidak seperti ` memiliki satu`, pemilik tersebut dapat memiliki nol atau banyak contoh model.

@@ -2,6 +2,7 @@
 title: GORM ガイド
 layout: page
 ---
+
 デベロッパーフレンドリーを目指した、素晴らしいGolang用ORMライブラリ。
 
 ## 概要

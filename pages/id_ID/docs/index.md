@@ -2,6 +2,7 @@
 title: Panduan GORM
 layout: page
 ---
+
 Perpustakaan ORM yang fantastis untuk Golang, bertujuan untuk menjadi pengembang yang ramah.
 
 ## Ikhtisar

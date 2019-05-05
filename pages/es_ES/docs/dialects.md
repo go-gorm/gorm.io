@@ -2,6 +2,7 @@
 title: Dialect Specific Data Type
 layout: page
 ---
+
 ## Escribir Nuevo Dialecto
 
 GORM provides official support for `sqlite`, `mysql`, `postgres`, `mssql`.
@@ -37,5 +38,24 @@ type Document struct {
 Puede utilizar el modelo de la siguiente forma:
 
 ```go
-password := "0654857340" metadata := json.RawMessage(`{"is_archived": 0}`) sampleDoc := Document{   Body: "This is a test document",   Metadata: postgres.Jsonb{ metadata },   Secrets: postgres.Hstore{"password": &password}, } //inserta sampleDoc en la base de datos db.Create(&sampleDoc) //recuperar los datos nuevamente para confirmar si se insertaron correctamente resultDoc := Document{} db.Where("id = ?", sampleDoc.ID).First(&resultDoc) metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata) secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, resultDoc.Secrets) // esto debería imprimir "verdadero" fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
+password := "0654857340"
+metadata := json.RawMessage(`{"is_archived": 0}`)
+sampleDoc := Document{
+  Body: "This is a test document",
+  Metadata: postgres.Jsonb{ metadata },
+  Secrets: postgres.Hstore{"password": &password},
+}
+
+//insert sampleDoc into the database
+db.Create(&sampleDoc)
+
+//retrieve the fields again to confirm if they were inserted correctly
+resultDoc := Document{}
+db.Where("id = ?", sampleDoc.ID).First(&resultDoc)
+
+metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata)
+secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, sampleDoc.Secrets)
+
+// this should print "true"
+fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
 ```
