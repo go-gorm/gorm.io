@@ -2,6 +2,7 @@
 title: GORM コミュニティ
 layout: page
 ---
+
 ## 質問
 
 **[質問をするには?](https://stackoverflow.com/help/how-to-ask)**
