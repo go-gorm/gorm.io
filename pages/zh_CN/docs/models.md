@@ -2,6 +2,7 @@
 title: 模型定义
 layout: page
 ---
+
 ## 模型定义
 
 模型（Models）通常只是正常的 golang structs、基本的 go 类型或它们的指针。 同时也支持[`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner)及[`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) 接口（interfaces）。
