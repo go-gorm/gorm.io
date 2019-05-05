@@ -2,6 +2,7 @@
 title: Logger
 layout: page
 ---
+
 ## Logger
 
 Gorm ha un logger incorporato, che per impostazioni predefinite, stamperà i registri solo quando si verificherà un errore.
