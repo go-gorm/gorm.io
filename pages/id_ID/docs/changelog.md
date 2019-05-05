@@ -2,6 +2,7 @@
 title: Ubah log
 layout: halaman
 ---
+
 ## v2.0
 
 WIP
