@@ -2,6 +2,7 @@
 title: Composite Primary Key
 layout: page
 ---
+
 Set multiple fields as primary key to enable composite primary key
 
 ```go
