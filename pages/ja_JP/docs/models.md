@@ -2,6 +2,7 @@
 title: モデルの宣言
 layout: page
 ---
+
 ## モデルの宣言
 
 モデルは通常、単なるGoの構造体や基本型やそれらのポインタです。 [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner)と[`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer)インタフェースもサポートします。
