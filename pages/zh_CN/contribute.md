@@ -2,6 +2,7 @@
 title: 贡献 GORM
 layout: page
 ---
+
 **为了 GORM 更好的发展，您可以在在下面的事情上提供您的帮助：**
 
 ## 帮助他人了解 GORM
