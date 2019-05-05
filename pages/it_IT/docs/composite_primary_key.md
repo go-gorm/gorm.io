@@ -2,6 +2,7 @@
 title: Chiave primaria composita
 layout: page
 ---
+
 Imposta più campi come chiave primaria per attivare la chiave primaria composita
 
 ```go
