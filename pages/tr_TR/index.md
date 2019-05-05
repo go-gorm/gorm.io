@@ -4,6 +4,7 @@ description: Golang için geliştirici dostu olmayı hedefleyen fantastik bir OR
 subtitle: Golang için fantastik bir ORM kütüphanesi
 comments: false
 ---
+
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Dört dörtlük bir ORM (neredeyse)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> İlişkiler(Bire bir, Birden çoğa, Aitlik, Çoktan çoğa, Çok biçimlilik)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Kancalar (Before/After Create/Save/Update/Delete/Find)
