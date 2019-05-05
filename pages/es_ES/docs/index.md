@@ -2,6 +2,7 @@
 title: Guías de GORM
 layout: página
 ---
+
 La fantástica biblioteca ORM de Golang, aspira a ser desarrollador amigable.
 
 ## Información General
