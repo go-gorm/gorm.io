@@ -2,6 +2,7 @@
 title: Logger
 layout: page
 ---
+
 ## Logger
 
 Gorm has built-in logger support, default mode, it will only print logs when there are errors happened.
