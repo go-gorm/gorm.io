@@ -2,6 +2,7 @@
 title: Composite Primary Key
 layout: page
 ---
+
 Establezca varios campos como clave primaria para habilitar la clave primaria compuesta
 
 ```go
