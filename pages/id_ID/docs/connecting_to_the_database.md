@@ -2,6 +2,7 @@
 title: Menghubungkan ke database
 layout: page
 ---
+
 ## Menghubungkan ke database
 
 In order to connect to a database, you need to import the database's driver first. For example:
