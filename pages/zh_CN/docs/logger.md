@@ -2,6 +2,7 @@
 title: Logger
 layout: page
 ---
+
 ## Logger
 
 Gorm有内置的日志记录器支持，默认情况下，它会打印发生的错误
