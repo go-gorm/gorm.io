@@ -2,6 +2,7 @@
 title: 変更履歴
 layout: page
 ---
+
 ## v2.0
 
 WIP
