@@ -2,6 +2,7 @@
 title: データベースへの接続
 layout: page
 ---
+
 ## データベースへの接続
 
 In order to connect to a database, you need to import the database's driver first. For example:
