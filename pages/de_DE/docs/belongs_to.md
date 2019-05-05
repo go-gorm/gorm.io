@@ -2,6 +2,7 @@
 title: Belongs To
 layout: page
 ---
+
 ## Belongs To
 
 Eine `belongs to` Assoziation stellt eine Eins-zu-Eins-Verbindung mit einem anderen Modell her, so dass jede Instanz des Deklarationsmodells zu einer Instanz des anderen Modells "gehört".
