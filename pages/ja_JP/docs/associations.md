@@ -2,6 +2,7 @@
 title: Associations
 layout: page
 ---
+
 ## Auto Create/Update
 
 GORM はレコードの作成・更新時に関連および関連先を自動的に保存します。もし関連に主キーが含まれる場合、GORM は関連先の `Update` を保存時にコールし、そうでなければ作成します。
