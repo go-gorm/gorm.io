@@ -2,6 +2,7 @@
 title: Has Many
 layout: page
 ---
+
 ## Has Many
 
 `has many`アソシエーションは他のモデルとのone-to-manyなつながりを表します。`has one`とは異なり、親は0もしくは多のモデルのインスタンスを持ちます。
