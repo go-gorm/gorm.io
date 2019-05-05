@@ -4,6 +4,7 @@ description: Perpustakaan ORM yang fantastis untuk Golang, bertujuan menjadi pen
 subtitle: Perpustakaan ORM yang fantastis untuk Golang
 comments: false
 ---
+
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM (almost)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Asosiasi (Memiliki Satu, Memiliki Banyak, Milik Banyak, Banyaknya Polimorfisme)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)
