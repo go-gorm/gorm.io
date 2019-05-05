@@ -2,6 +2,7 @@
 title: Actualizar
 layout: page
 ---
+
 ## Actualizar Todos los Campos
 
 `Save` incluirá todos los campos al realizar la Actualización SQL, aún cuando no es cambiado
