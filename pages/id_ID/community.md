@@ -2,6 +2,7 @@
 title: Komunitas GORM
 layout: page
 ---
+
 ## Meminta
 
 **[Bagaimana saya mengajukan pertanyaan yang bagus?](https://stackoverflow.com/help/how-to-ask)**
