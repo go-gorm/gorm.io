@@ -2,6 +2,7 @@
 title: Transactions
 layout: page
 ---
+
 GORM perform single `create`, `update`, `delete` operations in transactions by default to ensure database data integrity.
 
 If you want to treat multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
