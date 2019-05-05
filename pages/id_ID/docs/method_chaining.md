@@ -2,6 +2,7 @@
 title: Metode Rantai
 layout: page
 ---
+
 ## Method Chaining
 
 Gorm menerapkan metode antarmuka rantai, jadi anda bisa menulis kode seperti ini:
