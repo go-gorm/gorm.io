@@ -2,6 +2,7 @@
 title: Connecting to database
 layout: page
 ---
+
 ## Verbindung zur Datenbank aufbauen
 
 In order to connect to a database, you need to import the database's driver first. For example:
