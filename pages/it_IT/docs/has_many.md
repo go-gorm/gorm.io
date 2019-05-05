@@ -2,6 +2,7 @@
 title: Has Many
 layout: page
 ---
+
 ## Has Many
 
 A `has many` association also sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
