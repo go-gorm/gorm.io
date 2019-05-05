@@ -2,6 +2,7 @@
 title: Conventions
 layout: page
 ---
+
 ## gorm.Model
 
 `gorm.Model` is a basic GoLang struct which includes the following fields: `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
