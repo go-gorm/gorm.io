@@ -2,6 +2,7 @@
 title: Migrasi
 layout: page
 ---
+
 ## Migrasi Otomatis
 
 Secara otomatis skema Anda berpindah tempat, untuk memperbarui skema Anda sampai saat ini.
