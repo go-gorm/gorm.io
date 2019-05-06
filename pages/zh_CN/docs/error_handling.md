@@ -1,17 +1,17 @@
 ---
-title: Error Handling
-layout: page
+title: 错误处理
+layout: 页面
 ---
 
-In Go, error handling is important.
+Go的錯誤處理是很重要的
 
-You are encouraged to do error check after any [Immediate Methods](/docs/method_chaining.html#Immediate-Methods)
+建議您在任何立即方法后进行错误检查
 
-## Error Handling
+## 错误处理
 
-Error handling in GORM is different than idiomatic Go code because of its chainable API, but still easy to implement.
+GORM中的错误处理与惯用的Go代码不同，因为它具有可链接的API，但仍然易于实现。
 
-If any error occurs, GORM will set `*gorm.DB`'s `Error` field, which you can check like this:
+如果发生任何错误，GORM将设置* gorm.DB的错误字段，可以这样检查：
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
@@ -27,9 +27,9 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 }
 ```
 
-## Errors
+## 错误
 
-When processing data, it is common for multiple errors to occur. GORM provides an API to return all errors as a slice:
+处理数据时，通常会发生多个错误。 GORM提供了一个API来将所有错误作为切片返回：
 
 ```go
 // If there are more than one error happened, `GetErrors` returns them as `[]error`
@@ -42,9 +42,9 @@ for _, err := range errors {
 }
 ```
 
-## RecordNotFound Error
+## RecordNotFound（紀錄未找到）错误
 
-GORM provides a shortcut to handle `RecordNotFound` errors. If there are several errors, it will check if any of them is a `RecordNotFound` error.
+GORM提供了处理RecordNotFound错误的快捷方式。如果有多个错误，它将检查它们中是否有任何RecordNotFound错误。
 
 ```go
 // Check if returns RecordNotFound error
