@@ -40,7 +40,7 @@ db.Save(&user)
 
 ## 跳过自动更新
 
-If your association is already existing in database, you might not want to update it.
+如果数据库中已存在关联, 你可能不希望对其进行更新。
 
 可以使用 DB 设置, 将 ` gorm: association_autoupdate ` 设置为 ` false `
 
@@ -64,7 +64,7 @@ type User struct {
 
 ## 跳过自动创建
 
-Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
+即使你禁用了 `AutoUpdating`，没有主键的关联仍然会被创建，所有关联的引用也会被保存。
 
 如果你也想跳过，那么你可以通过 DB 的设置，将`gorm:association_autocreate`设置为`false`
 
