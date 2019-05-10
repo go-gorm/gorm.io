@@ -25,7 +25,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ## Borrado Rápido
 
-If a model has a `DeletedAt` field, it will get a soft delete ability automatically! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
+Si el modelo tiene el campo `DeletedAt`, ¡Tendrá la posibilidad de borrar automáticamente! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
 
 ```go
 db.Delete(&user)
@@ -46,6 +46,6 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ## Delete record permanently
 
-    // Delete record permanently with Unscoped
+    // Borra los registros permanentemente con Unscoped
     db.Unscoped().Delete(&order)
     //// DELETE FROM orders WHERE id=10;
