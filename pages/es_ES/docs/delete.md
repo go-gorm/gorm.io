@@ -25,7 +25,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ## Borrado Rápido
 
-Si el modelo tiene el campo `DeletedAt`, ¡Tendrá la posibilidad de borrar automáticamente! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
+Si el modelo tiene el campo `DeletedAt`, ¡Tendrá la posibilidad de borrar automáticamente! Al llamar a `Delete`, el registro no será eliminado permanentemente de la base de datos; más bien, el valor `DeletedAt` será establecido en la hora actual
 
 ```go
 db.Delete(&user)
