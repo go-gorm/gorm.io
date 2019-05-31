@@ -1,9 +1,9 @@
 ---
-title: Query
+title: Sorgu
 layout: page
 ---
 
-## Query
+## Sorgu
 
 ```go
 // Get first record, order by primary key
