@@ -1,21 +1,21 @@
 ---
-title: Change Log
-layout: page
+title: Registro de Cambios
+layout: página
 ---
 
 ## v2.0
 
-WIP
+Trabajo en curso
 
 ## v1.0 - 2016.04.27
 
-Breaking Changes
+Cambios que rompen funcionalidad anterior
 
-* `gorm.Open` return type `*gorm.DB` instead of `gorm.DB`
+* `gorm.Open` return type `*gorm.DB` en vez de `gorm.DB`
 
-* Updating will only update changed fields
+* El método Updating sólo actualizará los campos modificados
 
-* Soft Delete's will only check `deleted_at IS NULL`
+* Los Soft Delete solo verificarán `deleted_at IS NULL`
 
 * New ToDBName logic
     
