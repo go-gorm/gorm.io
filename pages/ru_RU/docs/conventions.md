@@ -99,7 +99,7 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ## Snake Case Column Name
 
-Column names will be the field's name is lower snake case.
+Названия столбцов будут именовать поле нижней части змеи.
 
 ```go
 type User struct {
