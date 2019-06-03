@@ -66,7 +66,7 @@ type User struct {
 
 ## Polymorphism Association
 
-Supports polymorphic `has many` and `has one` associations.
+Поддерживает полиморфические `has many` и `has one` ассоциации.
 
 ```go
   type Cat struct {
@@ -91,17 +91,17 @@ Supports polymorphic `has many` and `has one` associations.
 
 Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
 
-## Working with Has One
+## Работа с Has One
 
-You could find `has one` associations with `Related`
+Вы можете найти `has one` связи с помощью `Related`
 
 ```go
 var card CreditCard
 db.Model(&user).Related(&card, "CreditCard")
-//// SELECT * FROM credit_cards WHERE user_id = 123; // 123 is user's primary key
-// CreditCard is user's field name, it means get user's CreditCard relations and fill it into variable card
-// If the field name is same as the variable's type name, like above example, it could be omitted, like:
+//// SELECT * FROM credit_cards WHERE user_id = 123; // 123 это первичный ключ пользователя
+// CreditCard это название поля в таблице user, это значит получить пользовательские связи с CreditCard и записать в переменную card
+// Если название поле совпадает с названием переменной, как в примере ниже, его можно опустить, например:
 db.Model(&user).Related(&card)
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+Для расширенного использования, смотрите [Режим связей](/docs/associations.html#Association-Mode)
