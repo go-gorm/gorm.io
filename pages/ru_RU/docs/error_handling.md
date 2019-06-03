@@ -33,7 +33,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 
 ```go
 // Если произошла более чем одна ошибка, `GetErrors` вернет их как `[]error`
-db.First(&user).Limit(10).Find(&users).GetErrors()
+errors := db.First(&user).Limit(10).Find(&users).GetErrors()
 
 fmt.Println(len(errors))
 
