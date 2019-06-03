@@ -172,7 +172,7 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 
 ### Удаление связей
 
-Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
+Удалить связь между объектом источником & аргументами объекта, удалит только ссылку, не удалит эти объекты из БД.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
@@ -181,7 +181,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### Очистить связи
 
-Remove reference between source & current associations, won't delete those associations
+Удалить ссылку между исходными & текущими ассоциациями, не удалит эти ассоциации
 
 ```go
 db.Model(&user).Association("Languages").Clear()
