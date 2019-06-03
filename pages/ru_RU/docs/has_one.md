@@ -27,11 +27,11 @@ type User struct {
 
 Для связи has one "имеет одну", поле внешнего ключа должно существовать, владелец будет сохранять первичный ключ принадлежащей поделив это поле.
 
-The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
+Название поля генерируется с помощью `has one` типа модели плюс его `primary key` (первичный ключ), для примера выше это `UserID`.
 
-When you give a credit card to the user, its will save the User's `ID` into its `UserID` field.
+Когда вы задаете кредитную карту модели пользователя, она сохранит `ID` кредитной карты в поле `CreditCardID`.
 
-If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
+Если вы хотите использовать другое поле для сохранения отношений, вы можете изменить его с тегом `foreignkey`, например:
 
 ```go
 type CreditCard struct {
@@ -48,7 +48,7 @@ type User struct {
 
 ## Association ForeignKey
 
-By default, the owned entity will save the `has one` model's primary into a foreign key, you could change to save another field, like use `Name` for below example.
+По умолчанию, сущность владелец сохранит `has one` первичный ключ модели во внешний ключ, для сохранения в другое поле вы можете изменить, например, использовать `Name` для примера ниже.
 
 ```go
 type CreditCard struct {
