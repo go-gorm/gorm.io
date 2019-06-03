@@ -1,7 +1,7 @@
 ---
-layout: index
+layout: индекс
 description: Фантастически-простой ORM фреймворк, для Golang разработчиков.
-subtitle: The fantastic ORM library for Golang
+subtitle: Фантастическая библиотека ORM для Golang
 comments: false
 ---
 
