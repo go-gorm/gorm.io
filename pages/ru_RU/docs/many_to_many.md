@@ -60,11 +60,11 @@ type CustomizeAccount struct {
 }
 ```
 
-It will create a many2many relationship for those two structs, and their relations will be saved into join table `PersonAccount` with foreign keys `customize_person_id_person` AND `customize_account_id_account`
+Он создаст многие ко многим отношение для этих двух структур, и их отношения будут сохранены в таблицу для присоединения `PersonAccount` с внешним ключом `customize_person_id_person` И `customize_account_id_account`
 
 ## Jointable ForeignKey
 
-If you want to change join table's foreign keys, you could use tag `association_jointable_foreignkey`, `jointable_foreignkey`
+Если вы хотите изменить внешние ключи таблицы присоединения, вы можете использовать тег `association_jointable_foreignkey`, `jointable_foreignkey`
 
 ```go
 type CustomizePerson struct {
@@ -80,9 +80,9 @@ type CustomizeAccount struct {
 
 ## Self-Referencing
 
-To define a self-referencing many2many relationship, you have to change association's foreign key in the join table.
+Чтобы определить само ссылающиеся отношения многие ко многим, вы должны изменить внешний ключ ассоциации в таблице присоединяющихся.
 
-to make it different with source's foreign key, which is generated using struct's name and its primary key, for example:
+чтобы сделать его отличным от внешнего ключа источника, который генерируется с использованием имени struct и его основного ключа, например:
 
 ```go
 type User struct {
@@ -91,9 +91,9 @@ type User struct {
 }
 ```
 
-GORM will create a join table with foreign key `user_id` and `friend_id`, and use it to save user's self-reference relationship.
+GORM создаст таблицу для присоединения с внешним ключом `user_id` и `friend_id`, и использует ее для сохранения само ссылки таблицы пользователя.
 
-Then you can operate it like normal relations, e.g:
+Затем вы можете работать как с обычными отношениями, например:
 
 ```go
 DB.Preload("Friends").First(&user, "id = ?", 1)
@@ -109,7 +109,7 @@ DB.Model(&user).Association("Friends").Clear()
 DB.Model(&user).Association("Friends").Count()
 ```
 
-## Working with Many To Many
+## Работа с Many To Many
 
 ```go
 db.Model(&user).Related(&languages, "Languages")
