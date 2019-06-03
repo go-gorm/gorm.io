@@ -7,10 +7,10 @@ layout: страница
 
 Многие ко многим добавляет join таблицы между двумя моделями.
 
-For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specfied language.
+Например, если ваше приложение включает пользователей и языки, и пользователь может говорить на многих языках, и многие пользователи могут говорить на заданном языке.
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// User принадлежит многим языкам, используя `user_languages` как join таблицу
 type User struct {
     gorm.Model
     Languages         []Language `gorm:"many2many:user_languages;"`
@@ -25,7 +25,7 @@ type Language struct {
 ## Back-Reference
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// User принадлежит многим языкам, используя `user_languages` как join таблицу
 type User struct {
     gorm.Model
     Languages         []*Language `gorm:"many2many:user_languages;"`
