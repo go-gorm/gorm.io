@@ -38,6 +38,7 @@ layout: page
 * [Validations-在创建、更新时验证模型](https://github.com/qor/validations)
 * [Gormstore - gorilla sessions 的 GORM 后端](https://github.com/wader/gormstore)
 * [go-oauth2-gorm - GORM adapter for go-oauth2](https://github.com/techknowlogick/go-oauth2-gorm)
+* [gormt - GORM mysql to golang struct](https://github.com/xie1xiao1jun/gormt)
 
 ## 完善本页面
 
