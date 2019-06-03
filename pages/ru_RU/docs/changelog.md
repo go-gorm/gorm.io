@@ -19,7 +19,7 @@ layout: страница
 
 * Новая логика ToDBName
     
-    When GORM convert struct, field name to db name, only common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` were handled, so `HTTP`'s db name is `http`, but not `h_t_t_p`.
+    Когда GORM конвертирует struct, имя поля в db имя, были обработаны только общие инициализации из [golint](https://github.com/golang/lint/blob/master/lint.go#L702) такие как `HTTP`, `URI` были обработаны, так что имя Базы данных `HTTP` конвертировалось в `http`, но не `h_t_t_p`.
     
     Но для некоторых других инициализаторов не в списке, например, `SKU`, это имя db было `s_k_u`, это изменение исправлено.
 
