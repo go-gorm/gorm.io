@@ -65,7 +65,7 @@ GORM имеет установленные callback для реализации 
 
 - Row Query callbacks - no callbacks registered by default
 
-Row Query callbacks will be called when perform `Row` or `Rows`, there are no registered callbacks by default, you could register a new one like:
+Callback Row Query будет вызываться когда используется `Row` или `Rows`, по умолчанию нет никаких коллбэков, Вы должны зарегистрировать свою например так:
 
 ```go
 func updateTableName(scope *gorm.Scope) {
@@ -75,4 +75,4 @@ func updateTableName(scope *gorm.Scope) {
 db.Callback().RowQuery().Register("publish:update_table_name", updateTableName)
 ```
 
-View <https://godoc.org/github.com/jinzhu/gorm> to view all available API
+Просмотрите <https://godoc.org/github.com/jinzhu/gorm> для просмотра всех доступных API
