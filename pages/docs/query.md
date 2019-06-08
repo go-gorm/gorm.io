@@ -44,7 +44,7 @@ db.Where("name = ?", "jinzhu").Find(&users)
 db.Where("name <> ?", "jinzhu").Find(&users)
 
 // IN
-db.Where("name in (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
+db.Where("name IN (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
 
 // LIKE
 db.Where("name LIKE ?", "%jin%").Find(&users)
