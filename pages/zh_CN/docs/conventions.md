@@ -34,15 +34,15 @@ type User struct {
 
 ## `ID` 作为主键
 
-GORM uses any field with the name `ID` as the table's primary key by default.
+GORM 默认会使用名为`ID`的字段作为表的主键。
 
 ```go
 type User struct {
-  ID   string // field named `ID` will be used as primary field by default
+  ID   string // 名为`ID`的字段会默认作为表的主键
   Name string
 }
 
-// Set field `AnimalID` as primary field
+// 使用`AnimalID`作为主键
 type Animal struct {
   AnimalID int64 `gorm:"primary_key"`
   Name     string
@@ -50,14 +50,14 @@ type Animal struct {
 }
 ```
 
-## 多元化的表名（Table Name）
+## 表名（Table Name）
 
-Table name is the pluralized version of struct name.
+表名默认就是结构体名称的复数，例如：
 
 ```go
-type User struct {} // default table name is `users`
+type User struct {} // 默认表名为 `users`
 
-// Set User's table name to be `profiles`
+// 通过TableName方法将User表命名为`profiles`
 func (User) TableName() string {
   return "profiles"
 }
@@ -71,13 +71,14 @@ func (u User) TableName() string {
 }
 
 // Disable table name's pluralization, if set to true, `User`'s table name will be `user`
+// 关闭复数表名，如果设置为true，`User`表的表名就会是`user`，而不是`users`
 db.SingularTable(true)
 ```
 
 ### 指定表名称
 
 ```go
-// Create `deleted_users` table with struct User's definition
+// 使用User结构体创建名为`deleted_users`的表
 db.Table("deleted_users").CreateTable(&User{})
 
 var deleted_users []User
@@ -90,7 +91,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 
 ### 更改默认表名称（table name）
 
-You can apply any rules on the default table name by defining the `DefaultTableNameHandler`.
+你可以通过定义`DefaultTableNameHandler`来设置默认表名的命名规则
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
@@ -100,7 +101,7 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ## 下划线分割命名（Snake Case）的列名
 
-Column names will be the field's name is lower snake case.
+列名由字段名称进行下划线分割来生成
 
 ```go
 type User struct {
@@ -110,11 +111,11 @@ type User struct {
   CreatedAt time.Time // column name is `created_at`
 }
 
-// Overriding Column Name
+// 重写列名
 type Animal struct {
-    AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
-    Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
-    Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
+    AnimalId    int64     `gorm:"column:beast_id"`         // 设置列名为 `beast_id`
+    Birthday    time.Time `gorm:"column:day_of_the_beast"` // 设置列名为 `day_of_the_beast`
+    Age         int64     `gorm:"column:age_of_the_beast"` //设置列名为 `age_of_the_beast`
 }
 ```
 
