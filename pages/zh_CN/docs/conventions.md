@@ -123,25 +123,25 @@ type Animal struct {
 
 ### CreatedAt
 
-For models having a `CreatedAt` field, it will be set to the time when the record is first created.
+如果模型有 `CreatedAt`字段，该字段的值将会是初次创建记录的时间。
 
 ```go
-db.Create(&user) // will set `CreatedAt` to current time
+db.Create(&user) // `CreatedAt`将会是当前时间
 
-// To change its value, you could use `Update`
+// 可以使用`Update`方法来改变`CreateAt`的值
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
 ### UpdatedAt
 
-For models having an `UpdatedAt` field, it will be set to time when the record is updated.
+如果模型有`UpdatedAt`字段，该字段的值将会是每次更新记录的时间。
 
 ```go
-db.Save(&user) // will set `UpdatedAt` to current time
+db.Save(&user) // `UpdatedAt`将会是当前时间
 
-db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+db.Model(&user).Update("name", "jinzhu") // `UpdatedAt`将会是当前时间
 ```
 
 ### DeletedAt
 
-For models with a `DeletedAt` field, when `Delete` is called on that instance, it won't truly be deleted from database, but will set its `DeletedAt` field to the current time. Refer to [Soft Delete](/docs/delete.html#Soft-Delete)
+如果模型有`DeletedAt`字段，调用`Delete`删除该记录时，将会设置`DeletedAt`字段为当前时间，而不是直接将记录从数据库中删除。 什么是 [软删除](/docs/delete.html#Soft-Delete)
