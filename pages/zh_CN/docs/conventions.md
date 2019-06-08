@@ -5,12 +5,12 @@ layout: page
 
 ## gorm.Model
 
-`gorm.Model` is a basic GoLang struct which includes the following fields: `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
+`gorm.Model` 是一个包含了`ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`四个字段的GoLang结构体。
 
-It may be embeded into your model or you may build your own model without it.
+你可以将它嵌入到你自己的模型中，当然你也可以完全使用自己的模型。
 
 ```go
-// gorm.Model definition
+// gorm.Model 定义
 type Model struct {
   ID        uint `gorm:"primary_key"`
   CreatedAt time.Time
@@ -19,12 +19,13 @@ type Model struct {
 }
 
 // Inject fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` into model `User`
+// 将 `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`字段注入到`User`模型中
 type User struct {
   gorm.Model
   Name string
 }
 
-// Declaring model w/o gorm.Model
+// 不使用gorm.Model定义模型
 type User struct {
   ID   int
   Name string
