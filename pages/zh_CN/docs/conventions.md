@@ -70,7 +70,6 @@ func (u User) TableName() string {
     }
 }
 
-// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
 // 关闭复数表名，如果设置为true，`User`表的表名就会是`user`，而不是`users`
 db.SingularTable(true)
 ```
@@ -105,10 +104,10 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ```go
 type User struct {
-  ID        uint      // column name is `id`
-  Name      string    // column name is `name`
-  Birthday  time.Time // column name is `birthday`
-  CreatedAt time.Time // column name is `created_at`
+  ID        uint      // 列名为`id`
+  Name      string    // 列名为 `name`
+  Birthday  time.Time // 列名为 `birthday`
+  CreatedAt time.Time // 列名为 `created_at`
 }
 
 // 重写列名
