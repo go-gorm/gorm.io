@@ -28,7 +28,7 @@ type Profile struct {
 
 belongs to を定義する場合、外部キーは必ず存在しなければならず、デフォルトの外部キーは所有側の型名と主キーを連結したものになります。
 
-上述の例では、`User` に属するモデルを定義する場合、外部キーは `UserID` にします。
+For the above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
 GORM provides a way to customize the foreign key, for example:
 
