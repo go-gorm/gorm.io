@@ -33,7 +33,7 @@ When processing data, it is common for multiple errors to occur. GORM provides a
 
 ```go
 // 1つ以上のエラーが起きた場合、`GetErrors`は`[]error`を返します
-db.First(&user).Limit(10).Find(&users).GetErrors()
+errors := db.First(&user).Limit(10).Find(&users).GetErrors()
 
 fmt.Println(len(errors))
 
