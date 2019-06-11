@@ -68,7 +68,7 @@ func PaidWithCod(db *gorm.DB) *gorm.DB {
 
 func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
     return func (db *gorm.DB) *gorm.DB {
-        return db.Scopes(AmountGreaterThan1000).Where("status in (?)", status)
+        return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
     }
 }
 
