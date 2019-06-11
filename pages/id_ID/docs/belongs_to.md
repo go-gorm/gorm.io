@@ -18,7 +18,7 @@ Kunci asing
 
 Untuk menentukan milik hubungan, kunci asing harus ada, kunci asing default menggunakan nama jenis pemilik ditambah kunci utamanya.
 
-Untuk contoh di atas, untuk menentukan model yang dimiliki`Pengguna`, kunci asing seharusnya `Identitas Pengguna`.
+For the above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
 GORM provides a way to customize the foreign key, for example:
 
