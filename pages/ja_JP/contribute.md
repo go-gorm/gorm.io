@@ -24,7 +24,7 @@ GORMをあなたの言語に翻訳するには、 <https://translate.gorm.io>に
 
 ## プログラム
 
-* 問題や[Github Issues](https://github. com/jinzhu/gorm/issues)で同意を得た機能を修正するために、[Github](https://github. com/jinzhu/gorm)にプルリクエストを作成します
+* 問題や[Github Issues](https://github.com/jinzhu/gorm/issues)で同意を得た機能を修正するために、[Github](https://github.com/jinzhu/gorm)にプルリクエストを作成します
 * GORM用のオープンソースのプラグインを作成します。 (それらを[the list](/community.html#Open-Sources)に追加するのをお忘れなく)
 
 ## 寄付

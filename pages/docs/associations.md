@@ -14,7 +14,7 @@ user := User{
 	ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
 	Emails:          []Email{
 		{Email: "jinzhu@example.com"},
-		{Email: "jinzhu-2@example@example.com"},
+		{Email: "jinzhu-2@example.com"},
 	},
 	Languages:       []Language{
 		{Name: "ZH"},
