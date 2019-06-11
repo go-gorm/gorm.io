@@ -28,7 +28,7 @@ type Profile struct {
 
 Um eine zu einer Beziehung gehörende Eigenschaft zu definieren, muss der Fremdschlüssel vorhanden sein. Der Standard-Fremdschlüssel verwendet den Typnamen des Eigentümers und seinen Primärschlüssel.
 
-Um beispielsweise ein Modell zu definieren, das zu ` User ` gehört, sollte der Fremdschlüssel ` UserID ` lauten.
+For the above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
 GORM provides a way to customize the foreign key, for example:
 
