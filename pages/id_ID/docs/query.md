@@ -30,25 +30,25 @@ db.Pertama(&Pengguna, 10)
 #### SQL biasa
 
 ```go
-// Dapatkan rekaman pertama yang cocok
-db. Dimana ("nama =?", "Jinzhu").Pertama (&pengguna)
-//// PILIH * DARI DI MANA nama pengguna= 'jinzhu' batas 1;
+// Get first matched record
+db.Where("name = ?", "jinzhu").First(&user)
+//// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Dapatkan semua rekaman yang cocok
-db.Dimana ("nama =?", "Jinzhu").Temukan (& pengguna)
-//// PILIH * DARI DI MANA nama pengguna = 'jinzhu';
+// Get all matched records
+db.Where("name = ?", "jinzhu").Find(&users)
+//// SELECT * FROM users WHERE name = 'jinzhu';
 
 // <>
-db.Dimana ("nama <>?", "Jinzhu").Temukan (&pengguna)
+db.Where("name <> ?", "jinzhu").Find(&users)
 
-// DI
-db. Dimana ("nama dalam (?)", []tali{"jinzhu", "jinzhu 2"}).Temukan(&pengguna)
+// IN
+db.Where("name IN (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
 
-// SEPERTI
-db. Dimana ("nama SEPERTI?", "%jin%").Temukan(&pengguna)
+// LIKE
+db.Where("name LIKE ?", "%jin%").Find(&users)
 
-// DAN
-db.Di mana("nama = ? DAN usia >=? "," Jinzhu "," 22 ").Temukan(&pengguna)
+// AND
+db.Where("name = ? DAN usia >=? "," Jinzhu "," 22 ").Temukan(&pengguna)
 
 // Waktu
 db.Dimana("diperbarui_at > ? ", minggulalu).Temukan (&pengguna)
