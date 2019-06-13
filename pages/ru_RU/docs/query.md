@@ -32,11 +32,11 @@ db.First(&user, 10)
 #### Ообычный SQL
 
 ```go
-// Получить первую запись по совпадению
+// Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Получить все записи по совпадению
+// Get all matched records
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
