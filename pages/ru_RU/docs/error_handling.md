@@ -32,7 +32,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 При обработке данных, часто встречаются несколько ошибок. GORM предоставляет API для возврата всех ошибок в виде среза:
 
 ```go
-// Если произошла более чем одна ошибка, `GetErrors` вернет их как `[]error`
+// If there are more than one error happened, `GetErrors` returns them as `[]error`
 errors := db.First(&user).Limit(10).Find(&users).GetErrors()
 
 fmt.Println(len(errors))

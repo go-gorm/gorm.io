@@ -32,11 +32,11 @@ db.First(&user, 10)
 #### Plain SQL
 
 ```go
-// 获取第一个匹配的记录
+// Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// 获取所有匹配的记录
+// Get all matched records
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 

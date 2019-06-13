@@ -75,13 +75,13 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// クレジットカードの注文かつ1000件以上の注文を取得します
+// Find all credit card orders and amount greater than 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// CODによる注文かつ1000件以上の注文を取得します
+// Find all COD orders and amount greater than 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// 支払い済みで発送済みの注文かつ1000件以上の注文を取得します
+// Find all paid, shipped orders that amount greater than 1000
 ```
 
 ## 複数の即時メソッド

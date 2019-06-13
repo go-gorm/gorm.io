@@ -32,7 +32,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 When processing data, it is common for multiple errors to occur. GORM provides an API to return all errors as a slice:
 
 ```go
-// Si hay más de un error, `GetErrors` los devuelve como `[]error`
+// If there are more than one error happened, `GetErrors` returns them as `[]error`
 errors := db.First(&user).Limit(10).Find(&users).GetErrors()
 
 fmt.Println(len(errors))
@@ -47,14 +47,5 @@ for _, err := range errors {
 GORM provides a shortcut to handle `RecordNotFound` errors. If there are several errors, it will check if any of them is a `RecordNotFound` error.
 
 ```go
-// Comprueba si retorna un error RecordNotFound
-db.Where("name = ?", "hello world").First(&user).RecordNotFound()
-
-if db.Model(&user).Related(&credit_card).RecordNotFound() {
-  // registro no encontrado
-}
-
-if err := db.Where("name = ?", "jinzhu").First(&user).Error; gorm.IsRecordNotFoundError(err) {
-  // registro no encontrado
-}
+// Comprueba si retorna un error RecordNotFound db.Where("name = ?", "hello world").First(&user).RecordNotFound() if db.Model(&user).Related(&credit_card).RecordNotFound() {   // registro no encontrado } if err := db.Where("name = ?", "jinzhu").First(&user).Error; gorm.IsRecordNotFoundError(err) {   // registro no encontrado }
 ```
