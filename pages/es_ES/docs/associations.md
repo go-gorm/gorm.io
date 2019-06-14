@@ -86,7 +86,7 @@ o use etiquetas GORM, `gorm:"association_autocreate:false"`
 
 ## Saltar Creación/Actualización Automática
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
+Para deshabilitar tanto `AutoCreate` como `AutoUpdate`, puedes utilizar dos settings juntas
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -179,17 +179,17 @@ db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Limpiar Asociaciones
 
-Remove reference between source & current associations, won't delete those associations
+Remover referencias entre la fuente & las asociaciones actuales, no removerá las asociaciones
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Contar asociaciones
 
-Return the count of current associations
+Devuelve la cantidad de asociaciones actuales
 
 ```go
 db.Model(&user).Association("Languages").Count()
