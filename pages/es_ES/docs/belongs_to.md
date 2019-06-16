@@ -17,7 +17,7 @@ type User struct {   gorm.Model   Name string } // `Profile` pertenece a `User`,
 
 Para definir una relación de pertenencia, la clave foránea debe existir, la clave foránea predeterminada usa el nombre de tipo más su clave principal.
 
-For the above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+En el ejemplo anterior, para definir un modelo que pertenece a `User` la foreign key debe ser `UserID`.
 
 GORM proporciona una manera de personalizar la clave foránea, por ejemplo:
 
