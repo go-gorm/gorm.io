@@ -8,16 +8,16 @@ layout: page
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-db.NewRecord(user) // => returns `true` as primary key is blank
+db.NewRecord(user) // => 主キー画からの場合に `true` を返します。
 
 db.Create(&user)
 
-db.NewRecord(user) // => return `false` after `user` created
+db.NewRecord(user) // => `user` が作られた後に `false` を返します。
 ```
 
 ## Default Values
 
-You can define a field's default value with a tag. For example:
+以下のように、タグを利用してデフォルト値を設定できます。
 
 ```go
 type Animal struct {
@@ -27,7 +27,7 @@ type Animal struct {
 }
 ```
 
-Then the inserting SQL will exclude those fields that have no value or [zero values](https://tour.golang.org/basics/12). After inserting the record into the database, gorm will load those fields' value from the database.
+値のないフィールドや[ゼロ値](https://tour.golang.org/basics/12)のフィールドは、insertのSQL実行時には除外して実行されます。 After inserting the record into the database, gorm will load those fields' value from the database.
 
 ```go
 var animal = Animal{Age: 99, Name: ""}
