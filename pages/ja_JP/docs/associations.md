@@ -147,7 +147,7 @@ db.Model(&user).Association("Languages").Error
 
 ### Find Associations
 
-Find matched associations
+条件に当てはまるassciationを見つけます。
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
@@ -155,7 +155,7 @@ db.Model(&user).Association("Languages").Find(&languages)
 
 ### Append Associations
 
-Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
+`many to many`, `has many`の場合、新しいassociationを追加し、`has one`, `belogs to`の場合、現在のassociationと置き換えます。
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -164,7 +164,7 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 
 ### Replace Associations
 
-Replace current associations with new ones
+現在のassociationを、新しいものと置き換えます。
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -190,7 +190,7 @@ db.Model(&user).Association("Languages").Clear()
 
 ### Count Associations
 
-Return the count of current associations
+現在のassociation数を数えて返します。
 
 ```go
 db.Model(&user).Association("Languages").Count()
