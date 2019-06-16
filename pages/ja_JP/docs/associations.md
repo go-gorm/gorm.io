@@ -86,7 +86,7 @@ db.Set("gorm:association_autoupdate", false).Save(&user)
 
 ## Skip AutoCreate/Update
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
+`AutoCreate`と`AutUpdate`の両方を無効にしたい場合には、両方の設定を`false`にします。
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -98,7 +98,7 @@ type User struct {
 }
 ```
 
-Or use `gorm:save_associations`
+もしくは、`gorm:save_associations`タグを使用します。
 
     db.Set("gorm:save_associations", false).Create(&user)
     db.Set("gorm:save_associations", false).Save(&user)
