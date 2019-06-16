@@ -27,27 +27,27 @@ type Animal struct {
 }
 ```
 
-値のないフィールドや[ゼロ値](https://tour.golang.org/basics/12)のフィールドは、insertのSQL実行時には除外して実行されます。 After inserting the record into the database, gorm will load those fields' value from the database.
+値のないフィールドや[ゼロ値](https://tour.golang.org/basics/12)のフィールドは、insertのSQL実行時には除外して実行されます。 gormは、これらのフィールドをデータベースへレコードの挿入後に読み込みます。
 
 ```go
 var animal = Animal{Age: 99, Name: ""}
 db.Create(&animal)
 // INSERT INTO animals("age") values('99');
-// SELECT name from animals WHERE ID=111; // the returning primary key is 111
+// SELECT name from animals WHERE ID=111; // 返却された主キーは111です。
 // animal.Name => 'galeone'
 ```
 
-**NOTE** all fields having a zero value, like `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), won't be saved into the database but will use its default value. If you want to avoid this, consider using a pointer type or scanner/valuer, e.g:
+**NOTE** `0`, `''`, `false` その他の [ゼロ値](https://tour.golang.org/basics/12)は、 データベースに保存されず、代わりにデフォルト値が設定されます。 これを回避したい場合には、以下のようにポインタか`scanner/valuer`を利用してください。
 
 ```go
-// Use pointer value
+// ポインタを利用する場合
 type User struct {
   gorm.Model
   Name string
   Age  *int `gorm:"default:18"`
 }
 
-// Use scanner/valuer
+// scanner/valuerを利用する場合
 type User struct {
   gorm.Model
   Name string
@@ -57,7 +57,7 @@ type User struct {
 
 ## Setting Field Values In Hooks
 
-If you want to update a field's value in `BeforeCreate` hook, you can use `scope.SetColumn`, for example:
+`BeforeCreate` フックでフィールドの値を更新したい場合、`scope.SetColumn`が利用できます。
 
 ```go
 func (user *User) BeforeCreate(scope *gorm.Scope) error {
@@ -69,7 +69,7 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 ## Extra Creating option
 
 ```go
-// Add extra SQL option for inserting SQL
+// InsertのSQLに、オプションを設定できます。
 db.Set("gorm:insert_option", "ON CONFLICT").Create(&product)
 // INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
 ```
