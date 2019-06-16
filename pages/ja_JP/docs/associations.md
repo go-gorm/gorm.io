@@ -132,7 +132,7 @@ type User struct {
 
 ## Association Mode
 
-Association Mode contains some helper methods to handle relationship related things easily.
+Associationモードには、リレーションを簡単に操作するためのいくつかのヘルパーメソッドがあります。
 
 ```go
 // Start Association Mode
