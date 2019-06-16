@@ -135,13 +135,14 @@ type User struct {
 Associationモードには、リレーションを簡単に操作するためのいくつかのヘルパーメソッドがあります。
 
 ```go
-// Start Association Mode
-var user User
+// Associationモードを開始します
+var user User 
 db.Model(&user).Association("Languages")
-// `user` is the source, must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
-// db.Model(&user).Association("Languages").Error
+// `user` は、ソースであり、主キーを持っている必要があります。 
+// `Languages` は、リレーションのためのソースのフィールド名です。 
+// Associationモードは、この2つの条件が満たされた時に動作します。
+// これをチェックするためにはこのように書きます。
+db.Model(&user).Association("Languages").Error
 ```
 
 ### Find Associations
