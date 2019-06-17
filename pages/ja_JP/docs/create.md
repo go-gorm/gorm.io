@@ -8,7 +8,7 @@ layout: page
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-db.NewRecord(user) // => 主キー画からの場合に `true` を返します。
+db.NewRecord(user) // => 主キーが空の場合に `true` を返します。
 
 db.Create(&user)
 
