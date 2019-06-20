@@ -48,7 +48,7 @@ type Profile struct {
 
 ## Association ForeignKey
 
-For a belongs to relationship, GORM usually uses the owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+对于一个 belongs to 关系，GORM 通常使用所有者的主键作为外键的值，对于上面例子，外键的值是 `User` 的 `ID`。
 
 当你关联一个 profile 到一个 user 时，GORM 将保存 user 的 `ID` 到 profile 的 `UserID` 字段。
 
@@ -70,7 +70,7 @@ type Profile struct {
 
 ## Working with Belongs To
 
-You could find `belongs to` associations with `Related`
+你可以使用 `Related` 查找 `belongs to` 关系。
 
 ```go
 db.Model(&user).Related(&profile)
