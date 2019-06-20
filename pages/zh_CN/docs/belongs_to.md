@@ -52,9 +52,10 @@ type Profile struct {
 
 当你关联一个 profile 到一个 user 时，GORM 将保存 user 的 `ID` 到 profile 的 `UserID` 字段。
 
-你可以用 ``association_foreignkey<code> 标签来更改它，例如：</p>
+你可以用 `association_foreignkey` 标签来更改它，例如：
 
-<pre><code class="go">type User struct {
+```go
+type User struct {
     gorm.Model
   Refer int
     Name string
@@ -66,7 +67,7 @@ type Profile struct {
   User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
   UserRefer string
 }
-``</pre> 
+```
 
 ## Working with Belongs To
 
