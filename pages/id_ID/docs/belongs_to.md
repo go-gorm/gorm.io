@@ -32,7 +32,7 @@ type Profile struct {
     gorm.Model
   Name      string
   User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
-  UserRefer string
+  UserRefer uint
 }
 ```
 
@@ -47,7 +47,7 @@ Anda dapat mengubahnya dengan tanda ` association_foreign_key `, misal:
 ```go
 type User struct {
     gorm.Model
-  Refer int
+  Refer string
     Name string
 }
 
