@@ -48,7 +48,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 ```
 
 **NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited.
-If you would like access those changes in your hooks, you could accept current tranaction as argument in your hooks, for example:
+If you would like access those changes in your hooks, you could accept current transaction as argument in your hooks, for example:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
