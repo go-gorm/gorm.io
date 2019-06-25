@@ -47,7 +47,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**NOTA** Las operaciones de Guardar/Eliminar en GORM se ejecutan en las transacciones de forma predeterminada, por lo que los cambios realizados en esa transacción no estarán visibles hasta que se haya confirmado. Si desea acceder a esos cambios en sus hooks, puede aceptar la transacción actual como argumento en sus hooks, por ejemplo:
+**NOTA** Las operaciones de Guardar/Eliminar en GORM se ejecutan en las transacciones de forma predeterminada, por lo que los cambios realizados en esa transacción no estarán visibles hasta que se haya confirmado. If you would like access those changes in your hooks, you could accept current transaction as argument in your hooks, for example:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
