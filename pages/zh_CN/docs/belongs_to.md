@@ -5,7 +5,7 @@ layout: page
 
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+`belongs to` 会与另一个模型建立一对一关系，因此声明的每一个模型实例都会"属于"另一个模型实例。
 
 例如, 如果您的应用程序包含用户和配置文件, 并且可以将每个配置文件分配给一个用户
 
@@ -28,9 +28,9 @@ type Profile struct {
 
 若要定义属于关系的外键必须存在, 默认外键使用所有者的类型名称及其主键。
 
-For the above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+对于上述例子，定义一个属于 `User` 的模型，外键应该是 `UserID`。
 
-GORM provides a way to customize the foreign key, for example:
+GORM 提供了自定义外键的方法，例如：
 
 ```go
 type User struct {
@@ -42,22 +42,22 @@ type Profile struct {
     gorm.Model
   Name      string
   User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
-  UserRefer string
+  UserRefer uint
 }
 ```
 
 ## Association ForeignKey
 
-For a belongs to relationship, GORM usually uses the owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+对于一个 belongs to 关系，GORM 通常使用所有者的主键作为外键的值，对于上面例子，外键的值是 `User` 的 `ID`。
 
-When you assign a profile to a user, GORM will save user's `ID` into profile's `UserID` field.
+当你关联一个 profile 到一个 user 时，GORM 将保存 user 的 `ID` 到 profile 的 `UserID` 字段。
 
-You are able to change it with tag `association_foreignkey`, e.g:
+你可以用 `association_foreignkey` 标签来更改它，例如：
 
 ```go
 type User struct {
     gorm.Model
-  Refer int
+  Refer string
     Name string
 }
 
@@ -71,7 +71,7 @@ type Profile struct {
 
 ## Working with Belongs To
 
-You could find `belongs to` associations with `Related`
+你可以使用 `Related` 查找 `belongs to` 关系。
 
 ```go
 db.Model(&user).Related(&profile)

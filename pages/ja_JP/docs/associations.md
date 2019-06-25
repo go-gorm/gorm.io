@@ -132,21 +132,22 @@ type User struct {
 
 ## Association Mode
 
-Association Mode contains some helper methods to handle relationship related things easily.
+Associationモードには、リレーションを簡単に操作するためのいくつかのヘルパーメソッドがあります。
 
 ```go
-// Start Association Mode
-var user User
+// Associationモードを開始します
+var user User 
 db.Model(&user).Association("Languages")
-// `user` is the source, must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
-// db.Model(&user).Association("Languages").Error
+// `user` は、ソースであり、主キーを持っている必要があります。 
+// `Languages` は、リレーションのためのソースのフィールド名です。 
+// Associationモードは、この2つの条件が満たされた時に動作します。
+// これをチェックするためにはこのように書きます。
+db.Model(&user).Association("Languages").Error
 ```
 
 ### Find Associations
 
-Find matched associations
+条件に当てはまるassciationを見つけます。
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
@@ -154,7 +155,7 @@ db.Model(&user).Association("Languages").Find(&languages)
 
 ### Append Associations
 
-Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
+`many to many`, `has many`の場合、新しいassociationを追加し、`has one`, `belogs to`の場合、現在のassociationと置き換えます。
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -163,7 +164,7 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 
 ### Replace Associations
 
-Replace current associations with new ones
+現在のassociationを、新しいものと置き換えます。
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -189,7 +190,7 @@ db.Model(&user).Association("Languages").Clear()
 
 ### Count Associations
 
-Return the count of current associations
+現在のassociation数を数えて返します。
 
 ```go
 db.Model(&user).Association("Languages").Count()

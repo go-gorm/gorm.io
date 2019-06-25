@@ -47,7 +47,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**CATATAN** Simpan/Hapus operasi dalam GORM yang berjalan pada transaksi secara default, sehingga perubahan yang dibuat dalam transaksi itu tidak terlihat sampai ia dilakukan. Jika anda ingin mengakses perubahan-perubahan ini di dalam kait anda, anda dapat menerima transaksi saat ini sebagai argumen di kait anda, sebagai contoh:
+**CATATAN** Simpan/Hapus operasi dalam GORM yang berjalan pada transaksi secara default, sehingga perubahan yang dibuat dalam transaksi itu tidak terlihat sampai ia dilakukan. If you would like access those changes in your hooks, you could accept current transaction as argument in your hooks, for example:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {

@@ -47,7 +47,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**ПРИМЕЧАНИЕ** Save/Delete в GORM выполняются в транзакции по умолчанию, поэтому изменения, внесенные в этой транзакции не будут видны пока она будет зафиксирована. Если вы хотите получить доступ к этим изменениям в хуках, вы можете принять текущую транзакцию в качестве аргумента в ваших хуках, например:
+**ПРИМЕЧАНИЕ** Save/Delete в GORM выполняются в транзакции по умолчанию, поэтому изменения, внесенные в этой транзакции не будут видны пока она будет зафиксирована. If you would like access those changes in your hooks, you could accept current transaction as argument in your hooks, for example:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {

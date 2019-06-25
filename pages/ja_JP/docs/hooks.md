@@ -47,7 +47,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**メモ** GORMにおける保存と削除の操作はデフォルトでトランザクション内で実行されます。そのため、トランザクション内での変更はコミットするまで可視化されません。 フック内からこれらの変更にアクセスしたい場合は、現在のトランザクションをフックの引数として受け入れます。例:
+**メモ** GORMにおける保存と削除の操作はデフォルトでトランザクション内で実行されます。そのため、トランザクション内での変更はコミットするまで可視化されません。 If you would like access those changes in your hooks, you could accept current transaction as argument in your hooks, for example:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {

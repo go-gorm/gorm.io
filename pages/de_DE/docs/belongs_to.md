@@ -41,8 +41,8 @@ type User struct {
 type Profile struct {
     gorm.Model
   Name      string
-  User      User `gorm:"foreignkey:UserRefer"` // benutze UserRefer als Fremdschlüssel
-  UserRefer string
+  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
+  UserRefer uint
 }
 ```
 
@@ -57,14 +57,14 @@ Man kann es mit dem Tag `association_foreignkey` ändern, e.g:
 ```go
 type User struct {
     gorm.Model
-  Refer int
+  Refer string
     Name string
 }
 
 type Profile struct {
     gorm.Model
   Name      string
-  User      User `gorm:"association_foreignkey:Refer"` // benutze Refer als Fremdschlüssel der Assoziation
+  User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
   UserRefer string
 }
 ```

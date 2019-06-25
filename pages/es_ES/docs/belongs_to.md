@@ -22,7 +22,17 @@ En el ejemplo anterior, para definir un modelo que pertenece a `User` la foreign
 GORM proporciona una manera de personalizar la clave foránea, por ejemplo:
 
 ```go
-type User struct {     gorm.Model     Name string } type Profile struct {     gorm.Model   Name string   User User `gorm:"foreignkey:UserRefer"` // usa UserRefer como clave foránea  UserRefer string }
+type User struct {
+    gorm.Model
+    Name string
+}
+
+type Profile struct {
+    gorm.Model
+  Name      string
+  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
+  UserRefer uint
+}
 ```
 
 ## Asociación ForeignKey
@@ -36,14 +46,14 @@ Puede cambiarlo con la etiqueta `association_foreignkey`, por ejemplo:
 ```go
 type User struct {
     gorm.Model
-  Refer int
+  Refer string
     Name string
 }
 
 type Profile struct {
     gorm.Model
   Name      string
-  User      User `gorm:"association_foreignkey:Refer"` // usa Refer como clave foránea de asociación
+  User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
   UserRefer string
 }
 ```
