@@ -20,7 +20,7 @@ The fantastic ORM library for Golang, aims to be developer friendly.
 * Every feature comes with tests
 * Developer Friendly
 
-## Install
+## Installation
 
 ```sh
 go get -u github.com/jinzhu/gorm
