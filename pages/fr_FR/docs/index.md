@@ -5,7 +5,7 @@ layout: page
 
 The fantastic ORM library for Golang, aims to be developer friendly.
 
-## Overview
+## Introduction
 
 * Full-Featured ORM (almost)
 * Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
