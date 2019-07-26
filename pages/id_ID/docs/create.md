@@ -17,7 +17,7 @@ db.NewRecord(user) // => return `false` after `user` created
 
 ## Nilai Bawaan
 
-You can define a field's default value with a tag. For example:
+Anda dapat mendefinisikan nilai default dari sebuah field dengan sebuah tanda. Contohnya:
 
 ```go
 type Animal struct {
@@ -27,7 +27,7 @@ type Animal struct {
 }
 ```
 
-Then the inserting SQL will exclude those fields that have no value or [zero values](https://tour.golang.org/basics/12). After inserting the record into the database, gorm will load those fields' value from the database.
+Lalu penambahan SQL akan mengecualikan fields yang tidak memiliki nilai atau yang memiliki [nilai nol](https://tour.golang.org/basics/12). Setelah memasukkan record ke database, gorm akan memuat nilai-nilai field tersebut dari database.
 
 ```go
 var animal = Animal{Age: 99, Name: ""}
@@ -37,7 +37,7 @@ db.Create(&animal)
 // animal.Name => 'galeone'
 ```
 
-**NOTE** all fields having a zero value, like `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), won't be saved into the database but will use its default value. If you want to avoid this, consider using a pointer type or scanner/valuer, e.g:
+**CATATAN** semua field yang memiliki nilai nol, seperti `0`, `''`, `false` atau [nilai nol](https://tour.golang.org/basics/12) lain, tidak akan disimpan ke database tapi akan menggunakan nilai default. Apabila anda ingin mencegal hal ini, gunakan tipe pointer atau scanner/valuer, seperti:
 
 ```go
 // Use pointer value
@@ -57,7 +57,7 @@ type User struct {
 
 ## Menetapkan Nilai Bidang Dalam Hooks
 
-If you want to update a field's value in `BeforeCreate` hook, you can use `scope.SetColumn`, for example:
+Apabila anda ingin memperbaharui nilai dari sebuah field dalam hook `BeforeCreate`, anda dapat menggunakan `scope.SetColumn`, contohnya:
 
 ```go
 func (user *User) BeforeCreate(scope *gorm.Scope) error {
