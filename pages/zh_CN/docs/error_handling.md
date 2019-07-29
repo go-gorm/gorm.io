@@ -3,9 +3,9 @@ title: 错误处理
 layout: 页面
 ---
 
-Go的錯誤處理是很重要的
+Go的错误处理是很重要的
 
-建議您在任何立即方法后进行错误检查
+建议您在任何[立即方法](https://gorm.io/zh_CN/docs/method_chaining.html#Immediate-Methods)后进行错误检查
 
 ## 错误处理
 
@@ -42,7 +42,7 @@ for _, err := range errors {
 }
 ```
 
-## RecordNotFound（紀錄未找到）错误
+## RecordNotFound（记录未找到）错误
 
 GORM提供了处理RecordNotFound错误的快捷方式。如果有多个错误，它将检查它们中是否有任何RecordNotFound错误。
 
