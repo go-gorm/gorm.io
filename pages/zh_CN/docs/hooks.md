@@ -3,11 +3,11 @@ title: Hooks
 layout: page
 ---
 
-## Object Life Cycle
+## 对象生命周期
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+Hooks(一般称为之钩子函数)的功能是在运行创建/查询/更新/删除语句之前或者之后执行。
 
-If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+如果你为一个 model 定义了一个具体的方法，它将会在运行 创建，更新，查询，删除时自动被调用，并且如果任何回调函数函数返回一个错误，GORM 将会停止接下来的操作并且回滚当前的事务。
 
 ## Hooks
 
