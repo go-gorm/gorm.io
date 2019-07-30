@@ -9,27 +9,27 @@ Hooks(一般称之为钩子函数)的功能是在运行创建/查询/更新/删�
 
 如果你为一个 model 定义了一个具体的方法，它将会在运行 创建，更新，查询，删除时自动被调用，并且如果任何回调函数函数返回一个错误，GORM 将会停止接下来的操作并且回滚当前的事务。
 
-## Hooks
+## 钩子函数
 
 ### 创建一个对象
 
-Available hooks for creating
+以下为可用的钩子函数
 
 ```go
-// begin transaction
+// 开始事务
 BeforeSave
 BeforeCreate
-// save before associations
-// update timestamp `CreatedAt`, `UpdatedAt`
+// 在关联前保存
+// 更新时间戳 `CreatedAt`, `UpdatedAt`
 // save self
-// reload fields that have default value and its value is blank
-// save after associations
+// 重新加载具有默认值的字段，其值为空
+// 在关联后保存
 AfterCreate
 AfterSave
-// commit or rollback transaction
+// 提交或回滚事务
 ```
 
-Code Example:
+示例代码
 
 ```go
 func (u *User) BeforeSave() (err error) {
