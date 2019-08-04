@@ -10,6 +10,12 @@ Automatically migrate your schema, to keep your schema update to date.
 **WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data.
 
 ```go
+type User struct {
+  name    string
+  user_id string
+}
+```
+```go
 db.AutoMigrate(&User{})
 
 db.AutoMigrate(&User{}, &Product{}, &Order{})
