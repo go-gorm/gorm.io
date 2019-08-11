@@ -26,9 +26,10 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 **注意**
 
-In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+`time.Time`を正しく扱うため、`parseTime`をパラメータとして渡してあげる必要があります。([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
 
-In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
+UTF-8の完全な対応のため、`charset=utf8`を`charset=utf8mb4`に変更する必要があります。詳しくは [こちらの記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
+
 
 ```go
 import (
