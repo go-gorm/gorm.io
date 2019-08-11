@@ -75,7 +75,7 @@ func main() {
 
 ### SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go)はDockerを使って[Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/)でも動かすことができます。
 
 ```go
 import (
@@ -91,4 +91,4 @@ func main() {
 
 ## サポートされていないデータベース
 
-GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
+GORMが公式にサポートしている上記のデータベース以外でも、Dialectを書けば利用することができます。詳しくは [GORM Dialects](/docs/dialects.html) を参照してください。
