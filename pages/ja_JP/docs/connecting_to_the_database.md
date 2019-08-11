@@ -26,7 +26,7 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 **注意**
 
-`time.Time`を正しく扱うため、`parseTime`をパラメータとして渡してあげる必要があります。([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+`time.Time`を正しく扱うため、`parseTime`をパラメータとして渡してあげる必要があります。([対応している他のパラメータ](https://github.com/go-sql-driver/mysql#parameters))
 
 UTF-8の完全な対応のため、`charset=utf8`を`charset=utf8mb4`に変更する必要があります。詳しくは [こちらの記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
 
@@ -59,7 +59,7 @@ func main() {
 
 ### Sqlite3
 
-**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
+**注意** パスでの指定の代わりに `:memory:` を使うと、メモリー上の一時的なデータベースが使用されます。GORMの機能を使ってメモリー上の実際のDBを叩くことになるので、テストの時に便利です。
 
 ```go
 import (
