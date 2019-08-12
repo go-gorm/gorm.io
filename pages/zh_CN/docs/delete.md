@@ -31,27 +31,27 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ## 软删除
 
-如果一个 model 有 `DeletedAt` 字段，他将自动获得软删除的功能！ When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
+如果一个 model 有 `DeletedAt` 字段，他将自动获得软删除的功能！ 当调用 `Delete` 方法时， 记录不会真正的从数据库中被删除， 只会将`DeletedAt` 字段的值会被设置为当前时间
 
 ```go
 db.Delete(&user)
 //// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// 批量删除
 db.Where("age = ?", 20).Delete(&User{})
 //// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when query them
+// 查询记录时会忽略被软删除的记录
 db.Where("age = 20").Find(&user)
 //// SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 
-// Find soft deleted records with Unscoped
+// Unscoped 方法可以查询被软删除的记录
 db.Unscoped().Where("age = 20").Find(&users)
 //// SELECT * FROM users WHERE age = 20;
 ```
 
-## Delete record permanently
+## 物理删除
 
-    // Delete record permanently with Unscoped
+    // Unscoped 方法可以物理删除记录
     db.Unscoped().Delete(&order)
     //// DELETE FROM orders WHERE id=10;
