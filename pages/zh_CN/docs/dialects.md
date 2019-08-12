@@ -17,9 +17,9 @@ GORM 官方支持以下几种方言：`sqlite`, `mysql`, `postgres`, `mssql`.
 
 ### PostgreSQL
 
-GORM supports loading the following PostgreSQL exclusive column types: - jsonb - hstore
+GORM 支持加载以下 PostgreSQL 特有类型： - jsonb - hstore
 
-Given the following Model definition:
+Model 定义如下：
 
 ```go
 import (
@@ -35,7 +35,7 @@ type Document struct {
 }
 ```
 
-You may use the model like so:
+你可以这样使用 model:
 
 ```go
 password := "0654857340"
@@ -46,16 +46,16 @@ sampleDoc := Document{
   Secrets: postgres.Hstore{"password": &password},
 }
 
-//insert sampleDoc into the database
+// 插入 sampleDoc 到数据库
 db.Create(&sampleDoc)
 
-//retrieve the fields again to confirm if they were inserted correctly
+// 取出记录，以确定记录是否正确插入
 resultDoc := Document{}
 db.Where("id = ?", sampleDoc.ID).First(&resultDoc)
 
 metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata)
 secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, sampleDoc.Secrets)
 
-// this should print "true"
+// 应该输出 "true"
 fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
 ```
