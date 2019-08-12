@@ -1,5 +1,5 @@
 ---
-title: 方言的特殊数据类型
+title: 方言的特殊类型
 layout: page
 ---
 
@@ -11,7 +11,7 @@ GORM 官方支持以下几种方言：`sqlite`, `mysql`, `postgres`, `mssql`.
 
 某些数据库可能兼容 `mysql` 或 `postgres` 方言，此时你可以直接使用现有方言。
 
-## 特殊数据类型方言
+## 方言的特殊类型
 
 某些 SQL 的方言包含特殊的、非标准的类型，比如 PostgreSQL 中的 `jsonb` 类型。 GORM 支持其中的几种类型，如下所示。
 
