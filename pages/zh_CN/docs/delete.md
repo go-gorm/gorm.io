@@ -5,21 +5,21 @@ layout: page
 
 ## 删除记录
 
-**WARNING** When deleting a record, you need to ensure its primary field has value, and GORM will use the primary key to delete the record, if the primary key field is blank, GORM will delete all records for the model
+**警告** 删除记录时，请确保主键字段有值，GORM 会通过主键去删除记录，如果主键为空，GORM 会删除该 model 的所有记录。
 
 ```go
-// Delete an existing record
+// 删除现有记录
 db.Delete(&email)
 //// DELETE from emails where id=10;
 
-// Add extra SQL option for deleting SQL
+// 为删除 SQL 添加额外的 SQL 操作
 db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email)
 //// DELETE from emails where id=10 OPTION (OPTIMIZE FOR UNKNOWN);
 ```
 
-## Batch Delete
+## 批量删除
 
-Delete all matched records
+删除全部匹配的记录
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -29,9 +29,9 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 //// DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-## Soft Delete
+## 软删除
 
-If a model has a `DeletedAt` field, it will get a soft delete ability automatically! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
+如果一个 model 有 `DeletedAt` 字段，他将自动获得软删除的功能！ When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
 
 ```go
 db.Delete(&user)
