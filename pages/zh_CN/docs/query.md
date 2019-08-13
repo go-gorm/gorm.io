@@ -143,17 +143,17 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 //// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-### Inline Condition
+### 内联条件
 
-Works similar like `Where`.
+作用与 `Where` 类型
 
-When using with [Multiple Immediate Methods](/docs/method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
+当与多个 [Multiple Immediate Methods](/docs/method_chaining.html#Multiple-Immediate-Methods) 一起使用时, 不会将这些条件传递给后面的 immediate methods.
 
 ```go
-// Get by primary key (only works for integer primary key)
+// 根据主键获取记录 (只适用于整形主键)
 db.First(&user, 23)
 //// SELECT * FROM users WHERE id = 23 LIMIT 1;
-// Get by primary key if it were a non-integer type
+// 根据主键获取记录, 如果它是一个非整形主键
 db.First(&user, "id = ?", "string_primary_key")
 //// SELECT * FROM users WHERE id = 'string_primary_key' LIMIT 1;
 
@@ -173,10 +173,10 @@ db.Find(&users, map[string]interface{}{"age": 20})
 //// SELECT * FROM users WHERE age = 20;
 ```
 
-### Extra Querying option
+### 其它查询选项
 
 ```go
-// Add extra SQL option for selecting SQL
+// 为查询 SQL 添加额外的 SQL 操作
 db.Set("gorm:query_option", "FOR UPDATE").First(&user, 10)
 //// SELECT * FROM users WHERE id = 10 FOR UPDATE;
 ```
