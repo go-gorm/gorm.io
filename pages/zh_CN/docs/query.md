@@ -410,7 +410,7 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ## Pluck
 
-Query single column from a model as a map, if you want to query multiple columns, you should use [`Scan`](#Scan) instead
+查询 model 中的一个列作为切片，如果您想要查询多个列，您应该使用 [`Scan`](#Scan)
 
 ```go
 var ages []int64
@@ -421,7 +421,7 @@ db.Model(&User{}).Pluck("name", &names)
 
 db.Table("deleted_users").Pluck("name", &names)
 
-// Requesting more than one column? Do it like this:
+// 想查询多个字段？ 这样做：
 db.Select("name, age").Find(&users)
 ```
 
