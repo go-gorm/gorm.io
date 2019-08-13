@@ -5,12 +5,12 @@ layout: page
 
 ## Has One
 
-一个 `has one` 关联与另一个 model 建立了一对一关系，但它和一对一关系有不同的语义（及结果）。 This association indicates that each instance of a model contains or possesses one instance of another model.
+一个 `has one` 关联与另一个 model 建立了一对一关系，但它和一对一关系有不同的语义（及结果）。 Has one 表示：model 的每一个示例都包含或拥有另一个 model 的示例。
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+例如，如果你的应用包含用户和信用卡，并且每个用户只能有一张信用卡。
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+// 用户有一张信用卡，UserID 是外键
 type CreditCard struct {
     gorm.Model
     Number   string
