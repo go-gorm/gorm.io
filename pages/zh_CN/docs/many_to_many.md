@@ -80,9 +80,9 @@ type CustomizeAccount struct {
 
 ## Self-Referencing
 
-To define a self-referencing many2many relationship, you have to change association's foreign key in the join table.
+在自引用的多对多关系中，你必须在连接表中修改关联外键。
 
-to make it different with source's foreign key, which is generated using struct's name and its primary key, for example:
+使用 struct 名及其主键生成关联外键，使得关联外键与外键不同，比如：
 
 ```go
 type User struct {
@@ -91,9 +91,9 @@ type User struct {
 }
 ```
 
-GORM will create a join table with foreign key `user_id` and `friend_id`, and use it to save user's self-reference relationship.
+GORM 会生成一个关联表，其外键为 `user_id` 和 `friend_id`，并用其保存自引用用户关系。
 
-Then you can operate it like normal relations, e.g:
+然后你还是可以像正常关系一样操作它们，比如：
 
 ```go
 DB.Preload("Friends").First(&user, "id = ?", 1)
