@@ -34,20 +34,20 @@ db.DB()
 ### Has Table
 
 ```go
-// Check model `User`'s table exists or not
+// 检查模型 User 的表是否存在
 db.HasTable(&User{})
 
-// Check table `users` exists or not
+// 检查表 users 是否存在
 db.HasTable("users")
 ```
 
 ### Create Table
 
 ```go
-// Create table for model `User`
+// 为模型 `User` 创建表
 db.CreateTable(&User{})
 
-// will append "ENGINE=InnoDB" to the SQL statement when creating table `users`
+// 创建表时会追加 “ENGINE=InnoDB” 到 SQL 语句中。
 db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
 ```
 
