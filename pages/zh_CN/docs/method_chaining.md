@@ -27,11 +27,11 @@ if yetAnotherCondition {
 
 在调用 immediate 方法前不会生成 Query 语句，有时候这会很有用。
 
-Like you could extract a wrapper to handle some common logic
+比如你可以提取一个 wrapper 来处理一些通用逻辑。
 
-## Immediate Methods
+## Immediate 方法
 
-Immediate methods are those methods that will generate SQL query and send it to database, usually it is those CRUD methods, like:
+Immediate methods 是指那些会立即生成 SQL 语句并发送到数据库的方法, 他们一般是 CRUD 方法，比如：
 
 `Create`, `First`, `Find`, `Take`, `Save`, `UpdateXXX`, `Delete`, `Scan`, `Row`, `Rows`...
 
