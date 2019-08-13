@@ -54,29 +54,29 @@ db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
 ### Drop table
 
 ```go
-// Drop model `User`'s table
+// 删除模型 `User` 的表
 db.DropTable(&User{})
 
-// Drop table `users`
+// 删除表 `users`
 db.DropTable("users")
 
-// Drop model's `User`'s table and table `products`
+// 删除模型 `User` 的表和表 `products`
 db.DropTableIfExists(&User{}, "products")
 ```
 
 ### ModifyColumn
 
-Modify column's type to given value
+修改列类型为给定的值
 
 ```go
-// change column description's data type to `text` for model `User`
+// 修改模型 `User` 的 description 列的类型为 `text` 
 db.Model(&User{}).ModifyColumn("description", "text")
 ```
 
 ### DropColumn
 
 ```go
-// Drop column description from model `User`
+// 删除模型 `User` 的 description 列
 db.Model(&User{}).DropColumn("description")
 ```
 
