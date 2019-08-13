@@ -5,7 +5,7 @@ layout: page
 
 ## Many To Many
 
-Many to Many adds a join table between two models.
+Many to Many 在两个 model 中添加一张连接表。
 
 For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specfied language.
 
