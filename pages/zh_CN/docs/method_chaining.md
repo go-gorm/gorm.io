@@ -27,7 +27,7 @@ if yetAnotherCondition {
 
 在调用 immediate 方法前不会生成 Query 语句，有时候这会很有用。
 
-比如你可以提取一个 wrapper 来处理一些通用逻辑。
+比如你可以抽取一个函数来处理一些通用逻辑。
 
 ## Immediate 方法
 
@@ -73,18 +73,18 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// 查询所有信用卡中金额大于 1000 的订单
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// 查询所有 Cod 中金额大于 1000 的订单
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// 查询所有已付款、已发货中金额大于 1000 的订单
 ```
 
-## Multiple Immediate Methods
+## 多 Immediate 方法
 
-When using multiple immediate methods with GORM, later immediate method will reuse before immediate methods's query conditions (excluding inline conditions)
+在 GORM 中使用多 immediate 方法时，后一个 immediate 方法会复用前一个 immediate 方法的条件 (不包括内联条件) 。
 
 ```go
 db.Where("name LIKE ?", "jinzhu%").Find(&users, "id IN (?)", []int{1, 2, 3}).Count(&count)
