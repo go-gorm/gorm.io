@@ -1,5 +1,5 @@
 ---
-title: Method Chaining
+title: 链式方法
 layout: page
 ---
 
