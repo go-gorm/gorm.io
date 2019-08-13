@@ -143,7 +143,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 //// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-### 内联条件
+### Inline Condition
 
 作用与 `Where` 类型
 
@@ -183,14 +183,14 @@ db.Set("gorm:query_option", "FOR UPDATE").First(&user, 10)
 
 ## FirstOrInit
 
-Get first matched record, or initalize a new one with given conditions (only works with struct, map conditions)
+获取匹配的第一条记录, 或者根据给定的条件初始化一个新的对象 (仅支持 struct 和 map 条件)
 
 ```go
-// Unfound
+// 未找到
 db.FirstOrInit(&user, User{Name: "non_existing"})
 //// user -> User{Name: "non_existing"}
 
-// Found
+// 找到
 db.Where(User{Name: "Jinzhu"}).FirstOrInit(&user)
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
@@ -199,10 +199,10 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 
 ### Attrs
 
-Initalize struct with argument if record not found
+如果记录未找到，将使用参数初始化 struct.
 
 ```go
-// Unfound
+// 未找到
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = 'non_existing';
 //// user -> User{Name: "non_existing", Age: 20}
@@ -211,7 +211,7 @@ db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = 'non_existing';
 //// user -> User{Name: "non_existing", Age: 20}
 
-// Found
+// 找到
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = jinzhu';
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
@@ -219,14 +219,14 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 
 ### Assign
 
-Assign argument to struct regardless it is found or not
+不管记录是否找到，都将参数赋值给 struct.
 
 ```go
-// Unfound
+// 未找到
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 //// user -> User{Name: "non_existing", Age: 20}
 
-// Found
+// 找到
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = jinzhu';
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 30}
@@ -234,31 +234,31 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record, or create a new one with given conditions (only works with struct, map conditions)
+获取匹配的第一条记录, 或者根据给定的条件创建一个新的对象 (仅支持 struct 和 map 条件)
 
 ```go
-// Unfound
+// 未找到
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 //// INSERT INTO "users" (name) VALUES ("non_existing");
 //// user -> User{Id: 112, Name: "non_existing"}
 
-// Found
+// 找到
 db.Where(User{Name: "Jinzhu"}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "Jinzhu"}
 ```
 
 ### Attrs
 
-Assign struct with argument if record not found and create with those values
+如果记录未找到，将使用参数创建 struct.
 
 ```go
-// Unfound
+// 未找到
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'non_existing';
 //// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 //// user -> User{Id: 112, Name: "non_existing", Age: 20}
 
-// Found
+// 找到
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 //// user -> User{Id: 111, Name: "jinzhu", Age: 20}
@@ -266,16 +266,16 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 
 ### Assign
 
-Assign it to the record regardless it is found or not, and save back to database.
+不管记录是否找到，都将参数赋值给 struct 并保存至数据库.
 
 ```go
-// Unfound
+// 未找到
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'non_existing';
 //// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 //// user -> User{Id: 112, Name: "non_existing", Age: 20}
 
-// Found
+// 找到
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 //// UPDATE users SET age=30 WHERE id = 111;
