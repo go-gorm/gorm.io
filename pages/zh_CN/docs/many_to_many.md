@@ -7,10 +7,10 @@ layout: page
 
 Many to Many 在两个 model 中添加一张连接表。
 
-For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specfied language.
+比如，您的应用程序包含用户和语言，一个用户可以说多种语言，多个用户也可以说某一种语言。
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// 用户拥有且属于多种语言，使用 `user_languages` 作为连接表
 type User struct {
     gorm.Model
     Languages         []Language `gorm:"many2many:user_languages;"`
@@ -25,7 +25,7 @@ type Language struct {
 ## Back-Reference
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// 用户拥有且属于多种语言，使用 `user_languages` 作为连接表
 type User struct {
     gorm.Model
     Languages         []*Language `gorm:"many2many:user_languages;"`
@@ -60,11 +60,11 @@ type CustomizeAccount struct {
 }
 ```
 
-It will create a many2many relationship for those two structs, and their relations will be saved into join table `PersonAccount` with foreign keys `customize_person_id_person` AND `customize_account_id_account`
+它将为这两个 struct 创建多对多关系，并且他们的关系将被保存到连接表 `PersonAccount` ，连接表的外键为 `customize_person_id_person` 和 `customize_account_id_account`.
 
 ## Jointable ForeignKey
 
-If you want to change join table's foreign keys, you could use tag `association_jointable_foreignkey`, `jointable_foreignkey`
+如果你想改变连接表的外键，你可以使用标签 `association_jointable_foreignkey` 和 `jointable_foreignkey`.
 
 ```go
 type CustomizePerson struct {
