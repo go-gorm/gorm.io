@@ -57,14 +57,14 @@ db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "ag
 
 ## 无 Hooks 更新
 
-Above updating operations will perform the model's `BeforeUpdate`, `AfterUpdate` method, update its `UpdatedAt` timestamp, save its `Associations` when updating, if you don't want to call them, you could use `UpdateColumn`, `UpdateColumns`
+上面的更新操作会自动运行 model 的 `BeforeUpdate`, `AfterUpdate` 方法，更新 `UpdatedAt` 时间戳, 在更新时保存其 `Associations`, 如果你不想调用这些方法，你可以使用 `UpdateColumn`， `UpdateColumns`
 
 ```go
-// Update single attribute, similar with `Update`
+// 更新单个属性，类似于 `Update`
 db.Model(&user).UpdateColumn("name", "hello")
 //// UPDATE users SET name='hello' WHERE id = 111;
 
-// Update multiple attributes, similar with `Updates`
+// 更新多个属性，类似于 `Updates`
 db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 //// UPDATE users SET name='hello', age=18 WHERE id = 111;
 ```
@@ -101,9 +101,9 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 //// UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
-## Change Values In Hooks
+## 修改 Hooks 中的值
 
-If you want to change updating values in hooks using `BeforeUpdate`, `BeforeSave`, you could use `scope.SetColumn`, for example:
+如果你想修改 `BeforeUpdate`, `BeforeSave` 等 Hooks 中更新的值，你可以使用 `scope.SetColumn`, 例如：
 
 ```go
 func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
@@ -113,10 +113,10 @@ func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
 }
 ```
 
-## Extra Updating option
+## 其它更新选项
 
 ```go
-// Add extra SQL option for updating SQL
+// 为 update SQL 添加其它的 SQL
 db.Model(&user).Set("gorm:update_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Update("name", "hello")
 //// UPDATE users SET name='hello', updated_at = '2013-11-17 21:34:10' WHERE id=111 OPTION (OPTIMIZE FOR UNKNOWN);
 ```
