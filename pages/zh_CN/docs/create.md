@@ -17,7 +17,7 @@ db.NewRecord(user) // => 创建`user`后返回`false`
 
 ## 默认值
 
-You can define a field's default value with a tag. For example:
+你可以通过 tag 定义字段的默认值，比如：
 
 ```go
 type Animal struct {
@@ -27,7 +27,7 @@ type Animal struct {
 }
 ```
 
-Then the inserting SQL will exclude those fields that have no value or [zero values](https://tour.golang.org/basics/12). After inserting the record into the database, gorm will load those fields' value from the database.
+生成的 SQL 语句会排除没有值或值为 [零值](https://tour.golang.org/basics/12) 的字段。 将记录插入到数据库后，Gorm会从数据库加载那些字段的值。
 
 ```go
 var animal = Animal{Age: 99, Name: ""}
