@@ -427,7 +427,7 @@ db.Select("name, age").Find(&users)
 
 ## Scan
 
-Scan results into another struct.
+Scan 结果至另一个 struct.
 
 ```go
 type Result struct {
@@ -438,6 +438,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name, age").Where("name = ?", 3).Scan(&result)
 
-// Raw SQL
+// 原生SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
 ```
