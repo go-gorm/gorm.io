@@ -20,7 +20,7 @@ db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 
 ## 其它迁移工具
 
-GORM 的自动迁移在大多数情况下都会正常工作，但如果你在需求更严格的迁移工具， GORM 提供了通用 DB interface ，这可能对你有帮助。
+GORM 的自动迁移在大多数情况下都会正常工作，但如果你需要更严格的迁移工具， GORM 提供了通用 DB interface ，这可能对你有帮助。
 
 ```go
 // 返回 `*sql.DB`
@@ -83,34 +83,34 @@ db.Model(&User{}).DropColumn("description")
 ### Add Indexes
 
 ```go
-// Add index for columns `name` with given name `idx_user_name`
+// 为 `name` 列添加名为 `idx_user_name` 的普通索引
 db.Model(&User{}).AddIndex("idx_user_name", "name")
 
-// Add index for columns `name`, `age` with given name `idx_user_name_age`
+// 为 `name` 和 `age` 两列添加名为 `idx_user_name_age` 的普通索引
 db.Model(&User{}).AddIndex("idx_user_name_age", "name", "age")
 
-// Add unique index
+// 添加唯一索引
 db.Model(&User{}).AddUniqueIndex("idx_user_name", "name")
 
-// Add unique index for multiple columns
+// 为多列添加唯一索引
 db.Model(&User{}).AddUniqueIndex("idx_user_name_age", "name", "age")
 ```
 
 ### Remove Index
 
 ```go
-// Remove index
+// 删除索引
 db.Model(&User{}).RemoveIndex("idx_user_name")
 ```
 
 ### Add Foreign Key
 
 ```go
-// Add foreign key
-// 1st param : foreignkey field
-// 2nd param : destination table(id)
-// 3rd param : ONDELETE
-// 4th param : ONUPDATE
+// 添加外键
+// 第一个参数： 外键字段
+// 第二个参数：目标表名(字段)
+// 第三个参数：删除时
+// 第四个参数： 更新时
 db.Model(&User{}).AddForeignKey("city_id", "cities(id)", "RESTRICT", "RESTRICT")
 ```
 
