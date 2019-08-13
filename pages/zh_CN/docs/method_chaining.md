@@ -35,13 +35,13 @@ Immediate methods 是指那些会立即生成 SQL 语句并发送到数据库的
 
 `Create`, `First`, `Find`, `Take`, `Save`, `UpdateXXX`, `Delete`, `Scan`, `Row`, `Rows`...
 
-Here is an immediate methods example based on above chain:
+这有一个基于上面链式方法代码的 immediate 方法的例子：
 
 ```go
 tx.Find(&user)
 ```
 
-Generates
+生成的 Sql
 
 ```sql
 SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
@@ -49,9 +49,9 @@ SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
 
 ## Scopes
 
-Scope is build based on the method chaining theory.
+Scope 是建立在链式操作的基础之上的。
 
-With it, you could extract some generic logics, to write more reusable libraries.
+基于它，你可以抽取一些通用逻辑，写出更多可重用的函数库。
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
