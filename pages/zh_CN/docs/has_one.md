@@ -25,11 +25,11 @@ type User struct {
 
 ## Foreign Key
 
-For a `has one` relationship, a foreign key field must also exist, the owned will save the primary key of the model belongs to it into this field.
+在 `has one` 关系中，必须存在一个外键字段，用于保存 `has one` 所属 model 的主键。
 
-The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
+外键字段的名称通常使用 `has one` 所属模型加上它的 `主键` 生成，对于上面的例子，其外键名为 `UserID`.
 
-When you give a credit card to the user, its will save the User's `ID` into its `UserID` field.
+当你为用户关联信用卡时，信用卡会保存用户的 `ID` 到它的 `UserID` 字段。
 
 If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
 
