@@ -90,7 +90,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 db.Where("name LIKE ?", "jinzhu%").Find(&users, "id IN (?)", []int{1, 2, 3}).Count(&count)
 ```
 
-Generates
+生成的 Sql
 
 ```sql
 SELECT * FROM users WHERE name LIKE 'jinzhu%' AND id IN (1, 2, 3)
@@ -98,6 +98,6 @@ SELECT * FROM users WHERE name LIKE 'jinzhu%' AND id IN (1, 2, 3)
 SELECT count(*) FROM users WHERE name LIKE 'jinzhu%'
 ```
 
-## Thread Safety
+## 线程安全
 
-All Chain Methods will clone and create a new DB object (shares one connection pool), GORM is safe for concurrent use by multiple goroutines.
+所有链式方法都会创建并克隆一个新的 DB 对象 (共享一个连接池)，GORM 在多 goroutine 中是并发安全的。
