@@ -46,11 +46,11 @@ type User struct {
 | EMBEDDED_PREFIX | 设置嵌入结构的前缀                     |
 | -               | 忽略此字段                         |
 
-### 关联关系相关的结构体标记（tags）
+### 关联 struct 的标记（tags）
 
-Check out the Associations section for details
+关联 struct 的详情请查看关联部分
 
-| 结构体标记（Tag）                         | 描述                                             |
+| Tag                                | 描述                                             |
 | ---------------------------------- | ---------------------------------------------- |
 | MANY2MANY                          | 设置join的表                                       |
 | FOREIGNKEY                         | 设置外键                                           |
