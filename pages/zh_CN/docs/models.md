@@ -59,8 +59,8 @@ type User struct {
 | POLYMORPHIC_VALUE                  | Specifies polymorphic value                    |
 | JOINTABLE_FOREIGNKEY               | Specifies foreign key of jointable             |
 | ASSOCIATION_JOINTABLE_FOREIGNKEY | Specifies association foreign key of jointable |
-| SAVE_ASSOCIATIONS                  | AutoSave associations or not                   |
-| ASSOCIATION_AUTOUPDATE             | AutoUpdate associations or not                 |
-| ASSOCIATION_AUTOCREATE             | AutoCreate associations or not                 |
+| SAVE_ASSOCIATIONS                  | 是否自动保存关联记录                                     |
+| ASSOCIATION_AUTOUPDATE             | 是否自动更新关联记录                                     |
+| ASSOCIATION_AUTOCREATE             | 是否自动创建关联记录                                     |
 | ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not         |
 | PRELOAD                            | Auto Preload associations or not               |
