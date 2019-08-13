@@ -7,29 +7,29 @@ layout: page
 
 自动迁移你的模型，使之保持最新状态。
 
-**WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data.
+**警告：** 自动迁移 **只会** 创建表、缺失的列、缺失的索引， **不会** 更改现有列的类型或删除未使用的列，以此来保护您的数据。
 
 ```go
 db.AutoMigrate(&User{})
 
 db.AutoMigrate(&User{}, &Product{}, &Order{})
 
-// Add table suffix when create tables
+// 创建表时添加表后缀
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
-## Other Migration Tools
+## 其它迁移工具
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides generic DB interface which might be helpful for you.
+GORM 的自动迁移在大多数情况下都会正常工作，但如果你在需求更严格的迁移工具， GORM 提供了通用 DB interface ，这可能对你有帮助。
 
 ```go
-// returns `*sql.DB`
+// 返回 `*sql.DB`
 db.DB()
 ```
 
-Refer [Generic Interface](/docs/generic_interface.html) for more details.
+参考 [通用 Interface](/docs/generic_interface.html) 获取详情。
 
-## Schema Methods
+## 模型方法
 
 ### Has Table
 
