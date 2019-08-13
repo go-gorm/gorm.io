@@ -47,7 +47,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited. If you would like access those changes in your hooks, you could accept current transaction as argument in your hooks, for example:
+**注意** 在 GORM 中 Save/Delete 操作默认是基于事务完成， 所以相关更改在提交事务之前是不可见的。 如果你想在你的 hooks 中看到这些变化，你可以在你的 hooks 中接收当前事务的参数，比如：
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
@@ -56,9 +56,9 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### 更新对象
 
-Available hooks for updating
+更新对象时可用的 Hooks
 
 ```go
 // begin transaction
