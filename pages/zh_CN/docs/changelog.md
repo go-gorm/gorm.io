@@ -19,7 +19,7 @@ layout: page
 
 * 新的ToDBName逻辑
     
-    When GORM convert struct, field name to db name, only common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` were handled, so `HTTP`'s db name is `http`, but not `h_t_t_p`.
+    将GORM从类型名或字段名转换为db名时，采用了类似于 [golint](https://github.com/golang/lint/blob/master/lint.go#L702)处理`HTTP`和`URI` 缩写的方式。 因此，`HTTP` 的数据库名是 `http` ，而不是 `h_t_t_p`。
     
     But for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it.
 
