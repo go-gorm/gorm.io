@@ -69,23 +69,23 @@ db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 //// UPDATE users SET name='hello', age=18 WHERE id = 111;
 ```
 
-## Batch Updates
+## 批量更新
 
-Hooks won't run when do batch updates
+批量更新时 Hooks 不会运行
 
 ```go
 db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface{}{"name": "hello", "age": 18})
 //// UPDATE users SET name='hello', age=18 WHERE id IN (10, 11);
 
-// Update with struct only works with none zero values, or use map[string]interface{}
+// 使用 struct 更新时，只会更新非零值字段，若想更新所有字段，请使用map[string]interface{}
 db.Model(User{}).Updates(User{Name: "hello", Age: 18})
 //// UPDATE users SET name='hello', age=18;
 
-// Get updated records count with `RowsAffected`
+// 使用 `RowsAffected` 获取更新记录总数
 db.Model(User{}).Updates(User{Name: "hello", Age: 18}).RowsAffected
 ```
 
-## Update with SQL Expression
+## 使用 SQL 表达式更新
 
 ```go
 DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
