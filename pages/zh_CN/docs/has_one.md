@@ -1,11 +1,11 @@
 ---
-title: 一个关联
+title: Has One
 layout: page
 ---
 
-## 一个关联
+## Has One
 
-A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+一个 `has one` 关联与另一个 model 建立了一对一关系，但它和一对一关系有不同的语义（及结果）。 This association indicates that each instance of a model contains or possesses one instance of another model.
 
 For example, if your application includes users and credit cards, and each user can only have one credit card.
 
