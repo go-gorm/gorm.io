@@ -109,14 +109,14 @@ DB.Model(&user).Association("Friends").Clear()
 DB.Model(&user).Association("Friends").Count()
 ```
 
-## Working with Many To Many
+## Many To Many 的使用
 
 ```go
 db.Model(&user).Related(&languages, "Languages")
 //// SELECT * FROM "languages" INNER JOIN "user_languages" ON "user_languages"."language_id" = "languages"."id" WHERE "user_languages"."user_id" = 111
 
-// Preload Languages when query user
+// 查询 user 时会预加载 Languages
 db.Preload("Languages").First(&user)
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+高级用法请参阅： [关联模式](/docs/associations.html#Association-Mode)
