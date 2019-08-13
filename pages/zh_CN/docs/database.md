@@ -11,7 +11,7 @@ layout: page
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
+GORM 已经包装了一些驱动，以便更容易的记住导入路径，所以你可以这样导入 mysql 的驱动：
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -22,7 +22,7 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ## MySQL
 
-**NOTE:** In order to handle `time.Time`, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**注意:**为了正确处理 `time.Time `, 您需要添加 `parseTime` 参数。 ([更多支持的参数](https://github.com/go-sql-driver/mysql#parameters))
 
 ```go
 import (
