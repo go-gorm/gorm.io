@@ -47,7 +47,7 @@ for rows.Next() {
 }
 ```
 
-## Scan `sql.Rows` into model
+## 将 `sql.Rows` 扫描至 model
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
@@ -55,9 +55,10 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows scan a row into user
+  // ScanRows 扫描一行记录到 user
   db.ScanRows(rows, &user)
 
   // do something
+}
 }
 ```
