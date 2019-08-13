@@ -1,6 +1,6 @@
 ---
-title: 查找关联
-layout: 页面
+title: 关联
+layout: page
 ---
 
 ## 自动创建/更新
@@ -135,7 +135,7 @@ type User struct {
 关联模式包含几个帮助方法，可以更方便的来管理关联
 
 ```go
-// Start Association Mode
+// 开始使用关联模式
 var user User
 db.Model(&user).Association("Languages")
 // `user` is the source, must contains primary key
