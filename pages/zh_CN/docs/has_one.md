@@ -25,13 +25,13 @@ type User struct {
 
 ## Foreign Key
 
-在 `has one` 关系中，必须存在一个外键字段，用于保存 `has one` 所属 model 的主键。
+在 `has one` 关系中，被拥有 model 必须存在一个外键字段，用于保存所属 model 的主键。
 
-外键字段的名称通常使用 `has one` 所属模型加上它的 `主键` 生成，对于上面的例子，其外键名为 `UserID`.
+外键字段的名称通常使用 `has one` 所属 model 加上它的 `主键` 生成，对于上面的例子，其外键名为 `UserID`.
 
 当你为用户关联信用卡时，信用卡会保存用户的 `ID` 到它的 `UserID` 字段。
 
-If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
+如果你想使用另一个字段来记录该关系，您可以通过标签 `foreignkey` 来改变它， 例如：
 
 ```go
 type CreditCard struct {
@@ -48,7 +48,7 @@ type User struct {
 
 ## Association ForeignKey
 
-By default, the owned entity will save the `has one` model's primary into a foreign key, you could change to save another field, like use `Name` for below example.
+默认情况下，被拥有 model 会在其外键中，保存 `has one` 所属 model 的主键，您可以更改保存至另一个字段，例如上面例子中的 `Name`.
 
 ```go
 type CreditCard struct {
