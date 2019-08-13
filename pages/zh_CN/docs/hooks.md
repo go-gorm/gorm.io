@@ -1,5 +1,5 @@
 ---
-title: Hooks
+title: 钩子
 layout: page
 ---
 
@@ -58,22 +58,22 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 
 ### 更新对象
 
-更新对象时可用的 Hooks
+更新对象时可用的 hooks
 
 ```go
-// begin transaction
+// begin transaction 开始事物
 BeforeSave
 BeforeUpdate
-// save before associations
-// update timestamp `UpdatedAt`
-// save self
-// save after associations
+// save before associations 保存前关联
+// update timestamp `UpdatedAt` 更新 `UpdatedAt` 时间戳
+// save self 保存自己
+// save after associations 保存后关联
 AfterUpdate
 AfterSave
-// commit or rollback transaction
+// commit or rollback transaction 提交或回滚事务
 ```
 
-Code Example:
+代码实例:
 
 ```go
 func (u *User) BeforeUpdate() (err error) {
@@ -83,7 +83,7 @@ func (u *User) BeforeUpdate() (err error) {
     return
 }
 
-// Updating data in same transaction
+// 在同一个事务中更新数据
 func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
@@ -92,22 +92,22 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### 删除对象
 
-Available hooks for deleting
+删除对象时可用的 hooks
 
 ```go
-// begin transaction
+// begin transaction 开始事务
 BeforeDelete
-// delete self
+// delete self 删除自己
 AfterDelete
-// commit or rollback transaction
+// commit or rollback transaction 提交或回滚事务
 ```
 
-Code Example:
+代码实例:
 
 ```go
-// Updating data in same transaction
+//  在一个事务中更新数据
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
@@ -116,17 +116,17 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Querying an object
+### 查询对象
 
-Available hooks for querying
+查询对象时可用的 hooks
 
 ```go
-// load data from database
-// Preloading (eager loading)
+// load data from database 从数据库加载数据
+// Preloading (eager loading) 预加载（加载）
 AfterFind
 ```
 
-Code Example:
+代码实例:
 
 ```go
 func (u *User) AfterFind() (err error) {
