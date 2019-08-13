@@ -37,27 +37,27 @@ db.Create(&animal)
 // animal.Name => 'galeone'
 ```
 
-**NOTE** all fields having a zero value, like `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), won't be saved into the database but will use its default value. If you want to avoid this, consider using a pointer type or scanner/valuer, e.g:
+**注意** 所有字段的零值, 比如 `0`, `''`, `false` 或者其它 [零值](https://tour.golang.org/basics/12)，都不会保存到数据库内，但会使用他们的默认值。 如果你想避免这种情况，可以考虑使用指针或实现 Scanner/Valuer 接口，比如：
 
 ```go
-// Use pointer value
+// 使用指针
 type User struct {
   gorm.Model
   Name string
   Age  *int `gorm:"default:18"`
 }
 
-// Use scanner/valuer
+// 使用 Scanner/Valuer
 type User struct {
   gorm.Model
   Name string
-  Age  sql.NullInt64 `gorm:"default:18"`
+  Age  sql.NullInt64 `gorm:"default:18"`  // sql.NullInt64 实现了Scanner/Valuer接口
 }
 ```
 
 ## 在Hooks中设置字段值
 
-If you want to update a field's value in `BeforeCreate` hook, you can use `scope.SetColumn`, for example:
+如果你想在`BeforeCreate` hook 中修改字段的值，可以使用`scope.SetColumn`，例如：
 
 ```go
 func (user *User) BeforeCreate(scope *gorm.Scope) error {
