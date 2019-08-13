@@ -5,12 +5,12 @@ layout: page
 
 ## Has Many
 
-A `has many` association also sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+在一个 `has many` 关联中，其也与另一个 model 建立了一对多关系，不同于 `has one`，model 的拥有者可以有零个或多个实例。
 
-For example, if your application includes users and credit card, and each user can have many credit cards.
+例如，你的应用包含了用户和信用卡，并且每个用户可以有多张信用卡。
 
 ```go
-// User has many CreditCards, UserID is the foreign key
+// 用户有多张信用卡， UserID 是外键
 type User struct {
     gorm.Model
     CreditCards []CreditCard
