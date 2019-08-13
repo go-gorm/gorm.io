@@ -66,7 +66,7 @@ type User struct {
 
 ## Polymorphism Association
 
-Supports polymorphic `has many` and `has one` associations.
+`has many` 和 `has one` 支持 polymorphic 关联。
 
 ```go
   type Cat struct {
@@ -89,11 +89,11 @@ Supports polymorphic `has many` and `has one` associations.
   }
 ```
 
-Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
+注意：many-to-many 明确的不支持 polymorphic 关联，如果使用会抛出错误。
 
-## Working with Has One
+## Has One 的使用
 
-You could find `has one` associations with `Related`
+你可以通过 `Related` 使用 `has one` 关联。
 
 ```go
 var card CreditCard
