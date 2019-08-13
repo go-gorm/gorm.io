@@ -29,7 +29,7 @@ db.First(&user, 10)
 
 ### Where
 
-#### Plain SQL
+#### 普通 SQL
 
 ```go
 // 获取第一条匹配的记录
@@ -145,7 +145,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 
 ### Inline Condition
 
-作用与 `Where` 类型
+作用与 `Where` 类似
 
 当与多个 [Multiple Immediate Methods](/docs/method_chaining.html#Multiple-Immediate-Methods) 一起使用时, 不会将这些条件传递给后面的 immediate methods.
 
@@ -282,11 +282,11 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "jinzhu", Age: 30}
 ```
 
-## Advanced Query
+## 高级查询
 
-### SubQuery
+### SubQuery 子查询
 
-SubQuery with `*gorm.expr`
+基于 `*gorm.expr` 的子查询
 
 ```go
 db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?", "paid").QueryExpr()).Find(&orders)
