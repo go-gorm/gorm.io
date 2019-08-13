@@ -86,7 +86,7 @@ db.Set("gorm:association_autocreate", false).Save(&user)
 
 ## 跳过自动创建及更新
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
+若要禁用 `自动创建` 及 `自动更新`, 可以将这两个设置一起使用
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -106,7 +106,7 @@ type User struct {
     type User struct {
       gorm.Model
       Name    string
-      Company Company `gorm:"save_associations:false"`
+      Company Company `gorm:"association_autoupdate:false"`
     }
     
 
@@ -132,7 +132,7 @@ type User struct {
 
 ## 关联模式
 
-Association Mode contains some helper methods to handle relationship related things easily.
+关联模式包含几个帮助方法，可以更方便的来管理关联
 
 ```go
 // Start Association Mode
@@ -163,7 +163,7 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 
 ### 替换关联
 
-Replace current associations with new ones
+将当前的协会替换为新的协会
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
