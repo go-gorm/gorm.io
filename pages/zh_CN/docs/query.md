@@ -310,17 +310,17 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 
 ### Order
 
-Specify order when retrieve records from database, set reorder (the second argument) to `true` to overwrite defined conditions
+指定从数据库中检索出记录的顺序。设置第二个参数 reorder 为 `true` ，可以覆盖前面定义的排序条件。
 
 ```go
 db.Order("age desc, name").Find(&users)
 //// SELECT * FROM users ORDER BY age desc, name;
 
-// Multiple orders
+// 多字段排序
 db.Order("age desc").Order("name").Find(&users)
 //// SELECT * FROM users ORDER BY age desc, name;
 
-// ReOrder
+// 覆盖排序
 db.Order("age desc").Find(&users1).Order("age", true).Find(&users2)
 //// SELECT * FROM users ORDER BY age desc; (users1)
 //// SELECT * FROM users ORDER BY age; (users2)
@@ -328,13 +328,13 @@ db.Order("age desc").Find(&users1).Order("age", true).Find(&users2)
 
 ### Limit
 
-Specify the max number of records to retrieve
+指定从数据库检索出的最大记录数。
 
 ```go
 db.Limit(3).Find(&users)
 //// SELECT * FROM users LIMIT 3;
 
-// Cancel limit condition with -1
+// -1 取消 Limit 条件
 db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 //// SELECT * FROM users LIMIT 10; (users1)
 //// SELECT * FROM users; (users2)
@@ -342,13 +342,13 @@ db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 
 ### Offset
 
-Specify the number of records to skip before starting to return the records
+指定开始返回记录前要跳过的记录数。
 
 ```go
 db.Offset(3).Find(&users)
 //// SELECT * FROM users OFFSET 3;
 
-// Cancel offset condition with -1
+// -1 取消 Offset 条件
 db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 //// SELECT * FROM users OFFSET 10; (users1)
 //// SELECT * FROM users; (users2)
@@ -356,7 +356,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 
 ### Count
 
-Get how many records for a model
+该 model 能获取的记录总数。
 
 ```go
 db.Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Find(&users).Count(&count)
@@ -370,7 +370,7 @@ db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
 ```
 
-**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns
+**注意** `Count` 必须是链式查询的最后一个操作 ，因为它会覆盖前面的 `SELECT`
 
 ### Group & Having
 
@@ -394,7 +394,7 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ### Joins
 
-Specify Joins conditions
+指定连接条件
 
 ```go
 rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
@@ -404,7 +404,7 @@ for rows.Next() {
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// multiple joins with parameter
+// 多连接及参数
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
