@@ -3,17 +3,17 @@ title: 链式方法
 layout: page
 ---
 
-## Method Chaining
+## 链式方法
 
-Gorm implements method chaining interface, so you could write code like this:
+Gorm 实现了链式方法接口，所以你可以把代码写成这样：
 
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 
-// create a new relation
+// 创建一个新的 relation
 tx := db.Where("name = ?", "jinzhu")
 
-// add more filter
+// 添加更多查询条件
 if someCondition {
     tx = tx.Where("age = ?", 20)
 } else {
@@ -25,7 +25,7 @@ if yetAnotherCondition {
 }
 ```
 
-Query won't be generated until a immediate method, which could be useful in some cases.
+在调用 immediate 方法前不会生成 Query 语句，有时候这会很有用。
 
 Like you could extract a wrapper to handle some common logic
 
