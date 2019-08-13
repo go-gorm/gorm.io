@@ -1,11 +1,11 @@
 ---
-title: Migration
+title: 迁移
 layout: page
 ---
 
-## Auto Migration
+## 自动迁移
 
-Automatically migrate your schema, to keep your schema update to date.
+自动迁移你的模型，使之保持最新状态。
 
 **WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data.
 
