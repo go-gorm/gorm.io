@@ -15,15 +15,15 @@ GORM中的错误处理与惯用的Go代码不同，因为它具有可链接的AP
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-    // error handling...
+    // 处理错误……
 }
 ```
 
-Or
+或者
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-    // error handling...
+    // 处理错误……
 }
 ```
 
@@ -32,7 +32,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 处理数据时，通常会发生多个错误。 GORM提供了一个API来将所有错误作为切片返回：
 
 ```go
-// If there are more than one error happened, `GetErrors` returns them as `[]error`
+// 如果发生了一个以上的错误， `GetErrors` 以`[]error`形式返回他们
 errors := db.First(&user).Limit(10).Find(&users).GetErrors()
 
 fmt.Println(len(errors))
@@ -47,14 +47,14 @@ for _, err := range errors {
 GORM提供了处理RecordNotFound错误的快捷方式。如果有多个错误，它将检查它们中是否有任何RecordNotFound错误。
 
 ```go
-// Check if returns RecordNotFound error
+// 检查是否为 RecordNotFound 错误
 db.Where("name = ?", "hello world").First(&user).RecordNotFound()
 
 if db.Model(&user).Related(&credit_card).RecordNotFound() {
-  // record not found
+  // 未找到记录
 }
 
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; gorm.IsRecordNotFoundError(err) {
-  // record not found
+  // 未找到记录
 }
 ```
