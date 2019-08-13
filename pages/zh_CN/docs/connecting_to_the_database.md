@@ -58,7 +58,7 @@ func main() {
 
 ### Sqlite3
 
-**注意：** 你也可以使用`:memory:` 替代文件路径。 这会告诉 sqlite 使用系统内存作为一个临时数据库。 This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
+**注意：** 你也可以使用`:memory:` 替代文件路径。 这会告诉 sqlite 使用系统内存作为一个临时数据库。 当你针对 GORM 应用进行测试时，这特别有用，因为你的测试需要一个真正的数据库，并且该数据库位于内存中，性能也很好。
 
 ```go
 import (
@@ -74,7 +74,7 @@ func main() {
 
 ### SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[通过 SQL Server 开始使用](https://www.microsoft.com/en-us/sql-server/developer-get-started/go),它可以运行在有 Docker 环境的 [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) 上。
 
 ```go
 import (
