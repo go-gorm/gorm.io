@@ -25,21 +25,21 @@ type CreditCard struct {
 
 ## Foreign Key
 
-To define a has many relationship, a foreign key must exist. The default foreign key's name is the owner's type name plus the name of its primary key field (e.g. UserID, CardID, etc).
+在 has many 关系中，被拥有 model 必须存在一个外键字段，默认的外键字段名称通常使用拥有者 model 加上它的主键（比如 UserID, CardID, 等）。
 
-For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+例如：定义一个属于 `User` 的 model，它的外键应该为 `UserID`.
 
-To use another field as foreign key, you can customize it with a `foreignkey` tag, e.g:
+要使用另一个字段作为外键，你可以通过标签 `foreignkey` 来定制它，例如：
 
 ```go
 type User struct {
-    gorm.Model
-    CreditCards []CreditCard `gorm:"foreignkey:UserRefer"`
+  gorm.Model
+  CreditCards []CreditCard `gorm:"foreignkey:UserRefer"`
 }
 
 type CreditCard struct {
-    gorm.Model
-    Number    string
+  gorm.Model
+  Number    string
   UserRefer uint
 }
 ```
