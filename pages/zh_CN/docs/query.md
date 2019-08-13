@@ -295,7 +295,7 @@ db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?
 
 ### Select
 
-Specify fields that you want to retrieve from database, by default, will select all fields
+指定你想从数据库中检索出的字段，默认会选择全部字段。
 
 ```go
 db.Select("name, age").Find(&users)
