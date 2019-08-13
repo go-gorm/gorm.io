@@ -32,11 +32,11 @@ db.First(&user, 10)
 #### Plain SQL
 
 ```go
-// Get first matched record
+// 获取第一条匹配的记录
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Get all matched records
+// 获取全部匹配的记录
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
@@ -52,7 +52,7 @@ db.Where("name LIKE ?", "%jin%").Find(&users)
 // AND
 db.Where("name = ? AND age >= ?", "jinzhu", "22").Find(&users)
 
-// Time
+// 时间
 db.Where("updated_at > ?", lastWeek).Find(&users)
 
 // BETWEEN
@@ -70,7 +70,7 @@ db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 //// SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice of primary keys
+// 主键的切片
 db.Where([]int64{20, 21, 22}).Find(&users)
 //// SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
@@ -82,27 +82,27 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 //// SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You could consider to use pointer type or scanner/valuer to avoid this.
+你可以使用指针或实现 Scanner/Valuer 接口来避免这个问题.
 
 ```go
-// Use pointer value
+// 使用指针
 type User struct {
   gorm.Model
   Name string
   Age  *int
 }
 
-// Use scanner/valuer
+// 使用 Scanner/Valuer
 type User struct {
   gorm.Model
   Name string
-  Age  sql.NullInt64
+  Age  sql.NullInt64  // sql.NullInt64 实现了 Scanner/Valuer 接口
 }
 ```
 
 ### Not
 
-Works similar like `Where`
+作用与 `Where` 类似
 
 ```go
 db.Not("name", "jinzhu").First(&user)
