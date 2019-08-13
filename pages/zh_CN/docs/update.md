@@ -22,30 +22,30 @@ db.Save(&user)
 如果你只希望更新指定字段，可以使用`Update`或者`Updates`
 
 ```go
-// Update single attribute if it is changed
+// 更新单个属性，如果它有变化
 db.Model(&user).Update("name", "hello")
 //// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update single attribute with combined conditions
+// 根据给定的条件更新单个属性
 db.Model(&user).Where("active = ?", true).Update("name", "hello")
 //// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
 
-// Update multiple attributes with `map`, will only update those changed fields
+// 使用 map 更新多个属性，只会更新其中有变化的属性
 db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
 //// UPDATE users SET name='hello', age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update multiple attributes with `struct`, will only update those changed & non blank fields
+// 使用 struct 更新多个属性，只会更新其中有变化且为非零值的字段
 db.Model(&user).Updates(User{Name: "hello", Age: 18})
 //// UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 
-// WARNING when update with struct, GORM will only update those fields that with non blank value
-// For below Update, nothing will be updated as "", 0, false are blank values of their types
+// 警告：当使用 struct 更新时，GORM只会更新那些非零值的字段
+// 对于下面的操作，不会发生任何更新，"", 0, false 都是其类型的零值
 db.Model(&user).Updates(User{Name: "", Age: 0, Actived: false})
 ```
 
-## Update Selected Fields
+## 更新选定字段
 
-If you only want to update or ignore some fields when updating, you could use `Select`, `Omit`
+如果你想更新或忽略某些字段，你可以使用 `Select`，`Omit`
 
 ```go
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
