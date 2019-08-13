@@ -234,7 +234,7 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-获取匹配的第一条记录, 或者根据给定的条件创建一个新的对象 (仅支持 struct 和 map 条件)
+获取匹配的第一条记录, 或者根据给定的条件创建一个新的记录 (仅支持 struct 和 map 条件)
 
 ```go
 // 未找到
@@ -249,7 +249,7 @@ db.Where(User{Name: "Jinzhu"}).FirstOrCreate(&user)
 
 ### Attrs
 
-如果记录未找到，将使用参数创建 struct.
+如果记录未找到，将使用参数创建 struct 和记录.
 
 ```go
 // 未找到
