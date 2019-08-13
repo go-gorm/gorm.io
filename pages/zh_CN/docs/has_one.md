@@ -5,21 +5,21 @@ layout: page
 
 ## Has One
 
-一个 `has one` 关联与另一个 model 建立了一对一关系，但它和一对一关系有不同的语义（及结果）。 Has one 表示：model 的每一个示例都包含或拥有另一个 model 的示例。
+在一个 `has one` 关联中，其也与另一个 model 建立了一对一关系，但它和一对一关系有不同的语义（及结果）。 Has one 表示：model 的每一个示例都包含或拥有另一个 model 的示例。
 
-例如，如果你的应用包含用户和信用卡，并且每个用户只能有一张信用卡。
+例如，你的应用包含了用户和信用卡，并且每个用户只能有一张信用卡。
 
 ```go
+type User struct {
+    gorm.Model
+    CreditCard   CreditCard
+}
+
 // 用户有一张信用卡，UserID 是外键
 type CreditCard struct {
     gorm.Model
     Number   string
     UserID   uint
-}
-
-type User struct {
-    gorm.Model
-    CreditCard   CreditCard
 }
 ```
 
@@ -34,15 +34,15 @@ type User struct {
 如果你想使用另一个字段来记录该关系，您可以通过标签 `foreignkey` 来改变它， 例如：
 
 ```go
+type User struct {
+    gorm.Model
+    CreditCard CreditCard `gorm:"foreignkey:UserName"`
+}
+
 type CreditCard struct {
     gorm.Model
     Number   string
     UserName string
-}
-
-type User struct {
-    gorm.Model
-    CreditCard CreditCard `gorm:"foreignkey:UserName"`
 }
 ```
 
@@ -51,16 +51,16 @@ type User struct {
 默认情况下，被拥有 model 会在其外键中，保存 `has one` 所属 model 的主键，您可以更改保存至另一个字段，例如上面例子中的 `Name`.
 
 ```go
-type CreditCard struct {
-    gorm.Model
-    Number string
-    UID    string
-}
-
 type User struct {
     gorm.Model
     Name       `sql:"index"`
     CreditCard CreditCard `gorm:"foreignkey:uid;association_foreignkey:name"`
+}
+
+type CreditCard struct {
+    gorm.Model
+    Number string
+    UID    string
 }
 ```
 
