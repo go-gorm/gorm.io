@@ -66,7 +66,7 @@ type CreditCard struct {
 
 ## Polymorphism Association
 
-`has many` 和 `has one` 支持 polymorphic 关联。
+Gorm 支持 `has many` 和 `has one` 的 polymorphic 关联。
 
 ```go
   type Cat struct {
