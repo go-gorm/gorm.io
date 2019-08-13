@@ -26,7 +26,7 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 **注意：**
 
-想要能正确的处理 `time.Time`，你需要添加 `parseTime` 参数。 ([更多支持的参数](https://github.com/go-sql-driver/mysql#parameters))
+想要能正确的处理 `time.Time`，你需要添加 `parseTime` 参数。 ([更多支持的参数](https://github. com/go-sql-driver/mysql#parameters))
 
 想要完全的支持 UTF-8 编码，你需要修改`charset=utf8` 为 `charset=utf8mb4`。 详情请查看 [utf8mb4](https://mathiasbynens.be/notes/mysql-utf8mb4).
 
