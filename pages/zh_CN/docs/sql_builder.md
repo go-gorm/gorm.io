@@ -1,5 +1,5 @@
 ---
-title: SQL 构造器
+title: SQL 生成器
 layout: page
 ---
 
