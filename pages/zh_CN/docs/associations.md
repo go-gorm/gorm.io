@@ -163,7 +163,7 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 
 ### 替换关联
 
-将当前的协会替换为新的协会
+使用新关联替换当前关联
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
