@@ -42,9 +42,9 @@ for _, err := range errors {
 }
 ```
 
-## RecordNotFound（记录未找到）错误
+## 记录未找到错误
 
-GORM提供了处理RecordNotFound错误的快捷方式。如果有多个错误，它将检查它们中是否有任何RecordNotFound错误。
+RecordNotFound，GORM提供了处理 `RecordNotFound` 错误的快捷方式。如果有多个错误，它将逐一检查这些错误是否为 `RecordNotFound` 错误。
 
 ```go
 // 检查是否为 RecordNotFound 错误
