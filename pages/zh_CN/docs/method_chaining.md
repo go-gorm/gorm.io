@@ -5,7 +5,7 @@ layout: page
 
 ## 链式方法
 
-Gorm 实现了链式方法接口，所以你可以把代码写成这样：
+Method Chaining，Gorm 实现了链式方法接口，所以你可以把代码写成这样：
 
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
@@ -25,17 +25,17 @@ if yetAnotherCondition {
 }
 ```
 
-在调用 immediate 方法前不会生成 Query 语句，有时候这会很有用。
+在调用立即执行方法前不会生成 Query 语句，有时候这会很有用。
 
 比如你可以抽取一个函数来处理一些通用逻辑。
 
-## Immediate 方法
+## 立即执行方法
 
-Immediate methods 是指那些会立即生成 SQL 语句并发送到数据库的方法, 他们一般是 CRUD 方法，比如：
+Immediate methods ，立即执行方法是指那些会立即生成 SQL 语句并发送到数据库的方法, 他们一般是 CRUD 方法，比如：
 
 `Create`, `First`, `Find`, `Take`, `Save`, `UpdateXXX`, `Delete`, `Scan`, `Row`, `Rows`...
 
-这有一个基于上面链式方法代码的 immediate 方法的例子：
+这有一个基于上面链式方法代码的立即执行方法的例子：
 
 ```go
 tx.Find(&user)
@@ -47,9 +47,9 @@ tx.Find(&user)
 SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
 ```
 
-## Scopes
+## 范围
 
-Scope 是建立在链式操作的基础之上的。
+Scopes，Scope 是建立在链式操作的基础之上的。
 
 基于它，你可以抽取一些通用逻辑，写出更多可重用的函数库。
 
@@ -82,7 +82,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // 查询所有已付款、已发货中金额大于 1000 的订单
 ```
 
-## 多 Immediate 方法
+## 多个立即执行方法
 
 在 GORM 中使用多 immediate 方法时，后一个 immediate 方法会复用前一个 immediate 方法的条件 (不包括内联条件) 。
 
