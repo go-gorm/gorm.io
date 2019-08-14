@@ -55,8 +55,8 @@ type User struct {
 | MANY2MANY                          | 指定连接表                            |
 | FOREIGNKEY                         | 设置外键                             |
 | ASSOCIATION_FOREIGNKEY             | 设置关联外键                           |
-| POLYMORPHIC                        | Specifies polymorphic type       |
-| POLYMORPHIC_VALUE                  | Specifies polymorphic value      |
+| POLYMORPHIC                        | 指定多态类型                           |
+| POLYMORPHIC_VALUE                  | 指定多态值                            |
 | JOINTABLE_FOREIGNKEY               | 指定连接表的外键                         |
 | ASSOCIATION_JOINTABLE_FOREIGNKEY | 指定连接表的关联外键                       |
 | SAVE_ASSOCIATIONS                  | AutoSave associations or not     |
