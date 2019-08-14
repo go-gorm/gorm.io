@@ -84,7 +84,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 
 ## 多个立即执行方法
 
-在 GORM 中使用多 immediate 方法时，后一个 immediate 方法会复用前一个 immediate 方法的条件 (不包括内联条件) 。
+Multiple Immediate Methods，在 GORM 中使用多个立即执行方法时，后一个立即执行方法会复用前一个 立即执行方法的条件 (不包括内联条件) 。
 
 ```go
 db.Where("name LIKE ?", "jinzhu%").Find(&users, "id IN (?)", []int{1, 2, 3}).Count(&count)
