@@ -26,7 +26,7 @@ type Profile struct {
 
 ## 外键
 
-若要定义属于关系的外键必须存在, 默认外键使用所有者的类型名称及其主键。
+Foreign Key，若要定义属于关系的外键必须存在, 默认外键使用所有者的类型名称及其主键。
 
 对于上述例子，定义一个属于 `User` 的模型，外键应该是 `UserID`。
 
@@ -69,7 +69,7 @@ type Profile struct {
 }
 ```
 
-## 属于的使用
+## Belongs To 的使用
 
 你可以使用 `Related` 查找 `belongs to` 关系。
 
