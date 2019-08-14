@@ -22,10 +22,10 @@ type Language struct {
 }
 ```
 
-## Back-Reference
+## 互引用关联
 
 ```go
-// 用户拥有且属于多种语言，使用 `user_languages` 作为连接表
+// Back-Reference，用户拥有且属于多种语言，使用 `user_languages` 作为连接表
 type User struct {
     gorm.Model
     Languages         []*Language `gorm:"many2many:user_languages;"`
@@ -46,7 +46,7 @@ db.Model(&language).Related(&users,  "Users")
 //// SELECT * FROM "users" INNER JOIN "user_languages" ON "user_languages"."user_id" = "users"."id" WHERE  ("user_languages"."language_id" IN ('111'))
 ```
 
-## Foreign Keys
+## 多外键
 
 ```go
 type CustomizePerson struct {
