@@ -66,7 +66,7 @@ type CreditCard struct {
 
 ## Polymorphism Association
 
-Gorm 支持 `has many` 和 `has one` 的 polymorphic 关联。
+Gorm 支持 `has many` 和 `has one` 的多态关联。
 
 ```go
   type Cat struct {
@@ -89,7 +89,7 @@ Gorm 支持 `has many` 和 `has one` 的 polymorphic 关联。
   }
 ```
 
-注意：many-to-many 明确的不支持 polymorphic 关联，如果使用会抛出错误。
+注意：many-to-many 明确的不支持多态关联，如果使用会抛出错误。
 
 ## Has One 的使用
 
