@@ -23,9 +23,9 @@ type CreditCard struct {
 }
 ```
 
-## Foreign Key
+## 外键
 
-在 has many 关系中，被拥有 model 必须存在一个外键字段，默认的外键字段名称通常使用拥有者 model 加上它的主键（比如 UserID, CardID, 等）。
+Foreign Key，在 has many 关系中，被拥有 model 必须存在一个外键字段，默认的外键字段名称通常使用其拥有者 model 加上它的主键（比如 UserID, CardID, 等）。
 
 例如：定义一个属于 `User` 的 model，它的外键应该为 `UserID`.
 
@@ -44,9 +44,9 @@ type CreditCard struct {
 }
 ```
 
-## Association ForeignKey
+## 关联外键
 
-GORM 通常使用拥有者的主键作为外键的值，在上面的例子中，它是 `User`'s `ID`.
+Association ForeignKey，GORM 通常使用拥有者的主键作为外键的值，在上面的例子中，它是 `User` 的 `ID`.
 
 当你为用户关联信用卡时，GORM 会保存用户的 `ID` 到信用卡的 `UserID` 字段。
 
@@ -66,9 +66,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## 多态关联
 
-GORM 支持 has many 和 has one 的多态关联。
+Polymorphism Association，GORM 支持 has many 和 has one 的多态关联。
 
 ```go
   type Cat struct {
