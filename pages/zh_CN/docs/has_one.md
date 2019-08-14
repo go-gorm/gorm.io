@@ -23,11 +23,11 @@ type CreditCard struct {
 }
 ```
 
-## Foreign Key
+## 外键
 
-在 `has one` 关系中，被拥有 model 必须存在一个外键字段，用于保存所属 model 的主键。
+Foreign Key，在 `has one` 关系中，被拥有 model 必须存在一个外键字段，用于保存所属 model 的主键。
 
-外键字段的名称通常使用 `has one` 所属 model 加上它的 `主键` 生成，对于上面的例子，其外键名为 `UserID`.
+外键字段的名称通常使用 `has one` 拥有者 model 加上它的 `主键` 生成，对于上面的例子，其外键名为 `UserID`.
 
 当你为用户关联信用卡时，信用卡会保存用户的 `ID` 到它的 `UserID` 字段。
 
@@ -46,7 +46,7 @@ type CreditCard struct {
 }
 ```
 
-## Association ForeignKey
+## 关联外键
 
 默认情况下，被拥有 model 会在其外键中，保存 `has one` 所属 model 的主键，您可以更改保存至另一个字段，例如上面例子中的 `Name`.
 
