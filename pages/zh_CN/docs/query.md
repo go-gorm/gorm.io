@@ -27,7 +27,7 @@ db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
 
-### Where
+### Where 条件
 
 #### 普通 SQL
 
@@ -100,7 +100,7 @@ type User struct {
 }
 ```
 
-### Not
+### Not 条件
 
 作用与 `Where` 类似
 
@@ -128,7 +128,7 @@ db.Not(User{Name: "jinzhu"}).First(&user)
 //// SELECT * FROM users WHERE name <> "jinzhu";
 ```
 
-### Or
+### Or 条件
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -143,11 +143,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 //// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-### Inline Condition
+### Inline Condition 内联条件
 
 作用与 `Where` 类似
 
-当与多个 [Multiple Immediate Methods](/docs/method_chaining.html#Multiple-Immediate-Methods) 一起使用时, 不会将这些条件传递给后面的 immediate methods.
+当与 [多个立即执行方法](/docs/method_chaining.html#Multiple-Immediate-Methods) 一起使用时, 内联条件不会传递给后面的立即执行方法。
 
 ```go
 // 根据主键获取记录 (只适用于整形主键)
@@ -173,7 +173,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 //// SELECT * FROM users WHERE age = 20;
 ```
 
-### 其它查询选项
+### Extra Querying option 其它查询选项
 
 ```go
 // 为查询 SQL 添加额外的 SQL 操作
@@ -282,7 +282,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "jinzhu", Age: 30}
 ```
 
-## 高级查询
+## Advanced Query 高级查询
 
 ### SubQuery 子查询
 
