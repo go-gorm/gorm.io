@@ -138,9 +138,9 @@ type User struct {
 // 开始使用关联模式
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source, must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
+// `user` 是源，必须包含主键
+// `Languages` 是关系中的源的字段名
+// 只有在满足上面两个条件时，关联模式才能正常工作，请注意检查错误：
 // db.Model(&user).Association("Languages").Error
 ```
 
