@@ -60,11 +60,11 @@ type CustomizeAccount struct {
 }
 ```
 
-它将为这两个 struct 创建多对多关系，并且他们的关系将被保存到连接表 `PersonAccount` ，连接表的外键为 `customize_person_id_person` 和 `customize_account_id_account`.
+Foreign Keys，它将为这两个 struct 创建多对多关系，并且他们的关系将被保存到连接表 `PersonAccount` ，连接表的外键为 `customize_person_id_person` 和 `customize_account_id_account`.
 
-## Jointable ForeignKey
+## 连接表外键
 
-如果你想改变连接表的外键，你可以使用标签 `association_jointable_foreignkey` 和 `jointable_foreignkey`.
+Jointable ForeignKey，如果你想改变连接表的外键，你可以使用标签 `association_jointable_foreignkey` 和 `jointable_foreignkey`.
 
 ```go
 type CustomizePerson struct {
@@ -78,11 +78,11 @@ type CustomizeAccount struct {
 }
 ```
 
-## Self-Referencing
+## 自引用关联
 
-在自引用的多对多关系中，你必须在连接表中修改关联外键。
+Self-Referencing，在自引用的多对多关系中，你必须在连接表中修改关联外键。
 
-使用 struct 名及其主键生成关联外键，使得关联外键与外键不同，比如：
+使用属性名及其主键生成关联外键，使得关联外键与外键不同，比如：
 
 ```go
 type User struct {
