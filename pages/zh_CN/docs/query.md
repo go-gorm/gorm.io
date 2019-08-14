@@ -183,7 +183,7 @@ db.Set("gorm:query_option", "FOR UPDATE").First(&user, 10)
 
 ## FirstOrInit
 
-获取匹配的第一条记录, 或者根据给定的条件初始化一个新的对象 (仅支持 struct 和 map 条件)
+获取匹配的第一条记录，否则根据给定的条件初始化一个新的对象 (仅支持 struct 和 map 条件)
 
 ```go
 // 未找到
@@ -234,7 +234,7 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-获取匹配的第一条记录, 或者根据给定的条件创建一个新的记录 (仅支持 struct 和 map 条件)
+获取匹配的第一条记录, 否则根据给定的条件创建一个新的记录 (仅支持 struct 和 map 条件)
 
 ```go
 // 未找到
@@ -293,9 +293,9 @@ db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?
 // SELECT * FROM "orders"  WHERE "orders"."deleted_at" IS NULL AND (amount > (SELECT AVG(amount) FROM "orders"  WHERE (state = 'paid')));
 ```
 
-### Select
+### 选择字段
 
-指定你想从数据库中检索出的字段，默认会选择全部字段。
+Select，指定你想从数据库中检索出的字段，默认会选择全部字段。
 
 ```go
 db.Select("name, age").Find(&users)
@@ -308,9 +308,9 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 //// SELECT COALESCE(age,'42') FROM users;
 ```
 
-### Order
+### 排序
 
-指定从数据库中检索出记录的顺序。设置第二个参数 reorder 为 `true` ，可以覆盖前面定义的排序条件。
+Order，指定从数据库中检索出记录的顺序。设置第二个参数 reorder 为 `true` ，可以覆盖前面定义的排序条件。
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -326,9 +326,9 @@ db.Order("age desc").Find(&users1).Order("age", true).Find(&users2)
 //// SELECT * FROM users ORDER BY age; (users2)
 ```
 
-### Limit
+### 数量
 
-指定从数据库检索出的最大记录数。
+Limit，指定从数据库检索出的最大记录数。
 
 ```go
 db.Limit(3).Find(&users)
@@ -340,9 +340,9 @@ db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 //// SELECT * FROM users; (users2)
 ```
 
-### Offset
+### 偏移
 
-指定开始返回记录前要跳过的记录数。
+Offset，指定开始返回记录前要跳过的记录数。
 
 ```go
 db.Offset(3).Find(&users)
@@ -354,9 +354,9 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 //// SELECT * FROM users; (users2)
 ```
 
-### Count
+### 总数
 
-该 model 能获取的记录总数。
+Count，该 model 能获取的记录总数。
 
 ```go
 db.Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Find(&users).Count(&count)
@@ -392,9 +392,9 @@ type Result struct {
 db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
 ```
 
-### Joins
+### 连接
 
-指定连接条件
+Joins，指定连接条件
 
 ```go
 rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
@@ -410,7 +410,7 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ## Pluck
 
-查询 model 中的一个列作为切片，如果您想要查询多个列，您应该使用 [`Scan`](#Scan)
+Pluck，查询 model 中的一个列作为切片，如果您想要查询多个列，您应该使用 [`Scan`](#Scan)
 
 ```go
 var ages []int64
@@ -425,9 +425,9 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Select("name, age").Find(&users)
 ```
 
-## Scan
+## 扫描
 
-Scan 结果至另一个 struct.
+Scan，扫描结果至一个 struct.
 
 ```go
 type Result struct {
