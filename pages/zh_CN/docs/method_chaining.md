@@ -1,11 +1,11 @@
 ---
-title: 链式方法
+title: 链式操作
 layout: page
 ---
 
-## 链式方法
+## 链式操作
 
-Method Chaining，Gorm 实现了链式方法接口，所以你可以把代码写成这样：
+Method Chaining，Gorm 实现了链式操作接口，所以你可以把代码写成这样：
 
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
