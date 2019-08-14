@@ -48,7 +48,7 @@ type CreditCard struct {
 
 ## 关联外键
 
-默认情况下，被拥有 model 会在其外键中，保存 `has one` 所属 model 的主键，您可以更改保存至另一个字段，例如上面例子中的 `Name`.
+Association ForeignKey，默认情况下，在 `has one` 中，被拥有 model 会使用其外键，保存拥有者 model 的主键，您可以更改保存至另一个字段，例如上面例子中的 `Name`.
 
 ```go
 type User struct {
@@ -64,9 +64,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## 多态关联
 
-Gorm 支持 `has many` 和 `has one` 的多态关联。
+Polymorphism Association，Gorm 支持 `has many` 和 `has one` 的多态关联。
 
 ```go
   type Cat struct {
