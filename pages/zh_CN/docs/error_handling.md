@@ -1,11 +1,11 @@
 ---
 title: 错误处理
-layout: 页面
+layout: page
 ---
 
 Go的错误处理是很重要的
 
-建议您在任何[立即方法](https://gorm. io/zh_CN/docs/method_chaining. html#Immediate-Methods)后进行错误检查
+建议您在调用任何 [立即执行方法](https://gorm. io/zh_CN/docs/method_chaining. html#Immediate-Methods) 后进行错误检查
 
 ## 错误处理
 
