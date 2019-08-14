@@ -11,9 +11,9 @@ Hooks(一般称之为钩子函数)的功能是在运行创建/查询/更新/删�
 
 ## 钩子函数
 
-### 创建一个对象
+### 创建对象时
 
-以下为可用的钩子函数
+Creating an object，创建对象时可用的 hooks
 
 ```go
 // 开始事务
@@ -56,9 +56,9 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### 更新对象
+### 更新对象时
 
-更新对象时可用的 hooks
+Updating an object，更新对象时可用的 hooks
 
 ```go
 // begin transaction 开始事物
@@ -92,9 +92,9 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### 删除对象
+### 删除对象时
 
-删除对象时可用的 hooks
+Deleting an object，删除对象时可用的 hooks
 
 ```go
 // begin transaction 开始事务
@@ -116,9 +116,9 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### 查询对象
+### 查询对象时
 
-查询对象时可用的 hooks
+Querying an object，查询对象时可用的 hooks
 
 ```go
 // load data from database 从数据库加载数据
