@@ -50,17 +50,17 @@ type User struct {
 
 关联 struct 的详情请查看关联部分
 
-| Tag                                | 描述                 |
-| ---------------------------------- | ------------------ |
-| MANY2MANY                          | 指定连接表              |
-| FOREIGNKEY                         | 设置外键               |
-| ASSOCIATION_FOREIGNKEY             | 设置关联外键             |
-| POLYMORPHIC                        | 指定多态类型             |
-| POLYMORPHIC_VALUE                  | 指定多态值              |
-| JOINTABLE_FOREIGNKEY               | 指定连接表的外键           |
-| ASSOCIATION_JOINTABLE_FOREIGNKEY | 指定连接表的关联外键         |
-| SAVE_ASSOCIATIONS                  | 是否自动做 save 的相关操作   |
-| ASSOCIATION_AUTOUPDATE             | 是否自动做 update 的相关操作 |
-| ASSOCIATION_AUTOCREATE             | 是否自动创建             |
-| ASSOCIATION_SAVE_REFERENCE       | 是否自动保存关联引用         |
-| PRELOAD                            | 是否自动预加载            |
+| Tag                                | 描述                   |
+| ---------------------------------- | -------------------- |
+| MANY2MANY                          | 指定连接表                |
+| FOREIGNKEY                         | 设置外键                 |
+| ASSOCIATION_FOREIGNKEY             | 设置关联外键               |
+| POLYMORPHIC                        | 指定多态类型               |
+| POLYMORPHIC_VALUE                  | 指定多态值                |
+| JOINTABLE_FOREIGNKEY               | 指定连接表的外键             |
+| ASSOCIATION_JOINTABLE_FOREIGNKEY | 指定连接表的关联外键           |
+| SAVE_ASSOCIATIONS                  | 是否自动完成 save 的相关操作    |
+| ASSOCIATION_AUTOUPDATE             | 是否自动完成 update 的相关操作  |
+| ASSOCIATION_AUTOCREATE             | 是否自动完成 create 的相关操作  |
+| ASSOCIATION_SAVE_REFERENCE       | 是否自动完成引用的 save 的相关操作 |
+| PRELOAD                            | 是否自动完成预加载的相关操作       |
