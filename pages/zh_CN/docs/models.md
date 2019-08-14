@@ -50,17 +50,17 @@ type User struct {
 
 关联 struct 的详情请查看关联部分
 
-| Tag                                | 描述                               |
-| ---------------------------------- | -------------------------------- |
-| MANY2MANY                          | 指定连接表                            |
-| FOREIGNKEY                         | 设置外键                             |
-| ASSOCIATION_FOREIGNKEY             | 设置关联外键                           |
-| POLYMORPHIC                        | 指定多态类型                           |
-| POLYMORPHIC_VALUE                  | 指定多态值                            |
-| JOINTABLE_FOREIGNKEY               | 指定连接表的外键                         |
-| ASSOCIATION_JOINTABLE_FOREIGNKEY | 指定连接表的关联外键                       |
-| SAVE_ASSOCIATIONS                  | AutoSave associations or not     |
-| ASSOCIATION_AUTOUPDATE             | AutoUpdate associations or not   |
-| ASSOCIATION_AUTOCREATE             | AutoCreate associations or not   |
-| ASSOCIATION_SAVE_REFERENCE       | 是否自动保存关联引用                       |
-| PRELOAD                            | Auto Preload associations or not |
+| Tag                                | 描述         |
+| ---------------------------------- | ---------- |
+| MANY2MANY                          | 指定连接表      |
+| FOREIGNKEY                         | 设置外键       |
+| ASSOCIATION_FOREIGNKEY             | 设置关联外键     |
+| POLYMORPHIC                        | 指定多态类型     |
+| POLYMORPHIC_VALUE                  | 指定多态值      |
+| JOINTABLE_FOREIGNKEY               | 指定连接表的外键   |
+| ASSOCIATION_JOINTABLE_FOREIGNKEY | 指定连接表的关联外键 |
+| SAVE_ASSOCIATIONS                  | 是否自动保存     |
+| ASSOCIATION_AUTOUPDATE             | 是否自动更新     |
+| 是否自动保存                             | 是否自动创建     |
+| ASSOCIATION_SAVE_REFERENCE       | 是否自动保存关联引用 |
+| PRELOAD                            | 是否自动预加载    |
