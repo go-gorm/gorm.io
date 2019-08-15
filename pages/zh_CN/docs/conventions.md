@@ -12,10 +12,10 @@ layout: page
 ```go
 // gorm.Model 定义
 type Model struct {
-  ID        uint `gorm:"primary_key"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt *time.Time
+    ID        uint `gorm:"primary_key"`
+    CreatedAt time.Time
+    UpdatedAt time.Time
+    DeletedAt *time.Time `sql:"index"`
 }
 
 // Inject fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` into model `User`
