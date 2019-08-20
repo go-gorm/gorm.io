@@ -5,9 +5,9 @@ layout: page
 
 ## gorm.Model
 
-`gorm.Model` is a basic GoLang struct which includes the following fields: `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
+`gorm.Model`は`ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`というフィールドを持つ、GoのStructです。
 
-It may be embeded into your model or you may build your own model without it.
+あなたのモデルに組み込んで使っても良いですし、組み込まずに独自のモデルを使っても構いません。
 
 ```go
 // gorm.Modelの定義
@@ -33,7 +33,7 @@ type User struct {
 
 ## 主キーとしての`ID`
 
-GORM uses any field with the name `ID` as the table's primary key by default.
+GORMはデフォルトでは`ID`という名前のフィールドをテーブルの主キーとして扱います。
 
 ```go
 type User struct {
@@ -51,7 +51,7 @@ type Animal struct {
 
 ## 複数形のテーブル名
 
-Table name is the pluralized version of struct name.
+テーブル名は、Struct名の複数形が使われます。
 
 ```go
 type User struct {} // `デフォルトのテーブル名は`users`です
@@ -89,7 +89,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 
 ### デフォルトのテーブル名の変更
 
-You can apply any rules on the default table name by defining the `DefaultTableNameHandler`.
+`DefaultTableNameHandler`を定義すると、デフォルトのテーブル名の生成ルールを変更できます。
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
@@ -99,7 +99,7 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ## スネークケースのカラム名
 
-Column names will be the field's name is lower snake case.
+カラム名はスネークケース化されたフィールド名になります。
 
 ```go
 type User struct {
@@ -121,7 +121,7 @@ type Animal struct {
 
 ### CreatedAt
 
-For models having a `CreatedAt` field, it will be set to the time when the record is first created.
+`CreatedAt`フィールドの持つモデルでは、レコードの初回生成時に現在時刻が設定されます。
 
 ```go
 db.Create(&user) // `CreatedAt`には現在時刻が設定されます
@@ -132,7 +132,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-For models having an `UpdatedAt` field, it will be set to time when the record is updated.
+`UpdatedAt`フィールドを持つモデルでは、レコード保存時に現在時刻が設定されます
 
 ```go
 db.Save(&user) // `UpdatedAt`に現在時刻を設定します
