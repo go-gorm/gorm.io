@@ -5,13 +5,13 @@ layout: page
 
 ## データベースへの接続
 
-In order to connect to a database, you need to import the database's driver first. For example:
+データベースに接続するには、まずデータベースのドライバーをImportする必要があります。
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remember the import path. So you could import the mysql driver with:
+GORMには各ドライバーのImportを楽にするためのラッパーがいくつか用意されています。例えばMySQLドライバーをImportする場合は、下記のように書けます。
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -24,9 +24,9 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ### MySQL
 
-**NOTE:**
+**注意**
 
-In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+`time.Time`を正しく扱うため、`parseTime`をパラメータとして渡してあげる必要があります。(\[対応している他のパラメータ\](https://github.com/go-sql-driver/mysql#parameters)) (\[対応している他のパラメータ\](https://github.com/go-sql-driver/mysql#parameters))
 
 In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
 
