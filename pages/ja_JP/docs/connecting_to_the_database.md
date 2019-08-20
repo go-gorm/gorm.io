@@ -26,9 +26,9 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 **注意**
 
-`time.Time`を正しく扱うため、`parseTime`をパラメータとして渡してあげる必要があります。(\[対応している他のパラメータ\](https://github.com/go-sql-driver/mysql#parameters)) (\[対応している他のパラメータ\](https://github.com/go-sql-driver/mysql#parameters))
+`time.Time`を正しく扱うため、`parseTime`をパラメータとして渡してあげる必要があります。 ([対応している他のパラメータ](https://github.com/go-sql-driver/mysql#parameters))
 
-In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
+UTF-8の完全な対応のため、`charset=utf8`を`charset=utf8mb4`に変更する必要があります。 詳しくは [こちらの記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
 
 ```go
 import (
@@ -58,7 +58,7 @@ func main() {
 
 ### Sqlite3
 
-**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
+**注意** パスでの指定の代わりに `:memory:` を使うことができます。 その場合、メモリー上の一時的なデータベースが使用されます。 GORMの機能を使ってメモリー上の実際のDBを叩くことになるので、テストの時に便利です。
 
 ```go
 import (
@@ -74,7 +74,7 @@ func main() {
 
 ### SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go)はDockerを使って [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/)、[Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) でも動かすことができます。
 
 ```go
 import (
@@ -90,4 +90,4 @@ func main() {
 
 ## サポートされていないデータベース
 
-GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
+GORMが公式にサポートしている上記のデータベース以外でも、Dialectを書けば利用することができます。詳しくは [GORM Dialects](/docs/dialects.html) を参照してください。
