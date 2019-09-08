@@ -5,7 +5,7 @@ layout: page
 
 ## Delete Record
 
-**WARNING** When deleting a record, you need to ensure its primary field has value, and GORM will use the primary key to delete the record, if the primary key field is blank, GORM will delete all records for the model
+**Warning** レコードを削除する際、主キーが値を持っているかを確認してください。GORMはレコードを削除する際に主キーを使うので、主キーが空の場合、GORMはそのモデルの全レコードを削除してしまいます。
 
 ```go
 // 存在するレコードを削除する
@@ -31,7 +31,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ## Soft Delete
 
-If a model has a `DeletedAt` field, it will get a soft delete ability automatically! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
+モデルに`DeletedAt` フィールドがある場合、自動的にソフトデリート機能が使えるようになります。 When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
 
 ```go
 db.Delete(&user)
