@@ -31,7 +31,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ## Soft Delete
 
-モデルに`DeletedAt` フィールドがある場合、自動的にソフトデリート機能が使えるようになります。 When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
+モデルに`DeletedAt` フィールドがある場合、自動的にソフトデリート機能が使えるようになります。 このとき`Delete`した場合、レコードはデータベースから物理削除されるのではなく、 `DeletedAt`に現在の時間がセットされます。
 
 ```go
 db.Delete(&user)
@@ -41,11 +41,11 @@ db.Delete(&user)
 db.Where("age = ?", 20).Delete(&User{})
 //// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when query them
+// ソフトデリートされたレコードはクエリ実行時に無視されます
 db.Where("age = 20").Find(&user)
 //// SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 
-// Find soft deleted records with Unscoped
+// Unscopedを使うことでソフトデリートされたレコードを取得できます。
 db.Unscoped().Where("age = 20").Find(&users)
 //// SELECT * FROM users WHERE age = 20;
 ```
