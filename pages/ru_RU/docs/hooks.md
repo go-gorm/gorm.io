@@ -33,7 +33,7 @@ AfterSave
 
 ```go
 func (u *User) BeforeSave() (err error) {
-    if u.IsValid() {
+    if !u.IsValid() {
         err = errors.New("can't save invalid data")
     }
     return

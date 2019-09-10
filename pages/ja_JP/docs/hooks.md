@@ -33,8 +33,8 @@ AfterSave
 
 ```go
 func (u *User) BeforeSave() (err error) {
-    if u.IsValid() {
-        err = errors.New("不正な値を保存できません")
+    if !u.IsValid() {
+        err = errors.New("can't save invalid data")
     }
     return
 }

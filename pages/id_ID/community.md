@@ -38,7 +38,7 @@ layout: page
 * [Validasi - memvalidasi model saat membuat, memperbarui](https://github.com/qor/validations)
 * [ Gormstore - GORM backend untuk sesi gorila](https://github.com/wader/gormstore)
 * [go-oauth2-gorm - GORM adapter for go-oauth2](https://github.com/techknowlogick/go-oauth2-gorm)
-* [gormt - GORM mysql to golang struct](https://github.com/xie1xiao1jun/gormt)
+* [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
 
 ## Berkontribusi untuk halaman ini
 
