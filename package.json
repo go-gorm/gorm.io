@@ -18,7 +18,7 @@
     "hexo-renderer-stylus": "^0.3.1",
     "hexo-server": "^0.3.3",
     "hoek": "^5.0.4",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "lunr": "^2.3.5",
     "npm": "^6.7.0"
   }
