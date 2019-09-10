@@ -5,12 +5,12 @@ layout: page
 
 ## Many To Many
 
-Many to Many adds a join table between two models.
+Many to Many 在两个 model 中添加一张连接表。
 
-For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specfied language.
+比如，您的应用程序包含用户和语言，一个用户可以说多种语言，多个用户也可以说某一种语言。
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// 用户拥有且属于多种语言，使用 `user_languages` 作为连接表
 type User struct {
     gorm.Model
     Languages         []Language `gorm:"many2many:user_languages;"`
@@ -22,10 +22,10 @@ type Language struct {
 }
 ```
 
-## Back-Reference
+## 互引用关联
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// Back-Reference，用户拥有且属于多种语言，使用 `user_languages` 作为连接表
 type User struct {
     gorm.Model
     Languages         []*Language `gorm:"many2many:user_languages;"`
@@ -46,7 +46,7 @@ db.Model(&language).Related(&users,  "Users")
 //// SELECT * FROM "users" INNER JOIN "user_languages" ON "user_languages"."user_id" = "users"."id" WHERE  ("user_languages"."language_id" IN ('111'))
 ```
 
-## Foreign Keys
+## 多外键
 
 ```go
 type CustomizePerson struct {
@@ -60,11 +60,11 @@ type CustomizeAccount struct {
 }
 ```
 
-It will create a many2many relationship for those two structs, and their relations will be saved into join table `PersonAccount` with foreign keys `customize_person_id_person` AND `customize_account_id_account`
+Foreign Keys，它将为这两个 struct 创建多对多关系，并且他们的关系将被保存到连接表 `PersonAccount` ，连接表的外键为 `customize_person_id_person` 和 `customize_account_id_account`.
 
-## Jointable ForeignKey
+## 连接表外键
 
-If you want to change join table's foreign keys, you could use tag `association_jointable_foreignkey`, `jointable_foreignkey`
+Jointable ForeignKey，如果你想改变连接表的外键，你可以使用标签 `association_jointable_foreignkey` 和 `jointable_foreignkey`.
 
 ```go
 type CustomizePerson struct {
@@ -78,11 +78,11 @@ type CustomizeAccount struct {
 }
 ```
 
-## Self-Referencing
+## 自引用关联
 
-To define a self-referencing many2many relationship, you have to change association's foreign key in the join table.
+Self-Referencing，在自引用的多对多关系中，你必须在连接表中修改关联外键。
 
-to make it different with source's foreign key, which is generated using struct's name and its primary key, for example:
+使用属性名及其主键生成关联外键，使得关联外键与外键不同，比如：
 
 ```go
 type User struct {
@@ -91,9 +91,9 @@ type User struct {
 }
 ```
 
-GORM will create a join table with foreign key `user_id` and `friend_id`, and use it to save user's self-reference relationship.
+GORM 会生成一个关联表，其外键为 `user_id` 和 `friend_id`，并用其保存自引用用户关系。
 
-Then you can operate it like normal relations, e.g:
+然后你还是可以像正常关系一样操作它们，比如：
 
 ```go
 DB.Preload("Friends").First(&user, "id = ?", 1)
@@ -109,14 +109,14 @@ DB.Model(&user).Association("Friends").Clear()
 DB.Model(&user).Association("Friends").Count()
 ```
 
-## Working with Many To Many
+## Many To Many 的使用
 
 ```go
 db.Model(&user).Related(&languages, "Languages")
 //// SELECT * FROM "languages" INNER JOIN "user_languages" ON "user_languages"."language_id" = "languages"."id" WHERE "user_languages"."user_id" = 111
 
-// Preload Languages when query user
+// 查询 user 时会预加载 Languages
 db.Preload("Languages").First(&user)
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+高级用法请参阅： [关联模式](/docs/associations.html#Association-Mode)

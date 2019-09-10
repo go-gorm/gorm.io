@@ -1,6 +1,6 @@
 ---
-title: 查找关联
-layout: 页面
+title: 关联
+layout: page
 ---
 
 ## 自动创建/更新
@@ -86,7 +86,7 @@ db.Set("gorm:association_autocreate", false).Save(&user)
 
 ## 跳过自动创建及更新
 
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
+若要禁用 `自动创建` 及 `自动更新`, 可以将这两个设置一起使用
 
 ```go
 db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
@@ -106,7 +106,7 @@ type User struct {
     type User struct {
       gorm.Model
       Name    string
-      Company Company `gorm:"save_associations:false"`
+      Company Company `gorm:"association_autoupdate:false"`
     }
     
 
@@ -132,15 +132,15 @@ type User struct {
 
 ## 关联模式
 
-Association Mode contains some helper methods to handle relationship related things easily.
+关联模式包含几个帮助方法，可以更方便的来管理关联
 
 ```go
-// Start Association Mode
+// 开始使用关联模式
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source, must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
+// `user` 是源，必须包含主键
+// `Languages` 是关系中的源的字段名
+// 只有在满足上面两个条件时，关联模式才能正常工作，请注意检查错误：
 // db.Model(&user).Association("Languages").Error
 ```
 
@@ -163,7 +163,7 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 
 ### 替换关联
 
-Replace current associations with new ones
+使用新关联替换当前关联
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})

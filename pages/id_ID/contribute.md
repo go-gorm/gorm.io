@@ -20,12 +20,12 @@ layout: page
 
 Anda dapat menerjemahkan situs saat ini dengan <https://translate.gorm.io>
 
-To translate GORM in your language you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to <https://translate.gorm.io>.
+Untuk menerjemahkan GORM ke bahasa anda, anda perlu membuat sebuah pos permintaan pada [Github issues](https://github.com/jinzhu/gorm.io/issues) agar bisa ditambahkan ke <https://translate.gorm.io>.
 
 ## Program
 
-* Create pull request on [Github](https://github.com/jinzhu/gorm) to fix issues, agreed features from [Github Issues](https://github.com/jinzhu/gorm/issues)
-* Create open source plugins for GORM. (Don't forgot to add them to [the list](/community.html#Open-Sources))
+* Buat sebuah pull request pada [Github](https://github.com/jinzhu/gorm) untuk membetulkan isu-isu, fitur-fitur yang disetujui dari [Github Issues](https://github.com/jinzhu/gorm/issues)
+* Buat plugin-plugin open source untuk GORM. (Jangan lupa untuk menambahkannya ke [daftar](/community.html#Open-Sources))
 
 ## Donasi
 

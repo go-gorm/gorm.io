@@ -11,7 +11,7 @@ layout: page
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
+GORM 已经包装了一些驱动，以便更容易的记住导入路径，所以你可以这样导入 mysql 的驱动：
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -22,7 +22,7 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ## MySQL
 
-**NOTE:** In order to handle `time.Time`, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**注意:**为了正确处理 `time.Time `, 您需要添加 `parseTime` 参数。 ([更多支持的参数](https://github.com/go-sql-driver/mysql#parameters))
 
 ```go
 import (
@@ -52,7 +52,7 @@ func main() {
 
 ## Sqlite3
 
-**NOTE:** You can also use `:memory:` for the connection, which will use sqlite in temporary system memory. This is especially useful when writing tests for your application against GORM.
+**注意：** 你也可以使用`:memory:` 连接数据库，这将在临时内存中使用 sqlite 当您针对 GORM 编写应用程序测试时，这尤其有用。
 
 ```go
 import (
@@ -68,7 +68,7 @@ func main() {
 
 ## SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[通过 SQL Server 开始使用](https://www.microsoft.com/en-us/sql-server/developer-get-started/go),它可以运行在有 Docker 环境的 [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) 上。
 
 ```go
 import (
@@ -82,8 +82,8 @@ func main() {
 }
 ```
 
-## Write Dialect for unsupported databases
+## 为不支持的数据库编写方言
 
-GORM officially supports the above databases, but you could write a dialect for unsupported databases.
+GORM 官方支持上述四个数据库，但您可以为不受支持的数据库编写方言（Dialects）
 
-To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
+编写你自己的方言，请参阅： <https://github.com/jinzhu/gorm/blob/master/dialect.go>

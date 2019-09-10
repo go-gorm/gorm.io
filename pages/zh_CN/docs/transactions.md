@@ -5,7 +5,7 @@ layout: page
 
 GORM 默认会将单个的 `create`, `update`, `delete`操作封装在事务内进行处理，以确保数据的完整性。
 
-If you want to treat multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
+如果你想把多个 `create`, `update`, `delete` 操作作为一个原子操作，`Transaction` 就是用来完成这个的。
 
 ## 事务
 
@@ -31,7 +31,7 @@ tx.Commit()
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
-  // Note the use of tx as the database handle once you are within a transaction
+  // 注意，当你在一个事务中应使用 tx 作为数据库句柄
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {

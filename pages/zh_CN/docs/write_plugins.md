@@ -40,7 +40,7 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 
 ## 注册callback顺序
 
-Register callbacks with orders
+注册 callback 顺序
 
 ```go
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
@@ -63,16 +63,16 @@ GORM定义了回调以执行其CRUD操作，在开始编写插件之前检查它
 
 - [Delete callbacks](https://github.com/jinzhu/gorm/blob/master/callback_delete.go)
 
-- Row Query callbacks - no callbacks registered by default
+- Row Query callbacks - 没有默认注册的 callback
 
-Row Query callbacks will be called when perform `Row` or `Rows`, there are no registered callbacks by default, you could register a new one like:
+Row Query callbacks 在运行 `Row` 或 `Rows` 时被调用，默认情况下它没有注册的回调，你可以注册一个新的回调：
 
 ```go
 func updateTableName(scope *gorm.Scope) {
-  scope.Search.Table(scope.TableName() + "_draft") // append `_draft` to table name
+  scope.Search.Table(scope.TableName() + "_draft") // 追加 `_draft` 到表名后
 }
 
 db.Callback().RowQuery().Register("publish:update_table_name", updateTableName)
 ```
 
-View <https://godoc.org/github.com/jinzhu/gorm> to view all available API
+查阅所有可用 [API](https://godoc.org/github.com/jinzhu/gorm)

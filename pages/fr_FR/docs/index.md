@@ -5,7 +5,7 @@ layout: page
 
 The fantastic ORM library for Golang, aims to be developer friendly.
 
-## Overview
+## Introduction
 
 * Full-Featured ORM (almost)
 * Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
@@ -20,13 +20,13 @@ The fantastic ORM library for Golang, aims to be developer friendly.
 * Every feature comes with tests
 * Developer Friendly
 
-## Install
+## Installation
 
 ```sh
 go get -u github.com/jinzhu/gorm
 ```
 
-## Quick Start
+## Démarrage rapide
 
 ```go
 package main

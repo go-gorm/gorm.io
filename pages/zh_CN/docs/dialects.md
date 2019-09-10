@@ -1,25 +1,25 @@
 ---
-title: Dialect Specific Data Type
+title: 方言的特殊类型
 layout: page
 ---
 
-## Write new Dialect
+## 创建新方言
 
-GORM provides official support for `sqlite`, `mysql`, `postgres`, `mssql`.
+GORM 官方支持以下几种方言：`sqlite`, `mysql`, `postgres`, `mssql`.
 
-You can add support for additional databases by creating a new dialect. When creating a new dialect, you must implement [the dialect interface](https://godoc.org/github.com/jinzhu/gorm#Dialect).
+你可以通过创建一个新的方言来为其它数据库提供支持。 当你创建一个新方言的时候，你必须实现 [the dialect interface](https://godoc.org/github.com/jinzhu/gorm#Dialect) 接口。
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+某些数据库可能兼容 `mysql` 或 `postgres` 方言，此时你可以直接使用现有方言。
 
-## Dialect Specific Data Type
+## 方言的特殊类型
 
-Certain dialects of SQL ship with their own custom, non-standard column types, such as the `jsonb` column in PostgreSQL. GORM supports loading several of these types, as listed in the following sections.
+某些 SQL 的方言包含特殊的、非标准的类型，比如 PostgreSQL 中的 `jsonb` 类型。 GORM 支持其中的几种类型，如下所示。
 
 ### PostgreSQL
 
-GORM supports loading the following PostgreSQL exclusive column types: - jsonb - hstore
+GORM 支持加载以下 PostgreSQL 特有类型： - jsonb - hstore
 
-Given the following Model definition:
+Model 定义如下：
 
 ```go
 import (
@@ -35,7 +35,7 @@ type Document struct {
 }
 ```
 
-You may use the model like so:
+你可以这样使用 model:
 
 ```go
 password := "0654857340"
@@ -46,16 +46,16 @@ sampleDoc := Document{
   Secrets: postgres.Hstore{"password": &password},
 }
 
-//insert sampleDoc into the database
+// 插入 sampleDoc 到数据库
 db.Create(&sampleDoc)
 
-//retrieve the fields again to confirm if they were inserted correctly
+// 取出记录，以确定记录是否正确插入
 resultDoc := Document{}
 db.Where("id = ?", sampleDoc.ID).First(&resultDoc)
 
 metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata)
 secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, sampleDoc.Secrets)
 
-// this should print "true"
+// 应该输出 "true"
 fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
 ```

@@ -1,11 +1,11 @@
 ---
-title: SQL Builder
+title: SQL 生成器
 layout: page
 ---
 
 ## 执行原生SQL
 
-Run Raw SQL, which is not chainable with other methods
+执行原生 SQL 时，不支持与其它方法的链式操作
 
 ```go
 db.Exec("DROP TABLE users;")
@@ -21,9 +21,9 @@ var result Result
 db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
 ```
 
-## `sql.Row` & `sql.Rows`
+## `sql.Row` 和 `sql.Rows`
 
-Get query result as `*sql.Row` or `*sql.Rows`
+通过 `*sql.Row` 或 `*sql.Rows` 获取查询结果
 
 ```go
 row := db.Table("users").Where("name = ?", "jinzhu").Select("name, age").Row() // (*sql.Row)
@@ -37,7 +37,7 @@ for rows.Next() {
     ...
 }
 
-// Raw SQL
+// 原生 SQL
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows() // (*sql.Rows, error)
 defer rows.Close()
 for rows.Next() {
@@ -47,7 +47,7 @@ for rows.Next() {
 }
 ```
 
-## Scan `sql.Rows` into model
+## 将 `sql.Rows` 扫描至 model
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
@@ -55,9 +55,10 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows scan a row into user
+  // ScanRows 扫描一行记录到 user
   db.ScanRows(rows, &user)
 
   // do something
+}
 }
 ```

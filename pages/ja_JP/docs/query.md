@@ -32,11 +32,11 @@ db.First(&user, 10)
 #### Plain SQL
 
 ```go
-// Get first matched record
+// 条件に一致した最初のレコードを取得します
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Get all matched records
+// 条件に一致したすべてのレコードを取得します
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
@@ -44,7 +44,7 @@ db.Where("name = ?", "jinzhu").Find(&users)
 db.Where("name <> ?", "jinzhu").Find(&users)
 
 // IN
-db.Where("name IN (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
+db.Where("name in (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
 
 // LIKE
 db.Where("name LIKE ?", "%jin%").Find(&users)
@@ -62,15 +62,15 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 #### Struct & Map
 
 ```go
-// Struct
+// 構造体
 db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 //// SELECT * FROM users WHERE name = "jinzhu" AND age = 20 LIMIT 1;
 
-// Map
+// マップ
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 //// SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice of primary keys
+// 主キーのスライス
 db.Where([]int64{20, 21, 22}).Find(&users)
 //// SELECT * FROM users WHERE id IN (20, 21, 22);
 ```

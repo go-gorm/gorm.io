@@ -5,68 +5,68 @@ layout: page
 
 ## Has One
 
-A `has one` association also sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+在一个 `has one` 关联中，其也与另一个 model 建立了一对一关系，但它和一对一关系有不同的语义（及结果）。 Has one 表示：model 的每一个示例都包含或拥有另一个 model 的示例。
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+例如，你的应用包含了用户和信用卡，并且每个用户只能有一张信用卡。
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+type User struct {
+    gorm.Model
+    CreditCard   CreditCard
+}
+
+// 用户有一张信用卡，UserID 是外键
 type CreditCard struct {
     gorm.Model
     Number   string
     UserID   uint
 }
-
-type User struct {
-    gorm.Model
-    CreditCard   CreditCard
-}
 ```
 
-## Foreign Key
+## 外键
 
-For a `has one` relationship, a foreign key field must also exist, the owned will save the primary key of the model belongs to it into this field.
+Foreign Key，在 `has one` 关系中，被拥有 model 必须存在一个外键字段，用于保存所属 model 的主键。
 
-The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
+外键字段的名称通常使用 `has one` 拥有者 model 加上它的 `主键` 生成，对于上面的例子，其外键名为 `UserID`.
 
-When you give a credit card to the user, its will save the User's `ID` into its `UserID` field.
+当你为用户关联信用卡时，信用卡会保存用户的 `ID` 到它的 `UserID` 字段。
 
-If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
+如果你想使用另一个字段来记录该关系，您可以通过标签 `foreignkey` 来改变它， 例如：
 
 ```go
+type User struct {
+    gorm.Model
+    CreditCard CreditCard `gorm:"foreignkey:UserName"`
+}
+
 type CreditCard struct {
     gorm.Model
     Number   string
     UserName string
 }
-
-type User struct {
-    gorm.Model
-    CreditCard CreditCard `gorm:"foreignkey:UserName"`
-}
 ```
 
-## Association ForeignKey
+## 关联外键
 
-By default, the owned entity will save the `has one` model's primary into a foreign key, you could change to save another field, like use `Name` for below example.
+Association ForeignKey，默认情况下，在 `has one` 中，被拥有 model 会使用其外键，保存拥有者 model 的主键，您可以更改保存至另一个字段，例如上面例子中的 `Name`.
 
 ```go
-type CreditCard struct {
-    gorm.Model
-    Number string
-    UID    string
-}
-
 type User struct {
     gorm.Model
     Name       `sql:"index"`
     CreditCard CreditCard `gorm:"foreignkey:uid;association_foreignkey:name"`
 }
+
+type CreditCard struct {
+    gorm.Model
+    Number string
+    UID    string
+}
 ```
 
-## Polymorphism Association
+## 多态关联
 
-Supports polymorphic `has many` and `has one` associations.
+Polymorphism Association，Gorm 支持 `has many` 和 `has one` 的多态关联。
 
 ```go
   type Cat struct {
@@ -89,19 +89,19 @@ Supports polymorphic `has many` and `has one` associations.
   }
 ```
 
-Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
+注意：many-to-many 明确的不支持多态关联，如果使用会抛出错误。
 
-## Working with Has One
+## Has One 的使用
 
-You could find `has one` associations with `Related`
+你可以通过 `Related` 使用 `has one` 关联。
 
 ```go
 var card CreditCard
 db.Model(&user).Related(&card, "CreditCard")
 //// SELECT * FROM credit_cards WHERE user_id = 123; // 123 is user's primary key
-// CreditCard is user's field name, it means get user's CreditCard relations and fill it into variable card
-// If the field name is same as the variable's type name, like above example, it could be omitted, like:
+// CreditCard 是 users 的字段，其含义是，获取 user 的 CreditCard 并填充至 card 变量
+// 如果字段名与 model 名相同，比如上面的例子，此时字段名可以省略不写，像这样：
 db.Model(&user).Related(&card)
 ```
 
-For advanced usage, refer [Association Mode](/docs/associations.html#Association-Mode)
+高级用法请参阅： [关联模式](/docs/associations.html#Association-Mode)

@@ -47,21 +47,21 @@ type User struct {
 | EMBEDDED_PREFIX | 设置嵌入结构的前缀                     |
 | -               | 忽略此字段                         |
 
-### 关联关系相关的结构体标记（tags）
+### 关联 struct 的标记（tags）
 
-Check out the Associations section for details
+关联 struct 的详情请查看关联部分
 
-| 结构体标记（Tag）                         | 描述                                             |
-| ---------------------------------- | ---------------------------------------------- |
-| MANY2MANY                          | 设置join的表                                       |
-| FOREIGNKEY                         | 设置外键                                           |
-| ASSOCIATION_FOREIGNKEY             | Specifies association foreign key              |
-| POLYMORPHIC                        | Specifies polymorphic type                     |
-| POLYMORPHIC_VALUE                  | Specifies polymorphic value                    |
-| JOINTABLE_FOREIGNKEY               | Specifies foreign key of jointable             |
-| ASSOCIATION_JOINTABLE_FOREIGNKEY | Specifies association foreign key of jointable |
-| SAVE_ASSOCIATIONS                  | AutoSave associations or not                   |
-| ASSOCIATION_AUTOUPDATE             | AutoUpdate associations or not                 |
-| ASSOCIATION_AUTOCREATE             | AutoCreate associations or not                 |
-| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not         |
-| PRELOAD                            | Auto Preload associations or not               |
+| 结构体标记（Tag）                     | 描述                   |
+| ---------------------------------- | -------------------- |
+| MANY2MANY                          | 指定连接表                |
+| FOREIGNKEY                         | 设置外键                 |
+| ASSOCIATION_FOREIGNKEY             | 设置关联外键               |
+| POLYMORPHIC                        | 指定多态类型               |
+| POLYMORPHIC_VALUE                  | 指定多态值                |
+| JOINTABLE_FOREIGNKEY               | 指定连接表的外键             |
+| ASSOCIATION_JOINTABLE_FOREIGNKEY | 指定连接表的关联外键           |
+| SAVE_ASSOCIATIONS                  | 是否自动完成 save 的相关操作    |
+| ASSOCIATION_AUTOUPDATE             | 是否自动完成 update 的相关操作  |
+| ASSOCIATION_AUTOCREATE             | 是否自动完成 create 的相关操作  |
+| ASSOCIATION_SAVE_REFERENCE       | 是否自动完成引用的 save 的相关操作 |
+| PRELOAD                            | 是否自动完成预加载的相关操作       |

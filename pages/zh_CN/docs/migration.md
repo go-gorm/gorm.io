@@ -1,116 +1,116 @@
 ---
-title: Migration
+title: 迁移
 layout: page
 ---
 
-## Auto Migration
+## 自动迁移
 
-Automatically migrate your schema, to keep your schema update to date.
+自动迁移你的模型，使之保持最新状态。
 
-**WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data.
+**警告：** 自动迁移 **只会** 创建表、缺失的列、缺失的索引， **不会** 更改现有列的类型或删除未使用的列，以此来保护您的数据。
 
 ```go
 db.AutoMigrate(&User{})
 
 db.AutoMigrate(&User{}, &Product{}, &Order{})
 
-// Add table suffix when create tables
+// 创建表时添加表后缀
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
-## Other Migration Tools
+## 其它迁移工具
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides generic DB interface which might be helpful for you.
+GORM 的自动迁移在大多数情况下都会正常工作，但如果你需要更严格的迁移工具， GORM 提供了通用 DB interface ，这可能对你有帮助。
 
 ```go
-// returns `*sql.DB`
+// 返回 `*sql.DB`
 db.DB()
 ```
 
-Refer [Generic Interface](/docs/generic_interface.html) for more details.
+参考 [通用 Interface](/docs/generic_interface.html) 获取详情。
 
-## Schema Methods
+## 模型方法
 
 ### Has Table
 
 ```go
-// Check model `User`'s table exists or not
+// 检查模型 User 的表是否存在
 db.HasTable(&User{})
 
-// Check table `users` exists or not
+// 检查表 users 是否存在
 db.HasTable("users")
 ```
 
 ### Create Table
 
 ```go
-// Create table for model `User`
+// 为模型 `User` 创建表
 db.CreateTable(&User{})
 
-// will append "ENGINE=InnoDB" to the SQL statement when creating table `users`
+// 创建表时会追加 “ENGINE=InnoDB” 到 SQL 语句中。
 db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
 ```
 
 ### Drop table
 
 ```go
-// Drop model `User`'s table
+// 删除模型 `User` 的表
 db.DropTable(&User{})
 
-// Drop table `users`
+// 删除表 `users`
 db.DropTable("users")
 
-// Drop model's `User`'s table and table `products`
+// 删除模型 `User` 的表和表 `products`
 db.DropTableIfExists(&User{}, "products")
 ```
 
 ### ModifyColumn
 
-Modify column's type to given value
+修改列类型为给定的值
 
 ```go
-// change column description's data type to `text` for model `User`
+// 修改模型 `User` 的 description 列的类型为 `text` 
 db.Model(&User{}).ModifyColumn("description", "text")
 ```
 
 ### DropColumn
 
 ```go
-// Drop column description from model `User`
+// 删除模型 `User` 的 description 列
 db.Model(&User{}).DropColumn("description")
 ```
 
 ### Add Indexes
 
 ```go
-// Add index for columns `name` with given name `idx_user_name`
+// 为 `name` 列添加名为 `idx_user_name` 的普通索引
 db.Model(&User{}).AddIndex("idx_user_name", "name")
 
-// Add index for columns `name`, `age` with given name `idx_user_name_age`
+// 为 `name` 和 `age` 两列添加名为 `idx_user_name_age` 的普通索引
 db.Model(&User{}).AddIndex("idx_user_name_age", "name", "age")
 
-// Add unique index
+// 添加唯一索引
 db.Model(&User{}).AddUniqueIndex("idx_user_name", "name")
 
-// Add unique index for multiple columns
+// 为多列添加唯一索引
 db.Model(&User{}).AddUniqueIndex("idx_user_name_age", "name", "age")
 ```
 
 ### Remove Index
 
 ```go
-// Remove index
+// 删除索引
 db.Model(&User{}).RemoveIndex("idx_user_name")
 ```
 
 ### Add Foreign Key
 
 ```go
-// Add foreign key
-// 1st param : foreignkey field
-// 2nd param : destination table(id)
-// 3rd param : ONDELETE
-// 4th param : ONUPDATE
+// 添加外键
+// 第一个参数： 外键字段
+// 第二个参数：目标表名(字段)
+// 第三个参数：删除时
+// 第四个参数： 更新时
 db.Model(&User{}).AddForeignKey("city_id", "cities(id)", "RESTRICT", "RESTRICT")
 ```
 

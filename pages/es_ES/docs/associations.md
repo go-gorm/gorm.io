@@ -158,7 +158,7 @@ Añadir nuevas asociaciones para `numerosas`, `tiene numerosas`, reemplazar asoc
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
-db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
+db.Model(&user).Association("Languages").Append(Language{Name: "ES"})
 ```
 
 ### Reemplazar Asociaciones
@@ -167,7 +167,7 @@ Reemplazar asociaciones actuales con otras nuevas
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
-db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
+db.Model(&user).Association("Languages").Replace(Language{Name: "ES"}, languageEN)
 ```
 
 ### Eliminar Asociaciones

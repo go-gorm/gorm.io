@@ -5,12 +5,12 @@ layout: page
 
 ## Has Many
 
-A `has many` association also sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+在一个 `has many` 关联中，其也与另一个 model 建立了一对多关系，不同于 `has one`，model 的拥有者可以有零个或多个实例。
 
-For example, if your application includes users and credit card, and each user can have many credit cards.
+例如，你的应用包含了用户和信用卡，并且每个用户可以有多张信用卡。
 
 ```go
-// User has many CreditCards, UserID is the foreign key
+// 用户有多张信用卡， UserID 是外键
 type User struct {
     gorm.Model
     CreditCards []CreditCard
@@ -23,52 +23,52 @@ type CreditCard struct {
 }
 ```
 
-## Foreign Key
+## 外键
 
-To define a has many relationship, a foreign key must exist. The default foreign key's name is the owner's type name plus the name of its primary key field (e.g. UserID, CardID, etc).
+Foreign Key，在 has many 关系中，被拥有 model 必须存在一个外键字段，默认的外键字段名称通常使用其拥有者 model 加上它的主键（比如 UserID, CardID, 等）。
 
-For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+例如：定义一个属于 `User` 的 model，它的外键应该为 `UserID`.
 
-To use another field as foreign key, you can customize it with a `foreignkey` tag, e.g:
+要使用另一个字段作为外键，你可以通过标签 `foreignkey` 来定制它，例如：
 
 ```go
 type User struct {
-    gorm.Model
-    CreditCards []CreditCard `gorm:"foreignkey:UserRefer"`
+  gorm.Model
+  CreditCards []CreditCard `gorm:"foreignkey:UserRefer"`
 }
 
 type CreditCard struct {
-    gorm.Model
-    Number    string
+  gorm.Model
+  Number    string
   UserRefer uint
 }
 ```
 
-## Association ForeignKey
+## 关联外键
 
-GORM usually uses the owner's primary key as the foreign key's value, for above example, it is the `User`'s `ID`,
+Association ForeignKey，GORM 通常使用拥有者的主键作为外键的值，在上面的例子中，它是 `User` 的 `ID`.
 
-When you assign credit cards to a user, GORM will save the user's `ID` into credit cards' `UserID` field.
+当你为用户关联信用卡时，GORM 会保存用户的 `ID` 到信用卡的 `UserID` 字段。
 
-You are able to change it with tag `association_foreignkey`, e.g:
+您可以通过标签 `association_foreignkey` 来改变它，例如：
 
 ```go
 type User struct {
-    gorm.Model
+  gorm.Model
   MemberNumber string
-    CreditCards  []CreditCard `gorm:"foreignkey:UserMemberNumber;association_foreignkey:MemberNumber"`
+  CreditCards  []CreditCard `gorm:"foreignkey:UserMemberNumber;association_foreignkey:MemberNumber"`
 }
 
 type CreditCard struct {
-    gorm.Model
-    Number           string
+  gorm.Model
+  Number           string
   UserMemberNumber string
 }
 ```
 
-## Polymorphism Association
+## 多态关联
 
-GORM supports polymorphic has-many and has-one associations.
+Polymorphism Association，GORM 支持 has many 和 has one 的多态关联。
 
 ```go
   type Cat struct {
@@ -91,15 +91,15 @@ GORM supports polymorphic has-many and has-one associations.
   }
 ```
 
-Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.
+注意：many-to-many 明确的不支持多态关联，如果使用会抛出错误。
 
-## Working with Has Many
+## Has Many 的使用
 
-You could find `has many` associations with `Related`
+你可以通过 `Related` 使用 `has many` 关联。
 
 ```go
 db.Model(&user).Related(&emails)
 //// SELECT * FROM emails WHERE user_id = 111; // 111 is user's primary key
 ```
 
-For advanced usage, refer to [Association Mode](/docs/associations.html#Association-Mode)
+高级用法请参阅： [关联模式](/docs/associations.html#Association-Mode)

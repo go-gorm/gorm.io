@@ -1,35 +1,35 @@
 ---
-title: Hooks
+title: 钩子
 layout: page
 ---
 
-## Object Life Cycle
+## 对象生命周期
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+Hooks(一般称之为钩子函数)的功能是在运行创建/查询/更新/删除语句之前或者之后执行。
 
-If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+如果你为一个 model 定义了一个具体的方法，它将会在运行 创建，更新，查询，删除时自动被调用，并且如果任何回调函数函数返回一个错误，GORM 将会停止接下来的操作并且回滚当前的事务。
 
-## Hooks
+## 钩子函数
 
-### Creating an object
+### 创建对象时
 
-Available hooks for creating
+Creating an object，创建对象时可用的 hooks
 
 ```go
-// begin transaction
+// 开始事务
 BeforeSave
 BeforeCreate
-// save before associations
-// update timestamp `CreatedAt`, `UpdatedAt`
+// 在关联前保存
+// 更新时间戳 `CreatedAt`, `UpdatedAt`
 // save self
-// reload fields that have default value and its value is blank
-// save after associations
+// 重新加载具有默认值的字段，其值为空
+// 在关联后保存
 AfterCreate
 AfterSave
-// commit or rollback transaction
+// 提交或回滚事务
 ```
 
-Code Example:
+示例代码
 
 ```go
 func (u *User) BeforeSave() (err error) {
@@ -47,7 +47,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited. If you would like access those changes in your hooks, you could accept current transaction as argument in your hooks, for example:
+**注意** 在 GORM 中 Save/Delete 操作默认是基于事务完成， 所以相关更改在提交事务之前是不可见的。 如果你想在你的 hooks 中看到这些变化，你可以在你的 hooks 中接收当前事务的参数，比如：
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
@@ -56,24 +56,24 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### 更新对象时
 
-Available hooks for updating
+Updating an object，更新对象时可用的 hooks
 
 ```go
-// begin transaction
+// begin transaction 开始事物
 BeforeSave
 BeforeUpdate
-// save before associations
-// update timestamp `UpdatedAt`
-// save self
-// save after associations
+// save before associations 保存前关联
+// update timestamp `UpdatedAt` 更新 `UpdatedAt` 时间戳
+// save self 保存自己
+// save after associations 保存后关联
 AfterUpdate
 AfterSave
-// commit or rollback transaction
+// commit or rollback transaction 提交或回滚事务
 ```
 
-Code Example:
+代码实例:
 
 ```go
 func (u *User) BeforeUpdate() (err error) {
@@ -83,7 +83,7 @@ func (u *User) BeforeUpdate() (err error) {
     return
 }
 
-// Updating data in same transaction
+// 在同一个事务中更新数据
 func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
@@ -92,22 +92,22 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### 删除对象时
 
-Available hooks for deleting
+Deleting an object，删除对象时可用的 hooks
 
 ```go
-// begin transaction
+// begin transaction 开始事务
 BeforeDelete
-// delete self
+// delete self 删除自己
 AfterDelete
-// commit or rollback transaction
+// commit or rollback transaction 提交或回滚事务
 ```
 
-Code Example:
+代码实例:
 
 ```go
-// Updating data in same transaction
+//  在一个事务中更新数据
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
@@ -116,17 +116,17 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Querying an object
+### 查询对象时
 
-Available hooks for querying
+Querying an object，查询对象时可用的 hooks
 
 ```go
-// load data from database
-// Preloading (eager loading)
+// load data from database 从数据库加载数据
+// Preloading (eager loading) 预加载（加载）
 AfterFind
 ```
 
-Code Example:
+代码实例:
 
 ```go
 func (u *User) AfterFind() (err error) {

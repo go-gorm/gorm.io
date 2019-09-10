@@ -5,13 +5,13 @@ layout: page
 
 ## 连接数据库
 
-In order to connect to a database, you need to import the database's driver first. For example:
+想要连接数据库，你需要先导入对应数据库的驱动，比如：
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remember the import path. So you could import the mysql driver with:
+GORM 已经包装了一些驱动，以便更容易的记住导入路径，所以你可以这样导入 mysql 的驱动：
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -24,11 +24,11 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ### MySQL
 
-**NOTE:**
+**注意：**
 
-In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+想要能正确的处理 `time.Time`，你需要添加 `parseTime` 参数。 ([更多支持的参数](https://github. com/go-sql-driver/mysql#parameters))
 
-In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
+想要完全的支持 UTF-8 编码，你需要修改`charset=utf8` 为 `charset=utf8mb4`。 详情请查看 [utf8mb4](https://mathiasbynens.be/notes/mysql-utf8mb4).
 
 ```go
 import (
@@ -41,6 +41,11 @@ func main() {
   defer db.Close()
 }
 ```
+
+If you want to specify the host, you need to use `()`. Example:  
+
+
+    user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
 
 ### PostgreSQL
 

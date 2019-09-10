@@ -3,7 +3,7 @@ title: Create
 layout: page
 ---
 
-## Create Record
+## Créer un enregistrement
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
@@ -15,7 +15,7 @@ db.Create(&user)
 db.NewRecord(user) // => return `false` after `user` created
 ```
 
-## Default Values
+## Valeurs par défaut
 
 You can define a field's default value with a tag. For example:
 
@@ -55,7 +55,7 @@ type User struct {
 }
 ```
 
-## Setting Field Values In Hooks
+## Définir les valeurs de champ via les hooks
 
 If you want to update a field's value in `BeforeCreate` hook, you can use `scope.SetColumn`, for example:
 

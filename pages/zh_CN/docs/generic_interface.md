@@ -1,29 +1,29 @@
 ---
-title: Generic database interface sql.DB
+title: 通过数据库接口 sql.DB
 layout: page
 ---
 
-GORM provides the method `DB` which returns a generic database interface [*sql.DB](http://golang.org/pkg/database/sql/#DB) from the current `*gorm.DB` connection
+GORM 提供了 `DB`方法 ，可以从当前 `*gorm.DB` 连接内，获取一个通用的数据库接口[*sql.DB](http://golang.org/pkg/database/sql/#DB)
 
 ```go
-// Get generic database object sql.DB to use its functions
+// 获取通用 sql.DB 并使用其方法
 db.DB()
 
 // Ping
 db.DB().Ping()
 ```
 
-**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns `nil`
+**注意** 如果数据库底层连接的不是一个 `*sql.DB`，比如在一个事务内，方法会返回`nil`。
 
-## Connection Pool
+## 连接池
 
 ```go
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleCons 设置连接池中的最大闲置连接数。
 db.DB().SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenCons 设置数据库的最大连接数量。
 db.DB().SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetiment 设置连接的最大可复用时间。
 db.DB().SetConnMaxLifetime(time.Hour)
 ```
