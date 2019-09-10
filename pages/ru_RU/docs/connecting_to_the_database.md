@@ -42,6 +42,11 @@ func main() {
 }
 ```
 
+If you want to specify the host, you need to use `()`. Example:  
+
+
+    user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
+
 ### PostgreSQL
 
 ```go
@@ -58,7 +63,7 @@ func main() {
 
 ### Sqlite3
 
-**ПРИМЕЧАНИЕ:** Вы также можете использовать `:memory:` вместо пути к файлу. Это скажет sqlite использовать временную базу данных в системной памяти. Это особенно полезно при написании тестов для вашего приложения с использованием GORM, но также может использоваться как база данных.
+**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
 
 ```go
 import (
@@ -74,7 +79,7 @@ func main() {
 
 ### MS SQL Server
 
-[Начните с MS SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), он может работать на вашем [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) с использованием Docker
+[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
 ```go
 import (
@@ -90,4 +95,4 @@ func main() {
 
 ## Неподдерживаемые базы данных
 
-GORM официально поддерживает более четырех баз данных, вы можете написать диалекты для неподдерживаемых баз данных, см. [GORM Диалекты](/docs/dialects.html)
+GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
