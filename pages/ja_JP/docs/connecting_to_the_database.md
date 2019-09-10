@@ -42,7 +42,7 @@ func main() {
 }
 ```
 
-If you want to specify the host, you need to use `()`. Example:  
+ホストを指定する場合は「()」を使います。 `()`例：  
 
 
     user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
@@ -63,7 +63,7 @@ func main() {
 
 ### Sqlite3
 
-**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
+**NOTE:**パスの代わりに`:memory:`の指定も可能です。 This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
 
 ```go
 import (
