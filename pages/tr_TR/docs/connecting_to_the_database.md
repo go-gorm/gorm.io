@@ -42,6 +42,11 @@ func main() {
 }
 ```
 
+If you want to specify the host, you need to use `()`. Example:  
+
+
+    user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
+
 ### PostgreSQL
 
 ```go
