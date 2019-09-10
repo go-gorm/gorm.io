@@ -23,3 +23,6 @@ ru_RU:
 fr_FR:
   name: French
   disqus_lang: fr
+pt_BR:
+  name: Brazilian Portuguese
+  disqus_lang: pt
