@@ -42,6 +42,11 @@ func main() {
 }
 ```
 
+If you want to specify the host, you need to use `()`. Example:  
+
+
+    user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
+
 ### PostgreSQL
 
 ```go
@@ -58,7 +63,7 @@ func main() {
 
 ### Sqlite3
 
-**注意** パスでの指定の代わりに `:memory:` を使うことができます。 その場合、メモリー上の一時的なデータベースが使用されます。 GORMの機能を使ってメモリー上の実際のDBを叩くことになるので、テストの時に便利です。
+**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
 
 ```go
 import (
@@ -74,7 +79,7 @@ func main() {
 
 ### SQL Server
 
-[SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go)はDockerを使って [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/)、[Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) でも動かすことができます。
+[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
 ```go
 import (
@@ -90,4 +95,4 @@ func main() {
 
 ## サポートされていないデータベース
 
-GORMが公式にサポートしている上記のデータベース以外でも、Dialectを書けば利用することができます。詳しくは [GORM Dialects](/docs/dialects.html) を参照してください。
+GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
