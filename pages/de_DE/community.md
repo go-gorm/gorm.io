@@ -38,7 +38,7 @@ layout: page
 * [Validations - validate models when creating, updating](https://github.com/qor/validations)
 * [Gormstore - GORM backend for gorilla sessions](https://github.com/wader/gormstore)
 * [go-oauth2-gorm - GORM adapter for go-oauth2](https://github.com/techknowlogick/go-oauth2-gorm)
-* [gormt - GORM mysql to golang struct](https://github.com/xie1xiao1jun/gormt)
+* [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
 
 ## Trage zu dieser Seite bei
 
