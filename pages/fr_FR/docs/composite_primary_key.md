@@ -1,15 +1,15 @@
 ---
-title: Composite Primary Key
+title: Clé primaire composée
 layout: page
 ---
 
-Set multiple fields as primary key to enable composite primary key
+Définir plusieurs champs comme clé primaire pour activer la clé primaire composée
 
 ```go
 type Product struct {
-    ID           string `gorm:"primary_key"`
+    ID                        string `gorm:"primary_key"`
     LanguageCode string `gorm:"primary_key"`
-  Code         string
-  Name         string
+    Code                   string
+    Name                  string
 }
 ```
