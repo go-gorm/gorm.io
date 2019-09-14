@@ -47,6 +47,7 @@ If you want to specify the host, you need to use `()`. Example:
  
 ### PostgreSQL
 
+
 ```go
 import (
   "github.com/jinzhu/gorm"
