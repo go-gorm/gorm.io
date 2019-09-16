@@ -31,15 +31,23 @@ Para poder soportar la codificación UTF-8, debes cambiar `charset=utf8` a `char
 import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/mysql" ) func main() {   db, err := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")   defer db.Close() }
 ```
 
-If you want to specify the host, you need to use `()`. Example:  
-
+If you want to specify the host, you need to use `()`. Example:
 
     user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
+    
 
 ### PostgreSQL
 
 ```go
-import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/postgres" ) func main() {   db, err := gorm.Open("postgres", "host=myhost port=myport user=gorm dbname=gorm password=mypassword")   defer db.Close() }
+import (
+  "github.com/jinzhu/gorm"
+  _ "github.com/jinzhu/gorm/dialects/postgres"
+)
+
+func main() {
+  db, err := gorm.Open("postgres", "host=myhost port=myport user=gorm dbname=gorm password=mypassword")
+  defer db.Close()
+}
 ```
 
 ### Sqlite3
@@ -47,7 +55,15 @@ import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/postgre
 **NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
 
 ```go
-import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/sqlite" ) func main() {   db, err := gorm.Open("sqlite3", "/tmp/gorm.db")   defer db.Close() }
+import (
+  "github.com/jinzhu/gorm"
+  _ "github.com/jinzhu/gorm/dialects/sqlite"
+)
+
+func main() {
+  db, err := gorm.Open("sqlite3", "/tmp/gorm.db")
+  defer db.Close()
+}
 ```
 
 ### SQL Server
@@ -55,7 +71,15 @@ import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/sqlite"
 [Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
 
 ```go
-import (   "github.com/jinzhu/gorm"   _ "github.com/jinzhu/gorm/dialects/mssql" ) func main() {   db, err := gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")   defer db.Close() }
+import (
+  "github.com/jinzhu/gorm"
+  _ "github.com/jinzhu/gorm/dialects/mssql"
+)
+
+func main() {
+  db, err := gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
+  defer db.Close()
+}
 ```
 
 ## Bases de Datos no Compatibles
