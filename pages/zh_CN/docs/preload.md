@@ -6,6 +6,19 @@ layout: page
 ## 预加载
 
 ```go
+//示例用到的结构体
+type User struct {
+  gorm.Model
+  Username string
+  Orders Order
+}
+type Order struct {
+  gorm.Model
+  UserID uint
+  Price float64
+}
+
+//Preload的参数得是主model的属性名
 db.Preload("Orders").Find(&users)
 //// SELECT * FROM users;
 //// SELECT * FROM orders WHERE user_id IN (1,2,3,4);
