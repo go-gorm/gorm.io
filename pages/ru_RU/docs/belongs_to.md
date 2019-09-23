@@ -28,7 +28,7 @@ type Profile struct {
 
 Для определения принадлежности к отношениям, внешний ключ должен существовать, по умолчанию внешний ключ использует имя типа владельца плюс его первичный ключ.
 
-For the above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+Например, для определения модели, которая принадлежит `User`, внешний ключ должен быть `UserID`.
 
 GORM дает возможность настроить внешний ключ, например:
 
@@ -41,7 +41,7 @@ type User struct {
 type Profile struct {
     gorm.Model
   Name      string
-  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
+  User      User `gorm:"foreignkey:UserRefer"` // используется UserRefer как внешний ключ
   UserRefer uint
 }
 ```
@@ -64,7 +64,7 @@ type User struct {
 type Profile struct {
     gorm.Model
   Name      string
-  User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
+  User      User `gorm:"association_foreignkey:Refer"` // используется Refer как ассоциативный внешний ключ
   UserRefer string
 }
 ```
