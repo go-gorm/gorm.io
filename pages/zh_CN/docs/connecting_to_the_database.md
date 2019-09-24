@@ -42,7 +42,7 @@ func main() {
 }
 ```
 
-If you want to specify the host, you need to use `()`. Example:
+如果你想指定主机，你需要使用 `()`. 例如:
 
     user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
     
@@ -63,7 +63,7 @@ func main() {
 
 ### Sqlite3
 
-**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
+**注意:** 你也可以使用 `:memory:` 替换一个文件路径。 这会告诉 sqlite 使用内存作为一个临时数据。 当你针对 GORM 应用进行测试时，这特别有用，因为你的测试需要一个真正的数据库，并且该数据库位于内存中，性能也很好。
 
 ```go
 import (
@@ -79,7 +79,7 @@ func main() {
 
 ### SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), 它可以运行在你的 [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/)、[Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) 和 Docker
 
 ```go
 import (
