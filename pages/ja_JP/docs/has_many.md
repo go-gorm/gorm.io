@@ -25,11 +25,11 @@ type CreditCard struct {
 
 ## Foreign Key
 
-To define a has many relationship, a foreign key must exist. The default foreign key's name is the owner's type name plus the name of its primary key field (e.g. UserID, CardID, etc).
+has manyの関係を定義する場合、外部キーが必ず存在します。デフォルトの外部キーの名前は、参照されるモデルの名前と主キーの名前を結合したものになります(例えば、UserIDやCardIDなど)。
 
-For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+上述の例では、`User` に属するモデルを定義する場合、外部キーは `UserID` にします。
 
-To use another field as foreign key, you can customize it with a `foreignkey` tag, e.g:
+外部キーとして他のフィールドを使う場合、`foreignkey`タグを使用してカスタマイズすることができる。たとえば、
 
 ```go
 type User struct {
