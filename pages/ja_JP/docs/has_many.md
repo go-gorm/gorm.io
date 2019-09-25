@@ -7,7 +7,7 @@ layout: page
 
 `has many`アソシエーションは他のモデルとのone-to-manyなつながりを表します。`has one`とは異なり、親は0もしくは多のモデルのインスタンスを持ちます。
 
-For example, if your application includes users and credit card, and each user can have many credit cards.
+例えば、あなたのアプリケーションにおいて、userとcredit cardモデルがあり、それぞれのuserがたくさんのcredit cardを所有していたとします。
 
 ```go
 // User has many CreditCards, UserID is the foreign key
