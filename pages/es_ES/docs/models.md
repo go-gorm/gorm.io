@@ -3,7 +3,7 @@ title: Declarando Modelos
 layout: page
 ---
 
-## Declaring Models
+## Declarando Modelos
 
 Los modelos generalmente son estructuras normales de Golang, tipos de Go básicos o punteros de ellos. Las interfaces sql.Scanner y driver.Valuer también son compatibles.
 
@@ -26,9 +26,9 @@ type User struct {
 
 ## Etiquetas de estructura
 
-Tags are optional to use when declaring models. GORM supports the following tags:
+El uso de las etiquetas son opcionales al declarar modelos. GORM admite el uso de las siguientes:
 
-### Etiquetas de Estructuración admitidas
+### Etiquetas de una estructura admitidas
 
 | Etiqueta        | Descripción                                                            |
 | --------------- | ---------------------------------------------------------------------- |
@@ -47,9 +47,9 @@ Tags are optional to use when declaring models. GORM supports the following tags
 | EMBEDDED_PREFIX | Establece el prefijo del nombre de la estructura integrada             |
 | -               | Ignore estos campos                                                    |
 
-### Struct tags for Associations
+### Etiquetas de una estructura para asociaciones
 
-Check out the Associations section for details
+Consulte la sección de asociaciones para más detalles
 
 | Tag                                | Description                                    |
 | ---------------------------------- | ---------------------------------------------- |
