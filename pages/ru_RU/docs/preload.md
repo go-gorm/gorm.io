@@ -6,7 +6,7 @@ layout: страница
 ## Preload
 
 ```go
-// the struct User and Order for below code
+// struct User и Order 
 type User struct {
   gorm.Model
   Username string
@@ -17,7 +17,7 @@ type Order struct {
   UserID uint
   Price float64
 }
-// the Preload function's param should be the main struct's field name
+// Значение функции Preload должно быть названием поля основного struct
 db.Preload("Orders").Find(&users)
 //// SELECT * FROM users;
 //// SELECT * FROM orders WHERE user_id IN (1,2,3,4);
