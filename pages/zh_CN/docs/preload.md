@@ -6,6 +6,18 @@ layout: page
 ## 预加载
 
 ```go
+// the struct User and Order for below code
+type User struct {
+  gorm.Model
+  Username string
+  Orders Order
+}
+type Order struct {
+  gorm.Model
+  UserID uint
+  Price float64
+}
+// the Preload function's param should be the main struct's field name
 db.Preload("Orders").Find(&users)
 //// SELECT * FROM users;
 //// SELECT * FROM orders WHERE user_id IN (1,2,3,4);

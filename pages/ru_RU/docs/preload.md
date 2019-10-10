@@ -6,6 +6,18 @@ layout: страница
 ## Preload
 
 ```go
+// the struct User and Order for below code
+type User struct {
+  gorm.Model
+  Username string
+  Orders Order
+}
+type Order struct {
+  gorm.Model
+  UserID uint
+  Price float64
+}
+// the Preload function's param should be the main struct's field name
 db.Preload("Orders").Find(&users)
 //// SELECT * FROM users;
 //// SELECT * FROM orders WHERE user_id IN (1,2,3,4);
@@ -20,9 +32,9 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 
 db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 //// SELECT * FROM users;
-//// SELECT * FROM orders WHERE user_id IN (1,2,3,4); // имеет много
-//// SELECT * FROM profiles WHERE user_id IN (1,2,3,4); // имеет один
-//// SELECT * FROM roles WHERE id IN (4,5,6); // принадлежит
+//// SELECT * FROM orders WHERE user_id IN (1,2,3,4); // has many
+//// SELECT * FROM profiles WHERE user_id IN (1,2,3,4); // has one
+//// SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
 ```
 
 ## Авто предзагрузка
