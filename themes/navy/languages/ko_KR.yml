@@ -20,10 +20,10 @@ sidebar:
   docs:
     getting_started: 시작하기
     overview: 개요
-    declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
-    crud_interface: CRUD Interface
+    declaring_models: 모델 선언
+    conventions: 규칙
+    connecting_to_the_database: 데이터베이스 연결
+    crud_interface: CRUD 인터페이스
     create: Create
     query: Query
     update: Update
@@ -47,7 +47,7 @@ sidebar:
     write_plugins: Write Plugins
     dialects: GORM Dialects
     logger: Logger
-    change_log: ChangeLog
+    change_log: 변경이력
     community: 커뮤니티
     contribute: 기여하기
     translate: 현재 사이트 번역하기
