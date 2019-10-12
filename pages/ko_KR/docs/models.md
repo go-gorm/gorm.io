@@ -1,13 +1,13 @@
 ---
-title: Declaring Models
+title: 모델 선언
 layout: page
 ---
 
-## Declaring Models
+## 모델 선언
 
-Models are usually just normal Golang structs, basic Go types, or pointers of them. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are also supported.
+모델은 보통 일반적인 Go언어 구조체, 기본 Go 타입 또는 포인터입니다. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) 과 [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) 인터페이스도 지원합니다.
 
-Model Example:
+모델 예제:
 
 ```go
 type User struct {
@@ -16,15 +16,15 @@ type User struct {
   Age          sql.NullInt64
   Birthday     *time.Time
   Email        string  `gorm:"type:varchar(100);unique_index"`
-  Role         string  `gorm:"size:255"` // set field size to 255
-  MemberNumber *string `gorm:"unique;not null"` // set member number to unique and not null
-  Num          int     `gorm:"AUTO_INCREMENT"` // set num to auto incrementable
-  Address      string  `gorm:"index:addr"` // create index with name `addr` for address
-  IgnoreMe     int     `gorm:"-"` // ignore this field
+  Role         string  `gorm:"size:255"` // 필드 사이즈를 255로 설정합니다.
+  MemberNumber *string `gorm:"unique;not null"` // MemberNumber를 유니크, not null로 설정합니다.
+  Num          int     `gorm:"AUTO_INCREMENT"` // Num을 자동증가 번호로 설정합니다.
+  Address      string  `gorm:"index:addr"` // 이름이 `addr`인 인덱스를 작성합니다.
+  IgnoreMe     int     `gorm:"-"` // 이 항목은 무시합니다.
 }
 ```
 
-## Struct tags
+## 구조체 태그
 
 Tags are optional to use when declaring models. GORM supports the following tags:
 
