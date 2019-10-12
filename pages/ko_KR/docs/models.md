@@ -26,26 +26,26 @@ type User struct {
 
 ## 구조체 태그
 
-Tags are optional to use when declaring models. GORM supports the following tags:
+태그는 모델을 선언 시 선택사항입니다. GORM은 아래의 태그들을 지원합니다:
 
-### Supported Struct tags
+### 지원하는 구조체 태그
 
-| Tag             | Description                                                            |
+| 태그              | 설명                                                                     |
 | --------------- | ---------------------------------------------------------------------- |
-| Column          | Specifies column name                                                  |
-| Type            | Specifies column data type                                             |
-| Size            | Specifies column size, default 255                                     |
-| PRIMARY_KEY     | Specifies column as primary key                                        |
-| UNIQUE          | Specifies column as unique                                             |
-| DEFAULT         | Specifies column default value                                         |
-| PRECISION       | Specifies column precision                                             |
-| NOT NULL        | Specifies column as NOT NULL                                           |
-| AUTO_INCREMENT  | Specifies column auto incrementable or not                             |
+| Column          | 컬럼명을 지정합니다.                                                            |
+| Type            | 데이터 타입을 지정합니다.                                                         |
+| Size            | 컬럼 사이즈를 지정합니다. 기본값은 255 입니다.                                           |
+| PRIMARY_KEY     | 기본키로 지정합니다.                                                            |
+| UNIQUE          | 유니크 제약을 지정합니다.                                                         |
+| DEFAULT         | 기본값을 지정합니다.                                                            |
+| PRECISION       | 자릿수를 지정합니다.                                                            |
+| NOT NULL        | NOT NULL 제약을 지정합니다.                                                    |
+| AUTO_INCREMENT  | 자동증가번호 유무를 지정합니다.                                                      |
 | INDEX           | Create index with or without name, same name creates composite indexes |
 | UNIQUE_INDEX    | Like `INDEX`, create unique index                                      |
 | EMBEDDED        | Set struct as embedded                                                 |
 | EMBEDDED_PREFIX | Set embedded struct's prefix name                                      |
-| -               | Ignore this fields                                                     |
+| -               | 이 항목은 무시됩니다.                                                           |
 
 ### Struct tags for Associations
 
