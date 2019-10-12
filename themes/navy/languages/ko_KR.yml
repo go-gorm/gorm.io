@@ -1,25 +1,25 @@
 ---
 menu:
   home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  docs: <i class="fa fa-book"></i>문서
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fa fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  community: <i class="fa fa-slack"></i>커뮤니티
+  contribute: <i class="fa fa-rocket"></i>기여하기
+  search: 문서 검색...
 index:
-  get_started: Get started
+  get_started: 시작하기
 page:
-  contents: Contents
+  contents: 내용
   back_to_top: 맨 위로 돌아가기
   improve: Improve this doc
   prev: 이전
   next: 다음
-  last_updated: "Last updated: %s"
+  last_updated: "갱신일: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
+    getting_started: 시작하기
+    overview: 개요
     declaring_models: Declaring Models
     conventions: Conventions
     connecting_to_the_database: Connecting to Database
@@ -48,6 +48,6 @@ sidebar:
     dialects: GORM Dialects
     logger: Logger
     change_log: ChangeLog
-    community: Community
-    contribute: Contribute
-    translate: Translate current site
+    community: 커뮤니티
+    contribute: 기여하기
+    translate: 현재 사이트 번역하기
