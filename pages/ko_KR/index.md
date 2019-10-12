@@ -1,12 +1,12 @@
 ---
 layout: index
-description: The fantastic ORM library for Golang, aims to be developer friendly.
-subtitle: The fantastic ORM library for Golang
+description: 개발자 친화적인 환상적인 Go언어용 ORM라이브러리
+subtitle: 환상적인 Go언어용 ORM라이브러리
 comments: false
 ---
 
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM (almost)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 어소시에이션 (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Preloading (eager loading)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transactions
