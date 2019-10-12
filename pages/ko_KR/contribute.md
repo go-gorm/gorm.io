@@ -1,5 +1,5 @@
 ---
-title: Contribute to GORM
+title: GORM에 기여하세요
 layout: page
 ---
 
