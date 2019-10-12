@@ -11,10 +11,10 @@ index:
   get_started: Get started
 page:
   contents: Contents
-  back_to_top: Back to Top
+  back_to_top: 맨 위로 돌아가기
   improve: Improve this doc
-  prev: Prev
-  next: Next
+  prev: 이전
+  next: 다음
   last_updated: "Last updated: %s"
 sidebar:
   docs:
@@ -34,7 +34,7 @@ sidebar:
     has_many: Has Many
     many_to_many: Many To Many
     preload: Preloading (Eager Loading)
-    tutorials: Tutorials
+    tutorials: 튜토리얼
     method_chaining: Method Chaining
     error_handling: Error Handling
     hooks: Hooks
