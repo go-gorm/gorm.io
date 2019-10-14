@@ -3,7 +3,7 @@ title: Migración
 layout: página
 ---
 
-## Migracion automatica
+## Migración Automática
 
 Migra automáticamente tu esquema, para mantenerlo actualizado hasta la fecha.
 
@@ -18,9 +18,9 @@ db.AutoMigrate(&User{}, &Product{}, &Order{})
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
-## Other Migration Tools
+## Otras Herramientas de Migración
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides generic DB interface which might be helpful for you.
+El AutoMigrate de GORM funciona bien para la mayoría de los casos, pero si está buscando herramientas de migración más serias, GORM proporciona una interfaz DB genérica que podría ser útil para ti.
 
 ```go
 // returns `*sql.DB`
