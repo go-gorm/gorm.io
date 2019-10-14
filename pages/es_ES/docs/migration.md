@@ -3,11 +3,11 @@ title: Migración
 layout: página
 ---
 
-## Auto Migration
+## Migracion automatica
 
-Automatically migrate your schema, to keep your schema update to date.
+Migra automáticamente tu esquema, para mantenerlo actualizado hasta la fecha.
 
-**WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data.
+**ADVERTENCIA:** AutoMigrate **SOLAMENTE** creará tablas, columnas faltantes e índices faltantes, y **NO** cambiará el tipo de columna existente o eliminará columnas no utilizadas para proteger sus datos.
 
 ```go
 db.AutoMigrate(&User{})
