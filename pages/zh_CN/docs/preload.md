@@ -6,7 +6,7 @@ layout: page
 ## 预加载
 
 ```go
-// the struct User and Order for below code
+// 下面的例子会用到 User 和 Order 结构体
 type User struct {
   gorm.Model
   Username string
@@ -17,7 +17,7 @@ type Order struct {
   UserID uint
   Price float64
 }
-// the Preload function's param should be the main struct's field name
+// Preload 方法的参数应该是主结构体的字段名
 db.Preload("Orders").Find(&users)
 //// SELECT * FROM users;
 //// SELECT * FROM orders WHERE user_id IN (1,2,3,4);
