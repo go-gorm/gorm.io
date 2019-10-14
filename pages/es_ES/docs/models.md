@@ -26,9 +26,9 @@ type User struct {
 
 ## Etiquetas de estructura
 
-Tags are optional to use when declaring models. GORM supports the following tags:
+El uso de las etiquetas son opcionales al declarar modelos. GORM admite el uso de las siguientes etiquetas:
 
-### Etiquetas de Estructuración admitidas
+### Etiquetas de una Estructura para asociaciones
 
 | Etiqueta        | Descripción                                                            |
 | --------------- | ---------------------------------------------------------------------- |

@@ -5,7 +5,7 @@ layout: page
 
 ## gorm.Model
 
-`gorm.Model` is a basic GoLang struct which includes the following fields: `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
+`gorm.Model` es una estructura básica de GoLang que incluye los siguientes campos: `ID`, `Creado`, `Actualizado`, `Borrado`.
 
 It may be embeded into your model or you may build your own model without it.
 

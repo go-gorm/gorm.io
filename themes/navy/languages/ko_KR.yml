@@ -1,29 +1,29 @@
 ---
 menu:
   home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  docs: <i class="fa fa-book"></i>문서
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fa fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  community: <i class="fa fa-slack"></i>커뮤니티
+  contribute: <i class="fa fa-rocket"></i>기여하기
+  search: 문서 검색...
 index:
-  get_started: Get started
+  get_started: 시작하기
 page:
-  contents: Contents
-  back_to_top: Back to Top
+  contents: 내용
+  back_to_top: 맨 위로 돌아가기
   improve: Improve this doc
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  prev: 이전
+  next: 다음
+  last_updated: "갱신일: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
-    declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
-    crud_interface: CRUD Interface
+    getting_started: 시작하기
+    overview: 개요
+    declaring_models: 모델 선언
+    conventions: 규칙
+    connecting_to_the_database: 데이터베이스 연결
+    crud_interface: CRUD 인터페이스
     create: Create
     query: Query
     update: Update
@@ -34,7 +34,7 @@ sidebar:
     has_many: Has Many
     many_to_many: Many To Many
     preload: Preloading (Eager Loading)
-    tutorials: Tutorials
+    tutorials: 튜토리얼
     method_chaining: Method Chaining
     error_handling: Error Handling
     hooks: Hooks
@@ -47,7 +47,7 @@ sidebar:
     write_plugins: Write Plugins
     dialects: GORM Dialects
     logger: Logger
-    change_log: ChangeLog
-    community: Community
-    contribute: Contribute
-    translate: Translate current site
+    change_log: 변경이력
+    community: 커뮤니티
+    contribute: 기여하기
+    translate: 현재 사이트 번역하기

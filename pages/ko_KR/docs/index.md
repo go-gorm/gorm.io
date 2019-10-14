@@ -1,32 +1,32 @@
 ---
-title: GORM Guides
+title: GORM 가이드
 layout: page
 ---
 
-The fantastic ORM library for Golang, aims to be developer friendly.
+개발자 친화적인 환상적인 Go언어용 ORM라이브러리
 
-## Overview
+## 개요
 
-* Full-Featured ORM (almost)
+* (거의) 모든 기능을 갖춘 ORM
 * Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism)
 * Hooks (Before/After Create/Save/Update/Delete/Find)
 * Preloading (eager loading)
 * Transactions
 * Composite Primary Key
-* SQL Builder
-* Auto Migrations
+* SQL 빌더
+* 자동 마이그레이션
 * Logger
 * Extendable, write Plugins based on GORM callbacks
-* Every feature comes with tests
-* Developer Friendly
+* 모든 기능에 테스트 코드가 제공됨
+* 개발자 친화적
 
-## Install
+## 인스톨
 
 ```sh
 go get -u github.com/jinzhu/gorm
 ```
 
-## Quick Start
+## 빠른 시작
 
 ```go
 package main

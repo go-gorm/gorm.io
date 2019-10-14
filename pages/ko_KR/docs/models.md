@@ -1,13 +1,13 @@
 ---
-title: Declaring Models
+title: 모델 선언
 layout: page
 ---
 
-## Declaring Models
+## 모델 선언
 
-Models are usually just normal Golang structs, basic Go types, or pointers of them. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are also supported.
+모델은 보통 일반적인 Go언어 구조체, 기본 Go 타입 또는 포인터입니다. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) 과 [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) 인터페이스도 지원합니다.
 
-Model Example:
+모델 예제:
 
 ```go
 type User struct {
@@ -16,36 +16,36 @@ type User struct {
   Age          sql.NullInt64
   Birthday     *time.Time
   Email        string  `gorm:"type:varchar(100);unique_index"`
-  Role         string  `gorm:"size:255"` // set field size to 255
-  MemberNumber *string `gorm:"unique;not null"` // set member number to unique and not null
-  Num          int     `gorm:"AUTO_INCREMENT"` // set num to auto incrementable
-  Address      string  `gorm:"index:addr"` // create index with name `addr` for address
-  IgnoreMe     int     `gorm:"-"` // ignore this field
+  Role         string  `gorm:"size:255"` // 필드 사이즈를 255로 설정합니다.
+  MemberNumber *string `gorm:"unique;not null"` // MemberNumber를 유니크, not null로 설정합니다.
+  Num          int     `gorm:"AUTO_INCREMENT"` // Num을 자동증가 번호로 설정합니다.
+  Address      string  `gorm:"index:addr"` // 이름이 `addr`인 인덱스를 작성합니다.
+  IgnoreMe     int     `gorm:"-"` // 이 항목은 무시합니다.
 }
 ```
 
-## Struct tags
+## 구조체 태그
 
-Tags are optional to use when declaring models. GORM supports the following tags:
+태그는 모델을 선언 시 선택사항입니다. GORM은 아래의 태그들을 지원합니다:
 
-### Supported Struct tags
+### 지원하는 구조체 태그
 
-| Tag             | Description                                                            |
-| --------------- | ---------------------------------------------------------------------- |
-| Column          | Specifies column name                                                  |
-| Type            | Specifies column data type                                             |
-| Size            | Specifies column size, default 255                                     |
-| PRIMARY_KEY     | Specifies column as primary key                                        |
-| UNIQUE          | Specifies column as unique                                             |
-| DEFAULT         | Specifies column default value                                         |
-| PRECISION       | Specifies column precision                                             |
-| NOT NULL        | Specifies column as NOT NULL                                           |
-| AUTO_INCREMENT  | Specifies column auto incrementable or not                             |
-| INDEX           | Create index with or without name, same name creates composite indexes |
-| UNIQUE_INDEX    | Like `INDEX`, create unique index                                      |
-| EMBEDDED        | Set struct as embedded                                                 |
-| EMBEDDED_PREFIX | Set embedded struct's prefix name                                      |
-| -               | Ignore this fields                                                     |
+| 태그              | 설명                                               |
+| --------------- | ------------------------------------------------ |
+| Column          | 컬럼명을 지정합니다.                                      |
+| Type            | 데이터 타입을 지정합니다.                                   |
+| Size            | 컬럼 사이즈를 지정합니다. 기본값은 255 입니다.                     |
+| PRIMARY_KEY     | 기본키로 지정합니다.                                      |
+| UNIQUE          | 유니크 제약을 지정합니다.                                   |
+| DEFAULT         | 기본값을 지정합니다.                                      |
+| PRECISION       | 자릿수를 지정합니다.                                      |
+| NOT NULL        | NOT NULL 제약을 지정합니다.                              |
+| AUTO_INCREMENT  | 자동증가번호 유무를 지정합니다.                                |
+| INDEX           | 이름이 있거나, 없는 인덱스를 생성합니다. 이름이 같을 경우 복합 인덱스가 작성됩니다. |
+| UNIQUE_INDEX    | `INDEX`와 같이 유니크 인덱스를 작성합니다.                      |
+| EMBEDDED        | 임베디드 구조체로 설정합니다.                                 |
+| EMBEDDED_PREFIX | 임베디드 구조체의 접두사 이름을 지정합니다.                         |
+| -               | 이 항목은 무시됩니다.                                     |
 
 ### Struct tags for Associations
 
