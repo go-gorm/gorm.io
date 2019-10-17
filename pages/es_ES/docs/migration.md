@@ -1,13 +1,13 @@
 ---
-title: Migration
-layout: page
+title: Migración
+layout: página
 ---
 
-## Auto Migration
+## Migración Automática
 
-Automatically migrate your schema, to keep your schema update to date.
+Migra automáticamente tu esquema, para mantenerlo actualizado hasta la fecha.
 
-**WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data.
+**ADVERTENCIA:** AutoMigrate **SOLAMENTE** creará tablas, columnas faltantes e índices faltantes, y **NO** cambiará el tipo de columna existente o eliminará columnas no utilizadas para proteger sus datos.
 
 ```go
 db.AutoMigrate(&User{})
@@ -18,16 +18,16 @@ db.AutoMigrate(&User{}, &Product{}, &Order{})
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
-## Other Migration Tools
+## Otras Herramientas de Migración
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides generic DB interface which might be helpful for you.
+El AutoMigrate de GORM funciona bien para la mayoría de los casos, pero si está buscando herramientas de migración más serias, GORM proporciona una interfaz DB genérica que podría ser útil para ti.
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-Refer [Generic Interface](/docs/generic_interface.html) for more details.
+Ir a [Interfaz Genérica](/docs/generic_interface.html) para más detalles.
 
 ## Schema Methods
 
