@@ -32,11 +32,11 @@ db.First(&user, 10)
 #### Ообычный SQL
 
 ```go
-// Get first matched record
+// Получить первую совпадающую запись 
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Get all matched records
+// Получить все совпадающие записи 
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
@@ -56,11 +56,11 @@ db.Where("name LIKE ?", "%jin%").Find(&users)
 db.Where("name = ? AND age >= ?", "jinzhu", "22").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu' AND age >= 22;
 
-// Time
+// Время
 db.Where("updated_at > ?", lastWeek).Find(&users)
 //// SELECT * FROM users WHERE updated_at > '2000-01-01 00:00:00';
 
-// BETWEEN
+// BETWEEN ( между )
 db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 //// SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
