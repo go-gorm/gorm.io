@@ -36,27 +36,33 @@ db.First(&user, 10)
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Получить все совпадающие записи
+// Получить все совпадающие записи 
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
 // <>
 db.Where("name <> ?", "jinzhu").Find(&users)
+//// SELECT * FROM users WHERE name <> 'jinzhu';
 
 // IN
 db.Where("name IN (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
+//// SELECT * FROM users WHERE name in ('jinzhu','jinzhu 2');
 
 // LIKE
 db.Where("name LIKE ?", "%jin%").Find(&users)
+//// SELECT * FROM users WHERE name LIKE '%jin%';
 
 // AND
 db.Where("name = ? AND age >= ?", "jinzhu", "22").Find(&users)
+//// SELECT * FROM users WHERE name = 'jinzhu' AND age >= 22;
 
-// Time
+// Время
 db.Where("updated_at > ?", lastWeek).Find(&users)
+//// SELECT * FROM users WHERE updated_at > '2000-01-01 00:00:00';
 
-// BETWEEN
+// BETWEEN ( между )
 db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
+//// SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
 #### Структура "struct" & Карта
@@ -368,9 +374,12 @@ db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 
 db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
+
+db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
+//// SELECT count( distinct(name) ) FROM deleted_users;
 ```
 
-**ПРИМЕЧАНИЕ** При использовании `Count` в цепочке запросов, он должно быть последним, так как он перезапишет `SELECT` столбцов
+**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns, But using the `count` keyword does not
 
 ### Group & Having
 

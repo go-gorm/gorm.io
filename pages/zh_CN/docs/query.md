@@ -32,31 +32,37 @@ db.First(&user, 10)
 #### 普通 SQL
 
 ```go
-// 获取第一条匹配的记录
+// Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// 获取全部匹配的记录
+// Get all matched records
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
 // <>
 db.Where("name <> ?", "jinzhu").Find(&users)
+//// SELECT * FROM users WHERE name <> 'jinzhu';
 
 // IN
 db.Where("name IN (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
+//// SELECT * FROM users WHERE name in ('jinzhu','jinzhu 2');
 
 // LIKE
 db.Where("name LIKE ?", "%jin%").Find(&users)
+//// SELECT * FROM users WHERE name LIKE '%jin%';
 
 // AND
 db.Where("name = ? AND age >= ?", "jinzhu", "22").Find(&users)
+//// SELECT * FROM users WHERE name = 'jinzhu' AND age >= 22;
 
-// 时间
+// Time
 db.Where("updated_at > ?", lastWeek).Find(&users)
+//// SELECT * FROM users WHERE updated_at > '2000-01-01 00:00:00';
 
 // BETWEEN
 db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
+//// SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
 #### Struct & Map
@@ -368,9 +374,12 @@ db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 
 db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
+
+db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
+//// SELECT count( distinct(name) ) FROM deleted_users;
 ```
 
-**注意** `Count` 必须是链式查询的最后一个操作 ，因为它会覆盖前面的 `SELECT`
+**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns, But using the `count` keyword does not
 
 ### Group & Having
 

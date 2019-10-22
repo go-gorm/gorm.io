@@ -40,21 +40,27 @@ db.Where("name = ?", "jinzhu").Find(&users)
 
 // <>
 db.Where("name <> ?", "jinzhu").Find(&users)
+//// SELECT * FROM users WHERE name <> 'jinzhu';
 
 // IN
 db.Where("name IN (?)", []string{"jinzhu", "jinzhu 2"}).Find(&users)
+//// SELECT * FROM users WHERE name in ('jinzhu','jinzhu 2');
 
 // LIKE
 db.Where("name LIKE ?", "%jin%").Find(&users)
+//// SELECT * FROM users WHERE name LIKE '%jin%';
 
 // AND
-db.Where("name = ? DAN usia >=? "," Jinzhu "," 22 ").Temukan(&pengguna)
+db.Where("name = ? AND age >= ?", "jinzhu", "22").Find(&users)
+//// SELECT * FROM users WHERE name = 'jinzhu' AND age >= 22;
 
-// Waktu
-db.Dimana("diperbarui_at > ? ", minggulalu).Temukan (&pengguna)
+// Time
+db.Where("updated_at > ?", lastWeek).Find(&users)
+//// SELECT * FROM users WHERE updated_at > '2000-01-01 00:00:00';
 
-// ANTARA
-db.Dimana("dibuat _di ANTARA? DAN ?", Minggulalu, hari ini).Temukan(&pengguna)
+// BETWEEN
+db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
+//// SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
 #### Struktur & Peta
@@ -367,9 +373,12 @@ db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 
 db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
+
+db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
+//// SELECT count( distinct(name) ) FROM deleted_users;
 ```
 
-**CATATAN** Ketika menggunakan `Hitungan` dalam rantai pertanyaan, itu harus menjadi yang terakhir, karena akan menimpa `PILIH` kolom
+**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns, But using the `count` keyword does not
 
 ### Kelompok & Memiliki
 
