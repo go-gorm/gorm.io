@@ -379,7 +379,7 @@ db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
 //// SELECT count( distinct(name) ) FROM deleted_users;
 ```
 
-**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns, But using the `count` keyword does not
+**注意** `Count` 必须是链式查询的最后一个操作 ，因为它会覆盖前面的 `SELECT`，但如果里面使用了 `count` 时不会覆盖
 
 ### Group & Having
 
