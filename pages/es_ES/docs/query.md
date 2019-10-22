@@ -370,14 +370,7 @@ db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
 ```
 
-Gets how many different records a model has
-
-```
-db.Table("deleted_users").Select("count( distinct(name) )").Count(&count())
-//// SELECT count( distinct(name) ) FROM deleted_users;
-```
-
-**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns, But using the `distinct` keyword does not
+**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns
 
 ### Group & Having
 
