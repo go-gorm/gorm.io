@@ -374,9 +374,12 @@ db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 
 db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
+
+db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
+//// SELECT count( distinct(name) ) FROM deleted_users;
 ```
 
-**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns
+**NOTE** When use `Count` in a query chain, it has to be the last one, as it will overwrite `SELECT` columns, But using the `count` keyword does not
 
 ### Group & Having
 
