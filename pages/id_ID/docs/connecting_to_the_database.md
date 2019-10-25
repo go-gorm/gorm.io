@@ -5,13 +5,13 @@ layout: page
 
 ## Menghubungkan ke database
 
-In order to connect to a database, you need to import the database's driver first. For example:
+Agar bisa terhubung ke database, anda perlu mengimpor driver database terlebih dahulu. Sebagai contoh:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remember the import path. So you could import the mysql driver with:
+GORM telah memasukkan beberapa driver, untuk mempermudah mengingat jalur impor mereka, sehingga anda bisa mengimpor driver mysql dengan:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -24,11 +24,11 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ### MySQL
 
-**NOTE:**
+**CATATAN:**
 
-In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+Untuk menggunakan `time.Time` secara benar, anda harus menyisipkan `parseTime` sebagai sebuah parameter. ([Lihat parameter yang di dukung](https://github.com/go-sql-driver/mysql#parameters))
 
-In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
+Demi mendukung UTF-8 encoding secara penuh, anda harus mengubah `charset=utf8` ke `charset=utf8mb4`. Lihat [artikel ini](https://mathiasbynens.be/notes/mysql-utf8mb4) untuk penjelasan lebih lanjut.
 
 ```go
 import (
