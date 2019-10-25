@@ -68,7 +68,7 @@ func main() {
 
 ## Server SQL
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), dapat perjalan di [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) menggunakan Docker
 
 ```go
 import (
@@ -84,6 +84,6 @@ func main() {
 
 ## Tulis Dialek untuk basis data yang tidak didukung
 
-GORM officially supports the above databases, but you could write a dialect for unsupported databases.
+GORM secara resmi mendukung database di atas, tapi anda bisa menulis dialek untuk database yang tidak didukung.
 
 To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
