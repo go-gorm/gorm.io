@@ -41,7 +41,7 @@ Kebaikan dan kemurahan hati anda sangat dihargai
 
 Kebaikan dan kemurahan hati anda sangat dihargai, dan nama anda akan tercantum di halaman ini atau beranda situs web ini.
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[Donasi berulang dengan OpenCollective](https://opencollective.com/gorm) [Donasi berulang dengan Patreon](https://www.patreon.com/jinzhu)
 
 <br />
 
@@ -49,7 +49,7 @@ Kebaikan dan kemurahan hati anda sangat dihargai, dan nama anda akan tercantum d
 
 <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=740"></object>
 
-## Backers
+## Pendukung
 
 <div class="backers-list">
   
