@@ -5,13 +5,13 @@ layout: page
 
 ## Menghubungkan ke database
 
-In order to connect to a database, you need to import the database's driver first. For example:
+Agar bisa terhubung ke database, anda perlu mengimpor driver database terlebih dahulu. Sebagai contoh:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remember the import path. So you could import the mysql driver with:
+GORM telah memasukkan beberapa driver, untuk mempermudah mengingat jalur impor mereka, sehingga anda bisa mengimpor driver mysql dengan:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -24,11 +24,11 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ### MySQL
 
-**NOTE:**
+**CATATAN:**
 
-In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+Untuk menggunakan `time.Time` secara benar, anda harus menyisipkan `parseTime` sebagai sebuah parameter. ([Lihat parameter yang di dukung](https://github.com/go-sql-driver/mysql#parameters))
 
-In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
+Demi mendukung UTF-8 encoding secara penuh, anda harus mengubah `charset=utf8` ke `charset=utf8mb4`. Lihat [artikel ini](https://mathiasbynens.be/notes/mysql-utf8mb4) untuk penjelasan lebih lanjut.
 
 ```go
 import (
@@ -42,7 +42,7 @@ func main() {
 }
 ```
 
-If you want to specify the host, you need to use `()`. Example:
+Jika anda mau menentukan host, gunakanlah `()`. Contoh:
 
     user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
     
@@ -63,7 +63,7 @@ func main() {
 
 ### Sqlite3
 
-**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
+**CATATAN:** Anda boleh menggunakan `:memory:` daripada nama path dari file. Ini akan membuat sqlite menggunakan database sementara dalam memori sistem. Ini sangat berguna ketika menulis program test untuk aplikasi GORM anda, test anda menggunakan aktual database, tetapi punya keunggulan performa dikarena database ada di dalam memori.
 
 ```go
 import (
@@ -79,7 +79,7 @@ func main() {
 
 ### Server SQL
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), dapat perjalan di [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) menggunakan Docker
 
 ```go
 import (
@@ -93,6 +93,6 @@ func main() {
 }
 ```
 
-## Basisdata tidak didukung
+## Basisdata yang tidak didukung
 
-GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](/docs/dialects.html)
+GORM secara resmi mendukung di atas empat database, anda bisa menulis dialek untuk database yang tidak didukung, lihat [Dialek GORM](/docs/dialects.html)

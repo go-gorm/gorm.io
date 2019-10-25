@@ -50,7 +50,7 @@ db.Set("gorm:association_autoupdate", false).Create(&user)
 db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
 
-or use GORM tags, `gorm:"association_autoupdate:false"`
+atau boleh menggunakan tag GORM,`gorm:"association_autoupdate:false"`
 
 ```go
 type User struct {

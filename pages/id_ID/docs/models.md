@@ -3,9 +3,9 @@ title: Mendeklarasikan Model
 layout: page
 ---
 
-## Declaring Models
+## Mendeklarasikan Model
 
-Models are usually just normal Golang structs, basic Go types, or pointers of them. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) interfaces are also supported.
+Model adalah berupa Golang structs yang normal, Go types yang dasar atau pointers nya mereka. [`sql.Scanner`](https://golang.org/pkg/database/sql/#Scanner) and [`driver.Valuer`](https://golang.org/pkg/database/sql/driver/#Valuer) antarmuka juga bisa didukung.
 
 Contoh Model:
 
@@ -53,7 +53,7 @@ Check out the Associations section for details
 
 | Label                              | Keterangan                                           |
 | ---------------------------------- | ---------------------------------------------------- |
-| MANY2MANY                          | Menentukan ikut nama tabel                           |
+| MANY2MANY                          | Menentukan nama penghubung tabel                     |
 | FOREIGNKEY                         | Menentukan kunci asing                               |
 | ASSOCIATION_FOREIGNKEY             | Menentukan asosiasi kunci asing                      |
 | POLYMORPHIC                        | Menentukan jenis polimorfik                          |
@@ -64,4 +64,4 @@ Check out the Associations section for details
 | ASSOCIATION_AUTOUPDATE             | PembaruanOtomatis asosiasi atau tidak                |
 | ASSOCIATION_AUTOCREATE             | Buat asosiasi otomatis atau tidak                    |
 | ASSOCIATION_AUTOCREATE             | Penyimpanan otomatis asosiasi referensi atau tidak   |
-| PRELOAD                            | Auto Preload associations or not                     |
+| PRELOAD                            | Buat asosiasi otomatis atau tidak                    |

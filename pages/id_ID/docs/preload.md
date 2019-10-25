@@ -1,5 +1,5 @@
 ---
-title: Preloading (Eager loading)
+title: Pramuat (Loading Eager)
 layout: page
 ---
 
@@ -37,9 +37,9 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 //// SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
 ```
 
-## Auto Preloading
+## Pra muat otomatis
 
-Always auto preload associations
+Selalu menggunakan asosiasi pramuat otomatis
 
 ```go
 type User struct {
