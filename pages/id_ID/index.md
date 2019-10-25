@@ -1,14 +1,14 @@
 ---
-layout: index
+layout: Daftar Isi
 description: Perpustakaan ORM yang fantastis untuk Golang, bertujuan menjadi pengembang yang bersahabat.
 subtitle: Perpustakaan ORM yang fantastis untuk Golang
-comments: false
+comments: tidak
 ---
 
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM (almost)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> ORM yang banyak fitur(hampir)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Asosiasi (Memiliki Satu, Memiliki Banyak, Milik Banyak, Banyaknya Polimorfisme)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Preloading (eager loading)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Pengait (Before/After Create/Save/Update/Delete/Find)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Pramuat (Loading Eager)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transaksi
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Kunci Utama Komposit
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Pembangun SQL
