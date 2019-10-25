@@ -63,7 +63,7 @@ func main() {
 
 ### Sqlite3
 
-**NOTE:** You can also use `:memory:` instead of a path to a file. Ini akan membuat sqlite menggunakan database sementara dalam memori sistem. Ini sangat berguna ketika menulis program test untuk aplikasi GORM anda, test anda menggunakan aktual database, tetapi punya keunggulan performa dikarena database ada di dalam memori.
+**CATATAN:** Anda boleh menggunakan `:memory:` daripada nama path dari file. Ini akan membuat sqlite menggunakan database sementara dalam memori sistem. Ini sangat berguna ketika menulis program test untuk aplikasi GORM anda, test anda menggunakan aktual database, tetapi punya keunggulan performa dikarena database ada di dalam memori.
 
 ```go
 import (
