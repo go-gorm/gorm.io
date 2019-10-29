@@ -61,7 +61,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 Updating an object，更新对象时可用的 hooks
 
 ```go
-// begin transaction 开始事物
+// begin transaction 开始事务
 BeforeSave
 BeforeUpdate
 // save before associations 保存前关联
