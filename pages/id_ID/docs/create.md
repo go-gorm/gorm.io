@@ -3,19 +3,19 @@ title: Membuat
 layout: page
 ---
 
-## Buat Catatan
+## Buat Baris Data
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-db.NewRecord(user) // => returns `true` as primary key is blank
+db.NewRecord(user) // => kembali nilai `true` ketika primary key kosong
 
 db.Create(&user)
 
-db.NewRecord(user) // => return `false` after `user` created
+db.NewRecord(user) // => kembali nilai `false` setelah `user` dibuat
 ```
 
-## Nilai Bawaan
+## Nilai Default
 
 Anda dapat mendefinisikan nilai default dari sebuah field dengan sebuah tanda. Contohnya:
 
@@ -40,14 +40,14 @@ db.Create(&animal)
 **CATATAN** semua field yang memiliki nilai nol, seperti `0`, `''`, `false` atau [nilai nol](https://tour.golang.org/basics/12) lain, tidak akan disimpan ke database tapi akan menggunakan nilai default. Apabila anda ingin mencegal hal ini, gunakan tipe pointer atau scanner/valuer, seperti:
 
 ```go
-// Use pointer value
+// Menggunakan nilai pointer 
 type User struct {
   gorm.Model
   Name string
   Age  *int `gorm:"default:18"`
 }
 
-// Use scanner/valuer
+// Menggunakan scanner/valuer
 type User struct {
   gorm.Model
   Name string
