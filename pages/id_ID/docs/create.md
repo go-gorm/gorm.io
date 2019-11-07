@@ -66,10 +66,10 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 }
 ```
 
-## Pilihan Membuat Tambahan
+## Membuat dengan Ekstra Opsi
 
 ```go
-// Add extra SQL option for inserting SQL
+// Tambah ekstra SQL opsi untuk insert SQL
 db.Set("gorm:insert_option", "ON CONFLICT").Create(&product)
 // INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
 ```
