@@ -19,7 +19,7 @@ db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email)
 
 ## Batch Hapus
 
-Hapus seluruh catatan yang cocok
+Hapus seluruh baris yang cocok dengan kondisi
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -29,7 +29,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 //// DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-## Hapus lembut
+## Hapus sementara
 
 If a model has a `DeletedAt` field, it will get a soft delete ability automatically! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
 
@@ -50,7 +50,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 //// SELECT * FROM users WHERE age = 20;
 ```
 
-## Delete record permanently
+## Hapus baris data permanen
 
     // Delete record permanently with Unscoped
     db.Unscoped().Delete(&order)
