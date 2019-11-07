@@ -52,7 +52,7 @@ func main() {
 
 ## Sqlite3
 
-**NOTE:** You can also use `:memory:` for the connection, which will use sqlite in temporary system memory. This is especially useful when writing tests for your application against GORM.
+**CATATAN:** Anda dapat menggunakan `:memory:` untuk koneksinya, yang hal itu sqlite akan menggunakan sistem memory yang sementara. Ini sangat berguna untuk membuat program test aplikasi GORM punya anda.
 
 ```go
 import (
@@ -86,4 +86,4 @@ func main() {
 
 GORM secara resmi mendukung database di atas, tapi anda bisa menulis dialek untuk database yang tidak didukung.
 
-To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
+Untuk menulis dialek anda sendiri, lihat: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
