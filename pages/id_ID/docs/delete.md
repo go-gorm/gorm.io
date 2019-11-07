@@ -17,7 +17,7 @@ db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email)
 //// DELETE from emails where id=10 OPTION (OPTIMIZE FOR UNKNOWN);
 ```
 
-## Batch Hapus
+## Hapus Masal
 
 Hapus seluruh baris yang cocok dengan kondisi
 
@@ -31,7 +31,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ## Hapus sementara
 
-If a model has a `DeletedAt` field, it will get a soft delete ability automatically! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
+Jika sebuah model mempunyai kolom `DeletedAt` maka akan aktif fitur menghapus sementara! Dan ketika memanggil fungsi `Delete`, baris data tersebut tidak akan di hapus secara permanen dari database. Melainkan nilai dari `DeletedAt` akan terisi dengan waktu sekarang
 
 ```go
 db.Delete(&user)
