@@ -8,11 +8,11 @@ layout: page
 **PERINGATAN** Saat menghapus baris data, anda harus memastikan kolom utama itu memiliki nilai, dan GORM akan menggunakan kolom kunci utama untuk menghapus catatan, jika kolom kunci utama kosong, GORM akan menghapus semua baris data untuk model tersebut
 
 ```go
-// Delete an existing record
+// Menghapus baris data terkini
 db.Delete(&email)
 //// DELETE from emails where id=10;
 
-// Add extra SQL option for deleting SQL
+// Tambal opsi extra SQL untuk penghapusan SQL
 db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email)
 //// DELETE from emails where id=10 OPTION (OPTIMIZE FOR UNKNOWN);
 ```
