@@ -33,7 +33,7 @@ Lalu penambahan SQL akan mengecualikan fields yang tidak memiliki nilai atau yan
 var animal = Animal{Age: 99, Name: ""}
 db.Create(&animal)
 // INSERT INTO animals("age") values('99');
-// SELECT name from animals WHERE ID=111; // the returning primary key is 111
+// SELECT name from animals WHERE ID=111; // nilai dari primary key ialah 111
 // animal.Name => 'galeone'
 ```
 
