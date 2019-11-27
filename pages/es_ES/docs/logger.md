@@ -8,27 +8,27 @@ layout: page
 Gorm tiene soporte de logger incorporado, de manera predeterminada, solo imprimirá registros cuando ocurran errores.
 
 ```go
-// Enable Logger, show detailed log
+// Habilitar Logger, muestra log detallado
 db.LogMode(true)
 
-// Disable Logger, don't show any log even errors
+// Deshabilitar Logger, no muestra ningún log nisiquera errores
 db.LogMode(false)
 
-// Debug a single operation, show detailed log for this operation
+// Depurar una sola operación, muestra log detallado para esta operación
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
-## Customize Logger
+## Personalizar Logger
 
-Refer GORM's default logger for how to customize it <https://github.com/jinzhu/gorm/blob/master/logger.go>
+Consulte logger predeterminado de GORM para aprender como personalizarlo <https://github.com/jinzhu/gorm/blob/master/logger.go>
 
-For example, using [Revel](https://revel.github.io/)'s Logger as the backend for GORM
+Por ejemplo, usando el logger de [Revel](https://revel.github.io/) como backend para GORM
 
 ```go
 db.SetLogger(gorm.Logger{revel.TRACE})
 ```
 
-Using `os.Stdout` as the backend
+Usando `os.Stdout` como backend
 
 ```go
 db.SetLogger(log.New(os.Stdout, "\r\n", 0))
