@@ -5,7 +5,7 @@ layout: page
 
 ## Logger
 
-Gorm has built-in logger support, default mode, it will only print logs when there are errors happened.
+Gorm tiene soporte de logger incorporado, de manera predeterminada, solo imprimirá registros cuando ocurran errores.
 
 ```go
 // Enable Logger, show detailed log
