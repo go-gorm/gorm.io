@@ -3,7 +3,7 @@ title: Asociaciones
 layout: page
 ---
 
-## Auto Create/Update
+## Creacion/Actualización Automática
 
 GORM guardará automáticamente asociaciones y su referencia cuando crea/actualiza un registro. Si una asociación tiene una clave principal, GORM pedirá `Actualizar` para guardarla, de lo contrario será creado.
 
@@ -135,12 +135,12 @@ type User struct {
 El Modo de Asociación contiene métodos de ayuda para manejar cosas relativas con relaciones fácilmente.
 
 ```go
-// Start Association Mode
+// Iniciar modo asociación
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source, must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
+// `user` es la fuente, debe contener clave primaria
+// `Languages` es el nombre del campo que contendrá la relación
+// Modo asociación solo puede funcionar si las dos condiciones anteriores se satisfacen, comprobar siempre que esté correcto:
 // db.Model(&user).Association("Languages").Error
 ```
 
@@ -175,8 +175,8 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "ES"}, languageE
 Eliminar relación entre la fuente & objetos de argumento, solo eliminar la referencia, no eliminará esos objetos de DB.
 
 ```go
-db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
-db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
+db.Model(&user).Association("Languages").Delete([]Language{languageES, languageEN})
+db.Model(&user).Association("Languages").Delete(languageES, languageEN)
 ```
 
 ### Limpiar Asociaciones
