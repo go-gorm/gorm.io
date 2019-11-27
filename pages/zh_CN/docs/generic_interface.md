@@ -1,5 +1,5 @@
 ---
-title: 通过数据库接口 sql.DB
+title: 通用数据库接口 sql.DB
 layout: page
 ---
 
