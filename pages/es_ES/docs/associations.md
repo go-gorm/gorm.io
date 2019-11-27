@@ -57,7 +57,7 @@ type User struct {
   gorm.Model
   Name       string
   CompanyID  uint
-  // Don't update associations having primary key, but will save reference
+  // No actualiza las asociaciones que tienen una clave primaria, pero guarda la referencia
   Company    Company `gorm:"association_autoupdate:false"`
 }
 ```
@@ -79,7 +79,7 @@ o use etiquetas GORM, `gorm:"association_autocreate:false"`
     type User struct {
       gorm.Model
       Name       string
-      // Don't create associations w/o primary key, WON'T save its reference
+      // No crea asociaciones sin clave principal, NO guardará su referencia
       Company1   Company `gorm:"association_autocreate:false"`
     }
     
