@@ -6,23 +6,23 @@ layout: страница
 ## Query
 
 ```go
-// Получить первую запись, сортировка по первичному ключу
+// Get first record, order by primary key
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Получить одну запись без указания сортировки
+// Get one record, no specified order
 db.Take(&user)
 //// SELECT * FROM users LIMIT 1;
 
-// Получить последнюю запись, сортировка по первичному ключу
+// Get last record, order by primary key
 db.Last(&user)
 //// SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
-// Получить все записи
+// Get all records
 db.Find(&users)
 //// SELECT * FROM users;
 
-// Получить запись с первичным ключом (работает только если первичный ключ число)
+// Get record with primary key (only works for integer primary key)
 db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
