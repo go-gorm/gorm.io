@@ -10,7 +10,7 @@ layout: page
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specfied order
+// Get one record, no specified order
 db.Take(&user)
 //// SELECT * FROM users LIMIT 1;
 
