@@ -12,22 +12,43 @@ If you want to treat multiple `create`, `update`, `delete` as one atomic operati
 トランザクション内で複数操作をまとめて実行するための、一般的なフローは以下の通りです。
 
 ```go
-// トランザクションを開始します
+func CreateAnimals(db *gorm.DB) error {
+  return db.Transaction(func(tx *gorm.DB) error {
+    // do some database operations in the transaction (use 'tx' from this point, not 'db')
+    if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
+      // return any error will rollback
+      return err
+    }
+
+    if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
+      return err
+    }
+
+    // return nil will commit
+    return nil
+  })
+}
+```
+
+## Transactions by manual
+
+```go
+// begin a transaction
 tx := db.Begin()
 
-// データベース操作をトランザクション内で行います(ここからは'db'でなく'tx'を使います)
+// do some database operations in the transaction (use 'tx' from this point, not 'db')
 tx.Create(...)
 
 // ...
 
-// エラーが起きた場合はトランザクションをロールバックします
+// rollback the transaction in case of error
 tx.Rollback()
 
-// もしくはトランザクションをコミットします
+// Or commit the transaction
 tx.Commit()
 ```
 
-## 具体例
+## A Specific Example
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
