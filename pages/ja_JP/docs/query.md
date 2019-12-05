@@ -6,23 +6,23 @@ layout: page
 ## Query
 
 ```go
-// 主キーでソートされた最初のレコードを取得します
+// Get first record, order by primary key
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// ソートなしでレコードを1行取得します
+// Get one record, no specified order
 db.Take(&user)
 //// SELECT * FROM users LIMIT 1;
 
-// 主キーでソートされた最後のレコードを取得します
+// Get last record, order by primary key
 db.Last(&user)
 //// SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
-// すべてのレコードを取得します
+// Get all records
 db.Find(&users)
 //// SELECT * FROM users;
 
-// 主キーを指定してレコードを取得します (integer 型の主キーでのみ動作します)
+// Get record with primary key (only works for integer primary key)
 db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
