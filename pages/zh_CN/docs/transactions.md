@@ -48,7 +48,7 @@ tx.Rollback()
 tx.Commit()
 ```
 
-## A Specific Example
+## 一个具体的例子
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
