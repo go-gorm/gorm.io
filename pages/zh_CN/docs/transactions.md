@@ -52,7 +52,7 @@ tx.Commit()
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
-  // Note the use of tx as the database handle once you are within a transaction
+  // 请注意，事务一旦开始，你就应该使用 tx 作为数据库句柄
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
