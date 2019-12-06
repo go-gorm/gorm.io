@@ -6,23 +6,23 @@ layout: page
 ## 查询
 
 ```go
-// Get first record, order by primary key
+// 根据主键查询第一条记录
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// 随机获取一条记录
 db.Take(&user)
 //// SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key
+// 根据主键查询最后一条记录
 db.Last(&user)
 //// SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
-// Get all records
+// 查询所有的记录
 db.Find(&users)
 //// SELECT * FROM users;
 
-// Get record with primary key (only works for integer primary key)
+// 查询指定的某条记录(仅当主键为整型时可用)
 db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
