@@ -14,9 +14,9 @@ GORM 默认会将单个的 `create`, `update`, `delete`操作封装在事务内�
 ```go
 func CreateAnimals(db *gorm.DB) error {
   return db.Transaction(func(tx *gorm.DB) error {
-    // do some database operations in the transaction (use 'tx' from this point, not 'db')
+    // 在事务中做一些数据库操作 (这里应该使用 'tx' ，而不是 'db')
     if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-      // return any error will rollback
+      // 返回任意 err ，整个事务都会 rollback
       return err
     }
 
@@ -24,27 +24,27 @@ func CreateAnimals(db *gorm.DB) error {
       return err
     }
 
-    // return nil will commit
+    // 返回 nil ，事务会 commit
     return nil
   })
 }
 ```
 
-## Transactions by manual
+## 手动控制的事务
 
 ```go
-// begin a transaction
+// 开始事务
 tx := db.Begin()
 
-// do some database operations in the transaction (use 'tx' from this point, not 'db')
+// 在事务中做一些数据库操作 (这里应该使用 'tx' ，而不是 'db')
 tx.Create(...)
 
 // ...
 
-// rollback the transaction in case of error
+// 有错误时，手动调用事务的 Rollback()
 tx.Rollback()
 
-// Or commit the transaction
+// 无错误时，手动调用事务的 Commit()
 tx.Commit()
 ```
 
