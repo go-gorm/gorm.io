@@ -14,7 +14,7 @@ type Product struct {
 }
 ```
 
-Note that integer fields with `primary_key` tag are `auto_increment` by default. That can result in multiple auto-incremented integer primary keys instead of a single composite primary key.
+请注意，默认情况下，带有 `主键` 标签的整形字段的会 `自动增长`。 这可能会导致多个自动增长的整形主键，而不是单个复合主键。
 
 To create the composite primary key containing ints you need to turn off `auto_increment` for the int fields:
 
