@@ -3,26 +3,26 @@ title: Query
 layout: page
 ---
 
-## Query
+## クエリ
 
 ```go
-// Get first record, order by primary key
+// 主キーでソートし、最初のレコードを取得する
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// ソートせずにレコードを1行取得する
 db.Take(&user)
 //// SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key
+// 主キーでソートし、最後のレコードを取得する
 db.Last(&user)
 //// SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
-// Get all records
+// 全てのレコードを取得する
 db.Find(&users)
 //// SELECT * FROM users;
 
-// Get record with primary key (only works for integer primary key)
+// 主キーを指定してレコードを取得する（主キーがinteger型の場合のみ使用可能）
 db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
@@ -32,11 +32,11 @@ db.First(&user, 10)
 #### Plain SQL
 
 ```go
-// Get first matched record
+// 最初にマッチしたレコードを取得
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Get all matched records
+// マッチした全てのレコードを取得
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
@@ -65,7 +65,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 //// SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-#### Struct & Map
+#### 構造体 & マップ
 
 ```go
 // 構造体
