@@ -15,7 +15,7 @@ If any error occurs, GORM will set `*gorm.DB`'s `Error` field, which you can che
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-	// error handling...
+  // error handling...
 }
 ```
 
@@ -23,7 +23,7 @@ Or
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-	// error handling...
+  // error handling...
 }
 ```
 
