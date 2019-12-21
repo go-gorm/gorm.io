@@ -5,7 +5,7 @@ layout: page
 
 GORMはデフォルトで1つの`create`, `update`, `delete`操作をトランザクション内で行います。これはデータベース上のデータ整合性を確保するためです。
 
-If you want to treat multiple `create`, `update`, `delete` as one atomic operation, `Transaction` is made for that.
+複数の `create`, `update`, `delete` を1つの不可分操作として扱いたい場合は、 `Transaction` が向いています。
 
 ## トランザクション
 
