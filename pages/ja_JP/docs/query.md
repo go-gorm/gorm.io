@@ -334,7 +334,7 @@ db.Order("age desc").Find(&users1).Order("age", true).Find(&users2)
 
 ### Limit
 
-Specify the max number of records to retrieve
+取得するレコードの最大数を指定します。
 
 ```go
 db.Limit(3).Find(&users)
