@@ -66,7 +66,7 @@ Anda dapat mengkustom prapembebanan SQL dengan melewati `func(db *gorm.DB) *gorm
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
-    return db.Order("orders.amount DESC")
+  return db.Order("orders.amount DESC")
 }).Find(&users)
 //// SELECT * FROM users;
 //// SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.amount DESC;
