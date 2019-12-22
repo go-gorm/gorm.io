@@ -386,17 +386,17 @@ db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
 ```go
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Rows()
 for rows.Next() {
-    ...
+  ...
 }
 
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Rows()
 for rows.Next() {
-    ...
+  ...
 }
 
 type Result struct {
-    Date  time.Time
-    Total int64
+  Date  time.Time
+  Total int64
 }
 db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
 ```
@@ -408,7 +408,7 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 ```go
 rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
 for rows.Next() {
-    ...
+  ...
 }
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
@@ -440,13 +440,13 @@ db.Select("name, age").Find(&users)
 
 ```go
 type Result struct {
-    Name string
-    Age  int
+  Name string
+  Age  int
 }
 
 var result Result
-db.Table("users").Select("name, age").Where("name = ?", 3).Scan(&result)
+db.Table("users").Select("name, age").Where("name = ?", "Antonio").Scan(&result)
 
-// Сырой SQL
-db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
+// Raw SQL
+db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
