@@ -7,10 +7,10 @@ layout: page
 
 ```go
 type Product struct {
-   ID           string `gorm:"primary_key"`
-   LanguageCode string `gorm:"primary_key"`
-   Code         string
-   Name         string
+  ID           string `gorm:"primary_key"`
+  LanguageCode string `gorm:"primary_key"`
+  Code         string
+  Name         string
 }
 ```
 
@@ -20,7 +20,7 @@ type Product struct {
 
 ```go
 type Product struct {
-    CategoryID uint64 `gorm:"primary_key;auto_increment:false"`
-    TypeID     uint64 `gorm:"primary_key;auto_increment:false"`
+  CategoryID uint64 `gorm:"primary_key;auto_increment:false"`
+  TypeID     uint64 `gorm:"primary_key;auto_increment:false"`
 }
 ```
