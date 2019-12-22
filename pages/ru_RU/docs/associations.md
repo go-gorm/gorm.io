@@ -9,17 +9,17 @@ GORM будет автоматически сохранять связь и ее
 
 ```go
 user := User{
-    Name:            "jinzhu",
-    BillingAddress:  Address{Address1: "Billing Address - Address 1"},
-    ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
-    Emails:          []Email{
-        {Email: "jinzhu@example.com"},
-        {Email: "jinzhu-2@example.com"},
-    },
-    Languages:       []Language{
-        {Name: "ZH"},
-        {Name: "EN"},
-    },
+  Name:            "jinzhu",
+  BillingAddress:  Address{Address1: "Billing Address - Address 1"},
+  ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
+  Emails:          []Email{
+    {Email: "jinzhu@example.com"},
+    {Email: "jinzhu-2@example.com"},
+  },
+  Languages:       []Language{
+    {Name: "ZH"},
+    {Name: "EN"},
+  },
 }
 
 db.Create(&user)
