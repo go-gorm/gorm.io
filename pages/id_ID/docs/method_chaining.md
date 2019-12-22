@@ -15,13 +15,13 @@ tx := db.Where("name = ?", "jinzhu")
 
 // add more filter
 if someCondition {
-    tx = tx.Where("age = ?", 20)
+  tx = tx.Where("age = ?", 20)
 } else {
-    tx = tx.Where("age = ?", 30)
+  tx = tx.Where("age = ?", 30)
 }
 
 if yetAnotherCondition {
-    tx = tx.Where("active = ?", 1)
+  tx = tx.Where("active = ?", 1)
 }
 ```
 
@@ -55,21 +55,21 @@ Dengan itu, Anda bisa mengekstrak beberapa logika generik, untuk menulis lebih b
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
-    return db.Where("amount > ?", 1000)
+  return db.Where("amount > ?", 1000)
 }
 
 func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
-    return db.Where("pay_mode_sign = ?", "C")
+  return db.Where("pay_mode_sign = ?", "C")
 }
 
 func PaidWithCod(db *gorm.DB) *gorm.DB {
-    return db.Where("pay_mode_sign = ?", "C")
+  return db.Where("pay_mode_sign = ?", "C")
 }
 
 func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
-    return func (db *gorm.DB) *gorm.DB {
-        return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
-    }
+  return func (db *gorm.DB) *gorm.DB {
+    return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
+  }
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
