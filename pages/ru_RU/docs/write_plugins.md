@@ -11,13 +11,13 @@ layout: страница
 
 ```go
 func updateCreated(scope *Scope) {
-    if scope.HasColumn("Created") {
-        scope.SetColumn("Created", NowFunc())
-    }
+  if scope.HasColumn("Created") {
+    scope.SetColumn("Created", NowFunc())
+  }
 }
 
 db.Callback().Create().Register("update_created_at", updateCreated)
-// регистрация callback для Create процесса
+// register a callback for Create process
 ```
 
 ## Удалить существующий callback
