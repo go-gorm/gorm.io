@@ -21,9 +21,9 @@ Anda dapat mendefinisikan nilai default dari sebuah field dengan sebuah tanda. C
 
 ```go
 type Animal struct {
-    ID   int64
-    Name string `gorm:"default:'galeone'"`
-    Age  int64
+  ID   int64
+  Name string `gorm:"default:'galeone'"`
+  Age  int64
 }
 ```
 
