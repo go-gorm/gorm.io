@@ -10,16 +10,16 @@ layout: страница
 Например, если ваше приложение включает в себя пользователей и кредитную карту, и каждый пользователь может иметь много кредитных карт.
 
 ```go
-// Пользователи имеют много кредитных карт, UserID является внешним ключом
+// User has many CreditCards, UserID is the foreign key
 type User struct {
-    gorm.Model
-    CreditCards []CreditCard
+  gorm.Model
+  CreditCards []CreditCard
 }
 
 type CreditCard struct {
-    gorm.Model
-    Number   string
-    UserID  uint
+  gorm.Model
+  Number   string
+  UserID  uint
 }
 ```
 
@@ -33,13 +33,13 @@ type CreditCard struct {
 
 ```go
 type User struct {
-    gorm.Model
-    CreditCards []CreditCard `gorm:"foreignkey:UserRefer"`
+  gorm.Model
+  CreditCards []CreditCard `gorm:"foreignkey:UserRefer"`
 }
 
 type CreditCard struct {
-    gorm.Model
-    Number    string
+  gorm.Model
+  Number    string
   UserRefer uint
 }
 ```
@@ -54,14 +54,14 @@ type CreditCard struct {
 
 ```go
 type User struct {
-    gorm.Model
+  gorm.Model
   MemberNumber string
-    CreditCards  []CreditCard `gorm:"foreignkey:UserMemberNumber;association_foreignkey:MemberNumber"`
+  CreditCards  []CreditCard `gorm:"foreignkey:UserMemberNumber;association_foreignkey:MemberNumber"`
 }
 
 type CreditCard struct {
-    gorm.Model
-    Number           string
+  gorm.Model
+  Number           string
   UserMemberNumber string
 }
 ```
@@ -71,24 +71,24 @@ type CreditCard struct {
 GORM поддерживает полиморфический has-many "имеет много" и has-one "имеет одно" объединение.
 
 ```go
-  type Cat struct {
-    ID    int
-    Name  string
-    Toy   []Toy `gorm:"polymorphic:Owner;"`
-  }
+type Cat struct {
+  ID    int
+  Name  string
+  Toy   []Toy `gorm:"polymorphic:Owner;"`
+}
 
-  type Dog struct {
-    ID   int
-    Name string
-    Toy  []Toy `gorm:"polymorphic:Owner;"`
-  }
+type Dog struct {
+  ID   int
+  Name string
+  Toy  []Toy `gorm:"polymorphic:Owner;"`
+}
 
-  type Toy struct {
-    ID        int
-    Name      string
-    OwnerID   int
-    OwnerType string
-  }
+type Toy struct {
+  ID        int
+  Name      string
+  OwnerID   int
+  OwnerType string
+}
 ```
 
 Примечание: полиморфический belongs-to "принадлежит к" и many-to-many "многие ко многим" не поддерживаются, и будут выводить ошибки.
