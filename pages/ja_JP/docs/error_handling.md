@@ -9,9 +9,9 @@ Goではエラーハンドリングが重要です。
 
 ## エラーハンドリング
 
-Error handling in GORM is different than idiomatic Go code because of its chainable API, but still easy to implement.
+GORMにおけるエラーハンドリングは、チェーン可能なAPIのために、慣用的なGoのコードとは少し異なります。ですが、実装は簡単です。
 
-If any error occurs, GORM will set `*gorm.DB`'s `Error` field, which you can check like this:
+何らかのエラーが起きた場合、GORMはそれを`*gorm.DB`の`Error`フィールドにセットするので、このようにチェックを行うことができます:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
@@ -44,7 +44,7 @@ for _, err := range errors {
 
 ## RecordNotFoundエラー
 
-GORM provides a shortcut to handle `RecordNotFound` errors. If there are several errors, it will check if any of them is a `RecordNotFound` error.
+GORMは`RecordNotFound`エラーを扱うためのショートカットを提供しています。複数のエラーが生じた場合は、その中に`RecordNotFound`エラーが含まれているかチェックします。
 
 ```go
 // RecordNotFoundエラーを返すかチェックします
