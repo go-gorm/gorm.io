@@ -41,7 +41,7 @@ type User struct {
 type Profile struct {
   gorm.Model
   Name      string
-  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
+  User      User `gorm:"foreignkey:UserRefer"` // UserRefer を外部キーとして使用する
   UserRefer uint
 }
 ```
