@@ -9,17 +9,17 @@ GORM はレコードの作成・更新時に関連および関連先を自動的
 
 ```go
 user := User{
-    Name:            "jinzhu",
-    BillingAddress:  Address{Address1: "Billing Address - Address 1"},
-    ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
-    Emails:          []Email{
-        {Email: "jinzhu@example.com"},
-        {Email: "jinzhu-2@example.com"},
-    },
-    Languages:       []Language{
-        {Name: "ZH"},
-        {Name: "EN"},
-    },
+  Name:            "jinzhu",
+  BillingAddress:  Address{Address1: "Billing Address - Address 1"},
+  ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
+  Emails:          []Email{
+    {Email: "jinzhu@example.com"},
+    {Email: "jinzhu-2@example.com"},
+  },
+  Languages:       []Language{
+    {Name: "ZH"},
+    {Name: "EN"},
+  },
 }
 
 db.Create(&user)
@@ -155,7 +155,7 @@ db.Model(&user).Association("Languages").Find(&languages)
 
 ### Append Associations
 
-`many to many`, `has many`の場合、新しいassociationを追加し、`has one`, `belogs to`の場合、現在のassociationと置き換えます。
+`many to many`, `has many`の場合、新しいassociationを追加し、`has one`, `belongs to`の場合、現在のassociationと置き換えます。
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})

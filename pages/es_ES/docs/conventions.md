@@ -26,7 +26,23 @@ type User struct {   ID string // el campo llamado `ID` se utilizará como campo
 Table name is the pluralized version of struct name.
 
 ```go
-type User struct {} // el nombre de la tabla por defecto es `users` // Establecer el nombre de la tabla de Usuario para ser `profiles` func (User) TableName() string {   return "profiles" } func (u User) TableName() string {     if u.Role == "admin" {         return "admin_users"     } else {         return "users"     } } // Deshabilita la pluralización del nombre de la tabla, si se establece en verdadero, el nombre de la tabla `User` será `user` db.SingularTable(true)
+type User struct {} // default table name is `users`
+
+// Set User's table name to be `profiles`
+func (User) TableName() string {
+  return "profiles"
+}
+
+func (u User) TableName() string {
+  if u.Role == "admin" {
+    return "admin_users"
+  } else {
+    return "users"
+  }
+}
+
+// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
+db.SingularTable(true)
 ```
 
 ### Especificando el Nombre de la Tabla
@@ -40,7 +56,9 @@ type User struct {} // el nombre de la tabla por defecto es `users` // Establece
 You can apply any rules on the default table name by defining the `DefaultTableNameHandler`.
 
 ```go
-gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string {     return "prefix_" + defaultTableName; }
+gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
+  return "prefix_" + defaultTableName;
+}
 ```
 
 ## Nombre de la Columna usando Snake Case
@@ -48,7 +66,19 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 Column names will be the field's name is lower snake case.
 
 ```go
-type User struct {   ID uint // el nombre de la columna es `id`   Name string // el nombre de la columna es `name`   Birthday time.Time // el nombre de la columna es `birthday`   CreatedAt time.Time // el nombre de la columna es `created_at` } // Sobreescribiendo el nombre de columna type Animal struct {     AnimalId int64 `gorm:"column:beast_id"` // establecer el nombre de la columna a `beast_id`     Birthday time.Time `gorm:"column:day_of_the_beast"` // establecer el nombre de la columna a `day_of_the_beast`     Age int64 `gorm:"column:age_of_the_beast"` // establecer el nombre de la columna a `age_of_the_beast` }
+type User struct {
+  ID        uint      // column name is `id`
+  Name      string    // column name is `name`
+  Birthday  time.Time // column name is `birthday`
+  CreatedAt time.Time // column name is `created_at`
+}
+
+// Overriding Column Name
+type Animal struct {
+  AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
+  Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
+  Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
+}
 ```
 
 ## Seguimiento de Marca de Tiempo

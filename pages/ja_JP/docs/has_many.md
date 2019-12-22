@@ -12,14 +12,14 @@ layout: page
 ```go
 // User has many CreditCards, UserID is the foreign key
 type User struct {
-    gorm.Model
-    CreditCards []CreditCard
+  gorm.Model
+  CreditCards []CreditCard
 }
 
 type CreditCard struct {
-    gorm.Model
-    Number   string
-    UserID  uint
+  gorm.Model
+  Number   string
+  UserID  uint
 }
 ```
 
@@ -33,13 +33,13 @@ has manyの関係を定義する場合、外部キーが必ず存在します。
 
 ```go
 type User struct {
-    gorm.Model
-    CreditCards []CreditCard `gorm:"foreignkey:UserRefer"`
+  gorm.Model
+  CreditCards []CreditCard `gorm:"foreignkey:UserRefer"`
 }
 
 type CreditCard struct {
-    gorm.Model
-    Number    string
+  gorm.Model
+  Number    string
   UserRefer uint
 }
 ```
@@ -54,14 +54,14 @@ You are able to change it with tag `association_foreignkey`, e.g:
 
 ```go
 type User struct {
-    gorm.Model
+  gorm.Model
   MemberNumber string
-    CreditCards  []CreditCard `gorm:"foreignkey:UserMemberNumber;association_foreignkey:MemberNumber"`
+  CreditCards  []CreditCard `gorm:"foreignkey:UserMemberNumber;association_foreignkey:MemberNumber"`
 }
 
 type CreditCard struct {
-    gorm.Model
-    Number           string
+  gorm.Model
+  Number           string
   UserMemberNumber string
 }
 ```
@@ -71,24 +71,24 @@ type CreditCard struct {
 GORM supports polymorphic has-many and has-one associations.
 
 ```go
-  type Cat struct {
-    ID    int
-    Name  string
-    Toy   []Toy `gorm:"polymorphic:Owner;"`
-  }
+type Cat struct {
+  ID    int
+  Name  string
+  Toy   []Toy `gorm:"polymorphic:Owner;"`
+}
 
-  type Dog struct {
-    ID   int
-    Name string
-    Toy  []Toy `gorm:"polymorphic:Owner;"`
-  }
+type Dog struct {
+  ID   int
+  Name string
+  Toy  []Toy `gorm:"polymorphic:Owner;"`
+}
 
-  type Toy struct {
-    ID        int
-    Name      string
-    OwnerID   int
-    OwnerType string
-  }
+type Toy struct {
+  ID        int
+  Name      string
+  OwnerID   int
+  OwnerType string
+}
 ```
 
 Note: polymorphic belongs-to and many-to-many are explicitly NOT supported, and will throw errors.

@@ -42,7 +42,7 @@ func main() {
 }
 ```
 
-If you want to specify the host, you need to use `()`. Example:
+ホストを指定する場合は、`()`を使用してください。例:
 
     user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
     

@@ -12,6 +12,27 @@ If you want to treat multiple `create`, `update`, `delete` as one atomic operati
 To perform a set of operations within a transaction, the general flow is as below.
 
 ```go
+func CreateAnimals(db *gorm.DB) error {
+  return db.Transaction(func(tx *gorm.DB) error {
+    // do some database operations in the transaction (use 'tx' from this point, not 'db')
+    if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
+      // return any error will rollback
+      return err
+    }
+
+    if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
+      return err
+    }
+
+    // return nil will commit
+    return nil
+  })
+}
+```
+
+## Transactions by manual
+
+```go
 // begin a transaction
 tx := db.Begin()
 

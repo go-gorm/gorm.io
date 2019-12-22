@@ -6,23 +6,25 @@ layout: page
 ## Pertanyaan
 
 ```go
-// Dapatkan rekaman pertama, pesan menurut kunci utama db.Pertama(&pengguna)
-//// PILIH * DARI pengguna MEMESAN Oleh BATAS id 1;
+// Get first record, order by primary key
+db.First(&user)
+//// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Dapatkan satu rekaman, tidak ada perintah ditentukan db.Mengambil(&pengguna) 
-//// PILIH *DARI BATAS pengguna LIMIT 1;
+// Get one record, no specified order
+db.Take(&user)
+//// SELECT * FROM users LIMIT 1;
 
-// Dapatkan rekaman terakhir, pesan menurut kunci utama 
-db.Terakhir (& pengguna)
-//// PILIH * DARI pesanan pengguna OLEH Batas id DESC 1;
+// Get last record, order by primary key
+db.Last(&user)
+//// SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
-// Dapatkan semua rekaman
-db. Temukan (&pengguna)
-//// PILIH * DARI pengguna;
+// Get all records
+db.Find(&users)
+//// SELECT * FROM users;
 
-// Dapatkan rekaman dengan kunci utama (hanya bekerja untuk kunci utama bilangan bulat) 
-db.Pertama(&Pengguna, 10)
-//// PILIH * DARI DIMANA id pengguna= 10;
+// Get record with primary key (only works for integer primary key)
+db.First(&user, 10)
+//// SELECT * FROM users WHERE id = 10;
 ```
 
 ### Dimana
@@ -385,17 +387,17 @@ db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
 ```go
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Rows()
 for rows.Next() {
-    ...
+  ...
 }
 
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Rows()
 for rows.Next() {
-    ...
+  ...
 }
 
 type Result struct {
-    Date  time.Time
-    Total int64
+  Date  time.Time
+  Total int64
 }
 db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
 ```
@@ -407,7 +409,7 @@ Specify Joins conditions
 ```go
 rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
 for rows.Next() {
-    ...
+  ...
 }
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
@@ -439,13 +441,13 @@ Pindai hasil ke dalam struktur lain.
 
 ```go
 type Result struct {
-    Name string
-    Age  int
+  Name string
+  Age  int
 }
 
 var result Result
-db.Table("users").Select("name, age").Where("name = ?", 3).Scan(&result)
+db.Table("users").Select("name, age").Where("name = ?", "Antonio").Scan(&result)
 
 // Raw SQL
-db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
+db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```

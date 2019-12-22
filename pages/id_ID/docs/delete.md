@@ -3,23 +3,23 @@ title: Hapus
 layout: page
 ---
 
-## Hapus catatan
+## Hapus Baris Data
 
-**WARNING** When deleting a record, you need to ensure its primary field has value, and GORM will use the primary key to delete the record, if the primary key field is blank, GORM will delete all records for the model
+**PERINGATAN** Saat menghapus baris data, anda harus memastikan kolom utama itu memiliki nilai, dan GORM akan menggunakan kolom kunci utama untuk menghapus catatan, jika kolom kunci utama kosong, GORM akan menghapus semua baris data untuk model tersebut
 
 ```go
-// Delete an existing record
+// Menghapus baris data terkini
 db.Delete(&email)
 //// DELETE from emails where id=10;
 
-// Add extra SQL option for deleting SQL
+// Tambal opsi extra SQL untuk penghapusan SQL
 db.Set("gorm:delete_option", "OPTION (OPTIMIZE FOR UNKNOWN)").Delete(&email)
 //// DELETE from emails where id=10 OPTION (OPTIMIZE FOR UNKNOWN);
 ```
 
-## Batch Hapus
+## Hapus Masal
 
-Hapus seluruh catatan yang cocok
+Hapus seluruh baris yang cocok dengan kondisi
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -29,9 +29,9 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 //// DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-## Hapus lembut
+## Hapus sementara
 
-If a model has a `DeletedAt` field, it will get a soft delete ability automatically! When calling `Delete`, the record will not be permanently removed from the database; rather, the `DeletedAt`'s value will be set to the current time
+Jika sebuah model mempunyai kolom `DeletedAt` maka akan aktif fitur menghapus sementara! Dan ketika memanggil fungsi `Delete`, baris data tersebut tidak akan di hapus secara permanen dari database. Melainkan nilai dari `DeletedAt` akan terisi dengan waktu sekarang
 
 ```go
 db.Delete(&user)
@@ -50,7 +50,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 //// SELECT * FROM users WHERE age = 20;
 ```
 
-## Delete record permanently
+## Hapus baris data permanen
 
     // Delete record permanently with Unscoped
     db.Unscoped().Delete(&order)

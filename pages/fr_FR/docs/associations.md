@@ -9,17 +9,17 @@ GORM enregistre automatiquement les associations et leurs référence lors de la
 
 ```go
 user := User{
-    Name:            "jinzhu",
-    BillingAddress:  Address{Address1: "Billing Address - Address 1"},
-    ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
-    Emails:          []Email{
-        {Email: "jinzhu@example.com"},
-        {Email: "jinzhu-2@example.com"},
-    },
-    Languages:       []Language{
-        {Name: "ZH"},
-        {Name: "EN"},
-    },
+  Name:            "jinzhu",
+  BillingAddress:  Address{Address1: "Billing Address - Address 1"},
+  ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
+  Emails:          []Email{
+    {Email: "jinzhu@example.com"},
+    {Email: "jinzhu-2@example.com"},
+  },
+  Languages:       []Language{
+    {Name: "ZH"},
+    {Name: "EN"},
+  },
 }
 
 db.Create(&user)

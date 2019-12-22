@@ -55,23 +55,22 @@ type Animal struct {
 Table name is the pluralized version of struct name.
 
 ```go
-type User struct {} // standardmäßiger Tabellen-Name ist `users`
+type User struct {} // default table name is `users`
 
-// Setze User's Tabellen-Name zu `profiles`
+// Set User's table name to be `profiles`
 func (User) TableName() string {
   return "profiles"
 }
 
 func (u User) TableName() string {
-    if u.Role == "admin" {
-        return "admin_users"
-    } else {
-        return "users"
-    }
+  if u.Role == "admin" {
+    return "admin_users"
+  } else {
+    return "users"
+  }
 }
 
-// Deaktiviere die Pluralisierung von Tabellen-Namen,
-// wenn auf `true` gesetzt wird der `User` Tabellen-Name zu `user`
+// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
 db.SingularTable(true)
 ```
 
@@ -95,7 +94,7 @@ You can apply any rules on the default table name by defining the `DefaultTableN
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
-    return "prefix_" + defaultTableName;
+  return "prefix_" + defaultTableName;
 }
 ```
 
@@ -113,9 +112,9 @@ type User struct {
 
 // Overriding Column Name
 type Animal struct {
-    AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
-    Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
-    Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
+  AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
+  Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
+  Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
 }
 ```
 

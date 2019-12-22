@@ -12,22 +12,43 @@ If you want to treat multiple `create`, `update`, `delete` as one atomic operati
 Untuk melakukan serangkaian operasi dalam suatu transaksi, arus umum adalah sebagai berikut.
 
 ```go
-// Mulai transaksi
-tx := db.Mulai()
+func CreateAnimals(db *gorm.DB) error {
+  return db.Transaction(func(tx *gorm.DB) error {
+    // do some database operations in the transaction (use 'tx' from this point, not 'db')
+    if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
+      // return any error will rollback
+      return err
+    }
 
-// lakukan beberapa operasi database dalam transaksi (gunakan 'tx' dari poin ini, tidak 'db')
-tx.buat(...)
+    if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
+      return err
+    }
+
+    // return nil will commit
+    return nil
+  })
+}
+```
+
+## Transactions by manual
+
+```go
+// begin a transaction
+tx := db.Begin()
+
+// do some database operations in the transaction (use 'tx' from this point, not 'db')
+tx.Create(...)
 
 // ...
 
-// kembalikan transaksi jika terjadi kesalahan
-tx.kembalikan()
+// rollback the transaction in case of error
+tx.Rollback()
 
-// Atau lakukan transaksi
-tx.Melakukan()
+// Or commit the transaction
+tx.Commit()
 ```
 
-## Sebuah contoh khusus
+## A Specific Example
 
 ```go
 func CreateAnimals(db *gorm.DB) error {

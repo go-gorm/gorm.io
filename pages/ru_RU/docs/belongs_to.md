@@ -34,14 +34,14 @@ GORM дает возможность настроить внешний ключ,
 
 ```go
 type User struct {
-    gorm.Model
-    Name string
+  gorm.Model
+  Name string
 }
 
 type Profile struct {
-    gorm.Model
+  gorm.Model
   Name      string
-  User      User `gorm:"foreignkey:UserRefer"` // используется UserRefer как внешний ключ
+  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
   UserRefer uint
 }
 ```
@@ -56,15 +56,15 @@ type Profile struct {
 
 ```go
 type User struct {
-    gorm.Model
+  gorm.Model
   Refer string
-    Name string
+  Name string
 }
 
 type Profile struct {
-    gorm.Model
+  gorm.Model
   Name      string
-  User      User `gorm:"association_foreignkey:Refer"` // используется Refer как ассоциативный внешний ключ
+  User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
   UserRefer string
 }
 ```

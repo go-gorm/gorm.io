@@ -33,17 +33,17 @@ AfterSave
 
 ```go
 func (u *User) BeforeSave() (err error) {
-    if !u.IsValid() {
-        err = errors.New("can't save invalid data")
-    }
-    return
+  if !u.IsValid() {
+    err = errors.New("can't save invalid data")
+  }
+  return
 }
 
 func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
-    if u.ID == 1 {
+  if u.ID == 1 {
     scope.DB().Model(u).Update("role", "admin")
   }
-    return
+  return
 }
 ```
 
@@ -51,8 +51,8 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
-    tx.Model(u).Update("role", "admin")
-    return
+  tx.Model(u).Update("role", "admin")
+  return
 }
 ```
 
@@ -77,10 +77,10 @@ AfterSave
 
 ```go
 func (u *User) BeforeUpdate() (err error) {
-    if u.readonly() {
-        err = errors.New("読み出し専用ユーザーです")
-    }
-    return
+  if u.readonly() {
+    err = errors.New("read only user")
+  }
+  return
 }
 
 // Updating data in same transaction
@@ -88,7 +88,7 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
   }
-    return
+  return
 }
 ```
 
@@ -107,12 +107,12 @@ AfterDelete
 コード例:
 
 ```go
-// 同一トランザクション内でデータを更新します
+// Updating data in same transaction
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
   }
-    return
+  return
 }
 ```
 
@@ -129,10 +129,10 @@ AfterFind
 コード例:
 
 ```go
-unc (u *User) AfterFind() (err error) {
+func (u *User) AfterFind() (err error) {
   if u.MemberShip == "" {
     u.MemberShip = "user"
   }
-    return
+  return
 }
 ```

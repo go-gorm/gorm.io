@@ -3,26 +3,26 @@ title: Query
 layout: page
 ---
 
-## Query
+## クエリ
 
 ```go
-// 主キーでソートされた最初のレコードを取得します
+// 主キーでソートし、最初のレコードを取得する
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// ソートなしでレコードを1行取得します
+// ソートせずにレコードを1行取得する
 db.Take(&user)
 //// SELECT * FROM users LIMIT 1;
 
-// 主キーでソートされた最後のレコードを取得します
+// 主キーでソートし、最後のレコードを取得する
 db.Last(&user)
 //// SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
-// すべてのレコードを取得します
+// 全てのレコードを取得する
 db.Find(&users)
 //// SELECT * FROM users;
 
-// 主キーを指定してレコードを取得します (integer 型の主キーでのみ動作します)
+// 主キーを指定してレコードを取得する（主キーがinteger型の場合のみ使用可能）
 db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
@@ -32,11 +32,11 @@ db.First(&user, 10)
 #### Plain SQL
 
 ```go
-// Get first matched record
+// 最初にマッチしたレコードを取得
 db.Where("name = ?", "jinzhu").First(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Get all matched records
+// マッチした全てのレコードを取得
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
@@ -65,7 +65,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 //// SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-#### Struct & Map
+#### 構造体 & マップ
 
 ```go
 // 構造体
@@ -334,7 +334,7 @@ db.Order("age desc").Find(&users1).Order("age", true).Find(&users2)
 
 ### Limit
 
-Specify the max number of records to retrieve
+取得するレコードの最大数を指定します。
 
 ```go
 db.Limit(3).Find(&users)
@@ -386,17 +386,17 @@ db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
 ```go
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Rows()
 for rows.Next() {
-    ...
+  ...
 }
 
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Rows()
 for rows.Next() {
-    ...
+  ...
 }
 
 type Result struct {
-    Date  time.Time
-    Total int64
+  Date  time.Time
+  Total int64
 }
 db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
 ```
@@ -408,7 +408,7 @@ Specify Joins conditions
 ```go
 rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
 for rows.Next() {
-    ...
+  ...
 }
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
@@ -440,13 +440,13 @@ db.Select("name, age").Find(&users)
 
 ```go
 type Result struct {
-    Name string
-    Age  int
+  Name string
+  Age  int
 }
 
 var result Result
-db.Table("users").Select("name, age").Where("name = ?", 3).Scan(&result)
+db.Table("users").Select("name, age").Where("name = ?", "Antonio").Scan(&result)
 
 // Raw SQL
-db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
+db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```

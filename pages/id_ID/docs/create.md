@@ -3,27 +3,27 @@ title: Membuat
 layout: page
 ---
 
-## Buat Catatan
+## Buat Baris Data
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-db.NewRecord(user) // => returns `true` as primary key is blank
+db.NewRecord(user) // => kembali nilai `true` ketika primary key kosong
 
 db.Create(&user)
 
-db.NewRecord(user) // => return `false` after `user` created
+db.NewRecord(user) // => kembali nilai `false` setelah `user` dibuat
 ```
 
-## Nilai Bawaan
+## Nilai Default
 
 Anda dapat mendefinisikan nilai default dari sebuah field dengan sebuah tanda. Contohnya:
 
 ```go
 type Animal struct {
-    ID   int64
-    Name string `gorm:"default:'galeone'"`
-    Age  int64
+  ID   int64
+  Name string `gorm:"default:'galeone'"`
+  Age  int64
 }
 ```
 
@@ -33,21 +33,21 @@ Lalu penambahan SQL akan mengecualikan fields yang tidak memiliki nilai atau yan
 var animal = Animal{Age: 99, Name: ""}
 db.Create(&animal)
 // INSERT INTO animals("age") values('99');
-// SELECT name from animals WHERE ID=111; // the returning primary key is 111
+// SELECT name from animals WHERE ID=111; // nilai dari primary key ialah 111
 // animal.Name => 'galeone'
 ```
 
 **CATATAN** semua field yang memiliki nilai nol, seperti `0`, `''`, `false` atau [nilai nol](https://tour.golang.org/basics/12) lain, tidak akan disimpan ke database tapi akan menggunakan nilai default. Apabila anda ingin mencegal hal ini, gunakan tipe pointer atau scanner/valuer, seperti:
 
 ```go
-// Use pointer value
+// Menggunakan nilai pointer 
 type User struct {
   gorm.Model
   Name string
   Age  *int `gorm:"default:18"`
 }
 
-// Use scanner/valuer
+// Menggunakan scanner/valuer
 type User struct {
   gorm.Model
   Name string
@@ -66,10 +66,10 @@ func (user *User) BeforeCreate(scope *gorm.Scope) error {
 }
 ```
 
-## Pilihan Membuat Tambahan
+## Membuat dengan Ekstra Opsi
 
 ```go
-// Add extra SQL option for inserting SQL
+// Tambah ekstra SQL opsi untuk insert SQL
 db.Set("gorm:insert_option", "ON CONFLICT").Create(&product)
 // INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
 ```

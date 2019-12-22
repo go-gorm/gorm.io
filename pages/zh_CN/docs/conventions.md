@@ -55,22 +55,22 @@ type Animal struct {
 表名默认就是结构体名称的复数，例如：
 
 ```go
-type User struct {} // 默认表名为 `users`
+type User struct {} // default table name is `users`
 
-// 通过TableName方法将User表命名为`profiles`
+// Set User's table name to be `profiles`
 func (User) TableName() string {
   return "profiles"
 }
 
 func (u User) TableName() string {
-    if u.Role == "admin" {
-        return "admin_users"
-    } else {
-        return "users"
-    }
+  if u.Role == "admin" {
+    return "admin_users"
+  } else {
+    return "users"
+  }
 }
 
-// 关闭复数表名，如果设置为true，`User`表的表名就会是`user`，而不是`users`
+// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
 db.SingularTable(true)
 ```
 
@@ -94,7 +94,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
-    return "prefix_" + defaultTableName;
+  return "prefix_" + defaultTableName;
 }
 ```
 
@@ -104,17 +104,17 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ```go
 type User struct {
-  ID        uint      // 列名为`id`
-  Name      string    // 列名为 `name`
-  Birthday  time.Time // 列名为 `birthday`
-  CreatedAt time.Time // 列名为 `created_at`
+  ID        uint      // column name is `id`
+  Name      string    // column name is `name`
+  Birthday  time.Time // column name is `birthday`
+  CreatedAt time.Time // column name is `created_at`
 }
 
-// 重写列名
+// Overriding Column Name
 type Animal struct {
-    AnimalId    int64     `gorm:"column:beast_id"`         // 设置列名为 `beast_id`
-    Birthday    time.Time `gorm:"column:day_of_the_beast"` // 设置列名为 `day_of_the_beast`
-    Age         int64     `gorm:"column:age_of_the_beast"` //设置列名为 `age_of_the_beast`
+  AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
+  Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
+  Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
 }
 ```
 

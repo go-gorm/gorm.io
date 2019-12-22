@@ -10,16 +10,16 @@ layout: страница
 Например, если ваше приложение включает в себя пользователей и кредитные карты, и каждый пользователь может иметь одну кредитную карту.
 
 ```go
-// User имеет одну CreditCard, CreditCardID это внешний ключ
+// User has one CreditCard, CreditCardID is the foreign key
 type CreditCard struct {
-    gorm.Model
-    Number   string
-    UserID   uint
+  gorm.Model
+  Number   string
+  UserID   uint
 }
 
 type User struct {
-    gorm.Model
-    CreditCard   CreditCard
+  gorm.Model
+  CreditCard   CreditCard
 }
 ```
 
@@ -27,7 +27,7 @@ type User struct {
 
 Для связи has one "имеет одну", поле внешнего ключа должно существовать, владелец будет сохранять первичный ключ принадлежащей поделив это поле.
 
-Название поля генерируется с помощью `has one` типа модели плюс его `primary key` (первичный ключ), для примера выше это `UserID`.
+The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
 
 Когда вы задаете кредитную карту модели пользователя, она сохранит `ID` кредитной карты в поле `CreditCardID`.
 
@@ -35,32 +35,32 @@ type User struct {
 
 ```go
 type CreditCard struct {
-    gorm.Model
-    Number   string
-    UserName string
+  gorm.Model
+  Number   string
+  UserName string
 }
 
 type User struct {
-    gorm.Model
-    CreditCard CreditCard `gorm:"foreignkey:UserName"`
+  gorm.Model
+  CreditCard CreditCard `gorm:"foreignkey:UserName"`
 }
 ```
 
 ## Association ForeignKey
 
-По умолчанию, сущность владелец сохранит `has one` первичный ключ модели во внешний ключ, для сохранения в другое поле вы можете изменить, например, использовать `Name` для примера ниже.
+By default, the owned entity will save the `has one` model's primary into a foreign key, you could change to save another field, like use `Name` for below example.
 
 ```go
 type CreditCard struct {
-    gorm.Model
-    Number string
-    UID    string
+  gorm.Model
+  Number string
+  UID    string
 }
 
 type User struct {
-    gorm.Model
-    Name       `sql:"index"`
-    CreditCard CreditCard `gorm:"foreignkey:uid;association_foreignkey:name"`
+  gorm.Model
+  Name       `sql:"index"`
+  CreditCard CreditCard `gorm:"foreignkey:uid;association_foreignkey:name"`
 }
 ```
 
@@ -69,24 +69,24 @@ type User struct {
 Поддерживает полиморфические `has many` и `has one` ассоциации.
 
 ```go
-  type Cat struct {
-    ID    int
-    Name  string
-    Toy   Toy `gorm:"polymorphic:Owner;"`
-  }
+type Cat struct {
+  ID    int
+  Name  string
+  Toy   Toy `gorm:"polymorphic:Owner;"`
+}
 
-  type Dog struct {
-    ID   int
-    Name string
-    Toy  Toy `gorm:"polymorphic:Owner;"`
-  }
+type Dog struct {
+  ID   int
+  Name string
+  Toy  Toy `gorm:"polymorphic:Owner;"`
+}
 
-  type Toy struct {
-    ID        int
-    Name      string
-    OwnerID   int
-    OwnerType string
-  }
+type Toy struct {
+  ID        int
+  Name      string
+  OwnerID   int
+  OwnerType string
+}
 ```
 
 Примечание: полиморфический belongs-to "принадлежит к" и many-to-many "многие ко многим" не поддерживаются, и будут выводить ошибки.

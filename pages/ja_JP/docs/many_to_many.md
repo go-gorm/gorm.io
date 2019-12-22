@@ -10,15 +10,15 @@ Many to Many adds a join table between two models.
 例えば、アプリケーションにusersとlanguagesというモデルがある場合を考えます。 userは複数のlanguageをもち、複数のuserがあるlanguageを話せるとします。
 
 ```go
-// Userは複数のlanguageをもつとき、`user_languages`をjoinするために使います。
+// User has and belongs to many languages, use `user_languages` as join table
 type User struct {
-    gorm.Model
-    Languages         []Language `gorm:"many2many:user_languages;"`
+  gorm.Model
+  Languages         []Language `gorm:"many2many:user_languages;"`
 }
 
 type Language struct {
-    gorm.Model
-    Name string
+  gorm.Model
+  Name string
 }
 ```
 
@@ -27,14 +27,14 @@ type Language struct {
 ```go
 // User has and belongs to many languages, use `user_languages` as join table
 type User struct {
-    gorm.Model
-    Languages         []*Language `gorm:"many2many:user_languages;"`
+  gorm.Model
+  Languages         []*Language `gorm:"many2many:user_languages;"`
 }
 
 type Language struct {
-    gorm.Model
-    Name string
-    Users             []*User     `gorm:"many2many:user_languages;"`
+  gorm.Model
+  Name string
+  Users               []*User     `gorm:"many2many:user_languages;"`
 }
 
 var users []User

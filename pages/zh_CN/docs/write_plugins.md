@@ -11,13 +11,13 @@ GORM本身由`Callbacks`提供支持，因此您可以根据需要完全自定�
 
 ```go
 func updateCreated(scope *Scope) {
-    if scope.HasColumn("Created") {
-        scope.SetColumn("Created", NowFunc())
-    }
+  if scope.HasColumn("Created") {
+    scope.SetColumn("Created", NowFunc())
+  }
 }
 
 db.Callback().Create().Register("update_created_at", updateCreated)
-// 注册Create进程的回调
+// register a callback for Create process
 ```
 
 ## 删除现有的callback

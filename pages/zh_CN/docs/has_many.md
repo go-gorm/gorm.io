@@ -10,16 +10,16 @@ layout: page
 例如，你的应用包含了用户和信用卡，并且每个用户可以有多张信用卡。
 
 ```go
-// 用户有多张信用卡， UserID 是外键
+// User has many CreditCards, UserID is the foreign key
 type User struct {
-    gorm.Model
-    CreditCards []CreditCard
+  gorm.Model
+  CreditCards []CreditCard
 }
 
 type CreditCard struct {
-    gorm.Model
-    Number   string
-    UserID  uint
+  gorm.Model
+  Number   string
+  UserID  uint
 }
 ```
 
@@ -71,24 +71,24 @@ type CreditCard struct {
 Polymorphism Association，GORM 支持 has many 和 has one 的多态关联。
 
 ```go
-  type Cat struct {
-    ID    int
-    Name  string
-    Toy   []Toy `gorm:"polymorphic:Owner;"`
-  }
+type Cat struct {
+  ID    int
+  Name  string
+  Toy   []Toy `gorm:"polymorphic:Owner;"`
+}
 
-  type Dog struct {
-    ID   int
-    Name string
-    Toy  []Toy `gorm:"polymorphic:Owner;"`
-  }
+type Dog struct {
+  ID   int
+  Name string
+  Toy  []Toy `gorm:"polymorphic:Owner;"`
+}
 
-  type Toy struct {
-    ID        int
-    Name      string
-    OwnerID   int
-    OwnerType string
-  }
+type Toy struct {
+  ID        int
+  Name      string
+  OwnerID   int
+  OwnerType string
+}
 ```
 
 注意：many-to-many 明确的不支持多态关联，如果使用会抛出错误。

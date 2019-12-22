@@ -11,7 +11,7 @@ Agar bisa terhubung ke database, anda perlu mengimpor driver database terlebih d
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
+GORM sudah termasuk beberapa driver, untuk mempermudah mengingat jalur impor mereka, sehingga anda bisa mengimpor driver mysql dengan:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -22,7 +22,7 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ## MySQL
 
-**NOTE:** In order to handle `time.Time`, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**CATATAN:**Untuk menggunakan `time.Time` secara benar, anda harus menyisipkan `parseTime` sebagai sebuah parameter. ([Lihat parameter yang di dukung](https://github.com/go-sql-driver/mysql#parameters))
 
 ```go
 import (
@@ -52,7 +52,7 @@ func main() {
 
 ## Sqlite3
 
-**NOTE:** You can also use `:memory:` for the connection, which will use sqlite in temporary system memory. This is especially useful when writing tests for your application against GORM.
+**CATATAN:** Anda dapat menggunakan `:memory:` untuk koneksinya, yang hal itu sqlite akan menggunakan sistem memory yang sementara. Ini sangat berguna untuk membuat program test aplikasi GORM punya anda.
 
 ```go
 import (
@@ -86,4 +86,4 @@ func main() {
 
 GORM secara resmi mendukung database di atas, tapi anda bisa menulis dialek untuk database yang tidak didukung.
 
-To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
+Untuk menulis dialek anda sendiri, lihat: <https://github.com/jinzhu/gorm/blob/master/dialect.go>

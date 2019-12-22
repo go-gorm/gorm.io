@@ -10,18 +10,18 @@ Gormはメソッドチェーンのインタフェースを実装しているた�
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 
-// 新規リレーションを作成します
+// create a new relation
 tx := db.Where("name = ?", "jinzhu")
 
-// さらにフィルタを追加します
+// add more filter
 if someCondition {
-    tx = tx.Where("age = ?", 20)
+  tx = tx.Where("age = ?", 20)
 } else {
-    tx = tx.Where("age = ?", 30)
+  tx = tx.Where("age = ?", 30)
 }
 
 if yetAnotherCondition {
-    tx = tx.Where("active = ?", 1)
+  tx = tx.Where("active = ?", 1)
 }
 ```
 
@@ -57,21 +57,21 @@ SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
-    return db.Where("amount > ?", 1000)
+  return db.Where("amount > ?", 1000)
 }
 
 func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
-    return db.Where("pay_mode_sign = ?", "C")
+  return db.Where("pay_mode_sign = ?", "C")
 }
 
 func PaidWithCod(db *gorm.DB) *gorm.DB {
-    return db.Where("pay_mode_sign = ?", "C")
+  return db.Where("pay_mode_sign = ?", "C")
 }
 
 func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
-    return func (db *gorm.DB) *gorm.DB {
-        return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
-    }
+  return func (db *gorm.DB) *gorm.DB {
+    return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
+  }
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)

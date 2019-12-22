@@ -62,11 +62,11 @@ func (User) TableName() string {
 }
 
 func (u User) TableName() string {
-    if u.Role == "admin" {
-        return "admin_users"
-    } else {
-        return "users"
-    }
+  if u.Role == "admin" {
+    return "admin_users"
+  } else {
+    return "users"
+  }
 }
 
 // Disable table name's pluralization, if set to true, `User`'s table name will be `user`
@@ -93,7 +93,7 @@ You can apply any rules on the default table name by defining the `DefaultTableN
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
-    return "prefix_" + defaultTableName;
+  return "prefix_" + defaultTableName;
 }
 ```
 
@@ -111,9 +111,9 @@ type User struct {
 
 // Overriding Column Name
 type Animal struct {
-    AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
-    Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
-    Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
+  AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
+  Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
+  Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
 }
 ```
 

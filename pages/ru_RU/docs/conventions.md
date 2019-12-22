@@ -54,22 +54,22 @@ type Animal struct {
 Название таблицы - плюралистическая версия структурного имени.
 
 ```go
-type User struct {} // название таблицы по умолчанию `users`
+type User struct {} // default table name is `users`
 
-// Установить название таблицы `profiles` для User's
+// Set User's table name to be `profiles`
 func (User) TableName() string {
   return "profiles"
 }
 
 func (u User) TableName() string {
-    if u.Role == "admin" {
-        return "admin_users"
-    } else {
-        return "users"
-    }
+  if u.Role == "admin" {
+    return "admin_users"
+  } else {
+    return "users"
+  }
 }
 
-// Отключить плюрализирование имени таблицы, если выставлено в true, название таблицы для модели `User`'s будет `user`
+// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
 db.SingularTable(true)
 ```
 
@@ -93,7 +93,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
-    return "prefix_" + defaultTableName;
+  return "prefix_" + defaultTableName;
 }
 ```
 
@@ -103,17 +103,17 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ```go
 type User struct {
-  ID        uint      // название колонки `id`
-  Name      string    // название колонки `name`
-  Birthday  time.Time // название колонки `birthday`
-  CreatedAt time.Time // название колонки `created_at`
+  ID        uint      // column name is `id`
+  Name      string    // column name is `name`
+  Birthday  time.Time // column name is `birthday`
+  CreatedAt time.Time // column name is `created_at`
 }
 
 // Overriding Column Name
 type Animal struct {
-    AnimalId    int64     `gorm:"column:beast_id"`         // установить название колонки `beast_id`
-    Birthday    time.Time `gorm:"column:day_of_the_beast"` // установить название колонки `day_of_the_beast`
-    Age         int64     `gorm:"column:age_of_the_beast"` // установить название колонки `age_of_the_beast`
+  AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
+  Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
+  Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
 }
 ```
 

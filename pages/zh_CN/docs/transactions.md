@@ -15,9 +15,9 @@ GORM 默认会将单个的 `create`, `update`, `delete`操作封装在事务内�
 ```go
 func CreateAnimals(db *gorm.DB) error {
   return db.Transaction(func(tx *gorm.DB) error {
-    // 事务内请使用 tx 来操作数据库，而不是 db
+    // 在事务中做一些数据库操作 (这里应该使用 'tx' ，而不是 'db')
     if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-      // 返回错误将会触发事务回滚
+      // 返回任意 err ，整个事务都会 rollback
       return err
     }
 
@@ -37,15 +37,15 @@ func CreateAnimals(db *gorm.DB) error {
 // 开启事务
 tx := db.Begin()
 
-// 在事务中执行具体的数据库操作 (事务内的操作使用 'tx' 执行，而不是 'db')
+// 在事务中做一些数据库操作 (这里应该使用 'tx' ，而不是 'db')
 tx.Create(...)
 
 // ...
 
-// 如果发生错误则执行回滚
+// 有错误时，手动调用事务的 Rollback()
 tx.Rollback()
 
-// 或者（未发生错误时）提交事务
+// 无错误时，手动调用事务的 Commit()
 tx.Commit()
 ```
 
@@ -53,7 +53,7 @@ tx.Commit()
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
-  // 注意，当你在一个事务中应使用 tx 作为数据库句柄
+  // 请注意，事务一旦开始，你就应该使用 tx 作为数据库句柄
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {

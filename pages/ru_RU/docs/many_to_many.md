@@ -10,31 +10,31 @@ layout: страница
 Например, если ваше приложение включает пользователей и языки, и пользователь может говорить на многих языках, и многие пользователи могут говорить на заданном языке.
 
 ```go
-// User принадлежит многим языкам, используя `user_languages` как join таблицу
+// User has and belongs to many languages, use `user_languages` as join table
 type User struct {
-    gorm.Model
-    Languages         []Language `gorm:"many2many:user_languages;"`
+  gorm.Model
+  Languages         []Language `gorm:"many2many:user_languages;"`
 }
 
 type Language struct {
-    gorm.Model
-    Name string
+  gorm.Model
+  Name string
 }
 ```
 
 ## Back-Reference
 
 ```go
-// User принадлежит многим языкам, используя `user_languages` как join таблицу
+// User has and belongs to many languages, use `user_languages` as join table
 type User struct {
-    gorm.Model
-    Languages         []*Language `gorm:"many2many:user_languages;"`
+  gorm.Model
+  Languages         []*Language `gorm:"many2many:user_languages;"`
 }
 
 type Language struct {
-    gorm.Model
-    Name string
-    Users             []*User     `gorm:"many2many:user_languages;"`
+  gorm.Model
+  Name string
+  Users               []*User     `gorm:"many2many:user_languages;"`
 }
 
 var users []User

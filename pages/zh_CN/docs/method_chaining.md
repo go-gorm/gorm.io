@@ -10,18 +10,18 @@ Method Chaining，Gorm 实现了链式操作接口，所以你可以把代码写
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 
-// 创建一个新的 relation
+// create a new relation
 tx := db.Where("name = ?", "jinzhu")
 
-// 添加更多查询条件
+// add more filter
 if someCondition {
-    tx = tx.Where("age = ?", 20)
+  tx = tx.Where("age = ?", 20)
 } else {
-    tx = tx.Where("age = ?", 30)
+  tx = tx.Where("age = ?", 30)
 }
 
 if yetAnotherCondition {
-    tx = tx.Where("active = ?", 1)
+  tx = tx.Where("active = ?", 1)
 }
 ```
 
@@ -55,31 +55,31 @@ Scopes，Scope 是建立在链式操作的基础之上的。
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
-    return db.Where("amount > ?", 1000)
+  return db.Where("amount > ?", 1000)
 }
 
 func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
-    return db.Where("pay_mode_sign = ?", "C")
+  return db.Where("pay_mode_sign = ?", "C")
 }
 
 func PaidWithCod(db *gorm.DB) *gorm.DB {
-    return db.Where("pay_mode_sign = ?", "C")
+  return db.Where("pay_mode_sign = ?", "C")
 }
 
 func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
-    return func (db *gorm.DB) *gorm.DB {
-        return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
-    }
+  return func (db *gorm.DB) *gorm.DB {
+    return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
+  }
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// 查询所有信用卡中金额大于 1000 的订单
+// Find all credit card orders and amount greater than 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// 查询所有 Cod 中金额大于 1000 的订单
+// Find all COD orders and amount greater than 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// 查询所有已付款、已发货中金额大于 1000 的订单
+// Find all paid, shipped orders that amount greater than 1000
 ```
 
 ## 多个立即执行方法

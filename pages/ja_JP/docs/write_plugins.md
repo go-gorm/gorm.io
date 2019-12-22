@@ -11,9 +11,9 @@ Register a callback into callbacks
 
 ```go
 func updateCreated(scope *Scope) {
-    if scope.HasColumn("Created") {
-        scope.SetColumn("Created", NowFunc())
-    }
+  if scope.HasColumn("Created") {
+    scope.SetColumn("Created", NowFunc())
+  }
 }
 
 db.Callback().Create().Register("update_created_at", updateCreated)
