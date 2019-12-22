@@ -386,17 +386,17 @@ db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
 ```go
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Rows()
 for rows.Next() {
-	...
+  ...
 }
 
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Rows()
 for rows.Next() {
-	...
+  ...
 }
 
 type Result struct {
-	Date  time.Time
-	Total int64
+  Date  time.Time
+  Total int64
 }
 db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
 ```
@@ -408,7 +408,7 @@ Specify Joins conditions
 ```go
 rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
 for rows.Next() {
-	...
+  ...
 }
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
@@ -440,8 +440,8 @@ Scan results into another struct.
 
 ```go
 type Result struct {
-	Name string
-	Age  int
+  Name string
+  Age  int
 }
 
 var result Result
