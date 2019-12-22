@@ -13,8 +13,8 @@ db.Exec("UPDATE orders SET shipped_at=? WHERE id IN (?)", time.Now(), []int64{11
 
 // Scan
 type Result struct {
-	Name string
-	Age  int
+  Name string
+  Age  int
 }
 
 var result Result
@@ -32,18 +32,18 @@ row.Scan(&name, &age)
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
 defer rows.Close()
 for rows.Next() {
-	...
-	rows.Scan(&name, &age, &email)
-	...
+  ...
+  rows.Scan(&name, &age, &email)
+  ...
 }
 
 // Raw SQL
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows() // (*sql.Rows, error)
 defer rows.Close()
 for rows.Next() {
-	...
-	rows.Scan(&name, &age, &email)
-	...
+  ...
+  rows.Scan(&name, &age, &email)
+  ...
 }
 ```
 
