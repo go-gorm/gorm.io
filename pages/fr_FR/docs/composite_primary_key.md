@@ -7,10 +7,10 @@ Définir plusieurs champs comme clé primaire pour activer la clé primaire comp
 
 ```go
 type Product struct {
-    ID                        string `gorm:"primary_key"`
-    LanguageCode string `gorm:"primary_key"`
-    Code                   string
-    Name                  string
+  ID           string `gorm:"primary_key"`
+  LanguageCode string `gorm:"primary_key"`
+  Code         string
+  Name         string
 }
 ```
 
@@ -20,7 +20,7 @@ To create the composite primary key containing ints you need to turn off `auto_i
 
 ```go
 type Product struct {
-    CategoryID uint64 `gorm:"primary_key;auto_increment:false"`
-    TypeID     uint64 `gorm:"primary_key;auto_increment:false"`
+  CategoryID uint64 `gorm:"primary_key;auto_increment:false"`
+  TypeID     uint64 `gorm:"primary_key;auto_increment:false"`
 }
 ```
