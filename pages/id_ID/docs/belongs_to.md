@@ -24,12 +24,12 @@ GORM provides a way to customize the foreign key, for example:
 
 ```go
 type User struct {
-    gorm.Model
-    Name string
+  gorm.Model
+  Name string
 }
 
 type Profile struct {
-    gorm.Model
+  gorm.Model
   Name      string
   User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
   UserRefer uint
@@ -46,13 +46,13 @@ Anda dapat mengubahnya dengan tanda ` association_foreign_key `, misal:
 
 ```go
 type User struct {
-    gorm.Model
+  gorm.Model
   Refer string
-    Name string
+  Name string
 }
 
 type Profile struct {
-    gorm.Model
+  gorm.Model
   Name      string
   User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
   UserRefer string
