@@ -23,15 +23,15 @@ Given the following Model definition:
 
 ```go
 import (
-    "encoding/json"
-    "github.com/jinzhu/gorm/dialects/postgres"
+  "encoding/json"
+  "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 type Document struct {
-    Metadata postgres.Jsonb
-    Secrets  postgres.Hstore
-    Body     string
-    ID       int
+  Metadata postgres.Jsonb
+  Secrets  postgres.Hstore
+  Body     string
+  ID       int
 }
 ```
 
