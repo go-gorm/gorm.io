@@ -54,22 +54,22 @@ type Animal struct {
 テーブル名は、Struct名の複数形が使われます。
 
 ```go
-type User struct {} // `デフォルトのテーブル名は`users`です
+type User struct {} // default table name is `users`
 
-// Userのテーブル名を`profiles`に設定します
+// Set User's table name to be `profiles`
 func (User) TableName() string {
   return "profiles"
 }
 
 func (u User) TableName() string {
-    if u.Role == "admin" {
-        return "admin_users"
-    } else {
-        return "users"
-    }
+  if u.Role == "admin" {
+    return "admin_users"
+  } else {
+    return "users"
+  }
 }
 
-// テーブル名の複数形化を無効化します。trueにすると`User`のテーブル名は`user`になります
+// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
 db.SingularTable(true)
 ```
 
@@ -93,7 +93,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete()
 
 ```go
 gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) string  {
-    return "prefix_" + defaultTableName;
+  return "prefix_" + defaultTableName;
 }
 ```
 
@@ -103,17 +103,17 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ```go
 type User struct {
-  ID        uint      // カラム名は`id`
-  Name      string    // カラム名は`name`
-  Birthday  time.Time // カラム名は`birthday`
-  CreatedAt time.Time // カラム名は`created_at`
+  ID        uint      // column name is `id`
+  Name      string    // column name is `name`
+  Birthday  time.Time // column name is `birthday`
+  CreatedAt time.Time // column name is `created_at`
 }
 
-// カラム名の上書き
+// Overriding Column Name
 type Animal struct {
-    AnimalId    int64     `gorm:"column:beast_id"`         // カラム名を`beast_id`に設定します
-    Birthday    time.Time `gorm:"column:day_of_the_beast"` // カラム名を`day_of_the_beast`に設定します
-    Age         int64     `gorm:"column:age_of_the_beast"` // カラム名を`age_of_the_beast`に設定します
+  AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
+  Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
+  Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
 }
 ```
 
