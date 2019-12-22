@@ -12,10 +12,10 @@ index:
 page:
   contents: Contents
   back_to_top: トップに戻る
-  improve: Improve this doc
+  improve: このドキュメントを改善する
   prev: 前へ
   next: 次へ
-  last_updated: "Last updated: %s"
+  last_updated: "最終更新日: %s"
 sidebar:
   docs:
     getting_started: はじめに
