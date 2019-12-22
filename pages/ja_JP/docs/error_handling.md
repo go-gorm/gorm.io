@@ -15,7 +15,7 @@ GORMにおけるエラーハンドリングは、チェーン可能なAPIのた�
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-  // error handling...
+  // エラーハンドリング...
 }
 ```
 
@@ -23,16 +23,16 @@ if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-  // error handling...
+  // エラーハンドリング...
 }
 ```
 
 ## エラー
 
-When processing data, it is common for multiple errors to occur. GORM provides an API to return all errors as a slice:
+データを処理するときに、複数のエラーが発生するのはよくあることです。GORMはエラーをスライスとしてreturnするAPIを提供しています。
 
 ```go
-// If there are more than one error happened, `GetErrors` returns them as `[]error`
+// 1つ以上のエラーが起きた場合、`GetErrors`は`[]error`を返します
 errors := db.First(&user).Limit(10).Find(&users).GetErrors()
 
 fmt.Println(len(errors))
