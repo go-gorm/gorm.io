@@ -15,7 +15,7 @@ layout: страница
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-    // обработка ошибок...
+  // error handling...
 }
 ```
 
@@ -23,7 +23,7 @@ if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-    // обработка ошибок...
+  // error handling...
 }
 ```
 
