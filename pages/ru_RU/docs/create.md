@@ -21,9 +21,9 @@ db.NewRecord(user) // => вернет `false` после создания `user`
 
 ```go
 type Animal struct {
-    ID   int64
-    Name string `gorm:"default:'galeone'"`
-    Age  int64
+  ID   int64
+  Name string `gorm:"default:'galeone'"`
+  Age  int64
 }
 ```
 
