@@ -155,7 +155,7 @@ db.Model(&user).Association("Languages").Find(&languages)
 
 ### Append Associations
 
-`many to many`, `has many`の場合、新しいassociationを追加し、`has one`, `belogs to`の場合、現在のassociationと置き換えます。
+`many to many`, `has many`の場合、新しいassociationを追加し、`has one`, `belongs to`の場合、現在のassociationと置き換えます。
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
