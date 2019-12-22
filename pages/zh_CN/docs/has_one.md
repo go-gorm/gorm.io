@@ -10,16 +10,16 @@ layout: page
 例如，你的应用包含了用户和信用卡，并且每个用户只能有一张信用卡。
 
 ```go
-type User struct {
-    gorm.Model
-    CreditCard   CreditCard
+// User has one CreditCard, CreditCardID is the foreign key
+type CreditCard struct {
+  gorm.Model
+  Number   string
+  UserID   uint
 }
 
-// 用户有一张信用卡，UserID 是外键
-type CreditCard struct {
-    gorm.Model
-    Number   string
-    UserID   uint
+type User struct {
+  gorm.Model
+  CreditCard   CreditCard
 }
 ```
 
@@ -27,40 +27,40 @@ type CreditCard struct {
 
 Foreign Key，在 `has one` 关系中，被拥有 model 必须存在一个外键字段，用于保存所属 model 的主键。
 
-外键字段的名称通常使用 `has one` 拥有者 model 加上它的 `主键` 生成，对于上面的例子，其外键名为 `UserID`.
+The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
 
 当你为用户关联信用卡时，信用卡会保存用户的 `ID` 到它的 `UserID` 字段。
 
 如果你想使用另一个字段来记录该关系，您可以通过标签 `foreignkey` 来改变它， 例如：
 
 ```go
-type User struct {
-    gorm.Model
-    CreditCard CreditCard `gorm:"foreignkey:UserName"`
+type CreditCard struct {
+  gorm.Model
+  Number   string
+  UserName string
 }
 
-type CreditCard struct {
-    gorm.Model
-    Number   string
-    UserName string
+type User struct {
+  gorm.Model
+  CreditCard CreditCard `gorm:"foreignkey:UserName"`
 }
 ```
 
 ## 关联外键
 
-Association ForeignKey，默认情况下，在 `has one` 中，被拥有 model 会使用其外键，保存拥有者 model 的主键，您可以更改保存至另一个字段，例如上面例子中的 `Name`.
+By default, the owned entity will save the `has one` model's primary into a foreign key, you could change to save another field, like use `Name` for below example.
 
 ```go
-type User struct {
-    gorm.Model
-    Name       `sql:"index"`
-    CreditCard CreditCard `gorm:"foreignkey:uid;association_foreignkey:name"`
+type CreditCard struct {
+  gorm.Model
+  Number string
+  UID    string
 }
 
-type CreditCard struct {
-    gorm.Model
-    Number string
-    UID    string
+type User struct {
+  gorm.Model
+  Name       `sql:"index"`
+  CreditCard CreditCard `gorm:"foreignkey:uid;association_foreignkey:name"`
 }
 ```
 
@@ -69,24 +69,24 @@ type CreditCard struct {
 Polymorphism Association，Gorm 支持 `has many` 和 `has one` 的多态关联。
 
 ```go
-  type Cat struct {
-    ID    int
-    Name  string
-    Toy   Toy `gorm:"polymorphic:Owner;"`
-  }
+type Cat struct {
+  ID    int
+  Name  string
+  Toy   Toy `gorm:"polymorphic:Owner;"`
+}
 
-  type Dog struct {
-    ID   int
-    Name string
-    Toy  Toy `gorm:"polymorphic:Owner;"`
-  }
+type Dog struct {
+  ID   int
+  Name string
+  Toy  Toy `gorm:"polymorphic:Owner;"`
+}
 
-  type Toy struct {
-    ID        int
-    Name      string
-    OwnerID   int
-    OwnerType string
-  }
+type Toy struct {
+  ID        int
+  Name      string
+  OwnerID   int
+  OwnerType string
+}
 ```
 
 注意：many-to-many 明确的不支持多态关联，如果使用会抛出错误。
