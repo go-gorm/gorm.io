@@ -10,31 +10,31 @@ Many to Many 在两个 model 中添加一张连接表。
 比如，您的应用程序包含用户和语言，一个用户可以说多种语言，多个用户也可以说某一种语言。
 
 ```go
-// 用户拥有且属于多种语言，使用 `user_languages` 作为连接表
+// User has and belongs to many languages, use `user_languages` as join table
 type User struct {
-    gorm.Model
-    Languages         []Language `gorm:"many2many:user_languages;"`
+  gorm.Model
+  Languages         []Language `gorm:"many2many:user_languages;"`
 }
 
 type Language struct {
-    gorm.Model
-    Name string
+  gorm.Model
+  Name string
 }
 ```
 
 ## 互引用关联
 
 ```go
-// Back-Reference，用户拥有且属于多种语言，使用 `user_languages` 作为连接表
+// User has and belongs to many languages, use `user_languages` as join table
 type User struct {
-    gorm.Model
-    Languages         []*Language `gorm:"many2many:user_languages;"`
+  gorm.Model
+  Languages         []*Language `gorm:"many2many:user_languages;"`
 }
 
 type Language struct {
-    gorm.Model
-    Name string
-    Users             []*User     `gorm:"many2many:user_languages;"`
+  gorm.Model
+  Name string
+  Users               []*User     `gorm:"many2many:user_languages;"`
 }
 
 var users []User
