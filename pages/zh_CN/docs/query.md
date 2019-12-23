@@ -253,41 +253,6 @@ db.Where(User{Name: "Jinzhu"}).FirstOrCreate(&user)
 //// user -> User{Id: 111, Name: "Jinzhu"}
 ```
 
-### Attrs
-
-如果记录未找到，将使用参数创建 struct 和记录.
-
-```go
-// 未找到
-db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'non_existing';
-//// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
-//// user -> User{Id: 112, Name: "non_existing", Age: 20}
-
-// 找到
-db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'jinzhu';
-//// user -> User{Id: 111, Name: "jinzhu", Age: 20}
-```
-
-### Assign
-
-不管记录是否找到，都将参数赋值给 struct 并保存至数据库.
-
-```go
-// 未找到
-db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'non_existing';
-//// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
-//// user -> User{Id: 112, Name: "non_existing", Age: 20}
-
-// 找到
-db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'jinzhu';
-//// UPDATE users SET age=30 WHERE id = 111;
-//// user -> User{Id: 111, Name: "jinzhu", Age: 30}
-```
-
 ## Advanced Query 高级查询
 
 ### SubQuery 子查询
