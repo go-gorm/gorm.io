@@ -10,7 +10,7 @@ layout: page
 例如，你的应用包含了用户和信用卡，并且每个用户可以有多张信用卡。
 
 ```go
-// User has many CreditCards, UserID is the foreign key
+// User 可以有多张信用卡(CreditCards), UserID 是外键
 type User struct {
   gorm.Model
   CreditCards []CreditCard
@@ -99,7 +99,7 @@ type Toy struct {
 
 ```go
 db.Model(&user).Related(&emails)
-//// SELECT * FROM emails WHERE user_id = 111; // 111 is user's primary key
+//// SELECT * FROM emails WHERE user_id = 111; // 111 是 user 的主键
 ```
 
 高级用法请参阅： [关联模式](/docs/associations.html#Association-Mode)
