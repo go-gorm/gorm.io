@@ -55,9 +55,9 @@ type Animal struct {
 表名默认就是结构体名称的复数，例如：
 
 ```go
-type User struct {} // default table name is `users`
+type User struct {} // 默认表名是 `users`
 
-// Set User's table name to be `profiles`
+// 将 User 的表名设置为 `profiles`
 func (User) TableName() string {
   return "profiles"
 }
@@ -70,7 +70,7 @@ func (u User) TableName() string {
   }
 }
 
-// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
+// 禁用默认表名的复数形式，如果置为 true，则 `User` 的默认表名是 `user`
 db.SingularTable(true)
 ```
 
