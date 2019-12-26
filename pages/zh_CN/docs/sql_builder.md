@@ -37,7 +37,7 @@ for rows.Next() {
   ...
 }
 
-// Raw SQL
+// 原生 SQL
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows() // (*sql.Rows, error)
 defer rows.Close()
 for rows.Next() {
