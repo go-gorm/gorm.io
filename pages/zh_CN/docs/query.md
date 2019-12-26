@@ -447,6 +447,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name, age").Where("name = ?", "Antonio").Scan(&result)
 
-// Raw SQL
+// 原生 SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
