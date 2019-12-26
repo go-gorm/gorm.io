@@ -10,10 +10,10 @@ Method Chaining，Gorm 实现了链式操作接口，所以你可以把代码写
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 
-// create a new relation
+// 创建一个查询
 tx := db.Where("name = ?", "jinzhu")
 
-// add more filter
+// 添加更多条件
 if someCondition {
   tx = tx.Where("age = ?", 20)
 } else {
