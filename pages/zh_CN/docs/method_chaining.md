@@ -10,10 +10,10 @@ Method Chaining，Gorm 实现了链式操作接口，所以你可以把代码写
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 
-// create a new relation
+// 创建一个查询
 tx := db.Where("name = ?", "jinzhu")
 
-// add more filter
+// 添加更多条件
 if someCondition {
   tx = tx.Where("age = ?", 20)
 } else {
@@ -73,13 +73,13 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// 查找所有金额大于 1000 的信用卡订单
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// 查找所有金额大于 1000 的 COD 订单
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// 查找所有金额大于 1000 且已付款或者已发货的订单
 ```
 
 ## 多个立即执行方法

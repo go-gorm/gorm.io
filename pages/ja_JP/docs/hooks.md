@@ -7,7 +7,7 @@ layout: page
 
 フックとは生成/参照/更新/削除の前後に呼ばれる関数のことです。
 
-If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+モデルに特定のメソッドを定義すると、生成、更新、参照、削除の時に自動的に呼ばれます。コールバックからエラーを返した場合、GORMはそれ以降の操作を停止して現在のトランザクションをロールバックします。
 
 ## フック
 
@@ -34,7 +34,7 @@ AfterSave
 ```go
 func (u *User) BeforeSave() (err error) {
   if !u.IsValid() {
-    err = errors.New("can't save invalid data")
+    err = errors.New("不正な値は保存できません")
   }
   return
 }
@@ -47,7 +47,7 @@ func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
 }
 ```
 
-**メモ** GORMにおける保存と削除の操作はデフォルトでトランザクション内で実行されます。そのため、トランザクション内での変更はコミットするまで可視化されません。 If you would like access those changes in your hooks, you could accept current transaction as argument in your hooks, for example:
+**メモ** GORMにおける保存と削除の操作はデフォルトでトランザクション内で実行されます。そのため、トランザクション内での変更はコミットするまで可視化されません。 フック内からこれらの変更にアクセスしたい場合は、現在のトランザクションをフックの引数として受け入れます。例:
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
@@ -78,12 +78,12 @@ AfterSave
 ```go
 func (u *User) BeforeUpdate() (err error) {
   if u.readonly() {
-    err = errors.New("read only user")
+    err = errors.New("読み取り専用ユーザーです")
   }
   return
 }
 
-// Updating data in same transaction
+// 同一のトランザクション内でデータを更新する
 func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
@@ -107,7 +107,7 @@ AfterDelete
 コード例:
 
 ```go
-// Updating data in same transaction
+// 同一のトランザクション内でデータを更新する
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)

@@ -17,7 +17,7 @@ func updateCreated(scope *Scope) {
 }
 
 db.Callback().Create().Register("update_created_at", updateCreated)
-// register a callback for Create process
+// 为 Create 注册一个 callback
 ```
 
 ## 删除现有的callback

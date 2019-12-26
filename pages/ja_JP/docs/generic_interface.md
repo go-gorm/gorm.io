@@ -3,7 +3,7 @@ title: 一般的なデータベースインタフェース sql.DB
 layout: page
 ---
 
-GORM provides the method `DB` which returns a generic database interface [*sql.DB](http://golang.org/pkg/database/sql/#DB) from the current `*gorm.DB` connection
+GORMは`DB`メソッドを提供しており、一般的なデータベースインタフェース[*sql.DB](http://golang.org/pkg/database/sql/#DB)を現在の`*gorm.DB`コネクションから返します。
 
 ```go
 // 一般的なデータベースオブジェクト sql.DB をその機能を利用するために取得します
@@ -13,7 +13,7 @@ db.DB()
 db.DB().Ping()
 ```
 
-**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns `nil`
+**注意** トランザクションのように、基となるデータベースコネクションが`*sql.DB`でない場合は、`nil`を返します。
 
 ## コネクションプール
 

@@ -403,7 +403,7 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ### Joins
 
-Specify Joins conditions
+結合条件を指定します。
 
 ```go
 rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
@@ -447,6 +447,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name, age").Where("name = ?", "Antonio").Scan(&result)
 
-// Raw SQL
+// 生SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```

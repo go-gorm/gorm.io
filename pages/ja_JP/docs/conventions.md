@@ -54,9 +54,9 @@ type Animal struct {
 テーブル名は、Struct名の複数形が使われます。
 
 ```go
-type User struct {} // default table name is `users`
+type User struct {} // デフォルトのテーブル名は `users`です
 
-// Set User's table name to be `profiles`
+// Userのテーブル名を`profiles`にする
 func (User) TableName() string {
   return "profiles"
 }
@@ -69,7 +69,7 @@ func (u User) TableName() string {
   }
 }
 
-// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
+// テーブル名を複数形にしない。trueにすると、`User`のテーブル名は `user`になります
 db.SingularTable(true)
 ```
 
@@ -103,17 +103,17 @@ gorm.DefaultTableNameHandler = func (db *gorm.DB, defaultTableName string) strin
 
 ```go
 type User struct {
-  ID        uint      // column name is `id`
-  Name      string    // column name is `name`
-  Birthday  time.Time // column name is `birthday`
-  CreatedAt time.Time // column name is `created_at`
+  ID        uint      // カラム名は `id`
+  Name      string    // カラム名は `name`
+  Birthday  time.Time // カラム名は `birthday`
+  CreatedAt time.Time // カラム名は `created_at`
 }
 
 // Overriding Column Name
 type Animal struct {
-  AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
-  Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
-  Age         int64     `gorm:"column:age_of_the_beast"` // set column name to `age_of_the_beast`
+  AnimalId    int64     `gorm:"column:beast_id"`         // カラム名を `beast_id` に設定する
+  Birthday    time.Time `gorm:"column:day_of_the_beast"` // カラム名を `day_of_the_beast` に設定する
+  Age         int64     `gorm:"column:age_of_the_beast"` // カラム名を `age_of_the_beast` に設定する
 }
 ```
 

@@ -15,7 +15,7 @@ GORM中的错误处理与惯用的Go代码不同，因为它具有可链接的AP
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-  // error handling...
+  // error 处理...
 }
 ```
 
@@ -23,7 +23,7 @@ if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-  // error handling...
+  // error 处理...
 }
 ```
 
