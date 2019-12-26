@@ -10,7 +10,7 @@ layout: page
 例如，你的应用包含了用户和信用卡，并且每个用户只能有一张信用卡。
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+// User 只能有一张信用卡 (CreditCard), CreditCardID 是外键
 type CreditCard struct {
   gorm.Model
   Number   string
