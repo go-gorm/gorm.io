@@ -5,7 +5,7 @@ layout: page
 
 In Go, error handling is important.
 
-You are encouraged to do error check after any [Immediate Methods](/docs/method_chaining.html#Immediate-Methods)
+You are encouraged to do error check after any [Immediate Methods](method_chaining.html#Immediate-Methods)
 
 ## Error Handling
 
