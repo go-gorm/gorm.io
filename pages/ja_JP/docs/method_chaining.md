@@ -10,10 +10,10 @@ Gormはメソッドチェーンのインタフェースを実装しているた�
 ```go
 db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
 
-// create a new relation
+// 新規リレーションを作成する
 tx := db.Where("name = ?", "jinzhu")
 
-// add more filter
+// 更にフィルタを追加する
 if someCondition {
   tx = tx.Where("age = ?", 20)
 } else {
