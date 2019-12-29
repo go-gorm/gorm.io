@@ -1,5 +1,5 @@
 ---
-title: Connecting to the database
+title: データベースへの接続
 layout: page
 ---
 
@@ -11,7 +11,7 @@ layout: page
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
+GORMには各ドライバーのImportを楽にするためのラッパーがいくつか用意されています。例えばMySQLドライバーをImportする場合は、下記のように書けます。
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -22,7 +22,7 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 
 ## MySQL
 
-**NOTE:** In order to handle `time.Time`, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+**注意:** `time.Time`を正しく扱うためには、`parseTime`をパラメータに含める必要があります。 ([対応している他のパラメータ](https://github.com/go-sql-driver/mysql#parameters))
 
 ```go
 import (
@@ -68,7 +68,7 @@ func main() {
 
 ## SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can running on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+[SQL Serverで始める場合](https://www.microsoft.com/en-us/sql-server/developer-get-started/go)、[Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/)、[Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/)上のDockerを使って起動できます。
 
 ```go
 import (
