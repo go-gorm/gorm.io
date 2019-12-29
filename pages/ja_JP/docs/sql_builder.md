@@ -11,7 +11,7 @@ layout: page
 db.Exec("DROP TABLE users;")
 db.Exec("UPDATE orders SET shipped_at=? WHERE id IN (?)", time.Now(), []int64{11,22,33})
 
-// Scan
+// スキャン
 type Result struct {
   Name string
   Age  int
@@ -37,7 +37,7 @@ for rows.Next() {
   ...
 }
 
-// Raw SQL
+// 素のSQL
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows() // (*sql.Rows, error)
 defer rows.Close()
 for rows.Next() {
