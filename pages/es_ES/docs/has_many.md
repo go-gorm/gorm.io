@@ -101,4 +101,4 @@ You could find `has many` associations with `Related`
 db.Model(&user).Related(&emails) //// SELECT * FROM emails WHERE user_id = 111; // 111 es la clave principal del usuario
 ```
 
-For advanced usage, refer to [Association Mode](/docs/associations.html#Association-Mode)
+For advanced usage, refer to [Association Mode](associations.html#Association-Mode)
