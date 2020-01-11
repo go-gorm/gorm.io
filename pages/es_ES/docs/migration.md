@@ -27,7 +27,7 @@ El AutoMigrate de GORM funciona bien para la mayoría de los casos, pero si est�
 db.DB()
 ```
 
-Ir a [Interfaz Genérica](/docs/generic_interface.html) para más detalles.
+Refer [Generic Interface](generic_interface.html) for more details.
 
 ## Schema Methods
 
