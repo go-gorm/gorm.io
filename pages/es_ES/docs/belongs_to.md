@@ -66,4 +66,4 @@ Se puede encontrar la asociación `belongs to`con `Related`
 db.Model(&user).Related(&profile) //// SELECT * FROM profiles WHERE user_id = 111; // 111 es el ID de usuario
 ```
 
-Para un uso avanzado, consulte [Modo de Asociación](/docs/associations.html#Association-Mode)
+For advanced usage, refer [Association Mode](associations.html#Association-Mode)
