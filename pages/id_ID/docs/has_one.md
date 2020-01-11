@@ -104,4 +104,4 @@ db.Model(&user).Related(&card, "CreditCard")
 db.Model(&user).Related(&card)
 ```
 
-Untuk penggunaan lanjutan, lihat [Mode Asosiasi](/docs/associations.html#Association-Mode)
+For advanced usage, refer [Association Mode](associations.html#Association-Mode)
