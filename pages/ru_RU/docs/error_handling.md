@@ -5,7 +5,7 @@ layout: страница
 
 В Go важное значение имеет обработка ошибок.
 
-Вам рекомендуется проверить ошибки после любого из [Быстрых методов](/docs/method_chaining.html#Immediate-Methods)
+You are encouraged to do error check after any [Immediate Methods](method_chaining.html#Immediate-Methods)
 
 ## Обработка ошибок
 
