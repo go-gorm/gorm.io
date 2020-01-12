@@ -89,8 +89,17 @@ import (
   _ "github.com/jinzhu/gorm/dialects/mssql"
 )
 
+var server = "<your_server>"
+var port = 1433
+var user = "<your_username>"
+var password = "<your_password>"
+var database = "<your_database>"
+
 func main() {
-  db, err := gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
+  connString := fmt.Sprintf("server=%s;user id=%s;password=%s;port=%d;database=%s;",
+    server, user, password, port, database)
+    
+  db, err := gorm.Open("mssql", connString)
   defer db.Close()
 }
 ```
