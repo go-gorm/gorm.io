@@ -119,4 +119,4 @@ db.Model(&user).Related(&languages, "Languages")
 db.Preload("Languages").First(&user)
 ```
 
-For advanced usage, refer [Association Mode](associations.html#Association-Mode)
+高级用法请参阅 [关联模式](associations.html#Association-Mode)
