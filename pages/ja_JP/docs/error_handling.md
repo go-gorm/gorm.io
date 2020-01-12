@@ -5,7 +5,7 @@ layout: page
 
 Goではエラーハンドリングが重要です。
 
-[即時メソッド](/docs/method_chaining.html#Immediate-Methods)の後ではエラーチェックを行ったほうが良いです。
+You are encouraged to do error check after any [Immediate Methods](method_chaining.html#Immediate-Methods)
 
 ## エラーハンドリング
 

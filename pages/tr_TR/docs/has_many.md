@@ -102,4 +102,4 @@ db.Model(&user).Related(&emails)
 //// SELECT * FROM emails WHERE user_id = 111; // 111 is user's primary key
 ```
 
-For advanced usage, refer to [Association Mode](/docs/associations.html#Association-Mode)
+For advanced usage, refer to [Association Mode](associations.html#Association-Mode)

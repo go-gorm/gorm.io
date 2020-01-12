@@ -27,7 +27,7 @@ GORM 的自动迁移在大多数情况下都会正常工作，但如果你需要
 db.DB()
 ```
 
-参考 [通用 Interface](/docs/generic_interface.html) 获取详情。
+Refer [Generic Interface](generic_interface.html) for more details.
 
 ## 模型方法
 

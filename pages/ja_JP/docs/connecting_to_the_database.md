@@ -95,4 +95,4 @@ func main() {
 
 ## サポートされていないデータベース
 
-GORMは上記4つのデータベースを公式サポートしています。サポートされていないデータベース用にDialectを書くことも可能です。[GORM Dialects](/docs/dialects.html)を参照してください。
+GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](dialects.html)

@@ -27,7 +27,7 @@ GORM's AutoMigrate works well for most cases, but if you are looking for more se
 db.DB()
 ```
 
-Lihat [ Antarmuka Generik](/docs/generic_interface.html) untuk rincian lebih lanjut.
+Refer [Generic Interface](generic_interface.html) for more details.
 
 ## Metode Skema
 

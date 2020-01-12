@@ -27,7 +27,7 @@ GORMの自動マイグレーションはほとんどの場合で、うまく機�
 db.DB()
 ```
 
-詳しくは[一般的なインタフェース](/docs/generic_interface.html)を参照してください。
+Refer [Generic Interface](generic_interface.html) for more details.
 
 ## スキーマメソッド
 

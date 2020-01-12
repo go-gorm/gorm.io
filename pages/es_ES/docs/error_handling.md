@@ -5,7 +5,7 @@ layout: page
 
 En Go, el manejo de errores es importante.
 
-Se recomienda hacer una comprobación de errores después de cualquier [Métodos Inmediatos](/docs/method_chaining.html#Immediate-Methods)
+You are encouraged to do error check after any [Immediate Methods](method_chaining.html#Immediate-Methods)
 
 ## Manejo de Errores
 

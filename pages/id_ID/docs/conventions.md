@@ -142,4 +142,4 @@ db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
 
 ### DeletedAt
 
-For models with a `DeletedAt` field, when `Delete` is called on that instance, it won't truly be deleted from database, but will set its `DeletedAt` field to the current time. Refer to [Soft Delete](/docs/delete.html#Soft-Delete)
+For models with a `DeletedAt` field, when `Delete` is called on that instance, it won't truly be deleted from database, but will set its `DeletedAt` field to the current time. Refer to [Soft Delete](delete.html#Soft-Delete)

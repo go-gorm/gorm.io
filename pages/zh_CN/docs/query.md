@@ -153,7 +153,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 
 作用与 `Where` 类似
 
-当与 [多个立即执行方法](/docs/method_chaining.html#Multiple-Immediate-Methods) 一起使用时, 内联条件不会传递给后面的立即执行方法。
+When using with [Multiple Immediate Methods](method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
 
 ```go
 // 根据主键获取记录 (只适用于整形主键)

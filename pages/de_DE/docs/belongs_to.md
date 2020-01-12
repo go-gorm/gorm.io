@@ -78,4 +78,4 @@ db.Model(&user).Related(&profile)
 //// SELECT * FROM profiles WHERE user_id = 111; // 111 ist die ID des Nutzers
 ```
 
-Für erweiterte Verwendung verweisen wir auf den [Assoziationsmodus](/docs/associations.html#Association-Mode)
+For advanced usage, refer [Association Mode](associations.html#Association-Mode)

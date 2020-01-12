@@ -14,9 +14,9 @@ GORMはデフォルトで1つの`create`, `update`, `delete`操作をトラン�
 ```go
 func CreateAnimals(db *gorm.DB) error {
   return db.Transaction(func(tx *gorm.DB) error {
-    // do some database operations in the transaction (use 'tx' from this point, not 'db')
+    // データベース操作をトランザクション内で行います（ここからは'db'ではなく'tx'を使います）
     if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-      // return any error will rollback
+      // エラーを返した場合はロールバックされます
       return err
     }
 
@@ -24,35 +24,35 @@ func CreateAnimals(db *gorm.DB) error {
       return err
     }
 
-    // return nil will commit
+    // nilを返すとコミットされます
     return nil
   })
 }
 ```
 
-## Transactions by manual
+## 手動でのトランザクション
 
 ```go
-// begin a transaction
+// トランザクションを開始します
 tx := db.Begin()
 
-// do some database operations in the transaction (use 'tx' from this point, not 'db')
+// データベース操作をトランザクション内で行います(ここからは'db'でなく'tx'を使います)
 tx.Create(...)
 
 // ...
 
-// rollback the transaction in case of error
+// エラーが起きた場合はトランザクションをロールバックします
 tx.Rollback()
 
-// Or commit the transaction
+// もしくはトランザクションをコミットします
 tx.Commit()
 ```
 
-## A Specific Example
+## 具体例
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
-  // Note the use of tx as the database handle once you are within a transaction
+  // 一度トランザクション内に入ったら、txをデータベースハンドラとして使いましょう
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {

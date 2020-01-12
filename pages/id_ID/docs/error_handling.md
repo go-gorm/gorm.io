@@ -5,7 +5,7 @@ layout: page
 
 Sebagai Gantinya, penanganan kesalahan itu penting.
 
-Anda disarankan untuk melakukan pengecekan kesalahan setelah setiap [Metode Langsung](/docs/method_chaining.html#Immediate-Methods)
+You are encouraged to do error check after any [Immediate Methods](method_chaining.html#Immediate-Methods)
 
 ## Penanganan Kesalahan
 

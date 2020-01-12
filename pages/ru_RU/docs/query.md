@@ -153,7 +153,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 
 Работает также как и `Where`.
 
-При использовании [Нескольких быстрых методов](/docs/method_chaining.html#Multiple-Immediate-Methods), эти условия будут переданы в следующие быстрые методы.
+When using with [Multiple Immediate Methods](method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
 
 ```go
 // Получить по первичному ключу (работает только если первичный ключ число)
