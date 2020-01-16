@@ -16,7 +16,7 @@ type Product struct {
 
 Nota che i campi integer con il tag `primary_key` sono `auto_increment` di default. Questo può risultare in più chiavi primarie integer auto-increment invece di una singola chiave primaria composta.
 
-To create the composite primary key containing ints you need to turn off `auto_increment` for the int fields:
+Per creare la chiave primaria composta contenente gli interi devi disattivare `auto_increment` per i campi interi:
 
 ```go
 type Product struct {
