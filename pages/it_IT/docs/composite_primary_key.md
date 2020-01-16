@@ -1,5 +1,5 @@
 ---
-title: Chiave primaria composita
+title: Chiave primaria composta
 layout: page
 ---
 
@@ -14,7 +14,7 @@ type Product struct {
 }
 ```
 
-Note that integer fields with `primary_key` tag are `auto_increment` by default. That can result in multiple auto-incremented integer primary keys instead of a single composite primary key.
+Nota che i campi integer con il tag `primary_key` sono `auto_increment` di default. Questo può risultare in più chiavi primarie integer auto-increment invece di una singola chiave primaria composta.
 
 To create the composite primary key containing ints you need to turn off `auto_increment` for the int fields:
 
