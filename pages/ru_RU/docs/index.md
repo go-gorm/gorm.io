@@ -52,7 +52,7 @@ func main() {
   // Миграция схем
   db.AutoMigrate(&Product{})
 
-  // Соаздние
+  // Создание
   db.Create(&Product{Code: "L1212", Price: 1000})
 
   // Чтение
@@ -63,7 +63,7 @@ func main() {
   // Правка - обновление цены на 2000
   db.Model(&product).Update("Price", 2000)
 
-  // Удаление - удалить продкут
+  // Удаление - удалить продукт
   db.Delete(&product)
 }
 ```
