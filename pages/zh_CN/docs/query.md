@@ -375,8 +375,8 @@ db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
 
-db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
-//// SELECT count( distinct(name) ) FROM deleted_users;
+db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
+//// SELECT count( distinct(name) ) FROM deleted_users; (count)
 ```
 
 **注意** `Count` 必须是链式查询的最后一个操作 ，因为它会覆盖前面的 `SELECT`，但如果里面使用了 `count` 时不会覆盖
