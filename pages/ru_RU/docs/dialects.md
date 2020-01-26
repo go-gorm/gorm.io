@@ -42,20 +42,20 @@ password := "0654857340"
 metadata := json.RawMessage(`{"is_archived": 0}`)
 sampleDoc := Document{
   Body: "This is a test document",
-  Metadata: postgres.Jsonb{ metadata },
+  Metadata: postgres.Jsonb{ RawMessage: metadata },
   Secrets: postgres.Hstore{"password": &password},
 }
 
-//добавить sampleDoc в базу данных
+//insert sampleDoc into the database
 db.Create(&sampleDoc)
 
-//получить поля снова для подтверждения корекности
+//retrieve the fields again to confirm if they were inserted correctly
 resultDoc := Document{}
 db.Where("id = ?", sampleDoc.ID).First(&resultDoc)
 
 metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata)
 secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, sampleDoc.Secrets)
 
-// должно вывести "true"
+// this should print "true"
 fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
 ```
