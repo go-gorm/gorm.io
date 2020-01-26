@@ -102,4 +102,4 @@ db.Model(&user).Related(&emails)
 //// SELECT * FROM emails WHERE user_id = 111; // 111 是 user 的主键
 ```
 
-For advanced usage, refer to [Association Mode](associations.html#Association-Mode)
+高级用法请参阅 [关联模式](associations.html#Association-Mode)

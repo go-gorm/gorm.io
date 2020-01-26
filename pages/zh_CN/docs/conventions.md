@@ -143,4 +143,4 @@ db.Model(&user).Update("name", "jinzhu") // `UpdatedAt`将会是当前时间
 
 ### DeletedAt
 
-如果模型有`DeletedAt`字段，调用`Delete`删除该记录时，将会设置`DeletedAt`字段为当前时间，而不是直接将记录从数据库中删除。 Refer to [Soft Delete](delete.html#Soft-Delete)
+如果模型有`DeletedAt`字段，调用`Delete`删除该记录时，将会设置`DeletedAt`字段为当前时间，而不是直接将记录从数据库中删除。 了解什么是 [软删除](delete.html#Soft-Delete)

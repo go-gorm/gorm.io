@@ -5,7 +5,7 @@ layout: page
 
 Go的错误处理是很重要的
 
-You are encouraged to do error check after any [Immediate Methods](method_chaining.html#Immediate-Methods)
+建议您在调用任何 [立即执行方法](https://gorm. io/zh_CN/docs/method_chaining. html#立即执行方法) 后进行错误检查
 
 ## 错误处理
 
