@@ -24,7 +24,7 @@ Para traducir GORM en su idioma debe publicar una solicitud en [Github issues](h
 
 ## Programa
 
-* Crear pull request en [Github](https://github. com/jinzhu/gorm) para corregir problemas, características acordadas de [Github Issues](https://github. com/jinzhu/gorm/issues)
+* Crear pull request en [Github](https://github.com/jinzhu/gorm) para corregir problemas, características acordadas de [Github Issues](https://github.com/jinzhu/gorm/issues)
 * Crear plugings open source para GORM. (No se olvide de añadirlos a [la lista](/community.html#Open-Sources))
 
 ## Donaciones
