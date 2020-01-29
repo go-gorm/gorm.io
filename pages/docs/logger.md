@@ -18,6 +18,20 @@ db.LogMode(false)
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
+## Compatibility Mode
+
+When you run a dialect which is not officially supported by GORM, the package will automatically print a warning message:
+
+```
+dialectXYZ is not officially supported, running under compatibility mode.
+```
+
+You can disable this message by setting to false the variable **CompatibilityWarning** like this:
+
+```
+gorm.CompatibilityWarning = false
+```
+
 ## Customize Logger
 
 Refer GORM's default logger for how to customize it [https://github.com/jinzhu/gorm/blob/master/logger.go](https://github.com/jinzhu/gorm/blob/master/logger.go)
