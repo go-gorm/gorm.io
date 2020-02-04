@@ -3,7 +3,7 @@ title: Asociaciones
 layout: page
 ---
 
-## Creacion/Actualización Automática
+## Creación/Actualización Automática
 
 GORM guardará automáticamente asociaciones y su referencia cuando crea/actualiza un registro. Si una asociación tiene una clave principal, GORM pedirá `Actualizar` para guardarla, de lo contrario será creado.
 
