@@ -14,9 +14,9 @@ GORM выполняет одиночный `create`, `update`, `delete` в тр�
 ```go
 func CreateAnimals(db *gorm.DB) error {
   return db.Transaction(func(tx *gorm.DB) error {
-    // do some database operations in the transaction (use 'tx' from this point, not 'db')
+    // выполните операции с БД в транзакции (используйте 'tx' вместо 'db')
     if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-      // return any error will rollback
+      // возвращение ошибки приведет к откату транзакции
       return err
     }
 
@@ -24,35 +24,35 @@ func CreateAnimals(db *gorm.DB) error {
       return err
     }
 
-    // return nil will commit
+    // возврат nil совершит коммит транзакции
     return nil
   })
 }
 ```
 
-## Transactions by manual
+## Транзакции вручную
 
 ```go
-// begin a transaction
+// начало транзакции
 tx := db.Begin()
 
-// do some database operations in the transaction (use 'tx' from this point, not 'db')
+// выполните операции с БД в транзакции (используйте 'tx' вместо 'db')
 tx.Create(...)
 
 // ...
 
-// rollback the transaction in case of error
+// откат транзакции в случае ошибки
 tx.Rollback()
 
-// Or commit the transaction
+// или коммит транзакции
 tx.Commit()
 ```
 
-## A Specific Example
+## Конкретный пример
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
-  // Note the use of tx as the database handle once you are within a transaction
+  // ВНИМАНИЕ! Используйте tx в качестве хендлера в транзакции
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
