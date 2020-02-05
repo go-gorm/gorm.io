@@ -41,7 +41,7 @@ type User struct {
 type Profile struct {
   gorm.Model
   Name      string
-  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
+  User      User `gorm:"foreignkey:UserRefer"` // использовать UserRefer как внешний ключ
   UserRefer uint
 }
 ```
@@ -64,7 +64,7 @@ type User struct {
 type Profile struct {
   gorm.Model
   Name      string
-  User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
+  User      User `gorm:"association_foreignkey:Refer"` // использовать Refer как ассоциативный внешний ключ
   UserRefer string
 }
 ```
@@ -78,4 +78,4 @@ db.Model(&user).Related(&profile)
 //// SELECT * FROM profiles WHERE user_id = 111; // 111 is user's ID
 ```
 
-For advanced usage, refer [Association Mode](associations.html#Association-Mode)
+Для расширенного использования, смотрите [Режим связей](associations.html#Association-Mode)
