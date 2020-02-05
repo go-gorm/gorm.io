@@ -7,7 +7,7 @@ layout: page
 
 Many to Many は2つのモデル間のjoinを提供します。
 
-例えば、アプリケーションにusersとlanguagesというモデルがある場合を考えます。 userは複数のlanguageをもち、複数のuserがあるlanguageを話せるとします。
+For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
 
 ```go
 // User has and belongs to many languages, use `user_languages` as join table
