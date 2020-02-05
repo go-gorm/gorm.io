@@ -7,7 +7,7 @@ layout: страница
 
 Многие ко многим добавляет join таблицы между двумя моделями.
 
-Например, если ваше приложение включает пользователей и языки, и пользователь может говорить на многих языках, и многие пользователи могут говорить на заданном языке.
+For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
 
 ```go
 // User has and belongs to many languages, use `user_languages` as join table
