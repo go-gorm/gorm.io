@@ -46,16 +46,16 @@ sampleDoc := Document{
   Secrets: postgres.Hstore{"password": &password},
 }
 
-//insert sampleDoc into the database
+//добавить sampleDoc в БД
 db.Create(&sampleDoc)
 
-//retrieve the fields again to confirm if they were inserted correctly
+// повторное получение записей для подтверждения корректности добавления
 resultDoc := Document{}
 db.Where("id = ?", sampleDoc.ID).First(&resultDoc)
 
 metadataIsEqual := reflect.DeepEqual(resultDoc.Metadata, sampleDoc.Metadata)
 secretsIsEqual := reflect.DeepEqual(resultDoc.Secrets, sampleDoc.Secrets)
 
-// this should print "true"
+// должно вывести "true"
 fmt.Println("Inserted fields are as expected:", metadataIsEqual && secretsIsEqual)
 ```
