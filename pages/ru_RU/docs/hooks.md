@@ -83,7 +83,7 @@ func (u *User) BeforeUpdate() (err error) {
   return
 }
 
-// Updating data in same transaction
+// Обновление данных в этой же транзакции
 func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
@@ -107,7 +107,7 @@ AfterDelete
 Примеры кода:
 
 ```go
-// Updating data in same transaction
+// Обновление данных в той же транзакции
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
