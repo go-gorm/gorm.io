@@ -54,9 +54,9 @@ type Animal struct {
 Название таблицы - плюралистическая версия структурного имени.
 
 ```go
-type User struct {} // default table name is `users`
+type User struct {} // название таблицы по умолчанию `users`
 
-// Set User's table name to be `profiles`
+// Установить имя таблицы User's как `profiles`
 func (User) TableName() string {
   return "profiles"
 }
@@ -69,7 +69,7 @@ func (u User) TableName() string {
   }
 }
 
-// Disable table name's pluralization, if set to true, `User`'s table name will be `user`
+// Отключить множественное имя таблицы, если установлено значение true, имя таблицы `User` будет` user`
 db.SingularTable(true)
 ```
 
@@ -109,7 +109,7 @@ type User struct {
   CreatedAt time.Time // column name is `created_at`
 }
 
-// Overriding Column Name
+// Переопределение имени столбца
 type Animal struct {
   AnimalId    int64     `gorm:"column:beast_id"`         // set column name to `beast_id`
   Birthday    time.Time `gorm:"column:day_of_the_beast"` // set column name to `day_of_the_beast`
@@ -142,4 +142,4 @@ db.Model(&user).Update("name", "jinzhu") // установит `UpdatedAt` на 
 
 ### DeletedAt
 
-Для моделей с полем `DeletedAt`, когда вызывается метод экземпляра `Delete`, он не будет по-настоящему удален из базы данных, а установит поле `DeletedAt` на текущее unix время. Refer to [Soft Delete](delete.html#Soft-Delete)
+Для моделей с полем `DeletedAt`, когда вызывается метод экземпляра `Delete`, он не будет по-настоящему удален из базы данных, а установит поле `DeletedAt` на текущее unix время. Ссылка на [Мягкое удаление](delete.html#Soft-Delete)

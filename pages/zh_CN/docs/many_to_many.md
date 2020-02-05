@@ -7,7 +7,7 @@ layout: page
 
 Many to Many 在两个 model 中添加一张连接表。
 
-比如，您的应用程序包含用户和语言，一个用户可以说多种语言，多个用户也可以说某一种语言。
+For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
 
 ```go
 // User 拥有并属于多种 Language，使用 `user_languages` 连接表

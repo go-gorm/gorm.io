@@ -3,7 +3,7 @@ title: Asociaciones
 layout: page
 ---
 
-## Creacion/Actualización Automática
+## Creación/Actualización Automática
 
 GORM guardará automáticamente asociaciones y su referencia cuando crea/actualiza un registro. Si una asociación tiene una clave principal, GORM pedirá `Actualizar` para guardarla, de lo contrario será creado.
 
@@ -42,7 +42,7 @@ db.Save(&user)
 
 Si su asociación ya existe en la base de datos, podría no querer actualizarla.
 
-Usted podría utilizar configuración DB, establezca `gorm:association_autoupdate` a `falso`
+Usted podría utilizar la configuración de BD, establezca `gorm:association_autoupdate` a `falso`
 
 ```go
 // No actualizar asociaciones que tengan clave principal, pero guardar referencia

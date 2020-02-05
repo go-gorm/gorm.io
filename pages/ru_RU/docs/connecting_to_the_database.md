@@ -95,4 +95,4 @@ func main() {
 
 ## Не поддерживаемые базы данных
 
-GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](dialects.html)
+GORM официально поддерживает более четырех баз данных, вы можете написать диалекты для не поддерживаемых баз данных, см. [GORM Диалекты](dialects.html)

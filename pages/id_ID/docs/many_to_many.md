@@ -7,7 +7,7 @@ layout: page
 
 Many to Many adds a join table between two models.
 
-Misalnya, jika aplikasi anda mencakup pengguna dan bahasa, dan pengguna dapat berbicara banyak bahasa, dan banyak pengguna dapat mengucapkan bahasa tertentu.
+For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
 
 ```go
 // User has and belongs to many languages, use `user_languages` as join table

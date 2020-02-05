@@ -42,14 +42,14 @@ password := "0654857340"
 metadata := json.RawMessage(`{"is_archived": 0}`)
 sampleDoc := Document{
   Body: "This is a test document",
-  Metadata: postgres.Jsonb{ metadata },
+  Metadata: postgres.Jsonb{ RawMessage: metadata },
   Secrets: postgres.Hstore{"password": &password},
 }
 
-//добавить sampleDoc в базу данных
+//добавить sampleDoc в БД
 db.Create(&sampleDoc)
 
-//получить поля снова для подтверждения корекности
+// повторное получение записей для подтверждения корректности добавления
 resultDoc := Document{}
 db.Where("id = ?", sampleDoc.ID).First(&resultDoc)
 

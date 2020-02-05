@@ -375,8 +375,8 @@ db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 db.Table("deleted_users").Count(&count)
 //// SELECT count(*) FROM deleted_users;
 
-db.Table("deleted_users").Select("count(distinct(name))").Count(&count())
-//// SELECT count( distinct(name) ) FROM deleted_users;
+db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
+//// SELECT count( distinct(name) ) FROM deleted_users; (count)
 ```
 
 **ПРИМЕЧАНИЕ** При использовании `Count` в цепочке запросов, он должно быть последним, так как он перезапишет `SELECT` столбцов, а использование ключевого слова `count` не будет
