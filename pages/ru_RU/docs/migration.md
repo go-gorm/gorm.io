@@ -27,7 +27,7 @@ GORM AutoMigrate работает хорошо для большинства с�
 db.DB()
 ```
 
-Refer [Generic Interface](generic_interface.html) for more details.
+Подробнее см. [Общий интерфейс](generic_interface.html).
 
 ## Методы схемы
 

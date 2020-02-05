@@ -10,7 +10,7 @@ layout: страница
 Например, если ваше приложение включает в себя пользователей и кредитную карту, и каждый пользователь может иметь много кредитных карт.
 
 ```go
-// User has many CreditCards, UserID is the foreign key
+// User имеет много CreditCards, UserID является внешним ключем
 type User struct {
   gorm.Model
   CreditCards []CreditCard
@@ -102,4 +102,4 @@ db.Model(&user).Related(&emails)
 //// SELECT * FROM emails WHERE user_id = 111; // 111 is user's primary key
 ```
 
-For advanced usage, refer to [Association Mode](associations.html#Association-Mode)
+Для расширенного использования, смотрите [Режим связей](associations.html#Association-Mode)
