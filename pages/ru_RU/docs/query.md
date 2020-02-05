@@ -6,23 +6,23 @@ layout: страница
 ## Query
 
 ```go
-// Get first record, order by primary key
+// Получить первую запись с сортировкой по первичному ключу
 db.First(&user)
 //// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// Получить одну запись без сортировки 
 db.Take(&user)
 //// SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key
+// Получить последнюю запись с сортировкой по первичному ключу
 db.Last(&user)
 //// SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
-// Get all records
+// Получить все записи
 db.Find(&users)
 //// SELECT * FROM users;
 
-// Get record with primary key (only works for integer primary key)
+// Получить запись с первичным ключем (работает только для первичных ключей типа int)
 db.First(&user, 10)
 //// SELECT * FROM users WHERE id = 10;
 ```
@@ -153,7 +153,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 
 Работает также как и `Where`.
 
-When using with [Multiple Immediate Methods](method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
+При использовании [Нескольких быстрых методов](method_chaining.html#Multiple-Immediate-Methods), эти условия будут переданы в следующие быстрые методы.
 
 ```go
 // Получить по первичному ключу (работает только если первичный ключ число)
@@ -447,6 +447,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name, age").Where("name = ?", "Antonio").Scan(&result)
 
-// Raw SQL
+// Чистый SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
