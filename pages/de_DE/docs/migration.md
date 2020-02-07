@@ -7,7 +7,7 @@ layout: page
 
 Automatically migrate your schema, to keep your schema update to date.
 
-**WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data.
+**WARNING:** AutoMigrate will **ONLY** create tables, missing columns and missing indexes, and **WON'T** change existing column's type or delete unused columns to protect your data and also **WON'T** create **relations** between tables such as foreign keys. See **Add Foreign Key** part in the current page.
 
 ```go
 db.AutoMigrate(&User{})
