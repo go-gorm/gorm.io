@@ -1,4 +1,6 @@
-en: English
+en:
+  name: English
+  disqus_lang: en
 zh_CN:
   name: 简体中文
   disqus_lang: zh
@@ -23,6 +25,6 @@ ru_RU:
 fr_FR:
   name: French
   disqus_lang: fr
-pt_BR:
-  name: Brazilian Portuguese
-  disqus_lang: pt
+ko_KR:
+  name: 한국어
+  disqus_lang: ko
