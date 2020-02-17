@@ -38,7 +38,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-## Sauter la mise à jour automatique
+## Ignorer la mise à jour automatique
 
 Si votre association existe déjà dans la base de données, vous ne voudrez peut-être pas la mettre à jour.
 
@@ -62,7 +62,7 @@ type User struct {
 }
 ```
 
-## Sauter la création automatique
+## Ignorer la création automatique
 
 Même si vous avez désactivé `AutoUpdating`, les associations sans clé primaire doivent quand même être créées et leur référence enregistrée.
 
