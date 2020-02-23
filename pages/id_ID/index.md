@@ -1,8 +1,8 @@
 ---
-layout: Daftar Isi
+layout: index
 description: Perpustakaan ORM yang fantastis untuk Golang, bertujuan menjadi pengembang yang bersahabat.
 subtitle: Perpustakaan ORM yang fantastis untuk Golang
-comments: tidak
+comments: false
 ---
 
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> ORM yang banyak fitur(hampir)
