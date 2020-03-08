@@ -3,9 +3,9 @@ title: 错误处理
 layout: page
 ---
 
-Go的错误处理是很重要的
+Go的错误处理是很重要的。
 
-建议您在调用任何 [立即执行方法](https://gorm. io/zh_CN/docs/method_chaining. html#立即执行方法) 后进行错误检查
+建议您在调用任何 [立即执行方法](https://gorm.io/zh_CN/docs/method_chaining.html#立即执行方法) 后进行错误检查
 
 ## 错误处理
 
