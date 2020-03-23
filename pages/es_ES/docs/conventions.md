@@ -85,7 +85,7 @@ type Animal struct {
 
 ### CreatedAt
 
-For models having a `CreatedAt` field, it will be set to the time when the record is first created.
+Para modelos que tengan un campo `CreatedAt`, se establecerá en el momento en que el registro sea creado por primera vez.
 
 ```go
 db.Create(&user) // se establecerá `CreatedAt` a la hora actual // Para cambiar su valor, puede usar `Update` db.Model(&user).Update("CreatedAt", time.Now())
