@@ -17,7 +17,7 @@ Cambios que rompen funcionalidad anterior
 
 * Los Soft Delete solo verificarán `deleted_at IS NULL`
 
-* New ToDBName logic
+* Nueva lógica de ToDBName
     
     When GORM convert struct, field name to db name, only common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` were handled, so `HTTP`'s db name is `http`, but not `h_t_t_p`.
     
