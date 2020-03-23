@@ -23,31 +23,31 @@ sidebar:
     declaring_models: Declarando Modelos
     conventions: Convenciones
     connecting_to_the_database: Conectando a Base de Datos
-    crud_interface: CRUD Interface
+    crud_interface: Interfaz CRUD
     create: Crear
-    query: Query
+    query: Consulta
     update: Actualizar
     delete: Eliminar
     associations: Asociaciones
     belongs_to: Pertenece A
-    has_one: Has One
-    has_many: Has Many
-    many_to_many: Many To Many
-    preload: Preloading (Eager Loading)
+    has_one: Tiene uno
+    has_many: Tiene muchos
+    many_to_many: Muchos a muchos
+    preload: Precarga (carga impaciente)
     tutorials: Tutoriales
-    method_chaining: Method Chaining
+    method_chaining: Método de cadena
     error_handling: Manejo de Errores
     hooks: Ganchos
     transactions: Transacciones
     migration: Migración
-    raw_sql_and_builder: Raw SQL and SQL Builder
+    raw_sql_and_builder: Constructor SQL y SQL Raw
     generic_interface: Interfaz de base de datos genérica
     advanced_topics: Tópicos Avanzados
-    composite_primary_key: Composite Primary Key
-    write_plugins: Write Plugins
-    dialects: GORM Dialects
+    composite_primary_key: Clave primaria compuesta
+    write_plugins: Escribir Plugins
+    dialects: Dialectos GORM
     logger: Logger
-    change_log: ChangeLog
+    change_log: Log de cambios
     community: Comunidad
     contribute: Contribuir
     translate: Traducir sitio actual
