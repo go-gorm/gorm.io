@@ -11,7 +11,7 @@ Para conectarse a una base de datos, necesita importar primero el controlador de
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
+GORM ha creado algunos drivers para facilitar recordar la ruta de importación. Así puedes importar el driver de mysql con:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -84,6 +84,6 @@ func main() {
 
 ## Escribir Dialectos para bases de datos no compatibles
 
-GORM officially supports the above databases, but you could write a dialect for unsupported databases.
+GORM soporta oficialmente las bases de datos anteriores, pero puedes escribir un dialecto para bases de datos no soportadas.
 
 To write your own dialect, refer to: <https://github.com/jinzhu/gorm/blob/master/dialect.go>
