@@ -13,7 +13,7 @@ db.DB()
 db.DB().Ping()
 ```
 
-**ПРИМЕЧАНИЕ** Если соединение с базой данных не является `*sql.DB`, как например в транзакции, возвращается `nil`
+**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will return `nil`
 
 ## Пул подключений
 
