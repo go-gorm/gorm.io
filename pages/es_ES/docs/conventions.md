@@ -7,7 +7,7 @@ layout: page
 
 `gorm.Model` es una estructura básica de GoLang que incluye los siguientes campos: `ID`, `Creado`, `Actualizado`, `Borrado`.
 
-It may be embeded into your model or you may build your own model without it.
+It may be embedded into your model or you may build your own model without it.
 
 ```go
 // Definición de gorm.Model type Model struct {   ID uint `gorm:"primary_key"`   CreatedAt time.Time   UpdatedAt time.Time   DeletedAt *time.Time } // Inyectar campos `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` en el modelo `User` type User struct {   gorm.Model   Name string } // Declarando el modelo sin gorm.Model type User struct {   ID int   Name string }
