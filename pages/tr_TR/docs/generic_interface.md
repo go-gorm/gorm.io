@@ -13,7 +13,7 @@ db.DB()
 db.DB().Ping()
 ```
 
-**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns `nil`
+**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will return `nil`
 
 ## Connection Pool
 
