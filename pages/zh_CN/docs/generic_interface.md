@@ -13,7 +13,7 @@ db.DB()
 db.DB().Ping()
 ```
 
-**注意** 如果数据库底层连接的不是一个 `*sql.DB`，比如在一个事务内，方法会返回`nil`。
+**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will return `nil`
 
 ## 连接池
 
