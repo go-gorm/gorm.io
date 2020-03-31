@@ -1,5 +1,5 @@
 ---
-title: 约定
+title: 惯例
 layout: page
 ---
 
