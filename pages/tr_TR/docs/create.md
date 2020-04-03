@@ -3,7 +3,7 @@ title: Create
 layout: page
 ---
 
-## Create Record
+## Kayıt Oluştur
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
@@ -15,9 +15,9 @@ db.Create(&user)
 db.NewRecord(user) // => return `false` after `user` created
 ```
 
-## Default Values
+## Varsayılan Değerler
 
-You can define a field's default value with a tag. For example:
+Etiket (golang tags) kullanarak bir alan için varsayılan değer tanımlayabilirsin. Örneğin:
 
 ```go
 type Animal struct {
@@ -27,7 +27,7 @@ type Animal struct {
 }
 ```
 
-Then the inserting SQL will exclude those fields that have no value or [zero values](https://tour.golang.org/basics/12). After inserting the record into the database, gorm will load those fields' value from the database.
+Bir değere sahip olmayan veya [başlangıç değerlerine (zero values)](https://tour.golang.org/basics/12) sahip olan alanlar, ekleme işlemi için oluşturulacak olan SQL'e katılmazlar. Veritabanında yeni bir kayıt oluşturulduktan sonra, Gorm bu alanları veritabanındaki değerleriyle günceller.
 
 ```go
 var animal = Animal{Age: 99, Name: ""}
@@ -37,17 +37,17 @@ db.Create(&animal)
 // animal.Name => 'galeone'
 ```
 
-**NOTE** all fields having a zero value, like `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), won't be saved into the database but will use its default value. If you want to avoid this, consider using a pointer type or scanner/valuer, e.g:
+**NOT:** başlangıç değerlerine (`0`, `''`, `false` ya da [ diğerleri ](https://tour.golang.org/basics/12)) sahip olan alanlar veritabanına kaydedilmez. Bu durumu önlemek istiyorsan, işaretçi (pointer) ya da scanner/valuer (bkz: sql.NullString) gibi tipleri kullanabilirsin:
 
 ```go
-// Use pointer value
+// işaretçi (pointer) tipini kullanan bir örnek
 type User struct {
   gorm.Model
   Name string
   Age  *int `gorm:"default:18"`
 }
 
-// Use scanner/valuer
+// scanner/valuer tipini kullanan bir örnek
 type User struct {
   gorm.Model
   Name string
@@ -55,7 +55,7 @@ type User struct {
 }
 ```
 
-## Setting Field Values In Hooks
+## Hook Kullanarak Bir Alanın Değerini Belirleme
 
 If you want to update a field's value in `BeforeCreate` hook, you can use `scope.SetColumn`, for example:
 
