@@ -33,9 +33,9 @@ sidebar:
     has_one: Has One
     has_many: Has Many
     many_to_many: Many To Many
-    preload: Preloading (Eager Loading)
-    tutorials: Tutorials
-    method_chaining: Method Chaining
+    preload: Önyükleme (Eager Loading)
+    tutorials: Eğitimler
+    method_chaining: Metot Zincirleme
     error_handling: Error Handling
     hooks: Hooks
     transactions: Transactions
