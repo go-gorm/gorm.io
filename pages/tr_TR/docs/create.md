@@ -57,16 +57,19 @@ type User struct {
 
 ## Hook Kullanarak Bir Alanın Değerini Belirleme
 
-If you want to update a field's value in `BeforeCreate` hook, you can use `scope.SetColumn`, for example:
+*Hook aslında kanca demek. Bu kelimeyi türkçeleştirmeye kalktığımda anlamdan oldukça uzaklaştı. Bulan bu sayfayı yeşillendirsin. Hook'lar aslında Gorm'un sağladığı bir takım fonksiyonlar. Örneğin BeforeCreate için konuşacak olursak bu basitçe yeni bir kayıt oluşturulmadan önce yani `Create` işleminden önce çağırılan bir fonksiyondur. *   
+  
+Eğer bir alanın değerini `BeforeCreate` aşamasında güncellemek istiyorsan `scope.SetColumn` fonksiyonunu (hook'unu) kullanabilirsin. Örneğin:
 
 ```go
 func (user *User) BeforeCreate(scope *gorm.Scope) error {
+  // Create işleminden önce user için yeni bir UUID üretiliyor ve ID fieldına bu değer atanıyor.
   scope.SetColumn("ID", uuid.New())
   return nil
 }
 ```
 
-## Extra Creating option
+## Oluşturma (Create) işlemi için ekstra opsiyon
 
 ```go
 // Add extra SQL option for inserting SQL
