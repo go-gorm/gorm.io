@@ -1,17 +1,17 @@
 ---
-title: Connecting to the database
+title: Veritabanına bağlanma
 layout: page
 ---
 
-# Connecting to the database
+# Veritabanına bağlanma
 
-In order to connect to a database, you need to import the database's driver first. For example:
+Bir veritabanına bağlanmak için önce veritabanı sürücüsünü içe aktarmanız (import) gerekir. Örneğin:
 
 ```go
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM has wrapped some drivers to make it easier to remeber the import path. So you could import the mysql driver with:
+GORM en çok kullanılan veritabanlarının sürücülerini kullanımı ve hatırlamayı kolaylaştırmak için kendi içine almıştır. Örneğin mysql sürücüsünü aşağıdaki gibi kolayca ekleyebilirsiniz:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
