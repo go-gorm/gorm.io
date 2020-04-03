@@ -11,7 +11,7 @@ Bir veritabanına bağlanmak için önce veritabanı sürücüsünü içe aktarm
 import _ "github.com/go-sql-driver/mysql"
 ```
 
-GORM en çok kullanılan veritabanlarının sürücülerini kullanımı ve hatırlamayı kolaylaştırmak için kendi içine almıştır. Örneğin mysql sürücüsünü aşağıdaki gibi kolayca ekleyebilirsiniz:
+GORM en çok kullanılan veritabanlarının sürücülerini kullanımı ve hatırlamayı kolaylaştırmak için kendi içine eklemiştir. Örneğin mysql sürücüsünü aşağıdaki gibi kolayca ekleyebilirsiniz:
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
