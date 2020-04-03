@@ -36,11 +36,11 @@ sidebar:
     preload: Önyükleme (Eager Loading)
     tutorials: Eğitimler
     method_chaining: Metot Zincirleme
-    error_handling: Error Handling
-    hooks: Hooks
-    transactions: Transactions
-    migration: Migration
-    raw_sql_and_builder: Raw SQL and SQL Builder
+    error_handling: Hata işleme
+    hooks: Kanca (modül)
+    transactions: İşlem Yığınları
+    migration: Veri Taşıma
+    raw_sql_and_builder: Ham SQL ve SQL Oluşturucu
     generic_interface: Generic Database Interface
     advanced_topics: Advanced Topics
     composite_primary_key: Composite Primary Key
