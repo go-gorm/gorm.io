@@ -30,9 +30,9 @@ sidebar:
     delete: Sil
     associations: İlişkilendirmeler
     belongs_to: '-e Ait'
-    has_one: Has One
-    has_many: Has Many
-    many_to_many: Many To Many
+    has_one: Tek Yönlü İlişki
+    has_many: Birden Çoka İlişki
+    many_to_many: Çoktan Çoka İlişki
     preload: Önyükleme (Eager Loading)
     tutorials: Eğitimler
     method_chaining: Metot Zincirleme
@@ -45,9 +45,9 @@ sidebar:
     advanced_topics: İleri düzey Konular
     composite_primary_key: Birleşik Birincil Anahtar
     write_plugins: Eklentiler Oluştur
-    dialects: GORM Dialects
-    logger: Logger
-    change_log: ChangeLog
-    community: Community
-    contribute: Contribute
-    translate: Translate current site
+    dialects: GORM Dialects (lehçeleri)
+    logger: Günlükçü (Loglayıcı)
+    change_log: Değişim Günlüğü
+    community: Topluluk
+    contribute: Katkıda Bulun
+    translate: Şu anki sayfayı çevir
