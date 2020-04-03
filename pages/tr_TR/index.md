@@ -14,6 +14,6 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Üretici
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Otomatik Taşıma (Migration)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extend edilebilir, GORM'un geri çağırma fonksiyonları üzerine eklentiler geliştirilebilir
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Tüm yeni özellikler test edilerek eklenir
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Geliştirici dostudur
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Genişletilebilir, GORM'un geri çağırma fonksiyonlarını kullanarak eklentiler geliştirilebilir
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Her özellik test edilerek eklenir
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Geliştirici dostu
