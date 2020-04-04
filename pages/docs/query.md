@@ -34,7 +34,7 @@ db.First(&user, 10)
 ```go
 // Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
-//// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
+//// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
 // Get all matched records
 db.Where("name = ?", "jinzhu").Find(&users)
@@ -70,7 +70,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 ```go
 // Struct
 db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
-//// SELECT * FROM users WHERE name = "jinzhu" AND age = 20 LIMIT 1;
+//// SELECT * FROM users WHERE name = "jinzhu" AND age = 20 ORDER BY id LIMIT 1;
 
 // Map
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
@@ -112,7 +112,7 @@ Works similar like `Where`
 
 ```go
 db.Not("name", "jinzhu").First(&user)
-//// SELECT * FROM users WHERE name <> "jinzhu" LIMIT 1;
+//// SELECT * FROM users WHERE name <> "jinzhu" ORDER BY id LIMIT 1;
 
 // Not In
 db.Not("name", []string{"jinzhu", "jinzhu 2"}).Find(&users)
@@ -120,18 +120,18 @@ db.Not("name", []string{"jinzhu", "jinzhu 2"}).Find(&users)
 
 // Not In slice of primary keys
 db.Not([]int64{1,2,3}).First(&user)
-//// SELECT * FROM users WHERE id NOT IN (1,2,3);
+//// SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 
 db.Not([]int64{}).First(&user)
-//// SELECT * FROM users;
+//// SELECT * FROM users ORDER BY id LIMIT 1;
 
 // Plain SQL
 db.Not("name = ?", "jinzhu").First(&user)
-//// SELECT * FROM users WHERE NOT(name = "jinzhu");
+//// SELECT * FROM users WHERE NOT(name = "jinzhu") ORDER BY id LIMIT 1;
 
 // Struct
 db.Not(User{Name: "jinzhu"}).First(&user)
-//// SELECT * FROM users WHERE name <> "jinzhu";
+//// SELECT * FROM users WHERE name <> "jinzhu" ORDER BY id LIMIT 1;
 ```
 
 ### Or
@@ -158,10 +158,10 @@ When using with [Multiple Immediate Methods](method_chaining.html#Multiple-Immed
 ```go
 // Get by primary key (only works for integer primary key)
 db.First(&user, 23)
-//// SELECT * FROM users WHERE id = 23 LIMIT 1;
+//// SELECT * FROM users WHERE id = 23;
 // Get by primary key if it were a non-integer type
 db.First(&user, "id = ?", "string_primary_key")
-//// SELECT * FROM users WHERE id = 'string_primary_key' LIMIT 1;
+//// SELECT * FROM users WHERE id = 'string_primary_key';
 
 // Plain SQL
 db.Find(&user, "name = ?", "jinzhu")
@@ -210,16 +210,16 @@ Initalize struct with argument if record not found
 ```go
 // Unfound
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
-//// SELECT * FROM USERS WHERE name = 'non_existing';
+//// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// user -> User{Name: "non_existing", Age: 20}
 
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
-//// SELECT * FROM USERS WHERE name = 'non_existing';
+//// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// user -> User{Name: "non_existing", Age: 20}
 
 // Found
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
-//// SELECT * FROM USERS WHERE name = jinzhu';
+//// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 ```
 
@@ -234,7 +234,7 @@ db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 // Found
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
-//// SELECT * FROM USERS WHERE name = jinzhu';
+//// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 30}
 ```
 
@@ -260,13 +260,13 @@ Assign struct with argument if record not found and create with those values
 ```go
 // Unfound
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'non_existing';
+//// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 //// user -> User{Id: 112, Name: "non_existing", Age: 20}
 
 // Found
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'jinzhu';
+//// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 //// user -> User{Id: 111, Name: "jinzhu", Age: 20}
 ```
 
@@ -277,13 +277,13 @@ Assign it to the record regardless it is found or not, and save back to database
 ```go
 // Unfound
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'non_existing';
+//// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 //// user -> User{Id: 112, Name: "non_existing", Age: 20}
 
 // Found
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'jinzhu';
+//// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 //// UPDATE users SET age=30 WHERE id = 111;
 //// user -> User{Id: 111, Name: "jinzhu", Age: 30}
 ```
