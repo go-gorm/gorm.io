@@ -5,11 +5,11 @@ layout: page
 
 **Vous pouvez aider à améliorer GORM! il y a beaucoup de choses que vous pouvez faire:**
 
-## Help others to know GORM
+## Aidez les autres à découvrir GORM
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
+* Partagez GORM avec le monde via les réseaux sociaux ou informez simplement les personnes susceptibles d'être intéressées
+* Aidez les nouveaux arrivants à résoudre leurs problèmes sur [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/jinzhu/gorm/issues) et [Chat Rooms](/community.html#Chat)
+* Écrivez des tutoriels, enregistrez des vidéos, etc... (N'oubliez pas de les ajouter à [la liste](/community.html))
 * Help to promote GORM on GitHub by [Starring](https://github.com/jinzhu/gorm/stargazers) and [Watching](https://github.com/jinzhu/gorm/watchers) the [GORM repository](https://github.com/jinzhu/gorm)
 
 ## Documentation and Writing
