@@ -9,15 +9,15 @@ GORM enregistre automatiquement les associations et leurs référence lors de la
 
 ```go
 user := User{
-  Name:            "jinzhu",
+  Name:            "valem",
   BillingAddress:  Address{Address1: "Billing Address - Address 1"},
   ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
   Emails:          []Email{
-    {Email: "jinzhu@example.com"},
-    {Email: "jinzhu-2@example.com"},
+    {Email: "valem@example.com"},
+    {Email: "valem-2@example.com"},
   },
   Languages:       []Language{
-    {Name: "ZH"},
+    {Name: "FR"},
     {Name: "EN"},
   },
 }
@@ -26,10 +26,10 @@ db.Create(&user)
 //// BEGIN TRANSACTION;
 //// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1");
 //// INSERT INTO "addresses" (address1) VALUES ("Shipping Address - Address 1");
-//// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
-//// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com");
-//// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu-2@example.com");
-//// INSERT INTO "languages" ("name") VALUES ('ZH');
+//// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("valem", 1, 2);
+//// INSERT INTO "emails" (user_id,email) VALUES (111, "valem@example.com");
+//// INSERT INTO "emails" (user_id,email) VALUES (111, "valem-2@example.com");
+//// INSERT INTO "languages" ("name") VALUES ('MNE);
 //// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 1);
 //// INSERT INTO "languages" ("name") VALUES ('EN');
 //// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 2);
