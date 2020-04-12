@@ -3,7 +3,7 @@ title: Contribuer à GORM
 layout: page
 ---
 
-**You can help to deliver a better GORM! there are many things that you can do:**
+**Vous pouvez aider à améliorer GORM! il y a beaucoup de choses que vous pouvez faire:**
 
 ## Help others to know GORM
 
