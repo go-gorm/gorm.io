@@ -34,7 +34,7 @@ db.First(&user, 10)
 ```go
 // Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
-//// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
+//// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
 // Get all matched records
 db.Where("name = ?", "jinzhu").Find(&users)
@@ -70,13 +70,13 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 ```go
 // Struct
 db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
-//// SELECT * FROM users WHERE name = "jinzhu" AND age = 20 LIMIT 1;
+//// SELECT * FROM users WHERE name = "jinzhu" AND age = 20 ORDER BY id LIMIT 1;
 
 // Map
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 //// SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// 主键的切片
+// Slice of primary keys
 db.Where([]int64{20, 21, 22}).Find(&users)
 //// SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
@@ -112,7 +112,7 @@ type User struct {
 
 ```go
 db.Not("name", "jinzhu").First(&user)
-//// SELECT * FROM users WHERE name <> "jinzhu" LIMIT 1;
+//// SELECT * FROM users WHERE name <> "jinzhu" ORDER BY id LIMIT 1;
 
 // Not In
 db.Not("name", []string{"jinzhu", "jinzhu 2"}).Find(&users)
@@ -120,18 +120,18 @@ db.Not("name", []string{"jinzhu", "jinzhu 2"}).Find(&users)
 
 // Not In slice of primary keys
 db.Not([]int64{1,2,3}).First(&user)
-//// SELECT * FROM users WHERE id NOT IN (1,2,3);
+//// SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 
 db.Not([]int64{}).First(&user)
-//// SELECT * FROM users;
+//// SELECT * FROM users ORDER BY id LIMIT 1;
 
 // Plain SQL
 db.Not("name = ?", "jinzhu").First(&user)
-//// SELECT * FROM users WHERE NOT(name = "jinzhu");
+//// SELECT * FROM users WHERE NOT(name = "jinzhu") ORDER BY id LIMIT 1;
 
 // Struct
 db.Not(User{Name: "jinzhu"}).First(&user)
-//// SELECT * FROM users WHERE name <> "jinzhu";
+//// SELECT * FROM users WHERE name <> "jinzhu" ORDER BY id LIMIT 1;
 ```
 
 ### Or 条件
@@ -156,12 +156,12 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 当内联条件与 [多个立即执行方法](method_chaining.html#Multiple-Immediate-Methods) 一起使用时, 内联条件不会传递给后面的立即执行方法。
 
 ```go
-// 根据主键获取记录 (只适用于整形主键)
+// Get by primary key (only works for integer primary key)
 db.First(&user, 23)
-//// SELECT * FROM users WHERE id = 23 LIMIT 1;
-// 根据主键获取记录, 如果它是一个非整形主键
+//// SELECT * FROM users WHERE id = 23;
+// Get by primary key if it were a non-integer type
 db.First(&user, "id = ?", "string_primary_key")
-//// SELECT * FROM users WHERE id = 'string_primary_key' LIMIT 1;
+//// SELECT * FROM users WHERE id = 'string_primary_key';
 
 // Plain SQL
 db.Find(&user, "name = ?", "jinzhu")
@@ -208,18 +208,18 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 如果记录未找到，将使用参数初始化 struct.
 
 ```go
-// 未找到
+// Unfound
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
-//// SELECT * FROM USERS WHERE name = 'non_existing';
+//// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// user -> User{Name: "non_existing", Age: 20}
 
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
-//// SELECT * FROM USERS WHERE name = 'non_existing';
+//// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// user -> User{Name: "non_existing", Age: 20}
 
-// 找到
+// Found
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
-//// SELECT * FROM USERS WHERE name = jinzhu';
+//// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
 ```
 
@@ -228,13 +228,13 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 不管记录是否找到，都将参数赋值给 struct.
 
 ```go
-// 未找到
+// Unfound
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 //// user -> User{Name: "non_existing", Age: 20}
 
-// 找到
+// Found
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
-//// SELECT * FROM USERS WHERE name = jinzhu';
+//// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 30}
 ```
 
@@ -258,15 +258,15 @@ db.Where(User{Name: "Jinzhu"}).FirstOrCreate(&user)
 如果记录未找到，将使用参数创建 struct 和记录.
 
 ```go
-// 未找到
+// Unfound
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'non_existing';
+//// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 //// user -> User{Id: 112, Name: "non_existing", Age: 20}
 
-// 找到
+// Found
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'jinzhu';
+//// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 //// user -> User{Id: 111, Name: "jinzhu", Age: 20}
 ```
 
@@ -275,15 +275,15 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 不管记录是否找到，都将参数赋值给 struct 并保存至数据库.
 
 ```go
-// 未找到
+// Unfound
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'non_existing';
+//// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 //// user -> User{Id: 112, Name: "non_existing", Age: 20}
 
-// 找到
+// Found
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
-//// SELECT * FROM users WHERE name = 'jinzhu';
+//// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 //// UPDATE users SET age=30 WHERE id = 111;
 //// user -> User{Id: 111, Name: "jinzhu", Age: 30}
 ```
@@ -295,7 +295,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 基于 `*gorm.expr` 的子查询
 
 ```go
-db.Where("amount > ?", DB.Table("orders").Select("AVG(amount)").Where("state = ?", "paid").QueryExpr()).Find(&orders)
+db.Where("amount > ?", db.Table("orders").Select("AVG(amount)").Where("state = ?", "paid").SubQuery()).Find(&orders)
 // SELECT * FROM "orders"  WHERE "orders"."deleted_at" IS NULL AND (amount > (SELECT AVG(amount) FROM "orders"  WHERE (state = 'paid')));
 ```
 
