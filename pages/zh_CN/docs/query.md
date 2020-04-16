@@ -32,11 +32,11 @@ db.First(&user, 10)
 #### 普通 SQL
 
 ```go
-// Get first matched record
+// 获取第一个匹配的记录
 db.Where("name = ?", "jinzhu").First(&user)
-//// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
+//// SELECT * FROM users WHERE name = 'jinzhu' limit 1;
 
-// Get all matched records
+// 获取所有匹配的记录
 db.Where("name = ?", "jinzhu").Find(&users)
 //// SELECT * FROM users WHERE name = 'jinzhu';
 
@@ -76,7 +76,7 @@ db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 //// SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice of primary keys
+// 主键切片
 db.Where([]int64{20, 21, 22}).Find(&users)
 //// SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
