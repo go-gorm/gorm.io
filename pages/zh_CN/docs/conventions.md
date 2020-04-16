@@ -7,7 +7,7 @@ layout: page
 
 `gorm.Model` 是一个包含了`ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`四个字段的GoLang结构体。
 
-你可以将它嵌入到你自己的模型中，当然你也可以完全使用自己的模型。
+你可以将它嵌入到你自己的 Model 中，也可以完全使用自己的 Model。
 
 ```go
 // gorm.Model 定义

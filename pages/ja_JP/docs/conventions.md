@@ -7,7 +7,7 @@ layout: page
 
 `gorm.Model`は`ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`というフィールドを持つ、GoのStructです。
 
-あなたのモデルに組み込んで使っても良いですし、組み込まずに独自のモデルを使っても構いません。
+It may be embedded into your model or you may build your own model without it.
 
 ```go
 // gorm.Modelの定義

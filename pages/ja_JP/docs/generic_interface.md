@@ -13,7 +13,7 @@ db.DB()
 db.DB().Ping()
 ```
 
-**注意** トランザクションのように、基となるデータベースコネクションが`*sql.DB`でない場合は、`nil`を返します。
+**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will return `nil`
 
 ## コネクションプール
 

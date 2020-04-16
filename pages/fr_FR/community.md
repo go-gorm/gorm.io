@@ -1,11 +1,11 @@
 ---
-title: GORM Community
+title: Communauté GORM
 layout: page
 ---
 
-## Ask
+## Questions
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[Comment puis-je poser une bonne question?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - <https://stackoverflow.com/questions/tagged/go-gorm>
 * Github Issues - <https://github.com/jinzhu/gorm/issues>
@@ -15,7 +15,7 @@ layout: page
 * Slack - [https://go-gorm.slack.com](https://join.slack.com/t/go-gorm/shared_invite/enQtMzE1NDg0ODc5MjAwLTAyMDZjOGQ5MmFjYjdhN2IzNjlkZDE3MDE4ODRjY2QyNDY5N2UzZTdjM2VkMDA4Nzk3NjU4NTM5OTAzOGNkYTg)
 * Gitter - <https://gitter.im/jinzhu/gorm>
 
-## Links
+## Liens
 
 * [Gorm Gotchas](https://blog.depado.eu/post/gorm-gotchas)
 * [How I Built an API with Mux, Go, PostgreSQL, and GORM](https://dev.to/aspittel/how-i-built-an-api-with-mux-go-postgresql-and-gorm-5ah8)
@@ -23,7 +23,7 @@ layout: page
 * [Data consistency, gorm and CockroachDB](http://callistaenterprise.se/blogg/teknik/2018/02/14/go-blog-series-part13/)
 * [GORM Chinese Documents / GORM 中文文档](https://jasperxu.github.io/gorm-zh/)
 
-## Videos
+## Vidéos
 
 * [Overview of the GORM object relational mapper](https://www.youtube.com/watch?v=nVD9acHituc)
 * [GORM: An Object Relational Mapper for Go](https://www.pluralsight.com/courses/gorm-go-object-relational-mapper)
@@ -40,6 +40,6 @@ layout: page
 * [go-oauth2-gorm - GORM adapter for go-oauth2](https://github.com/techknowlogick/go-oauth2-gorm)
 * [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
 
-## Contribute to this page
+## Contribuer à cette page
 
-Please edit [this page](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md) and create pull request
+Veuillez modifier [cette page](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md) puis faire une pull request
