@@ -21,6 +21,22 @@ var result Result
 db.Raw("SELECT name, age FROM users WHERE name = ?", 3).Scan(&result)
 ```
 
+## Run `sql.Stmt` 
+
+Run a SQL prepared statement
+
+```go
+stmt, err := db.DB().Prepare("INSERT INTO users (name, age) VALUES (?, ?)") // (*sql.Stmt, error)
+ 
+res, err := stmt.Exec("Jinzhu", 11) // (sql.Result, error)
+
+userID, err := res.LastInsertId() 
+
+if err != nil { 
+  // do something
+}   
+```
+
 ## `sql.Row` & `sql.Rows`
 
 Get query result as `*sql.Row` or `*sql.Rows`
