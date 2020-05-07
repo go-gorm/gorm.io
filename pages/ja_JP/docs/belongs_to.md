@@ -48,11 +48,11 @@ type Profile struct {
 
 ## Association ForeignKey
 
-For a belongs to relationship, GORM usually uses the owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+Belongs to を定義する場合、GORMはデフォルトで親モデルの主キーを外部キーとして使用します。 上記の例では`User`の`ID`になります。
 
-When you assign a profile to a user, GORM will save user's `ID` into profile's `UserID` field.
+ProfileをUserに定義した場合、GORMではUserの`ID`をProfileの`UserID`に保存します。
 
-You are able to change it with tag `association_foreignkey`, e.g:
+`association_foreignkey`タグを用いて変更することもできます。
 
 ```go
 type User struct {
@@ -71,11 +71,11 @@ type Profile struct {
 
 ## Working with Belongs To
 
-You could find `belongs to` associations with `Related`
+`belongs to`の関連は`Related`を使用して取得できます。
 
 ```go
 db.Model(&user).Related(&profile)
 //// SELECT * FROM profiles WHERE user_id = 111; // 111 is user's ID
 ```
 
-For advanced usage, refer [Association Mode](associations.html#Association-Mode)
+さらに詳しい使い方については [Association Mode](associations.html#Association-Mode) を参照してください。
