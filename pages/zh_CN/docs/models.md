@@ -20,8 +20,7 @@ type User struct {
   MemberNumber *string `gorm:"unique;not null"` // 设置会员号（member number）唯一并且不为空
   Num          int     `gorm:"AUTO_INCREMENT"` // 设置 num 为自增类型
   Address      string  `gorm:"index:addr"` // 给address字段创建名为addr的索引
-  IgnoreMe     int     `gorm:"-"` // 忽略本字段
-}
+  IgnoreMe     int     `gorm:"-"` // 忽略本字段}
 ```
 
 ## 结构体标记（tags）
@@ -51,7 +50,7 @@ type User struct {
 
 关联 struct 的详情请查看关联部分
 
-| 结构体标记（Tag）                     | 描述                   |
+| Tag                                | 描述                   |
 | ---------------------------------- | -------------------- |
 | MANY2MANY                          | 指定连接表                |
 | FOREIGNKEY                         | 设置外键                 |
