@@ -7,7 +7,7 @@ layout: страница
 
 `gorm.Model` является базовой структурой GoLang, которая включает следующие поля: `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`.
 
-It may be embedded into your model or you may build your own model without it.
+Она может быть встроена в вашу модель или вы можете построить свою собственную модель без нее.
 
 ```go
 // Определение gorm.Model
