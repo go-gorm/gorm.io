@@ -208,7 +208,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 Создать структуру с аргументом, если запись не найдена
 
 ```go
-// Unfound
+// Нет записи
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// user -> User{Name: "non_existing", Age: 20}
@@ -217,7 +217,7 @@ db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// user -> User{Name: "non_existing", Age: 20}
 
-// Found
+// Есть запись
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 20}
@@ -228,11 +228,11 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 30}).FirstOrInit(&user)
 Назначить аргумент структуре независимо от того, найден он или нет
 
 ```go
-// Unfound
+// Нет записи
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 //// user -> User{Name: "non_existing", Age: 20}
 
-// Found
+// Есть запись
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
 //// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 //// user -> User{Id: 111, Name: "Jinzhu", Age: 30}
@@ -258,13 +258,13 @@ db.Where(User{Name: "Jinzhu"}).FirstOrCreate(&user)
 Назначить структуру с аргументом, если запись не найдена и создать с этими значениями
 
 ```go
-// Unfound
+// Нет записи
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 //// user -> User{Id: 112, Name: "non_existing", Age: 20}
 
-// Found
+// Есть запись
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 //// user -> User{Id: 111, Name: "jinzhu", Age: 20}
@@ -275,13 +275,13 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 30}).FirstOrCreate(&user)
 Назначить его записи независимо от того, что она найдена или нет, и сохранить обратно в базу данных.
 
 ```go
-// Unfound
+// Нет записи
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 //// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 //// user -> User{Id: 112, Name: "non_existing", Age: 20}
 
-// Found
+// Есть запись
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 30}).FirstOrCreate(&user)
 //// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 //// UPDATE users SET age=30 WHERE id = 111;
