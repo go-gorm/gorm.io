@@ -64,7 +64,7 @@ type User struct {
 
 ## Skip AutoCreate
 
-自動更新を無効にしたにもかかわらず、主キーなしの関連付けを作成しなければならず、その参照も保存されます。
+自動更新を無効にしたとしても、主キーを除く関連付けは作成され、その参照も保存されます。
 
 これを無効にするには、DB設定のgorm:association_autocreateをfalseに設定します
 
