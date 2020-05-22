@@ -42,23 +42,23 @@ db.Save(&user)
 
 Wenn die Zuordnungen bereits in der Datenbank vorhanden sind, möchte man sie möglicherweise nicht aktualisieren.
 
-Hierzu kann man die Datenbank-Einstellung `gorm:association_autoupdate` zu `false` setzen:
+Hierzu kann man die Datenbank-Einstellung `gorm:association_autoupdate` auf `false` setzen
 
 ```go
 // Assoziationen mit Primärschlüssel werden nicht aktualisiert,
-// speichert aber die Referenz
+// aber die Referenz wird gespeichert
 db.Set("gorm:association_autoupdate", false).Create(&user)
 db.Set("gorm:association_autoupdate", false).Save(&user)
 ```
 
-oder mit GORM tags, `gorm:"association_autoupdate:false"`
+oder GORM Tags nutzen, `gorm:"association_autoupdate:false"`
 
 ```go
 type User struct {
   gorm.Model
   Name       string
   CompanyID  uint
-  // Aktualisiere keine Verknüpfungen mit Primärschlüssel, speichert aber
+  // Aktualisiert keine Verknüpfungen mit Primärschlüssel, speichert aber
   // die Referenz
   Company    Company `gorm:"association_autoupdate:false"`
 }
@@ -66,24 +66,24 @@ type User struct {
 
 ## AutoCreate überspringen
 
-Selbst bei deaktiviertem `AutoUpdating` werden Assoziation ohne Primärschlüssel erstellt und ihre Referenz wird gespeichert.
+Selbst bei deaktiviertem `AutoUpdating` werden Assoziationen ohne Primärschlüssel erstellt und ihre Referenz wird gespeichert.
 
-Um dies zu deaktivieren, können Sie die Datenbank-Einstellung `gorm: association_autocreate` auf ` false ` setzen
+Um dies zu deaktivieren, können Sie die Datenbank-Einstellung `gorm: association_autocreate` auf `false` setzen
 
 ```go
 // Erstelle keine Assoziationen ohne Primärschlüssel,
-// speichert die Referenz NICHT
+// speichere die Referenz NICHT
 db.Set("gorm:association_autocreate", false).Create(&user)
 db.Set("gorm:association_autocreate", false).Save(&user)
 ```
 
-oder mit GORM tags, `gorm:"association_autocreate:false"`
+oder GORM Tags nutzen, `gorm:"association_autocreate:false"`
 
     type User struct {
       gorm.Model
       Name       string
-      // Erstellen keine Assoziationen ohne Primärschlüssel,
-      // speichert die Referenz NICHT 
+      // Erstelle keine Assoziationen ohne Primärschlüssel,
+      // speicher die Referenz NICHT 
      Company1   Company `gorm:"association_autocreate:false"`
     }
     
