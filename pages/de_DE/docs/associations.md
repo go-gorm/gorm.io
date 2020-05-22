@@ -5,7 +5,7 @@ layout: page
 
 ## Automatisches erstellen/aktualisieren
 
-GORM speichert beim erstellen / aktualisieren eines Datensatzes automatisch Assoziationen und deren Referenz. Wenn die Verknüpfung einen Primärschlüssel hat, ruft GORM `Update` auf, um es zu speichern, andernfalls wird sie erstellt.
+GORM speichert beim Erstellen / Aktualisieren eines Datensatzes automatisch Assoziationen und deren Referenz. Wenn die Verknüpfung einen Primärschlüssel hat, ruft GORM `Update` auf, um es zu speichern, andernfalls wird sie erstellt.
 
 ```go
 user := User{
@@ -40,7 +40,7 @@ db.Save(&user)
 
 ## AutoUpdate überspringen
 
-Wenn die Zuordnungen bereits in der Datenbank vorhanden sind, möchten man sie möglicherweise nicht aktualisieren.
+Wenn die Zuordnungen bereits in der Datenbank vorhanden sind, möchte man sie möglicherweise nicht aktualisieren.
 
 Hierzu kann man die Datenbank-Einstellung `gorm:association_autoupdate` zu `false` setzen:
 
