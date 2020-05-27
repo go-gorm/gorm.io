@@ -1,17 +1,13 @@
 ---
-title: データベースへの接続
+title: Connecting to a Database
 layout: page
 ---
 
-## データベースへの接続
+## Importing a Driver
 
-データベースに接続するには、まずデータベースのドライバーをImportする必要があります。
+In order to connect to a database, you need to import its driver first.
 
-```go
-import _ "github.com/go-sql-driver/mysql"
-```
-
-GORMには各ドライバーのImportを楽にするためのラッパーがいくつか用意されています。例えばMySQLドライバーをImportする場合は、下記のように書けます。
+GORM wraps the drivers for the officially supported databases.
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -20,15 +16,21 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 // import _ "github.com/jinzhu/gorm/dialects/mssql"
 ```
 
+You can import other drivers in the same way.
+
+```go
+import _ "github.com/go-sql-driver/mysql"
+```
+
 ## サポートされているデータベース
 
 ### MySQL
 
-**注意**
+**NOTE:**
 
-`time.Time`を正しく扱うため、`parseTime`をパラメータとして渡してあげる必要があります。 ([対応している他のパラメータ](https://github.com/go-sql-driver/mysql#parameters))
+In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
 
-UTF-8の完全な対応のため、`charset=utf8`を`charset=utf8mb4`に変更する必要があります。 詳しくは [こちらの記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
+In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
 
 ```go
 import (
@@ -42,7 +44,7 @@ func main() {
 }
 ```
 
-ホストを指定する場合は、`()`を使用してください。例:
+If you want to specify the host, you need to use `()`. Example:
 
     user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
     
@@ -61,9 +63,9 @@ func main() {
 }
 ```
 
-### Sqlite3
+### SQLite3
 
-**NOTE:**パスの代わりに`:memory:`の指定も可能です。 この場合、sqliteに対してシステムのメモリ上に一時的なデータベースを利用するように指定します。 GORMの機能を使ってメモリー上の実際のDBを叩くことになるので、テストの時に便利です。
+**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this.)
 
 ```go
 import (
@@ -79,7 +81,7 @@ func main() {
 
 ### SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), Dockerを使って[Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/)や[Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/)で実行することもできます。
+Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
 ```go
 import (
@@ -95,4 +97,4 @@ func main() {
 
 ## サポートされていないデータベース
 
-GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](dialects.html)
+GORM officially supports the databases listed above, but you can [write GORM dialects](dialects.html) for unsupported databases.
