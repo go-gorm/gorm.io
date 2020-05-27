@@ -1,23 +1,25 @@
 ---
-title: Connecting to database
+title: Connecting to a Database
 layout: page
 ---
 
-## Connecting to database
+## Importing a Driver
 
-In order to connect to a database, you need to import the database's driver first. For example:
+In order to connect to a database, you need to import its driver first.
 
-```go
-import _ "github.com/go-sql-driver/mysql"
-```
-
-GORM has wrapped some drivers to make it easier to remember the import path. So you could import the mysql driver with:
+GORM wraps the drivers for the officially supported databases.
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
 // import _ "github.com/jinzhu/gorm/dialects/postgres"
 // import _ "github.com/jinzhu/gorm/dialects/sqlite"
 // import _ "github.com/jinzhu/gorm/dialects/mssql"
+```
+
+You can import other drivers in the same way.
+
+```go
+import _ "github.com/go-sql-driver/mysql"
 ```
 
 ## Supported Databases
@@ -61,9 +63,9 @@ func main() {
 }
 ```
 
-### Sqlite3
+### SQLite3
 
-**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell sqlite to use a temporary database in system memory. This is especially useful when writing tests for your application against GORM, your tests to hit an actual database, but also be performant as the database is located in memory.
+**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this.)
 
 ```go
 import (
@@ -79,7 +81,7 @@ func main() {
 
 ### SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), it can run on your [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) with Docker
+Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
 ```go
 import (
@@ -95,4 +97,4 @@ func main() {
 
 ## Unsupported Databases
 
-GORM officially supports above four databases, you could write dialects for unsupported databases, refer [GORM Dialects](dialects.html)
+GORM officially supports the databases listed above, but you can [write GORM dialects](dialects.html) for unsupported databases.
