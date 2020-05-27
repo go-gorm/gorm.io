@@ -7,7 +7,6 @@ GORM 默认会将单个的 `create`, `update`, `delete`操作封装在事务内�
 
 如果你想把多个 `create`, `update`, `delete` 操作作为一个原子操作，`Transaction` 就是用来完成这个的。
 
-
 ## 事务
 
 要在事务中执行一系列操作，通常您可以参照下面的流程来执行。
@@ -25,16 +24,16 @@ func CreateAnimals(db *gorm.DB) error {
       return err
     }
 
-    // 返回 nil 提交事务
+    // 返回 nil ，事务会 commit
     return nil
   })
 }
 ```
 
-## 事务（手动控制）
+## 手动控制的事务
 
 ```go
-// 开启事务
+// 开始事务
 tx := db.Begin()
 
 // 在事务中做一些数据库操作 (这里应该使用 'tx' ，而不是 'db')

@@ -151,9 +151,9 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2"}).Find(
 
 ### Inline Condition
 
-Works similar like `Where`.
+`Where` と同様に利用できます。
 
-When using with [Multiple Immediate Methods](method_chaining.html#Multiple-Immediate-Methods), won't pass those conditions to later immediate methods.
+[Multiple Immediate Methods](method_chaining.html#Multiple-Immediate-Methods)を使用する際は、遅れて即時メソッドに条件を渡しません。
 
 ```go
 // Get by primary key (only works for integer primary key)
@@ -189,7 +189,7 @@ db.Set("gorm:query_option", "FOR UPDATE").First(&user, 10)
 
 ## FirstOrInit
 
-Get first matched record, or initalize a new one with given conditions (only works with struct, map conditions)
+最初にマッチしたレコードを得る、または渡された条件 (構造体、マップの場合のみ機能) を元にレコードを作成します
 
 ```go
 // Unfound
@@ -240,7 +240,7 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 30}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record, or create a new one with given conditions (only works with struct, map conditions)
+最初にマッチしたレコードを得る、または渡された条件 (構造体、マップの場合のみ機能) を元にレコードを作成します。
 
 ```go
 // Unfound

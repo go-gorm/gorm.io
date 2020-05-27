@@ -10,7 +10,7 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Préchargement (eager loading)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transactions
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Composite Primary Key
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Clé primaire composée
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Migrations automatiques
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
