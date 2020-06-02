@@ -51,5 +51,5 @@ theme: navy  # based from hexo offical site
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repository: https://__GITHUB_TOKEN__@github.com/jinzhu/gorm.io.git
+  repository: https://__GITHUB_TOKEN__@github.com/go-gorm/gorm.io.git
   branch: gh-pages
