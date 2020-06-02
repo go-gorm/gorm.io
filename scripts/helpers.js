@@ -149,12 +149,21 @@ hexo.extend.helper.register('canonical_path_for_nav', function() {
 
 hexo.extend.helper.register('lang_name', function(lang) {
   var data = this.site.data.languages[lang];
+
+  if (data == null) {
+    return lang
+  }
+
   return data.name || data;
 });
 
 hexo.extend.helper.register('disqus_lang', function() {
   var lang = this.page.lang;
   var data = this.site.data.languages[lang];
+
+  if (data == null) {
+    return lang
+  }
 
   return data.disqus_lang || lang;
 });
