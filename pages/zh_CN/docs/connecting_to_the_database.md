@@ -1,17 +1,13 @@
 ---
-title: 连接数据库
+title: Connecting to a Database
 layout: page
 ---
 
-## 连接数据库
+## Importing a Driver
 
-想要连接数据库，你需要先导入对应数据库的驱动，比如：
+In order to connect to a database, you need to import its driver first.
 
-```go
-import _ "github.com/go-sql-driver/mysql"
-```
-
-GORM 已经包装了一些驱动，以便更容易的记住导入路径，所以你可以这样导入 mysql 的驱动：
+GORM wraps the drivers for the officially supported databases.
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -20,15 +16,21 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 // import _ "github.com/jinzhu/gorm/dialects/mssql"
 ```
 
+You can import other drivers in the same way.
+
+```go
+import _ "github.com/go-sql-driver/mysql"
+```
+
 ## 所支持的数据库
 
 ### MySQL
 
-**注意：**
+**NOTE:**
 
-想要能正确的处理 `time.Time`，你需要添加 `parseTime` 参数。 ([更多支持的参数](https://github. com/go-sql-driver/mysql#parameters))
+In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
 
-想要完全的支持 UTF-8 编码，你需要修改`charset=utf8` 为 `charset=utf8mb4`。 详情请查看 [utf8mb4](https://mathiasbynens.be/notes/mysql-utf8mb4).
+In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
 
 ```go
 import (
@@ -42,7 +44,7 @@ func main() {
 }
 ```
 
-如果你想指定主机，你需要使用 `()`. 例如:
+If you want to specify the host, you need to use `()`. Example:
 
     user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
     
@@ -61,9 +63,9 @@ func main() {
 }
 ```
 
-### Sqlite3
+### SQLite3
 
-**注意:** 你也可以使用 `:memory:` 替换一个文件路径。 这会告诉 sqlite 使用内存作为一个临时数据。 当你针对 GORM 应用进行测试时，这特别有用，因为你的测试需要一个真正的数据库，并且该数据库位于内存中，性能也很好。
+**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this.)
 
 ```go
 import (
@@ -79,7 +81,7 @@ func main() {
 
 ### SQL Server
 
-[Get started with SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), 它可以运行在你的 [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/)、[Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) 和 Docker
+Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
 ```go
 import (
@@ -95,4 +97,4 @@ func main() {
 
 ## 不支持的数据库
 
-GORM 官方支持上述四个数据库，您可以为不受支持的数据库编写方言，具体请参阅 [GORM 方言](dialects.html)
+GORM officially supports the databases listed above, but you can [write GORM dialects](dialects.html) for unsupported databases.

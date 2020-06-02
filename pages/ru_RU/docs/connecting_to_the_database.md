@@ -1,17 +1,13 @@
 ---
-title: Подключение к базе данных
+title: Connecting to a Database
 layout: страница
 ---
 
-## Подключение к базе данных
+## Importing a Driver
 
-Для подключения к базе данных необходимо сначала импортировать драйвер базы данных. Например:
+In order to connect to a database, you need to import its driver first.
 
-```go
-import _ "github.com/go-sql-driver/mysql"
-```
-
-GORM содержит некоторые драйверы, чтобы облегчить запоминание пути импорта. Так что вы можете импортировать драйвер mysql с помощью:
+GORM wraps the drivers for the officially supported databases.
 
 ```go
 import _ "github.com/jinzhu/gorm/dialects/mysql"
@@ -20,15 +16,21 @@ import _ "github.com/jinzhu/gorm/dialects/mysql"
 // import _ "github.com/jinzhu/gorm/dialects/mssql"
 ```
 
+You can import other drivers in the same way.
+
+```go
+import _ "github.com/go-sql-driver/mysql"
+```
+
 ## Поддерживаемые базы данных
 
 ### MySQL
 
-**ПРИМЕЧАНИЕ:**
+**NOTE:**
 
-Для правильной работы `time.Time`, вам нужно включить `parseTime` в качестве параметра. ([Дополнительные поддерживаемые параметры](https://github.com/go-sql-driver/mysql#parameters))
+In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
 
-Чтобы полностью поддержать кодировку UTF-8, вам нужно изменить `charset=utf8` на `charset=utf8mb4`. Посмотрите эту [статью](https://mathiasbynens.be/notes/mysql-utf8mb4) для подробностей.
+In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
 
 ```go
 import (
@@ -42,7 +44,7 @@ func main() {
 }
 ```
 
-Если вы хотите указать хост, вам нужно использовать `()`. Пример:
+If you want to specify the host, you need to use `()`. Example:
 
     user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
     
@@ -61,9 +63,9 @@ func main() {
 }
 ```
 
-### Sqlite3
+### SQLite3
 
-**ПРИМЕЧАНИЕ:** Вы также можете использовать `:memory:` вместо пути к файлу. Это скажет sqlite использовать временную базу данных в системной памяти. Это особенно полезно при написании тестов для вашего приложения с использованием GORM, но также может использоваться как база данных.
+**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this.)
 
 ```go
 import (
@@ -79,7 +81,7 @@ func main() {
 
 ### MS SQL Server
 
-[Начните с MS SQL Server](https://www.microsoft.com/en-us/sql-server/developer-get-started/go), он может работать на вашем [Mac](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/mac/), [Linux](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/go/ubuntu/) с использованием Docker
+Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
 ```go
 import (
@@ -95,4 +97,4 @@ func main() {
 
 ## Не поддерживаемые базы данных
 
-GORM официально поддерживает более четырех баз данных, вы можете написать диалекты для не поддерживаемых баз данных, см. [GORM Диалекты](dialects.html)
+GORM officially supports the databases listed above, but you can [write GORM dialects](dialects.html) for unsupported databases.
