@@ -15,4 +15,4 @@ build:
     - script:
         name: hexo deploy
         code: |
-          ./node_modules/hexo/bin/hexo deploy
+          ./node_modules/hexo/bin/hexo generate && ./node_modules/hexo/bin/hexo deploy
