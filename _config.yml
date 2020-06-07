@@ -23,7 +23,7 @@ start: "go get -u github.com/jinzhu/gorm"
 
 # Common Configuration
 twitter: zhangjinzhu
-github: jinzhu/gorm
+github: go-gorm/gorm
 disqus_shortname: gorm
 algolia:
   en:
