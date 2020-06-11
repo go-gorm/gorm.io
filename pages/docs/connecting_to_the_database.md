@@ -67,7 +67,7 @@ func main() {
 ### SQLite3
 
 
-**NOTE:** You can also use `:memory:` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this.)
+**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this.)
 
 ```go
 import (
