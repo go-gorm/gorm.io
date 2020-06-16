@@ -18,7 +18,7 @@ type User struct {
 // `Profile` belongs to `User`, `UserID` is the foreign key
 type Profile struct {
   gorm.Model
-  UserID int
+  UserID uint
   User   User
   Name   string
 }
