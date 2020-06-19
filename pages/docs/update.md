@@ -78,11 +78,11 @@ db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface
 //// UPDATE users SET name='hello', age=18 WHERE id IN (10, 11);
 
 // Update with struct only works with none zero values, or use map[string]interface{}
-db.Model(User{}).Updates(User{Name: "hello", Age: 18})
+db.Model(User{}).Updates(&User{Name: "hello", Age: 18})
 //// UPDATE users SET name='hello', age=18;
 
 // Get updated records count with `RowsAffected`
-db.Model(User{}).Updates(User{Name: "hello", Age: 18}).RowsAffected
+db.Model(User{}).Updates(&User{Name: "hello", Age: 18}).RowsAffected
 ```
 
 ## Update with SQL Expression
