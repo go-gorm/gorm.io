@@ -1,6 +1,6 @@
 # Gorm Offical Site
 
-This website is for [GORM](http://github.com/jinzhu/gorm), you can access its content at [http://gorm.io](http://gorm.io)
+This website is for [GORM](https://github.com/go-gorm/gorm), you can access its content at [http://gorm.io](http://gorm.io)
 
 [![wercker status](https://app.wercker.com/status/6ab55ed2ae96e3d14fced7795b08f5d2/s/master "wercker status")](https://app.wercker.com/project/byKey/6ab55ed2ae96e3d14fced7795b08f5d2)
 
