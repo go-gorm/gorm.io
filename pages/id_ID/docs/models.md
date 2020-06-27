@@ -26,7 +26,7 @@ type User struct {
 
 ## Label Strukur
 
-Tags are optional to use when declaring models. GORM supports the following tags:
+Tags bersifat opsional ketika deklarasi model. Dibawah ini adalah beberapa tag yang ada pada GORM :
 
 ### Label Struktur yang didukung
 
@@ -49,7 +49,7 @@ Tags are optional to use when declaring models. GORM supports the following tags
 
 ### Tag struktur untuk Asosiasi
 
-Check out the Associations section for details
+Perhatikan bagian Asosiasi untuk rincian :
 
 | Label                              | Keterangan                                           |
 | ---------------------------------- | ---------------------------------------------------- |
