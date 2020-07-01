@@ -1,4 +1,4 @@
-name: hexo
+name: build
 
 on:
   push:
