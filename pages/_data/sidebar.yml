@@ -2,7 +2,6 @@ docs:
   getting_started:
     overview: index.html
     declaring_models: models.html
-    conventions: conventions.html
     connecting_to_the_database: connecting_to_the_database.html
   crud_interface:
     create: create.html
@@ -30,6 +29,7 @@ docs:
     performance: performance.html
     data_types: data_types.html
     scopes: scopes.html
+    conventions: conventions.html
     settings: settings.html
   advanced_topics:
     prometheus: prometheus.html

@@ -3,6 +3,21 @@ title: Associations
 layout: page
 ---
 
+
+| Tag                              | Description                                    |
+| ---                              | ---                                            |
+| MANY2MANY                        | Specifies join table name                      |
+| FOREIGNKEY                       | Specifies foreign key                          |
+| ASSOCIATION_FOREIGNKEY           | Specifies association foreign key              |
+| POLYMORPHIC                      | Specifies polymorphic type                     |
+| POLYMORPHIC_VALUE                | Specifies polymorphic value                    |
+| JOINTABLE_FOREIGNKEY             | Specifies foreign key of jointable             |
+| ASSOCIATION_JOINTABLE_FOREIGNKEY | Specifies association foreign key of jointable |
+| SAVE_ASSOCIATIONS                | AutoSave associations or not                   |
+| ASSOCIATION_AUTOUPDATE           | AutoUpdate associations or not                 |
+| ASSOCIATION_AUTOCREATE           | AutoCreate associations or not                 |
+| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not         |
+| PRELOAD                          | Auto Preload associations or not               |
 ## Auto Create/Update
 
 GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
