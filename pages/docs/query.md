@@ -205,7 +205,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 
 ### Attrs
 
-Initalize struct with argument if record not found
+Initialize struct with argument if record not found
 
 ```go
 // Unfound

@@ -31,30 +31,42 @@ sidebar:
     query: Query
     update: Update
     delete: Delete
+    raw_sql_and_builder: Raw SQL & SQL Builder
+    batch: Batch Processing
 
     associations: Associations
     belongs_to: Belongs To
     has_one: Has One
     has_many: Has Many
     many_to_many: Many To Many
+    association_mode: Association Mode
     preload: Preloading (Eager Loading)
 
     tutorials: Tutorials
-    method_chaining: Method Chaining
+    context: Context
     error_handling: Error Handling
+    session_mode: Session Mode
     hooks: Hooks
     transactions: Transactions
     migration: Migration
-    raw_sql_and_builder: Raw SQL and SQL Builder
+    logger: Logger
     generic_interface: Generic Database Interface
+    performance: Performance
+    data_types: Data Types
+    scopes: Scopes
+    settings: Settings
 
     advanced_topics: Advanced Topics
+    prometheus: Prometheus
+    hints: Hints
+    indexes: Indexes
+    constraints: Constraints
     composite_primary_key: Composite Primary Key
+    security: Security
+    gorm_config: GORM Config
     write_plugins: Write Plugins
-    dialects: GORM Dialects
-    logger: Logger
+    write_driver: Write Driver
     change_log: ChangeLog
-
     community: Community
     contribute: Contribute
     translate: Translate current site

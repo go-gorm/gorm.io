@@ -23,7 +23,7 @@ The fantastic ORM library for Golang, aims to be developer friendly.
 ## Install
 
 ```sh
-go get -u github.com/jinzhu/gorm
+go get -u gorm.io/gorm
 ```
 
 ## Quick Start

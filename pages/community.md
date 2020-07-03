@@ -8,7 +8,7 @@ layout: page
 **[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
-* Github Issues - [https://github.com/jinzhu/gorm/issues](https://github.com/jinzhu/gorm/issues)
+* Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
 
 ## Chat
 
@@ -42,4 +42,4 @@ layout: page
 
 ## Contribute to this page
 
-Please edit [this page](https://github.com/jinzhu/gorm.io/edit/master/pages/community.md) and create pull request
+Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) and create pull request

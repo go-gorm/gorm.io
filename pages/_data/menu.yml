@@ -1,4 +1,4 @@
 docs: /docs/
 community: /community.html
-api: https://pkg.go.dev/github.com/jinzhu/gorm
+api: https://pkg.go.dev/gorm.io/gorm
 contribute: /contribute.html

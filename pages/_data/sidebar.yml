@@ -9,26 +9,38 @@ docs:
     query: query.html
     update: update.html
     delete: delete.html
+    raw_sql_and_builder: sql_builder.html
+    batch: batch.html
   associations:
      belongs_to: belongs_to.html
      has_one: has_one.html
      has_many: has_many.html
      many_to_many: many_to_many.html
-     associations: associations.html
+     association_mode: associations.html
      preload: preload.html
   tutorials:
-    method_chaining: method_chaining.html
+    context: context.html
     error_handling: error_handling.html
+    session_mode: session.html
     hooks: hooks.html
     transactions: transactions.html
     migration: migration.html
-    raw_sql_and_builder: sql_builder.html
-    generic_interface: generic_interface.html
-  advanced_topics:
-    composite_primary_key: composite_primary_key.html
-    write_plugins: write_plugins.html
-    dialects: dialects.html
     logger: logger.html
+    generic_interface: generic_interface.html
+    performance: performance.html
+    data_types: data_types.html
+    scopes: scopes.html
+    settings: settings.html
+  advanced_topics:
+    prometheus: prometheus.html
+    hints: hints.html
+    indexes: indexes.html
+    constraints: constraints.html
+    composite_primary_key: composite_primary_key.html
+    security: security.html
+    gorm_config: gorm_config.html
+    write_plugins: write_plugins.html
+    write_driver: write_driver.html
     change_log: changelog.html
     community: /community.html
     contribute: /contribute.html
