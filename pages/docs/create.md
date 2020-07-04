@@ -31,7 +31,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## Hooks
+## Create Hooks
 
 GORM allows hooks `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`, those methods will be called when creating a record, refer [Hooks](hooks.html) for details
 
@@ -59,11 +59,11 @@ for _, user := range users {
 }
 ```
 
-[Upsert](#upsert), [Create With Associations](#create_with_associations) supported for batch insert
+[Upsert](#upsert), [Create With Associations](#create_with_associations) supported for batch insert also
 
 ## Advanced
 
-### Create With Associations
+### <span id="create_with_associations">Create With Associations</span>
 
 If your model defined any relations, and it has non-zero relations, those data will be saved when creating
 
@@ -123,11 +123,13 @@ type User struct {
 }
 ```
 
-### Upsert / On Conflict
+### <span id="upsert">Upsert / On Conflict</span>
 
 GORM provides compatible Upsert support for different databases
 
 ```go
+import "gorm.io/gorm/clause"
+
 // Do nothing on conflict
 DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 

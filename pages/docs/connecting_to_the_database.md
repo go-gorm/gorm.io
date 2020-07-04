@@ -32,10 +32,10 @@ MySQl Driver provides [few advanced configurations](https://github.com/go-gorm/m
 db, err := gorm.Open(mysql.New(mysql.Config{
   DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name
   DefaultStringSize: 256, // default size for string fields
-  DisableDatetimePrecision: true, // disable datetime precision which not supported before MySQL 5.6
-  DontSupportRenameIndex: true, // drop & create index when rename index, rename index not supported before MySQL 5.7, MariaDB
-  DontSupportRenameColumn: true, // use change when rename column, rename rename not supported before MySQL 8, MariaDB
-  SkipInitializeWithVersion: false, // smart configure based on used version
+  DisableDatetimePrecision: true, // disable datetime precision, which not supported before MySQL 5.6
+  DontSupportRenameIndex: true, // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
+  DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
+  SkipInitializeWithVersion: false, // auto configure based on used version
 }), &gorm.Config{})
 ```
 
@@ -61,7 +61,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
-### SQLite
+## SQLite
 
 ```go
 import (
@@ -89,6 +89,25 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
 Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
+
+## Connection Pool
+
+GORM using [database/sql]((https://pkg.go.dev/database/sql) to maintain connection pool
+
+```go
+sqlDB, err := db.DB()
+
+// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+sqlDB.SetMaxIdleConns(10)
+
+// SetMaxOpenConns sets the maximum number of open connections to the database.
+sqlDB.SetMaxOpenConns(100)
+
+// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+sqlDB.SetConnMaxLifetime(time.Hour)
+```
+
+Refer [Generic Interface](generic_interface.html) for details
 
 ## Unsupported Databases
 
