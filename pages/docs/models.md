@@ -25,9 +25,9 @@ type User struct {
 
 ## Conventions
 
-GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time.
+GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code, but if it doesn't match your requirements, [GORM allows you to configure them](conventions.html).
+If you follow the conventions adopted by GORM, you'll need to write very little configuration/code, If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
 
 ## gorm.Model
 
@@ -43,7 +43,7 @@ type Model struct {
 }
 ```
 
-You can embed it into your model to include those fields, refer [Embedded Struct](#embedded_struct)
+You can embed it into your struct to include those fields, refer [Embedded Struct](#embedded_struct)
 
 ```go
 type User struct {
@@ -62,28 +62,30 @@ type User struct {
 
 ## Advanced
 
-### Field Permissions
+### Field-Level Permission
 
-All exported fields will be used when doing CRUD with GORM by default.
-
-But GORM allows you set field-level permission with tags, you can make a field to read-only, write-only, create-only, update-only or ignored
+Exported fields have all permission when doing CRUD with GORM, but GORM allows you change the field-level permission with tag, so you can make a field to read-only, write-only, create-only, update-only or ignored
 
 ```go
 type User struct {
   Name string `gorm:"<-:create"` // allow read and create
   Name string `gorm:"<-:update"` // allow read and update
   Name string `gorm:"<-"`        // allow read and write (create and update)
+  Name string `gorm:"<-:false"`  // disable write permission
+  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
+  Name string `gorm:"->;<-:create"` // allow read and create
   Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"->"` // readonly
-  Name string `gorm:"-"`  // ignored
+  Name string `gorm:"-"`  // ignore this field when write and read
 }
 ```
 
 ### Auto Creating/Updating Time/Unix (Nano) Second
 
-GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined.
+GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
 
-To use other fields, you can configure those fields with tags `autoCreateTime`, `autoUpdateTime`, if you prefer to save unix (nano) seconds instead of time, you can simply change field's data type from `time.Time` to `int`
+To use fields with different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
+
+If you prefer to save unix (nano) seconds instead of time, you can simply change field's data type from `time.Time` to `int`
 
 ```go
 type User struct {
@@ -96,7 +98,7 @@ type User struct {
 
 ### <span id="embedded_struct">Embedded Struct</span>
 
-For any anonymous fields, GORM will includes its fields into its parent struct, for example:
+For anonymous fields, GORM will includes its fields into its parent struct, for example:
 
 ```go
 type User struct {
@@ -113,7 +115,7 @@ type User struct {
 }
 ```
 
-You can also embed a normal struct field using tag `embedded`, for example:
+For normal struct field, you can embed it with tag `embedded`, for example:
 
 ```go
 type Author struct {
@@ -135,7 +137,7 @@ type Blog struct {
 }
 ```
 
-With the help of tag `embeddedPrefix`, you can add prefix to embedded fields' db name, for example:
+And you can use tag `embeddedrefix` to add prefix to embedded fields' db name, for example:
 
 ```go
 type Blog struct {
@@ -157,9 +159,9 @@ type Blog struct {
 
 Tags are optional to use when declaring models, GORM supports the following tags:
 
-Name case doesn't matter, `camelCase` is preferred to use.
+Tag Name case doesn't matter, `camelCase` is preferred to use.
 
-| Tag            | Description                                                            |
+| Tag Name       | Description                                                            |
 | ---            | ---                                                                    |
 | column         | column db name                                                  |
 | type           | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, specified database data type like varbinary(8) also supported |
@@ -170,16 +172,16 @@ Name case doesn't matter, `camelCase` is preferred to use.
 | precision      | specifies column precision                                             |
 | not null       | specifies column as NOT NULL                                           |
 | autoIncrement  | specifies column auto incrementable                                    |
-| index          | create index with options, same name for multiple fields creates composite indexes |
-| uniqueIndex    | same as `index`, but create uniqued index                              |
-| embedded       | set field to embedded                                                  |
-| embeddedPrefix | Set embedded field's prefix                                            |
+| embedded       | embed a field                                                          |
+| embeddedPrefix | prefix for embedded field                                              |
 | autoCreateTime | track creating time when creating, `autoCreateTime:nano` track unix nano time for `int` fields |
 | autoUpdateTime | track updating time when creating/updating, `autoUpdateTime:nano` track unix nano time for `int` fields                                                  |
-| <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no permission |
-| ->             | set field's read permission, `->:false` disable read, `->` or `->:true` readonly, disable write permission unless configured it |
-| -              | ignore this fields (disable read/write permission)                                                     |
+| index          | create index with options, same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details |
+| uniqueIndex    | same as `index`, but create uniqued index                              |
 | check          | creates check constraint, eg: `check:(age > 13)`, refer [Constraints](constraints.html) |
+| <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no permission |
+| ->             | set field's read permission                                            |
+| -              | ignore this fields (disable read/write permission)                     |
 
 ### Associations Tags
 
