@@ -87,3 +87,22 @@ func main() {
 GORM officially supports the above databases, but you could write a dialect for unsupported databases.
 
 To write your own dialect, refer to: [https://github.com/jinzhu/gorm/blob/master/dialect.go](https://github.com/jinzhu/gorm/blob/master/dialect.go)
+
+## Connection Pool
+
+GORM using [database/sql]((https://pkg.go.dev/database/sql) to maintain connections pool
+
+```go
+sqlDB, err := db.DB()
+
+// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+sqlDB.SetMaxIdleConns(10)
+
+// SetMaxOpenConns sets the maximum number of open connections to the database.
+sqlDB.SetMaxOpenConns(100)
+
+// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+sqlDB.SetConnMaxLifetime(time.Hour)
+```
+
+Refer [Generic Interface](generic_interface.html) for more details

@@ -3,100 +3,95 @@ title: Connecting to a Database
 layout: page
 ---
 
-## Importing a Driver
+GORM officially supports databases MySQL, PostgreSQL, SQlite, SQL Server
 
-In order to connect to a database, you need to import its driver first.
-
-GORM wraps the drivers for the officially supported databases.
+## MySQL
 
 ```go
-import _ "github.com/jinzhu/gorm/dialects/mysql"
-// import _ "github.com/jinzhu/gorm/dialects/postgres"
-// import _ "github.com/jinzhu/gorm/dialects/sqlite"
-// import _ "github.com/jinzhu/gorm/dialects/mssql"
+import (
+  "gorm.io/driver/mysql"
+  "gorm.io/gorm"
+)
+
+func main() {
+  // refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
+  dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
+  db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+}
 ```
-
-You can import other drivers in the same way.
-
-```go
-import _ "github.com/go-sql-driver/mysql"
-```
-
-## Supported Databases
-
-### MySQL
 
 **NOTE:**
 
-In order to handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([More supported parameters](https://github.com/go-sql-driver/mysql#parameters))
+To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters))
 
-In order to fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See this [article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation.
+To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+
+MySQl Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
+
+```go
+db, err := gorm.Open(mysql.New(mysql.Config{
+  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name
+  DefaultStringSize: 256, // default size for string fields
+  DisableDatetimePrecision: true, // disable datetime precision which not supported before MySQL 5.6
+  DontSupportRenameIndex: true, // drop & create index when rename index, rename index not supported before MySQL 5.7, MariaDB
+  DontSupportRenameColumn: true, // use change when rename column, rename rename not supported before MySQL 8, MariaDB
+  SkipInitializeWithVersion: false, // smart configure based on used version
+}), &gorm.Config{})
+```
+
+## PostgreSQL
 
 ```go
 import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/mysql"
+  "gorm.io/driver/postgres"
+  "gorm.io/gorm"
 )
 
-func main() {
-  db, err := gorm.Open("mysql", "user:password@/dbname?charset=utf8&parseTime=True&loc=Local")
-  defer db.Close()
-}
+dsn := "user=gorm password=gorm DB.name=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
+db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-If you want to specify the host, you need to use `()`. Example:
-```
-user:password@(localhost)/dbname?charset=utf8&parseTime=True&loc=Local
-```
- 
-### PostgreSQL
+We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
 
+```go
+// https://github.com/go-gorm/postgres
+db, err := gorm.Open(postgres.New(postgres.Config{
+  DSN: "user=gorm password=gorm DB.name=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
+  PreferSimpleProtocol: true, // disables implicit prepared statement usage
+}), &gorm.Config{})
+```
+
+### SQLite
 
 ```go
 import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/postgres"
+  "gorm.io/driver/sqlite"
+  "gorm.io/gorm"
 )
 
-func main() {
-  db, err := gorm.Open("postgres", "host=myhost port=myport user=gorm dbname=gorm password=mypassword")
-  defer db.Close()
-}
+// github.com/mattn/go-sqlite3
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
-### SQLite3
+**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
 
-
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this.)
+## SQL Server
 
 ```go
 import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/sqlite"
+  "gorm.io/driver/sqlserver"
+  "gorm.io/gorm"
 )
 
-func main() {
-  db, err := gorm.Open("sqlite3", "/tmp/gorm.db")
-  defer db.Close()
-}
+// github.com/denisenkom/go-mssqldb
+dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
+db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
-
-### SQL Server
 
 Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
-```go
-import (
-  "github.com/jinzhu/gorm"
-  _ "github.com/jinzhu/gorm/dialects/mssql"
-)
-
-func main() {
-  db, err := gorm.Open("mssql", "sqlserver://username:password@localhost:1433?database=dbname")
-  defer db.Close()
-}
-```
-
 ## Unsupported Databases
 
-GORM officially supports the databases listed above, but you can [write GORM dialects](dialects.html) for unsupported databases.
+Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+
+For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
