@@ -8,68 +8,147 @@ layout: page
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-db.NewRecord(user) // => returns `true` as primary key is blank
+result := db.Create(&user) // pass pointer of data to Create
 
-db.Create(&user)
-
-db.NewRecord(user) // => return `false` after `user` created
+user.ID             // returns inserted data's primary key
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
 ```
 
-## Default Values
+## Create With Selected Fields
 
-You can define a field's default value with a tag. For example:
+Create with selected fields
 
 ```go
-type Animal struct {
-  ID   int64
-  Name string `gorm:"default:'galeone'"`
-  Age  int64
+db.Select("Name", "Age", "CreatedAt").Create(&user)
+// INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
+```
+
+Create without selected fields
+
+```go
+db.Omit("Name", "Age", "CreatedAt").Create(&user)
+// INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
+```
+
+## Hooks
+
+GORM allows hooks `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`, those methods will be called when creating a record, refer [Hooks](hooks.html) for details
+
+```go
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+  u.UUID = uuid.New()
+
+	if u.Role == "admin" {
+		return errors.New("invalid role")
+	}
+	return
 }
 ```
 
-Then the inserting SQL will exclude those fields that have no value or [zero values](https://tour.golang.org/basics/12). After inserting the record into the database, gorm will load those fields' value from the database.
+## Batch Insert
+
+Pass slice data to method `Create`, GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
 ```go
-var animal = Animal{Age: 99, Name: ""}
-db.Create(&animal)
-// INSERT INTO animals("age") values('99');
-// SELECT name from animals WHERE ID=111; // the returning primary key is 111
-// animal.Name => 'galeone'
+var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
+DB.Create(&users)
+
+for _, user := range users {
+  user.ID // 1,2,3
+}
 ```
 
-**NOTE** all fields having a zero value, like `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), won't be saved into the database but will use its default value. If you want to avoid this, consider using a pointer type or scanner/valuer, e.g:
+[Upsert](#upsert), [Create With Associations](#create_with_associations) supported for batch insert
+
+## Advanced
+
+### Create With Associations
+
+If your model defined any relations, and it has non-zero relations, those data will be saved when creating
 
 ```go
-// Use pointer value
+type CreditCard struct {
+  gorm.Model
+  Number   string
+  UserID   uint
+}
+
+type User struct {
+  gorm.Model
+  Name       string
+  CreditCard CreditCard
+}
+
+db.Create(&User{
+  Name: "jinzhu",
+  CreditCard: CreditCard{Number: "411111111111"}
+})
+// INSERT INTO `users` ...
+// INSERT INTO `credit_cards` ...
+```
+
+You can skip saving associations with `Select`, `Omit`
+
+```go
+db.Omit("CreditCard").Create(&user)
+
+// skip all associations
+db.Omit(clause.Associations).Create(&user)
+```
+
+### Default Values
+
+You can define default values for fields with tag `default`, for example:
+
+```go
+type User struct {
+  ID         int64
+  Name       string `gorm:"default:'galeone'"`
+  Age        int64  `gorm:"default:18"`
+	uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
+}
+```
+
+Then the default value will be used when inserting into database for [zero-value](https://tour.golang.org/basics/12) fields
+
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this
+
+```go
 type User struct {
   gorm.Model
   Name string
-  Age  *int `gorm:"default:18"`
-}
-
-// Use scanner/valuer
-type User struct {
-  gorm.Model
-  Name string
-  Age  sql.NullInt64 `gorm:"default:18"`
+  Age  *int           `gorm:"default:18"`
+  Active sql.NullBool `gorm:"default:true"`
 }
 ```
 
-## Setting Field Values In Hooks
+### Upsert / On Conflict
 
-If you want to update a field's value in `BeforeCreate` hook, you can use `scope.SetColumn`, for example:
+GORM provides compatible Upsert support for different databases
 
 ```go
-func (user *User) BeforeCreate(scope *gorm.Scope) error {
-  scope.SetColumn("ID", uuid.New())
-  return nil
-}
+// Do nothing on conflict
+DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
+
+// Update columns to default value on `id` conflict
+DB.Clauses(clause.OnConflict{
+  Columns:   []clause.Column{{Name: "id"}},
+  DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
+}).Create(&users)
+// MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
+
+// Update columns to new value on `id` conflict
+DB.Clauses(clause.OnConflict{
+  Columns:   []clause.Column{{Name: "id"}},
+  DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
+}).Create(&users)
+// MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET "name"="excluded"."name"; SQL Server
+// INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-## Extra Creating option
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Query](query.html)
 
-```go
-// Add extra SQL option for inserting SQL
-db.Set("gorm:insert_option", "ON CONFLICT").Create(&product)
-// INSERT INTO products (name, code) VALUES ("name", "code") ON CONFLICT;
-```
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
