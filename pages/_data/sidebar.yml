@@ -6,6 +6,7 @@ docs:
   crud_interface:
     create: create.html
     query: query.html
+    advanced_query: advanced_query.html
     update: update.html
     delete: delete.html
     raw_sql_and_builder: sql_builder.html

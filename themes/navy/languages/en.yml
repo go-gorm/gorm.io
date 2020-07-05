@@ -29,6 +29,7 @@ sidebar:
     crud_interface: CRUD Interface
     create: Create
     query: Query
+    advanced_query: Advanced Query
     update: Update
     delete: Delete
     raw_sql_and_builder: Raw SQL & SQL Builder
