@@ -32,12 +32,12 @@ The field's name is usually generated with `has one` model's type plus its `prim
 
 When you give a credit card to the user, its will save the User's `ID` into its `UserID` field.
 
-If you want to use another field to save the relationship, you can change it with tag `foreignkey`, e.g:
+If you want to use another field to save the relationship, you can change it with tag `foreignKey`, e.g:
 
 ```go
 type User struct {
   gorm.Model
-  CreditCard CreditCard `gorm:"foreignkey:UserName"`
+  CreditCard CreditCard `gorm:"foreignKey:UserName"`
   // use UserName as foreign key
 }
 
@@ -51,6 +51,8 @@ type CreditCard struct {
 ## Override References
 
 By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field, like use `Name` for below example.
+
+You are able to change it with tag `references`, e.g:
 
 ```go
 type User struct {
@@ -68,7 +70,7 @@ type CreditCard struct {
 
 ## Polymorphism Association
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field
+GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into polymorphic field, primary key value into the polymorphic field
 
 ```go
 type Cat struct {
@@ -123,6 +125,17 @@ Please checkout [Association Mode](associations.html#Association-Mode) for worki
 ## Eager Loading
 
 GORM allows eager loading has one associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+
+## Self-Referential Has One
+
+```go
+type User struct {
+  gorm.Model
+  Name      string
+  ManagerID *uint
+  Manager   *User
+}
+```
 
 ## FOREIGN KEY Constraints
 
