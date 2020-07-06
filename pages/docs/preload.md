@@ -5,69 +5,96 @@ layout: page
 
 ## Preload
 
+GORM allows eager loading relations in another SQL with `Preload`, for example:
+
 ```go
-// the struct User and Order for below code
 type User struct {
   gorm.Model
   Username string
-  Orders []Order
+  Orders   []Order
 }
+
 type Order struct {
   gorm.Model
   UserID uint
-  Price float64
+  Price  float64
 }
-// the Preload function's param should be the main struct's field name
+
+// Preload Orders when find users
 db.Preload("Orders").Find(&users)
-//// SELECT * FROM users;
-//// SELECT * FROM orders WHERE user_id IN (1,2,3,4);
-
-db.Preload("Orders", "state NOT IN (?)", "cancelled").Find(&users)
-//// SELECT * FROM users;
-//// SELECT * FROM orders WHERE user_id IN (1,2,3,4) AND state NOT IN ('cancelled');
-
-db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled").Find(&users)
-//// SELECT * FROM users WHERE state = 'active';
-//// SELECT * FROM orders WHERE user_id IN (1,2) AND state NOT IN ('cancelled');
+// SELECT * FROM users;
+// SELECT * FROM orders WHERE user_id IN (1,2,3,4);
 
 db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
-//// SELECT * FROM users;
-//// SELECT * FROM orders WHERE user_id IN (1,2,3,4); // has many
-//// SELECT * FROM profiles WHERE user_id IN (1,2,3,4); // has one
-//// SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
+// SELECT * FROM users;
+// SELECT * FROM orders WHERE user_id IN (1,2,3,4); // has many
+// SELECT * FROM profiles WHERE user_id IN (1,2,3,4); // has one
+// SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
 ```
 
-## Auto Preloading
+## Joins Preloading
 
-Always auto preload associations
+`Preload` loads the association data in a separate query, `Join Preload` will loads association data using inner join, for example:
+
+```go
+db.Joins("Company").Joins("Manager").Joins("Account").First(&user, 1)
+db.Joins("Company").Joins("Manager").Joins("Account").First(&user, "users.name = ?", "jinzhu")
+db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2,3,4,5})
+```
+
+**NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
+
+## Preload All
+
+`clause.Associations` can works with `Preload` similar `Select` when creating/updating, you can use it to `Preload` all associations, for example:
 
 ```go
 type User struct {
   gorm.Model
   Name       string
   CompanyID  uint
-  Company    Company `gorm:"PRELOAD:false"` // not preloaded
-  Role       Role                           // preloaded
+  Company    Company
+  Role       Role
 }
 
-db.Set("gorm:auto_preload", true).Find(&users)
+db.Preload(clause.Associations).Find(&users)
 ```
 
-## Nested Preloading
+## Preload with conditions
+
+GORM allows Preload associations with conditions, it works similar like [Inline Conditions](query.html#inline_conditions)
 
 ```go
-db.Preload("Orders.OrderItems").Find(&users)
-db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
+// Preload Orders with conditions
+db.Preload("Orders", "state NOT IN (?)", "cancelled").Find(&users)
+// SELECT * FROM users;
+// SELECT * FROM orders WHERE user_id IN (1,2,3,4) AND state NOT IN ('cancelled');
+
+db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled").Find(&users)
+// SELECT * FROM users WHERE state = 'active';
+// SELECT * FROM orders WHERE user_id IN (1,2) AND state NOT IN ('cancelled');
 ```
 
 ## Custom Preloading SQL
 
-You could custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+You are able to custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
   return db.Order("orders.amount DESC")
 }).Find(&users)
-//// SELECT * FROM users;
-//// SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.amount DESC;
+// SELECT * FROM users;
+// SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.amount DESC;
+```
+
+## Nested Preloading
+
+GORM supports nested preloading, for example:
+
+```go
+db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)
+
+// Customize Preload conditions for `Orders`
+// And GORM won't preload unmatched order's OrderItems then
+db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
 ```

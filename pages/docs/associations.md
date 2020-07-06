@@ -3,20 +3,6 @@ title: Associations
 layout: page
 ---
 
-
-## <span id="tags">Tags</span>
-
-| Tag              | Description                                     |
-| ---              | ---                                             |
-| foreignKey       | Specifies foreign key                           |
-| references       | Specifies references                            |
-| polymorphic      | Specifies polymorphic type                      |
-| polymorphicValue | Specifies polymorphic value, default table name |
-| many2many        | Specifies join table name                       |
-| jointForeignKey  | Specifies foreign key of jointable              |
-| joinReferences   | Specifies references's foreign key of jointable |
-| constraint       | Relations constraint                            |
-
 ## Auto Create/Update
 
 GORM will auto save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
@@ -83,16 +69,16 @@ db.Omit(clause.Associations).Create(&user)
 
 ## Association Mode
 
-Association Mode contains some helper methods to handle relationship easily.
+Association Mode contains some common used helper methods to handle relationship
 
 ```go
 // Start Association Mode
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source, must contains primary key
-// `Languages` is source's field name for a relationship
-// AssociationMode can only works if above two conditions both matched, check it ok or not:
-// db.Model(&user).Association("Languages").Error
+// `user` is the source model, it must contains primary key
+// `Languages` is a relationship's field name
+// If above two conditions matched, the AssociationMode should be started successfully, or it should returns error
+db.Model(&user).Association("Languages").Error
 ```
 
 ### Find Associations
@@ -175,3 +161,16 @@ gorm.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, use
 // Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
 gorm.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
+
+## <span id="tags">Association Tags</span>
+
+| Tag              | Description                                     |
+| ---              | ---                                             |
+| foreignKey       | Specifies foreign key                           |
+| references       | Specifies references                            |
+| polymorphic      | Specifies polymorphic type                      |
+| polymorphicValue | Specifies polymorphic value, default table name |
+| many2many        | Specifies join table name                       |
+| jointForeignKey  | Specifies foreign key of jointable              |
+| joinReferences   | Specifies references's foreign key of jointable |
+| constraint       | Relations constraint                            |

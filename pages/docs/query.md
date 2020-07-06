@@ -103,7 +103,7 @@ db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-### Inline Condition
+### <span id="inline_conditions">Inline Condition</span>
 
 Works similar like `Where`.
 
@@ -260,7 +260,7 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 Selecting distinct values from the model
 
 ```go
-DB.Distinct("name", "age").Order("name, age desc").Find(&results)
+db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
 `Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
