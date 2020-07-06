@@ -167,17 +167,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-### Group Conditions
-
-```go
-db.Where(
-	DB.Where("pizza = ?", "pepperoni").Where(DB.Where("size = ?", "small").Or("size = ?", "medium")),
-).Or(
-	DB.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
-).Find(&Pizza{}).Statement
-
-// SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
-```
+Also checkout [Group Conditions in Advanced Query](advanced_query.html), it can write complicated SQL easier
 
 ## Selecting Specific Fields
 
@@ -264,6 +254,16 @@ type Result struct {
 }
 db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
 ```
+
+## Distinct
+
+Selecting distinct values from the model
+
+```go
+DB.Distinct("name", "age").Order("name, age desc").Find(&results)
+```
+
+`Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
 
 ## Joins
 

@@ -3,9 +3,9 @@ title: Update
 layout: page
 ---
 
-## Update All Fields
+## Save All Fields
 
-`Save` will include all fields when perform the Updating SQL, even it is not changed
+`Save` will save all fields when perform the Updating SQL
 
 ```go
 db.First(&user)
@@ -13,46 +13,44 @@ db.First(&user)
 user.Name = "jinzhu 2"
 user.Age = 100
 db.Save(&user)
-
-//// UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
+// UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update Changed Fields
+## Update/Updates
 
-If you only want to update changed Fields, you could use `Update`, `Updates`
+Use `Update`, `Updates` to update selected fields
 
 ```go
-// Update single attribute if it is changed
+// Update single attribute
 db.Model(&user).Update("name", "hello")
-//// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
+// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update single attribute with combined conditions
+// Update single attribute with conditions
 db.Model(&user).Where("active = ?", true).Update("name", "hello")
-//// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
+// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
 
-// Update multiple attributes with `map`, will only update those changed fields
+// Update attributes with `struct`, will only update non-zero fields
+db.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
+// UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
+
+// Update attributes with `map`
 db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
-//// UPDATE users SET name='hello', age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
-
-// Update multiple attributes with `struct`, will only update those changed & non blank fields
-db.Model(&user).Updates(User{Name: "hello", Age: 18})
-//// UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
-
-// WARNING when update with struct, GORM will only update those fields that with non blank value
-// For below Update, nothing will be updated as "", 0, false are blank values of their types
-db.Model(&user).Updates(User{Name: "", Age: 0, Actived: false})
+// UPDATE users SET name='hello', age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
+
+**NOTE** When update with struct, GORM will only update non-zero fields, you might want to use `map` to update attributes or use `Select` to specify fields to update
 
 ## Update Selected Fields
 
-If you only want to update or ignore some fields when updating, you could use `Select`, `Omit`
+If you want to update selected or ignore some fields when updating, you can use `Select`, `Omit`
 
 ```go
+// Select with Map
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
-//// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
+// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
 db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
-//// UPDATE users SET age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
+// UPDATE users SET age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
 
 ## Update Columns w/o Hooks
