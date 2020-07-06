@@ -4,23 +4,22 @@ layout: page
 ---
 
 
-| Tag                              | Description                                    |
-| ---                              | ---                                            |
-| MANY2MANY                        | Specifies join table name                      |
-| FOREIGNKEY                       | Specifies foreign key                          |
-| ASSOCIATION_FOREIGNKEY           | Specifies association foreign key              |
-| POLYMORPHIC                      | Specifies polymorphic type                     |
-| POLYMORPHIC_VALUE                | Specifies polymorphic value                    |
-| JOINTABLE_FOREIGNKEY             | Specifies foreign key of jointable             |
-| ASSOCIATION_JOINTABLE_FOREIGNKEY | Specifies association foreign key of jointable |
-| SAVE_ASSOCIATIONS                | AutoSave associations or not                   |
-| ASSOCIATION_AUTOUPDATE           | AutoUpdate associations or not                 |
-| ASSOCIATION_AUTOCREATE           | AutoCreate associations or not                 |
-| ASSOCIATION_SAVE_REFERENCE       | AutoSave associations reference or not         |
-| PRELOAD                          | Auto Preload associations or not               |
+## <span id="tags">Tags</span>
+
+| Tag              | Description                                     |
+| ---              | ---                                             |
+| foreignKey       | Specifies foreign key                           |
+| references       | Specifies references                            |
+| polymorphic      | Specifies polymorphic type                      |
+| polymorphicValue | Specifies polymorphic value, default table name |
+| many2many        | Specifies join table name                       |
+| jointForeignKey  | Specifies foreign key of jointable              |
+| joinReferences   | Specifies references's foreign key of jointable |
+| constraint       | Relations constraint                            |
+
 ## Auto Create/Update
 
-GORM will auto save associations and its reference when creating/updating a record. if association has a primary key, GORM will call `Update` to save it, otherwise it will be created.
+GORM will auto save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
 
 ```go
 user := User{
@@ -38,118 +37,53 @@ user := User{
 }
 
 db.Create(&user)
-//// BEGIN TRANSACTION;
-//// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1");
-//// INSERT INTO "addresses" (address1) VALUES ("Shipping Address - Address 1");
-//// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
-//// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com");
-//// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu-2@example.com");
-//// INSERT INTO "languages" ("name") VALUES ('ZH');
-//// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 1);
-//// INSERT INTO "languages" ("name") VALUES ('EN');
-//// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 2);
-//// COMMIT;
+// BEGIN TRANSACTION;
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "addresses" (address1) VALUES ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "languages" ("name") VALUES ('ZH') ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1) ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "languages" ("name") VALUES ('EN') ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 2) ON DUPLICATE KEY DO NOTHING;
+// COMMIT;
 
 db.Save(&user)
 ```
 
-## Skip AutoUpdate
+## Skip Auto Create/Update
 
-If your association is already existing in database, you might not want to update it.
-
-You could use DB setting, set `gorm:association_autoupdate` to `false`
+To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
 
 ```go
-// Don't update associations having primary key, but will save reference
-db.Set("gorm:association_autoupdate", false).Create(&user)
-db.Set("gorm:association_autoupdate", false).Save(&user)
-```
-
-or use GORM tags, `gorm:"association_autoupdate:false"`
-
-```go
-type User struct {
-  gorm.Model
-  Name       string
-  CompanyID  uint
-  // Don't update associations having primary key, but will save reference
-  Company    Company `gorm:"association_autoupdate:false"`
+user := User{
+  Name:            "jinzhu",
+  BillingAddress:  Address{Address1: "Billing Address - Address 1"},
+  ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
+  Emails:          []Email{
+    {Email: "jinzhu@example.com"},
+    {Email: "jinzhu-2@example.com"},
+  },
+  Languages:       []Language{
+    {Name: "ZH"},
+    {Name: "EN"},
+  },
 }
-```
 
-## Skip AutoCreate
+db.Select("Name").Create(&user)
+// INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
-Even though you disabled `AutoUpdating`, associations w/o primary key still have to be created and its reference will be saved.
+db.Omit("BillingAddress").Create(&user)
+// Skip create BillingAddress when creating user
 
-To disable this, you could set DB setting `gorm:association_autocreate` to `false`
-
-```go
-// Don't create associations w/o primary key, WON'T save its reference
-db.Set("gorm:association_autocreate", false).Create(&user)
-db.Set("gorm:association_autocreate", false).Save(&user)
-```
-
-or use GORM tags, `gorm:"association_autocreate:false"`
-
-```
-type User struct {
-  gorm.Model
-  Name       string
-  // Don't create associations w/o primary key, WON'T save its reference
-  Company1   Company `gorm:"association_autocreate:false"`
-}
-```
-
-## Skip AutoCreate/Update
-
-To disable both `AutoCreate` and `AutoUpdate`, you could use those two settings together
-
-```go
-db.Set("gorm:association_autoupdate", false).Set("gorm:association_autocreate", false).Create(&user)
-
-type User struct {
-  gorm.Model
-  Name    string
-  Company Company `gorm:"association_autoupdate:false;association_autocreate:false"`
-}
-```
-
-Or use `gorm:save_associations`
-
-```
-db.Set("gorm:save_associations", false).Create(&user)
-db.Set("gorm:save_associations", false).Save(&user)
-
-type User struct {
-  gorm.Model
-  Name    string
-  Company Company `gorm:"save_associations:false"`
-}
-```
-
-## Skip Save Reference
-
-If you don't even want to save association's reference when updating/saving data, you could use below tricks
-
-```go
-db.Set("gorm:association_save_reference", false).Save(&user)
-db.Set("gorm:association_save_reference", false).Create(&user)
-```
-
-or use tag
-
-```go
-type User struct {
-  gorm.Model
-  Name       string
-  CompanyID  uint
-  Company    Company `gorm:"association_save_reference:false"`
-}
+db.Omit(clause.Associations).Create(&user)
+// Skip all associations when creating user
 ```
 
 ## Association Mode
 
-Association Mode contains some helper methods to handle relationship related things easily.
+Association Mode contains some helper methods to handle relationship easily.
 
 ```go
 // Start Association Mode
@@ -167,15 +101,22 @@ Find matched associations
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
+
+// Find with conditions
+codes := []string{"zh-CN", "en-US", "ja-JP"}
+db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
 ```
 
 ### Append Associations
 
-Append new associations for `many to many`, `has many`, replace current associations for `has one`, `belongs to`
+Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
+
 db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
+
+db.Model(&user).Association("CreditCard").Append(CreditCard{Number: "411111111111"})
 ```
 
 ### Replace Associations
@@ -184,12 +125,13 @@ Replace current associations with new ones
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
+
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
 ### Delete Associations
 
-Remove relationship between source & argument objects, only delete the reference, won't delete those objects from DB.
+Remove relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
@@ -198,7 +140,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### Clear Associations
 
-Remove reference between source & current associations, won't delete those associations
+Remove all reference between source & association, won't delete those associations
 
 ```go
 db.Model(&user).Association("Languages").Clear()
@@ -210,4 +152,26 @@ Return the count of current associations
 
 ```go
 db.Model(&user).Association("Languages").Count()
+```
+
+### Batch Data
+
+Association Mode supports batch data, e.g:
+
+```go
+// Find all roles for all users
+gorm.Model(&users).Association("Role").Find(&roles)
+
+// Delete User A from all users's team
+gorm.Model(&users).Association("Team").Delete(&userA)
+
+// Get unduplicated count of members in all user's team
+gorm.Model(&users).Association("Team").Count()
+
+// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
+var users = []User{user1, user2, user3}
+// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+gorm.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
+// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+gorm.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```

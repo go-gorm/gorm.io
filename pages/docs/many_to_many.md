@@ -160,14 +160,14 @@ You are allowed to override the default foreign keys, to specify multiple foreig
 
 ```go
 type Tag struct {
-  ID     uint   `gorm:"primary_key"`
-  Locale string `gorm:"primary_key"`
+  ID     uint   `gorm:"primaryKey"`
+  Locale string `gorm:"primaryKey"`
   Value  string
 }
 
 type Blog struct {
-  ID         uint   `gorm:"primary_key"`
-  Locale     string `gorm:"primary_key"`
+  ID         uint   `gorm:"primaryKey"`
+  Locale     string `gorm:"primaryKey"`
   Subject    string
   Body       string
   Tags       []Tag `gorm:"many2many:blog_tags;"`
