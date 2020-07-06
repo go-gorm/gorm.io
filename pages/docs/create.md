@@ -46,7 +46,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Batch Insert
+## <span id="batch_insert">Batch Insert</span>
 
 Pass slice data to method `Create`, GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 

@@ -7,75 +7,91 @@ layout: page
 
 A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
 
-For example, if your application includes users and profiles, and each profile can be assigned to exactly one user
+For example, if your application includes users and companies, and each user can be assigned to exactly one company
 
 ```go
+// `User` belongs to `Company`, `CompanyID` is the foreign key
 type User struct {
   gorm.Model
-  Name string
+  Name      string
+  CompanyID int
+  Company   Company
 }
 
-// `Profile` belongs to `User`, `UserID` is the foreign key
-type Profile struct {
-  gorm.Model
-  UserID uint
-  User   User
-  Name   string
+type Company struct {
+  ID   int
+  Name string
 }
 ```
 
-## Foreign Key
+## Override Foreign Key
 
-To define a belongs to relationship, the foreign key must exists, default foreign key uses owner's type name plus its primary key.
+To define a belongs to relationship, the foreign key must exists, default foreign key uses owner's type name plus its primary field name.
 
-For the above example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
 
 GORM provides a way to customize the foreign key, for example:
 
 ```go
 type User struct {
   gorm.Model
-  Name string
+  Name         string
+  CompanyRefer int
+  Company      Company `gorm:"foreignKey:CompanyRefer"`
+  // use CompanyRefer as foreign key
 }
 
-type Profile struct {
-  gorm.Model
-  Name      string
-  User      User `gorm:"foreignkey:UserRefer"` // use UserRefer as foreign key
-  UserRefer uint
+type Company struct {
+  ID   int
+  Name string
 }
 ```
 
-## Association ForeignKey
+## Override References
 
-For a belongs to relationship, GORM usually uses the owner's primary key as the foreign key's value, for above example, it is `User`'s `ID`.
+For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for above example, it is `Company`'s field `ID`.
 
-When you assign a profile to a user, GORM will save user's `ID` into profile's `UserID` field.
+When you assign a user to a company, GORM will save company's `ID` into user's `CompanyID` field.
 
-You are able to change it with tag `association_foreignkey`, e.g:
+You are able to change it with tag `references`, e.g:
 
 ```go
 type User struct {
   gorm.Model
-  Refer string
+  Name      string
+  CompanyID string
+  Company   Company `gorm:"references:Code"` // use Code as references
+}
+
+type Company struct {
+  ID   int
+  Code string
   Name string
 }
-
-type Profile struct {
-  gorm.Model
-  Name      string
-  User      User `gorm:"association_foreignkey:Refer"` // use Refer as association foreign key
-  UserRefer string
-}
 ```
 
-## Working with Belongs To
+## CRUD with Belongs To
 
-You could find `belongs to` associations with `Related`
+Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+
+## Eager Loading
+
+GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+
+## FOREIGN KEY Constraints
+
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`
 
 ```go
-db.Model(&user).Related(&profile)
-//// SELECT * FROM profiles WHERE user_id = 111; // 111 is user's ID
-```
+type User struct {
+  gorm.Model
+  Name      string
+  CompanyID int
+  Company   Company `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+}
 
-For advanced usage, refer [Association Mode](associations.html#Association-Mode)
+type Company struct {
+  ID   int
+  Name string
+}
+```

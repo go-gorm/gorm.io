@@ -10,7 +10,6 @@ docs:
     update: update.html
     delete: delete.html
     raw_sql_and_builder: sql_builder.html
-    batch: batch.html
   associations:
      belongs_to: belongs_to.html
      has_one: has_one.html
