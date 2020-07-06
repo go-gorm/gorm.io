@@ -56,7 +56,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
-## Group Conditions
+## <span id="group_conditions">Group Conditions</span>
 
 Easier to write complicated SQL query with Group Conditions
 
