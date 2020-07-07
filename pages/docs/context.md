@@ -3,7 +3,7 @@ title: Context
 layout: page
 ---
 
-GORM Provides Context support, you can use it with method `WithContext`
+GORM provides Context support, you can use it with method `WithContext`
 
 ## Single Session Mode
 
@@ -60,7 +60,7 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 })
 ```
 
-**NOTE** Set `Context` with `WithContext` goroutine-safe, refer [Session Mode](session.html) for details
+**NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
 
 ## Logger
 

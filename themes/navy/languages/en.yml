@@ -46,7 +46,7 @@ sidebar:
     tutorials: Tutorials
     context: Context
     error_handling: Error Handling
-    session_mode: Session Mode
+    session: Session
     hooks: Hooks
     transactions: Transactions
     migration: Migration

@@ -91,7 +91,7 @@ for rows.Next() {
 
 ## DryRun Mode
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session Mode](session.html) for details
+Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
 
 ```go
 stmt := DB.Session(&Session{DryRun: true}).First(&user, 1).Statement

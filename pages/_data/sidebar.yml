@@ -20,7 +20,8 @@ docs:
   tutorials:
     context: context.html
     error_handling: error_handling.html
-    session_mode: session.html
+    method_chaining: method_chaining.html
+    session: session.html
     hooks: hooks.html
     transactions: transactions.html
     migration: migration.html
