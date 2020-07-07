@@ -3,5 +3,89 @@ title: Performance
 layout: page
 ---
 
+GORM optimizes many things to improve the performance, the default performance should good for most applications, but there are still some tips for how to improve it for your application.
 
+## [Disable Default Transaction](transactions.html)
 
+GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization
+
+```go
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  SkipDefaultTransaction: true,
+})
+```
+
+## [Caches Prepared Statement](session.html)
+
+Creates prepared statement when executing any SQL and caches them to speed up future calls
+
+```go
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  PrepareStmt: true,
+})
+```
+
+## [SQL Builder with PreparedStmt](sql_builder.html)
+
+GORM tries a lot to improve generate SQL, you can still choose to use raw SQL or prepare SQL before usage with GORM API ([DryRun Mode](session.html)), and execute it with prepared statement later, e.g:
+
+```go
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  PrepareStmt: true,
+})
+
+db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
+```
+
+## Select Fields
+
+By default GORM select all fields when querying, you can use `Select` to specify fields you want
+
+```go
+db.Select("Name", "Age").Find(&Users{})
+```
+
+Or define an smaller API struct to use the [smart select fields feature](advanced_query.html)
+
+```go
+type User struct {
+  ID     uint
+  Name   string
+  Age    int
+  Gender string
+  // hundreds of fields
+}
+
+type APIUser struct {
+  ID   uint
+  Name string
+}
+
+// Select `id`, `name` automatically when query
+db.Model(&User{}).Limit(10).Find(&APIUser{})
+// SELECT `id`, `name` FROM `users` LIMIT 10
+```
+
+## [Iteration / FindInBatches](advanced_query.html)
+
+Query and process records with iteration or in batches
+
+## [Index Hints](hints.html)
+
+[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives flexibility to choose a more efficient execution plan than the optimizer
+
+```go
+import "gorm.io/hints"
+
+DB.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
+// SELECT * FROM `users` USE INDEX (`idx_user_name`)
+
+DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
+// SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
+
+DB.Clauses(
+	hints.ForceIndex("idx_user_name", "idx_user_id").ForOrderBy(),
+	hints.IgnoreIndex("idx_user_name").ForGroupBy(),
+).Find(&User{})
+// SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
+```
