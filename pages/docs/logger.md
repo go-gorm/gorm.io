@@ -5,31 +5,56 @@ layout: page
 
 ## Logger
 
-Gorm has built-in logger support, default mode, it will only print logs when there are errors happened.
+Gorm has a [default logger implementation](https://github.com/go-gorm/gorm/blob/master/logger/logger.go), it will prints Slow SQL and happening errors by default
+
+The logger accepts few options, you can customize it during initialization, for example:
 
 ```go
-// Enable Logger, show detailed log
-db.LogMode(true)
+newLogger := logger.New(
+  log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+  logger.Config{
+    SlowThreshold: time.Second,   // Slow SQL threshold
+    LogLevel:      logger.Silent, // Log level
+    Colorful:      false,         // Disable color
+  },
+)
 
-// Disable Logger, don't show any log even errors
-db.LogMode(false)
+// Globally mode
+db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
+  Logger: newLogger,
+})
 
-// Debug a single operation, show detailed log for this operation
+// Continuous session mode
+tx := db.Session(&Session{Logger: newLogger})
+tx.First(&user)
+tx.Model(&user).Update("Age", 18)
+
+// Debug a single operation, change the session's log level to logger.Info
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
+```
+
+### Log Levels
+
+GORM defined log levels: `Silent`, `Error`, `Warn`, `Info`
+
+```go
+db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
+  Logger: logger.Default.LogMode(logger.Silent),
+})
 ```
 
 ## Customize Logger
 
-Refer GORM's default logger for how to customize it [https://github.com/jinzhu/gorm/blob/master/logger.go](https://github.com/jinzhu/gorm/blob/master/logger.go)
+Refer GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
 
-For example, using [Revel](https://revel.github.io/)'s Logger as the backend for GORM
-
-```go
-db.SetLogger(gorm.Logger{revel.TRACE})
-```
-
-Using `os.Stdout` as the backend
+The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
 
 ```go
-db.SetLogger(log.New(os.Stdout, "\r\n", 0))
+type Interface interface {
+	LogMode(LogLevel) Interface
+	Info(context.Context, string, ...interface{})
+	Warn(context.Context, string, ...interface{})
+	Error(context.Context, string, ...interface{})
+	Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error)
+}
 ```
