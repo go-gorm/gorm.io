@@ -133,7 +133,7 @@ db.Migrator().ColumnTypes(&User{}) ([]*sql.ColumnType, error)
 
 ```go
 type UserIndex struct {
-  Name  string `gorm:"check:name_checker,(name <> 'jinzhu')"`
+  Name  string `gorm:"check:name_checker,name <> 'jinzhu'"`
 }
 
 // Create constraint
@@ -168,7 +168,7 @@ db.Migrator().HasIndex(&User{}, "idx_name")
 
 type User struct {
   gorm.Model
-  Name string `gorm:"size:255;index:idx_name,unique"`
+  Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
 // Rename index name
@@ -176,35 +176,9 @@ db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
-## Check Constraints
+## Constraints
 
-GORM supports create check constraints with tag `check`, it will be created when auto migrating/creating table
-
-```go
-type UserIndex struct {
-	Name  string `gorm:"check:name_checker,(name <> 'jinzhu')"`
-	Name2 string `gorm:"check:(name <> 'jinzhu')"`
-	Name3 string `gorm:"check:,(name <> 'jinzhu')"`
-}
-```
-
-## Index Constraints
-
-GORM also supports define index constraints with tag `index` or `uniqueIndex`, for example:
-
-```go
-type User struct {
-	Name         string `gorm:"index"`
-	Name2        string `gorm:"index:idx_name,unique"`
-	Name3        string `gorm:"index:,sort:desc,collate:utf8,type:btree,length:10,where:name3 != 'jinzhu'"`
-	Name4        string `gorm:"uniqueIndex"`
-	Name5        int64  `gorm:"index:,class:FULLTEXT,comment:hello \\, world,where:age > 10"`
-	Name6        int64  `gorm:"index:profile,comment:hello \\, world,where:age > 10"`
-	Age          int64  `gorm:"index:profile,expression:ABS(age)"`
-	OID          int64  `gorm:"index:idx_id;index:idx_oid,unique"`
-	MemberNumber string `gorm:"index:idx_id"`
-}
-```
+GORM creates constraints when auto migrating or creating table, checkout [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
 
 ## Other Migration Tools
 
