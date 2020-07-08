@@ -13,7 +13,7 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Context, Prepared Statment Mode, DryRun Mode
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Batch Insert, FindInBatches, Find To Map
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Composite Primary Key
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Composite Primary Key, Indexes, Constraints
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Auto Migrations
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, write Plugins based on GORM callbacks
