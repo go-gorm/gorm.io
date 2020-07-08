@@ -20,7 +20,7 @@ permalink: :year/:month/:day/:title/
 permalink_defaults:
 
 # Start Guide
-start: "go get -u github.com/jinzhu/gorm"
+start: "go get -u gorm.io/gorm"
 
 # Common Configuration
 twitter: zhangjinzhu
@@ -40,17 +40,10 @@ relative_link: false
 highlight:
   enable: true
   line_number: false
-  auto_detect: false
+  auto_detect: true
   tab_replace: '  '
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 theme: navy  # based from hexo offical site
-
-# Deployment
-## Docs: https://hexo.io/docs/deployment.html
-deploy:
-  type: git
-  repository: https://__GITHUB_TOKEN__@github.com/go-gorm/gorm.io.git
-  branch: gh-pages

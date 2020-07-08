@@ -9,6 +9,8 @@ Hooks are functions that are called before or after creation/querying/updating/d
 
 If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
 
+The type of hook methods should be `func(*gorm.DB) error`
+
 ## Hooks
 
 ### Creating an object
@@ -20,9 +22,7 @@ Available hooks for creating
 BeforeSave
 BeforeCreate
 // save before associations
-// update timestamp `CreatedAt`, `UpdatedAt`
-// save self
-// reload fields that have default value and its value is blank
+// insert into database
 // save after associations
 AfterCreate
 AfterSave
@@ -32,28 +32,31 @@ AfterSave
 Code Example:
 
 ```go
-func (u *User) BeforeSave() (err error) {
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+  u.UUID = uuid.New()
+
   if !u.IsValid() {
     err = errors.New("can't save invalid data")
   }
   return
 }
 
-func (u *User) AfterCreate(scope *gorm.Scope) (err error) {
+func (u *User) AfterCreate(tx *gorm.DB) (err error) {
   if u.ID == 1 {
-    scope.DB().Model(u).Update("role", "admin")
+    tx.Model(u).Update("role", "admin")
   }
   return
 }
 ```
 
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited.
-If you would like access those changes in your hooks, you could accept current transaction as argument in your hooks, for example:
+**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is commited, if you returns any error in your hooks, the change will be rollbacked
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
-  tx.Model(u).Update("role", "admin")
-  return
+  if !u.IsValid() {
+    return errors.New("rollback invalid user")
+  }
+  return nil
 }
 ```
 
@@ -66,8 +69,7 @@ Available hooks for updating
 BeforeSave
 BeforeUpdate
 // save before associations
-// update timestamp `UpdatedAt`
-// save self
+// update database
 // save after associations
 AfterUpdate
 AfterSave
@@ -77,7 +79,7 @@ AfterSave
 Code Example:
 
 ```go
-func (u *User) BeforeUpdate() (err error) {
+func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
   if u.readonly() {
     err = errors.New("read only user")
   }
@@ -100,7 +102,7 @@ Available hooks for deleting
 ```go
 // begin transaction
 BeforeDelete
-// delete self
+// delete from database
 AfterDelete
 // commit or rollback transaction
 ```
@@ -130,10 +132,27 @@ AfterFind
 Code Example:
 
 ```go
-func (u *User) AfterFind() (err error) {
+func (u *User) AfterFind(tx *gorm.DB) (err error) {
   if u.MemberShip == "" {
     u.MemberShip = "user"
   }
   return
 }
 ```
+
+## Modify current operation
+
+```go
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  // Modify current operation through tx.Statement, e.g:
+  tx.Statement.Select("Name", "Age")
+  tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
+
+  // tx is new session mode without the `WithConditions` option
+  // operations based on it will run inside same transaction but without any current conditions
+  var role Role
+  err := tx.First(&role, "name = ?", user.Role).Error
+  // SELECT * FROM roles WHERE name = "admin"
+  // ...
+  return err
+}

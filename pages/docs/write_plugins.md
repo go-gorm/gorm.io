@@ -3,24 +3,24 @@ title: Write Plugins
 layout: page
 ---
 
-GORM itself is powered by `Callbacks`, so you could fully customize GORM as you want
+## Callbacks
 
-## Register a new callback
+GORM itself is powered by `Callbacks`, it has callbacks for `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw`, you could fully customize GORM with them as you want
+
+### Register Callback
 
 Register a callback into callbacks
 
 ```go
-func updateCreated(scope *Scope) {
-  if scope.HasColumn("Created") {
-    scope.SetColumn("Created", NowFunc())
-  }
+func cropImage(db *gorm.DB) {
+  // crop image fields and upload them to CDN
 }
 
-db.Callback().Create().Register("update_created_at", updateCreated)
+db.Callback().Create().Register("crop_image", cropImage)
 // register a callback for Create process
 ```
 
-## Delete an existing callback
+### Delete Callback
 
 Delete a callback from callbacks
 
@@ -29,7 +29,7 @@ db.Callback().Create().Remove("gorm:create")
 // delete callback `gorm:create` from Create callbacks
 ```
 
-## Replace an existing callback
+### Replace Callback
 
 Replace a callback having same name with new one
 
@@ -38,7 +38,7 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 // replace callback `gorm:create` with new function `newCreateFunction` for Create process
 ```
 
-## Register callback orders
+### Register Callback with orders
 
 Register callbacks with orders
 
@@ -51,28 +51,25 @@ db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update",
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 ```
 
-## Pre-Defined Callbacks
+### Defined Callbacks
 
-GORM has defiend callbacks to perform CRUD operations, check them out before start write your plugins
+GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to support current GORM features, check them out before starting your plugins
 
-- [Create callbacks](https://github.com/jinzhu/gorm/blob/master/callback_create.go)
+## Plugin
 
-- [Update callbacks](https://github.com/jinzhu/gorm/blob/master/callback_update.go)
-
-- [Query callbacks](https://github.com/jinzhu/gorm/blob/master/callback_query.go)
-
-- [Delete callbacks](https://github.com/jinzhu/gorm/blob/master/callback_delete.go)
-
-- Row Query callbacks - no callbacks registered by default
-
-Row Query callbacks will be called when perform `Row` or `Rows`, there are no registered callbacks by default, you could register a new one like:
+GORM provides `Use` method to register plugins, plugin needs to implement `Plugin` interface
 
 ```go
-func updateTableName(scope *gorm.Scope) {
-  scope.Search.Table(scope.TableName() + "_draft") // append `_draft` to table name
+type Plugin interface {
+  Name() string
+  Initialize(*gorm.DB) error
 }
-
-db.Callback().RowQuery().Register("publish:update_table_name", updateTableName)
 ```
 
-View [https://godoc.org/github.com/jinzhu/gorm](https://godoc.org/github.com/jinzhu/gorm) to view all available API
+The `Initialize` method will be invoked when register the plugin into GORM first time, and GORM will save the registered plugins, access them like:
+
+```go
+db.Config.Plugins[pluginName]
+```
+
+Checkout [Prometheus](prometheus.html) as example

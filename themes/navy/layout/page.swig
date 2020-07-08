@@ -7,7 +7,11 @@
             <div class="inner">
               <header class="article-header">
                 <h1 class="article-title" itemprop="name">{{ page.title }}</h1>
+                {% if page.lang ===  "en" %}
                 <a href="{{ raw_link(page.source) }}" class="article-edit-link" title="{{ __('page.improve') }}"><i class="fa fa-pencil"></i></a>
+                {% else %}
+                <a href="https://translate.gorm.io/project/go-gorm/{{site.data.languages[page.lang].crowdin}}" class="article-edit-link" title="{{ __('page.improve') }}"><i class="fa fa-pencil"></i></a>
+                {% endif %}
               </header>
               <div class="article-content" itemprop="articleBody">
                 {{ page_anchor(page.content) }}
@@ -24,6 +28,16 @@
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">{{ __('page.contents') }}</strong>
               {{ toc(page.content, {list_number: false}) }}
+
+              {% if page.lang ===  "en" %}
+                <a href="{{ raw_link(page.source) }}" target="_blank" id="article-improve">
+                  {{ __('page.improve') }}
+                </a>
+              {% else %}
+                <a href="https://translate.gorm.io/project/go-gorm/{{site.data.languages[page.lang].crowdin}}" target="_blank" id="article-improve">
+                  {{ __('page.improve') }}
+                </a>
+              {% endif %}
               <a href="#" id="article-toc-top">{{ __('page.back_to_top') }}</a>
             </div>
           </aside>

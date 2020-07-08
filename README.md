@@ -16,7 +16,7 @@ This site will automatically deploy when commits land in `master`.
 
 You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
 
-To translate GORM in your language, you will need to post a request in the [Github issues](https://github.com/jinzhu/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
+To translate GORM in your language, you will need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
 
 ## Developing this Site
 

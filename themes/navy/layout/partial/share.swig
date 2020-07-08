@@ -1,10 +1,27 @@
-<!-- GitHub star -->
-<a class="github-button" href="https://github.com/{{ config.github }}" data-icon="octicon-star" data-show-count="true" aria-label="Star {{ config.github }} on GitHub">Star</a>
-<!-- GitHub fork -->
-<a class="github-button" href="https://github.com/{{ config.github }}/fork" data-icon="octicon-repo-forked" data-show-count="true" aria-label="Fork {{ config.github }} on GitHub">Fork</a><!-- Tweet button -->
-<!-- Twitter follow button -->
-<a href="https://twitter.com/{{ config.twitter }}" class="twitter-follow-button" data-show-count="true">Follow @{{ config.twitter }}</a>
-<!-- Github Button -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-<!-- Twitter share button -->
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<div class="shields-images">
+  <a href="https://github.com/go-gorm/gorm/stargazers">
+    <img alt="GitHub stars" src="https://img.shields.io/github/stars/go-gorm/gorm?color=1e94de&style=for-the-badge&logo=github">
+  </a>
+
+  <a href="https://github.com/go-gorm/gorm/network/members">
+    <img alt="GitHub forks" src="https://img.shields.io/github/forks/go-gorm/gorm?color=1e94de&style=for-the-badge&logo=github">
+  </a>
+
+  <a href="https://github.com/go-gorm/gorm/graphs/contributors">
+    <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/go-gorm/gorm?color=1e94de&style=for-the-badge&logo=github">
+  </a>
+
+  <a href="https://github.com/jinzhu">
+    <img alt="GitHub followers" src="https://img.shields.io/github/followers/jinzhu?color=1e94de&style=for-the-badge&logo=github">
+  </a>
+
+  <a href="https://github.com/go-gorm">
+    <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Release&color=1e94de&&style=for-the-badge&logo=go&logoColor=4BABD4">
+  </a>
+</div>
+
+<style>
+  .shields-images img {
+    height: 25px;
+  }
+</style>

@@ -3,101 +3,117 @@ title: Method Chaining
 layout: page
 ---
 
-## Method Chaining
-
-Gorm implements method chaining interface, so you could write code like this:
+GORM allows method chaining, so you can write code like this:
 
 ```go
-db, err := gorm.Open("postgres", "user=gorm dbname=gorm sslmode=disable")
+db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
+```
 
-// create a new relation
+There are three kinds of methods in GORM: `Chain Method`, `Finisher Method`, `New Session Method`
+
+## Chain Method
+
+Chain methods are methods modify or add `Clauses` to current `Statement`, like:
+
+`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
+
+Here is [the full lists](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), also check out the [SQL Builder](sql_builder.html) for more details about `Clauses`
+
+## Finisher Method
+
+Finishers are immediate methods that execute registered callbacks, which will generate and execute SQL, like those methods:
+
+`Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`...
+
+Check out [the full lists](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) here
+
+## New Session Mode
+
+After new initialized `*gorm.DB` or a `New Session Method`, following methods call will create a new `Statement` instance instead of using current one
+
+GROM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details
+
+Let explain it with examples:
+
+Example 1:
+
+```go
+db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+// db is new initialized *gorm.DB, which under `New Session Mode`
+db.Where("name = ?", "jinzhu").Where("age = ?", 18).Find(&users)
+// `Where("name = ?", "jinzhu")` is the first method call, it will creates a new `Statement`
+// `Where("age = ?", 18)` reuse the `Statement`, and add conditions to the `Statement`
+// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18;
+
+db.Where("name = ?", "jinzhu2").Where("age = ?", 20).Find(&users)
+// `Where("name = ?", "jinzhu2")` is also the first method call, it creates new `Statement` too
+// `Where("age = ?", 20)` reuse the `Statement`, and add conditions to the `Statement`
+// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// SELECT * FROM users WHERE name = 'jinzhu2' AND age = 20;
+
+db.Find(&users)
+// `Find(&users)` is a finisher method and also the first method call for a `New Session Mode` `*gorm.DB`
+// It creates a new `Statement` and executes registered Query Callbacks, generate and run following SQL
+// SELECT * FROM users;
+```
+
+Example 2:
+
+```go
+db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+// db is new initialized *gorm.DB, which under `New Session Mode`
 tx := db.Where("name = ?", "jinzhu")
+// `Where("name = ?", "jinzhu")` is the first method call, it creates a new `Statement` and add conditions
 
-// add more filter
-if someCondition {
-  tx = tx.Where("age = ?", 20)
-} else {
-  tx = tx.Where("age = ?", 30)
-}
+tx.Where("age = ?", 18).Find(&users)
+// `tx.Where("age = ?", 18)` REUSE above `Statement`, and add conditions to the `Statement`
+// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18
 
-if yetAnotherCondition {
-  tx = tx.Where("active = ?", 1)
-}
+tx.Where("age = ?", 28).Find(&users)
+// `tx.Where("age = ?", 18)` REUSE above `Statement` also, and add conditions to the `Statement`
+// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
 ```
 
-Query won't be generated until a immediate method, which could be useful in some cases.
+**NOTE** In example 2, the first query affected the second generated SQL as GORM reused the `Statement`, this might cause unexpected issues, refer [Goroutine Safety](#goroutine_safe) for how to avoid it
 
-Like you could extract a wrapper to handle some common logic
+## <span id="goroutine_safe">Goroutine Safety</span>
 
-## Immediate Methods
-
-Immediate methods are those methods that will generate SQL query and send it to database, usually it is those CRUD methods, like:
-
-`Create`, `First`, `Find`, `Take`, `Save`, `UpdateXXX`, `Delete`, `Scan`, `Row`, `Rows`...
-
-Here is an immediate methods example based on above chain:
+Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
 
 ```go
-tx.Find(&user)
-```
+db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-Generates
-
-```sql
-SELECT * FROM users where name = 'jinzhu' AND age = 30 AND active = 1;
-```
-
-## Scopes
-
-Scope is build based on the method chaining theory.
-
-With it, you could extract some generic logics, to write more reusable libraries.
-
-```go
-func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
-  return db.Where("amount > ?", 1000)
+// Safe for new initialized *gorm.DB
+for i := 0; i < 100; i++ {
+  go db.Where(...).First(&user)
 }
 
-func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
-  return db.Where("pay_mode_sign = ?", "C")
+tx := db.Where("name = ?", "jinzhu")
+// NOT Safe as reusing Statement
+for i := 0; i < 100; i++ {
+  go tx.Where(...).First(&user)
 }
 
-func PaidWithCod(db *gorm.DB) *gorm.DB {
-  return db.Where("pay_mode_sign = ?", "C")
+ctx, _ := context.WithTimeout(context.Background(), time.Second)
+ctxDB := db.WithContext(ctx)
+// Safe after a `New Session Method`
+for i := 0; i < 100; i++ {
+  go ctxDB.Where(...).First(&user)
 }
 
-func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
-  return func (db *gorm.DB) *gorm.DB {
-    return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
-  }
+ctx, _ := context.WithTimeout(context.Background(), time.Second)
+ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
+// Safe after a `New Session Method`
+for i := 0; i < 100; i++ {
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
 }
 
-db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
-
-db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
-
-db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
+// Safe after a `New Session Method`
+for i := 0; i < 100; i++ {
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+}
 ```
-
-## Multiple Immediate Methods
-
-When using multiple immediate methods with GORM, later immediate method will reuse before immediate methods's query conditions (excluding inline conditions)
-
-```go
-db.Where("name LIKE ?", "jinzhu%").Find(&users, "id IN (?)", []int{1, 2, 3}).Count(&count)
-```
-
-Generates
-
-```sql
-SELECT * FROM users WHERE name LIKE 'jinzhu%' AND id IN (1, 2, 3)
-
-SELECT count(*) FROM users WHERE name LIKE 'jinzhu%'
-```
-
-## Thread Safety
-
-All Chain Methods will clone and create a new DB object (shares one connection pool), GORM is safe for concurrent use by multiple goroutines.
