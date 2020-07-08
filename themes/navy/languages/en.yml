@@ -46,6 +46,7 @@ sidebar:
     tutorials: Tutorials
     context: Context
     error_handling: Error Handling
+    method_chaining: Method Chaining
     session: Session
     hooks: Hooks
     transactions: Transactions
