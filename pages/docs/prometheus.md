@@ -38,7 +38,7 @@ You can define your metrics and collect them with GORM Prometheus plugin, which 
 
 ```go
 type MetricsCollector interface {
-	Metrics(*Prometheus) []prometheus.Collector
+  Metrics(*Prometheus) []prometheus.Collector
 }
 ```
 
@@ -51,7 +51,7 @@ GORM provides an example for how to collect MySQL Status as metrics, check it ou
   Prefix: "gorm_status_",
   // Metrics name prefix, default is `gorm_status_`
   // For example, Threads_running's metric name is `gorm_status_Threads_running`
-	Interval: 100,
+  Interval: 100,
   // Fetch interval, default use Prometheus's RefreshInterval
   VariableNames: []string{"Threads_running"},
   // Select variables from SHOW STATUS, if not set, uses all status variables
