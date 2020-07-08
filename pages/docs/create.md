@@ -110,7 +110,7 @@ type User struct {
 }
 ```
 
-Then the default value will be used when inserting into database for [zero-value](https://tour.golang.org/basics/12) fields
+Then the default value will be used when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
 **NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this
 

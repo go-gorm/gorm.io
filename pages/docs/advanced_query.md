@@ -84,7 +84,7 @@ DB.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record, or initalize a new one with given conditions (only works with struct, map conditions)
+Get first matched record, or initialize a new one with given conditions (only works with struct, map conditions)
 
 ```go
 // User not found, initialize it with give conditions
@@ -162,7 +162,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not, and save them back to database.
+`Assign` attributes to the record regardless it is found or not, and save them back to the database.
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -189,7 +189,7 @@ DB.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allows passing index hints to database in case the query planner gets confused.
+Index hints allow passing index hints to the database in case the query planner gets confused.
 
 ```go
 import "gorm.io/hints"
@@ -247,7 +247,7 @@ result.RowsAffected // processed records count in all batches
 
 ## Query Hooks
 
-GORM allows hooks `AfterFind` for query, it will be called when querying a record, refer [Hooks](hooks.html) for details
+GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -260,7 +260,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="scan">Scan</span>
 
-Scan results into struct, works similar like `Find`
+Scan results into a struct work similar to `Find`
 
 ```go
 type Result struct {
@@ -277,7 +277,7 @@ db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into slice, if you want to query multiple columns, use [`Scan`](#scan) instead
+Query single column from database and scan into a slice, if you want to query multiple columns, use [`Scan`](#scan) instead
 
 ```go
 var ages []int64

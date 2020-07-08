@@ -64,7 +64,7 @@ type User struct {
 
 ### Field-Level Permission
 
-Exported fields have all permission when doing CRUD with GORM, but GORM allows you change the field-level permission with tag, so you can make a field to read-only, write-only, create-only, update-only or ignored
+Exported fields have all permission when doing CRUD with GORM, but GORM allows you to change the field-level permission with tag, so you can make a field to read-only, write-only, create-only, update-only or ignored
 
 ```go
 type User struct {
@@ -83,9 +83,9 @@ type User struct {
 
 GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
 
-To use fields with different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
+To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
 
-If you prefer to save unix (nano) seconds instead of time, you can simply change field's data type from `time.Time` to `int`
+If you prefer to save UNIX (nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
 
 ```go
 type User struct {
@@ -98,7 +98,7 @@ type User struct {
 
 ### <span id="embedded_struct">Embedded Struct</span>
 
-For anonymous fields, GORM will includes its fields into its parent struct, for example:
+For anonymous fields, GORM will include its fields into its parent struct, for example:
 
 ```go
 type User struct {
@@ -115,7 +115,7 @@ type User struct {
 }
 ```
 
-For normal struct field, you can embed it with tag `embedded`, for example:
+For a normal struct field, you can embed it with the tag `embedded`, for example:
 
 ```go
 type Author struct {

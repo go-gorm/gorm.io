@@ -17,7 +17,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## [Caches Prepared Statement](session.html)
 
-Creates prepared statement when executing any SQL and caches them to speed up future calls
+Creates a prepared statement when executing any SQL and caches them to speed up future calls
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -45,7 +45,7 @@ By default GORM select all fields when querying, you can use `Select` to specify
 db.Select("Name", "Age").Find(&Users{})
 ```
 
-Or define an smaller API struct to use the [smart select fields feature](advanced_query.html)
+Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)
 
 ```go
 type User struct {
@@ -72,7 +72,7 @@ Query and process records with iteration or in batches
 
 ## [Index Hints](hints.html)
 
-[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives flexibility to choose a more efficient execution plan than the optimizer
+[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
 
 ```go
 import "gorm.io/hints"

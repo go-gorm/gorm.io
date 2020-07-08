@@ -25,7 +25,7 @@ tx.Model(&user).Update("role", "admin")
 
 ## Chi Middleware Example
 
-Continuous session mode which might be helpful when handling API request, for example, you can setup `*gorm.DB` with Timeout Context in middlewares, and when use the `*gorm.DB` when processing all requests
+Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
 
 Following is a Chi middleware example:
 

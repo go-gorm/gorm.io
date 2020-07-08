@@ -30,7 +30,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## NamingStrategy
 
-GORM allows users change the naming conventions by overriding the default `NamingStrategy` which need to implements interface `Namer`
+GORM allows users to change the naming conventions by overriding the default `NamingStrategy` which need to implements interface `Namer`
 
 ```go
 type Namer interface {
@@ -82,7 +82,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## PrepareStmt
 
-`PreparedStmt` creates prepared statement when executing any SQL and caches them to speed up future calls, refer [Session](session.html) for details
+`PreparedStmt` creates a prepared statement when executing any SQL and caches them to speed up future calls, refer [Session](session.html) for details
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{

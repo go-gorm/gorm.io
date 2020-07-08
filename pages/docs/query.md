@@ -5,7 +5,7 @@ layout: page
 
 ## Retrieving a single object
 
-GORM provides `First`, `Take`, `Last` method to retrieve a single object from database, it adds `LIMIT 1` condition when querying database, when no record found, its returns error `ErrRecordNotFound`
+GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, when no record found, its returns error `ErrRecordNotFound`
 
 ```go
 // Get the first record ordered by primary key
@@ -89,7 +89,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**NOTE** When query with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
@@ -105,7 +105,7 @@ db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 
 ### <span id="inline_conditions">Inline Condition</span>
 
-Works similar like `Where`.
+Works similar to `Where`.
 
 ```go
 // Get by primary key (only works for integer primary key)
@@ -133,7 +133,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 
 ### Not Conditions
 
-Build NOT conditions, works similar like `Where`
+Build NOT conditions, works similar to `Where`
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -167,7 +167,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-Also checkout [Group Conditions in Advanced Query](advanced_query.html), it can write complicated SQL easier
+Also check out [Group Conditions in Advanced Query](advanced_query.html), it can write complicated SQL easier
 
 ## Selecting Specific Fields
 
@@ -186,7 +186,7 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 
 ## Order
 
-Specify order when retrieve records from database
+Specify order when retrieving records from the database
 
 ```go
 db.Order("age desc, name").Find(&users)

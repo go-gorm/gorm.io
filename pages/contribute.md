@@ -9,7 +9,7 @@ layout: page
 
 * Share GORM with the world by social channels, or simply tell people who might be interested
 * Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forgot to add them to [the list](/community.html))
+* Write tutorials, record videos, etc... (Don't forget to add them to [the list](/community.html))
 * Help to promote GORM on GitHub by [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
 
 ## Documentation and Writing
@@ -18,14 +18,14 @@ layout: page
 
 ### Translate this site
 
-You can translate current site with [https://translate.gorm.io](https://translate.gorm.io)
+You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
 
 To translate GORM in your language you need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
 
 ## Program
 
-* Create pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
-* Create open source plugins for GORM (Don't forgot to add them to [the list](/community.html#Open-Sources))
+* Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
+* Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
 
 ## Donations
 
@@ -40,7 +40,7 @@ Your kindness and generosity is greatly appreciated
 
 ### Recurring Donations
 
-Your kindness and generosity is greatly appreciated, and your name will be listed in this page or the home page of this website.
+Your kindness and generosity are greatly appreciated, and your name will be listed on this page or the home page of this website.
 
 [Recurring Donations with OpenCollective](https://opencollective.com/gorm)
 [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)

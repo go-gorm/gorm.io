@@ -5,7 +5,7 @@ layout: page
 
 ## Auto Create/Update
 
-GORM will auto save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORM will autosave associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
 
 ```go
 user := User{
@@ -61,15 +61,15 @@ db.Select("Name").Create(&user)
 // INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
 db.Omit("BillingAddress").Create(&user)
-// Skip create BillingAddress when creating user
+// Skip create BillingAddress when creating a user
 
 db.Omit(clause.Associations).Create(&user)
-// Skip all associations when creating user
+// Skip all associations when creating a user
 ```
 
 ## Association Mode
 
-Association Mode contains some common used helper methods to handle relationship
+Association Mode contains some commonly used helper methods to handle relationships
 
 ```go
 // Start Association Mode
@@ -77,7 +77,7 @@ var user User
 db.Model(&user).Association("Languages")
 // `user` is the source model, it must contains primary key
 // `Languages` is a relationship's field name
-// If above two conditions matched, the AssociationMode should be started successfully, or it should returns error
+// If the above two conditions matched, the AssociationMode should be started successfully, or it should return error
 db.Model(&user).Association("Languages").Error
 ```
 
@@ -117,7 +117,7 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 
 ### Delete Associations
 
-Remove relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
@@ -172,5 +172,5 @@ gorm.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, us
 | polymorphicValue | Specifies polymorphic value, default table name |
 | many2many        | Specifies join table name                       |
 | jointForeignKey  | Specifies foreign key of jointable              |
-| joinReferences   | Specifies references's foreign key of jointable |
+| joinReferences   | Specifies references' foreign key of jointable |
 | constraint       | Relations constraint                            |

@@ -9,7 +9,7 @@ GORM allows create database index with tag `index`, `uniqueIndex`, those indexes
 
 GORM accepts lots of index settings, like `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`
 
-Check following example for how to use it
+Check the following example for how to use it
 
 ```go
 type User struct {
@@ -46,9 +46,9 @@ type User struct {
 
 ### Fields Priority
 
-The column order of a composite index has impact on its performance so it must be chosen carefully
+The column order of a composite index has an impact on its performance so it must be chosen carefully
 
-You can specify the order with the `priority` option, default priority value is `10`, if priority value is same, the order will be based on model struct's field index
+You can specify the order with the `priority` option, the default priority value is `10`, if priority value is the same, the order will be based on model struct's field index
 
 ```go
 type User struct {
@@ -72,7 +72,7 @@ type User struct {
 
 ## Multiple indexes
 
-A field accepts multiple `index`, `uniqueIndex` tags that will creates multiple indexes on a field
+A field accepts multiple `index`, `uniqueIndex` tags that will create multiple indexes on a field
 
 ```go
 type UserIndex struct {

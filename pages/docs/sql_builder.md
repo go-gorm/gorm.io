@@ -33,7 +33,7 @@ db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,
 DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
-**NOTE** GORM allows cache prepared statment to increase performance, checkout [Performance](performance.html) for details
+**NOTE** GORM allows cache prepared statement to increase performance, checkout [Performance](performance.html) for details
 
 ## `Row` & `Rows`
 
@@ -105,7 +105,7 @@ stmt.Vars         //=> []interface{}{1}
 
 GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
 
-For example, when querying with `First`, it addes following clauses to the `Statement`
+For example, when querying with `First`, it adds the following clauses to the `Statement`
 
 ```go
 clause.Select{Columns: "*"}
@@ -150,7 +150,7 @@ Which is supported because GORM allows database driver register Clause Builder t
 
 GORM defined [Many Clauses](https://github.com/go-gorm/gorm/tree/master/clause), and some clauses provide advanced options can be used for your application
 
-Although most of them are rarely used, if you find GORM public API can't match your requirements, maybe good to check them out, for example:
+Although most of them are rarely used, if you find GORM public API can't match your requirements, may be good to check them out, for example:
 
 ```go
 DB.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)

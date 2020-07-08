@@ -5,7 +5,7 @@ layout: page
 
 ## Logger
 
-Gorm has a [default logger implementation](https://github.com/go-gorm/gorm/blob/master/logger/logger.go), it will prints Slow SQL and happening errors by default
+Gorm has a [default logger implementation](https://github.com/go-gorm/gorm/blob/master/logger/logger.go), it will print Slow SQL and happening errors by default
 
 The logger accepts few options, you can customize it during initialization, for example:
 
@@ -45,7 +45,7 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 
 ## Customize Logger
 
-Refer GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
+Refer to GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
 
 The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
 

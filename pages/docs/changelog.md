@@ -5,7 +5,7 @@ layout: page
 
 ## v2.0 - 2020.07
 
-GORM 2.0 is rewritten from scratch based on feedbacks we received in the last few years, it introduces some incompatible-API change and many improvements
+GORM 2.0 is rewritten from scratch based on feedback we received in the last few years, it introduces some incompatible-API change and many improvements
 
 * Performance Improvements
 * Modularity
@@ -13,8 +13,8 @@ GORM 2.0 is rewritten from scratch based on feedbacks we received in the last fe
 * SavePoint/RollbackTo/Nested Transaction Support
 * Association improvements (On Delete/Update), Modify Join Table for Many2Many, Association Mode for batch data
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints supports
-* Multiple fields support for auto creating/updating time, which also support unix (nano) seconds
-* Field permissions support: readonly, writeonly, createonly, updateonly, ignored
+* Multiple fields support for auto-creating/updating time, which also support UNIX (nano) seconds
+* Field permissions support: read-only, write-only, create-only, update-only, ignored
 * All new Migrator, Logger
 * Naming strategy (Unified table name, field name, join table name, foreign key, checker, index name rule)
 * Better customized data type support (e.g: JSON)

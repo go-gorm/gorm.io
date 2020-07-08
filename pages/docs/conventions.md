@@ -5,28 +5,28 @@ layout: page
 
 ## `ID` as Primary Key
 
-GORM uses field with the name `ID` as the table's primary key by default.
+GORM uses the field with the name `ID` as the table's primary key by default.
 
 ```go
 type User struct {
-  ID   string // field named `ID` will be used as primary field by default
-  Name string
+  ID   string // field named `ID` will be used as a primary field by default
+  Name string
 }
 ```
 
-You can set other field as primary key with tag `primaryKey`
+You can set other fields as primary key with tag `primaryKey`
 
 ```go
 // Set field `AnimalID` as primary field
 type Animal struct {
-  ID     int64
-  UUID   string `gorm:"primaryKey"`
-  Name   string
-  Age    int64
+  ID     int64
+  UUID   string `gorm:"primaryKey"`
+  Name   string
+  Age    int64
 }
 ```
 
-Also checkout [Composite Primary Key](composite_primary_key.html)
+Also check out [Composite Primary Key](composite_primary_key.html)
 
 ## Pluralized Table Name
 
@@ -43,11 +43,11 @@ type Tabler interface {
 
 // TableName overrides the table name used by User to `profiles`
 func (User) TableName() string {
-  return "profiles"
+  return "profiles"
 }
 ```
 
-### Temporarily specify table name
+### Temporarily specify a table name
 
 Temporarily specify table name with `Table` method, for example:
 
@@ -74,20 +74,20 @@ Column db name uses the field's name's `snake_case` by convention.
 
 ```go
 type User struct {
-  ID        uint      // column name is `id`
-  Name      string    // column name is `name`
-  Birthday  time.Time // column name is `birthday`
-  CreatedAt time.Time // column name is `created_at`
+  ID        uint      // column name is `id`
+  Name      string    // column name is `name`
+  Birthday  time.Time // column name is `birthday`
+  CreatedAt time.Time // column name is `created_at`
 }
 ```
 
-You can overrides the column name with tag `column`, or use [`NamingStrategy`](#naming_strategy)
+You can override the column name with tag `column`, or use [`NamingStrategy`](#naming_strategy)
 
 ```go
 type Animal struct {
-  AnimalID int64     `gorm:"column:beast_id"`         // set name to `beast_id`
-  Birthday time.Time `gorm:"column:day_of_the_beast"` // set name to `day_of_the_beast`
-  Age      int64     `gorm:"column:age_of_the_beast"` // set name to `age_of_the_beast`
+  AnimalID int64     `gorm:"column:beast_id"`         // set name to `beast_id`
+  Birthday time.Time `gorm:"column:day_of_the_beast"` // set name to `day_of_the_beast`
+  Age      int64     `gorm:"column:age_of_the_beast"` // set name to `age_of_the_beast`
 }
 ```
 
@@ -106,7 +106,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, the field will be set to current time when the record is updated or created if its value is zero
+For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
 
 ```go
 db.Save(&user) // set `UpdatedAt` to current time
@@ -114,4 +114,4 @@ db.Save(&user) // set `UpdatedAt` to current time
 db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
 ```
 
-**NOTE** GORM supports having multiple time tracking fields, track with other fields or track with unix second/unix nano second, check [Models](models.html#time_tracking) for more details
+**NOTE** GORM supports having multiple time tracking fields, track with other fields or track with UNIX second/UNIX nanosecond, check [Models](models.html#time_tracking) for more details

@@ -46,7 +46,7 @@ type CreditCard struct {
 
 ## Override References
 
-GORM usually uses the owner's primary key as the foreign key's value, for above example, it is the `User`'s `ID`,
+GORM usually uses the owner's primary key as the foreign key's value, for the above example, it is the `User`'s `ID`,
 
 When you assign credit cards to a user, GORM will save the user's `ID` into credit cards' `UserID` field.
 

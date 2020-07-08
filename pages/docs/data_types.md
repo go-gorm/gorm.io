@@ -3,13 +3,13 @@ title: Data Types
 layout: page
 ---
 
-GORM provides few interfaces allows users define well-supported customized data types for GORM, takes [json](https://github.com/go-gorm/datatypes/blob/master/json.go) as example
+GORM provides few interfaces that allow users to define well-supported customized data types for GORM, takes [json](https://github.com/go-gorm/datatypes/blob/master/json.go) as an example
 
 ## Implements Data Type
 
 ### Scanner / Valuer
 
-Customized data type has to implement the [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces, so GORM knowns to how to receive/save it into database
+The customized data type has to implement the [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces, so GORM knowns to how to receive/save it into the database
 
 For example:
 
@@ -90,4 +90,4 @@ db.Find(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 
 ## Customized Data Types Collections
 
-We created a github repo for customized data types collections [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), pull request welcome ;)
+We created a Github repo for customized data types collections [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), pull request welcome ;)

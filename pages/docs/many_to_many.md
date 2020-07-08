@@ -5,7 +5,7 @@ layout: page
 
 ## Many To Many
 
-Many to Many adds a join table between two models.
+Many to Many add a join table between two models.
 
 For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
 
@@ -22,7 +22,7 @@ type Language struct {
 }
 ```
 
-When using GORM `AutoMigrate` to create table for `User`, GORM will create the join table automatically
+When using GORM `AutoMigrate` to create a table for `User`, GORM will create the join table automatically
 
 ## Back-Reference
 
@@ -42,7 +42,7 @@ type Language struct {
 
 ## Override Foreign Key
 
-For a `many2many` relationship, the join table ownes the foreign key which reference two models, for example:
+For a `many2many` relationship, the join table owns the foreign key which references two models, for example:
 
 ```go
 type User struct {
@@ -60,7 +60,7 @@ type Language struct {
 //   foreign key: language_id, reference: languages.id
 ```
 
-To override them, you can use tag `foreignKey`, `reference`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys / references
+To override them, you can use tag `foreignKey`, `reference`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
 
 ```go
 type User struct {
@@ -154,7 +154,7 @@ type Language struct {
 
 ## Composite Foreign Keys
 
-If you are using [Composite Primary Keys](composite_primary_key.html) for your models, GORM will enabled composite foreign keys by default
+If you are using [Composite Primary Keys](composite_primary_key.html) for your models, GORM will enable composite foreign keys by default
 
 You are allowed to override the default foreign keys, to specify multiple foreign keys, just separate those keys' name by commas, for example:
 
@@ -191,4 +191,4 @@ type Blog struct {
 //   foreign key: tag_id, reference: tags.id
 ```
 
-Also checkout [Composite Primary Keys](composite_primary_key.html)
+Also check out [Composite Primary Keys](composite_primary_key.html)

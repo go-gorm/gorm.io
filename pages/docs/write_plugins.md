@@ -31,7 +31,7 @@ db.Callback().Create().Remove("gorm:create")
 
 ### Replace Callback
 
-Replace a callback having same name with new one
+Replace a callback having the same name with the new one
 
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
@@ -57,7 +57,7 @@ GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/ca
 
 ## Plugin
 
-GORM provides `Use` method to register plugins, plugin needs to implement `Plugin` interface
+GORM provides `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
 
 ```go
 type Plugin interface {
@@ -66,7 +66,7 @@ type Plugin interface {
 }
 ```
 
-The `Initialize` method will be invoked when register the plugin into GORM first time, and GORM will save the registered plugins, access them like:
+The `Initialize` method will be invoked when registering the plugin into GORM first time, and GORM will save the registered plugins, access them like:
 
 ```go
 db.Config.Plugins[pluginName]

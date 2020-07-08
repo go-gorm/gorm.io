@@ -5,7 +5,7 @@ layout: page
 
 ## Save All Fields
 
-`Save` will save all fields when perform the Updating SQL
+`Save` will save all fields when performing the Updating SQL
 
 ```go
 db.First(&user)
@@ -74,7 +74,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 
 ## Batch Updates
 
-If we havn't specify a record having priamry key value with `Model`, GORM will perform a batch updates
+If we haven't specified a record having primary key value with `Model`, GORM will perform a batch updates
 
 ```go
 // Update with struct only works with none zero values, or use map[string]interface{}
@@ -87,7 +87,7 @@ db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface
 
 ### Block Global Updates
 
-If you perform a batch update without any conditions, GORM WON'T run it, and will returns `ErrMissingWhereClause` error
+If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error
 
 You can use conditions like `1 = 1` to force the global update
 
@@ -131,7 +131,7 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 
 ### Without Hooks/Time Tracking
 
-If you want to skip `Hooks` methods and the auto update time tracking when updating, you can use `UpdateColumn`, `UpdateColumns`
+If you want to skip `Hooks` methods and the auto-update time tracking when updating, you can use `UpdateColumn`, `UpdateColumns`
 
 ```go
 // Update single attribute, similar with `Update`
@@ -151,7 +151,7 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello"})
 
 GORM provides `Changed` method could be used in **Before Hooks** when updating to check fields going to be updated or not
 
-The `Changed` method only works with methods `Update`, `Updates`, and it only checkes if the value of `Update` / `Updates` equals model value's field value and will the field be saved or not, will returns true if not equal and it will be saved
+The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the value of `Update` / `Updates` equals model value's field value and will the field be saved or not, will returns true if not equal and it will be saved
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {

@@ -13,7 +13,7 @@ There are three kinds of methods in GORM: `Chain Method`, `Finisher Method`, `Ne
 
 ## Chain Method
 
-Chain methods are methods modify or add `Clauses` to current `Statement`, like:
+Chain methods are methods to modify or add `Clauses` to current `Statement`, like:
 
 `Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
 
@@ -29,7 +29,7 @@ Check out [the full lists](https://github.com/go-gorm/gorm/blob/master/finisher_
 
 ## New Session Mode
 
-After new initialized `*gorm.DB` or a `New Session Method`, following methods call will create a new `Statement` instance instead of using current one
+After new initialized `*gorm.DB` or a `New Session Method`, following methods call will create a new `Statement` instance instead of using the current one
 
 GROM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details
 
@@ -54,7 +54,7 @@ db.Where("name = ?", "jinzhu2").Where("age = ?", 20).Find(&users)
 
 db.Find(&users)
 // `Find(&users)` is a finisher method and also the first method call for a `New Session Mode` `*gorm.DB`
-// It creates a new `Statement` and executes registered Query Callbacks, generate and run following SQL
+// It creates a new `Statement` and executes registered Query Callbacks, generates and run following SQL
 // SELECT * FROM users;
 ```
 

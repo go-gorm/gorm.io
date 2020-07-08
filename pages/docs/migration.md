@@ -28,7 +28,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Migrator Interface
 
-GORM provides migrator interface, which contains unified API interfaces for each database that could be used to build your database independent migrations, for example:
+GORM provides migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
 
 SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table
 
@@ -182,7 +182,7 @@ GORM creates constraints when auto migrating or creating table, checkout [Constr
 
 ## Other Migration Tools
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides generic DB interface which might be helpful for you.
+GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
 
 ```go
 // returns `*sql.DB`

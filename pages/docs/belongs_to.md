@@ -26,7 +26,7 @@ type Company struct {
 
 ## Override Foreign Key
 
-To define a belongs to relationship, the foreign key must exists, default foreign key uses owner's type name plus its primary field name.
+To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
 
 For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
 
@@ -49,9 +49,9 @@ type Company struct {
 
 ## Override References
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for above example, it is `Company`'s field `ID`.
+For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
 
-When you assign a user to a company, GORM will save company's `ID` into user's `CompanyID` field.
+When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
 
 You are able to change it with tag `references`, e.g:
 

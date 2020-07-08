@@ -1,11 +1,11 @@
 ---
-title: Preloading (Eager loading)
+title: Preloading (Eager Loading)
 layout: page
 ---
 
 ## Preload
 
-GORM allows eager loading relations in another SQL with `Preload`, for example:
+GORM allows eager loading relations in other SQL with `Preload`, for example:
 
 ```go
 type User struct {
@@ -62,7 +62,7 @@ db.Preload(clause.Associations).Find(&users)
 
 ## Preload with conditions
 
-GORM allows Preload associations with conditions, it works similar like [Inline Conditions](query.html#inline_conditions)
+GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
 
 ```go
 // Preload Orders with conditions
