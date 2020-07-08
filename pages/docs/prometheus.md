@@ -5,6 +5,8 @@ layout: page
 
 GORM provides prometheus plugin to collect [DBStats](https://pkg.go.dev/database/sql?tab=doc#DBStats) or user defined metrics
 
+https://github.com/go-gorm/prometheus
+
 ## Usage
 
 ```go
