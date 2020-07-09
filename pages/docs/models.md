@@ -71,7 +71,7 @@ type User struct {
   Name string `gorm:"<-:create"` // allow read and create
   Name string `gorm:"<-:update"` // allow read and update
   Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // disable write permission
+  Name string `gorm:"<-:false"`  // allow read, disable write permission
   Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
   Name string `gorm:"->;<-:create"` // allow read and create
   Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)

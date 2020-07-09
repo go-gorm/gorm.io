@@ -78,6 +78,16 @@ db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
+If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+
+```go
+type User struct {
+  ID      int
+  Deleted gorm.DeletedAt
+  Name    string
+}
+```
+
 ### Find soft deleted records
 
 You can find soft deleted records with `Unscoped`
