@@ -12,23 +12,23 @@ Golangのための素晴らしいORMライブラリは、開発者に優しい�
 * さまざまなフック (Before/After Create/Save/Update/Delete/Find)
 * Eager loading with `Preload`, `Joins`
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
-* Context, Prepared Statment Mode, DryRun Mode
-* Batch Insert, FindInBatches, Find To Map
+* Context、プリペアドステートメント、ドライラン
+* バッチインサート、FindInBatches,、Find To Map
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
-* Composite Primary Key
-* Auto Migrations
-* Logger
-* Extendable, write Plugins based on GORM callbacks
-* Every feature comes with tests
-* Developer Friendly
+* 複合主キー
+* 自動データベースマイグレーション
+* ロガー
+* 拡張可能。GORMコールバックに基づいてプラグインを書くことができる
+* すべての機能にはテストが付属しています
+* 開発者にやさしい。
 
-## Install
+## インストール
 
 ```sh
 go get -u gorm.io/gorm
 ```
 
-## Quick Start
+## クイックスタート
 
 ```go
 package main
