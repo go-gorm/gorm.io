@@ -1,5 +1,5 @@
 ---
-title: GORM Guides
+title: GORMガイド
 layout: page
 ---
 
