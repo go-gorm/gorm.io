@@ -1,9 +1,9 @@
 ---
-title: Declaring Models
+title: التصريح بالنماذج
 layout: page
 ---
 
-## Declaring Models
+## التصريح بالنماذج
 
 Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
 
