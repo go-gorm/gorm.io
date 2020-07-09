@@ -7,6 +7,8 @@ layout: page
 
 GORM itself is powered by `Callbacks`, it has callbacks for `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw`, you could fully customize GORM with them as you want
 
+Callbacks are registered into the global `*gorm.DB`, not the session-level, if you require `*gorm.DB` with different callbacks, you need to initialize another `*gorm.DB`
+
 ### Register Callback
 
 Register a callback into callbacks
