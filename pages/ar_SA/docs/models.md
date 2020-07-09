@@ -1,13 +1,13 @@
 ---
 title: التصريح بالنماذج
-layout: page
+layout: صفحة
 ---
 
 ## التصريح بالنماذج
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+النماذج هي هياكل Golang عادية، سواء أنواع Go الأساسية أو pointers، الواجهات [ sql.Scanner ](https://pkg.go.dev/database/sql/sql#Scanner) و [ driver.Valuer ](https://pkg.go.dev/database/sql/driver#Valuer) أيضا مدعومة
 
-For Example:
+مثلاً:
 
 ```go
 type User struct {
