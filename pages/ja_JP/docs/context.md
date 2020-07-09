@@ -3,17 +3,17 @@ title: Context
 layout: page
 ---
 
-GORM provides Context support, you can use it with method `WithContext`
+GORMはContextをサポートしています。メソッド `WithContext`で使用できます。
 
-## Single Session Mode
+## シングルセッションモード
 
-Single session mode usually used when you want to perform a single operation
+シングルセッションモードは通常、単一の操作を実行するときに使用されます。
 
 ```go
 db.WithContext(ctx).Find(&users)
 ```
 
-## Continuous session mode
+## 連続セッションモード
 
 Continuous session mode usually used when you want to perform a group of operations, for example:
 
