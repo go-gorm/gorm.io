@@ -3,13 +3,13 @@ title: GORMガイド
 layout: page
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+Golangのための素晴らしいORMライブラリは、開発者に優しいことを目指しています。
 
-## Overview
+## 概略
 
-* Full-Featured ORM
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
-* Hooks (Before/After Create/Save/Update/Delete/Find)
+* フル機能ORM
+* アソシエーションに対応 (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
+* さまざまなフック (Before/After Create/Save/Update/Delete/Find)
 * Eager loading with `Preload`, `Joins`
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
 * Context, Prepared Statment Mode, DryRun Mode
