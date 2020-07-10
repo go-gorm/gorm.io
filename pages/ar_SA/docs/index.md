@@ -14,7 +14,7 @@ layout: page
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
 * Context, Prepared Statment Mode, DryRun Mode
 * Batch Insert, FindInBatches, Find To Map
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
+* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, NamedArg
 * Composite Primary Key
 * Auto Migrations
 * Logger
