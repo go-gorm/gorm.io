@@ -26,7 +26,7 @@ GORM 2.0 is rewritten from scratch based on feedback we received in the last few
 
 Breaking Changes
 
-* `gorm.Open` return type `*gorm.DB` instead of `gorm.DB`
+* `gorm. Open` return type `*gorm.DB` instead of `gorm.DB`
 
 * Updating will only update changed fields
 
