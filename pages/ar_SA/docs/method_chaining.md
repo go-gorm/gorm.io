@@ -6,7 +6,13 @@ layout: page
 GORM allows method chaining, so you can write code like this:
 
 ```go
-db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
+First(&user)
+}
+
+tx := db. Where("name = ?", "jinzhu")
+// NOT Safe as reusing Statement
+for i := 0; i < 100; i++ {
+  go tx.
 ```
 
 There are three kinds of methods in GORM: `Chain Method`, `Finisher Method`, `New Session Method`
@@ -38,43 +44,47 @@ Let explain it with examples:
 Example 1:
 
 ```go
-db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db is new initialized *gorm.DB, which under `New Session Mode`
-db.Where("name = ?", "jinzhu").Where("age = ?", 18).Find(&users)
-// `Where("name = ?", "jinzhu")` is the first method call, it will creates a new `Statement`
-// `Where("age = ?", 18)` reuse the `Statement`, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
-// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18;
+db, err := gorm. Open(sqlite. Open("test.db"), &gorm. Config{})
 
-db.Where("name = ?", "jinzhu2").Where("age = ?", 20).Find(&users)
-// `Where("name = ?", "jinzhu2")` is also the first method call, it creates new `Statement` too
-// `Where("age = ?", 20)` reuse the `Statement`, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
-// SELECT * FROM users WHERE name = 'jinzhu2' AND age = 20;
+// Safe for new initialized *gorm.DB
+for i := 0; i < 100; i++ {
+  go db. First(&user)
+}
 
-db.Find(&users)
-// `Find(&users)` is a finisher method and also the first method call for a `New Session Mode` `*gorm.DB`
-// It creates a new `Statement` and executes registered Query Callbacks, generates and run following SQL
-// SELECT * FROM users;
+tx := db. Where("name = ?", "jinzhu")
+// NOT Safe as reusing Statement
+for i := 0; i < 100; i++ {
+  go tx. First(&user) // `name = 'jinzhu'` will applies to all
+}
+
+tx := db. Session(&gorm. Session{WithConditions: true})
+// Safe after a `New Session Method`
+for i := 0; i < 100; i++ {
+  go tx. First(&user) // `name = 'jinzhu'` will applies to all
+}
 ```
 
 Example 2:
 
 ```go
-db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db is new initialized *gorm.DB, which under `New Session Mode`
-tx := db.Where("name = ?", "jinzhu")
-// `Where("name = ?", "jinzhu")` is the first method call, it creates a new `Statement` and add conditions
+db, err := gorm. Open(sqlite. Open("test.db"), &gorm. Config{})
 
-tx.Where("age = ?", 18).Find(&users)
-// `tx.Where("age = ?", 18)` REUSE above `Statement`, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
-// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18
+// Safe for new initialized *gorm.DB
+for i := 0; i < 100; i++ {
+  go db. First(&user)
+}
 
-tx.Where("age = ?", 28).Find(&users)
-// `tx.Where("age = ?", 18)` REUSE above `Statement` also, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
-// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
+tx := db. Where("name = ?", "jinzhu")
+// NOT Safe as reusing Statement
+for i := 0; i < 100; i++ {
+  go tx. First(&user) // `name = 'jinzhu'` will applies to all
+}
+
+tx := db. Session(&gorm. Session{WithConditions: true})
+// Safe after a `New Session Method`
+for i := 0; i < 100; i++ {
+  go tx. First(&user) // `name = 'jinzhu'` will applies to all
+}
 ```
 
 **NOTE** In example 2, the first query affected the second generated SQL as GORM reused the `Statement`, this might cause unexpected issues, refer [Goroutine Safety](#goroutine_safe) for how to avoid it
@@ -84,36 +94,22 @@ tx.Where("age = ?", 28).Find(&users)
 Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
 
 ```go
-db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+db, err := gorm. Open(sqlite. Open("test.db"), &gorm. Config{})
 
 // Safe for new initialized *gorm.DB
 for i := 0; i < 100; i++ {
-  go db.Where(...).First(&user)
+  go db. First(&user)
 }
 
-tx := db.Where("name = ?", "jinzhu")
+tx := db. Where("name = ?", "jinzhu")
 // NOT Safe as reusing Statement
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user)
+  go tx. First(&user) // `name = 'jinzhu'` will applies to all
 }
 
-ctx, _ := context.WithTimeout(context.Background(), time.Second)
-ctxDB := db.WithContext(ctx)
+tx := db. Session(&gorm. Session{WithConditions: true})
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user)
-}
-
-ctx, _ := context.WithTimeout(context.Background(), time.Second)
-ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// Safe after a `New Session Method`
-for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
-}
-
-tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
-// Safe after a `New Session Method`
-for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go tx. First(&user) // `name = 'jinzhu'` will applies to all
 }
 ```
