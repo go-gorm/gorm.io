@@ -5,11 +5,11 @@ layout: page
 
 Goでは、エラー処理が重要です。
 
-You are encouraged to do error check after any [Finisher Methods](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
+[即時メソッド](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) の後にエラーチェックを行うことをおすすめします。
 
-## Error Handling
+## エラーハンドリング
 
-Error handling in GORM is different than idiomatic Go code because of its chainable API.
+GORMでのエラーハンドリングは、メソッドチェーン可能なAPIのため、ふつうのGoコードとは異なります。
 
 If any error occurs, GORM will set `*gorm.DB`'s `Error` field, you need to check it like this:
 
