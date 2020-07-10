@@ -101,20 +101,20 @@ DB.Table("users").Find(&results)
 Получить первую найденную запись, или инициализировать новую с заданными параметрами (работает только с struct и map)
 
 ```go
-// User not found, initialize it with give conditions
+// Пользователь не найден, инициализировать его с параметрами 
 db.FirstOrInit(&user, User{Name: "non_existing"})
-// user -> User{Name: "non_existing"}
+// пользователь -> User{Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Найти пользователя с параметром `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
-// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
+// пользователь -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-// Found user with `name` = `jinzhu`
+// Найденный пользователь с параметрами `name` = `jinzhu`
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
-// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
+// пользователь -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+инициализировать struct с дополнительными параметрами, если запись не найдена, эти `Атрибуты` не будут использованы в построении запроса SQL
 
 ```go
 // User not found, initialize it with give conditions and Attrs
