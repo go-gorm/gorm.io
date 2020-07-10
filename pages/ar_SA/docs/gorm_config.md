@@ -8,9 +8,9 @@ GORM provides Config can be used during initialization
 ```go
 type Config struct {
     SkipDefaultTransaction bool
-    NamingStrategy schema.Namer
-    Logger logger.Interface
-    NowFunc func() time.Time
+    NamingStrategy schema. Namer
+    Logger logger. Interface
+    NowFunc func() time. Time
     DryRun bool
     PrepareStmt bool
     DisableAutomaticPing bool
@@ -23,8 +23,8 @@ type Config struct {
 GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
-  SkipDefaultTransaction: true,
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
+  DisableAutomaticPing: true,
 })
 ```
 
@@ -46,11 +46,8 @@ type Namer interface {
 The default `NamingStrategy` also provides few options, like:
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
-  NamingStrategy: schema.NamingStrategy{
-    TablePrefix: "t_",   // table name prefix, table for `User` would be `t_users`
-    SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
-  },
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
+  DisableAutomaticPing: true,
 })
 ```
 
@@ -63,10 +60,8 @@ Allow changes GORM's default logger by overriding this option, refer [Logger](lo
 Change the function to be used when creating a new timestamp
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
-  NowFunc: func() time.Time {
-    return time.Now().Local()
-  },
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
+  PrepareStmt: false,
 })
 ```
 
@@ -75,8 +70,8 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 Generate `SQL` without executing, can be used to prepare or test generated SQL, refer [Session](session.html) for details
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
-  DryRun: false,
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
+  DisableAutomaticPing: true,
 })
 ```
 
@@ -85,8 +80,8 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 `PreparedStmt` creates a prepared statement when executing any SQL and caches them to speed up future calls, refer [Session](session.html) for details
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
-  PrepareStmt: false,
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
+  DisableAutomaticPing: true,
 })
 ```
 
@@ -95,7 +90,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 GORM automatically ping database after initialized to check database availability, disable it by setting it to `true`
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
   DisableAutomaticPing: true,
 })
 ```
@@ -105,7 +100,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 GORM creates database foreign key constraints automatically when `AutoMigrate` or `CreateTable`, disable this by setting it to `true`, refer [Migration](migration.html) for details
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
   DisableForeignKeyConstraintWhenMigrating: true,
 })
 ```
