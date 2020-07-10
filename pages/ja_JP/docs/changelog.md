@@ -36,10 +36,10 @@ GORM2.0は、過去数年間で受け取ったフィードバックにもとづ�
 
   GORMを型やフィールド名からdb名に変換する際、 [golint](https://github.com/golang/lint/blob/master/lint.go#L702) の`HTTP`や`URI` に対する処理と同様の短縮形を採用します。よって、`HTTP`のdb名は`h_t_t_p`ではなく `http`になります
 
-  But for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it.
+  しかし `SKU`のようなリストにないその他の省略形においては、db名は, `s_k_u`となります。この変更はそれを修正します。
 
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
+* `RecordNotFound`エラー が `ErrRecordNotFound` に改名されました
 
-* `mssql` dialect has been renamed to "github.com/jinzhu/gorm/dialects/mssql"
+* `mssql` の方言は以下に改名されました。"github.com/jinzhu/gorm/dialects/mssql"
 
-* `Hstore` has been moved to package "github.com/jinzhu/gorm/dialects/postgres"
+* `Hstore` は以下のパッケージに移動しました。"github.com/jinzhu/gorm/dialects/postgres"
