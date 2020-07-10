@@ -106,13 +106,13 @@ type User struct {
   ID         int64
   Name       string `gorm:"default:'galeone'"`
   Age        int64  `gorm:"default:18"`
-    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
+    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db 函数
 }
 ```
 
-Then the default value will be used when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+插入记录到数据库时，[零值](https://tour.golang.org/basics/12) 字段将使用默认值
 
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this
+**注意** 像 `0`、`''`、`false` 等零值，不会将这些字段定义的默认值保存到数据库。您需要使用指针类型或 Scanner/Valuer 来避免这个问题
 
 ```go
 type User struct {
@@ -123,9 +123,9 @@ type User struct {
 }
 ```
 
-### <span id="upsert">Upsert / On Conflict</span>
+### <span id="upsert">Upsert 及冲突</span>
 
-GORM provides compatible Upsert support for different databases
+GORM 为不同数据库提供了兼容的 Upsert 支持
 
 ```go
 import "gorm.io/gorm/clause"
