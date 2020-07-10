@@ -34,6 +34,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{DryRun: true})
 stmt := db.Find(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 // PostgreSQL
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
+stmt.Vars         //=> []interface{}{1}  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
