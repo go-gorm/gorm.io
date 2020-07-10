@@ -74,6 +74,22 @@ tx.Rollback()
 
 // Or commit the transaction
 tx.Commit()
+
+// ...
+
+// begin a transaction
+tx := db.Begin()
+
+// do some database operations in the transaction (use 'tx' from this point, not 'db')
+tx.Create(...)
+
+// ...
+
+// rollback the transaction in case of error
+tx.Rollback()
+
+// Or commit the transaction
+tx.Commit()
 ```
 
 ### A Specific Example

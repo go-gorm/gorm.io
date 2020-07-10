@@ -10,18 +10,17 @@ Automatically migrate your schema, to keep your schema update to date.
 **NOTE:** AutoMigrate will **ONLY** create tables, missing foreign keys, constraints, columns and indexes, it **WON'T** change existing column's type or delete unused columns to protect your data.
 
 ```go
-db.AutoMigrate(&User{})
+// Create table for `User`
+db. CreateTable(&User{})
 
-db.AutoMigrate(&User{}, &Product{}, &Order{})
-
-// Add table suffix when creating tables
-db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
+// Append "ENGINE=InnoDB" to the creating table SQL for `User`
+db. Set("gorm:table_options", "ENGINE=InnoDB").
 ```
 
 **NOTE** AutoMigrate creates database foreign key constraints automatically, you can disable this feature during initialization, for example:
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
   DisableForeignKeyConstraintWhenMigrating: true,
 })
 ```
@@ -41,7 +40,7 @@ type Migrator interface {
 
   // Database
   CurrentDatabase() string
-  FullDataTypeOf(*schema.Field) clause.Expr
+  FullDataTypeOf(*schema. Field) clause. Expr
 
   // Tables
   CreateTable(dst ...interface{}) error
@@ -55,7 +54,7 @@ type Migrator interface {
   AlterColumn(dst interface{}, field string) error
   HasColumn(dst interface{}, field string) bool
   RenameColumn(dst interface{}, oldName, field string) error
-  ColumnTypes(dst interface{}) ([]*sql.ColumnType, error)
+  ColumnTypes(dst interface{}) ([]*sql. ColumnType, error)
 
   // Constraints
   CreateConstraint(dst interface{}, name string) error
@@ -75,105 +74,105 @@ type Migrator interface {
 Returns current using database name
 
 ```go
-db.Migrator().CurrentDatabase()
+db. Migrator(). CurrentDatabase()
 ```
 
 ### Tables
 
 ```go
-// Create table for `User`
-db.Migrator().CreateTable(&User{})
+CreateIndex(&User{}, "Name")
+db. CreateIndex(&User{}, "idx_name")
 
-// Append "ENGINE=InnoDB" to the creating table SQL for `User`
-db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
+// Drop index for Name field
+db. DropIndex(&User{}, "Name")
+db. DropIndex(&User{}, "idx_name")
 
-// Check table for `User` exists or not
-db.Migrator().HasTable(&User{})
-db.Migrator().HasTable("users")
+// Check Index exists
+db. HasIndex(&User{}, "Name")
+db. HasIndex(&User{}, "idx_name")
 
-// Drop table if exists (will ignore or delete foreign key constraints when dropping)
-db.Migrator().DropTable(&User{})
-db.Migrator().DropTable("users")
-
-// Rename old table to new table
-db.Migrator().RenameTable(&User{}, &UserInfo{})
-db.Migrator().RenameTable("users", "user_infos")
+type User struct {
+  gorm. Model
+  Name  string `gorm:"size:255;index:idx_name,unique"`
+  Name2 string `gorm:"size:255;index:idx_name_2,unique"`
+}
+// Rename index name
+db. RenameIndex(&User{}, "Name", "Name2")
+db. RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
 ### Columns
 
 ```go
 type User struct {
-  Name string
+  gorm. Model
+  Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// Add name field
-db.Migrator().AddColumn(&User{}, "Name")
-// Drop name field
-db.Migrator().DropColumn(&User{}, "Name")
-// Alter name field
-db.Migrator().AlterColumn(&User{}, "Name")
-// Check column exists
-db.Migrator().HasColumn(&User{}, "Name")
+// Create index for Name field
+db. CreateIndex(&User{}, "Name")
+db. CreateIndex(&User{}, "idx_name")
+
+// Drop index for Name field
+db. DropIndex(&User{}, "Name")
+db. DropIndex(&User{}, "idx_name")
+
+// Check Index exists
+db. HasIndex(&User{}, "Name")
+db. HasIndex(&User{}, "idx_name")
 
 type User struct {
-  Name    string
-  NewName string
+  gorm. Model
+  Name  string `gorm:"size:255;index:idx_name,unique"`
+  Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-
-// Rename column to new name
-db.Migrator().RenameColumn(&User{}, "Name", "NewName")
-db.Migrator().RenameColumn(&User{}, "name", "new_name")
-
-// ColumnTypes
-db.Migrator().ColumnTypes(&User{}) ([]*sql.ColumnType, error)
+// Rename index name
+db. RenameIndex(&User{}, "Name", "Name2")
+db.
 ```
 
 ### Constraints
 
 ```go
-type UserIndex struct {
-  Name  string `gorm:"check:name_checker,name <> 'jinzhu'"`
-}
+DropIndex(&User{}, "Name")
+db. DropIndex(&User{}, "idx_name")
 
-// Create constraint
-db.Migrator().CreateConstraint(&User{}, "name_checker")
+// Check Index exists
+db. HasIndex(&User{}, "Name")
+db. HasIndex(&User{}, "idx_name")
 
-// Drop constraint
-db.Migrator().DropConstraint(&User{}, "name_checker")
-
-// Check constraint exists
-db.Migrator().HasConstraint(&User{}, "name_checker")
+type User struct {
+  gorm.
 ```
 
 ### Indexes
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
 // Create index for Name field
-db.Migrator().CreateIndex(&User{}, "Name")
-db.Migrator().CreateIndex(&User{}, "idx_name")
+db. CreateIndex(&User{}, "Name")
+db. CreateIndex(&User{}, "idx_name")
 
 // Drop index for Name field
-db.Migrator().DropIndex(&User{}, "Name")
-db.Migrator().DropIndex(&User{}, "idx_name")
+db. DropIndex(&User{}, "Name")
+db. DropIndex(&User{}, "idx_name")
 
 // Check Index exists
-db.Migrator().HasIndex(&User{}, "Name")
-db.Migrator().HasIndex(&User{}, "idx_name")
+db. HasIndex(&User{}, "Name")
+db. HasIndex(&User{}, "idx_name")
 
 type User struct {
-  gorm.Model
+  gorm. Model
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
 // Rename index name
-db.Migrator().RenameIndex(&User{}, "Name", "Name2")
-db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
+db. RenameIndex(&User{}, "Name", "Name2")
+db. RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
 ## Constraints

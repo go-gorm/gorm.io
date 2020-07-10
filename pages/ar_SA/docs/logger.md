@@ -10,27 +10,9 @@ Gorm has a [default logger implementation](https://github.com/go-gorm/gorm/blob/
 The logger accepts few options, you can customize it during initialization, for example:
 
 ```go
-newLogger := logger.New(
-  log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
-  logger.Config{
-    SlowThreshold: time.Second,   // Slow SQL threshold
-    LogLevel:      logger.Silent, // Log level
-    Colorful:      false,         // Disable color
-  },
-)
-
-// Globally mode
-db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
-  Logger: newLogger,
+db, err := gorm. Open(sqlite. Open("test.db"), &gorm. Config{
+  Logger: logger. Default. LogMode(logger. Silent),
 })
-
-// Continuous session mode
-tx := db.Session(&Session{Logger: newLogger})
-tx.First(&user)
-tx.Model(&user).Update("Age", 18)
-
-// Debug a single operation, change the session's log level to logger.Info
-db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
 ### Log Levels
@@ -38,8 +20,8 @@ db.Debug().Where("name = ?", "jinzhu").First(&User{})
 GORM defined log levels: `Silent`, `Error`, `Warn`, `Info`
 
 ```go
-db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
-  Logger: logger.Default.LogMode(logger.Silent),
+db, err := gorm. Open(sqlite. Open("test.db"), &gorm. Config{
+  Logger: logger. Default. LogMode(logger. Silent),
 })
 ```
 
@@ -52,9 +34,9 @@ The logger needs to implement the following interface, it accepts `context`, so 
 ```go
 type Interface interface {
     LogMode(LogLevel) Interface
-    Info(context.Context, string, ...interface{})
-    Warn(context.Context, string, ...interface{})
-    Error(context.Context, string, ...interface{})
-    Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error)
+    Info(context. Context, string, ...interface{})
+    Warn(context. Context, string, ...interface{})
+    Error(context. Context, string, ...interface{})
+    Trace(ctx context. Context, begin time. Time, fc func() (string, int64), err error)
 }
 ```

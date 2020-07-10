@@ -11,16 +11,7 @@ layout: صفحة
 
 ```go
 type User struct {
-  ID           uint
-  Name         string
-  Email        *string
-  Age          uint8
-  Birthday     *time.Time
-  MemberNumber sql.NullString
-  ActivedAt    sql.NullTime
-  CreatedAt    time.Time
-  UpdatedAt    time.Time
-}
+  CreatedAt time.
 ```
 
 ## Conventions
@@ -29,17 +20,21 @@ GORM prefer convention over configuration, by default, GORM uses `ID` as primary
 
 If you follow the conventions adopted by GORM, you'll need to write very little configuration/code, If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
 
-## gorm.Model
+## gorm. Model
 
-GORM defined a `gorm.Model` struct, which includes fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
+GORM defined a `gorm. Model` struct, which includes fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
 
 ```go
-// gorm.Model definition
-type Model struct {
+Model
+  Name string
+}
+// equals
+type User struct {
   ID        uint           `gorm:"primaryKey"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt gorm.DeletedAt `gorm:"index"`
+  CreatedAt time. Time
+  UpdatedAt time. Time
+  DeletedAt gorm. DeletedAt `gorm:"index"`
+  Name string
 }
 ```
 
@@ -47,17 +42,7 @@ You can embed it into your struct to include those fields, refer [Embedded Struc
 
 ```go
 type User struct {
-  gorm.Model
-  Name string
-}
-// equals
-type User struct {
-  ID        uint           `gorm:"primaryKey"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt gorm.DeletedAt `gorm:"index"`
-  Name string
-}
+  CreatedAt time.
 ```
 
 ## Advanced
@@ -85,11 +70,11 @@ GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention,
 
 To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
 
-If you prefer to save UNIX (nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
+If you prefer to save UNIX (nano) seconds instead of time, you can simply change the field's data type from `time. Time` to `int`
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
+  CreatedAt time. Time // Set to current time if it is zero on creating
   UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
   Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix NANO seconds as updating time
   Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
@@ -102,17 +87,7 @@ For anonymous fields, GORM will include its fields into its parent struct, for e
 
 ```go
 type User struct {
-  gorm.Model
-  Name string
-}
-// equals
-type User struct {
-  ID        uint           `gorm:"primaryKey"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt gorm.DeletedAt `gorm:"index"`
-  Name string
-}
+  CreatedAt time.
 ```
 
 For a normal struct field, you can embed it with the tag `embedded`, for example:

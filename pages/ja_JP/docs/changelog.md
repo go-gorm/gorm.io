@@ -13,8 +13,8 @@ GORM2.0は、過去数年間で受け取ったフィードバックにもとづ�
 * SavePoint/RollbackTo/Nested Transaction Support
 * アソシエーションの改善 (On Delete/Update), N: Nテーブルの結合の修正 バッチデータのためのアソシエーションモード
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints サポート
-* Multiple fields support for auto-creating/updating time, which also support UNIX (nano) seconds
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
+* UNIX(nano) 秒も使える作成/更新時間の自動フィールド
+* フィールド権限のサポート: 読み取り専用、書き込み専用、作成専用、更新専用、無視するフィールド
 * 完全に新しいマイグレーター、ロガー
 * 名前付け戦略(統合テーブル名、フィールド名、結合テーブル名、外部キー、チェッカー、インデックス名ルール)
 * より良いカスタマイズされたデータ型のサポート（例：JSON）

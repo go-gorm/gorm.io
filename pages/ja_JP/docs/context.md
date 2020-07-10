@@ -27,7 +27,7 @@ tx.Model(&user).Update("role", "admin")
 
 Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
 
-Following is a Chi middleware example:
+Chi ミドルウェアの例を以下に示します。
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {

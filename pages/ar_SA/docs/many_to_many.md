@@ -10,16 +10,17 @@ Many to Many add a join table between two models.
 For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
 
 ```go
-// User has and belongs to many languages, `user_languages` is the join table
 type User struct {
-  gorm.Model
-  Languages []Language `gorm:"many2many:user_languages;"`
+  gorm. Model
+  Languages []Language `gorm:"many2many:user_speaks;"`
 }
 
 type Language struct {
-  gorm.Model
+  Code string `gorm:"primarykey"`
   Name string
 }
+
+// CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
 When using GORM `AutoMigrate` to create a table for `User`, GORM will create the join table automatically
@@ -27,17 +28,17 @@ When using GORM `AutoMigrate` to create a table for `User`, GORM will create the
 ## Back-Reference
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
 type User struct {
-  gorm.Model
-  Languages []*Language `gorm:"many2many:user_languages;"`
+  gorm. Model
+  Languages []Language `gorm:"many2many:user_speaks;"`
 }
 
 type Language struct {
-  gorm.Model
+  Code string `gorm:"primarykey"`
   Name string
-  Users []*User `gorm:"many2many:user_languages;"`
 }
+
+// CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
 ## Override Foreign Key
@@ -46,38 +47,32 @@ For a `many2many` relationship, the join table owns the foreign key which refere
 
 ```go
 type User struct {
-  gorm.Model
-  Languages []Language `gorm:"many2many:user_languages;"`
+  gorm. Model
+  Languages []Language `gorm:"many2many:user_speaks;"`
 }
 
 type Language struct {
-  gorm.Model
+  Code string `gorm:"primarykey"`
   Name string
 }
 
-// Join Table: user_languages
-//   foreign key: user_id, reference: users.id
-//   foreign key: language_id, reference: languages.id
+// CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
 To override them, you can use tag `foreignKey`, `reference`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
 
 ```go
 type User struct {
-    gorm.Model
-    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:ProfileRefer"`
-    Refer    uint
+  gorm. Model
+  Languages []Language `gorm:"many2many:user_speaks;"`
 }
 
-type Profile struct {
-    gorm.Model
-    Name      string
-    UserRefer uint
+type Language struct {
+  Code string `gorm:"primarykey"`
+  Name string
 }
 
-// Which creates join table: user_profiles
-//   foreign key: user_refer_id, reference: users.refer
-//   foreign key: profile_refer, reference: profiles.user_refer
+// CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
 ## Self-Referential Many2Many
@@ -86,13 +81,16 @@ Self-referencing many2many relationship
 
 ```go
 type User struct {
-  gorm.Model
-    Friends []*User `gorm:"many2many:user_friends"`
+  gorm. Model
+  Languages []Language `gorm:"many2many:user_speaks;"`
 }
 
-// Which creates join table: user_friends
-//   foreign key: user_id, reference: users.id
-//   foreign key: friend_id, reference: users.id
+type Language struct {
+  Code string `gorm:"primarykey"`
+  Name string
+}
+
+// CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
 ## Eager Loading
@@ -108,30 +106,15 @@ Please checkout [Association Mode](associations.html#Association-Mode) for worki
 `JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports, and define more fields, you can setup it with `SetupJoinTable`, for example:
 
 ```go
-type Person struct {
-  ID        int
-  Name      string
-  Addresses []Address `gorm:"many2many:person_addresses;"`
+type User struct {
+  gorm.
+Model
+    Friends []*User `gorm:"many2many:user_friends"`
 }
 
-type Address struct {
-  ID   uint
-  Name string
-}
-
-type PersonAddress struct {
-  PersonID  int
-  AddressID int
-  CreatedAt time.Time
-  DeletedAt gorm.DeletedAt
-}
-
-func (PersonAddress) BeforeCreate(db *gorm.DB) error {
-  // ...
-}
-
-// PersonAddress must defined all required foreign keys, or it will raise error
-db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
+// Which creates join table: user_friends
+//   foreign key: user_id, reference: users.id
+//   foreign key: friend_id, reference: users.id
 ```
 
 ## FOREIGN KEY Constraints
@@ -140,7 +123,7 @@ You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for exam
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   Languages []Language `gorm:"many2many:user_speaks;"`
 }
 

@@ -10,14 +10,13 @@ A `has many` association sets up a one-to-many connection with another model, un
 For example, if your application includes users and credit card, and each user can have many credit cards.
 
 ```go
-// User has many CreditCards, UserID is the foreign key
 type User struct {
-  gorm.Model
-  CreditCards []CreditCard
+  gorm. Model
+  CreditCards []CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type CreditCard struct {
-  gorm.Model
+  gorm. Model
   Number string
   UserID uint
 }
@@ -33,14 +32,14 @@ To use another field as foreign key, you can customize it with a `foreignKey` ta
 
 ```go
 type User struct {
-  gorm.Model
-  CreditCards []CreditCard `gorm:"foreignKey:UserRefer"`
+  gorm. Model
+  CreditCards []CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type CreditCard struct {
-  gorm.Model
-  Number    string
-  UserRefer uint
+  gorm. Model
+  Number string
+  UserID uint
 }
 ```
 
@@ -54,15 +53,14 @@ You are able to change it with tag `references`, e.g:
 
 ```go
 type User struct {
-  gorm.Model
-  MemberNumber string
-  CreditCards  []CreditCard `gorm:"foreignKey:UserNumber;references:MemberNumber"`
+  gorm. Model
+  CreditCards []CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type CreditCard struct {
-  gorm.Model
-  Number     string
-  UserNumber string
+  gorm. Model
+  Number string
+  UserID uint
 }
 ```
 
@@ -74,7 +72,7 @@ GORM supports polymorphism association for `has one` and `has many`, it will sav
 type Dog struct {
   ID   int
   Name string
-  Toys []Toy `gorm:"polymorphic:Owner;"`
+  Toys []Toy `gorm:"polymorphic:Owner;polymorphicValue:master"`
 }
 
 type Toy struct {
@@ -84,9 +82,9 @@ type Toy struct {
   OwnerType string
 }
 
-db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
+db. Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs"), ("toy2","1","dogs")
+// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
 ```
 
 You can change the polymorphic type value with tag `polymorphicValue`, for example:
@@ -105,7 +103,7 @@ type Toy struct {
   OwnerType string
 }
 
-db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
+db. Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `dogs` (`name`) VALUES ("dog1")
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
 ```
@@ -122,10 +120,14 @@ GORM allows eager loading has many associations with `Preload`, refer [Preloadin
 
 ```go
 type User struct {
-  gorm.Model
-  Name      string
-  ManagerID *uint
-  Team      []User `gorm:"foreignkey:ManagerID"`
+  gorm. Model
+  CreditCards []CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+}
+
+type CreditCard struct {
+  gorm. Model
+  Number string
+  UserID uint
 }
 ```
 
@@ -135,12 +137,12 @@ You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for exam
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   CreditCards []CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type CreditCard struct {
-  gorm.Model
+  gorm. Model
   Number string
   UserID uint
 }

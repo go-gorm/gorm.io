@@ -156,4 +156,6 @@ func (u *User) BeforeCreate(tx *gorm.DB) error {
   // ...
   return err
 }
+  return err
+}
 ```

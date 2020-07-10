@@ -6,13 +6,8 @@ layout: page
 ## Create Record
 
 ```go
-user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
-
-result := db.Create(&user) // pass pointer of data to Create
-
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+db. Omit("Name", "Age", "CreatedAt"). Create(&user)
+// INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
 ## Create With Selected Fields
@@ -20,15 +15,21 @@ result.RowsAffected // returns inserted records count
 Create with selected fields
 
 ```go
-db.Select("Name", "Age", "CreatedAt").Create(&user)
-// INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
+AssignmentColumns([]string{"name", "age"}),
+}). Create(&users)
+// MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET "name"="excluded"."name"; SQL Server
+// INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
 Create without selected fields
 
 ```go
-db.Omit("Name", "Age", "CreatedAt").Create(&user)
-// INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
+AssignmentColumns([]string{"name", "age"}),
+}). Create(&users)
+// MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET "name"="excluded"."name"; SQL Server
+// INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
 ## Create Hooks
@@ -37,10 +38,10 @@ GORM allows hooks `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`, thos
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
-  u.UUID = uuid.New()
+  u.UUID = uuid. New()
 
-    if u.Role == "admin" {
-        return errors.New("invalid role")
+    if u. Role == "admin" {
+        return errors. New("invalid role")
     }
     return
 }
@@ -52,7 +53,7 @@ Pass slice data to method `Create`, GORM will generate a single SQL statement to
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
-DB.Create(&users)
+DB. Create(&users)
 
 for _, user := range users {
   user.ID // 1,2,3
@@ -68,33 +69,22 @@ for _, user := range users {
 If your model defined any relations, and it has non-zero relations, those data will be saved when creating
 
 ```go
-type CreditCard struct {
-  gorm.Model
-  Number   string
-  UserID   uint
-}
+var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
+DB.
+Create(&users)
 
-type User struct {
-  gorm.Model
-  Name       string
-  CreditCard CreditCard
+for _, user := range users {
+  user.ID // 1,2,3
 }
-
-db.Create(&User{
-  Name: "jinzhu",
-  CreditCard: CreditCard{Number: "411111111111"}
-})
-// INSERT INTO `users` ...
-// INSERT INTO `credit_cards` ...
 ```
 
 You can skip saving associations with `Select`, `Omit`
 
 ```go
-db.Omit("CreditCard").Create(&user)
+db. Omit("CreditCard"). Create(&user)
 
 // skip all associations
-db.Omit(clause.Associations).Create(&user)
+db. Omit(clause. Associations). Create(&user)
 ```
 
 ### Default Values
@@ -116,10 +106,10 @@ Then the default value will be used when inserting into the database for [zero-v
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   Name string
   Age  *int           `gorm:"default:18"`
-  Active sql.NullBool `gorm:"default:true"`
+  Active sql. NullBool `gorm:"default:true"`
 }
 ```
 
@@ -131,21 +121,17 @@ GORM provides compatible Upsert support for different databases
 import "gorm.io/gorm/clause"
 
 // Do nothing on conflict
-DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
+DB. OnConflict{DoNothing: true}). Create(&user)
 
 // Update columns to default value on `id` conflict
-DB.Clauses(clause.OnConflict{
-  Columns:   []clause.Column{{Name: "id"}},
-  DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
-}).Create(&users)
+DB. Assignments(map[string]interface{}{"role": "user"}),
+}). Create(&users)
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
 // Update columns to new value on `id` conflict
-DB.Clauses(clause.OnConflict{
-  Columns:   []clause.Column{{Name: "id"}},
-  DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
-}).Create(&users)
+DB. AssignmentColumns([]string{"name", "age"}),
+}). Create(&users)
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET "name"="excluded"."name"; SQL Server
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL

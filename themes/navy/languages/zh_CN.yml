@@ -1,0 +1,68 @@
+---
+menu:
+  home: <i class="fa fa-home"></i>主页
+  docs: <i class="fa fa-book"></i>文档
+  api: <i class="fa fa-cogs"></i>API
+  github: <i class="fa fa-github"></i>Github
+  community: <i class="fa fa-slack"></i>社区
+  contribute: <i class="fa fa-rocket"></i>贡献
+  search: 搜索文档...
+index:
+  get_started: 开始
+page:
+  contents: 内容
+  back_to_top: 回到顶部
+  improve: 改进此页面
+  prev: 上一个
+  next: 接下来
+  last_updated: "最后更新于 %s"
+sidebar:
+  docs:
+    getting_started: 入门指南
+    overview: 概述
+    declaring_models: 声明模型
+    conventions: 约定
+    connecting_to_the_database: 连接到数据库
+    crud_interface: CRUD 接口
+    create: 创建
+    query: 查询
+    advanced_query: 高级查询
+    update: 更新
+    delete: 删除
+    raw_sql_and_builder: 原生 SQL 和 SQL 生成器
+    batch: 批量处理
+    associations: 关联
+    belongs_to: Belongs To
+    has_one: Has One
+    has_many: Has Many
+    many_to_many: Many To Many
+    association_mode: 关联模式
+    preload: 预加载
+    tutorials: 教程
+    context: Context
+    error_handling: 错误处理
+    method_chaining: 链式操作
+    session: Session
+    hooks: 钩子
+    transactions: 事务
+    migration: 迁移
+    logger: Logger
+    generic_interface: 通用数据库接口
+    performance: 性能
+    data_types: 数据类型
+    scopes: Scope
+    settings: 设置
+    advanced_topics: 高级主题
+    prometheus: Prometheus
+    hints: Hints
+    indexes: Indexes
+    constraints: Constraints
+    composite_primary_key: Composite Primary Key
+    security: Security
+    gorm_config: GORM Config
+    write_plugins: Write Plugins
+    write_driver: Write Driver
+    change_log: ChangeLog
+    community: Community
+    contribute: Contribute
+    translate: Translate current site

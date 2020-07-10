@@ -8,7 +8,7 @@ layout: page
 GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
   SkipDefaultTransaction: true,
 })
 ```
@@ -18,20 +18,28 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 To perform a set of operations within a transaction, the general flow is as below.
 
 ```go
-db.Transaction(func(tx *gorm.DB) error {
-  // do some database operations in the transaction (use 'tx' from this point, not 'db')
-  if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // return any error will rollback
+func CreateAnimals(db *gorm.DB) error {
+  // Note the use of tx as the database handle once you are within a transaction
+  tx := db. Begin()
+  defer func() {
+    if r := recover(); r != nil {
+      tx. Rollback()
+    }
+  }()
+
+  if err := tx. Error; err != nil {
     return err
   }
 
-  if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
-    return err
+  if err := tx. Create(&Animal{Name: "Giraffe"}). Rollback()
+     return err
   }
 
-  // return nil will commit the whole transaction
-  return nil
-})
+  if err := tx. Create(&Animal{Name: "Lion"}). Rollback()
+     return err
+  }
+
+  return tx. Commit().
 ```
 
 ### Nested Transactions
@@ -39,41 +47,29 @@ db.Transaction(func(tx *gorm.DB) error {
 GORM supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
 
 ```go
-DB.Transaction(func(tx *gorm.DB) error {
-  tx.Create(&user1)
+tx := DB. Begin()
+tx. Create(&user1)
 
-  tx.Transaction(func(tx2 *gorm.DB) error {
-    tx.Create(&user2)
-    return errors.New("rollback user2") // Rollback user2
-  })
+tx. SavePoint("sp1")
+tx. Create(&user2)
+tx. RollbackTo("sp1") // Rollback user2
 
-  tx.Transaction(func(tx2 *gorm.DB) error {
-    tx.Create(&user3)
-    return nil
-  })
-
-  return nil
-})
-
-// Commit user1, user3
+tx. Commit() // Commit user1
 ```
 
 ## Transactions by manual
 
 ```go
-// begin a transaction
-tx := db.Begin()
+tx := DB. Begin()
+tx. Create(&user1)
 
-// do some database operations in the transaction (use 'tx' from this point, not 'db')
-tx.Create(...)
+tx.
 
 // ...
 
-// rollback the transaction in case of error
-tx.Rollback()
+RollbackTo("sp1") // Rollback user2
 
-// Or commit the transaction
-tx.Commit()
+tx. Commit() // Commit user1
 ```
 
 ### A Specific Example
@@ -81,28 +77,26 @@ tx.Commit()
 ```go
 func CreateAnimals(db *gorm.DB) error {
   // Note the use of tx as the database handle once you are within a transaction
-  tx := db.Begin()
+  tx := db. Begin()
   defer func() {
     if r := recover(); r != nil {
-      tx.Rollback()
+      tx. Rollback()
     }
   }()
 
-  if err := tx.Error; err != nil {
+  if err := tx. Error; err != nil {
     return err
   }
 
-  if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-     tx.Rollback()
+  if err := tx. Create(&Animal{Name: "Giraffe"}). Rollback()
      return err
   }
 
-  if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
-     tx.Rollback()
+  if err := tx. Create(&Animal{Name: "Lion"}). Rollback()
      return err
   }
 
-  return tx.Commit().Error
+  return tx. Commit(). Error
 }
 ```
 
@@ -111,12 +105,12 @@ func CreateAnimals(db *gorm.DB) error {
 GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
 
 ```go
-tx := DB.Begin()
-tx.Create(&user1)
+tx := DB. Begin()
+tx. Create(&user1)
 
-tx.SavePoint("sp1")
-tx.Create(&user2)
-tx.RollbackTo("sp1") // Rollback user2
+tx. SavePoint("sp1")
+tx. Create(&user2)
+tx. RollbackTo("sp1") // Rollback user2
 
-tx.Commit() // Commit user1
+tx. Commit() // Commit user1
 ```

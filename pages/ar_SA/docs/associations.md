@@ -22,20 +22,14 @@ user := User{
   },
 }
 
-db.Create(&user)
-// BEGIN TRANSACTION;
-// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "addresses" (address1) VALUES ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('ZH') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1) ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('EN') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 2) ON DUPLICATE KEY DO NOTHING;
-// COMMIT;
+db. Select("Name"). Create(&user)
+// INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
-db.Save(&user)
+db. Omit("BillingAddress"). Create(&user)
+// Skip create BillingAddress when creating a user
+
+db. Omit(clause. Associations). Create(&user)
+// Skip all associations when creating a user
 ```
 
 ## Skip Auto Create/Update
@@ -57,13 +51,13 @@ user := User{
   },
 }
 
-db.Select("Name").Create(&user)
+db. Select("Name"). Create(&user)
 // INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
-db.Omit("BillingAddress").Create(&user)
+db. Omit("BillingAddress"). Create(&user)
 // Skip create BillingAddress when creating a user
 
-db.Omit(clause.Associations).Create(&user)
+db. Omit(clause. Associations). Create(&user)
 // Skip all associations when creating a user
 ```
 
@@ -72,13 +66,7 @@ db.Omit(clause.Associations).Create(&user)
 Association Mode contains some commonly used helper methods to handle relationships
 
 ```go
-// Start Association Mode
-var user User
-db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two conditions matched, the AssociationMode should be started successfully, or it should return error
-db.Model(&user).Association("Languages").Error
+db. Model(&user). Association("Languages").
 ```
 
 ### Find Associations
@@ -86,11 +74,7 @@ db.Model(&user).Association("Languages").Error
 Find matched associations
 
 ```go
-db.Model(&user).Association("Languages").Find(&languages)
-
-// Find with conditions
-codes := []string{"zh-CN", "en-US", "ja-JP"}
-db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
+db. Model(&user). Association("Languages"). Count()
 ```
 
 ### Append Associations
@@ -98,11 +82,7 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
 
 ```go
-db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
-
-db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
-
-db.Model(&user).Association("CreditCard").Append(CreditCard{Number: "411111111111"})
+db. Model(&user). Association("Languages").
 ```
 
 ### Replace Associations
@@ -110,9 +90,7 @@ db.Model(&user).Association("CreditCard").Append(CreditCard{Number: "41111111111
 Replace current associations with new ones
 
 ```go
-db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
-
-db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
+db. Model(&user). Association("Languages").
 ```
 
 ### Delete Associations
@@ -120,8 +98,7 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
 
 ```go
-db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
-db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
+db. Model(&user). Association("Languages").
 ```
 
 ### Clear Associations
@@ -129,7 +106,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 Remove all reference between source & association, won't delete those associations
 
 ```go
-db.Model(&user).Association("Languages").Clear()
+db. Model(&user). Association("Languages").
 ```
 
 ### Count Associations
@@ -137,7 +114,7 @@ db.Model(&user).Association("Languages").Clear()
 Return the count of current associations
 
 ```go
-db.Model(&user).Association("Languages").Count()
+db. Model(&user). Association("Languages"). Count()
 ```
 
 ### Batch Data
@@ -146,20 +123,20 @@ Association Mode supports batch data, e.g:
 
 ```go
 // Find all roles for all users
-gorm.Model(&users).Association("Role").Find(&roles)
+gorm. Association("Role"). Find(&roles)
 
 // Delete User A from all users's team
-gorm.Model(&users).Association("Team").Delete(&userA)
+gorm. Delete(&userA)
 
 // Get unduplicated count of members in all user's team
-gorm.Model(&users).Association("Team").Count()
+gorm. Count()
 
 // For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
-gorm.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
+gorm. Append(&userA, &userB, &[]User{userA, userB, userC})
 // Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
-gorm.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
+gorm. Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## <span id="tags">Association Tags</span>

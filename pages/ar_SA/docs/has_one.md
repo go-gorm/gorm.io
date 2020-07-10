@@ -10,14 +10,13 @@ A `has one` association sets up a one-to-one connection with another model, but 
 For example, if your application includes users and credit cards, and each user can only have one credit card.
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
 type User struct {
-  gorm.Model
-  CreditCard CreditCard
+  gorm. Model
+  CreditCard CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type CreditCard struct {
-  gorm.Model
+  gorm. Model
   Number string
   UserID uint
 }
@@ -35,15 +34,14 @@ If you want to use another field to save the relationship, you can change it wit
 
 ```go
 type User struct {
-  gorm.Model
-  CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // use UserName as foreign key
+  gorm. Model
+  CreditCard CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type CreditCard struct {
-  gorm.Model
-  Number   string
-  UserName string
+  gorm. Model
+  Number string
+  UserID uint
 }
 ```
 
@@ -55,15 +53,14 @@ You are able to change it with tag `references`, e.g:
 
 ```go
 type User struct {
-  gorm.Model
-  Name       string     `sql:"index"`
-  CreditCard CreditCard `gorm:"foreignkey:UserName;references:name"`
+  gorm. Model
+  CreditCard CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type CreditCard struct {
-  gorm.Model
-  Number   string
-  UserName string
+  gorm. Model
+  Number string
+  UserID uint
 }
 ```
 
@@ -72,16 +69,10 @@ type CreditCard struct {
 GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field, primary key value into the polymorphic field
 
 ```go
-type Cat struct {
-  ID    int
-  Name  string
-  Toy   Toy `gorm:"polymorphic:Owner;"`
-}
-
 type Dog struct {
   ID   int
   Name string
-  Toy  Toy `gorm:"polymorphic:Owner;"`
+  Toy  Toy `gorm:"polymorphic:Owner;polymorphicValue:master"`
 }
 
 type Toy struct {
@@ -91,9 +82,9 @@ type Toy struct {
   OwnerType string
 }
 
-db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
+db. Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs")
+// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master")
 ```
 
 You can change the polymorphic type value with tag `polymorphicValue`, for example:
@@ -112,7 +103,7 @@ type Toy struct {
   OwnerType string
 }
 
-db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
+db. Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `dogs` (`name`) VALUES ("dog1")
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master")
 ```
@@ -129,7 +120,7 @@ GORM allows eager loading `has one` associations with `Preload` or `Joins`, refe
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   Name      string
   ManagerID *uint
   Manager   *User
@@ -142,12 +133,12 @@ You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for exam
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   CreditCard CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type CreditCard struct {
-  gorm.Model
+  gorm. Model
   Number string
   UserID uint
 }

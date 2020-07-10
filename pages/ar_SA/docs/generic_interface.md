@@ -10,13 +10,13 @@ GORM provides the method `DB` which returns a generic database interface [\*sql.
 sqlDB, err := db.DB()
 
 // Ping
-sqlDB.Ping()
+sqlDB. Ping()
 
 // Close
-sqlDB.Close()
+sqlDB. Close()
 
 // Returns database statistics
-sqlDB.Stats()
+sqlDB. Stats()
 ```
 
 **NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns error
@@ -27,12 +27,15 @@ sqlDB.Stats()
 // Get generic database object sql.DB to use its functions
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
-sqlDB.SetMaxIdleConns(10)
+// Ping
+sqlDB.
+Ping()
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
-sqlDB.SetMaxOpenConns(100)
+// Close
+sqlDB.
+Close()
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
-sqlDB.SetConnMaxLifetime(time.Hour)
+// Returns database statistics
+sqlDB.
+Stats()
 ```

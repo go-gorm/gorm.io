@@ -10,9 +10,11 @@ GORM optimizes many things to improve the performance, the default performance s
 GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
-  SkipDefaultTransaction: true,
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
+  PrepareStmt: true,
 })
+
+db.
 ```
 
 ## [Caches Prepared Statement](session.html)
@@ -20,9 +22,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 Creates a prepared statement when executing any SQL and caches them to speed up future calls
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
   PrepareStmt: true,
 })
+
+db.
 ```
 
 ## [SQL Builder with PreparedStmt](sql_builder.html)
@@ -30,11 +34,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 GORM tries a lot to improve generate SQL, you can still choose to use raw SQL or prepare SQL before usage with GORM API ([DryRun Mode](session.html)), and execute it with prepared statement later, e.g:
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
   PrepareStmt: true,
 })
 
-db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
+db. Raw("select sum(age) from users where role = ?", "admin"). Scan(&age)
 ```
 
 ## Select Fields
@@ -42,7 +46,10 @@ db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 By default GORM select all fields when querying, you can use `Select` to specify fields you want
 
 ```go
-db.Select("Name", "Age").Find(&Users{})
+UseIndex("idx_user_name")). Find(&User{})
+// SELECT * FROM `users` USE INDEX (`idx_user_name`)
+
+DB.
 ```
 
 Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)
@@ -62,7 +69,7 @@ type APIUser struct {
 }
 
 // Select `id`, `name` automatically when query
-db.Model(&User{}).Limit(10).Find(&APIUser{})
+db. Model(&User{}). Limit(10). Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
@@ -77,15 +84,15 @@ Query and process records with iteration or in batches
 ```go
 import "gorm.io/hints"
 
-DB.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
+DB. UseIndex("idx_user_name")). Find(&User{})
 // SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
-DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
+DB. ForJoin()). Find(&User{})
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 
-DB.Clauses(
-    hints.ForceIndex("idx_user_name", "idx_user_id").ForOrderBy(),
-    hints.IgnoreIndex("idx_user_name").ForGroupBy(),
-).Find(&User{})
+DB. Clauses(
+    hints. ForOrderBy(),
+    hints. IgnoreIndex("idx_user_name"). ForGroupBy(),
+). Find(&User{})
 // SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
 ```

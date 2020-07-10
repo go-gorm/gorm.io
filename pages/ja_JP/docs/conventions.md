@@ -1,23 +1,23 @@
 ---
-title: Conventions
+title: 規約
 layout: page
 ---
 
-## `ID` as Primary Key
+## 主キーとしての`ID`
 
-GORM uses the field with the name `ID` as the table's primary key by default.
+GORMはデフォルトで、テーブルの主キーとして `ID` という名前のフィールドを使用します。
 
 ```go
 type User struct {
-  ID   string // field named `ID` will be used as a primary field by default
+  ID   string //フィールドはデフォルトでは `ID` という名前のフィールドがプライマリフィールドとして使われます。
   Name string
 }
 ```
 
-You can set other fields as primary key with tag `primaryKey`
+他のフィールドを `primaryKey` タグで主キーとして設定できます
 
 ```go
-// Set field `AnimalID` as primary field
+// `AnimalID`フィールドをプライマリフィールドとして設定します
 type Animal struct {
   ID     int64
   UUID   string `gorm:"primaryKey"`
@@ -26,9 +26,9 @@ type Animal struct {
 }
 ```
 
-Also check out [Composite Primary Key](composite_primary_key.html)
+[複合プライマリキー](composite_primary_key.html) もチェックしてください
 
-## Pluralized Table Name
+## テーブル名は複数形
 
 GORM pluralizes struct name to `snake_cases` as table name, for struct `User`, its table name is `users` by convention
 
@@ -68,7 +68,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 
 GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html) for details
 
-## Column Name
+## カラム名
 
 Column db name uses the field's name's `snake_case` by convention.
 
@@ -91,7 +91,7 @@ type Animal struct {
 }
 ```
 
-## Timestamp Tracking
+## タイムスタンプの追跡
 
 ### CreatedAt
 

@@ -10,7 +10,15 @@ GORM provides Context support, you can use it with method `WithContext`
 Single session mode usually used when you want to perform a single operation
 
 ```go
-db.WithContext(ctx).Find(&users)
+Find(&users)
+
+  // lots of db operations
+})
+
+r. Get("/user", func(w http. Value("DB").(*gorm.DB)
+
+  var user User
+  db.
 ```
 
 ## Continuous session mode
@@ -18,9 +26,9 @@ db.WithContext(ctx).Find(&users)
 Continuous session mode usually used when you want to perform a group of operations, for example:
 
 ```go
-tx := db.WithContext(ctx)
-tx.First(&user, 1)
-tx.Model(&user).Update("role", "admin")
+tx := db. WithContext(ctx)
+tx. First(&user, 1)
+tx. Model(&user). Update("role", "admin")
 ```
 
 ## Chi Middleware Example
@@ -30,31 +38,29 @@ Continuous session mode which might be helpful when handling API requests, for e
 Following is a Chi middleware example:
 
 ```go
-func SetDBMiddleware(next http.Handler) http.Handler {
-  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    timeoutContext, _ := context.WithTimeout(context.Background(), time.Second)
-    ctx := context.WithValue(r.Context(), "DB", db.WithContext(timeoutContext))
-    next.ServeHTTP(w, r.WithContext(ctx))
+func SetDBMiddleware(next http. Handler) http. Handler {
+  return http. HandlerFunc(func(w http. Request) {
+    timeoutContext, _ := context. WithTimeout(context. Background(), time. Second)
+    ctx := context. WithValue(r. Context(), "DB", db. WithContext(timeoutContext))
+    next. ServeHTTP(w, r. WithContext(ctx))
   })
 }
 
-r := chi.NewRouter()
-r.Use(SetDBMiddleware)
+r := chi. NewRouter()
+r. Use(SetDBMiddleware)
 
-r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-  db, ok := ctx.Value("DB").(*gorm.DB)
+r. Get("/", func(w http. Value("DB").(*gorm.DB)
 
   var users []User
-  db.Find(&users)
+  db. Find(&users)
 
   // lots of db operations
 })
 
-r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
-  db, ok := ctx.Value("DB").(*gorm.DB)
+r. Get("/user", func(w http. Value("DB").(*gorm.DB)
 
   var user User
-  db.First(&user)
+  db. First(&user)
 
   // lots of db operations
 })

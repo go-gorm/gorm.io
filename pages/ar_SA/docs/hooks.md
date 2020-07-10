@@ -32,32 +32,32 @@ AfterSave
 Code Example:
 
 ```go
-func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
-  u.UUID = uuid.New()
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  // Modify current operation through tx. Statement, e.g:
+  tx. Select("Name", "Age")
+  tx. AddClause(clause. OnConflict{DoNothing: true})
 
-  if !u.IsValid() {
-    err = errors.New("can't save invalid data")
-  }
-  return
-}
-
-func (u *User) AfterCreate(tx *gorm.DB) (err error) {
-  if u.ID == 1 {
-    tx.Model(u).Update("role", "admin")
-  }
-  return
+  // tx is new session mode without the `WithConditions` option
+  // operations based on it will run inside same transaction but without any current conditions
+  var role Role
+  err := tx. First(&role, "name = ?", user. Role). Error
+  // SELECT * FROM roles WHERE name = "admin"
+  // ... return err
 }
 ```
 
 **NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is committed, if you return any error in your hooks, the change will be rollbacked
 
 ```go
-func (u *User) AfterCreate(tx *gorm.DB) (err error) {
-  if !u.IsValid() {
-    return errors.New("rollback invalid user")
-  }
-  return nil
-}
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  // Modify current operation through tx. Statement, e.g:
+  tx. Select("Name", "Age")
+  tx. AddClause(clause. OnConflict{DoNothing: true})
+
+  // tx is new session mode without the `WithConditions` option
+  // operations based on it will run inside same transaction but without any current conditions
+  var role Role
+  err := tx. First(&role, "name = ?", user. Role).
 ```
 
 ### Updating an object
@@ -79,20 +79,15 @@ AfterSave
 Code Example:
 
 ```go
-func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
-  if u.readonly() {
-    err = errors.New("read only user")
-  }
-  return
-}
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  // Modify current operation through tx. Statement, e.g:
+  tx. Select("Name", "Age")
+  tx. AddClause(clause. OnConflict{DoNothing: true})
 
-// Updating data in same transaction
-func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
-  if u.Confirmed {
-    tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
-  }
-  return
-}
+  // tx is new session mode without the `WithConditions` option
+  // operations based on it will run inside same transaction but without any current conditions
+  var role Role
+  err := tx. First(&role, "name = ?", user.
 ```
 
 ### Deleting an object
@@ -110,13 +105,15 @@ AfterDelete
 Code Example:
 
 ```go
-// Updating data in same transaction
-func (u *User) AfterDelete(tx *gorm.DB) (err error) {
-  if u.Confirmed {
-    tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
-  }
-  return
-}
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  // Modify current operation through tx. Statement, e.g:
+  tx. Select("Name", "Age")
+  tx. AddClause(clause. OnConflict{DoNothing: true})
+
+  // tx is new session mode without the `WithConditions` option
+  // operations based on it will run inside same transaction but without any current conditions
+  var role Role
+  err := tx. First(&role, "name = ?", user.
 ```
 
 ### Querying an object
@@ -133,8 +130,8 @@ Code Example:
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
-  if u.MemberShip == "" {
-    u.MemberShip = "user"
+  if u. MemberShip == "" {
+    u. MemberShip = "user"
   }
   return
 }
@@ -144,14 +141,14 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx.Statement, e.g:
-  tx.Statement.Select("Name", "Age")
-  tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
+  // Modify current operation through tx. Statement, e.g:
+  tx. Select("Name", "Age")
+  tx. AddClause(clause. OnConflict{DoNothing: true})
 
   // tx is new session mode without the `WithConditions` option
   // operations based on it will run inside same transaction but without any current conditions
   var role Role
-  err := tx.First(&role, "name = ?", user.Role).Error
+  err := tx. First(&role, "name = ?", user. Role). Error
   // SELECT * FROM roles WHERE name = "admin"
   // ...
   return err

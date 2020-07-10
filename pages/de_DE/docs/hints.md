@@ -49,5 +49,5 @@ DB.Clauses(hints.CommentAfter("select", "node2")).Create(&user)
 // /*node2*/ INSERT INTO `users` ...;
 
 DB.Clauses(hints.CommentAfter("where", "hint")).Find(&User{}, "id = ?", 1)
-// SELECT * FROM `users` WHERE id = ? /* hint */
+// SELECT * FROM `users` WHERE id = ? /* hint */ /* hint */
 ```
