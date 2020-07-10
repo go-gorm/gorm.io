@@ -26,7 +26,7 @@ Checkout [Database Indexes](indexes.html)
 GORM will creates foreign keys constraints for associations, you can disable this feature during initialization:
 
 ```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
   DisableForeignKeyConstraintWhenMigrating: true,
 })
 ```
@@ -35,14 +35,14 @@ GORM allows you setup FOREIGN KEY constraints's `OnDelete`, `OnDelete` option wi
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   CompanyID  int
   Company    Company    `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
   CreditCard CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type CreditCard struct {
-  gorm.Model
+  gorm. Model
   Number string
   UserID uint
 }
