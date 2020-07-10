@@ -19,8 +19,8 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * 自动迁移
 * 自定义日志
 * 可扩展性, 可基于 GORM callback 编写插件
-* Every feature comes with tests
-* Developer Friendly
+* 所有特性都通过了测试
+* 开发者友好
 
 ## 安装
 
@@ -28,7 +28,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 go get -u gorm.io/gorm
 ```
 
-## Quick Start
+## 快速入门
 
 ```go
 package main
@@ -51,24 +51,24 @@ func main() {
   }
   defer db.Close()
 
-  // Migrate the schema
+  // 自动迁移 schema
   db.AutoMigrate(&Product{})
 
-  // Create
+  // 创建
   db.Create(&Product{Code: "D42", Price: 100})
 
-  // Read
+  // 查询首条记录
   var product Product
-  db.First(&product, 1) // find product with integer primary key
-  db.First(&product, "code = ?", "D42") // find product with code D42
+  db.First(&product, 1) // 查询整型主键值为 1 的 product
+  db.First(&product, "code = ?", "D42") // 查询 code 为 D42 的 product
 
-  // Update - update product's price to 200
+  // Update - 将 product 的 Price 更新为 200
   db.Model(&product).Update("Price", 200)
   // Update - update multiple fields
-  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
+  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // 仅更新非零值字段
   db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
 
-  // Delete - delete product
+  // Delete - 删除 product
   db.Delete(&product, 1)
 }
 ```
