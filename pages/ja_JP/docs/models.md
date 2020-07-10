@@ -25,9 +25,9 @@ type User struct {
 
 ## 規約
 
-GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+GORMは「設定より規約」を好みます。デフォルトでは、GORMは主キーとしての`ID`、テーブル名を表すための複数形かつ`スネークケース`な構造体名、 `スネークケース`なカラム名、作成時と更新時をトラッキングするための`CreatedAt`、`UpdatedAt`フィールドを利用します。
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code, If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+GORMで採用されている規則に従う場合は、設定やコードを記述する手間が激減します。 規則があなたの要件と一致しない場合、 [GORMはそれらを設定することができます](conventions.html)
 
 ## gorm.Model
 
@@ -64,18 +64,18 @@ type User struct {
 
 ### フィールドレベルの権限
 
-Exported fields have all permission when doing CRUD with GORM, but GORM allows you to change the field-level permission with tag, so you can make a field to read-only, write-only, create-only, update-only or ignored
+エクスポートされたフィールドはGORMでCRUDを実行するときにすべての権限を持ちますが、GORMはタグでフィールドレベルの権限を変更することができます。 これにより、読み取り専用、書き込み専用、作成専用、更新専用、または無視するフィールドを作成できます。
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
-  Name string `gorm:"->;<-:create"` // allow read and create
-  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`  // ignore this field when write and read
+  Name string `gorm:"<-:create"` // 読み取り、作成が可能
+  Name string `gorm:"<-:update"` // 読み取り、更新が可能
+  Name string `gorm:"<-"`        // 読み取り、書き込みが可能 (createとupdateの両方)
+  Name string `gorm:"<-:false"`  // 読み取り可能、書き込み無効
+  Name string `gorm:"->"`        //  読み取り専用 (設定されていない限り、書き込みを無効にします。 )
+  Name string `gorm:"->;<-:create"` // 読み取りと作成が可能
+  Name string `gorm:"->:false;<-:create"` // 作成専用 (dbからの読み取りは無効)
+  Name string `gorm:"-"`  // 書き込みと読み込みの際にこのフィールドを無視します。
 }
 ```
 
