@@ -1,30 +1,30 @@
 ---
-title: Change Log
-layout: page
+title: Список изменений
+layout: страница
 ---
 
 ## v2.0 - 2020.07
 
-GORM 2.0 is rewritten from scratch based on feedback we received in the last few years, it introduces some incompatible-API change and many improvements
+GORM 2.0 переписан с нуля на основе обратной связи, полученной в последние несколько лет, это представляет некоторые несовместимые изменения API и много улучшений
 
-* Performance Improvements
-* Modularity
+* Улучшение производительности
+* Модульность
 * Context, Batch Insert, Prepared Statment, DryRun Mode, Join Preload, Find To Map, FindInBatches
-* SavePoint/RollbackTo/Nested Transaction Support
-* Association improvements (On Delete/Update), Modify Join Table for Many2Many, Association Mode for batch data
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints supports
-* Multiple fields support for auto-creating/updating time, which also support UNIX (nano) seconds
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
-* All new Migrator, Logger
-* Naming strategy (Unified table name, field name, join table name, foreign key, checker, index name rule)
-* Better customized data type support (e.g: JSON)
-* All new plugin system, Hooks API
+* SavePoint/RollbackTo/Вложенные транзакции
+* Улучшение связей (при удалении/обновлении), изменение таблицы связей для Many2Many, режим связи для пакетных данных
+* Конструктор SQL, Upsert, Блокировка, Оптимизатор/Индексирование/Комментарий поддержка подсказок
+* Поддержка нескольких полей для времени авто-создания/обновления, также поддерживает UNIX (nano) секунды
+* Поддержка прав доступа полей: только для чтения, только для записи, только для создания, только для обновления, игнорируется
+* Полностью новые Migrator, Logger
+* Стратегия именования (Unified table name, field name, join table name, foreign key, checker, index name rule)
+* Улучшенная поддержка настраиваемых типов данных (например, JSON)
+* Полностью новая система плагинов, Hooks API
 
 ## v1.0 - 2016.04
 
-[GORM V1 Docs](https://v1.gorm.io)
+[GORM V1 Документация](https://v1.gorm.io)
 
-Breaking Changes
+Критические изменения
 
 * `gorm.Open` return type `*gorm.DB` instead of `gorm.DB`
 
