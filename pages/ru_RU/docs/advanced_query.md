@@ -239,29 +239,29 @@ for rows.Next() {
 Запрашивать и обрабатывать записи в пакете
 
 ```go
-// batch size 100
+// размер пакета 100
 result := DB.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // batch processing found records
+    // пакетная обработка найденных записей
   }
 
   tx.Save(&results)
 
-  tx.RowsAffected // number of records in this batch
+  tx.RowsAffected // количество записей в текущем пакете
 
-  batch // Batch 1, 2, 3
+  batch // пакет 1, 2, 3
 
-  // returns error will stop future batches
+  // возвращение ошибки остановит обработку следующих пакетов 
   return nil
 })
 
-result.Error // returned error
-result.RowsAffected // processed records count in all batches
+result.Error // возвращена ошибка
+result.RowsAffected // количество обработанных записей во всех пакетах
 ```
 
-## Query Hooks
+## Хуки запросов
 
-GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
+GORM позволяет использовать хуки `AfterFind` для запроса, который будет вызыватся при выполнении запроса, посмотрите [Хуки](hooks.html) для подробностей
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -274,7 +274,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use [`Scan`](#scan) instead
+Запросить один столбец из БД и записать в slice, если вы хотите получить несколько столбцов, используйте [`Scan`](#scan)
 
 ```go
 var ages []int64
@@ -285,18 +285,18 @@ db.Model(&User{}).Pluck("name", &names)
 
 db.Table("deleted_users").Pluck("name", &names)
 
-// Distinct Pluck
+// Pluck с Distinct
 DB.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Requesting more than one column, use `Scan` or `Find` like this:
+// Запрашивая более одной колонки, используйте `Scan` или `Find`, например:
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
-## Scopes
+## Рамки
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+`Рамки` позволяют установить часто используемые запросы, которые можно использовать позже как методы
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -318,18 +318,18 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// Найти все заказы по кредитной карте с суммой более 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// Найти все заказы с оплатой наложенным платежом и суммой более 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// Найти все оплаченные и отгруженные заказы с суммой более 1000
 ```
 
-## <span id="count">Count</span>
+## <span id="count">Количество</span>
 
-Get matched records count
+Получить количество найденных записей
 
 ```go
 var count int64
@@ -349,7 +349,7 @@ DB.Model(&User{}).Distinct("name").Count(&count)
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
 // SELECT count(distinct(name)) FROM deleted_users
 
-// Count with Group
+// Количество с использованием Group
 users := []User{
   {Name: "name1"},
   {Name: "name2"},
