@@ -1,39 +1,39 @@
 ---
-title: Create
+title: 创建
 layout: page
 ---
 
-## Create Record
+## 创建记录
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // pass pointer of data to Create
+result := db.Create(&user) // 通过数据的指针来创建
 
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+user.ID             // 返回插入数据的主键
+result.Error        // 返回 error
+result.RowsAffected // 返回插入记录的条数
 ```
 
-## Create With Selected Fields
+## 选定字段创建
 
-Create with selected fields
+用选定字段的来创建
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create without selected fields
+创建时排除选定字段
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## Create Hooks
+## 创建钩子
 
-GORM allows hooks `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`, those methods will be called when creating a record, refer [Hooks](hooks.html) for details
+GORM 允许 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` 等钩子，创建记录时会调用这些方法, 详情请参阅 [钩子](hooks.html)
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -46,9 +46,9 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_insert">Batch Insert</span>
+## <span id="batch_insert">批量插入</span>
 
-Pass slice data to method `Create`, GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+将切片数据传递给 `Create` 方法，GORM 将生成一个单一的 SQL 语句来插入所有数据，并回填主键的值，钩子方法也会被调用。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -59,13 +59,13 @@ for _, user := range users {
 }
 ```
 
-[Upsert](#upsert), [Create With Associations](#create_with_associations) supported for batch insert also
+[Upsert](#upsert)、[关联创建](#create_with_associations) 同样支持批量插入
 
-## Advanced
+## 高级
 
-### <span id="create_with_associations">Create With Associations</span>
+### <span id="create_with_associations">关联创建</span>
 
-If your model defined any relations, and it has non-zero relations, those data will be saved when creating
+如果您的模型定义了任何关系（relation），并且它有非零关系，那么在创建时这些数据也会被保存
 
 ```go
 type CreditCard struct {
@@ -88,18 +88,18 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`
+您也可以通过 `Select`、 `Omit` 跳过关联保存
 
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// skip all associations
+// 跳过所有关联
 db.Omit(clause.Associations).Create(&user)
 ```
 
-### Default Values
+### 默认值
 
-You can define default values for fields with tag `default`, for example:
+您可以通过标签 `default` 为字段定义默认值，如：
 
 ```go
 type User struct {
