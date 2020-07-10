@@ -298,3 +298,20 @@ db.Joins("Company").Find(&users)
 ```
 
 Refer [Preloading (Eager Loading)](preload.html) for details
+
+## <span id="scan">Scan</span>
+
+Scan results into a struct work similar to `Find`
+
+```go
+type Result struct {
+  Name string
+  Age  int
+}
+
+var result Result
+db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
+
+// Raw SQL
+db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
+```
