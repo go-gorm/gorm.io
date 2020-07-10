@@ -9,7 +9,7 @@ GORM uses this for some features, like pass creating table options when migratin
 
 ```go
 // Add table suffix when creating tables
-db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
+db. Set("gorm:table_options", "ENGINE=InnoDB"). AutoMigrate(&User{})
 ```
 
 ## Set / Get
@@ -18,30 +18,30 @@ Use `Set` / `Get` pass settings to hooks methods, for example:
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   CreditCard CreditCard
   // ...
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  myValue, ok := tx.Get("my_value")
+  myValue, ok := tx. InstanceGet("my_value")
   // ok => true
   // myValue => 123
 }
 
 type CreditCard struct {
-  gorm.Model
+  gorm. Model
   // ...
 }
 
-func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
-  myValue, ok := tx.Get("my_value")
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  myValue, ok := tx. InstanceGet("my_value")
   // ok => true
   // myValue => 123
 }
 
-myValue := 123
-db.Set("my_value", myValue).Create(&User{})
+type CreditCard struct {
+  gorm.
 ```
 
 
@@ -51,29 +51,29 @@ Use `InstanceSet` / `InstanceGet` pass settings to current `*Statement`'s hooks 
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   CreditCard CreditCard
   // ...
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  myValue, ok := tx.InstanceGet("my_value")
+  myValue, ok := tx. InstanceGet("my_value")
   // ok => true
   // myValue => 123
 }
 
 type CreditCard struct {
-  gorm.Model
+  gorm. Model
   // ...
 }
 
 // When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
 func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
-  myValue, ok := tx.InstanceGet("my_value")
+  myValue, ok := tx. InstanceGet("my_value")
   // ok => false
   // myValue => nil
 }
 
 myValue := 123
-db.InstanceSet("my_value", myValue).Create(&User{})
+db. InstanceSet("my_value", myValue). Create(&User{})
 ```
