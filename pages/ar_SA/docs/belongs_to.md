@@ -10,12 +10,11 @@ A `belongs to` association sets up a one-to-one connection with another model, s
 For example, if your application includes users and companies, and each user can be assigned to exactly one company
 
 ```go
-// `User` belongs to `Company`, `CompanyID` is the foreign key
 type User struct {
-  gorm.Model
+  gorm. Model
   Name      string
   CompanyID int
-  Company   Company
+  Company   Company `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type Company struct {
@@ -34,11 +33,10 @@ GORM provides a way to customize the foreign key, for example:
 
 ```go
 type User struct {
-  gorm.Model
-  Name         string
-  CompanyRefer int
-  Company      Company `gorm:"foreignKey:CompanyRefer"`
-  // use CompanyRefer as foreign key
+  gorm. Model
+  Name      string
+  CompanyID int
+  Company   Company `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type Company struct {
@@ -57,15 +55,14 @@ You are able to change it with tag `references`, e.g:
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   Name      string
-  CompanyID string
-  Company   Company `gorm:"references:Code"` // use Code as references
+  CompanyID int
+  Company   Company `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type Company struct {
   ID   int
-  Code string
   Name string
 }
 ```
@@ -84,7 +81,7 @@ You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for exam
 
 ```go
 type User struct {
-  gorm.Model
+  gorm. Model
   Name      string
   CompanyID int
   Company   Company `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
