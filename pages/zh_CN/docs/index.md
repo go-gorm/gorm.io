@@ -1,15 +1,15 @@
 ---
-title: GORM Guides
+title: GORM 指南
 layout: page
 ---
 
 The fantastic ORM library for Golang aims to be developer friendly.
 
-## Overview
+## 特性
 
-* Full-Featured ORM
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
-* Hooks (Before/After Create/Save/Update/Delete/Find)
+* 全功能 ORM
+* 关联 (Has One、Has Many、Belongs To、Many To Many、多态、单表继承)
+* Create、Save、Update、Delete、Find 前/后的勾子
 * Eager loading with `Preload`, `Joins`
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
 * Context, Prepared Statment Mode, DryRun Mode
