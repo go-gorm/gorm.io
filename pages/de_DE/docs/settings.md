@@ -24,7 +24,7 @@ type User struct {
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  myValue, ok := tx.Get("my_value")
+  myValue, ok := tx.InstanceGet("my_value")
   // ok => true
   // myValue => 123
 }
@@ -34,14 +34,67 @@ type CreditCard struct {
   // ...
 }
 
+// When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
 func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
-  myValue, ok := tx.Get("my_value")
+  myValue, ok := tx.InstanceGet("my_value")
+  // ok => false
+  // myValue => nil
+}
+
+myValue := 123
+db.InstanceSet("my_value", myValue).Create(&User{})
+type User struct {
+  gorm.Model
+  CreditCard CreditCard
+  // ...
+}
+
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  myValue, ok := tx.InstanceGet("my_value")
   // ok => true
   // myValue => 123
 }
 
+type CreditCard struct {
+  gorm.Model
+  // ...
+}
+
+// When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
+func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
+  myValue, ok := tx.InstanceGet("my_value")
+  // ok => false
+  // myValue => nil
+}
+
 myValue := 123
-db.Set("my_value", myValue).Create(&User{})
+db.InstanceSet("my_value", myValue).Create(&User{})
+type User struct {
+  gorm.Model
+  CreditCard CreditCard
+  // ...
+}
+
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  myValue, ok := tx.InstanceGet("my_value")
+  // ok => true
+  // myValue => 123
+}
+
+type CreditCard struct {
+  gorm.Model
+  // ...
+}
+
+// When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
+func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
+  myValue, ok := tx.InstanceGet("my_value")
+  // ok => false
+  // myValue => nil
+}
+
+myValue := 123
+db.InstanceSet("my_value", myValue).Create(&User{})
 ```
 
 
@@ -50,6 +103,58 @@ db.Set("my_value", myValue).Create(&User{})
 Use `InstanceSet` / `InstanceGet` pass settings to current `*Statement`'s hooks methods, for example:
 
 ```go
+type User struct {
+  gorm.Model
+  CreditCard CreditCard
+  // ...
+}
+
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  myValue, ok := tx.InstanceGet("my_value")
+  // ok => true
+  // myValue => 123
+}
+
+type CreditCard struct {
+  gorm.Model
+  // ...
+}
+
+// When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
+func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
+  myValue, ok := tx.InstanceGet("my_value")
+  // ok => false
+  // myValue => nil
+}
+
+myValue := 123
+db.InstanceSet("my_value", myValue).Create(&User{})
+type User struct {
+  gorm.Model
+  CreditCard CreditCard
+  // ...
+}
+
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  myValue, ok := tx.InstanceGet("my_value")
+  // ok => true
+  // myValue => 123
+}
+
+type CreditCard struct {
+  gorm.Model
+  // ...
+}
+
+// When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
+func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
+  myValue, ok := tx.InstanceGet("my_value")
+  // ok => false
+  // myValue => nil
+}
+
+myValue := 123
+db.InstanceSet("my_value", myValue).Create(&User{})
 type User struct {
   gorm.Model
   CreditCard CreditCard
