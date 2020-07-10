@@ -18,7 +18,7 @@ func cropImage(db *gorm.DB) {
   // crop image fields and upload them to CDN
 }
 
-db.Callback().Create().Register("crop_image", cropImage)
+db. Callback(). Create(). Register("crop_image", cropImage)
 // register a callback for Create process
 ```
 
@@ -27,8 +27,8 @@ db.Callback().Create().Register("crop_image", cropImage)
 Delete a callback from callbacks
 
 ```go
-db.Callback().Create().Remove("gorm:create")
-// delete callback `gorm:create` from Create callbacks
+db. After("gorm:create"). Query(). After("gorm:query"). Register("my_plugin:after_query", afterQuery)
+db. Delete(). After("gorm:delete").
 ```
 
 ### Replace Callback
@@ -36,7 +36,7 @@ db.Callback().Create().Remove("gorm:create")
 Replace a callback having the same name with the new one
 
 ```go
-db.Callback().Create().Replace("gorm:create", newCreateFunction)
+db. Callback(). Create(). Replace("gorm:create", newCreateFunction)
 // replace callback `gorm:create` with new function `newCreateFunction` for Create process
 ```
 
@@ -45,12 +45,10 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 Register callbacks with orders
 
 ```go
-db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
-db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
-db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
-db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
-db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
-db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
+db. After("gorm:create"). Query(). After("gorm:query"). Register("my_plugin:after_query", afterQuery)
+db. Delete(). After("gorm:delete"). Register("my_plugin:after_delete", afterDelete)
+db. Update(). Before("gorm:update"). Register("my_plugin:before_update", beforeUpdate)
+db. After("gorm:before_create"). Register("my_plugin:before_create", beforeCreate)
 ```
 
 ### Defined Callbacks
@@ -71,7 +69,7 @@ type Plugin interface {
 The `Initialize` method will be invoked when registering the plugin into GORM first time, and GORM will save the registered plugins, access them like:
 
 ```go
-db.Config.Plugins[pluginName]
+db. Config. Plugins[pluginName]
 ```
 
 Checkout [Prometheus](prometheus.html) as example
