@@ -44,7 +44,47 @@ result.Error        // returns error
 ### String Conditions
 
 ```go
-// Get first matched record
+// Get by primary key (only works for integer primary key)
+db.First(&user, 23)
+// SELECT * FROM users WHERE id = 23;
+// Get by primary key if it were a non-integer type
+db.First(&user, "id = ?", "string_primary_key")
+// SELECT * FROM users WHERE id = 'string_primary_key';
+
+// Plain SQL
+db.Find(&user, "name = ?", "jinzhu")
+// SELECT * FROM users WHERE name = "jinzhu";
+
+db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
+// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
+
+// Struct
+db.Find(&users, User{Age: 20})
+// SELECT * FROM users WHERE age = 20;
+
+// Map
+db.Find(&users, map[string]interface{}{"age": 20})
+// SELECT * FROM users WHERE age = 20; // Get by primary key (only works for integer primary key)
+db.First(&user, 23)
+// SELECT * FROM users WHERE id = 23;
+// Get by primary key if it were a non-integer type
+db.First(&user, "id = ?", "string_primary_key")
+// SELECT * FROM users WHERE id = 'string_primary_key';
+
+// Plain SQL
+db.Find(&user, "name = ?", "jinzhu")
+// SELECT * FROM users WHERE name = "jinzhu";
+
+db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
+// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
+
+// Struct
+db.Find(&users, User{Age: 20})
+// SELECT * FROM users WHERE age = 20;
+
+// Map
+db.Find(&users, map[string]interface{}{"age": 20})
+// SELECT * FROM users WHERE age = 20; // Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
@@ -109,6 +149,26 @@ Works similar to `Where`.
 
 ```go
 // Get by primary key (only works for integer primary key)
+db.First(&user, 23)
+// SELECT * FROM users WHERE id = 23;
+// Get by primary key if it were a non-integer type
+db.First(&user, "id = ?", "string_primary_key")
+// SELECT * FROM users WHERE id = 'string_primary_key';
+
+// Plain SQL
+db.Find(&user, "name = ?", "jinzhu")
+// SELECT * FROM users WHERE name = "jinzhu";
+
+db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
+// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
+
+// Struct
+db.Find(&users, User{Age: 20})
+// SELECT * FROM users WHERE age = 20;
+
+// Map
+db.Find(&users, map[string]interface{}{"age": 20})
+// SELECT * FROM users WHERE age = 20; // Get by primary key (only works for integer primary key)
 db.First(&user, 23)
 // SELECT * FROM users WHERE id = 23;
 // Get by primary key if it were a non-integer type
@@ -226,6 +286,49 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 
 ```go
 type result struct {
+  Name  string
+  Email string
+}
+db.Model(&User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result{})
+// SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
+
+rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
+for rows.Next() {
+  ...
+}
+
+db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
+
+// multiple joins with parameter
+db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
+type result struct {
+  Date  time.Time
+  Total int
+}
+
+db.Model(&User{}).Select("name, sum(age) as total").Where("name LIKE ?", "group%").Group("name").First(&result)
+// SELECT name, sum(age) as total FROM `users` WHERE name LIKE "group%" GROUP BY `name`
+
+
+db.Model(&User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "group").Find(&result)
+// SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "group"
+
+rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Rows()
+for rows.Next() {
+  ...
+}
+
+rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Rows()
+for rows.Next() {
+  ...
+}
+
+type Result struct {
+  Date  time.Time
+  Total int64
+}
+db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
+type result struct {
   Date  time.Time
   Total int
 }
@@ -285,6 +388,22 @@ db.Table("users").Select("users.name, emails.email").Joins("left join emails on 
 
 // multiple joins with parameter
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
+type result struct {
+  Name  string
+  Email string
+}
+db.Model(&User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result{})
+// SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
+
+rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
+for rows.Next() {
+  ...
+}
+
+db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
+
+// multiple joins with parameter
+db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
 ### Joins Preloading
@@ -303,14 +422,20 @@ Refer [Preloading (Eager Loading)](preload.html) for details
 Scan results into a struct work similar to `Find`
 
 ```go
-type Result struct {
-  Name string
-  Age  int
+type result struct {
+  Name  string
+  Email string
+}
+db.Model(&User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result{})
+// SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
+
+rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
+for rows.Next() {
+  ...
 }
 
-var result Result
-db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
+db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// Raw SQL
-db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
+// multiple joins with parameter
+db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
