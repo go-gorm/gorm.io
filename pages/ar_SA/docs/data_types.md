@@ -14,27 +14,27 @@ The customized data type has to implement the [Scanner](https://pkg.go.dev/datab
 For example:
 
 ```go
-type JSON json.RawMessage
+type JSON json. RawMessage
 
-// Scan scan value into Jsonb, implements sql.Scanner interface
+// Scan scan value into Jsonb, implements sql. Scanner interface
 func (j *JSON) Scan(value interface{}) error {
   bytes, ok := value.([]byte)
   if !ok {
-    return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
+    return errors. New(fmt. Sprint("Failed to unmarshal JSONB value:", value))
   }
 
-  result := json.RawMessage{}
-  err := json.Unmarshal(bytes, &result)
+  result := json. RawMessage{}
+  err := json. Unmarshal(bytes, &result)
   *j = JSON(result)
   return err
 }
 
-// Value return json value, implement driver.Valuer interface
-func (j JSON) Value() (driver.Value, error) {
+// Value return json value, implement driver. Valuer interface
+func (j JSON) Value() (driver. Value, error) {
   if len(j) == 0 {
     return nil, nil
   }
-  return json.RawMessage(j).MarshalJSON()
+  return json. RawMessage(j). MarshalJSON()
 }
 ```
 
@@ -44,15 +44,15 @@ A customized data type might has different database types, you can implements th
 
 ```go
 type GormDataTypeInterface interface {
-  GormDBDataType(*gorm.DB, *schema.Field) string
+  GormDBDataType(*gorm.DB, *schema. Field) string
 }
 
-func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
-  // use field.Tag, field.TagSettings gets field's tags
+func (JSON) GormDBDataType(db *gorm.DB, field *schema. Field) string {
+  // use field. Tag, field. TagSettings gets field's tags
   // checkout https://github.com/go-gorm/gorm/blob/master/schema/field.go for all options
 
   // returns different database type based on driver name
-  switch db.Dialector.Name() {
+  switch db. Dialector. Name() {
   case "mysql":
     return "JSON"
   case "postgres":
@@ -64,7 +64,7 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 
 ### Clause Expression
 
-Customized data type possible needs specifically SQL which can't use current GORM API, you can define a `Builder` to implement interface `clause.Expression`
+Customized data type possible needs specifically SQL which can't use current GORM API, you can define a `Builder` to implement interface `clause. Expression`
 
 ```go
 type Expression interface {
@@ -76,23 +76,18 @@ Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) for im
 
 ```go
 // Generates SQL with clause Expression
-db.Find(&user, datatypes.JSONQuery("attributes").HasKey("role"))
-db.Find(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
+db. HasKey("role"))
+db. HasKey("orgs", "orga"))
 
 // MySQL
 // SELECT * FROM `users` WHERE JSON_EXTRACT(`attributes`, '$.role') IS NOT NULL
 // SELECT * FROM `users` WHERE JSON_EXTRACT(`attributes`, '$.orgs.orga') IS NOT NULL
 
 // PostgreSQL
-// SELECT * FROM "user" WHERE "attributes"::jsonb ? 'role'
-// SELECT * FROM "user" WHERE "attributes"::jsonb -> 'orgs' ? 'orga'
-
-db.Find(&user, datatypes.JSONQuery("attributes").Equals("jinzhu", "name"))
-// MySQL
-// SELECT * FROM `user` WHERE JSON_EXTRACT(`attributes`, '$.name') = "jinzhu"
-
-// PostgreSQL
-// SELECT * FROM "user" WHERE json_extract_path_text("attributes"::json,'name') = 'jinzhu'
+// SELECT * FROM "user_with_jsons" WHERE "attributes"::jsonb ? 'role'
+// SELECT * FROM "user_with_jsons" WHERE "attributes"::jsonb -> 'orgs' ? 'orga' 'role'
+// SELECT * FROM "user_with_jsons" WHERE "attributes"::jsonb -> 'orgs' ? 'role'
+// SELECT * FROM "user_with_jsons" WHERE "attributes"::jsonb -> 'orgs' ? 'orga'
 ```
 
 ## Customized Data Types Collections
