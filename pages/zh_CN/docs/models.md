@@ -159,9 +159,9 @@ type Blog struct {
 
 在声明模型时，标签是可选的，GORM 支持以下标签：
 
-Tag Name case doesn't matter, `camelCase` is preferred to use.
+标签名对大小写不敏感，但建议使用 `小驼峰（camelCase）` 的命名方式。
 
-| Tag Name       | Description                                                                                                                                                              |
+| 标签名            | 说明                                                                                                                                                                       |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | column         | column db name                                                                                                                                                           |
 | type           | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, specified database data type like varbinary(8) also supported |
@@ -183,6 +183,6 @@ Tag Name case doesn't matter, `camelCase` is preferred to use.
 | ->             | set field's read permission                                                                                                                                              |
 | -              | ignore this fields (disable read/write permission)                                                                                                                       |
 
-### Associations Tags
+### 关联标签
 
-GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the [Associations section](associations.html#tags) for details
+GORM 允许通过标签为关联配置外键、约束、many2many 表，详情请参考 [关联部分](associations.html#tags)
