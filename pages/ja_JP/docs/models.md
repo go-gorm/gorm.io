@@ -1,13 +1,13 @@
 ---
-title: Declaring Models
+title: モデルの宣言
 layout: page
 ---
 
-## Declaring Models
+## モデルの宣言
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+モデルは基本的な Go 型、ポインタ/エイリアス、 [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) および [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイスを実装するカスタム型を持つ通常の構造体です。
 
-For Example:
+例：
 
 ```go
 type User struct {
@@ -23,7 +23,7 @@ type User struct {
 }
 ```
 
-## Conventions
+## 規約
 
 GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
 
@@ -31,26 +31,26 @@ If you follow the conventions adopted by GORM, you'll need to write very little 
 
 ## gorm.Model
 
-GORM defined a `gorm.Model` struct, which includes fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
+GORMは `gorm.Model` 構造体を定義しました。これにはフィールド `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`が含まれます。
 
 ```go
-// gorm.Model definition
+// gorm.Model定義
 type Model struct {
-  ID        uint           `gorm:"primaryKey"`
+  ID uint `gorm:"primaryKey"`
   CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt gorm.DeletedAt `gorm:"index"`
+  UpdatedAt time.
+  DeletedAt `gorm:"index"`
 }
 ```
 
-You can embed it into your struct to include those fields, refer [Embedded Struct](#embedded_struct)
+これらのフィールドを含めるには、構造体に埋め込むことができます。 [埋め込み構造体](#embedded_struct)
 
 ```go
 type User struct {
   gorm.Model
   Name string
 }
-// equals
+// これら２つは同じものです
 type User struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
@@ -60,9 +60,9 @@ type User struct {
 }
 ```
 
-## Advanced
+## 上級者向け
 
-### Field-Level Permission
+### フィールドレベルの権限
 
 Exported fields have all permission when doing CRUD with GORM, but GORM allows you to change the field-level permission with tag, so you can make a field to read-only, write-only, create-only, update-only or ignored
 
