@@ -14,7 +14,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * 事务、嵌套事务、Save Point、回滚至 Save Point
 * Context、Prepared Statment 模式、DryRun 模式
 * Batch Insert, FindInBatches, Find To Map
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
+* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, NamedArg
 * 复合主键
 * 自动迁移
 * 自定义日志
