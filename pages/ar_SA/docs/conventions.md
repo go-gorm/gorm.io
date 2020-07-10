@@ -53,14 +53,14 @@ Temporarily specify table name with `Table` method, for example:
 
 ```go
 // Create table `deleted_users` with struct User's fields
-db.Table("deleted_users").AutoMigrate(&User{})
+db. AutoMigrate(&User{})
 
 // Query data from another table
 var deletedUsers []User
-db.Table("deleted_users").Find(&deletedUsers)
+db. Find(&deletedUsers)
 // SELECT * FROM deleted_users;
 
-db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
+db. Where("name = ?", "jinzhu"). Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
@@ -73,11 +73,10 @@ GORM allows users change the default naming conventions by overriding the defaul
 Column db name uses the field's name's `snake_case` by convention.
 
 ```go
-type User struct {
-  ID        uint      // column name is `id`
-  Name      string    // column name is `name`
-  Birthday  time.Time // column name is `birthday`
-  CreatedAt time.Time // column name is `created_at`
+type Animal struct {
+  AnimalID int64     `gorm:"column:beast_id"`         // set name to `beast_id`
+  Birthday time. Time `gorm:"column:day_of_the_beast"` // set name to `day_of_the_beast`
+  Age      int64     `gorm:"column:age_of_the_beast"` // set name to `age_of_the_beast`
 }
 ```
 
@@ -86,7 +85,7 @@ You can override the column name with tag `column`, or use [`NamingStrategy`](#n
 ```go
 type Animal struct {
   AnimalID int64     `gorm:"column:beast_id"`         // set name to `beast_id`
-  Birthday time.Time `gorm:"column:day_of_the_beast"` // set name to `day_of_the_beast`
+  Birthday time. Time `gorm:"column:day_of_the_beast"` // set name to `day_of_the_beast`
   Age      int64     `gorm:"column:age_of_the_beast"` // set name to `age_of_the_beast`
 }
 ```
@@ -98,10 +97,9 @@ type Animal struct {
 For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
 
 ```go
-db.Create(&user) // set `CreatedAt` to current time
+db. Save(&user) // set `UpdatedAt` to current time
 
-// To change its value, you could use `Update`
-db.Model(&user).Update("CreatedAt", time.Now())
+db. Model(&user). Update("name", "jinzhu") // will set `UpdatedAt` to current time
 ```
 
 ### UpdatedAt
@@ -109,9 +107,9 @@ db.Model(&user).Update("CreatedAt", time.Now())
 For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
 
 ```go
-db.Save(&user) // set `UpdatedAt` to current time
+db. Save(&user) // set `UpdatedAt` to current time
 
-db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+db. Model(&user). Update("name", "jinzhu") // will set `UpdatedAt` to current time
 ```
 
 **NOTE** GORM supports having multiple time tracking fields, track with other fields or track with UNIX second/UNIX nanosecond, check [Models](models.html#time_tracking) for more details
