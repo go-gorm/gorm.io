@@ -179,22 +179,22 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 `Assign` назначение атрибутов к записи, будет работать независимо от того, найдена запись или нет.
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// Пользователь не найден, инициализировать новую запись с параметрами и назначить Assign атрибуты
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
-// user -> User{ID: 112, Name: "non_existing", Age: 20}
+// пользователь -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// Найден пользователь с параметрами `name` = `jinzhu`, обновим запись Assign атрибутами
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // UPDATE users SET age=20 WHERE id = 111;
-// user -> User{ID: 111, Name: "jinzhu", Age: 20}
+// пользователь -> User{ID: 111, Name: "jinzhu", Age: 20}
 ```
 
-## Optimizer/Index Hints
+## Оптимизатор/Индексирование подсказки
 
-Optimizer hints allow us to control the query optimizer to choose a certain query execution plan.
+Подсказки оптимизатора позволяют просматривать план выполнения запроса.
 
 ```go
 import "gorm.io/hints"
@@ -203,7 +203,7 @@ DB.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allow passing index hints to the database in case the query planner gets confused.
+Индексные подсказки позволяют передавать индексированные подсказки к базе данных, если планировщик запросов запутается.
 
 ```go
 import "gorm.io/hints"
@@ -215,11 +215,11 @@ DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-Refer [Optimizer Hints/Index/Comment](hints.html) for more details
+Смотрите [Подсказки оптимизатор/Индекс/Комментарий](hints.html) для получения более подробной информации
 
-## Iteration
+## Итерация
 
-GORM supports iterating through Rows
+GORM поддерживает итерацию по строкам
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -227,16 +227,16 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows scan a row into user
+  // ScanRows записывает строки в user
   db.ScanRows(rows, &user)
 
-  // do something
+  // делаем что-то
 }
 ```
 
-## FindInBatches
+## Найти в пакете(FindInBatches)
 
-Query and process records in batch
+Запрашивать и обрабатывать записи в пакете
 
 ```go
 // batch size 100
