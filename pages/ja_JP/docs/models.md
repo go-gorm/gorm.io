@@ -81,11 +81,11 @@ type User struct {
 
 ### <name id="time_tracking">Auto Creating/Updating Time/Unix (Nano) Second</span>
 
-GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
+GORMでは、規約により、`CreatedAt`, `UpdatedAt`を使用して、作成/更新時間を追跡しています。定義されている場合、GORMは作成/更新時に[current time](gorm_config.html#current_time)を利用することができます。
 
-To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
+別の名前のフィールドを使用するには、タグ `autoCreateTime`、 `autoUpdateTime` を持つフィールドを設定できます。
 
-If you prefer to save UNIX (nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
+time.Timeの代わりにUNIX (nano)秒を保存したい場合は、フィールドのデータ型を `time.Time` から `int` に変更するだけです。
 
 ```go
 type User struct {
@@ -96,16 +96,16 @@ type User struct {
 }
 ```
 
-### <span id="embedded_struct">Embedded Struct</span>
+### <span id="embedded_struct">埋め込み構造体</span>
 
-For anonymous fields, GORM will include its fields into its parent struct, for example:
+匿名フィールドの場合、GORMはそのフィールドをその親の構造体に含めます。例えば:
 
 ```go
 type User struct {
   gorm.Model
   Name string
 }
-// equals
+// これらは同じものです
 type User struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
@@ -115,7 +115,7 @@ type User struct {
 }
 ```
 
-For a normal struct field, you can embed it with the tag `embedded`, for example:
+通常の struct フィールドでは、タグ `embedded`を埋め込むことができます。例:
 
 ```go
 type Author struct {
@@ -128,7 +128,7 @@ type Blog struct {
   Author  Author `gorm:"embedded"`
   Upvotes int32
 }
-// equals
+// 上と同じ意味です
 type Blog struct {
   ID    int64
     Name  string
@@ -137,7 +137,7 @@ type Blog struct {
 }
 ```
 
-And you can use tag `embeddedrefix` to add prefix to embedded fields' db name, for example:
+また、タグ `embeddedrefix` を使用して、埋め込みフィールドの db 名にプレフィックスを追加することができます。例：
 
 ```go
 type Blog struct {
@@ -155,34 +155,34 @@ type Blog struct {
 ```
 
 
-### Fields Tags
+### フィールドタグ
 
-Tags are optional to use when declaring models, GORM supports the following tags:
+タグはモデル宣言時に使用するオプションです。GORMは以下のタグをサポートしています。
 
-Tag Name case doesn't matter, `camelCase` is preferred to use.
+タグ名の場合たいした関心ごとではありませんが、どちらかといえば `キャメルケース` を使用するのが好ましいです。
 
-| Tag Name       | Description                                                                                                                                                              |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| column         | column db name                                                                                                                                                           |
-| type           | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, specified database data type like varbinary(8) also supported |
-| size           | specifies column data size/length, e.g: `size:256`                                                                                                                       |
-| primaryKey     | specifies column as primary key                                                                                                                                          |
-| unique         | specifies column as unique                                                                                                                                               |
-| default        | specifies column default value                                                                                                                                           |
-| precision      | specifies column precision                                                                                                                                               |
-| not null       | specifies column as NOT NULL                                                                                                                                             |
-| autoIncrement  | specifies column auto incrementable                                                                                                                                      |
-| embedded       | embed a field                                                                                                                                                            |
-| embeddedPrefix | prefix for embedded field                                                                                                                                                |
-| autoCreateTime | track creating time when creating, `autoCreateTime:nano` track unix nano time for `int` fields                                                                           |
-| autoUpdateTime | track updating time when creating/updating, `autoUpdateTime:nano` track unix nano time for `int` fields                                                                  |
-| index          | create index with options, same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                            |
-| uniqueIndex    | same as `index`, but create uniqued index                                                                                                                                |
-| check          | creates check constraint, eg: `check:(age > 13)`, refer [Constraints](constraints.html)                                                                               |
-| <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no permission                                            |
-| ->             | set field's read permission                                                                                                                                              |
-| -              | ignore this fields (disable read/write permission)                                                                                                                       |
+| タグ名            | 説明                                                                                                                            |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| column         | カラム名                                                                                                                          |
+| type           | カラムのデータ型を指定します。これは互換性のある汎用型を使用することを好みます。例えば、bool, int, uint, string, time, bytes, varbinary(8) のような特定のデータ型ももサポートされています        |
+| size           | 列データのサイズ/長さを指定します。例: `size:256`                                                                                               |
+| primaryKey     | 主キーを含む列として指定                                                                                                                  |
+| unique         | 一意な列として指定                                                                                                                     |
+| default        | 列のデフォルト値を指定                                                                                                                   |
+| precision      | 列の精度を指定                                                                                                                       |
+| not null       | 列をNOT NULLで指定                                                                                                                 |
+| autoIncrement  | 自動インクリメント可能な列として指定                                                                                                            |
+| embedded       | フィールドの埋め込み                                                                                                                    |
+| embeddedPrefix | 埋め込みフィールドのプレフィクス                                                                                                              |
+| autoCreateTime | track creating time when creating, `autoCreateTime:nano` track unix nano time for `int` fields                                |
+| autoUpdateTime | track updating time when creating/updating, `autoUpdateTime:nano` track unix nano time for `int` fields                       |
+| index          | create index with options, same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details |
+| uniqueIndex    | `index`と同じですが、一意のインデックスを作成                                                                                                    |
+| check          | creates check constraint, eg: `check:(age > 13)`, refer [Constraints](constraints.html)                                    |
+| <-             | フィールドの書き込み権限を設定 `<-:create` 作成専用フィールド `<-:update` 更新専用フィールド`<-:false` 権限なし                                           |
+| ->             | フィールドの読み取り権限を設定                                                                                                               |
+| -              | このフィールドを無視（読み取り/書き込み権限を無効にする）                                                                                                 |
 
-### Associations Tags
+### アソシエーションタグ
 
-GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the [Associations section](associations.html#tags) for details
+GORMでは外部キー、制約、関連タグを介した多数のテーブルを設定できます。詳細は [アソシエーションセクション](associations. html#tags) をご覧ください。
