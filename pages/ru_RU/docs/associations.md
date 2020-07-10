@@ -145,32 +145,32 @@ db.Model(&user).Association("Languages").Count()
 Режим ассоциации поддерживает пакетные данные, например:
 
 ```go
-// Find all roles for all users
+// Найти все роли для всех пользователей
 gorm.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// Удалить пользователя UserA из всех команд
 gorm.Model(&users).Association("Team").Delete(&userA)
 
-// Get unduplicated count of members in all user's team
+// Получить не сдублированное количество пользователей во всех командах
 gorm.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
+// Для `Append`, `Replace` с пакетными данными, количество аргументов должно совпадать с числом данных или вернет ошибку
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
 gorm.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// Обнулить команду пользователя user1 до userA, обнулить команду пользователя user2 до userB, обнулить команду пользователя user3' до userA, userB и userC
 gorm.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">Теги связей</span>
 
-| Tag              | Description                                     |
-| ---------------- | ----------------------------------------------- |
-| foreignKey       | Specifies foreign key                           |
-| references       | Specifies references                            |
-| polymorphic      | Specifies polymorphic type                      |
-| polymorphicValue | Specifies polymorphic value, default table name |
-| many2many        | Specifies join table name                       |
-| jointForeignKey  | Specifies foreign key of jointable              |
-| joinReferences   | Specifies references' foreign key of jointable  |
-| constraint       | Relations constraint                            |
+| Тег              | Описание                                                                    |
+| ---------------- | --------------------------------------------------------------------------- |
+| foreignKey       | Определяет внешний ключ                                                     |
+| references       | Указывает ссылки                                                            |
+| polymorphic      | Определяет полиморфический тип                                              |
+| polymorphicValue | Указывает значение полиморфического значения, название таблицы по умолчанию |
+| many2many        | Указывает имя таблицы связи                                                 |
+| jointForeignKey  | Определяет внешний ключ объединения                                         |
+| joinReferences   | Определяет внешний ключ объединения                                         |
+| constraint       | Ограничение связей                                                          |
