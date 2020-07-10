@@ -5,7 +5,7 @@ layout: page
 
 ## v2.0 - 2020.07
 
-GORM 2.0 is rewritten from scratch based on feedback we received in the last few years, it introduces some incompatible-API change and many improvements
+GORM2.0は、過去数年間で受け取ったフィードバックにもとづいて１から書き直されています。互換性のないAPIの変更や多くの改善点は以下です。
 
 * Performance Improvements
 * Modularity
