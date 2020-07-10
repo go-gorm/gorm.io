@@ -1,9 +1,9 @@
 ---
-title: Error Handling
+title: エラーハンドリング
 layout: page
 ---
 
-In Go, error handling is important.
+Goでは、エラー処理が重要です。
 
 You are encouraged to do error check after any [Finisher Methods](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
 
