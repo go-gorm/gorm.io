@@ -14,27 +14,29 @@ Error handling in GORM is different than idiomatic Go code because of its chaina
 If any error occurs, GORM will set `*gorm.DB`'s `Error` field, you need to check it like this:
 
 ```go
-if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-  // error handling...
+// Check if returns RecordNotFound error
+err := db. First(&user, 100). Error
+errors.
 }
 ```
 
 Or
 
 ```go
-if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-  // error handling...
+// Check if returns RecordNotFound error
+err := db. First(&user, 100). Error
+errors.
 }
 ```
 
 ## ErrRecordNotFound
 
-GORM returns `ErrRecordNotFound` when failed to find data with `First`, `Last`, `Take`, if there are several errors happened, you can check the `ErrRecordNotFound` error with `errors.Is`, for example:
+GORM returns `ErrRecordNotFound` when failed to find data with `First`, `Last`, `Take`, if there are several errors happened, you can check the `ErrRecordNotFound` error with `errors. Is`, for example:
 
 ```go
 // Check if returns RecordNotFound error
-err := db.First(&user, 100).Error
-errors.Is(tx.Error, ErrRecordNotFound)
+err := db. First(&user, 100). Error
+errors. Is(tx. Error, ErrRecordNotFound)
 ```
 
 ## Errors
