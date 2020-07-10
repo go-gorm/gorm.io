@@ -1,9 +1,9 @@
 ---
-title: Connecting to a Database
-layout: page
+title: Подключение к базе данных
+layout: страница
 ---
 
-GORM officially supports databases MySQL, PostgreSQL, SQlite, SQL Server
+GORM официально поддерживает базы данных MySQL, PostgreSQL, SQlite, SQL Server
 
 ## MySQL
 
@@ -14,29 +14,29 @@ import (
 )
 
 func main() {
-  // refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
+  // смотрите https://github.com/go-sql-driver/mysql#dsn-data-source-name для подробностей
   dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
   db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
 ```
 
-**NOTE:**
+**ПРИМЕЧАНИЕ:**
 
-To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters))
+Для корректной обработки `time.Time`, вам нужно включить `parseTime` в качестве параметра. ([больше параметров](https://github.com/go-sql-driver/mysql#parameters))
 
-To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+Чтобы полностью поддерживать кодировку UTF-8, необходимо изменить `charset=utf8` на `charset=utf8mb4`. Смотрите [эту статью](https://mathiasbynens.be/notes/mysql-utf8mb4) для подробностей
 
-MySQl Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
+MySQl Driver предоставляет [несколько расширенных настроек](https://github.com/go-gorm/mysql), которые можно использовать при инициализации, например:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
-  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name
-  DefaultStringSize: 256, // default size for string fields
-  DisableDatetimePrecision: true, // disable datetime precision, which not supported before MySQL 5.6
-  DontSupportRenameIndex: true, // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
+  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // имя источника данных
+  DefaultStringSize: 256, // размер по умолчанию для строковых полей
+  DisableDatetimePrecision: true, // выключаем точность datetime, которая не поддерживается до MySQL 5.
+  DontSupportRenameIndex: true, // drop & create когда переименовывается индекс переименование индекса не поддерживается до MySQL 5. , MariaDB
   DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
   SkipInitializeWithVersion: false, // auto configure based on used version
-}), &gorm.Config{})
+}), &gorm. нарисовать {})
 ```
 
 ## PostgreSQL
