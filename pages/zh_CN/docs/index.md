@@ -15,10 +15,10 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * Context、Prepared Statment 模式、DryRun 模式
 * Batch Insert, FindInBatches, Find To Map
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
-* Composite Primary Key
-* Auto Migrations
-* Logger
-* Extendable, write Plugins based on GORM callbacks
+* 复合主键
+* 自动迁移
+* 自定义日志
+* 可扩展性, 可基于 GORM callback 编写插件
 * Every feature comes with tests
 * Developer Friendly
 
