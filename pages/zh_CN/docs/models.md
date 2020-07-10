@@ -79,7 +79,7 @@ type User struct {
 }
 ```
 
-### <name id="time_tracking">Auto Creating/Updating Time/Unix (Nano) Second</span>
+### <name id="time_tracking">自动的创建、更新时间</span>
 
 GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
 
