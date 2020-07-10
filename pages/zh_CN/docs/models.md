@@ -81,11 +81,11 @@ type User struct {
 
 ### <name id="time_tracking">自动的创建、更新时间</span>
 
-GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
+GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果您定义了他们，GORM 在创建/更新时会自动填充 [当前时间](gorm_config.html#current_time) 至这些字段，支持 time.Time，(纳) 秒级 UNIX 时间戳等形式。
 
-To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
+要使用不同名称的字段，您可以配置 `autoCreateTim`、`autoUpdateTim` 标签
 
-If you prefer to save UNIX (nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
+如果您想要保存（纳）秒级 UNIX 时间戳，而不是时间，您只需简单地将 `time.Time` 修改为 `int` 即可
 
 ```go
 type User struct {
