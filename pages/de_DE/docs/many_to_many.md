@@ -132,6 +132,10 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
 
 // PersonAddress must defined all required foreign keys, or it will raise error
 db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
+}
+
+// PersonAddress must defined all required foreign keys, or it will raise error
+db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
 ## FOREIGN KEY Constraints
