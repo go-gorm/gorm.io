@@ -3,9 +3,9 @@ title: Advanced Query
 layout: page
 ---
 
-## Smart Select Fields
+## Умный выбор полей
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller API struct that select specific fields automatically
+GORM позволяет выбирать определенные поля с помощью [`Select`](query.html), если вы часто используете их в своем приложении, вы можете использовать более короткий struct для выбора определенных полей автоматически
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // тысячи полей
 }
 
 type APIUser struct {
@@ -21,12 +21,12 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when query
+// Выбирает поля `id`, `name` автоматически при запросе
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
-## Locking (FOR UPDATE)
+## Блокировка (ДЛЯ ОБНОВЛЕНИЯ)
 
 GORM supports different types of locks, for example:
 
@@ -87,7 +87,7 @@ db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&resul
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
 
-type Result struct { Name string Age  int } var result Result db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result) // Raw SQL db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
+Посмотрите [Чистый SQL и Конструктор SQL](sql_builder.html#named_argument) для подробностей
 
 ## Find To Map
 
