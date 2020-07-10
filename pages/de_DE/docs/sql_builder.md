@@ -30,7 +30,7 @@ db.Exec("DROP TABLE users")
 db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,3})
 
 // SQL Expression
-DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
+DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu") where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
 **NOTE** GORM allows cache prepared statement to increase performance, checkout [Performance](performance.html) for details
@@ -78,20 +78,8 @@ Checkout [FindInBatches](advanced_query.html) for how to query and process recor
 GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
 ```go
-DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
-// SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
-
-DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
-// SELECT * FROM `named_users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `named_users`.`id` LIMIT 1
-
-DB.Raw("SELECT * FROM named_users WHERE name1 = @name OR name2 = @name2 OR name3 = @name", sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
-// SELECT * FROM named_users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
-
-DB.Exec("UPDATE named_users SET name1 = @name, name2 = @name2, name3 = @name", sql.Named("name", "jinzhunew"), sql.Named("name2", "jinzhunew2"))
-// UPDATE named_users SET name1 = "jinzhunew", name2 = "jinzhunew2", name3 = "jinzhunew"
-
-DB.Raw("SELECT * FROM named_users WHERE (name1 = @name AND name3 = @name) AND name2 = @name2", map[string]interface{}{"name": "jinzhu", "name2": "jinzhu2"}).Find(&user)
-// SELECT * FROM named_users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
+DB.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
+// INSERT IGNORE INTO users (name,age...) VALUES ("jinzhu",18...);
 ```
 
 ## Scan `*sql.Rows` into struct
@@ -174,7 +162,7 @@ Although most of them are rarely used, if you find GORM public API can't match y
 
 ```go
 DB.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
-// INSERT IGNORE INTO users (name,age...) VALUES ("jinzhu",18...);
+// INSERT IGNORE INTO users (name,age...) VALUES ("jinzhu",18...); VALUES ("jinzhu",18...);
 ```
 
 ### StatementModifier
