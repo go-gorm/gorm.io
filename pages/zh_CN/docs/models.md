@@ -64,7 +64,7 @@ type User struct {
 
 ### 字段级权限控制
 
-Exported fields have all permission when doing CRUD with GORM, but GORM allows you to change the field-level permission with tag, so you can make a field to read-only, write-only, create-only, update-only or ignored
+可导出的字段在使用 GORM 进行 CRUD 时拥有全部的权限，此外，GORM 允许您用 tag 控制字段级别的权限。这样您就可以让一个字段的权限是只读、只写、只创建、只更新或者被忽略
 
 ```go
 type User struct {
