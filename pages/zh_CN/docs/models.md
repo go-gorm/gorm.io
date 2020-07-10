@@ -64,7 +64,7 @@ type User struct {
 
 ### 字段级权限控制
 
-可导出的字段在使用 GORM 进行 CRUD 时拥有全部的权限，此外，GORM 允许您用 tag 控制字段级别的权限。这样您就可以让一个字段的权限是只读、只写、只创建、只更新或者被忽略
+可导出的字段在使用 GORM 进行 CRUD 时拥有全部的权限，此外，GORM 允许您用标签控制字段级别的权限。这样您就可以让一个字段的权限是只读、只写、只创建、只更新或者被忽略
 
 ```go
 type User struct {
@@ -89,23 +89,23 @@ GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果�
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix NANO seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  CreatedAt time.Time // 在创建时，如果该字段为零值，则将其置为当前时间
+  UpdatedAt int       // 在创建时为零值，或更新时，将其 置为当前的 UNIX 秒数
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // 使用 UNIX 纳秒数作为更新时间
+  Created   int64 `gorm:"autoCreateTime"`      // 使用 UNIX 秒数作为创建时间
 }
 ```
 
-### <span id="embedded_struct">Embedded Struct</span>
+### <span id="embedded_struct">嵌入结构体</span>
 
-For anonymous fields, GORM will include its fields into its parent struct, for example:
+对于匿名字段，GORM 会将其字段包含在父结构体中，例如：
 
 ```go
 type User struct {
   gorm.Model
   Name string
 }
-// equals
+// 等效于
 type User struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
@@ -115,7 +115,7 @@ type User struct {
 }
 ```
 
-For a normal struct field, you can embed it with the tag `embedded`, for example:
+对于正常的结构体字段，你也可以通过标签 `embedded` 将其嵌入，例如：
 
 ```go
 type Author struct {
@@ -128,7 +128,7 @@ type Blog struct {
   Author  Author `gorm:"embedded"`
   Upvotes int32
 }
-// equals
+// 等效于
 type Blog struct {
   ID    int64
     Name  string
@@ -137,7 +137,7 @@ type Blog struct {
 }
 ```
 
-And you can use tag `embeddedrefix` to add prefix to embedded fields' db name, for example:
+并且，您可以使用标签 `embeddrefix` 来为 db 中的字段名添加前缀，例如：
 
 ```go
 type Blog struct {
@@ -145,7 +145,7 @@ type Blog struct {
   Author  Author `gorm:"embedded;embeddedPrefix:author_"`
   Upvotes int32
 }
-// equals
+// 等效于
 type Blog struct {
   ID          int64
     AuthorName  string
@@ -155,9 +155,9 @@ type Blog struct {
 ```
 
 
-### Fields Tags
+### 字段标签
 
-Tags are optional to use when declaring models, GORM supports the following tags:
+在声明模型时，标签是可选的，GORM 支持以下标签：
 
 Tag Name case doesn't matter, `camelCase` is preferred to use.
 
