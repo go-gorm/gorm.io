@@ -28,7 +28,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 
 ## Блокировка (ДЛЯ ОБНОВЛЕНИЯ)
 
-GORM supports different types of locks, for example:
+GORM поддерживает различные типы блокировок, например:
 
 ```go
 DB.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -41,11 +41,11 @@ DB.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+Посмотрите [Чистый SQL и Конструктор SQL](sql_builder.html) для подробностей
 
-## SubQuery
+## Под Запрос
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+Подзапрос может быть вложен в запрос, GORM сгенерирует подзапрос при использовании `*gorm.DB` объекта в качестве параметра
 
 ```go
 db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -56,9 +56,9 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
-## <span id="group_conditions">Group Conditions</span>
+## <span id="group_conditions">Группировка условий</span>
 
-Easier to write complicated SQL query with Group Conditions
+Проще писать сложные SQL запросы с помощью группировки условий
 
 ```go
 db.Where(
@@ -70,28 +70,23 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## Named Argument
+## Именованные аргументы
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM поддерживает именованные аргументы при использовании [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) или `map[string]interface{}{}`, например:
 
 ```go
-type Result struct {
-  Name string
-  Age  int
-}
+DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
+// SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-var result Result
-db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
-
-// Raw SQL
-db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
+DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
+// SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `named_users`.`id` LIMIT 1
 ```
 
 Посмотрите [Чистый SQL и Конструктор SQL](sql_builder.html#named_argument) для подробностей
 
-## Find To Map
+## Поиск в Map
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forgot to specify `Model` or `Table`, for example:
+GORM позволяет записывать результат запроса в `map[string]interface{}` или `[]map[string]interface{}`, не забудьте указать `Model` или `Table`, например:
 
 ```go
 var result map[string]interface{}
@@ -101,9 +96,9 @@ var results []map[string]interface{}
 DB.Table("users").Find(&results)
 ```
 
-## FirstOrInit
+## Первый или новый (FirstOrInit)
 
-Get first matched record, or initialize a new one with given conditions (only works with struct, map conditions)
+Получить первую найденную запись, или инициализировать новую с заданными параметрами (работает только с struct и map)
 
 ```go
 // User not found, initialize it with give conditions
