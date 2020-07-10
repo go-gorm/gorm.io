@@ -1,9 +1,9 @@
 ---
-title: Connecting to a Database
+title: データベースへの接続
 layout: page
 ---
 
-GORM officially supports databases MySQL, PostgreSQL, SQlite, SQL Server
+GORMは公式にMySQL、PostgreSQL、SQLite、SQL Server をサポートしています
 
 ## MySQL
 
@@ -20,13 +20,13 @@ func main() {
 }
 ```
 
-**NOTE:**
+**注意:**
 
-To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters))
+`time.Time` を正しく処理するには、パラメータとして `parseTime` を含める必要があります。 ([more parameters](https://github.com/go-sql-driver/mysql#parameters))
 
-To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+UTF-8 エンコーディングを完全にサポートするには、 `charset=utf8` を `charset=utf8mb4` に変更する必要があります。 詳細な説明は [この記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
 
-MySQl Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
+MySQLドライバは、初期化中に利用できる [高度な設定](https://github.com/go-gorm/mysql) をいくつか用意しています。例えば、：
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -51,7 +51,7 @@ dsn := "user=gorm password=gorm DB.name=gorm port=9920 sslmode=disable TimeZone=
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+Postgresのdatabase/sqlドライバとして [pgx](https://github.com/jackc/pgx) を使用しています。これはデフォルトでプリペアードステイトメントキャッシュを有効にしています。無効にするには:
 
 ```go
 // https://github.com/go-gorm/postgres
@@ -109,8 +109,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Refer [Generic Interface](generic_interface.html) for details
 
-## Unsupported Databases
+## サポートされていないデータベース
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+いくつかのデータベースは `mysql` または `postgres` の方言と互換性があります。 その場合はデータベースの方言を使うことができます
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+その他のデータベースのために、 [ドライバーを作ることをお勧めします。プルリクエストを歓迎します！](write_driver.html)

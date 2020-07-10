@@ -3,19 +3,19 @@ title: Context
 layout: page
 ---
 
-GORM provides Context support, you can use it with method `WithContext`
+GORMはContextをサポートしています。メソッド `WithContext`で使用できます。
 
-## Single Session Mode
+## 単一セッションモード
 
-Single session mode usually used when you want to perform a single operation
+単一セッションモードは通常、単一の操作を実行するときに使用されます。
 
 ```go
 db.WithContext(ctx).Find(&users)
 ```
 
-## Continuous session mode
+## 連続セッションモード
 
-Continuous session mode usually used when you want to perform a group of operations, for example:
+連続セッションモードは、通常、一連の操作を実行するときに使用されます。例:
 
 ```go
 tx := db.WithContext(ctx)
@@ -23,7 +23,7 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-## Chi Middleware Example
+## Chi Middleware の例
 
 Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
 

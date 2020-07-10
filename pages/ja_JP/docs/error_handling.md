@@ -1,42 +1,42 @@
 ---
-title: Error Handling
+title: エラーハンドリング
 layout: page
 ---
 
-In Go, error handling is important.
+Goでは、エラー処理が重要です。
 
-You are encouraged to do error check after any [Finisher Methods](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
+[即時メソッド](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) の後にエラーチェックを行うことをおすすめします。
 
-## Error Handling
+## エラーハンドリング
 
-Error handling in GORM is different than idiomatic Go code because of its chainable API.
+GORMでのエラーハンドリングは、メソッドチェーン可能なAPIのため、ふつうのGoコードとは異なります。
 
-If any error occurs, GORM will set `*gorm.DB`'s `Error` field, you need to check it like this:
+なんらかのエラーが発生した場合、GORMは `*gorm.DB`の `Error` フィールドに設定します。以下のようにチェックする必要があります：
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-  // error handling...
+  // ここでエラーハンドリング
 }
 ```
 
-Or
+または
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-  // error handling...
+  // ここでエラーハンドリング
 }
 ```
 
 ## ErrRecordNotFound
 
-GORM returns `ErrRecordNotFound` when failed to find data with `First`, `Last`, `Take`, if there are several errors happened, you can check the `ErrRecordNotFound` error with `errors.Is`, for example:
+GORMは、`First`, `Last`, `Take`でデータの検索に失敗した場合に`ErrRecordNotFound`を返します。もし複数のエラーが発生した場合は、`errors.Is`で`ErrRecordNotFound`エラーを確認することができます。たとえば以下のように使います
 
 ```go
-// Check if returns RecordNotFound error
+// RecordNotFoundエラーが返ったかのチェック
 err := db.First(&user, 100).Error
 errors.Is(tx.Error, ErrRecordNotFound)
 ```
 
-## Errors
+## エラーの種類
 
 [Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go)

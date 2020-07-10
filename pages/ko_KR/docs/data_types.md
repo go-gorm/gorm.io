@@ -84,8 +84,15 @@ db.Find(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 // SELECT * FROM `users` WHERE JSON_EXTRACT(`attributes`, '$.orgs.orga') IS NOT NULL
 
 // PostgreSQL
-// SELECT * FROM "user_with_jsons" WHERE "attributes"::jsonb ? 'role'
-// SELECT * FROM "user_with_jsons" WHERE "attributes"::jsonb -> 'orgs' ? 'orga'
+// SELECT * FROM "user" WHERE "attributes"::jsonb ? 'role'
+// SELECT * FROM "user" WHERE "attributes"::jsonb -> 'orgs' ? 'orga'
+
+db.Find(&user, datatypes.JSONQuery("attributes").Equals("jinzhu", "name"))
+// MySQL
+// SELECT * FROM `user` WHERE JSON_EXTRACT(`attributes`, '$.name') = "jinzhu"
+
+// PostgreSQL
+// SELECT * FROM "user" WHERE json_extract_path_text("attributes"::json,'name') = 'jinzhu'
 ```
 
 ## Customized Data Types Collections

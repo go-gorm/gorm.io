@@ -3,9 +3,9 @@ title: GORM Guides
 layout: page
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+أروع و أسهل مكتبة ORM خاصة بلغة Go تهدف أن تكون صديقة للمطورين.
 
-## Overview
+## لمحة عامة
 
 * Full-Featured ORM
 * Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
@@ -14,7 +14,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
 * Context, Prepared Statment Mode, DryRun Mode
 * Batch Insert, FindInBatches, Find To Map
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
+* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, NamedArg
 * Composite Primary Key
 * Auto Migrations
 * Logger
@@ -22,13 +22,13 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * Every feature comes with tests
 * Developer Friendly
 
-## Install
+## التثبيت
 
 ```sh
 go get -u gorm.io/gorm
 ```
 
-## Quick Start
+## نظرة سريعة
 
 ```go
 package main

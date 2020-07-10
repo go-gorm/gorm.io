@@ -1,34 +1,34 @@
 ---
-title: GORM Guides
+title: GORMガイド
 layout: page
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+Golangのための素晴らしいORMライブラリは、開発者に優しいことを目指しています。
 
-## Overview
+## 概略
 
-* Full-Featured ORM
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
-* Hooks (Before/After Create/Save/Update/Delete/Find)
+* フル機能ORM
+* アソシエーションに対応 (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
+* さまざまなフック (Before/After Create/Save/Update/Delete/Find)
 * Eager loading with `Preload`, `Joins`
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
-* Context, Prepared Statment Mode, DryRun Mode
-* Batch Insert, FindInBatches, Find To Map
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
-* Composite Primary Key
-* Auto Migrations
-* Logger
-* Extendable, write Plugins based on GORM callbacks
-* Every feature comes with tests
-* Developer Friendly
+* Context、プリペアドステートメント、ドライラン
+* バッチインサート、FindInBatches,、Find To Map
+* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, NamedArg
+* 複合主キー
+* 自動データベースマイグレーション
+* ロガー
+* 拡張可能。GORMコールバックに基づいてプラグインを書くことができる
+* すべての機能にはテストが付属しています
+* デベロッパーフレンドリー
 
-## Install
+## インストール
 
 ```sh
 go get -u gorm.io/gorm
 ```
 
-## Quick Start
+## クイックスタート
 
 ```go
 package main
@@ -51,7 +51,7 @@ func main() {
   }
   defer db.Close()
 
-  // Migrate the schema
+  // スキーマのマイグレーション
   db.AutoMigrate(&Product{})
 
   // Create
@@ -62,13 +62,13 @@ func main() {
   db.First(&product, 1) // find product with integer primary key
   db.First(&product, "code = ?", "D42") // find product with code D42
 
-  // Update - update product's price to 200
+  // Update - productのPriceを200に更新
   db.Model(&product).Update("Price", 200)
-  // Update - update multiple fields
+  // Update - 複数のフィールドを更新
   db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
   db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
 
-  // Delete - delete product
+  // Delete - productを削除
   db.Delete(&product, 1)
 }
 ```

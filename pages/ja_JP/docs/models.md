@@ -1,13 +1,13 @@
 ---
-title: Declaring Models
+title: モデルの宣言
 layout: page
 ---
 
-## Declaring Models
+## モデルの宣言
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+モデルは基本的な Go 型、ポインタ/エイリアス、 [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) および [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイスを実装するカスタム型を持つ通常の構造体です。
 
-For Example:
+例：
 
 ```go
 type User struct {
@@ -23,34 +23,34 @@ type User struct {
 }
 ```
 
-## Conventions
+## 規約
 
-GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+GORMは「設定より規約」を好みます。デフォルトでは、GORMは主キーとしての`ID`、テーブル名を表すための複数形かつ`スネークケース`な構造体名、 `スネークケース`なカラム名、作成時と更新時をトラッキングするための`CreatedAt`、`UpdatedAt`フィールドを利用します。
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code, If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+GORMで採用されている規則に従う場合は、設定やコードを記述する手間が激減します。 規則があなたの要件と一致しない場合、 [GORMはそれらを設定することができます](conventions.html)
 
 ## gorm.Model
 
-GORM defined a `gorm.Model` struct, which includes fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
+GORMは `gorm.Model` 構造体を定義しました。これにはフィールド `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`が含まれます。
 
 ```go
-// gorm.Model definition
+// gorm.Model定義
 type Model struct {
-  ID        uint           `gorm:"primaryKey"`
+  ID uint `gorm:"primaryKey"`
   CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt gorm.DeletedAt `gorm:"index"`
+  UpdatedAt time.
+  DeletedAt `gorm:"index"`
 }
 ```
 
-You can embed it into your struct to include those fields, refer [Embedded Struct](#embedded_struct)
+これらのフィールドを含めるには、構造体に埋め込むことができます。 [埋め込み構造体](#embedded_struct)
 
 ```go
 type User struct {
   gorm.Model
   Name string
 }
-// equals
+// これら２つは同じものです
 type User struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
@@ -60,22 +60,22 @@ type User struct {
 }
 ```
 
-## Advanced
+## 上級者向け
 
-### Field-Level Permission
+### フィールドレベルの権限
 
-Exported fields have all permission when doing CRUD with GORM, but GORM allows you to change the field-level permission with tag, so you can make a field to read-only, write-only, create-only, update-only or ignored
+エクスポートされたフィールドはGORMでCRUDを実行するときにすべての権限を持ちますが、GORMはタグでフィールドレベルの権限を変更することができます。 これにより、読み取り専用、書き込み専用、作成専用、更新専用、または無視するフィールドを作成できます。
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
-  Name string `gorm:"->;<-:create"` // allow read and create
-  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`  // ignore this field when write and read
+  Name string `gorm:"<-:create"` // 読み取り、作成が可能
+  Name string `gorm:"<-:update"` // 読み取り、更新が可能
+  Name string `gorm:"<-"`        // 読み取り、書き込みが可能 (createとupdateの両方)
+  Name string `gorm:"<-:false"`  // 読み取り可能、書き込み無効
+  Name string `gorm:"->"`        //  読み取り専用 (設定されていない限り、書き込みを無効にします。 )
+  Name string `gorm:"->;<-:create"` // 読み取りと作成が可能
+  Name string `gorm:"->:false;<-:create"` // 作成専用 (dbからの読み取りは無効)
+  Name string `gorm:"-"`  // 書き込みと読み込みの際にこのフィールドを無視します。
 }
 ```
 
