@@ -14,7 +14,7 @@ Golangのための素晴らしいORMライブラリは、開発者に優しい�
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
 * Context、プリペアドステートメント、ドライラン
 * バッチインサート、FindInBatches,、Find To Map
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, NamedArg
+* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
 * 複合主キー
 * 自動データベースマイグレーション
 * ロガー
