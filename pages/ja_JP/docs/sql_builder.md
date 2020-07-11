@@ -73,9 +73,9 @@ for rows.Next() {
 
 Checkout [FindInBatches](advanced_query.html) for how to query and process records in batch Checkout [Group Conditions](advanced_query.html#group_conditions) for how to build complicated SQL Query
 
-## <span id="named_argument">Named Argument</span>
+## <span id="named_argument">名前付き引数</span>
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORMは [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) または `map[string]interface{}{}`を使用した名前付き引数をサポートしています。例えば:
 
 ```go
 DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -94,7 +94,7 @@ DB.Raw("SELECT * FROM named_users WHERE (name1 = @name AND name3 = @name) AND na
 // SELECT * FROM named_users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
 ```
 
-## Scan `*sql.Rows` into struct
+## `*sql.Rows` を構造体にスキャン
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
