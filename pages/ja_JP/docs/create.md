@@ -88,18 +88,18 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`
+`Select`, `Omit` によってアソシエーションによる保存をスキップできます。
 
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// skip all associations
+// すべてのアソシエーションをスキップ
 db.Omit(clause.Associations).Create(&user)
 ```
 
-### Default Values
+### デフォルト値
 
-You can define default values for fields with tag `default`, for example:
+`default`タグによって、フィールドのデフォルト値を定義できます。例:
 
 ```go
 type User struct {
@@ -110,9 +110,9 @@ type User struct {
 }
 ```
 
-Then the default value will be used when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+[ゼロ値](https://tour.golang.org/basics/12) フィールドは、データベースへの挿入の際にデフォルト値が使用されます。
 
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this
+**注意**`0`, `''`, `false`のようなゼロ値は、デフォルト値を定義したフィールドに対しては、データベースに保存されないので、これを避けるためにポインタ型やScanner/Valuerを使用するとよいでしょう。
 
 ```go
 type User struct {
@@ -125,7 +125,7 @@ type User struct {
 
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORM provides compatible Upsert support for different databases
+GORMは異なるデータベースに対して互換性のあるUpsertのサポートを提供します。
 
 ```go
 import "gorm.io/gorm/clause"
@@ -151,6 +151,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+`FirstOrInit`, `FirstOrCreate`については[Advanced Query](advanced_query.html)を参照してください。
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+詳細については、 [Raw SQL and SQL Builder](sql_builder.html) を参照してください。
