@@ -3,37 +3,37 @@ title: Create
 layout: page
 ---
 
-## Create Record
+## レコードの作成
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // pass pointer of data to Create
+result := db.Create(&user) // データのポインタを渡す。
 
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+user.ID             // 挿入されたデータの主キーを返します。
+result.Error        // エラーを返します。
+result.RowsAffected // 挿入されたレコード数を返します。
 ```
 
-## Create With Selected Fields
+## 選んだフィールドで作成
 
-Create with selected fields
+選んだフィールドで作成
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create without selected fields
+選んだフィールド以外で作成
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## Create Hooks
+## フックの作成
 
-GORM allows hooks `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`, those methods will be called when creating a record, refer [Hooks](hooks.html) for details
+GORMは `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`をフックします。これらのメソッドはレコードを作成する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -46,9 +46,9 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_insert">Batch Insert</span>
+## <span id="batch_insert">バッチインサート</span>
 
-Pass slice data to method `Create`, GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+スライスをメソッド `Create`に渡すと、GORMはすべてのデータを挿入する1つのSQL文を生成し、主キーの値をバックフィルします。フックメソッドも呼び出されます。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -59,13 +59,13 @@ for _, user := range users {
 }
 ```
 
-[Upsert](#upsert), [Create With Associations](#create_with_associations) supported for batch insert also
+[Upsert](#upsert), [アソシエーションによる作成](#create_with_associations) でもバッチインサートはサポートされています。
 
-## Advanced
+## 高度な機能
 
-### <span id="create_with_associations">Create With Associations</span>
+### <span id="create_with_associations">アソシエーションによる作成</span>
 
-If your model defined any relations, and it has non-zero relations, those data will be saved when creating
+モデルがリレーションを定義し、リレーションがゼロ以外の場合、そのデータは作成時に保存されます。
 
 ```go
 type CreditCard struct {
