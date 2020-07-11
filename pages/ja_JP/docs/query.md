@@ -3,52 +3,52 @@ title: Query
 layout: page
 ---
 
-## Retrieving a single object
+## １つのオブジェクトを取得
 
-GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, when no record found, its returns error `ErrRecordNotFound`
+GORMは、データベースから１つのオブジェクトを取得するために`First`, `Take`, `Last`メソッドを提供します、それは、データベースにクエリを実行する際に`LIMIT 1`の条件を追加し、レコードが見つからなかった場合、`ErrRecordNotFound`エラーを返します。
 
 ```go
-// Get the first record ordered by primary key
+// 主キーでソートし、最初のレコードを取得する
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// ソートせずにレコードを1行取得する
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key desc
+// 主キーでソートし、最後のレコードを取得する
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // returns found records count
-result.Error        // returns error
+result.RowsAffected // 見つけたレコードの数を返す
+result.Error        // errorを返す
 
-// check record not found error
+// ErrRecordNotFoundエラーかどうか検査する
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
-## Retrieving objects
+## 複数のオブジェクトを取得
 
 ```go
-// Get all records
+// すべてのレコードを取得
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // returns found records count, equals `len(users)`
-result.Error        // returns error
+result.RowsAffected // 見つけたレコードの数を返す。`len(users)`と同じ
+result.Error        // エラーを返す
 ```
 
-## Conditions
+## Where
 
-### String Conditions
+### 文字列での条件指定
 
 ```go
-// Get first matched record
+// 最初にマッチしたレコードを取得
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
-// Get all matched records
+// マッチしたレコードすべて取得
 db.Where("name <> ?", "jinzhu").Find(&users)
 // SELECT * FROM users WHERE name <> 'jinzhu';
 
@@ -73,10 +73,10 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Struct & Map Conditions
+### 構造体やMapでの条件指定
 
 ```go
-// Struct
+// 構造体
 db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20 ORDER BY id LIMIT 1;
 
@@ -84,7 +84,7 @@ db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice of primary keys
+// 主キーのスライス
 db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
