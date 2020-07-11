@@ -89,14 +89,14 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**注** 構造体を使ってクエリするとき、GORMは非ゼロ値なフィールドのみを利用します。つまり、フィールドの値が `0`, `''`, `false` または他の [ゼロ値](https://tour.golang.org/basics/12)の場合、 クエリ条件の作成に使用されません。例：
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build query conditions, e.g:
+Mapを使用することで、ゼロ値でもクエリ条件を作成することができます。例:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
