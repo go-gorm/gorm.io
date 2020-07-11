@@ -1,11 +1,11 @@
 ---
-title: SQL Builder
+title: SQLビルダー
 layout: page
 ---
 
-## Raw SQL
+## SQL文の利用
 
-Query Raw SQL
+SQL文でQuery
 
 ```go
 type Result struct {
@@ -23,7 +23,7 @@ var age int
 DB.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-Exec Raw SQL
+SQL文でEXEC
 
 ```go
 db.Exec("DROP TABLE users")
@@ -33,45 +33,45 @@ db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,
 DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
-**NOTE** GORM allows cache prepared statement to increase performance, checkout [Performance](performance.html) for details
+**注** GORMはパフォーマンスを向上のためにプリペアードステイトメントをキャッシュできます。詳細は [パフォーマンス](performance.html)
 
 ## `Row` & `Rows`
 
-Get result as `*sql.Row`
+`*sql.Row` として結果を取得します
 
 ```go
-// Use GORM API build SQL
+// GORMのAPIを利用
 row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
 row.Scan(&name, &age)
 
-// Use Raw SQL
+// SQL文を利用
 row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row()
 row.Scan(&name, &age, &email)
 ```
 
-Get result as `*sql.Rows`
+`*sql.Rows` として結果を取得します
 
 ```go
-// Use GORM API build SQL
+// GORMのAPIを利用
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows()
 defer rows.Close()
 for rows.Next() {
   rows.Scan(&name, &age, &email)
 
-  // do something
+  // なんらかの処理
 }
 
-// Raw SQL
+// SQL文を利用
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows()
 defer rows.Close()
 for rows.Next() {
   rows.Scan(&name, &age, &email)
 
-  // do something
+  // なんらかの処理
 }
 ```
 
-Checkout [FindInBatches](advanced_query.html) for how to query and process records in batch Checkout [Group Conditions](advanced_query.html#group_conditions) for how to build complicated SQL Query
+バッチでレコードをクエリしたり処理したいなら、[FindInBatches](advanced_query.html)をチェックしてください。 複雑なSQLクエリを構築する方法については[Group Conditions](advanced_query.html#group_conditions) をチェックしてください。
 
 ## <span id="named_argument">名前付き引数</span>
 
@@ -109,9 +109,9 @@ for rows.Next() {
 }
 ```
 
-## DryRun Mode
+## ドライランモード
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
+実行せずに、`SQL`の生成だけを行います。生成されたSQLを確認したりテストしたりできます。詳細については[Session](session.html) を確認してください。
 
 ```go
 stmt := DB.Session(&Session{DryRun: true}).First(&user, 1).Statement
@@ -119,7 +119,7 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 ```
 
-## Advanced
+## 高度な機能
 
 ### Clauses
 
