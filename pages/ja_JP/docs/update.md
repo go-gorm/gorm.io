@@ -3,9 +3,9 @@ title: Update
 layout: page
 ---
 
-## Save All Fields
+## すべてのフィールドの更新（Save）
 
-`Save` will save all fields when performing the Updating SQL
+`Save`は 、SQLを実行するときにすべてのフィールドを更新します。
 
 ```go
 db.First(&user)
@@ -16,9 +16,9 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update/Updates
+## 特定のフィールドの更新（Update/Updates）
 
-Use `Update`, `Updates` to update selected fields
+`Update`, `Updates`は特定のフィールドを更新するために使います
 
 ```go
 // Update single attribute
@@ -39,11 +39,11 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 // UPDATE users SET name='hello', age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
 
-**NOTE** When update with struct, GORM will only update non-zero fields, you might want to use `map` to update attributes or use `Select` to specify fields to update
+**注意** 構造体で更新された場合、GORMは非ゼロ値フィールドのみ更新します。更新に**map**を使用するか、 `Select` で更新するフィールドを指定してください。
 
-## Update Selected Fields
+## 更新するフィールドを指定
 
-If you want to update selected or ignore some fields when updating, you can use `Select`, `Omit`
+更新時に特定のフィールドのみを更新するか、もしくはいくつかのフィールドを無視する場合は、 `Select`, `Omit` を使用できます。
 
 ```go
 // Select with Map
@@ -59,9 +59,9 @@ DB.Model(&result).Select("Name", "Age").Updates(User{Name: "new_name"})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 ```
 
-## Update Hooks
+## Updateフック
 
-GORM allows hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`, those methods will be called when updating a record, refer [Hooks](hooks.html) for details
+GORMは `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`をフックします。これらのメソッドはレコードを更新する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -72,9 +72,9 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Batch Updates
+## バッチでの更新
 
-If we haven't specified a record having primary key value with `Model`, GORM will perform a batch updates
+`Model`で主キー値を持つレコードを指定していない場合、GORMはバッチ更新を行います。
 
 ```go
 // Update with struct only works with none zero values, or use map[string]interface{}
@@ -109,11 +109,11 @@ result.RowsAffected // returns updated records count
 result.Error        // returns updating error
 ```
 
-## Advanced
+## 高度な機能
 
-### Update with SQL Expression
+### SQL式で更新
 
-GORM allows updates column with SQL expression
+GORMはSQL式で列を更新できます
 
 ```go
 DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
@@ -129,9 +129,9 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
-### Without Hooks/Time Tracking
+### フック/タイムトラッキングなしでの更新
 
-If you want to skip `Hooks` methods and the auto-update time tracking when updating, you can use `UpdateColumn`, `UpdateColumns`
+`フック` メソッドと更新時の自動更新タイムトラッキングをスキップしたい場合、 ` UpdateColumn `, `UpdateColumns`を使用できます。
 
 ```go
 // Update single attribute, similar with `Update`
