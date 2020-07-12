@@ -34,12 +34,12 @@ GORMで採用されている規則に従う場合は、設定やコードを記�
 GORMは `gorm.Model` 構造体を定義しました。これにはフィールド `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`が含まれます。
 
 ```go
-// gorm.Model定義
+// gorm.Model definition
 type Model struct {
-  ID uint `gorm:"primaryKey"`
+  ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
-  UpdatedAt time.
-  DeletedAt `gorm:"index"`
+  UpdatedAt time.Time
+  DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 ```
 
@@ -60,7 +60,7 @@ type User struct {
 }
 ```
 
-## 上級者向け
+## 高度な機能
 
 ### フィールドレベルの権限
 
