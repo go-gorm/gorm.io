@@ -14,12 +14,12 @@ layout: page
 * トランザクション、ネスティング、セーブポイント、セーブポイントへのロールバック
 * Context、プリペアドステートメント、ドライラン
 * バッチインサート、FindInBatches,、Find To Map
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
+* SQLビルダー、Upsert、 Locking、Optimizer/Index/Commentヒント
 * 複合主キー
-* 自動データベースマイグレーション
+* オートマイグレーション
 * ロガー
-* 拡張可能。GORMコールバックに基づいてプラグインを書くことができる
-* すべての機能にはテストが付属しています
+* GORMコールバックベースのプラグインを記述することで拡張可能
+* すべての機能に付属するテストコード
 * デベロッパーフレンドリー
 
 ## インストール
