@@ -1,35 +1,35 @@
 ---
-title: Hooks
-layout: page
+title: Хуки
+layout: страница
 ---
 
-## Object Life Cycle
+## Жизненный цикл объекта
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+Хаки - это функции, вызываемые до или после создания/выборки/обновления/удаления.
 
-If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+Если вы определили специальные методы для модели, они будут вызываться автоматически при создании, обновлении, выборке, удаление, и если вызов специального метода возвращает ошибку, GORM остановит выполнение запросов и откатит текущую транзакцию.
 
-The type of hook methods should be `func(*gorm.DB) error`
+Тип метода хука должен быть `func(*gorm.DB) error`
 
-## Hooks
+## Хуки
 
-### Creating an object
+### Создать объект
 
-Available hooks for creating
+Доступные хуки для создания
 
 ```go
-// begin transaction
+// начало транзакции
 BeforeSave
 BeforeCreate
-// save before associations
-// insert into database
-// save after associations
+// сохранить перед ассоциациями
+// добавить в БД
+// сохранить после ассоциациями
 AfterCreate
 AfterSave
-// commit or rollback transaction
+// фиксация или откат транзакции
 ```
 
-Code Example:
+Пример кода:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -49,34 +49,34 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is committed, if you return any error in your hooks, the change will be rollbacked
+**ПРИМЕЧАНИЕ** По умолчанию в GORM операции сохранения/удаления выполняются в транзакции, так что изменения, внесенные в эту транзакцию, не будут видны до тех пор, пока она не будет сохранена транзакция, если вы вернете ошибку в хуках, транзакция откатиться
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
   if !u.IsValid() {
-    return errors.New("rollback invalid user")
+    return errors.New("откат, пользователь не найден")
   }
   return nil
 }
 ```
 
-### Updating an object
+### Обновление объекта
 
-Available hooks for updating
+Доступные хуки для обновления
 
 ```go
-// begin transaction
+// начинаем транзакцию
 BeforeSave
 BeforeUpdate
-// save before associations
-// update database
-// save after associations
+// сохранение перед ассоциациями
+// обновление базы данных
+// сохранение после ассоциаций
 AfterUpdate
 AfterSave
-// commit or rollback transaction
+// фиксация или откат транзакции
 ```
 
-Code Example:
+Пример кода:
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -86,7 +86,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
   return
 }
 
-// Updating data in same transaction
+// Обновление данных в той же транзакции
 func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
@@ -95,22 +95,22 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### Удаление объекта
 
-Available hooks for deleting
+Доступные хуки для удаления
 
 ```go
-// begin transaction
+// начинаем транзакцию
 BeforeDelete
-// delete from database
+// удаляем из базы данных
 AfterDelete
-// commit or rollback transaction
+// фиксация или откат транзакции
 ```
 
-Code Example:
+Пример кода:
 
 ```go
-// Updating data in same transaction
+// Обновление данных в той же транзакции
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
@@ -119,17 +119,17 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Querying an object
+### Запрос объекта
 
-Available hooks for querying
+Доступные хуки для выборки
 
 ```go
-// load data from database
-// Preloading (eager loading)
+// загрузка данных из базы данных
+// Предзагрузка (нетерпеливая загрузка)
 AfterFind
 ```
 
-Code Example:
+Пример кода:
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -140,16 +140,16 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 }
 ```
 
-## Modify current operation
+## Изменить текущую операцию
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx.Statement, e.g:
+  // Изменить текущую операцию через tx.Statement, например:
   tx.Statement.Select("Name", "Age")
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
-  // tx is new session mode without the `WithConditions` option
-  // operations based on it will run inside same transaction but without any current conditions
+  // tx это новый сеанс без опции `WithConditions`
+  // операции на его основе будут выполняться внутри той же транзакции, но без каких-либо текущих условий
   var role Role
   err := tx.First(&role, "name = ?", user.Role).Error
   // SELECT * FROM roles WHERE name = "admin"
