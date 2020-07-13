@@ -1,16 +1,16 @@
 ---
-title: Many To Many
-layout: page
+title: Many To Many (многие ко многим)
+layout: страница
 ---
 
-## Many To Many
+## Many To Many (многие ко многим)
 
-Many to Many add a join table between two models.
+Many to Many добавляет объединяющую таблицу между двумя моделями.
 
-For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
+Например, если ваше приложение включает пользователей и языки, и пользователь может говорить на многих языках, и многие пользователи могут говорить на определенном языке.
 
 ```go
-// User has and belongs to many languages, `user_languages` is the join table
+// Пользователь имеет и принадлежит многим языкам, `user_languages` объединяющую таблица
 type User struct {
   gorm.Model
   Languages []Language `gorm:"many2many:user_languages;"`
@@ -22,12 +22,12 @@ type Language struct {
 }
 ```
 
-When using GORM `AutoMigrate` to create a table for `User`, GORM will create the join table automatically
+При использовании GORM `AutoMigrate` для создания таблицы по модели `User`, GORM автоматически создаст таблицу объединения
 
-## Back-Reference
+## Обратная ссылка
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// Пользователь имеет и принадлежит ко многим языкам, используется `user_languages` как таблица связей
 type User struct {
   gorm.Model
   Languages []*Language `gorm:"many2many:user_languages;"`
@@ -40,9 +40,9 @@ type Language struct {
 }
 ```
 
-## Override Foreign Key
+## Переопределить внешний ключ
 
-For a `many2many` relationship, the join table owns the foreign key which references two models, for example:
+Для `many2many` связей, объединяющая таблица имеет внешний ключ, который ссылается на две модели, например:
 
 ```go
 type User struct {
@@ -55,12 +55,12 @@ type Language struct {
   Name string
 }
 
-// Join Table: user_languages
-//   foreign key: user_id, reference: users.id
-//   foreign key: language_id, reference: languages.id
+// Таблица связей: user_languages
+//   внешний ключ: user_id, ссылается на: users.id
+//   внешний ключ: language_id, ссылается на: languages.id
 ```
 
-To override them, you can use tag `foreignKey`, `reference`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
+Чтобы переопределить их, вы можете использовать теги `foreignKey`, `reference`, `joinForeignKey`, `joinReferences`, не обязательно использовать их вместе, вы можете просто использовать один из них для переопределения некоторых внешних ключей/ссылок
 
 ```go
 type User struct {
@@ -75,14 +75,14 @@ type Profile struct {
     UserRefer uint
 }
 
-// Which creates join table: user_profiles
-//   foreign key: user_refer_id, reference: users.refer
-//   foreign key: profile_refer, reference: profiles.user_refer
+// Который создает таблицу связей: user_profiles
+//   внешний ключ: user_refer_id, ссылается на: users.refer
+//   внешний ключ: profile_refer, ссылается на: profiles.user_refer
 ```
 
-## Self-Referential Many2Many
+## Самосвязанный Many2Many
 
-Self-referencing many2many relationship
+Самосвязанная связь Many2Many
 
 ```go
 type User struct {
@@ -90,20 +90,20 @@ type User struct {
     Friends []*User `gorm:"many2many:user_friends"`
 }
 
-// Which creates join table: user_friends
-//   foreign key: user_id, reference: users.id
-//   foreign key: friend_id, reference: users.id
+// Который создает таблицу связей: user_friends
+//   внешний ключ: user_id, ссылается на: users.id
+//   внешний ключ: friend_id, ссылается на: users.id
 ```
 
-## Eager Loading
+## Нетерпеливая загрузка
 
-GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
+GORM позволяет использовать нетерпеливую загрузку для связей has many (имеет много) с помощью `Preload`, смотрите [Предзагрузка (Нетерпеливая загрузка)](preload.html) для подробностей
 
-## CRUD with Many2Many
+## CRUD с Many2Many
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with many2many relations
+Пожалуйста, смотрите [режим связей](associations.html#Association-Mode) для работы с many2many связями
 
-## Customize JoinTable
+## Настроить таблицу связей
 
 `JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports, and define more fields, you can setup it with `SetupJoinTable`, for example:
 
