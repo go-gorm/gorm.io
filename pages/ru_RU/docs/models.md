@@ -172,17 +172,17 @@ type Blog struct {
 | precision      | определяет точность столбца                                                                                                                                                      |
 | not null       | определяет столбец как НЕ NULL                                                                                                                                                   |
 | autoIncrement  | определяет столбец с авто инкрементом                                                                                                                                            |
-| embedded       | вставить поле                                                                                                                                                                    |
-| embeddedPrefix | prefix for embedded field                                                                                                                                                        |
-| autoCreateTime | track creating time when creating, `autoCreateTime:nano` track unix nano time for `int` fields                                                                                   |
-| autoUpdateTime | track updating time when creating/updating, `autoUpdateTime:nano` track unix nano time for `int` fields                                                                          |
-| index          | create index with options, same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                                    |
-| uniqueIndex    | same as `index`, but create uniqued index                                                                                                                                        |
-| check          | creates check constraint, eg: `check:(age > 13)`, refer [Constraints](constraints.html)                                                                                       |
-| <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no permission                                                    |
-| ->             | set field's read permission                                                                                                                                                      |
-| -              | ignore this fields (disable read/write permission)                                                                                                                               |
+| embedded       | встроенное поле                                                                                                                                                                  |
+| embeddedPrefix | префикс для встроенного поля                                                                                                                                                     |
+| autoCreateTime | сохранает время создания при создании, `autoCreateTime:nano` сохраняет unix nano время для `int` полей                                                                           |
+| autoUpdateTime | сохраняет время обновления при создании/обновлении, `autoUpdateTime:nano` сохраняет unix нано время для `int` полей                                                              |
+| index          | создать индекс с параметрами, одинаковое имя для нескольких полей создает составные индексы, смотрите [Индексы](indexes.html) для подробностей                                   |
+| uniqueIndex    | то же самое, что и `index`, но создает уникальный индекс                                                                                                                         |
+| check          | создает ограничение проверки, например: `check:(age > 13)`, см. [Ограничения](constraints.html)                                                                               |
+| <-             | задать разрешение на запись, `<-:create` только для создания, `<-:update` только обновление, `<-:false` Нет разрешения                                                  |
+| ->             | установить права на чтение полей                                                                                                                                                 |
+| -              | игнорировать эти поля (отключить разрешение на чтение/запись)                                                                                                                    |
 
-### Associations Tags
+### Взаимосвязи
 
-GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the [Associations section](associations.html#tags) for details
+GORM позволяет настраивать внешние ключи, ограничения, many2many через теги связей, загляните в [раздел Ассоциации](associations.html#tags) для получения подробной информации
