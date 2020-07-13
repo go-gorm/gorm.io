@@ -1,39 +1,39 @@
 ---
-title: Create
-layout: page
+title: Создать
+layout: страница
 ---
 
-## Create Record
+## Создать запись
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // pass pointer of data to Create
+result := db.Create(&user) // передаем данные для создания в Create
 
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+user.ID             // возвращает первичный ключ добавленной записи
+result.Error        // возвращает ошибку
+result.RowsAffected // возвращает количество вставленных записей
 ```
 
-## Create With Selected Fields
+## Создать с указанными полями
 
-Create with selected fields
+Создать с указанными полями
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create without selected fields
+Создать без указанных полей
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## Create Hooks
+## Создать хуки
 
-GORM allows hooks `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`, those methods will be called when creating a record, refer [Hooks](hooks.html) for details
+GORM позволяет хуки `BeforeSave (перед сохранением)`, `BeforeCreate (перед созданием)`, `AfterSave (после сохранения)`, `AfterCreate (после создания)`, эти методы будут вызваны при создании записи, смотрите [Хуки](hooks.html) для подробностей
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -46,9 +46,9 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_insert">Batch Insert</span>
+## <span id="batch_insert">Пакетная вставка</span>
 
-Pass slice data to method `Create`, GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+Передайте массив с данными в метод `Create`, GORM создаст запрос SQL для вставки и заполнит первичными ключами массив, будут также вызваны методы хуков.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -59,13 +59,13 @@ for _, user := range users {
 }
 ```
 
-[Upsert](#upsert), [Create With Associations](#create_with_associations) supported for batch insert also
+[Создать или обновить](#upsert), [Создать со связями](#create_with_associations) поддерживается для пакетной вставки
 
-## Advanced
+## Дополнительно
 
-### <span id="create_with_associations">Create With Associations</span>
+### <span id="create_with_associations">Создать со связями</span>
 
-If your model defined any relations, and it has non-zero relations, those data will be saved when creating
+Если в вашей модели определены связи, и она не имеет нулевых связей, эти данные будут сохранены при создании
 
 ```go
 type CreditCard struct {
@@ -88,25 +88,25 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`
+Вы можете пропустить сохранение связей с помощью `Select`, `Omit`
 
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// skip all associations
+// пропустить все связи
 db.Omit(clause.Associations).Create(&user)
 ```
 
-### Default Values
+### Значения по умолчанию
 
-You can define default values for fields with tag `default`, for example:
+Вы можете определить значения по умолчанию для полей при помощи тега `default`, например:
 
 ```go
 type User struct {
   ID         int64
   Name       string `gorm:"default:'galeone'"`
   Age        int64  `gorm:"default:18"`
-    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
+    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // функция БД
 }
 ```
 
