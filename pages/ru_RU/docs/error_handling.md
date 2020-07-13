@@ -1,6 +1,6 @@
 ---
-title: Error Handling
-layout: page
+title: Обработка ошибок
+layout: страница
 ---
 
 In Go, error handling is important.
