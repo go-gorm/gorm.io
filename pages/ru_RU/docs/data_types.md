@@ -1,11 +1,11 @@
 ---
-title: Data Types
-layout: page
+title: Типы данных
+layout: страница
 ---
 
-GORM provides few interfaces that allow users to define well-supported customized data types for GORM, takes [json](https://github.com/go-gorm/datatypes/blob/master/json.go) as an example
+GORM предоставляет некоторые интерфейсы, которые позволяют пользователям определять поддерживаемые типы данных для GORM, например [json](https://github.com/go-gorm/datatypes/blob/master/json.go)
 
-## Implements Data Type
+## Внедрение типа данных
 
 ### Scanner / Valuer
 
