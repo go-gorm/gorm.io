@@ -1,23 +1,23 @@
 ---
-title: Conventions
-layout: page
+title: Условности
+layout: страница
 ---
 
-## `ID` as Primary Key
+## `ID` как первичный ключ
 
-GORM uses the field with the name `ID` as the table's primary key by default.
+GORM использует поле с именем `ID` в качестве первичного ключа таблицы по умолчанию.
 
 ```go
 type User struct {
-  ID   string // field named `ID` will be used as a primary field by default
+  ID   string // поле с названием `ID` будет использовано для первичного ключа по умолчанию
   Name string
 }
 ```
 
-You can set other fields as primary key with tag `primaryKey`
+Вы можете установить другие поля в качестве первичного ключа при помощи тега `primaryKey`
 
 ```go
-// Set field `AnimalID` as primary field
+// Установить поле `AnimalID` в качестве первичного ключа
 type Animal struct {
   ID     int64
   UUID   string `gorm:"primaryKey"`
@@ -26,9 +26,9 @@ type Animal struct {
 }
 ```
 
-Also check out [Composite Primary Key](composite_primary_key.html)
+Также смотрите [Композитный первичный Ключ](composite_primary_key.html)
 
-## Pluralized Table Name
+## Именование таблиц в множестве
 
 GORM pluralizes struct name to `snake_cases` as table name, for struct `User`, its table name is `users` by convention
 
