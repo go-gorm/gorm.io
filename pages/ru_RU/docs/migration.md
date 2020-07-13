@@ -1,24 +1,24 @@
 ---
-title: Migration
-layout: page
+title: Миграция
+layout: страница
 ---
 
-## Auto Migration
+## Авто миграция
 
-Automatically migrate your schema, to keep your schema update to date.
+Автоматически переносит вашу схему, чтобы поддерживать обновление вашей схемы.
 
-**NOTE:** AutoMigrate will **ONLY** create tables, missing foreign keys, constraints, columns and indexes, it **WON'T** change existing column's type or delete unused columns to protect your data.
+**ПРИМЕЧАНИЕ:** AutoMigrate будет **ТОЛЬКО** создавать таблицы, отсутствующие внешние ключи, ограничения, колонки и индексы, **НЕ МЕНЯЕТ** существующий тип столбцов или не удаляет неиспользуемые столбцы для защиты данных.
 
 ```go
 db.AutoMigrate(&User{})
 
 db.AutoMigrate(&User{}, &Product{}, &Order{})
 
-// Add table suffix when creating tables
+// Добавляет суффикс таблицы при создании таблицы
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
-**NOTE** AutoMigrate creates database foreign key constraints automatically, you can disable this feature during initialization, for example:
+**ПРИМЕЧАНИЕ** AutoMigrate создает ограничения внешних ключей автоматически, вы можете отключить эту функцию во время инициализации, например:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -26,11 +26,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## Migrator Interface
+## Интерфейс Мигратора
 
-GORM provides migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
+GORM предоставляет интерфейс миграции, который содержит единый интерфейс API для каждой базы данных, которые могут быть использованы для построения независимой от баз данных миграции, например:
 
-SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table
+SQLite не поддерживает `ALTER COLUMN`, `DROP COLUMN`, GORM создаст новую таблицу аналогичную той, которую вы пытаетесь изменить, скопирует все данные, сбросит старую таблицу, переименовав новую таблицу
 
 MySQL doesn't support rename column, index for some versions, GORM will perform different SQL based on the MySQL version you are using
 
