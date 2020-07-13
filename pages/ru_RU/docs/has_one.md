@@ -49,9 +49,9 @@ type CreditCard struct {
 
 ## Переопределить связи
 
-By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field, like using `Name` for the below example.
+По умолчанию принадлежащая сущность сохранит первичный ключ модели `has one` во внешний ключ, вы можете изменить это, чтобы сохранялось другое поле, например `Name`, например как в примере ниже.
 
-You are able to change it with tag `references`, e.g:
+Вы можете изменить поле связи с помощью тега `references`, например:
 
 ```go
 type User struct {
@@ -67,9 +67,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## Полиморфическая связь
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field, primary key value into the polymorphic field
+GORM поддерживает полиморфическую связь между `has one (имеет одну)` и `has many (имеет много)`, он сохранит название таблицы принадлежащего сущности в поле полиморфического типа, значение первичного ключа в полиморфическое поле
 
 ```go
 type Cat struct {
@@ -96,7 +96,7 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs")
 ```
 
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
+Вы можете изменить значение типа полиморфических меток с помощью тега `polymorphicValue`, например:
 
 ```go
 type Dog struct {
@@ -117,15 +117,15 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master")
 ```
 
-## CRUD with Has One
+## CRUD с has one
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with `has one` relations
+Пожалуйста, смотрите [Режим связи](associations.html#Association-Mode) для работы с `has one` связями
 
-## Eager Loading
+## Нетерпеливая загрузка
 
-GORM allows eager loading `has one` associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM позволяет использовать нетерпеливую загрузку для связей `has one` с помощью `Preload` или `Joins`, смотрите [Предзагрузка (Нетерпеливая загрузка)](preload.html) для подробностей
 
-## Self-Referential Has One
+## Самосвязанный Has One
 
 ```go
 type User struct {
@@ -136,9 +136,9 @@ type User struct {
 }
 ```
 
-## FOREIGN KEY Constraints
+## Ограничения внешних ключей
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+Вы можете настроить `OnUpdate (при оновлении)`, `OnDelete (при удалении)` ограничения с помощью тега `constraint`, например:
 
 ```go
 type User struct {
