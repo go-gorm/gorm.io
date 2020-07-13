@@ -1,16 +1,16 @@
 ---
-title: Has One
-layout: page
+title: Has One (имеет одну)
+layout: страница
 ---
 
-## Has One
+## Has One (имеет одну)
 
-A `has one` association sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+Связь `has one` устанавливает связь с другой моделью, но с несколько разными семантиками (и последствиями). Эта ассоциация указывает, что каждый экземпляр модели содержит или обладает одной другой моделью.
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+Например, если ваше приложение включает пользователей и кредитные карты, и каждый пользователь может иметь только одну кредитную карту.
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+// User имеет одну CreditCard, CreditCardID это внешний ключ
 type User struct {
   gorm.Model
   CreditCard CreditCard
@@ -23,21 +23,21 @@ type CreditCard struct {
 }
 ```
 
-## Override Foreign Key
+## Переопределить внешний ключ
 
-For a `has one` relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
+Для связи `has one`, должен существовать внешний ключ, владелец сохранит первичный ключ модели принадлежащий ей в этом поле.
 
-The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
+Название поля, как правило, генерируется при помощи типа модели `has one` плюс `первичный ключ`, для приведенного выше примера: `UserID`.
 
-When you give a credit card to the user, it will save the User's `ID` into its `UserID` field.
+Когда вы даете пользователю кредитную карту, он сохранит `ID` пользователя в поле `UserID`.
 
-If you want to use another field to save the relationship, you can change it with tag `foreignKey`, e.g:
+Если вы хотите использовать другое поле для сохранения связей, вы можете изменить его при помощи тега `foreignKey`, например:
 
 ```go
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // use UserName as foreign key
+  // использовать UserName как внешний ключ
 }
 
 type CreditCard struct {
@@ -47,7 +47,7 @@ type CreditCard struct {
 }
 ```
 
-## Override References
+## Переопределить связи
 
 By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field, like using `Name` for the below example.
 
