@@ -3,40 +3,40 @@ title: Обработка ошибок
 layout: страница
 ---
 
-In Go, error handling is important.
+В Go, очень важна обработка ошибок.
 
-You are encouraged to do error check after any [Finisher Methods](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
+Вам рекомендуется проверять ошибки после [Методов окончания](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
 
-## Error Handling
+## Обработка ошибок
 
-Error handling in GORM is different than idiomatic Go code because of its chainable API.
+Обработка ошибок в GORM отличается от идиоматического Go кода из-за цепного API.
 
-If any error occurs, GORM will set `*gorm.DB`'s `Error` field, you need to check it like this:
+Если возникнет ошибка, GORM заполнит поле `*gorm.DB` `Error`, его необходимо проверять следующим образом:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-  // error handling...
+  // обработка ошибок ...
 }
 ```
 
-Or
+или
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-  // error handling...
+  // обработка ошибок ...
 }
 ```
 
 ## ErrRecordNotFound
 
-GORM returns `ErrRecordNotFound` when failed to find data with `First`, `Last`, `Take`, if there are several errors happened, you can check the `ErrRecordNotFound` error with `errors.Is`, for example:
+GORM возвращает `ErrRecordNotFound`, когда не удалось найти данные при помощи `First`, `Last`, `Take`, если произошло несколько ошибок, вы можете проверить `ErrRecordNotFound` при помощи `errors.Is`, например:
 
 ```go
-// Check if returns RecordNotFound error
+// Проверяет вернулась ли ошибка RecordNotFound
 err := db.First(&user, 100).Error
 errors.Is(tx.Error, ErrRecordNotFound)
 ```
 
-## Errors
+## Ошибки
 
-[Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go)
+[Список ошибок](https://github.com/go-gorm/gorm/blob/master/errors.go)
