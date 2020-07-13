@@ -3,7 +3,7 @@ title: 高级查询
 layout: page
 ---
 
-## Smart Select Fields
+## 智能选择字段
 
 GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller API struct that select specific fields automatically
 
