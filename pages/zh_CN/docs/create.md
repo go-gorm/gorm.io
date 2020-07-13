@@ -130,10 +130,10 @@ GORM 为不同数据库提供了兼容的 Upsert 支持
 ```go
 import "gorm.io/gorm/clause"
 
-// Do nothing on conflict
+// 不处理冲突
 DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Update columns to default value on `id` conflict
+// `id` 冲突时，将字段值更新为默认值
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -151,6 +151,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+也可以查看 [高级查询](advanced_query.html) 中的 `FirstOrInit`, `FirstOrCreate`
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+查看 [原生 SQL 及构造器](sql_builder.html) 获取更多细节
