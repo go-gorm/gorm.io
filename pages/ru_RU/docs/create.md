@@ -110,9 +110,9 @@ type User struct {
 }
 ```
 
-Then the default value will be used when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+Значение по умолчанию будет использовано при добавлении записи в БД для полей с [нулевыми-значениями](https://tour.golang.org/basics/12)
 
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this
+**ПРИМЕЧАНИЕ** Любое нулевое значение, например `0`, `''`, `false` не будут сохранены в базу данных, для полей с определенным значением по умолчанию, вы можете использовать Scanner/Valuer для избежания этого
 
 ```go
 type User struct {
@@ -123,17 +123,17 @@ type User struct {
 }
 ```
 
-### <span id="upsert">Upsert / On Conflict</span>
+### <span id="upsert">Upsert (Создать или обновить) / Конфликт</span>
 
-GORM provides compatible Upsert support for different databases
+GORM обеспечивает поддержку Upsert (Создать или обновить) для различных баз данных
 
 ```go
 import "gorm.io/gorm/clause"
 
-// Do nothing on conflict
+// Ничего не делать при конфликте
 DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Update columns to default value on `id` conflict
+// Сбросить данные в значения по умолчанию при конфликте по полю `id`
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -141,7 +141,7 @@ DB.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// Update columns to new value on `id` conflict
+// Установить новые данные при конфликте по полю `id`
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
@@ -151,6 +151,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+Смотрите также `FirstOrInit (первая или инициализировать)`, `FirstOrCreate (первая или создать)` в [Расширенный запрос SQL](advanced_query.html)
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+Смотрите [Чистый SQL и Конструктор SQL](sql_builder.html) для подробностей
