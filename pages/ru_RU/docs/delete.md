@@ -1,42 +1,42 @@
 ---
-title: Delete
-layout: page
+title: Удалить
+layout: страница
 ---
 
-## Delete Record
+## Удалить запись
 
-Delete a record
+Удалить запись
 
 ```go
-// Delete an existing record, email's primary key value is 10
+// Удалить существующую запись в таблице emails, где первичный ключ равен 10, переданный в переменной email
 db.Delete(&email)
 // DELETE from emails where id=10;
 
-// DELETE with inline condition
+// УДАЛИТЬ с помощью передаваемых значений
 db.Delete(&Email{}, 20)
 // DELETE from emails where id=20;
 
-// DELETE with additional conditions
+// УДАЛИТЬ с помощью дополнительных условий
 db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE FROM emails WHERE id=10 AND name = 'jinzhu'
 ```
 
-## Delete Hooks
+## Хуки удаления
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+GORM поддерживает хуки `BeforeDelete (перед удалением)`, `AfterDelete (после удаления)`, эти методы будут вызваны при удалении записи, смотрите [Хуки](hooks.html) для подробностей
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
     if u.Role == "admin" {
-        return errors.New("admin user not allowed to delete")
+        return errors.New("пользователь с ролью admin не может быть удален")
     }
     return
 }
 ```
 
-## Batch Delete
+## Пакетное удаление
 
-If we havn't specify a record having priamry key value, GORM will perform a batch delete all matched records
+Если мы не указали первичный ключ, GORM выполнит пакетное удаление всех совпадающих записей
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -46,11 +46,11 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-### Block Global Delete
+### Глобальное удаление
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will returns `ErrMissingWhereClause` error
+Если вы выполняете пакетное удаление без условий, GORM не выполнит его и вернет ошибку `ErrMissingWhereClause`
 
-You can use conditions like `1 = 1` to force the global delete
+Вы можете использовать условие похожее на `1 = 1` для удаления всех записей
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -59,26 +59,26 @@ db.Where("1 = 1").Delete(&User{})
 // DELETE `users` WHERE 1=1
 ```
 
-## Soft Delete
+## Мягкое удаление
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+Если ваша модель включает в себя поле `gorm.DeletedAt` (которое включено в `gorm.Model`), она получит возможность магкого удаления автоматически!
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+При вызове метода `Delete`, запись не будет удалена из базы данных, GORM установит значение `DeletedAt`в текущее время, и данная запись больше не будет участвовать в обычном поиске.
 
 ```go
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// Пакетное удаление
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when querying
+// Мягкое удаление записей, будет проигнорировано при получении записей из БД
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+Если вы не хотите использовать `gorm.Model`, вы можете включить мягкое удаление:
 
 ```go
 type User struct {
@@ -88,18 +88,18 @@ type User struct {
 }
 ```
 
-### Find soft deleted records
+### Найти мягко удаленные записи
 
-You can find soft deleted records with `Unscoped`
+Вы можете найти мягко удаленные записи с помощью `Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Delete permanently
+### Удалить безвозвратно
 
-You can delete matched records permanently with `Unscoped`
+Вы можете удалить записи навсегда с помощью `Unscoped`
 
 ```go
 db.Unscoped().Delete(&order)
