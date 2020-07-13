@@ -90,7 +90,7 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
-## Connection Pool
+## 连接池
 
 GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
 
@@ -109,8 +109,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Refer [Generic Interface](generic_interface.html) for details
 
-## Unsupported Databases
+## 不支持的数据库
 
 Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+其次，[我们鼓励且欢迎大家伙开发更多数据库类型的驱动！](write_driver.html)
