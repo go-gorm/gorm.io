@@ -105,7 +105,7 @@ GORM позволяет использовать нетерпеливую заг
 
 ## Настроить таблицу связей
 
-`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports, and define more fields, you can setup it with `SetupJoinTable`, for example:
+`Таблица связей` может быть полнофункциональной моделью, например `Soft Delete`,`Хуки` поддерживают и определяют больше полей, вы можете настроить его при помощи `SetupJoinTable`, например:
 
 ```go
 type Person struct {
@@ -130,13 +130,13 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// PersonAddress must defined all required foreign keys, or it will raise error
+// в PersonAddress должны быть определены все необходимые внешние ключи, или выкинет ошибку
 db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
-## FOREIGN KEY Constraints
+## Ограничения внешних ключей
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+Вы можете настроить `OnUpdate`, `OnDelete` ограничения с помощью тега `constraint`, например:
 
 ```go
 type User struct {
@@ -152,11 +152,11 @@ type Language struct {
 // CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
-## Composite Foreign Keys
+## Композитные внешние ключи
 
-If you are using [Composite Primary Keys](composite_primary_key.html) for your models, GORM will enable composite foreign keys by default
+При использовании [Композитных первичных ключей](composite_primary_key.html) для моделей, GORM по умолчанию включит композитные внешние ключи
 
-You are allowed to override the default foreign keys, to specify multiple foreign keys, just separate those keys' name by commas, for example:
+Вам разрешено переопределить внешние ключи по умолчанию, для указания нескольких внешних ключей, просто разделите их имя запятыми, например:
 
 ```go
 type Tag struct {
@@ -175,20 +175,20 @@ type Blog struct {
   LocaleTags []Tag `gorm:"many2many:locale_blog_tags;ForeignKey:id,locale;References:id"`
 }
 
-// Join Table: blog_tags
-//   foreign key: blog_id, reference: blogs.id
-//   foreign key: blog_locale, reference: blogs.locale
-//   foreign key: tag_id, reference: tags.id
-//   foreign key: tag_locale, reference: tags.locale
+// таблица связей: blog_tags
+//   внешний ключ: blog_id, ссылается на: blogs.id
+//   внешний ключ: blog_locale, ссылается на: blogs.locale
+//   внешний ключ: tag_id, ссылается на: tags.id
+//   внешний ключ: tag_locale, ссылается на: tags.locale
 
-// Join Table: shared_blog_tags
-//   foreign key: blog_id, reference: blogs.id
-//   foreign key: tag_id, reference: tags.id
+// таблица связей: shared_blog_tags
+//   внешний ключ: blog_id, ссылается на: blogs.id
+//   внешний ключ: tag_id, ссылается на: tags.id
 
-// Join Table: locale_blog_tags
-//   foreign key: blog_id, reference: blogs.id
-//   foreign key: blog_locale, reference: blogs.locale
-//   foreign key: tag_id, reference: tags.id
+// таблица связей: locale_blog_tags
+//   внешний ключ: blog_id, ссылается на: blogs.id
+//   внешний ключ: blog_locale, ссылается на: blogs.locale
+//   внешний ключ: tag_id, ссылается на: tags.id
 ```
 
-Also check out [Composite Primary Keys](composite_primary_key.html)
+Также смотрите [Композитный первичный Ключ](composite_primary_key.html)
