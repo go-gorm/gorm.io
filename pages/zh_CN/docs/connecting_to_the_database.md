@@ -3,7 +3,7 @@ title: Connecting to a Database
 layout: page
 ---
 
-GORM officially supports databases MySQL, PostgreSQL, SQlite, SQL Server
+GORM 官方支持的数据库类型有： MySQL, PostgreSQL, SQlite, SQL Server
 
 ## MySQL
 
@@ -20,7 +20,7 @@ func main() {
 }
 ```
 
-**NOTE:**
+**注意：**
 
 To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters))
 
