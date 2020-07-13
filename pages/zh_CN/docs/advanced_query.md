@@ -91,7 +91,7 @@ type Result struct { Name string Age  int } var result Result db.Table("users").
 
 ## Find 至 map
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forgot to specify `Model` or `Table`, for example:
+GORM 允许扫描结果至 `map[string]interface{}` 或 `[]map[string]interface{}`，此时别忘了指定 `Model` 或 `Table`，例如：
 
 ```go
 var result map[string]interface{}
