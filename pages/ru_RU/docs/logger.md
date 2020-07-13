@@ -1,6 +1,6 @@
 ---
 title: Logger
-layout: page
+layout: страница
 ---
 
 ## Logger
