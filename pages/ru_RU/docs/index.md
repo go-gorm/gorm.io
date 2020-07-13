@@ -1,18 +1,18 @@
 ---
-title: GORM Guides
-layout: page
+title: Инструкции по GORM
+layout: страница
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+Фантастическая библиотека ORM для Golang призвана быть дружественной для разработчиков.
 
-## Overview
+## Обзор
 
-* Full-Featured ORM
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
-* Hooks (Before/After Create/Save/Update/Delete/Find)
-* Eager loading with `Preload`, `Joins`
-* Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
-* Context, Prepared Statment Mode, DryRun Mode
+* Полнофункциональный ORM
+* Связи (Has One (имеет одну), Has Many (имеет много), Belongs To (принадлежит), Many To Many (многие ко многим), Polymorphism (полиморфизм), Single-table inheritance (одно табличное представление))
+* Хуки (До/После Создать/Сохранить/Обновить/Удалить/Найти)
+* Нетерпеливая загрузка с помощью `Preload`, `Joins`
+* Транзакции, вложенные транзакции, точки сохранения, откат к сохраненной точке
+* Контекст, Режим подготовки, Режим DryRun
 * Batch Insert, FindInBatches, Find To Map
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
 * Composite Primary Key
