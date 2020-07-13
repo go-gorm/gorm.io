@@ -13,22 +13,22 @@ layout: страница
 * Нетерпеливая загрузка с помощью `Preload`, `Joins`
 * Транзакции, вложенные транзакции, точки сохранения, откат к сохраненной точке
 * Контекст, Режим подготовки, Режим DryRun
-* Batch Insert, FindInBatches, Find To Map
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
-* Composite Primary Key
-* Auto Migrations
+* Пакетная вставка, найти в пакете, поиск в map
+* Конструктор SQL, Upsert(Создать или обновить), Блокировка, Подсказки Оптимизатор/Индексирование/Комментарий, NamedArg
+* Композитный первичный ключ
+* Автомиграция
 * Logger
-* Extendable, write Plugins based on GORM callbacks
-* Every feature comes with tests
-* Developer Friendly
+* Расширяемый, пишите плагины на основе методов GORM
+* Каждая функция поставляется с тестами
+* Дружественная для разработчиков
 
-## Install
+## Установка
 
 ```sh
 go get -u gorm.io/gorm
 ```
 
-## Quick Start
+## Быстрый старт
 
 ```go
 package main
@@ -51,24 +51,24 @@ func main() {
   }
   defer db.Close()
 
-  // Migrate the schema
+  // Миграция
   db.AutoMigrate(&Product{})
 
-  // Create
+  // Создание
   db.Create(&Product{Code: "D42", Price: 100})
 
-  // Read
+  // Чтение
   var product Product
-  db.First(&product, 1) // find product with integer primary key
-  db.First(&product, "code = ?", "D42") // find product with code D42
+  db.First(&product, 1) // найти товар с целочисленным первичным ключем
+  db.First(&product, "code = ?", "D42") // найти товар с кодом D42
 
-  // Update - update product's price to 200
+  // Обновление - заменить цену товара на 200
   db.Model(&product).Update("Price", 200)
-  // Update - update multiple fields
-  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
+  // Обновление - изменение нескольких полей
+  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // не нулевые поля
   db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
 
-  // Delete - delete product
+  // Удаление - удалить товар
   db.Delete(&product, 1)
 }
 ```
