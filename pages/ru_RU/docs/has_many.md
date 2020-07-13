@@ -1,16 +1,16 @@
 ---
-title: Has Many
-layout: page
+title: Has Many (имеет много)
+layout: страница
 ---
 
-## Has Many
+## Has Many (имеет много)
 
-A `has many` association sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+Связь `has many (имеет много)` устанавливает связь с другой моделью, в отличие от `has one (имеет одну)`, владелец может не иметь или иметь много экземпляров моделей.
 
-For example, if your application includes users and credit card, and each user can have many credit cards.
+Например, если ваше приложение включает пользователей и кредитные карты, и каждый пользователь может иметь много кредитных карт.
 
 ```go
-// User has many CreditCards, UserID is the foreign key
+// User имеет много CreditCards, UserID это внешний ключ
 type User struct {
   gorm.Model
   CreditCards []CreditCard
@@ -23,13 +23,13 @@ type CreditCard struct {
 }
 ```
 
-## Override Foreign Key
+## Переопределить внешний ключ
 
-To define a `has many` relationship, a foreign key must exist. The default foreign key's name is the owner's type name plus the name of its primary key field
+Чтобы определить связь `has many (имеет много)`, должен существовать внешний ключ. Имя внешнего ключа по умолчанию - это имя типа владельца плюс имя поля первичного ключа
 
-For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+Например, для определения модели, принадлежащей `User`, внешний ключ должен быть `UserID`.
 
-To use another field as foreign key, you can customize it with a `foreignKey` tag, e.g:
+Чтобы использовать другое поле в качестве внешнего ключа, вы можете настроить его с помощью тега `foreignKey`, например:
 
 ```go
 type User struct {
@@ -44,13 +44,13 @@ type CreditCard struct {
 }
 ```
 
-## Override References
+## Переопределить связи
 
-GORM usually uses the owner's primary key as the foreign key's value, for the above example, it is the `User`'s `ID`,
+GORM обычно использует первичный ключ владельца в качестве значения внешнего ключа, для приведенного выше примера это `ID` модели `User`,
 
-When you assign credit cards to a user, GORM will save the user's `ID` into credit cards' `UserID` field.
+При назначении кредитных карт пользователю, GORM сохранит `ID` пользователя в поле `UserID`.
 
-You are able to change it with tag `references`, e.g:
+Вы можете изменить поле связи с помощью тега `references`, например:
 
 ```go
 type User struct {
@@ -66,9 +66,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## Полиморфическая связь
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key value into the polymorphic field
+GORM поддерживает полиморфическую связь между `has one (имеет одну)` и `has many (имеет много)`, он сохранит название таблицы принадлежащего сущности в поле полиморфического типа, значение первичного ключа в полиморфическое поле
 
 ```go
 type Dog struct {
@@ -89,7 +89,7 @@ db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs"), ("toy2","1","dogs")
 ```
 
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
+Вы можете изменить значение типа полиморфических меток тегом `polymorphicValue`, например:
 
 ```go
 type Dog struct {
@@ -110,15 +110,15 @@ db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
 ```
 
-## CRUD with Has Many
+## CRUD с has many
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with has many relations
+Пожалуйста, смотрите [режим связей](associations.html#Association-Mode) для работы с has many (имеет много) связями
 
-## Eager Loading
+## Нетерпеливая загрузка
 
-GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
+GORM позволяет использовать нетерпеливую загрузку для связей has many (имеет много) с помощью `Preload`, смотрите [Предзагрузка (Нетерпеливая загрузка)](preload.html) для подробностей
 
-## Self-Referential Has Many
+## Самосвязанный Has Many
 
 ```go
 type User struct {
@@ -129,9 +129,9 @@ type User struct {
 }
 ```
 
-## FOREIGN KEY Constraints
+## Ограничения внешних ключей
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+Вы можете настроить `OnUpdate (при оновлении)`, `OnDelete (при удалении)` ограничения с помощью тега `constraint`, например:
 
 ```go
 type User struct {
