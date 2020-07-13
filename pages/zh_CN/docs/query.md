@@ -1,54 +1,54 @@
 ---
-title: Query
+title: 查询
 layout: page
 ---
 
-## Retrieving a single object
+## 检索单个对象
 
-GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, when no record found, its returns error `ErrRecordNotFound`
+GORM 提供 `First`, `Take`, `Last` 方法，以便从数据库中检索单个对象。当查询数据库时它添加了 `LIMIT 1` 条件。当没有找到记录时，它会返回错误 `ErrRecordNotFound`
 
 ```go
-// Get the first record ordered by primary key
+// 获取第一条记录（主键升序）
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// 获取一条记录，没有指定排序字段
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key desc
+// 获取最后一条记录（主键降序）
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // returns found records count
+result.RowsAffected // 返回找到的记录数
 result.Error        // returns error
 
-// check record not found error
+// 检查 ErrRecordNotFound 错误
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
-## Retrieving objects
+## 检索对象
 
 ```go
-// Get all records
+// 获取全部记录
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // returns found records count, equals `len(users)`
+result.RowsAffected // 返回找到的记录数，相当于 `len(users)`
 result.Error        // returns error
 ```
 
-## Conditions
+## 条件
 
 ### String Conditions
 
 ```go
-// Get first matched record
+// 获取第一条匹配的记录
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
-// Get all matched records
+// 获取全部匹配的记录
 db.Where("name <> ?", "jinzhu").Find(&users)
 // SELECT * FROM users WHERE name <> 'jinzhu';
 
@@ -73,7 +73,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Struct & Map Conditions
+### Struct & Map 条件
 
 ```go
 // Struct
@@ -84,19 +84,19 @@ db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice of primary keys
+// 主键切片条件
 db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**注意** 当使用结构作为条件查询时，GORM 只会查询非零值字段。这意味着如果您的字段值为 `0`、`''`、`false` 或其他 [零值](https://tour.golang.org/basics/12)，该字段不会被用于构建查询条件，例如：
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build query conditions, e.g:
+您可以使用 map 来构建查询条件，例如：
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
