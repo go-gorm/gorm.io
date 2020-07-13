@@ -1,9 +1,9 @@
 ---
-title: GORM Config
-layout: page
+title: Настройки GORM
+layout: страница
 ---
 
-GORM provides Config can be used during initialization
+GORM предоставляет конфигурацию, которую можно использовать во время инициализации
 
 ```go
 type Config struct {
@@ -20,7 +20,7 @@ type Config struct {
 
 ## SkipDefaultTransaction
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required
+GORM выполняет операции записи (создания/обновления/удаления) внутри транзакции, чтобы обеспечить целостность данных, вы можете отключить транзакции в процессе инициализации, если они не требуются
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -28,9 +28,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## NamingStrategy
+## Стратегия именования
 
-GORM allows users to change the naming conventions by overriding the default `NamingStrategy` which need to implements interface `Namer`
+GORM позволяет пользователям изменять преобразование имен, переопределяя стандартный `NamingStrategy`, который должен реализовывать интерфейс `Namer`
 
 ```go
 type Namer interface {
@@ -43,7 +43,7 @@ type Namer interface {
 }
 ```
 
-The default `NamingStrategy` also provides few options, like:
+По умолчанию `NamingStrategy` также предоставляет некоторые опции, таким образом:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
