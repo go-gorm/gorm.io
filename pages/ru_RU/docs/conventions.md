@@ -1,5 +1,5 @@
 ---
-title: Условности
+title: Преобразования
 layout: страница
 ---
 
@@ -32,9 +32,9 @@ type Animal struct {
 
 GORM плюрализует имя struct в `snake_cases (правило именования)` в качестве имени таблицы, для stuct `User`, название таблицы будет `users` по умолчанию
 
-### TableName
+### Название таблицы
 
-You can change the default table name by implementing the `Tabler` interface, for example:
+Вы можете изменить название таблицы по умолчанию, реализуя интерфейс `Tabler`, например:
 
 ```go
 type Tabler interface {
