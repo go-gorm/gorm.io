@@ -81,39 +81,39 @@ tx.Where("age = ?", 28).Find(&users)
 
 ## <span id="goroutine_safe">Гороутиновая безопасность</span>
 
-Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
+Методы создадут новый `Экземпляр` при новой инициализации `*gorm. B` или после `Метода новой сессии`, поэтому для повторного использования `*gorm. B`, вам нужно убедиться, что они находятся в `Методе новой сессии`, например:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// Safe for new initialized *gorm.DB
+// Безопасно для новой инициализации *gorm.DB
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// NOT Safe as reusing Statement
+// НЕ Безопасно для повторного использования
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.WithContext(ctx)
-// Safe after a `New Session Method`
+// Безопасно после `Метода новой сессии`
 for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// Safe after a `New Session Method`
+// Безопасно после `Метода новой сессии`
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` применит ко всем
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
-// Safe after a `New Session Method`
+// Безопасно после `Метода новой сессии`
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` применит ко всем
 }
 ```
