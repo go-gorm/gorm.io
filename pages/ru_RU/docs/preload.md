@@ -65,7 +65,7 @@ db.Preload(clause.Associations).Find(&users)
 GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
 
 ```go
-// Preload Orders with conditions
+// Предзагрузка заказов Orders с условиями
 db.Preload("Orders", "state NOT IN (?)", "cancelled").Find(&users)
 // SELECT * FROM users;
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4) AND state NOT IN ('cancelled');
