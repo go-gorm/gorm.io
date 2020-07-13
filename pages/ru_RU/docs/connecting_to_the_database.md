@@ -113,4 +113,4 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Некоторые базы данных могут быть совместимы с `mysql` или `postgres` диалектами, в этом случае можно просто использовать диалект для этих баз данных.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+Для других, [вам предлагается сделать драйвер, pull request приветствуется!](write_driver.html)
