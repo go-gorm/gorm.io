@@ -51,7 +51,7 @@ dsn := "user=gorm password=gorm DB.name=gorm port=9920 sslmode=disable TimeZone=
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+Мы используем [pgx](https://github.com/jackc/pgx) в качестве драйвера базы данных sql postgres, он разрешает кэш подготовленных выражений по умолчанию, чтобы отключить его:
 
 ```go
 // https://github.com/go-gorm/postgres
@@ -73,7 +73,7 @@ import (
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**ПРИМЕЧАНИЕ:** Вы также можете использовать `file::memory:?cache=shared` вместо пути к файлу. Это позволит SQLite использовать временную базу данных в системной памяти. (Смотрите [SQLite документацию](https://www.sqlite.org/inmemorydb.html) для подробностей)
 
 ## SQL Server
 
@@ -88,29 +88,29 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
-Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
+Microsoft предлагает [руководство](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) по использованию SQL Server с Go (и GORM).
 
-## Connection Pool
+## Пул подключений
 
-GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
+GORM использует \[database/sql\]((https://pkg.go.dev/database/sql) для поддержки пула подключения
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleConns устанавливает максимальное количество соединений в пуле простоя.
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns устанавливает максимальное количество открытых подключений к базе данных.
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime устанавливает максимальное время повторного использования.
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+Смотрите [Общий интерфейс](generic_interface.html) для подробностей
 
-## Unsupported Databases
+## Неподдерживаемые базы данных
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Некоторые базы данных могут быть совместимы с `mysql` или `postgres` диалектами, в этом случае можно просто использовать диалект для этих баз данных.
 
 For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
