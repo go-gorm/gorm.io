@@ -1,13 +1,13 @@
 ---
-title: Constraints
-layout: page
+title: Ограничения
+layout: страница
 ---
 
-GORM allows create database constraints with tag, constraints will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORM позволяет создавать ограничения базы данных с тегом, ограничения будут создаваться, при [авто миграции (AutoMigrate) или создании таблицы (CreateTable) с GORM](migration.html)
 
-## CHECK Constraint
+## Ограничение CHECK
 
-Create CHECK constraints with tag `check`
+Создадим CHECK ограничения при помощи тега `check`
 
 ```go
 type UserIndex struct {
@@ -17,13 +17,13 @@ type UserIndex struct {
 }
 ```
 
-## Index Constraint
+## Ограничение индекса
 
-Checkout [Database Indexes](indexes.html)
+Смотрите [Индексы базы данных](indexes.html)
 
-## Foreign Key Constraint
+## Ограничения внешнего ключа
 
-GORM will creates foreign keys constraints for associations, you can disable this feature during initialization:
+GORM создаст ограничения внешних ключей для ассоциаций, вы можете отключить эту функцию во время инициализации:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -31,7 +31,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-GORM allows you setup FOREIGN KEY constraints's `OnDelete`, `OnDelete` option with tag `constraint`, for example:
+GORM позволяет вам установить ограничения FOREIGN KEY для `OnUpdate`, `OnDelete` при помощи тега `constraint`, например:
 
 ```go
 type User struct {
