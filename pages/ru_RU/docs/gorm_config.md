@@ -48,19 +48,19 @@ type Namer interface {
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   NamingStrategy: schema.NamingStrategy{
-    TablePrefix: "t_",   // table name prefix, table for `User` would be `t_users`
-    SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
+    TablePrefix: "t_",   // префикс имен таблиц, таблица для `User` будет `t_users`
+    SingularTable: true, // использовать именование в единственном числе, таблица для `User` будет `user` при включении этой опции, или `t_user` при TablePrefix = "t_"
   },
 })
 ```
 
 ## Logger
 
-Allow changes GORM's default logger by overriding this option, refer [Logger](logger.html) for more details
+Разрешены изменения логирования по умолчанию в GORM, переопределяя эту опцию, смотрите [Logger](logger.html) для получения более подробной информации
 
 ## NowFunc
 
-Change the function to be used when creating a new timestamp
+Изменить функцию, используемую при создании новой отметки времени
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -72,7 +72,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DryRun
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, refer [Session](session.html) for details
+Генерировать `SQL` без выполнения, может быть использован для подготовки или тестирования SQL, смотрите [Сессии](session.html) для подробностей
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -82,7 +82,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## PrepareStmt
 
-`PreparedStmt` creates a prepared statement when executing any SQL and caches them to speed up future calls, refer [Session](session.html) for details
+`PreparedStmt (подготовка stmt)` создает подготовленную операцию при выполнении любого SQL и кэширует ее для ускорения будущих запросов, смотрите [Сессии](session.html) для подробностей
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -92,7 +92,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DisableAutomaticPing
 
-GORM automatically ping database after initialized to check database availability, disable it by setting it to `true`
+GORM автоматически опрашивает базу данных после инициализации для проверки доступности базы данных, отключается установкой `DisableAutomaticPing` в `true`
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -102,7 +102,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DisableForeignKeyConstraintWhenMigrating
 
-GORM creates database foreign key constraints automatically when `AutoMigrate` or `CreateTable`, disable this by setting it to `true`, refer [Migration](migration.html) for details
+GORM создает ограничения внешних ключей автоматически, когда `AutoMigrate (авто миграция)` или `CreateTable (создание таблицы)`, отключите это, установив `true`, смотрите [Миграции](migration.html) для подробностей
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
