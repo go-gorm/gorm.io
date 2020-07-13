@@ -28,9 +28,9 @@ type Animal struct {
 
 Также смотрите [Композитный первичный Ключ](composite_primary_key.html)
 
-## Именование таблиц в множестве
+## Плюрализация имен таблиц
 
-GORM pluralizes struct name to `snake_cases` as table name, for struct `User`, its table name is `users` by convention
+GORM плюрализует имя struct в `snake_cases (правило именования)` в качестве имени таблицы, для stuct `User`, название таблицы будет `users` по умолчанию
 
 ### TableName
 
