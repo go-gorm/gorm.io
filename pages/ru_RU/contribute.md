@@ -12,39 +12,39 @@ layout: страница
 * Написать руководства, видео записи и т.д... (Не забудьте добавить их в [список](/community.html))
 * Помогите продвижению GORM на GitHub [Оценивая](https://github.com/go-gorm/gorm/stargazers) и [Отслеживая](https://github.com/go-gorm/gorm/watchers) репозиторий [GORM](https://github.com/go-gorm/gorm)
 
-## Documentation and Writing
+## Документация и написание
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* Сделать документацию GORM лучше, написав новый контент или исправив существующий материал
 
-### Translate this site
+### Перевести этот сайт
 
-You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
+Вы можете перевести текущий сайт с помощью [https://translate.gorm.io](https://translate.gorm.io)
 
-To translate GORM in your language you need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
+Чтобы перевести GORM на свой язык, вам нужно отправить запрос в сервисе [Github issues](https://github.com/go-gorm/gorm.io/issues) для добавления своего языка в портале [https://translate.gorm.io](https://translate.gorm.io).
 
-## Program
+## Программа
 
-* Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
-* Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
+* Создайте Pull Request на [Github](https://github.com/go-gorm/gorm) для исправления ошибок или добавления новых функций
+* Создавайте плагины с открытым исходным кодом для GORM (Не забудьте добавить их в [список](/community.html#Open-Sources))
 
-## Donations
+## Пожертвования
 
-Many thanks to all our sponsors!
+Большое спасибо всем нашим спонсорам!
 
-### One-time Donations
+### Разовые пожертвования
 
-Your kindness and generosity is greatly appreciated
+Ваша доброта и щедрость высоко ценится
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[Разовые пожертвования с помощью Paypal](https://www.paypal.me/zhangjinzhu) [Разовые пожертвования с помощью OpenCollective](https://opencollective.com/gorm)
 
-### Recurring Donations
+### Периодические пожертвования
 
-Your kindness and generosity are greatly appreciated, and your name will be listed on this page or the home page of this website.
+Ваша доброта и щедрость высоко ценится, и ваше имя будет указано на этой странице или на домашней странице этого сайта.
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[Периодические пожертвования с помощью OpenCollective](https://opencollective.com/gorm) [Периодические пожертвования с помощью Patreon](https://www.patreon.com/jinzhu)
 
 <br>
 
-## Sponsors
+## Спонсоры
 
-## Backers
+## Покровители
