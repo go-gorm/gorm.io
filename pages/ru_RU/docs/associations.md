@@ -1,6 +1,6 @@
 ---
-title: Associations
-layout: page
+title: Связи
+layout: страница
 ---
 
 ## Авто Создание/Обновление
