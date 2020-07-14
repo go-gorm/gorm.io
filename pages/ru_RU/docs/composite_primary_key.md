@@ -1,9 +1,9 @@
 ---
-title: Composite Primary Key
-layout: page
+title: Композитный первичный ключ
+layout: страница
 ---
 
-Set multiple fields as primary key creates composite primary key, for example:
+Установить несколько полей как основной ключ для создания составного первичного ключа, например:
 
 ```go
 type Product struct {
@@ -14,7 +14,7 @@ type Product struct {
 }
 ```
 
-**Note** integer `PrioritizedPrimaryField` enables `AutoIncrement` by default, to disable it, you need to turn off `autoIncrement` for the int fields:
+**Примечание** integer `PrioritizedPrimaryField` включает `AutoIncrement` по умолчанию, чтобы отключить его, вам нужно выключить `autoIncrement` для полей:
 
 ```go
 type Product struct {

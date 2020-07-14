@@ -1,39 +1,39 @@
 ---
-title: Security
-layout: page
+title: Безопасность
+layout: страница
 ---
 
-GORM uses the `database/sql`'s argument placeholders to construct the SQL statement, which will automatically escape arguments to avoid SQL injection
+GORM использует плейсхолдеры аргументов `database/sql`для построения запросов SQL, которые автоматически экранирует аргументы во избежание инъекции SQL
 
-**NOTE** The SQL from Logger is not fully escaped like the one executed, be careful when copying and executing it in SQL console
+**ПРИМЕЧАНИЕ** SQL в Logger экранируется не полностью, как тот, который выполняется, будьте осторожны при копировании и выполнении SQL запросов из Logger
 
-## Query Condition
+## Условие запроса
 
-User's input should be only used as an argument, for example:
+Переданные пользователем значения должны использоваться только в качестве аргумента, например:
 
 ```go
 userInput := "jinzhu;drop table users;"
 
-// safe, will be escaped
+// безопасно, будет экранировано
 db.Where("name = ?", userInput).First(&user)
 
-// SQL injection
+// SQL инъекция
 db.Where(fmt.Sprintf("name = %v", userInput)).First(&user)
 ```
 
-## Inline Condition
+## Строчные условия
 
 ```go
-// will be escaped
+// будет экранировано
 db.First(&user, "name = ?", userInput)
 
-// SQL injection
+// SQL инъекция
 db..First(&user, fmt.Sprintf("name = %v", userInput))
 ```
 
-## SQL injection Methods
+## Методы SQL инъекции
 
-To support some features, some inputs are not escaped, be careful when using user's input with those methods
+Для поддержки некоторых функций, некоторые входные параметры не экранируются, будьте осторожны при использовании пользовательского ввода этими методами
 
 ```go
 db.Select("name; drop table users;").First(&user)
@@ -50,4 +50,4 @@ db.Raw("select name from users; drop table users;").First(&user)
 db.Exec("select name from users; drop table users;")
 ```
 
-The general rule to avoid SQL injection is don't trust user-submitted data, you can perform whitelist validation to test user input against an existing set of known, approved, and defined input, and when using user's input, only use them as an argument.
+Общее правило, чтобы избежать инъекции SQL, не доверяйте пользовательским данным, вы можете выполнить проверку по белому списку для проверки входных данных пользователя в существующем наборе известных утверждений, при использовании пользовательских данных ввода, используйте их только в качестве аргумента.

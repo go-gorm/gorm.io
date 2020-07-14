@@ -5,7 +5,7 @@ layout: page
 
 ## モデルの宣言
 
-モデルは基本的な Go 型、ポインタ/エイリアス、 [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) および [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイスを実装するカスタム型を持つ通常の構造体です。
+モデルは Goの基本型、ポインタ/エイリアス、 [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) および [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイスを実装するカスタム型を持つ通常の構造体です。
 
 例：
 
@@ -25,7 +25,7 @@ type User struct {
 
 ## 規約
 
-GORMは「設定より規約」を好みます。デフォルトでは、GORMは主キーとしての`ID`、テーブル名を表すための複数形かつ`スネークケース`な構造体名、 `スネークケース`なカラム名、作成時と更新時をトラッキングするための`CreatedAt`、`UpdatedAt`フィールドを利用します。
+GORMの方針は「設定より規約」です。デフォルトでは、GORMは主キーとしての`ID`、テーブル名を表すための複数形かつ`スネークケース`な構造体名、 `スネークケース`なカラム名、作成と更新の時間をトラッキングするための`CreatedAt`、`UpdatedAt`フィールドを利用します。
 
 GORMで採用されている規則に従う場合は、設定やコードを記述する手間が激減します。 規則があなたの要件と一致しない場合、 [GORMはそれらを設定することができます](conventions.html)
 
@@ -34,12 +34,12 @@ GORMで採用されている規則に従う場合は、設定やコードを記�
 GORMは `gorm.Model` 構造体を定義しました。これにはフィールド `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`が含まれます。
 
 ```go
-// gorm.Model定義
+// gorm.Modelの定義
 type Model struct {
-  ID uint `gorm:"primaryKey"`
+  ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
-  UpdatedAt time.
-  DeletedAt `gorm:"index"`
+  UpdatedAt time.Time
+  DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 ```
 
@@ -60,7 +60,7 @@ type User struct {
 }
 ```
 
-## 上級者向け
+## 高度な機能
 
 ### フィールドレベルの権限
 

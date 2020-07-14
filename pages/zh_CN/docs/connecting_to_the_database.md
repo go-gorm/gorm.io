@@ -3,7 +3,7 @@ title: Connecting to a Database
 layout: page
 ---
 
-GORM officially supports databases MySQL, PostgreSQL, SQlite, SQL Server
+GORM 官方支持的数据库类型有： MySQL, PostgreSQL, SQlite, SQL Server
 
 ## MySQL
 
@@ -20,7 +20,7 @@ func main() {
 }
 ```
 
-**NOTE:**
+**注意：**
 
 To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters))
 
@@ -90,7 +90,7 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
-## Connection Pool
+## 连接池
 
 GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
 
@@ -109,8 +109,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Refer [Generic Interface](generic_interface.html) for details
 
-## Unsupported Databases
+## 不支持的数据库
 
 Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+其次，[我们鼓励且欢迎大家伙开发更多数据库类型的驱动！](write_driver.html)

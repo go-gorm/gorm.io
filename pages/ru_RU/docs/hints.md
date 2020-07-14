@@ -1,13 +1,13 @@
 ---
-title: Hints
-layout: page
+title: Подсказки
+layout: страница
 ---
 
-GOMR provides optimizer/index/comment hints support
+GOMR обеспечивает поддержку оптимизатора/индексов/комментариев
 
 https://github.com/go-gorm/hints
 
-## Optimizer Hints
+## Подсказки оптимизатора
 
 ```go
 import "gorm.io/hints"
@@ -16,7 +16,7 @@ DB.Clauses(hints.New("hint")).Find(&User{})
 // SELECT * /*+ hint */ FROM `users`
 ```
 
-## Index Hints
+## Подсказки индексирования
 
 ```go
 import "gorm.io/hints"
@@ -34,7 +34,7 @@ DB.Clauses(
 // SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
 ```
 
-## Comment Hints
+## Подсказки комментарии
 
 ```go
 import "gorm.io/hints"

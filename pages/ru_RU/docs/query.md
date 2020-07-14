@@ -1,121 +1,121 @@
 ---
-title: Query
-layout: page
+title: Запрос
+layout: страница
 ---
 
-## Retrieving a single object
+## Получение одного объекта
 
-GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, when no record found, its returns error `ErrRecordNotFound`
+GORM предоставляет методы `First`, `Take`, `Last` для получения одного объекта из базы данных, метод добавляет условие `LIMIT 1` при запросе к базе данных, если запись не найдена, вернется ошибка `ErrRecordNotFound`
 
 ```go
-// Get the first record ordered by primary key
+// Получить первую запись с сортировкой по первичному ключу
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// Получить одну запись, без сортировки
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key desc
+// Получить последнюю запись, с сортировкой по первичному ключу
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // returns found records count
-result.Error        // returns error
+result.RowsAffected // возвращает количество найденных записей
+result.Error        // возвращает ошибку
 
-// check record not found error
+//  проверить на существование ошибки ErrRecordNotFound
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
-## Retrieving objects
+## Получение объектов
 
 ```go
-// Get all records
+// Получить все записи
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // returns found records count, equals `len(users)`
-result.Error        // returns error
+result.RowsAffected // возвращает количество найденных записей, аналогично `len(users)`
+result.Error        // возвращает ошибку
 ```
 
-## Conditions
+## Условия
 
-### String Conditions
+### Строковые условия
 
 ```go
-// Get first matched record
+// Получить первую найденную запись
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
-// Get all matched records
+// Получить все найденные записи
 db.Where("name <> ?", "jinzhu").Find(&users)
 // SELECT * FROM users WHERE name <> 'jinzhu';
 
-// IN
+// условие IN
 db.Where("name IN ?", []string{"jinzhu", "jinzhu 2"}).Find(&users)
 // SELECT * FROM users WHERE name in ('jinzhu','jinzhu 2');
 
-// LIKE
+// условие LIKE
 db.Where("name LIKE ?", "%jin%").Find(&users)
 // SELECT * FROM users WHERE name LIKE '%jin%';
 
-// AND
+// условие AND
 db.Where("name = ? AND age >= ?", "jinzhu", "22").Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age >= 22;
 
-// Time
+// Условие со временем
 db.Where("updated_at > ?", lastWeek).Find(&users)
 // SELECT * FROM users WHERE updated_at > '2000-01-01 00:00:00';
 
-// BETWEEN
+// Условие BETWEEN
 db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Struct & Map Conditions
+### Struct & Map Условия
 
 ```go
-// Struct
+// Условие Struct
 db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20 ORDER BY id LIMIT 1;
 
-// Map
+// Условие Map
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice of primary keys
+// Массив первичных ключей
 db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**ПРИМЕЧАНИЕ** При запросе с помощью struct, GORM будет запрашивать только поля без нуля, это означает, что значение поля равное `0`, `''`, `false` или другие [нулевые значения](https://tour.golang.org/basics/12), не будет использоваться для построения условий запроса, например:
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build query conditions, e.g:
+Вы можете использовать map для построения условий запроса, например:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-### <span id="inline_conditions">Inline Condition</span>
+### <span id="inline_conditions">Строчные условия</span>
 
-Works similar to `Where`.
+Работает аналогично `Where`.
 
 ```go
-// Get by primary key (only works for integer primary key)
+// Получить по первичному ключу (работает только для первичных ключей типа int)
 db.First(&user, 23)
 // SELECT * FROM users WHERE id = 23;
-// Get by primary key if it were a non-integer type
+// Получить по первичному ключу, если тип первичного ключа не int
 db.First(&user, "id = ?", "string_primary_key")
 // SELECT * FROM users WHERE id = 'string_primary_key';
 
-// Plain SQL
+// Сырой SQL
 db.Find(&user, "name = ?", "jinzhu")
 // SELECT * FROM users WHERE name = "jinzhu";
 
@@ -131,15 +131,15 @@ db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Not Conditions
+### Условия NOT
 
-Build NOT conditions, works similar to `Where`
+Построение условия NOT, работает аналогично `Where`
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE NOT name = "jinzhu" ORDER BY id LIMIT 1;
 
-// Not In
+// Not In ( Не в )
 db.Not(map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}).Find(&users)
 // SELECT * FROM users WHERE name NOT IN ("jinzhu", "jinzhu 2");
 
@@ -147,12 +147,12 @@ db.Not(map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}).Find(&use
 db.Not(User{Name: "jinzhu", Age: 18}).First(&user)
 // SELECT * FROM users WHERE name <> "jinzhu" AND age <> 18 ORDER BY id LIMIT 1;
 
-// Not In slice of primary keys
+// Не в массиве первичных ключей
 db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-### Or Conditions
+### Условия OR
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -167,11 +167,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-Also check out [Group Conditions in Advanced Query](advanced_query.html), it can write complicated SQL easier
+Кроме того, смотрите [групповые условия в расширенном запросе](advanced_query.html), это может проще написать сложные SQL запросы
 
-## Selecting Specific Fields
+## Выбор определенных полей
 
-Specify fields that you want to retrieve from database, by default, select all fields
+Укажите поля, которые вы хотите получить из базы данных, по умолчанию - выбирает все поля
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -184,28 +184,28 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-## Order
+## Порядок сортировки
 
-Specify order when retrieving records from the database
+Укажите порядок при получении записей из базы данных
 
 ```go
 db.Order("age desc, name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
-// Multiple orders
+// Несколько условий сортировки
 db.Order("age desc").Order("name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 ```
 
 ## Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit` указывает максимальное количество записей для извлечения, `Offset` указывает количество пропущенных записей перед началом возврата записей
 
 ```go
 db.Limit(3).Find(&users)
 // SELECT * FROM users LIMIT 3;
 
-// Cancel limit condition with -1
+// Отключить ограничения количества вывода при помощи условия -1
 db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 // SELECT * FROM users LIMIT 10; (users1)
 // SELECT * FROM users; (users2)
@@ -216,7 +216,7 @@ db.Offset(3).Find(&users)
 db.Limit(10).Offset(5).Find(&users)
 // SELECT * FROM users OFFSET 5 LIMIT 10;
 
-// Cancel offset condition with -1
+// Отключить условие смещения вывода при помощи условия -1
 db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
@@ -256,17 +256,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+Выбор уникальных значений из модели
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
+`Distinct` также работает с [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count)
 
 ## Joins
 
-Specify Joins conditions
+Указывает условия join
 
 ```go
 type result struct {
@@ -283,24 +283,24 @@ for rows.Next() {
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// multiple joins with parameter
+// множество join с параметрами
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
 ### Joins Preloading
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+Вы можете использовать `Joins` для предзагрузки связей в одном SQL запросе, например:
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Refer [Preloading (Eager Loading)](preload.html) for details
+Смотрите [Предзагрузка (Нетерпеливая загрузка)](preload.html) для подробностей
 
 ## <span id="scan">Scan</span>
 
-Scan results into a struct work similar to `Find`
+Записать результат в struct, работает аналогично `Find`
 
 ```go
 type Result struct {
@@ -311,6 +311,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
 
-// Raw SQL
+// Чистый SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```

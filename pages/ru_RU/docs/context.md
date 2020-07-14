@@ -1,21 +1,21 @@
 ---
-title: Context
-layout: page
+title: Контекст
+layout: страница
 ---
 
-GORM provides Context support, you can use it with method `WithContext`
+GORM обеспечивает поддержку контекста, вы можете использовать его методом `WithContext`
 
-## Single Session Mode
+## Режим одной сессии
 
-Single session mode usually used when you want to perform a single operation
+Режим одной сессии, обычно используется, когда вы хотите выполнить одну операцию
 
 ```go
 db.WithContext(ctx).Find(&users)
 ```
 
-## Continuous session mode
+## Режим непрерывной сессии
 
-Continuous session mode usually used when you want to perform a group of operations, for example:
+Режим непрерывной сессии обычно используется при выполнении группы операций, например:
 
 ```go
 tx := db.WithContext(ctx)
@@ -23,11 +23,11 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-## Chi Middleware Example
+## Пример Chi Middleware
 
-Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
+Режим непрерывной сессии, который может оказаться полезным при обработке запросов API, например, можно настроить `*gorm. B` с контекстом таймаута в middlewares, а затем использовать `*gorm.DB` при обработке всех запросов
 
-Following is a Chi middleware example:
+Пример middleware Chi:
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {
@@ -47,7 +47,7 @@ r.Get("/", func(w http.ResponseWriter, r *http.Request) {
   var users []User
   db.Find(&users)
 
-  // lots of db operations
+  // много операций с БД
 })
 
 r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -56,12 +56,12 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
   var user User
   db.First(&user)
 
-  // lots of db operations
+  // много операций с БД
 })
 ```
 
-**NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**ПРИМЕЧАНИЕ** Установка `Context` с `WithContext` является goroutine-безопасным, смотрите [Сессии](session.html) для подробностей
 
 ## Logger
 
-Logger accepts `Context` too, you can it tracking logs, refer [Logger](logger.html) for details
+Logger также принимает `Context`, вы можете им отслеживать журналы, см. [Logger](logger.html) для подробностей

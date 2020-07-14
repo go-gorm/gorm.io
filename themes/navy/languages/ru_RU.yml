@@ -1,68 +1,68 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  home: <i class="fa fa-home"></i>Главная
+  docs: <i class="fa fa-book"></i>Документация
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fa fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  community: <i class="fa fa-slack"></i>Сообщество
+  contribute: <i class="fa fa-rocket"></i>Внести вклад
+  search: Поиск в документации...
 index:
-  get_started: Get started
+  get_started: Начать работу
 page:
-  contents: Contents
-  back_to_top: Back to Top
-  improve: Improve this page
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  contents: Содержимое
+  back_to_top: Вернуться к началу
+  improve: Улучшить эту страницу
+  prev: Пред.
+  next: След.
+  last_updated: "Последнее обновление: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
-    declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
-    crud_interface: CRUD Interface
-    create: Create
-    query: Query
-    advanced_query: Advanced Query
-    update: Update
-    delete: Delete
-    raw_sql_and_builder: Raw SQL & SQL Builder
-    batch: Batch Processing
-    associations: Associations
+    getting_started: Начало работы
+    overview: Обзор
+    declaring_models: Объявление моделей
+    conventions: Преобразования
+    connecting_to_the_database: Подключение к базе данных
+    crud_interface: CRUD интерфейс
+    create: Создать
+    query: Запрос
+    advanced_query: Расширенный запрос
+    update: Обновление
+    delete: Удалить
+    raw_sql_and_builder: Raw SQL и конструктор SQL
+    batch: Пакетная обработка
+    associations: Связи
     belongs_to: Belongs To
     has_one: Has One
     has_many: Has Many
     many_to_many: Many To Many
-    association_mode: Association Mode
-    preload: Preloading (Eager Loading)
-    tutorials: Tutorials
-    context: Context
-    error_handling: Error Handling
-    method_chaining: Method Chaining
-    session: Session
-    hooks: Hooks
-    transactions: Transactions
-    migration: Migration
+    association_mode: Режим связи
+    preload: Предзагрузка (Нетерпеливая загрузка)
+    tutorials: Обучение
+    context: Контекст
+    error_handling: Обработка ошибок
+    method_chaining: Цепочки методов
+    session: Сессия
+    hooks: Хуки
+    transactions: Транзакции
+    migration: Миграция
     logger: Logger
-    generic_interface: Generic Database Interface
-    performance: Performance
-    data_types: Data Types
-    scopes: Scopes
-    settings: Settings
-    advanced_topics: Advanced Topics
+    generic_interface: Универсальный интерфейс базы данных
+    performance: Производительность
+    data_types: Типы данных
+    scopes: Области
+    settings: Настройки
+    advanced_topics: Дополнительные возможности
     prometheus: Prometheus
-    hints: Hints
-    indexes: Indexes
-    constraints: Constraints
-    composite_primary_key: Composite Primary Key
-    security: Security
-    gorm_config: GORM Config
-    write_plugins: Write Plugins
-    write_driver: Write Driver
-    change_log: ChangeLog
-    community: Community
-    contribute: Contribute
-    translate: Translate current site
+    hints: Подсказки
+    indexes: Индексы
+    constraints: Ограничения
+    composite_primary_key: Композитный первичный ключ
+    security: Безопасность
+    gorm_config: Настройки GORM
+    write_plugins: Написание плагинов
+    write_driver: Написание драйверов
+    change_log: История изменений
+    community: Сообщество
+    contribute: Внести вклад
+    translate: Перевести текущий сайт

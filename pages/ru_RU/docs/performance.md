@@ -1,13 +1,13 @@
 ---
-title: Performance
-layout: page
+title: Производительность
+layout: страница
 ---
 
-GORM optimizes many things to improve the performance, the default performance should good for most applications, but there are still some tips for how to improve it for your application.
+GORM оптимизирует многое для улучшения производительности, производительность по умолчанию должна быть хорошая для большинства приложений, но есть несколько советов по улучшению вашего приложения.
 
-## [Disable Default Transaction](transactions.html)
+## [Отключить транзакцию по умолчанию](transactions.html)
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization
+GORM выполняет операции записи (создания/обновления/удаления) внутри транзакции для обеспечения согласованности данных, что плохо для производительности, вы можете отключить её во время инициализации
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -15,9 +15,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## [Caches Prepared Statement](session.html)
+## [Подготовленный кеш](session.html)
 
-Creates a prepared statement when executing any SQL and caches them to speed up future calls
+Создает подготовленные данные при выполнении любого SQL и кэширует их для ускорения будущих вызовов
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -25,9 +25,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## [SQL Builder with PreparedStmt](sql_builder.html)
+## [Конструктор SQL с подготовкой](sql_builder.html)
 
-GORM tries a lot to improve generate SQL, you can still choose to use raw SQL or prepare SQL before usage with GORM API ([DryRun Mode](session.html)), and execute it with prepared statement later, e.g:
+GORM пытается многое улучшить при генерации SQL, вы все еще можете выбрать использование чистого SQL или подготовить SQL перед использованием в GORM API ([Режим DryRun](session.html)), и выполнить его подготовленным позднее, например:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -37,15 +37,15 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-## Select Fields
+## Выбрать поля
 
-By default GORM select all fields when querying, you can use `Select` to specify fields you want
+По умолчанию GORM выбирает все поля при запросе, вы можете использовать `Select` для указания полей
 
 ```go
 db.Select("Name", "Age").Find(&Users{})
 ```
 
-Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)
+Или определите меньший struct API для использования функции [умных полей](advanced_query.html)
 
 ```go
 type User struct {
@@ -53,7 +53,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // сотни полей
 }
 
 type APIUser struct {
@@ -61,18 +61,18 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when query
+// Выбрать `id`, `name` автоматически при запросе
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
-## [Iteration / FindInBatches](advanced_query.html)
+## [Итерация / Поиск в пакете](advanced_query.html)
 
-Query and process records with iteration or in batches
+Запрашивать и обрабатывать записи с итерациями или партиями
 
-## [Index Hints](hints.html)
+## [Подсказки индексирования](hints.html)
 
-[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
+[Индекс](indexes.html) используется для ускорения поиска данных и производительности SQL-запроса. `Подсказки индексирования` дают оптимизатору информацию о том, как выбрать индексы во время обработки запроса, что дает гибкость выбора более эффективного плана выполнения, чем оптимизатор
 
 ```go
 import "gorm.io/hints"

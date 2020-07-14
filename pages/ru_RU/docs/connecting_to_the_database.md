@@ -1,9 +1,9 @@
 ---
-title: Connecting to a Database
-layout: page
+title: Подключение к базе данных
+layout: страница
 ---
 
-GORM officially supports databases MySQL, PostgreSQL, SQlite, SQL Server
+GORM официально поддерживает базы данных MySQL, PostgreSQL, SQlite, SQL Server
 
 ## MySQL
 
@@ -14,29 +14,29 @@ import (
 )
 
 func main() {
-  // refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
+  // смотрите https://github.com/go-sql-driver/mysql#dsn-data-source-name для подробностей
   dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
   db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
 ```
 
-**NOTE:**
+**ПРИМЕЧАНИЕ:**
 
-To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters))
+Для корректной обработки `time.Time`, вам нужно включить `parseTime` в качестве параметра. ([больше параметров](https://github.com/go-sql-driver/mysql#parameters))
 
-To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+Чтобы полностью поддерживать кодировку UTF-8, необходимо изменить `charset=utf8` на `charset=utf8mb4`. Смотрите [эту статью](https://mathiasbynens.be/notes/mysql-utf8mb4) для подробностей
 
-MySQl Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
+MySQl Driver предоставляет [несколько расширенных настроек](https://github.com/go-gorm/mysql), которые можно использовать при инициализации, например:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
-  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name
-  DefaultStringSize: 256, // default size for string fields
-  DisableDatetimePrecision: true, // disable datetime precision, which not supported before MySQL 5.6
-  DontSupportRenameIndex: true, // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
+  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // имя источника данных
+  DefaultStringSize: 256, // размер по умолчанию для строковых полей
+  DisableDatetimePrecision: true, // выключаем точность datetime, которая не поддерживается до MySQL 5.
+  DontSupportRenameIndex: true, // drop & create когда переименовывается индекс переименование индекса не поддерживается до MySQL 5. , MariaDB
   DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
   SkipInitializeWithVersion: false, // auto configure based on used version
-}), &gorm.Config{})
+}), &gorm. нарисовать {})
 ```
 
 ## PostgreSQL
@@ -51,7 +51,7 @@ dsn := "user=gorm password=gorm DB.name=gorm port=9920 sslmode=disable TimeZone=
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+Мы используем [pgx](https://github.com/jackc/pgx) в качестве драйвера базы данных sql postgres, он разрешает кэш подготовленных выражений по умолчанию, чтобы отключить его:
 
 ```go
 // https://github.com/go-gorm/postgres
@@ -73,7 +73,7 @@ import (
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**ПРИМЕЧАНИЕ:** Вы также можете использовать `file::memory:?cache=shared` вместо пути к файлу. Это позволит SQLite использовать временную базу данных в системной памяти. (Смотрите [SQLite документацию](https://www.sqlite.org/inmemorydb.html) для подробностей)
 
 ## SQL Server
 
@@ -88,29 +88,29 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
-Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
+Microsoft предлагает [руководство](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) по использованию SQL Server с Go (и GORM).
 
-## Connection Pool
+## Пул подключений
 
-GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
+GORM использует \[database/sql\]((https://pkg.go.dev/database/sql) для поддержки пула подключения
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleConns устанавливает максимальное количество соединений в пуле простоя.
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns устанавливает максимальное количество открытых подключений к базе данных.
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime устанавливает максимальное время повторного использования.
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+Смотрите [Общий интерфейс](generic_interface.html) для подробностей
 
-## Unsupported Databases
+## Неподдерживаемые базы данных
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Некоторые базы данных могут быть совместимы с `mysql` или `postgres` диалектами, в этом случае можно просто использовать диалект для этих баз данных.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+Для других, [вам предлагается сделать драйвер, pull request приветствуется!](write_driver.html)

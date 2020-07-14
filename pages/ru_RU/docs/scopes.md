@@ -1,11 +1,11 @@
 ---
-title: Scopes
-layout: page
+title: Области
+layout: страница
 ---
 
-Scopes allow you to easily re-use commonly logic
+Область применения позволяет легко повторно использовать логику
 
-## Query
+## Запрос
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -27,16 +27,16 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// Найти все заказы по кредитной карте с суммой более 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// Найти все заказы с наложенным платежом и суммой более 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// Найти все оплаченные и отгруженные заказы с суммой более 1000
 ```
 
-## Pagination
+## Нумерация страниц
 
 ```go
 func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
@@ -63,7 +63,7 @@ db.Scopes(Paginate(r)).Find(&users)
 db.Scopes(Paginate(r)).Find(&articles)
 ```
 
-## Updates
+## Обновления
 
 ```go
 func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {

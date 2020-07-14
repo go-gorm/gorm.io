@@ -5,7 +5,7 @@ layout: page
 
 ## Delete Record
 
-Delete a record
+レコードを削除する
 
 ```go
 // Delete an existing record, email's primary key value is 10
@@ -21,9 +21,9 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE FROM emails WHERE id=10 AND name = 'jinzhu'
 ```
 
-## Delete Hooks
+## Deleteフック
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+GORMは `BeforeDelete`, `AfterDelete`をフックします。これらのメソッドはレコードを削除する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -34,7 +34,7 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## Batch Delete
+## 一括削除
 
 If we havn't specify a record having priamry key value, GORM will perform a batch delete all matched records
 
@@ -46,11 +46,11 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-### Block Global Delete
+### グローバルデリートのブロック
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will returns `ErrMissingWhereClause` error
+何も条件を付けずにバッチ削除を行った場合、GORMは実行せず、`ErrMissingWhereClause`エラーを返します。
 
-You can use conditions like `1 = 1` to force the global delete
+`1 = 1` のような条件を使用して、グローバルデリートを強制できます。
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -59,7 +59,7 @@ db.Where("1 = 1").Delete(&User{})
 // DELETE `users` WHERE 1=1
 ```
 
-## Soft Delete
+## 論理削除
 
 If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
 
@@ -88,7 +88,7 @@ type User struct {
 }
 ```
 
-### Find soft deleted records
+### 論理削除したレコードを検索する
 
 You can find soft deleted records with `Unscoped`
 
@@ -97,9 +97,9 @@ db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Delete permanently
+### 完全削除
 
-You can delete matched records permanently with `Unscoped`
+`Unscoped`で一致したレコードを永久に削除できます。
 
 ```go
 db.Unscoped().Delete(&order)

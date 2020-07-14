@@ -1,15 +1,15 @@
 ---
-title: Database Indexes
-layout: page
+title: Индексы базы данных
+layout: страница
 ---
 
-GORM allows create database index with tag `index`, `uniqueIndex`, those indexes will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORM позволяет создавать индекс базы данных при помощи тегов `index`, `uniqueIndex`, эти индексы будут создаваться, при [AutoMigrate или CreateTable в GORM](migration.html)
 
-## Index Tag
+## Тег индекса
 
-GORM accepts lots of index settings, like `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`
+GORM принимает множество настроек индекса, таких как `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`
 
-Check the following example for how to use it
+Следующий пример показывает, как это можно использовать
 
 ```go
 type User struct {
@@ -22,9 +22,9 @@ type User struct {
 }
 ```
 
-### uniqueIndex
+### uniqueIndex (уникальный индекс)
 
-tag `uniqueIndex` works similar like `index`, it equals to `index:,unique`
+тэг `uniqueIndex` работает подобно `index`, аналог `index:,unique`
 
 ```go
 type User struct {
@@ -33,9 +33,9 @@ type User struct {
 }
 ```
 
-## Composite Indexes
+## Композитные индексы
 
-Use same index name for two fields will creates composite indexes, for example:
+Использовать одно и то же имя индекса для двух полей создаст составные индексы, например:
 
 ```go
 type User struct {
@@ -44,35 +44,35 @@ type User struct {
 }
 ```
 
-### Fields Priority
+### Приоритет полей
 
-The column order of a composite index has an impact on its performance so it must be chosen carefully
+Порядок расположения составного индекса в колонках влияет на его производительность, поэтому его необходимо тщательно выбрать
 
-You can specify the order with the `priority` option, the default priority value is `10`, if priority value is the same, the order will be based on model struct's field index
+Вы можете указать порядок при помощи параметра `priority`, значение приоритета по умолчанию `10`, если приоритет одинаков, то порядок будет базироваться на порядке полей структуры модели
 
 ```go
 type User struct {
     Name   string `gorm:"index:idx_member"`
     Number string `gorm:"index:idx_member"`
 }
-// column order: name, number
+// порядок полей: name, number
 
 type User struct {
     Name   string `gorm:"index:idx_member,priority:2"`
     Number string `gorm:"index:idx_member,priority:1"`
 }
-// column order: number, name
+// порядо полей: number, name
 
 type User struct {
     Name   string `gorm:"index:idx_member,priority:12"`
     Number string `gorm:"index:idx_member"`
 }
-// column order: number, name
+// порядо полей: number, name
 ```
 
-## Multiple indexes
+## Несколько индексов
 
-A field accepts multiple `index`, `uniqueIndex` tags that will create multiple indexes on a field
+Поле может иметь несколько тэгов `index`, `uniqueIndex`, которые создадут несколько индексов в поле
 
 ```go
 type UserIndex struct {

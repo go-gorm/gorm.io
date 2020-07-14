@@ -3,9 +3,9 @@ title: 高级查询
 layout: page
 ---
 
-## Smart Select Fields
+## 智能选择字段
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller API struct that select specific fields automatically
+GORM 允许通过 [`Select`](query.html) 方法选择特定的字段，如果您在应用程序中经常使用此功能，你可以定义一个较小的 API 结构体，以实现自动选择特定的字段。
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // 假设后面还有几百个字段...
 }
 
 type APIUser struct {
@@ -21,14 +21,14 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when query
+// 查询时会自动选择 `id`, `name` 字段
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 ## Locking (FOR UPDATE)
 
-GORM supports different types of locks, for example:
+GORM 支持多种类型的锁，例如：
 
 ```go
 DB.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -41,11 +41,11 @@ DB.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+参考 [原生 SQL 及构造器](sql_builder.html) 获取详情
 
-## SubQuery
+## 子查询
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+子查询可以嵌套在查询中，GORM 允许在使用 `*gorm.DB` 对象作为参数时生成子查询
 
 ```go
 db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -56,9 +56,9 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
-## <span id="group_conditions">Group Conditions</span>
+## <span id="group_conditions">Group 条件</span>
 
-Easier to write complicated SQL query with Group Conditions
+使用 Group 条件可以更轻松的编写复杂 SQL 查询
 
 ```go
 db.Where(
@@ -70,9 +70,9 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## Named Argument
+## 命名参数
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM 支持 [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) 和 `map[string]interface{}{}` 形式的命名参数，例如：
 
 ```go
 type Result struct {
@@ -89,9 +89,9 @@ db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 
 type Result struct { Name string Age  int } var result Result db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result) // Raw SQL db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 
-## Find To Map
+## Find 至 map
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forgot to specify `Model` or `Table`, for example:
+GORM 允许扫描结果至 `map[string]interface{}` 或 `[]map[string]interface{}`，此时别忘了指定 `Model` 或 `Table`，例如：
 
 ```go
 var result map[string]interface{}

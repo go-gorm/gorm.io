@@ -1,26 +1,26 @@
 ---
-title: Data Types
-layout: page
+title: Типы данных
+layout: страница
 ---
 
-GORM provides few interfaces that allow users to define well-supported customized data types for GORM, takes [json](https://github.com/go-gorm/datatypes/blob/master/json.go) as an example
+GORM предоставляет некоторые интерфейсы, которые позволяют пользователям определять поддерживаемые типы данных для GORM, например [json](https://github.com/go-gorm/datatypes/blob/master/json.go)
 
-## Implements Data Type
+## Описание типов данных
 
 ### Scanner / Valuer
 
-The customized data type has to implement the [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces, so GORM knowns to how to receive/save it into the database
+Настраиваемый тип данных должен реализовывать интерфейсы [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) и [Valuer](https://pkg.go.dev/database/sql/driver#Valuer), чтобы GORM знал, как получить/сохранить его в базе данных
 
-For example:
+Например:
 
 ```go
 type JSON json.RawMessage
 
-// Scan scan value into Jsonb, implements sql.Scanner interface
+// Сканировать массив в Jsonb, описывает интерфейс sql.Scanner
 func (j *JSON) Scan(value interface{}) error {
   bytes, ok := value.([]byte)
   if !ok {
-    return errors.New(fmt.Sprint("Failed to unmarshal JSONB value:", value))
+    return errors.New(fmt.Sprint("Ошибка распаковки значения JSONB:", value))
   }
 
   result := json.RawMessage{}
@@ -29,7 +29,7 @@ func (j *JSON) Scan(value interface{}) error {
   return err
 }
 
-// Value return json value, implement driver.Valuer interface
+// Возвращает значение json, описывает интерфейс driver.Valuer
 func (j JSON) Value() (driver.Value, error) {
   if len(j) == 0 {
     return nil, nil
@@ -38,9 +38,9 @@ func (j JSON) Value() (driver.Value, error) {
 }
 ```
 
-### GormDataTypeInterface
+### Интерфейс GormDataTypeInterface
 
-A customized data type might has different database types, you can implements the `GormDataTypeInterface` to set them up, for example:
+Настраиваемый тип данных может работать в различных типах баз данных, вы можете использовать `GormDataTypeInterface` для их установки, например:
 
 ```go
 type GormDataTypeInterface interface {
@@ -48,10 +48,10 @@ type GormDataTypeInterface interface {
 }
 
 func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
-  // use field.Tag, field.TagSettings gets field's tags
-  // checkout https://github.com/go-gorm/gorm/blob/master/schema/field.go for all options
+  // использет field.Tag, field.TagSettings для получения тегов поля
+  // смотрите https://github.com/go-gorm/gorm/blob/master/schema/field.go для всех настроек
 
-  // returns different database type based on driver name
+  // возвращает тип БД в зависимости от имени драйвера
   switch db.Dialector.Name() {
   case "mysql":
     return "JSON"
@@ -62,9 +62,9 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 }
 ```
 
-### Clause Expression
+### Настраиваемые исключения
 
-Customized data type possible needs specifically SQL which can't use current GORM API, you can define a `Builder` to implement interface `clause.Expression`
+Настраиваемый тип данных требует специфического SQL, который не может использовать текущий GORM API, вы можете определить `Builder` для реализации `clause.Expression (исключений)`
 
 ```go
 type Expression interface {
@@ -72,7 +72,7 @@ type Expression interface {
 }
 ```
 
-Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) for implementation details
+Смотрите [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) как пример реализации
 
 ```go
 // Generates SQL with clause Expression
@@ -95,6 +95,6 @@ db.Find(&user, datatypes.JSONQuery("attributes").Equals("jinzhu", "name"))
 // SELECT * FROM "user" WHERE json_extract_path_text("attributes"::json,'name') = 'jinzhu'
 ```
 
-## Customized Data Types Collections
+## Настраиваемые наборы типов данных
 
-We created a Github repo for customized data types collections [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), pull request welcome ;)
+Мы создали репозиторий Github для настраиваемых коллекций типов данных [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), запрос на слияние приветсвуется ;)

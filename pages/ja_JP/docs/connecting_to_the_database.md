@@ -14,13 +14,13 @@ import (
 )
 
 func main() {
-  // refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
+  // 詳細は https://github.com/go-sql-driver/mysql#dsn-data-source-name を参照
   dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
   db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
 ```
 
-**注意:**
+**注:**
 
 `time.Time` を正しく処理するには、パラメータとして `parseTime` を含める必要があります。 ([more parameters](https://github.com/go-sql-driver/mysql#parameters))
 
@@ -90,7 +90,7 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
-## Connection Pool
+## コネクションプーリング
 
 GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
 

@@ -1,41 +1,41 @@
 ---
 title: Logger
-layout: page
+layout: страница
 ---
 
 ## Logger
 
-Gorm has a [default logger implementation](https://github.com/go-gorm/gorm/blob/master/logger/logger.go), it will print Slow SQL and happening errors by default
+Gorm реализует [логгер по умолчанию](https://github.com/go-gorm/gorm/blob/master/logger/logger.go), он будет выводить Медленные SQL запросы и перехватывать ошибки
 
-The logger accepts few options, you can customize it during initialization, for example:
+Логгер принимает несколько опций, вы можете настроить их в процессе инициализации, например:
 
 ```go
 newLogger := logger.New(
-  log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+  log.New(os.Stdout, "\r\n", log.LstdFlags), // вывод в io
   logger.Config{
-    SlowThreshold: time.Second,   // Slow SQL threshold
-    LogLevel:      logger.Silent, // Log level
-    Colorful:      false,         // Disable color
+    SlowThreshold: time.Second,   // Медленные SQL запросы
+    LogLevel:      logger.Silent, // Уровень логирования
+    Colorful:      false,         // Отключить цвета
   },
 )
 
-// Globally mode
+// Глобальный режим
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
   Logger: newLogger,
 })
 
-// Continuous session mode
+// Сессионный режим
 tx := db.Session(&Session{Logger: newLogger})
 tx.First(&user)
 tx.Model(&user).Update("Age", 18)
 
-// Debug a single operation, change the session's log level to logger.Info
+// Отладка одной операции, смена уровня логирования до logger.Info
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
-### Log Levels
+### Уровни лога
 
-GORM defined log levels: `Silent`, `Error`, `Warn`, `Info`
+Уровни логирования GORM: `Silent`, `Error`, `Warn`, `Info`
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
@@ -43,11 +43,11 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 })
 ```
 
-## Customize Logger
+## Настройка логгера
 
-Refer to GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
+Смотрите [ логирование по умолчанию](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) для GORM, чтобы определить свой собственный
 
-The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
+Логгер должен реализовать следующий интерфейс, он принимает `context`, чтобы вы могли использовать его для отслеживания журнала
 
 ```go
 type Interface interface {

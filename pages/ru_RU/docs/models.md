@@ -1,13 +1,13 @@
 ---
-title: Declaring Models
-layout: page
+title: Объявление моделей
+layout: страница
 ---
 
-## Declaring Models
+## Объявление моделей
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+Модели являются обычными stuct с основными типами Go, указателями/псевдонимами или пользовательскими типами, реализующими интерфейсы [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) и [Valuer](https://pkg.go.dev/database/sql/driver#Valuer)
 
-For Example:
+Например:
 
 ```go
 type User struct {
@@ -23,18 +23,18 @@ type User struct {
 }
 ```
 
-## Conventions
+## Преобразования
 
-GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+По умолчанию, GORM использует в качестве первичного ключа `ID`, преобразует имя struct в `snake_cases` в качестве имени таблицы, `snake_case` в качестве имени столбца и использует `CreatedAt`, `UpdatedAt` для отслеживания времени создания/обновления
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code, If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+Если вы следуете правилам, принятым GORM, вам нужно написать очень мало конфигурации/кода, Если правила не соответствует вашим требованиям, [GORM позволяет настроить их](conventions.html)
 
 ## gorm.Model
 
-GORM defined a `gorm.Model` struct, which includes fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
+GORM определил struct `gorm.Model`, который включает в себя поля `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
 
 ```go
-// gorm.Model definition
+// объявление gorm.Model
 type Model struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
@@ -43,14 +43,14 @@ type Model struct {
 }
 ```
 
-You can embed it into your struct to include those fields, refer [Embedded Struct](#embedded_struct)
+Вы можете вставить его (gorm.Model) в свой struct, чтобы включить эти поля, смотрите [Встроенный struct](#embedded_struct)
 
 ```go
 type User struct {
   gorm.Model
   Name string
 }
-// equals
+// идентичен
 type User struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
@@ -60,52 +60,52 @@ type User struct {
 }
 ```
 
-## Advanced
+## Дополнительно
 
-### Field-Level Permission
+### Разрешения на уровне поля
 
-Exported fields have all permission when doing CRUD with GORM, but GORM allows you to change the field-level permission with tag, so you can make a field to read-only, write-only, create-only, update-only or ignored
-
-```go
-type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
-  Name string `gorm:"->;<-:create"` // allow read and create
-  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`  // ignore this field when write and read
-}
-```
-
-### <name id="time_tracking">Auto Creating/Updating Time/Unix (Nano) Second</span>
-
-GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
-
-To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
-
-If you prefer to save UNIX (nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
+Экспортированные поля имеют все разрешения при выполнении CRUD с помощью GORM, но GORM позволяет изменять права на уровне поля при помощи тега, так что вы можете сделать поле только для чтения, записи, только для создания, обновления или игнорирования
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix NANO seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  Name string `gorm:"<-:create"` // разрешить чтение и создание
+  Name string `gorm:"<-:update"` // разрешить чтение и обновление
+  Name string `gorm:"<-"`        // разрешить чтение и запись (создание и обновление)
+  Name string `gorm:"<-:false"`  // разрешить чтение, запретить запись
+  Name string `gorm:"->"`        // только чтение (запрещает запись после создания)
+  Name string `gorm:"->;<-:create"` // разрешить чтение и создание
+  Name string `gorm:"->:false;<-:create"` // только создание (запрещает чтение из БД)
+  Name string `gorm:"-"`  // игнорировать это поле при чтении и записи
 }
 ```
 
-### <span id="embedded_struct">Embedded Struct</span>
+### <name id="time_tracking">Автоматическое создание/обновление Time/Unix (Нано) секунды</span>
 
-For anonymous fields, GORM will include its fields into its parent struct, for example:
+GORM использует `CreatedAt`, `UpdatedAt` для отслеживания создания/обновления времени, GORM заполнит [текущее время](gorm_config.html#current_time) при создании/обновлении, если эти поля определены
+
+Чтобы использовать поля с другим именем, вы можете настроить эти поля при помощи тегов `autoCreateTime`, `autoUpdateTime`
+
+Если вы предпочитаете сохранять UNIX (nano) секунды вместо времени, вы можете просто изменить тип данных поля с `time.Time` на `int`
+
+```go
+type User struct {
+  CreatedAt time.Time // Установить на текущее время если ноль при создании
+  UpdatedAt int       // Установить текущий unixtimestamp при обновлении или если ноль при создании
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // Установить unix NANO секунды как время обновления
+  Created   int64 `gorm:"autoCreateTime"`      // Установить unixtimestamp секунды как время создания
+}
+```
+
+### <span id="embedded_struct">Встроенный struct</span>
+
+Для анонимных полей, GORM будет включать свои поля в свою родительскую структуру, например:
 
 ```go
 type User struct {
   gorm.Model
   Name string
 }
-// equals
+// идентичен
 type User struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
@@ -115,7 +115,7 @@ type User struct {
 }
 ```
 
-For a normal struct field, you can embed it with the tag `embedded`, for example:
+Для обычных полей struct вы можете вставить их с тегом `embedded`, например:
 
 ```go
 type Author struct {
@@ -128,7 +128,7 @@ type Blog struct {
   Author  Author `gorm:"embedded"`
   Upvotes int32
 }
-// equals
+// идентично
 type Blog struct {
   ID    int64
     Name  string
@@ -137,7 +137,7 @@ type Blog struct {
 }
 ```
 
-And you can use tag `embeddedrefix` to add prefix to embedded fields' db name, for example:
+И вы можете использовать тег `embeddedrefix` для добавления префикса во встроенные поля в db, например:
 
 ```go
 type Blog struct {
@@ -145,7 +145,7 @@ type Blog struct {
   Author  Author `gorm:"embedded;embeddedPrefix:author_"`
   Upvotes int32
 }
-// equals
+// идентично
 type Blog struct {
   ID          int64
     AuthorName  string
@@ -155,34 +155,34 @@ type Blog struct {
 ```
 
 
-### Fields Tags
+### Теги полей
 
-Tags are optional to use when declaring models, GORM supports the following tags:
+Теги необязательны для использования при определении моделей, GORM поддерживает следующие теги:
 
-Tag Name case doesn't matter, `camelCase` is preferred to use.
+Имя тега не имеет значения, предпочтительнее использовать `camelCase`.
 
-| Tag Name       | Description                                                                                                                                                              |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| column         | column db name                                                                                                                                                           |
-| type           | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, specified database data type like varbinary(8) also supported |
-| size           | specifies column data size/length, e.g: `size:256`                                                                                                                       |
-| primaryKey     | specifies column as primary key                                                                                                                                          |
-| unique         | specifies column as unique                                                                                                                                               |
-| default        | specifies column default value                                                                                                                                           |
-| precision      | specifies column precision                                                                                                                                               |
-| not null       | specifies column as NOT NULL                                                                                                                                             |
-| autoIncrement  | specifies column auto incrementable                                                                                                                                      |
-| embedded       | embed a field                                                                                                                                                            |
-| embeddedPrefix | prefix for embedded field                                                                                                                                                |
-| autoCreateTime | track creating time when creating, `autoCreateTime:nano` track unix nano time for `int` fields                                                                           |
-| autoUpdateTime | track updating time when creating/updating, `autoUpdateTime:nano` track unix nano time for `int` fields                                                                  |
-| index          | create index with options, same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                            |
-| uniqueIndex    | same as `index`, but create uniqued index                                                                                                                                |
-| check          | creates check constraint, eg: `check:(age > 13)`, refer [Constraints](constraints.html)                                                                               |
-| <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no permission                                            |
-| ->             | set field's read permission                                                                                                                                              |
-| -              | ignore this fields (disable read/write permission)                                                                                                                       |
+| Назвние тэга   | Описание                                                                                                                                                                         |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| column         | название столбца                                                                                                                                                                 |
+| type           | тип данных столбца, предпочтительно использовать совместимый общий тип, например: bool, int, uint, float, string, time, bytes, тип данных типа varbinary(8) также поддерживается |
+| size           | задает размер/длину столбца, например: `size:256`                                                                                                                                |
+| primaryKey     | указать столбец в качестве первичного ключа                                                                                                                                      |
+| unique         | указать столбец как уникальный                                                                                                                                                   |
+| default        | задает значение столбца по умолчанию                                                                                                                                             |
+| precision      | определяет точность столбца                                                                                                                                                      |
+| not null       | определяет столбец как НЕ NULL                                                                                                                                                   |
+| autoIncrement  | определяет столбец с авто инкрементом                                                                                                                                            |
+| embedded       | встроенное поле                                                                                                                                                                  |
+| embeddedPrefix | префикс для встроенного поля                                                                                                                                                     |
+| autoCreateTime | сохранает время создания при создании, `autoCreateTime:nano` сохраняет unix nano время для `int` полей                                                                           |
+| autoUpdateTime | сохраняет время обновления при создании/обновлении, `autoUpdateTime:nano` сохраняет unix нано время для `int` полей                                                              |
+| index          | создать индекс с параметрами, одинаковое имя для нескольких полей создает составные индексы, смотрите [Индексы](indexes.html) для подробностей                                   |
+| uniqueIndex    | то же самое, что и `index`, но создает уникальный индекс                                                                                                                         |
+| check          | создает ограничение проверки, например: `check:(age > 13)`, см. [Ограничения](constraints.html)                                                                               |
+| <-             | задать разрешение на запись, `<-:create` только для создания, `<-:update` только обновление, `<-:false` Нет разрешения                                                  |
+| ->             | установить права на чтение полей                                                                                                                                                 |
+| -              | игнорировать эти поля (отключить разрешение на чтение/запись)                                                                                                                    |
 
-### Associations Tags
+### Взаимосвязи
 
-GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the [Associations section](associations.html#tags) for details
+GORM позволяет настраивать внешние ключи, ограничения, many2many через теги связей, загляните в [раздел Ассоциации](associations.html#tags) для получения подробной информации

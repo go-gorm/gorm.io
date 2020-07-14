@@ -1,11 +1,11 @@
 ---
-title: Preloading (Eager Loading)
-layout: page
+title: Предзагрузка (Нетерпеливая загрузка)
+layout: страница
 ---
 
-## Preload
+## Предварительная загрузка
 
-GORM allows eager loading relations in other SQL with `Preload`, for example:
+GORM позволяет загружать отношения с помощью `Preload`, например:
 
 ```go
 type User struct {
@@ -20,7 +20,7 @@ type Order struct {
   Price  float64
 }
 
-// Preload Orders when find users
+// Предварительная загрузка Заказов (Orders) при поиске пользователей
 db.Preload("Orders").Find(&users)
 // SELECT * FROM users;
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4);
@@ -32,9 +32,9 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 // SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
 ```
 
-## Joins Preloading
+## Join с предварительной загрузкой
 
-`Preload` loads the association data in a separate query, `Join Preload` will loads association data using inner join, for example:
+`Preload` загружает данные связей в отдельном запросе, `Join Preload` загружает данные связей используя join внутри запроса, например:
 
 ```go
 db.Joins("Company").Joins("Manager").Joins("Account").First(&user, 1)
@@ -42,11 +42,11 @@ db.Joins("Company").Joins("Manager").Joins("Account").First(&user, "users.name =
 db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2,3,4,5})
 ```
 
-**NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
+**ПРИМЕЧАНИЕ** `Join Preload` работает со связями один к одному, например: `has one`, `belongs to`
 
-## Preload All
+## Предзагрузить все
 
-`clause.Associations` can works with `Preload` similar `Select` when creating/updating, you can use it to `Preload` all associations, for example:
+`clause.Associations` может работать с `Preload` аналогично `Select` при создании/обновлении, вы можете использовать его для `предзагрузки` всех связей, например:
 
 ```go
 type User struct {
@@ -60,12 +60,12 @@ type User struct {
 db.Preload(clause.Associations).Find(&users)
 ```
 
-## Preload with conditions
+## Предзагрузка с условиями
 
-GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
+GORM позволяет предварительно загрузить связи с условиями, это работает аналогично [Строчным Условиям](query.html#inline_conditions)
 
 ```go
-// Preload Orders with conditions
+// Предзагрузка заказов Orders с условиями
 db.Preload("Orders", "state NOT IN (?)", "cancelled").Find(&users)
 // SELECT * FROM users;
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4) AND state NOT IN ('cancelled');
@@ -75,9 +75,9 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 // SELECT * FROM orders WHERE user_id IN (1,2) AND state NOT IN ('cancelled');
 ```
 
-## Custom Preloading SQL
+## Пользовательский SQL
 
-You are able to custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+Вы можете самостоятельно загрузить SQL, передав `func(db *gorm.DB) *gorm.DB`, например:
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
@@ -87,14 +87,14 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.amount DESC;
 ```
 
-## Nested Preloading
+## Вложенная предварительная загрузка
 
-GORM supports nested preloading, for example:
+GORM поддерживает вложенную предварительную загрузку, например:
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)
 
-// Customize Preload conditions for `Orders`
-// And GORM won't preload unmatched order's OrderItems then
+// настройка предварительных условий для `Orders`
+// GORM не будет загружать не совпадающие заказы
 db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
 ```

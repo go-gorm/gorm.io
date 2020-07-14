@@ -1,119 +1,119 @@
 ---
-title: Method Chaining
-layout: page
+title: Цепочки методов
+layout: страница
 ---
 
-GORM allows method chaining, so you can write code like this:
+GORM позволяет делать цепочки методов, так что вы можете написать код следующим образом:
 
 ```go
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 ```
 
-There are three kinds of methods in GORM: `Chain Method`, `Finisher Method`, `New Session Method`
+В GORM существует три вида методов: `Метод цепочки`, `Метод окончания`, `Метод новой сессии`
 
-## Chain Method
+## Метод цепочки
 
-Chain methods are methods to modify or add `Clauses` to current `Statement`, like:
+Методы цепочки - это методы изменения или добавления `Условий` к текущему `экземпляру`, например:
 
 `Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
 
-Here is [the full lists](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), also check out the [SQL Builder](sql_builder.html) for more details about `Clauses`
+Вот [полный список](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), также ознакомьтесь с [Конструктор SQL](sql_builder.html) для получения более подробной информации о `Условиях`
 
-## Finisher Method
+## Метод завершения
 
-Finishers are immediate methods that execute registered callbacks, which will generate and execute SQL, like those methods:
+Завершители - это методы, которые выполняют зарегистрированные callback, которые будут генерировать и выполнять SQL, такие как эти методы:
 
 `Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`...
 
-Check out [the full lists](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) here
+Смотрите [полный список тут](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
 
-## New Session Mode
+## Метод новой сессии
 
-After new initialized `*gorm.DB` or a `New Session Method`, following methods call will create a new `Statement` instance instead of using the current one
+После новой инициализации `*gorm. B` или `Метода новой сессии`, следующий вызов методов создаст новый `экземпляр` вместо использования текущего
 
-GROM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details
+GROM определил методы `Session`, `WithContext`, `Debug`, как `Методы новой сессии`, см. [Сессия](session.html)
 
-Let explain it with examples:
+Давайте объясним это с примерами:
 
-Example 1:
+Пример 1:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db is new initialized *gorm.DB, which under `New Session Mode`
+// db ново инициализированная *gorm.DB `метод новой сессии`
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).Find(&users)
-// `Where("name = ?", "jinzhu")` is the first method call, it will creates a new `Statement`
-// `Where("age = ?", 18)` reuse the `Statement`, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// `Where("name = ?", "jinzhu")` первый вызов метода, создаст новый `экземпляр`
+// `Where("age = ?", 18)` использует существующий `экземпляр`, и добавляет к нему условия
+// `Find(&users)` это завершитель, выполняет зарегистрированные callback функции, генерирует и выполняет SQL
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18;
 
 db.Where("name = ?", "jinzhu2").Where("age = ?", 20).Find(&users)
-// `Where("name = ?", "jinzhu2")` is also the first method call, it creates new `Statement` too
-// `Where("age = ?", 20)` reuse the `Statement`, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// `Where("name = ?", "jinzhu2")` первый вызов метода, так же создаст новый `экземпляр`
+// `Where("age = ?", 20)` использует существующий `экземпляр`, и добавляет к нему условия
+// `Find(&users)` это завершитель, выполняет зарегистрированные callback функции, генерирует и выполняет SQL
 // SELECT * FROM users WHERE name = 'jinzhu2' AND age = 20;
 
 db.Find(&users)
-// `Find(&users)` is a finisher method and also the first method call for a `New Session Mode` `*gorm.DB`
-// It creates a new `Statement` and executes registered Query Callbacks, generates and run following SQL
+// `Find(&users)` это завершитель и он же первый метод вызова в `методе новой сессии` `*gorm.DB`
+// создаст новый `экземпляр` и выполнит зарегистрированные callback функции, генерирует и выполняет SQL
 // SELECT * FROM users;
 ```
 
-Example 2:
+Пример 2:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db is new initialized *gorm.DB, which under `New Session Mode`
+// db ново инициализированная *gorm.DB, `метод новой сессии`
 tx := db.Where("name = ?", "jinzhu")
-// `Where("name = ?", "jinzhu")` is the first method call, it creates a new `Statement` and add conditions
+// `Where("name = ?", "jinzhu")` первый вызов метода, создает новый `экземпляр` и добавляет условия
 
 tx.Where("age = ?", 18).Find(&users)
-// `tx.Where("age = ?", 18)` REUSE above `Statement`, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// `tx.Where("age = ?", 18)` использует повторно `экземпляр`, и добавляет условия
+// `Find(&users)` это завершитель, выполняет зарегистрированные callback функции, генерирует и выполняет SQL
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18
 
 tx.Where("age = ?", 28).Find(&users)
-// `tx.Where("age = ?", 18)` REUSE above `Statement` also, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// `tx.Where("age = ?", 18)` использует повторно `экземпляр`, и добавляет условия
+// `Find(&users)` это завершитель, выполняет зарегистрированные callback функции, генерирует и выполняет SQL
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
 ```
 
-**NOTE** In example 2, the first query affected the second generated SQL as GORM reused the `Statement`, this might cause unexpected issues, refer [Goroutine Safety](#goroutine_safe) for how to avoid it
+**ПРИМЕЧАНИЕ** В примере 2, первый запрос повлиял на второй сгенерированный SQL, так как GORM повторно использовал `Экземпляр`, это может вызвать непредвиденные проблемы, смотрите [Гороутинная Безопасность](#goroutine_safe) для того, чтобы избежать этого
 
-## <span id="goroutine_safe">Goroutine Safety</span>
+## <span id="goroutine_safe">Гороутиновая безопасность</span>
 
-Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
+Методы создадут новый `Экземпляр` при новой инициализации `*gorm. B` или после `Метода новой сессии`, поэтому для повторного использования `*gorm. B`, вам нужно убедиться, что они находятся в `Методе новой сессии`, например:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// Safe for new initialized *gorm.DB
+// Безопасно для новой инициализации *gorm.DB
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// NOT Safe as reusing Statement
+// НЕ Безопасно для повторного использования
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.WithContext(ctx)
-// Safe after a `New Session Method`
+// Безопасно после `Метода новой сессии`
 for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// Safe after a `New Session Method`
+// Безопасно после `Метода новой сессии`
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` применит ко всем
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
-// Safe after a `New Session Method`
+// Безопасно после `Метода новой сессии`
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` применит ко всем
 }
 ```

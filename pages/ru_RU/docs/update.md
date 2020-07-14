@@ -1,11 +1,11 @@
 ---
-title: Update
-layout: page
+title: Обновление
+layout: страница
 ---
 
-## Save All Fields
+## Сохранить все поля
 
-`Save` will save all fields when performing the Updating SQL
+`Save` сохранит все поля при выполнении SQL
 
 ```go
 db.First(&user)
@@ -18,35 +18,35 @@ db.Save(&user)
 
 ## Update/Updates
 
-Use `Update`, `Updates` to update selected fields
+Используйте `Update`, `Updates` для обновления выбранных полей
 
 ```go
-// Update single attribute
-// the user of `Model(&user)` needs to have primary key value, it is `111` in this example
+// Обновить один атрибут
+// модель `Model(&user)` должна иметь первичный ключ, например со значением `111`
 db.Model(&user).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update single attribute with conditions
+// Обновить один атрибут с условиями
 db.Model(&user).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
 
-// Update attributes with `struct`, will only update non-zero fields
+// Обновление атрибутов при помощи `struct`, обновит только не нулевые атрибуты
 db.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
 // UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 
-// Update attributes with `map`
+// Обновление атрибута при помощи `map`
 db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
 // UPDATE users SET name='hello', age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
 
-**NOTE** When update with struct, GORM will only update non-zero fields, you might want to use `map` to update attributes or use `Select` to specify fields to update
+**ПРИМЕЧАНИЕ** При обновлении с помощью struct, GORM будет обновлять только не нулевые поля, вы можете использовать `map` для обновления атрибутов или `Select` для указания полей для обновления
 
-## Update Selected Fields
+## Обновить выбранные поля
 
-If you want to update selected or ignore some fields when updating, you can use `Select`, `Omit`
+Если вы хотите обновить выбранные или игнорировать некоторые поля при обновлении, вы можете использовать `Select`, `Omit`
 
 ```go
-// Select with Map
+// Выборка при помощи Map
 // the user of `Model(&user)` needs to have primary key value, it is `111` in this example
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
 // UPDATE users SET name='hello' WHERE id=111;
@@ -54,14 +54,14 @@ db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "
 db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
 // UPDATE users SET age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Select with Struct
+// Выборка при помощи Struct
 DB.Model(&result).Select("Name", "Age").Updates(User{Name: "new_name"})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 ```
 
-## Update Hooks
+## Обновить Хуки
 
-GORM allows hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`, those methods will be called when updating a record, refer [Hooks](hooks.html) for details
+GORM поддерживает хуки `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`, эти методы будут вызваны при обновлении записи, смотрите [хуки](hooks.html) для подробностей
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -72,12 +72,12 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Batch Updates
+## Пакетные обновления
 
-If we haven't specified a record having primary key value with `Model`, GORM will perform a batch updates
+Если мы не указали запись первичный ключ с помощью `Model`, GORM будет выполнять пакетное обновление
 
 ```go
-// Update with struct only works with none zero values, or use map[string]interface{}
+// Обновление при помощи struct будет работать только с не нулевыми значениями, или используйте map[string]interface{}
 db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE role = 'admin;
 
@@ -85,11 +85,11 @@ db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface
 // UPDATE users SET name='hello', age=18 WHERE id IN (10, 11);
 ```
 
-### Block Global Updates
+### Блокировать глобальные обновления
 
-If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error
+Если вы выполните пакетное обновление без каких-либо условий, GORM НЕ запустит его и вернет ошибку `ErrMissingWhereClause`
 
-You can use conditions like `1 = 1` to force the global update
+Вы можете использовать условия, такие как `1 = 1` для принудительного глобального обновления
 
 ```go
 db.Model(&User{}).Update("name", "jinzhu").Error // gorm.ErrMissingWhereClause
@@ -98,22 +98,22 @@ db.Model(&User{}).Where("1 = 1").Update("name", "jinzhu")
 // UPDATE users SET `name` = "jinzhu" WHERE 1=1
 ```
 
-### Updated Records Count
+### Количество обновленных записей
 
 ```go
-// Get updated records count with `RowsAffected`
+// Получить количество обновленных записей при помощи `RowsAffected`
 result := db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE role = 'admin;
 
-result.RowsAffected // returns updated records count
-result.Error        // returns updating error
+result.RowsAffected // возвращает количество обновленных записей
+result.Error        // возвращает ошибки обновления
 ```
 
-## Advanced
+## Дополнительно
 
-### Update with SQL Expression
+### Обновить с помощью SQL выражения
 
-GORM allows updates column with SQL expression
+GORM позволяет обновлять столбец с помощью выражений SQL
 
 ```go
 DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
@@ -129,42 +129,42 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
-### Without Hooks/Time Tracking
+### Без хуков/отслеживание времени
 
-If you want to skip `Hooks` methods and the auto-update time tracking when updating, you can use `UpdateColumn`, `UpdateColumns`
+Если вы хотите пропустить методы `Хуков` и автоматическое обновление времени при обновлении, вы можете использовать `UpdateColumn`, `UpdateColumns`
 
 ```go
-// Update single attribute, similar with `Update`
+// Обновить один атрибут. аналогично `Update`
 db.Model(&user).UpdateColumn("name", "hello")
 // UPDATE users SET name='hello' WHERE id = 111;
 
-// Update attributes, similar with `Updates`
+// Обновить атрибуты, аналогично `Updates`
 db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE id = 111;
 
-// Update attributes with Select, similar with `Updates`
+// Обновить атрибуты с помощью Select, аналогично `Updates`
 db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello"})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
-### Check Field has changed?
+### Проверка, изменилось ли поле?
 
-GORM provides `Changed` method could be used in **Before Hooks** when updating to check fields going to be updated or not
+GORM предоставляет метод `Changed`, который может быть использован в **Before Hooks (Предварительные Хуки)** при обновлении для проверки полей, которые будут обновлены или не обновлены
 
-The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the value of `Update` / `Updates` equals model value's field value and will the field be saved or not, will returns true if not equal and it will be saved
+Метод `Changed` работает только с методами `Update`, `Updates`, и проверяет только равно ли значение `Update` / `Updates` значению поля модели и будет ли поле сохранено или нет, вернет истину, если не равно и она будет сохранена
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
-  // role field changed
+  // поле Role изменено
     if tx.Statement.Changed("Role") {
     return errors.New("role not allowed to change")
     }
 
-  if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
+  if tx.Statement.Changed("Name", "Admin") { // если Name или Role изменены
     tx.Statement.SetColumn("Age", 18)
   }
 
-  // any fields changed
+  // любое поле изменено
     if tx.Statement.Changed() {
         tx.Statement.SetColumn("RefreshedAt", time.Now())
     }
@@ -174,23 +174,23 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"})
-// Changed("Name") => false, `Name` not changed
+// Changed("Name") => false, `Name` не изменено
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{
   "name": "jinzhu2", "admin": false,
 })
-// Changed("Name") => false, `Name` not selected to update
+// Changed("Name") => false, `Name` не выбрано для обновления
 
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})
-// Changed("Name") => false, `Name` not changed
+// Changed("Name") => false, `Name` не изменено
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"})
-// Changed("Name") => false, `Name` not selected to update
+// Changed("Name") => false, `Name` не выбрано для обновления
 ```
 
-### Change Updating Values
+### Изменить обновляемые данные
 
-To change updating values in Before Hooks, you should use `scope.SetColumn` unless it is a full updates with `Save`, for example:
+Чтобы изменить значения в Предварительных Хуках, следует использовать `scope.SetColumn` если это не полное обновление с использованием `Save`, например:
 
 ```go
 func (user *User) BeforeSave(scope *gorm.Scope) (err error) {

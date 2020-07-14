@@ -3,23 +3,23 @@ title: GORMガイド
 layout: page
 ---
 
-Golangのための素晴らしいORMライブラリは、開発者に優しいことを目指しています。
+デベロッパーフレンドリーを目指した、Go言語のORMライブラリです。
 
-## 概略
+## 特徴
 
 * フル機能ORM
-* アソシエーションに対応 (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
-* さまざまなフック (Before/After Create/Save/Update/Delete/Find)
-* Eager loading with `Preload`, `Joins`
-* Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
+* アソシエーション(Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
+* フック (Before/After Create/Save/Update/Delete/Find)
+* `Preload`, `Joins`を使ったイーガーロード
+* トランザクション、ネスティング、セーブポイント、セーブポイントへのロールバック
 * Context、プリペアドステートメント、ドライラン
 * バッチインサート、FindInBatches,、Find To Map
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
+* SQLビルダー、Upsert、 Locking、Optimizer/Index/Commentヒント
 * 複合主キー
-* 自動データベースマイグレーション
+* オートマイグレーション
 * ロガー
-* 拡張可能。GORMコールバックに基づいてプラグインを書くことができる
-* すべての機能にはテストが付属しています
+* GORMコールバックベースのプラグインを記述することで拡張可能
+* すべての機能に付属するテストコード
 * デベロッパーフレンドリー
 
 ## インストール
@@ -54,18 +54,18 @@ func main() {
   // スキーマのマイグレーション
   db.AutoMigrate(&Product{})
 
-  // Create
+  // Create - 作成
   db.Create(&Product{Code: "D42", Price: 100})
 
-  // Read
+  // Read - 取得
   var product Product
-  db.First(&product, 1) // find product with integer primary key
-  db.First(&product, "code = ?", "D42") // find product with code D42
+  db.First(&product, 1) // 主キーでproductを取得する
+  db.First(&product, "code = ?", "D42") // codeがD42であるproductを取得する
 
   // Update - productのPriceを200に更新
   db.Model(&product).Update("Price", 200)
   // Update - 複数のフィールドを更新
-  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
+  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // 非ゼロ値フィールドのみ
   db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
 
   // Delete - productを削除

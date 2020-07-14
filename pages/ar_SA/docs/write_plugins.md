@@ -15,10 +15,33 @@ Register a callback into callbacks
 
 ```go
 func cropImage(db *gorm.DB) {
-  // crop image fields and upload them to CDN
+  if db.Statement.Schema != nil {
+    // crop image fields and upload them to CDN, dummy code
+    for _, field := range db.Statement.Schema.Fields {
+      switch db.Statement.ReflectValue.Kind() {
+      case reflect.Slice, reflect.Array:
+        for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
+          if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
+            if crop, ok := fieldValue.(CropInterface); ok {
+              crop.Crop()
+            }
+          }
+        }
+      case reflect.Struct:
+        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); isZero {
+          if crop, ok := fieldValue.(CropInterface); ok {
+            crop.Crop()
+          }
+        }
+      }
+    }
+
+    field := db.Statement.Schema.LookUpField("Name")
+    // processing
+  }
 }
 
-db. Callback(). Create(). Register("crop_image", cropImage)
+db.Callback().Create().Register("crop_image", cropImage)
 // register a callback for Create process
 ```
 
