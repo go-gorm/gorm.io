@@ -1,21 +1,21 @@
 ---
 layout: index
-description: The fantastic ORM library for Golang aims to be developer friendly.
-subtitle: The fantastic ORM library for Golang
+description: Фантастическая ORM библиотека для Golang, стремится быть дружественной к разработчику.
+subtitle: Фантастическая библиотека ORM для Golang
 comments: false
 ---
 
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Eager loading with Preload, Joins
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Context, Prepared Statment Mode, DryRun Mode
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Полнофункциональный ORM
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Связи (Has One (имеет одну), Has Many (имеет много), Belongs To (принадлежит), Many To Many (многие ко многим), Polymorphism (полиморфизм), Single-table inheritance (одно табличное представление))
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Хуки (Before/After Create/Save/Update/Delete/Find)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Нетерпеливая загрузка при помощи Preload, Joins
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Транзакции, вложенные транзакции, точки сохранения, откат к сохраненной точке
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Контекст, Режим подготовки, Режим DryRun
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Batch Insert, FindInBatches, Find To Map
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Composite Primary Key, Indexes, Constraints
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Auto Migrations
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Композитный первичный ключ, индексы, ограничения
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Авто миграция
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, write Plugins based on GORM callbacks
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Every feature comes with tests
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Developer Friendly
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Расширяемый, пишите плагины на основе методов GORM
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Каждая функция поставляется с тестами
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Дружественная для разработчиков
