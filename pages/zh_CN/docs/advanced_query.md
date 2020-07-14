@@ -103,7 +103,7 @@ DB.Table("users").Find(&results)
 
 ## FirstOrInit
 
-获取第一个匹配的记录，或者根据给定的条件初始化一个新的记录（仅支持 sturct 和 map 条件）
+获取第一条匹配的记录，或者根据给定的条件初始化一个 struct（仅支持 sturct 和 map 条件）
 
 ```go
 // 未找到 user，则根据给定的条件初始化一条记录
@@ -119,33 +119,33 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+如果没有找到记录，可以使用包含更多的属性的结构体初始化 user，`Attrs` 不会被用于生成查询 SQL
 
 ```go
-// User not found, initialize it with give conditions and Attrs
+// 未找到 user，则根据给定的条件以及 Attrs 初始化 user
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// User not found, initialize it with give conditions and Attrs
+// 未找到 user，则根据给定的条件以及 Attrs 初始化 user
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// 找到了 `name` = `jinzhu` 的 user，则忽略 Attrs
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query
+不管是否找到记录，`Assign` 都会将属性赋值给 struct，但这些属性不会被用于生成查询 SQL
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// 未找到 user，根据条件和 Assign 属性初始化 struct
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// 找到 `name` = `jinzhu` 的记录，依然会更新 Assign 相关的属性
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 20}
@@ -153,44 +153,44 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record, or create a new one with given conditions (only works with struct, map conditions)
+获取第一条匹配的记录，或者根据给定的条件创建一条新纪录（仅支持 sturct 和 map 条件）
 
 ```go
-// User not found, create a new record with give conditions
+// 未找到 user，则根据给定条件创建一条新纪录
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// 找到了 `name` = `jinzhu` 的 user
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age}: 18
 ```
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+如果没有找到记录，可以使用包含更多的属性的结构体创建记录，`Attrs` 不会被用于生成查询 SQL 。
 
 ```go
-// User not found, create it with give conditions and Attrs
+// 未找到 user，根据条件和 Assign 属性创建记录
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// 找到了 `name` = `jinzhu` 的 user，则忽略 Attrs
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not, and save them back to the database.
+不管是否找到记录，`Assign` 都会将属性赋值给 struct，并将结果写回数据库
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// 未找到 user，根据条件和 Assign 属性创建记录
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// 找到了 `name` = `jinzhu` 的 user，依然会根据 Assign 更新记录
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // UPDATE users SET age=20 WHERE id = 111;
@@ -222,9 +222,9 @@ DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 
 Refer [Optimizer Hints/Index/Comment](hints.html) for more details
 
-## Iteration
+## 迭代
 
-GORM supports iterating through Rows
+GORM 支持通过行进行迭代
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -232,10 +232,10 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows scan a row into user
+  // ScanRows 将一行记录扫描至 user
   db.ScanRows(rows, &user)
 
-  // do something
+  // 业务逻辑...
 }
 ```
 
