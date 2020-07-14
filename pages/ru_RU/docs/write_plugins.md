@@ -1,17 +1,17 @@
 ---
-title: Write Plugins
-layout: page
+title: Написание плагинов
+layout: страница
 ---
 
 ## Callbacks
 
-GORM itself is powered by `Callbacks`, it has callbacks for `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw`, you could fully customize GORM with them as you want
+Сам GORM основан на методах `Callbacks`, у которого есть callback функции для `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw`, с помощью которых вы можете полностью настроить GORM по своему усмотрению
 
-Callbacks are registered into the global `*gorm.DB`, not the session-level, if you require `*gorm.DB` with different callbacks, you need to initialize another `*gorm.DB`
+Вызовы callback регистрируются в глобальной `*gorm.DB`, а не на сессионном уровне, если вам требуется `*gorm. B` с другими функциями callback, вам нужно инициализировать другой `*gorm.DB`
 
-### Register Callback
+### Регистрация функций callback
 
-Register a callback into callbacks
+Регистрация функции callback в Callbacks
 
 ```go
 func cropImage(db *gorm.DB) {
