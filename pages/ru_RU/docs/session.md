@@ -1,12 +1,12 @@
 ---
-title: Session
-layout: page
+title: Сессия
+layout: страница
 ---
 
-GORM provides `Session` method, which is a [`New Session Method`](method_chaining.html), it allows create a new session mode with configuration:
+GORM предоставляет методы `Session`, которые являются [`Методами новой сессии`](method_chaining.html), и позволяют создавать новый режим сеанса с настройками:
 
 ```go
-// Session Configuration
+// Настройки Session
 type Session struct {
   DryRun         bool
   PrepareStmt    bool
@@ -19,27 +19,27 @@ type Session struct {
 
 ## DryRun
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, for example:
+Генерировать `SQL` без выполнения, может быть использован для подготовки или тестирования сгенерированных SQL, например:
 
 ```go
-// new session mode
+// режим новой сессии
 stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 
-// globally mode with DryRun
+// глобальный режим DryRun
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{DryRun: true})
 
-// different databases generate different SQL
+// разные БД генерируют разные SQL запросы
 stmt := db.Find(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 // PostgreSQL
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
-## PrepareStmt
+## Подготовить
 
-`PreparedStmt` creates prepared statement when executing any SQL and caches them to speed up future calls, for example:
+`PreparedStmt` создает подготовленное объекты при выполнении любого SQL и кэширует их для ускорения будущих звонков, например:
 
 ```go
 // continuous session mode
