@@ -283,24 +283,24 @@ for rows.Next() {
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// multiple joins with parameter
+// множество join с параметрами
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
 ### Joins Preloading
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+Вы можете использовать `Joins` для предзагрузки связей в одном SQL запросе, например:
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Refer [Preloading (Eager Loading)](preload.html) for details
+Смотрите [Предзагрузка (Нетерпеливая загрузка)](preload.html) для подробностей
 
 ## <span id="scan">Scan</span>
 
-Scan results into a struct work similar to `Find`
+Записать результат в struct, работает аналогично `Find`
 
 ```go
 type Result struct {
@@ -311,6 +311,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
 
-// Raw SQL
+// Чистый SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
