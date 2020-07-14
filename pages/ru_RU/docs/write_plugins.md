@@ -16,7 +16,7 @@ layout: страница
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // crop image fields and upload them to CDN, dummy code
+    // обрезка изображений и загрузка их на сервер CDN, пример кода
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
@@ -37,35 +37,35 @@ func cropImage(db *gorm.DB) {
     }
 
     field := db.Statement.Schema.LookUpField("Name")
-    // processing
+    // обработка
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// register a callback for Create process
+// регистрация функции callback для обработки Create
 ```
 
-### Delete Callback
+### Удаление функций callback
 
-Delete a callback from callbacks
+Удаление функции callback из Callbacks
 
 ```go
 db.Callback().Create().Remove("gorm:create")
-// delete callback `gorm:create` from Create callbacks
+// удалить callback `gorm:create` из обработчика Create
 ```
 
-### Replace Callback
+### Замена функций callback
 
-Replace a callback having the same name with the new one
+Заменить callback с идентичным именем на новый
 
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
-// replace callback `gorm:create` with new function `newCreateFunction` for Create process
+// заменить callback `gorm:create` новой функцией `newCreateFunction` для обработчика Create
 ```
 
-### Register Callback with orders
+### Регистрация функций callback с порядком выполнения
 
-Register callbacks with orders
+Регистрация функций callback с порядком выполнения
 
 ```go
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
@@ -76,13 +76,13 @@ db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update",
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 ```
 
-### Defined Callbacks
+### Существующие функции callback
 
-GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to support current GORM features, check them out before starting your plugins
+GORM предоставляет [некоторые функции callback](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) для поддержки текущих функций GORM, ознакомьтесь с ними перед началом написания своих плагинов
 
-## Plugin
+## Плагин
 
-GORM provides `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
+GORM предоставляет метод `Use` для регистрации плагинов, плагин должен реализовывать интерфейс `Plugin`
 
 ```go
 type Plugin interface {
@@ -91,10 +91,10 @@ type Plugin interface {
 }
 ```
 
-The `Initialize` method will be invoked when registering the plugin into GORM first time, and GORM will save the registered plugins, access them like:
+Метод `Initialize` будет вызван при первом регистрации плагина в GORM, и GORM сохранит его в зарегистрированные плагины, обращайтесь к ним таким образом:
 
 ```go
 db.Config.Plugins[pluginName]
 ```
 
-Checkout [Prometheus](prometheus.html) as example
+Смотрите [Prometheus](prometheus.html) в качестве примера
