@@ -71,11 +71,11 @@ for rows.Next() {
 }
 ```
 
-Checkout [FindInBatches](advanced_query.html) for how to query and process records in batch Checkout [Group Conditions](advanced_query.html#group_conditions) for how to build complicated SQL Query
+Смотрите [FindInBatches](advanced_query.html), для подробностей как запрашивать и обрабатывать записи в пакете Ознакомьтесь с [Групповые Условия](advanced_query.html#group_conditions) для создания сложных SQL запросов
 
-## <span id="named_argument">Named Argument</span>
+## <span id="named_argument">Именованные аргументы</span>
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM поддерживает именованные аргументы при помощи [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) или `map[string]interface{}{}`, например:
 
 ```go
 DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -94,7 +94,7 @@ DB.Raw("SELECT * FROM named_users WHERE (name1 = @name AND name3 = @name) AND na
 // SELECT * FROM named_users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
 ```
 
-## Scan `*sql.Rows` into struct
+## Сканировать `*sql.Rows` в struct
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
@@ -102,16 +102,16 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows scan a row into user
+  // ScanRows сканирует строку в user
   db.ScanRows(rows, &user)
 
-  // do something
+  // что-то делаем
 }
 ```
 
-## DryRun Mode
+## Режим DryRun
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
+Генерировать `SQL` без выполнения, может быть использован для подготовки или тестирования сгенерированного SQL, смотрите [Session](session.html) для подробностей
 
 ```go
 stmt := DB.Session(&Session{DryRun: true}).First(&user, 1).Statement
@@ -119,13 +119,13 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 ```
 
-## Advanced
+## Дополнительно
 
-### Clauses
+### Оговорки
 
-GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
+GORM использует SQL конструктор при генерации SQL для каждой операции, GORM создает объект `*gorm.Statement`, применяет все GORM API добавлять/изменять `Clause (Оговорки)` для `Statement`, и в конце генерирует GORM SQL на основе этих выражений
 
-For example, when querying with `First`, it adds the following clauses to the `Statement`
+Например, при запросе с помощью `First` он добавляет следующие оговорки в `Statement`
 
 ```go
 clause.Select{Columns: "*"}
@@ -136,41 +136,41 @@ clause.OrderByColumn{
 }
 ```
 
-Then GORM build finally querying SQL in callbacks like:
+Затем GORM наконец-то выполняет запрос SQL в callback функции, например:
 
 ```go
 Statement.Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")
 ```
 
-Which generate SQL:
+Который генерирует SQL:
 
 ```sql
 SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 ```
 
-You can define your own `Clause` and use it with GORM, it needs to implements [Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface)
+Вы можете определить `Clause` и использовать его с GORM, он должен реализовывать [Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface)
 
-Check out [examples](https://github.com/go-gorm/gorm/tree/master/clause) for reference
+Ознакомьтесь с [примерами](https://github.com/go-gorm/gorm/tree/master/clause)
 
-### Clause Builder
+### Построитель оговорок
 
-For different databases, Clauses may generate different SQL, for example:
+Для различных баз данных Оговорки могут генерировать разные SQL, например:
 
 ```go
 db.Offset(10).Limit(5).Find(&users)
-// Generated for SQL Server
+// Сгенерировано для SQL Server
 // SELECT * FROM "users" OFFSET 10 ROW FETCH NEXT 5 ROWS ONLY
-// Generated for MySQL
+// Сгенерировано для MySQL
 // SELECT * FROM `users` LIMIT 5 OFFSET 10
 ```
 
-Which is supported because GORM allows database driver register Clause Builder to replace the default one, take the [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45) as example
+Что поддерживается, потому что GORM позволяет зарегистрировать драйвер базы данных Clause Builder, чтобы заменить стандартный, например, [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45)
 
-### Clause Options
+### Варианты оговорок
 
-GORM defined [Many Clauses](https://github.com/go-gorm/gorm/tree/master/clause), and some clauses provide advanced options can be used for your application
+GORM определяет [Многие оговорки](https://github.com/go-gorm/gorm/tree/master/clause), а некоторые оговорки предоставляют расширенные опции и могут быть использованы для вашего приложения
 
-Although most of them are rarely used, if you find GORM public API can't match your requirements, may be good to check them out, for example:
+Хотя большинство из них редко используется, если вы обнаружили, что публичный GORM API не соответствует вашим требованиям, может быть полезно проверить их, например:
 
 ```go
 DB.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
@@ -179,7 +179,7 @@ DB.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
 
 ### StatementModifier
 
-GORM provides interface [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier) allows you modify statement to match your requirements, take [Hints](hints.html) as example
+GORM предоставляет интерфейс [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier), который позволяет вам изменить statement в соответствии с вашими требованиями, смотрите [Hints](hints.html) в качестве примера
 
 ```go
 import "gorm.io/hints"
