@@ -1,20 +1,20 @@
 ---
-title: Settings
-layout: page
+title: Настройки
+layout: страница
 ---
 
-GORM provides `Set`, `Get`, `InstanceSet`, `InstanceGet` methods allow users pass values to [hooks](hooks.html) or other methods
+GORM предоставляет методы `Set`, `Get`, `InstanceSet`, `InstanceGet`, которые позволяют пользователям передавать значения в [хуки](hooks.html) или другие методы
 
-GORM uses this for some features, like pass creating table options when migrating table.
+GORM использует это для некоторых функций, таких как передача создания параметров таблицы при миграции.
 
 ```go
-// Add table suffix when creating tables
+// Добавляем суффикс таблицы при создании таблиц
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
 ## Set / Get
 
-Use `Set` / `Get` pass settings to hooks methods, for example:
+Используйте `Set` / `Get` для передачи параметров в методы хуков, например:
 
 ```go
 type User struct {
@@ -47,7 +47,7 @@ db.Set("my_value", myValue).Create(&User{})
 
 ## InstanceSet / InstanceGet
 
-Use `InstanceSet` / `InstanceGet` pass settings to current `*Statement`'s hooks methods, for example:
+Используйте `InstanceSet` / `InstanceGet` чтобы передать настройки текущему `*Statement` методам хуков, например:
 
 ```go
 type User struct {
@@ -67,7 +67,7 @@ type CreditCard struct {
   // ...
 }
 
-// When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
+// При создании связей, GORM создает новый `*Statement`, поэтому не может читать настройки других экземпляров
 func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
   myValue, ok := tx.InstanceGet("my_value")
   // ok => false
