@@ -1,11 +1,11 @@
 ---
-title: SQL Builder
-layout: page
+title: Конструктор SQL
+layout: страница
 ---
 
-## Raw SQL
+## Чистый SQL
 
-Query Raw SQL
+Запрос сырого SQL
 
 ```go
 type Result struct {
@@ -23,51 +23,51 @@ var age int
 DB.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-Exec Raw SQL
+Выполнение сырого SQL
 
 ```go
 db.Exec("DROP TABLE users")
 db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,3})
 
-// SQL Expression
+// SQL Выражение
 DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
-**NOTE** GORM allows cache prepared statement to increase performance, checkout [Performance](performance.html) for details
+**ПРИМЕЧАНИЕ** GORM позволяет кэшировать подготовленное утверждение для повышения производительности, смотрите [Производительность](performance.html) для подробностей
 
-## `Row` & `Rows`
+## `Строка` & `Строки`
 
-Get result as `*sql.Row`
+Получить результат в `*sql.Row`
 
 ```go
-// Use GORM API build SQL
+// Использовать GORM API построитель SQL
 row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
 row.Scan(&name, &age)
 
-// Use Raw SQL
+// Использовать сырой SQL
 row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row()
 row.Scan(&name, &age, &email)
 ```
 
-Get result as `*sql.Rows`
+Получить результат как `*sql.Rows`
 
 ```go
-// Use GORM API build SQL
+// Использовать GORM API построитель SQL
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows()
 defer rows.Close()
 for rows.Next() {
   rows.Scan(&name, &age, &email)
 
-  // do something
+  // что-то делаем
 }
 
-// Raw SQL
+// Сырой SQL
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows()
 defer rows.Close()
 for rows.Next() {
   rows.Scan(&name, &age, &email)
 
-  // do something
+  // что-то делаем
 }
 ```
 
