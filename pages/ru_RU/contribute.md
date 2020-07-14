@@ -10,7 +10,7 @@ layout: страница
 * Поделитесь GORM с миром по социальным сетям, или просто расскажите людям, которым это может быть интересно
 * Помогите новичкам решать проблемы на [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) и в [Чатах](/community.html#Chat)
 * Написать руководства, видео записи и т.д... (Не забудьте добавить их в [список](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
+* Помогите продвижению GORM на GitHub [Оценивая](https://github.com/go-gorm/gorm/stargazers) и [Отслеживая](https://github.com/go-gorm/gorm/watchers) репозиторий [GORM](https://github.com/go-gorm/gorm)
 
 ## Documentation and Writing
 
