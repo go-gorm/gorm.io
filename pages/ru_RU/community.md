@@ -1,31 +1,31 @@
 ---
-title: GORM Community
-layout: page
+title: GORM Сообщество
+layout: страница
 ---
 
-## Ask
+## Задать вопрос
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[Как задать хороший вопрос?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
-* Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
+* Github Вопросы - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
 
-## Chat
+## Чат
 
 * Gitter - [https://gitter.im/jinzhu/gorm](https://gitter.im/jinzhu/gorm)
 
-## Links
+## Ссылки
 
-* [GORM V2 article example link](#contribute)
+* [GORM V2 пример ссылки на статью](#contribute)
 
-## Videos
+## Видео
 
-* [GORM V2 videos example link](#contribute)
+* [GORM V2 пример ссылки на видео](#contribute)
 
-## Open Sources
+## Открытый исходный код
 
-* [GORM V2 plugins example link](#contribute)
+* [GORM V2 пример ссылки на плагин](#contribute)
 
-## <span id="contribute">Contribute to this page</span>
+## <span id="contribute">Внести изменения в эту страницу</span>
 
-Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) to add your awesome links
+Пожалуйста, отредактируйте [эту страницу](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md), чтобы добавить свои потрясающие ссылки
