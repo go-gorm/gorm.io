@@ -241,32 +241,32 @@ for rows.Next() {
 
 ## FindInBatches
 
-Query and process records in batch
+用于批量查询并处理记录
 
 ```go
-// batch size 100
+// 每次批量处理 100 条
 result := DB.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // batch processing found records
+    // 批量处理找到的记录
   }
 
   tx.Save(&results)
 
-  tx.RowsAffected // number of records in this batch
+  tx.RowsAffected // 本次批量操作影响的记录数
 
   batch // Batch 1, 2, 3
 
-  // returns error will stop future batches
+  // 如果返回错误会终止后续批量操作
   return nil
 })
 
 result.Error // returned error
-result.RowsAffected // processed records count in all batches
+result.RowsAffected // 整个批量操作影响的记录数
 ```
 
-## Query Hooks
+## 查询钩子
 
-GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
+对于查询操作，GORM 支持 `AfterFind` 钩子，查询记录后会调用它，详情请参考 [钩子](hooks.html)
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -279,7 +279,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use [`Scan`](#scan) instead
+Pluck 用于从数据库查询单个列，并将结果扫描到切片。如果您想要查询多列，您应该使用 [`Scan`](#scan)
 
 ```go
 var ages []int64
@@ -294,14 +294,14 @@ db.Table("deleted_users").Pluck("name", &names)
 DB.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Requesting more than one column, use `Scan` or `Find` like this:
+// 超过一列的查询，应该使用 `Scan` 或者 `Find`，例如：
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
 ## Scopes
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+`Scopes` 允许你指定常用的查询，可以在调用方法时引用这些查询
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -323,18 +323,18 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// 查找所有金额大于 1000 的信用卡订单
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// 查找所有金额大于 1000 的 COD 订单
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// 查找所有金额大于1000 的已付款或已发货订单
 ```
 
 ## <span id="count">Count</span>
 
-Get matched records count
+Count 用于获取匹配的记录数
 
 ```go
 var count int64
@@ -347,14 +347,14 @@ db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 db.Table("deleted_users").Count(&count)
 // SELECT count(*) FROM deleted_users;
 
-// Count with Distinct
+// 去重计数
 DB.Model(&User{}).Distinct("name").Count(&count)
 // SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
 // SELECT count(distinct(name)) FROM deleted_users
 
-// Count with Group
+// 分组计数
 users := []User{
   {Name: "name1"},
   {Name: "name2"},
