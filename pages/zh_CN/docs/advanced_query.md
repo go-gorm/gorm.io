@@ -103,18 +103,18 @@ DB.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record, or initialize a new one with given conditions (only works with struct, map conditions)
+获取第一个匹配的记录，或者根据给定的条件初始化一个新的记录（仅支持 sturct 和 map 条件）
 
 ```go
-// User not found, initialize it with give conditions
+// 未找到 user，则根据给定的条件初始化一条记录
 db.FirstOrInit(&user, User{Name: "non_existing"})
 // user -> User{Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// 找到了 `name` = `jinzhu` 的 user
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-// Found user with `name` = `jinzhu`
+// 找到了 `name` = `jinzhu` 的 user
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
