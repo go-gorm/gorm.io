@@ -1,11 +1,11 @@
 ---
-title: Transactions
-layout: page
+title: Транзакции
+layout: страница
 ---
 
-## Disable Default Transaction
+## Отключить транзакцию по умолчанию
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required
+GORM выполняет операции записи (создания/обновления/удаления) внутри транзакции, чтобы обеспечить целостность данных, вы можете отключить транзакции в процессе инициализации, если они не требуются
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -13,15 +13,15 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## Transaction
+## Транзакция
 
-To perform a set of operations within a transaction, the general flow is as below.
+Для выполнения ряда операций в рамках транзакции, общий шаблон выполнения приводится ниже.
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
-  // do some database operations in the transaction (use 'tx' from this point, not 'db')
+  // выполняем операции с БД в транзакции (используйте 'tx' вмсето 'db')
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // return any error will rollback
+    // возврат любой ошибки, откатит транзакцию
     return err
   }
 
@@ -29,14 +29,14 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  // return nil will commit the whole transaction
+  // возврат nil сделает фиксацию всей транзакции
   return nil
 })
 ```
 
-### Nested Transactions
+### Вложенные транзакции
 
-GORM supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
+GORM поддерживает вложенные транзакции, вы можете откатить подмножество операций, выполняемых в рамках более крупной транзакции, например:
 
 ```go
 DB.Transaction(func(tx *gorm.DB) error {
@@ -55,32 +55,32 @@ DB.Transaction(func(tx *gorm.DB) error {
   return nil
 })
 
-// Commit user1, user3
+// Коммит user1, user3
 ```
 
-## Transactions by manual
+## Транзакции вручную
 
 ```go
-// begin a transaction
+// начало транзакции
 tx := db.Begin()
 
-// do some database operations in the transaction (use 'tx' from this point, not 'db')
+// выполнить операции с БД в транзакции (используйте 'tx' вместо 'db')
 tx.Create(...)
 
 // ...
 
-// rollback the transaction in case of error
+// откатить транзакцию в случае ошибки
 tx.Rollback()
 
-// Or commit the transaction
+// фиксация транзакции
 tx.Commit()
 ```
 
-### A Specific Example
+### Конкретный пример
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
-  // Note the use of tx as the database handle once you are within a transaction
+  // Используйте tx как объект БД пока вы в транзакции
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
@@ -108,7 +108,7 @@ func CreateAnimals(db *gorm.DB) error {
 
 ## SavePoint, RollbackTo
 
-GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
+GORM предоставляет `SavePoint`, `RollbackTo` для сохранения точек и возврата к точке сохранения, например:
 
 ```go
 tx := DB.Begin()
@@ -116,7 +116,7 @@ tx.Create(&user1)
 
 tx.SavePoint("sp1")
 tx.Create(&user2)
-tx.RollbackTo("sp1") // Rollback user2
+tx.RollbackTo("sp1") // Откат user2
 
-tx.Commit() // Commit user1
+tx.Commit() // Фиксация user1
 ```
