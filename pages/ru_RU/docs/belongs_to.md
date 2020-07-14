@@ -1,6 +1,6 @@
 ---
 title: Belongs To
-layout: page
+layout: страница
 ---
 
 ## Принадлежит к (Belongs To)
