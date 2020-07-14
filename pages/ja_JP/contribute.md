@@ -1,47 +1,47 @@
 ---
-title: Contribute to GORM
+title: GORMに貢献する
 layout: page
 ---
 
-**You can help to deliver a better GORM! there are many things that you can do:**
+**より良いGORMを提供するのを助けることができます！ できることはたくさんあります**
 
-## Help others to know GORM
+## GORMを知りたい他の人たちを助ける
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forget to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
+* GORMをソーシャルチャンネルで世界と共有したり、興味がある人に伝えたりします
+* [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm)、[Github Issues](https://github.com/go-gorm/gorm/issues)、[チャットルーム](/community.html#Chat)などで初心者の質問を解決する。
+* チュートリアルを書く、ビデオを録画するなど... ( [リスト](/community.html) に追加することを忘れないでください)
+* [GORMのレポジトリ](https://github.com/go-gorm/gorm)に[スター](https://github.com/go-gorm/gorm/stargazers)や[Watching](https://github.com/go-gorm/gorm/watchers)を設定して、GitHubでGORMを促進するのを手伝う
 
-## Documentation and Writing
+## ドキュメント改善と執筆
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* 新しいコンテンツを作成し、既存の資料を修正することで、GORMのドキュメントを改善する
 
-### Translate this site
+### このドキュメントを翻訳する
 
-You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
+このドキュメントサイトは[https://translate.gorm.io](https://translate.gorm.io) で翻訳できます
 
-To translate GORM in your language you need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
+[https://translate.gorm.io](https://translate.gorm.io)に翻訳したい言語を追加するには、[Github issues](https://github.com/go-gorm/gorm.io/issues)にリクエストを投稿してください。
 
-## Program
+## プログラム
 
-* Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
-* Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
+* Issueを解決するために [Github](https://github.com/go-gorm/gorm) でプルリクエストを作成し、新機能を追加します。
+* GORM用のオープンソースプラグインを作成します（ [リスト](/community.html#Open-Sources)に追加することを忘れないでください）
 
-## Donations
+## 寄付
 
-Many thanks to all our sponsors!
+スポンサーの皆様、ありがとうございます!
 
-### One-time Donations
+### 寄付
 
-Your kindness and generosity is greatly appreciated
+あなたの優しさと寛大さに非常に感謝します
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[Paypalによる個別の寄付](https://www.paypal.me/zhangjinzhu) [OpenCollectiveによる個別の寄付](https://opencollective.com/gorm)
 
-### Recurring Donations
+### 定期的な寄付
 
-Your kindness and generosity are greatly appreciated, and your name will be listed on this page or the home page of this website.
+あなたの親切および寛大さは非常に非常に感謝します。あなたの名前はこのウェブサイトのこのページまたはホームページに掲載されます。
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[OpenCollective による定期的な寄付](https://opencollective.com/gorm) [Patreon による定期的な寄付](https://www.patreon.com/jinzhu)
 
 <br>
 
