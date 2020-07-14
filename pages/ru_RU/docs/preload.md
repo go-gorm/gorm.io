@@ -87,14 +87,14 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.amount DESC;
 ```
 
-## Nested Preloading
+## Вложенная предварительная загрузка
 
-GORM supports nested preloading, for example:
+GORM поддерживает вложенную предварительную загрузку, например:
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)
 
-// Customize Preload conditions for `Orders`
-// And GORM won't preload unmatched order's OrderItems then
+// настройка предварительных условий для `Orders`
+// GORM не будет загружать не совпадающие заказы
 db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
 ```
