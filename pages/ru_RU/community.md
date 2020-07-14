@@ -8,7 +8,7 @@ layout: страница
 **[Как задать хороший вопрос?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
-* Github Вопросы - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
+* Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
 
 ## Чат
 
