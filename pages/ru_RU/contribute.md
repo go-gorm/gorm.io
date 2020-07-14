@@ -1,15 +1,15 @@
 ---
-title: Contribute to GORM
-layout: page
+title: Внести свой вклад в GORM
+layout: страница
 ---
 
-**You can help to deliver a better GORM! there are many things that you can do:**
+**Вы можете помочь сделать GORM лучше! есть много вещей, которые вы можете сделать:**
 
-## Help others to know GORM
+## Помогите другим узнать GORM
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forget to add them to [the list](/community.html))
+* Поделитесь GORM с миром по социальным сетям, или просто расскажите людям, которым это может быть интересно
+* Помогите новичкам решать проблемы на [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) и в [Чатах](/community.html#Chat)
+* Написать руководства, видео записи и т.д... (Не забудьте добавить их в [список](/community.html))
 * Help to promote GORM on GitHub by [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
 
 ## Documentation and Writing
