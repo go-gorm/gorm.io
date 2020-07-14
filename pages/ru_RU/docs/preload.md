@@ -62,7 +62,7 @@ db.Preload(clause.Associations).Find(&users)
 
 ## Предзагрузка с условиями
 
-GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
+GORM позволяет предварительно загрузить связи с условиями, это работает аналогично [Строчным Условиям](query.html#inline_conditions)
 
 ```go
 // Предзагрузка заказов Orders с условиями
@@ -75,9 +75,9 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 // SELECT * FROM orders WHERE user_id IN (1,2) AND state NOT IN ('cancelled');
 ```
 
-## Custom Preloading SQL
+## Пользовательский SQL
 
-You are able to custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+Вы можете самостоятельно загрузить SQL, передав `func(db *gorm.DB) *gorm.DB`, например:
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
