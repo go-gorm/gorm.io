@@ -39,7 +39,7 @@ layout: page
 
 ### 定期的な寄付
 
-あなたの親切および寛大さは非常に非常に感謝します。あなたの名前はこのウェブサイトのこのページまたはホームページに掲載されます。
+あなたの親切および寛大さに非常に感謝します。あなたの名前はこのウェブサイトのこのページまたはホームページに掲載されます。
 
 [OpenCollective による定期的な寄付](https://opencollective.com/gorm) [Patreon による定期的な寄付](https://www.patreon.com/jinzhu)
 
