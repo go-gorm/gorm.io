@@ -1,6 +1,6 @@
 ---
-title: Advanced Query
-layout: page
+title: Расширенный запрос
+layout: страница
 ---
 
 ## Умный выбор полей
