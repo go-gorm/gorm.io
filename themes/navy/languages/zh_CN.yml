@@ -54,15 +54,15 @@ sidebar:
     settings: 设置
     advanced_topics: 高级主题
     prometheus: Prometheus
-    hints: Hints
-    indexes: Indexes
-    constraints: Constraints
-    composite_primary_key: Composite Primary Key
-    security: Security
-    gorm_config: GORM Config
-    write_plugins: Write Plugins
-    write_driver: Write Driver
-    change_log: ChangeLog
-    community: Community
-    contribute: Contribute
-    translate: Translate current site
+    hints: 提示
+    indexes: 索引
+    constraints: 约束
+    composite_primary_key: 复合主键
+    security: 安全
+    gorm_config: GORM 配置
+    write_plugins: 编写插件
+    write_driver: 编写驱动
+    change_log: 更新日志
+    community: 社区
+    contribute: 贡献
+    translate: 翻译当前页面

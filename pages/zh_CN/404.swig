@@ -10,6 +10,6 @@ comments: false
   <p>File not found</p>
 
   <p>
-    The site configured at this address does not contain the requested file.
+    抱歉，找不到页面
   </p>
 <div>
