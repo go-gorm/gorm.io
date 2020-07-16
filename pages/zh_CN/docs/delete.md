@@ -73,12 +73,12 @@ db.Delete(&user)
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// 在查询时会忽略软删除的记录
+// 在查询时会忽略被软删除的记录
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+如果您不想引入 `gorm.Model`，您也可以这样启用软删除特性：
 
 ```go
 type User struct {
@@ -88,18 +88,18 @@ type User struct {
 }
 ```
 
-### Find soft deleted records
+### 查找被软删除的记录
 
-You can find soft deleted records with `Unscoped`
+您可以使用 `Unscoped` 找到被软删除的记录
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Delete permanently
+### 永久删除
 
-You can delete matched records permanently with `Unscoped`
+您也可以使用 `Unscoped` 永久删除匹配的记录
 
 ```go
 db.Unscoped().Delete(&order)
