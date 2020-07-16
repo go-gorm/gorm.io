@@ -1,11 +1,11 @@
 ---
 title: 实体关联
-layout: 页面
+layout: page
 ---
 
-## 自动 创建/更新
+## 自动创建/更新
 
-GORM will autosave associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GROM会自动保持关联以及在使用[Upsert](create.html#upsert)的creating/updating时自动保存引用
 
 ```go
 user := User{
