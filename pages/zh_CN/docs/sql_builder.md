@@ -1,11 +1,11 @@
 ---
-title: SQL Builder
+title: SQL 构造器
 layout: page
 ---
 
-## Raw SQL
+## 原生 SQL
 
-Query Raw SQL
+原生 SQL 查询
 
 ```go
 type Result struct {
@@ -23,59 +23,59 @@ var age int
 DB.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-Exec Raw SQL
+执行原生 SQL
 
 ```go
 db.Exec("DROP TABLE users")
 db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,3})
 
-// SQL Expression
+// SQL 表达式
 DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
-**NOTE** GORM allows cache prepared statement to increase performance, checkout [Performance](performance.html) for details
+**注意** GORM 允许缓存准备好的语句来提高性能，详情请参考 [性能](performance.html)
 
 ## `Row` & `Rows`
 
-Get result as `*sql.Row`
+获取 `*sql.Row` 结果
 
 ```go
-// Use GORM API build SQL
+// 使用 GORM API 构建 SQL
 row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
 row.Scan(&name, &age)
 
-// Use Raw SQL
+// 使用原生 SQL
 row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row()
 row.Scan(&name, &age, &email)
 ```
 
-Get result as `*sql.Rows`
+获取 `*sql.Rows` 结果
 
 ```go
-// Use GORM API build SQL
+// 使用 GORM API 构建 SQL
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows()
 defer rows.Close()
 for rows.Next() {
   rows.Scan(&name, &age, &email)
 
-  // do something
+  // 业务逻辑...
 }
 
-// Raw SQL
+// 原生 SQL
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows()
 defer rows.Close()
 for rows.Next() {
   rows.Scan(&name, &age, &email)
 
-  // do something
+  // 业务逻辑...
 }
 ```
 
-Checkout [FindInBatches](advanced_query.html) for how to query and process records in batch Checkout [Group Conditions](advanced_query.html#group_conditions) for how to build complicated SQL Query
+转到 [FindInBatches](advanced_query.html) 获取如何在批量中查询和处理记录的信息， 转到 [Group 条件](advanced_query.html#group_conditions) 获取如何构建复杂 SQL 查询的信息
 
-## <span id="named_argument">Named Argument</span>
+## <span id="named_argument">命名参数</span>
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM 支持 [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) 或 `map[string]interface{}{}` 命名参数，例如：
 
 ```go
 DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -94,7 +94,7 @@ DB.Raw("SELECT * FROM named_users WHERE (name1 = @name AND name3 = @name) AND na
 // SELECT * FROM named_users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
 ```
 
-## Scan `*sql.Rows` into struct
+## 将 `sql.Rows` 扫描至 struct
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
@@ -102,16 +102,16 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows scan a row into user
+  // ScanRows 将一行扫描至 user
   db.ScanRows(rows, &user)
 
-  // do something
+  // 业务逻辑...
 }
 ```
 
-## DryRun Mode
+## DryRun 模式
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
+在不执行的情况下生成 `SQL` ，可以用于准备或测试生成的 SQL，详情请参考 [Session](session.html)
 
 ```go
 stmt := DB.Session(&Session{DryRun: true}).First(&user, 1).Statement
@@ -119,13 +119,13 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 ```
 
-## Advanced
+## 高级
 
 ### Clauses
 
-GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
+GORM 内部使用 SQL builder 生成 SQL。对于每个操作，GORM 都会创建一个 `*gorm.Statement` 对象，所有的 GORM API 都是在为 `statement` 添加/修改 `Clause`，最后，GORM 会根据这些 Clause 生成 SQL
 
-For example, when querying with `First`, it adds the following clauses to the `Statement`
+例如，当通过 `First` 进行查询时，它会在 `Statement` 中添加以下 Clause
 
 ```go
 clause.Select{Columns: "*"}
@@ -136,7 +136,7 @@ clause.OrderByColumn{
 }
 ```
 
-Then GORM build finally querying SQL in callbacks like:
+然后 GORM 在回调中构建最终的查询 SQL，比如：
 
 ```go
 Statement.Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")
