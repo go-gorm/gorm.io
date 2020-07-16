@@ -25,7 +25,7 @@ tx.Model(&user).Update("role", "admin")
 
 ## Chi Middleware の例
 
-Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
+継続セッションモードはAPIリクエストの処理に役立ちます。たとえば、ミドルウェア内のタイムアウトContextを使って、`*gorm.DB`を設定できます。 それからは、すべてのリクエストを処理するときにその`* gorm.DB`を使用します
 
 Chi ミドルウェアの例を以下に示します。
 
@@ -47,7 +47,7 @@ r.Get("/", func(w http.ResponseWriter, r *http.Request) {
   var users []User
   db.Find(&users)
 
-  // lots of db operations
+  // データベースの処理を複数書く
 })
 
 r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -56,12 +56,12 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
   var user User
   db.First(&user)
 
-  // lots of db operations
+  // データベースの処理を複数書く
 })
 ```
 
-**NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**注** `Context`を`WithContext`で設定するのはgoroutine-safeです。 詳細は[Session](session.html)を参照してください。
 
 ## Logger
 
-Logger accepts `Context` too, you can it tracking logs, refer [Logger](logger.html) for details
+ロガーは `Context` も受け付けており、ログをトラッキングすることができます。詳細については [Logger](logger.html) を参照してください。

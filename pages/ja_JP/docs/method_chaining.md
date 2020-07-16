@@ -1,41 +1,41 @@
 ---
-title: Method Chaining
+title: メソッドチェーン
 layout: page
 ---
 
-GORM allows method chaining, so you can write code like this:
+GORMはメソッドチェーンが可能なため、次のようなコードを書くことができます。
 
 ```go
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 ```
 
-There are three kinds of methods in GORM: `Chain Method`, `Finisher Method`, `New Session Method`
+GORMには `Chain Method`, `Finisher Method`, `New Session Method`という3種類のメソッドがあります:
 
 ## Chain Method
 
-Chain methods are methods to modify or add `Clauses` to current `Statement`, like:
+Chain Methodsは現在の`Statement`に`Clauses`を変更または追加するメソッドです。
 
 `Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
 
-Here is [the full lists](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), also check out the [SQL Builder](sql_builder.html) for more details about `Clauses`
+こちらが[Chain Methodの一覧](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)です。`Clauses`についての詳細は [SQL Builder](sql_builder.html)を参照してください。
 
 ## Finisher Method
 
-Finishers are immediate methods that execute registered callbacks, which will generate and execute SQL, like those methods:
+Finishersは登録されたコールバックを実行する即時メソッドで、SQLを生成して実行します。
 
 `Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`...
 
-Check out [the full lists](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) here
+[Finisher Methodの一覧](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) を参照してください。
 
 ## New Session Mode
 
-After new initialized `*gorm.DB` or a `New Session Method`, following methods call will create a new `Statement` instance instead of using the current one
+`*gorm.DB`が新しく初期化されたか、`New Session Method`が実行された後、 次のメソッド呼び出しは、現在のインスタンスを使用する代わりに新しい`Statement`インスタンスを作成します。
 
-GROM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details
+GROMは`Session`, `WithContext`, `Debug`のメソッドを`New Session Method`として定義しています。詳細については [Session](session.html)を参照してください。
 
-Let explain it with examples:
+以下の例で説明しましょう。
 
-Example 1:
+例１：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -58,7 +58,7 @@ db.Find(&users)
 // SELECT * FROM users;
 ```
 
-Example 2:
+例：２
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -77,11 +77,11 @@ tx.Where("age = ?", 28).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
 ```
 
-**NOTE** In example 2, the first query affected the second generated SQL as GORM reused the `Statement`, this might cause unexpected issues, refer [Goroutine Safety](#goroutine_safe) for how to avoid it
+**注** 例２では、 GORMが`Statement`を再利用したため、最初のクエリが2回目に生成されたSQLに影響しました。これにより予期しない問題が発生する可能性があります。回避方法については[Goroutine Safety](#goroutine_safe)を参照してください
 
 ## <span id="goroutine_safe">Goroutine Safety</span>
 
-Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
+メソッドは、新しい`* gorm.DB`の初期化または`New Session Method`の後に新しい`Statement`インスタンスを作成するため、`* gorm.DB`を再利用するには、それらが`New Session Mode`であることを確認する必要があります。次に例を示します。
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})

@@ -1,11 +1,11 @@
 ---
-title: Update
+title: 更新
 layout: page
 ---
 
-## Save All Fields
+## 保存所有字段
 
-`Save` will save all fields when performing the Updating SQL
+`Save` 会保存所有的字段，即使字段是零值
 
 ```go
 db.First(&user)
@@ -18,35 +18,35 @@ db.Save(&user)
 
 ## Update/Updates
 
-Use `Update`, `Updates` to update selected fields
+使用 `Update`、`Updates` 可以更新选定的字段
 
 ```go
-// Update single attribute
+// 更新单个字段
 // the user of `Model(&user)` needs to have primary key value, it is `111` in this example
 db.Model(&user).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update single attribute with conditions
+// 根据条件更新单个字段
 db.Model(&user).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
 
-// Update attributes with `struct`, will only update non-zero fields
+// 通过 `struct` 更新多个字段，不会更新零值字段
 db.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
 // UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 
-// Update attributes with `map`
+// 通过 `map` 更新多个字段，零值字段也会更新
 db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
 // UPDATE users SET name='hello', age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
 
-**NOTE** When update with struct, GORM will only update non-zero fields, you might want to use `map` to update attributes or use `Select` to specify fields to update
+**注意** 当通过 struct 更新时，GORM 只会更新非零字段。 如果您想确保指定字段被更新，你应该使用 `Select` 更新选定字段，或使用 `map` 来完成更新操作
 
-## Update Selected Fields
+## 更新选定字段
 
-If you want to update selected or ignore some fields when updating, you can use `Select`, `Omit`
+如果您想要在更新时选定、忽略某些字段，您可以使用 `Select`、`Omit`
 
 ```go
-// Select with Map
+// Select 与 Map
 // the user of `Model(&user)` needs to have primary key value, it is `111` in this example
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
 // UPDATE users SET name='hello' WHERE id=111;
@@ -54,14 +54,14 @@ db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "
 db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
 // UPDATE users SET age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Select with Struct
+// Select 与 Struct
 DB.Model(&result).Select("Name", "Age").Updates(User{Name: "new_name"})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 ```
 
-## Update Hooks
+## 更新钩子
 
-GORM allows hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`, those methods will be called when updating a record, refer [Hooks](hooks.html) for details
+对于更新操作，GORM 支持 `BeforeSave`、`BeforeUpdate`、`AfterSave`、`AfterUpdate` 钩子，这些方法将在更新记录时被调用，详情请参阅 [钩子](hooks.html)
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -72,12 +72,12 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Batch Updates
+## 批量更新
 
-If we haven't specified a record having primary key value with `Model`, GORM will perform a batch updates
+如果您尚未通过 `Model` 指定记录的主键，则 GORM 会执行批量更新
 
 ```go
-// Update with struct only works with none zero values, or use map[string]interface{}
+// 通过 struct 只能更新非零值，若要更新零值，可以使用 map[string]interface{}
 db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE role = 'admin;
 
@@ -85,9 +85,9 @@ db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface
 // UPDATE users SET name='hello', age=18 WHERE id IN (10, 11);
 ```
 
-### Block Global Updates
+### 阻止全局更新
 
-If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error
+如果在没有任何条件的情况下执行批量更新，GORM 不会执行该操作，并返回` ErrMissingWhereClause `错误
 
 You can use conditions like `1 = 1` to force the global update
 
