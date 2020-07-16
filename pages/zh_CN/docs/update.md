@@ -147,24 +147,24 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello"})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
-### 检查字段是否有更新？
+### 检查字段是否有变更？
 
-GORM provides `Changed` method could be used in **Before Hooks** when updating to check fields going to be updated or not
+GORM 提供的 `Changed` 方法可以在 **Before** 钩子中检查字段是否有变更
 
 The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the value of `Update` / `Updates` equals model value's field value and will the field be saved or not, will returns true if not equal and it will be saved
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
-  // role field changed
+  // 如果 role 字段有变更
     if tx.Statement.Changed("Role") {
     return errors.New("role not allowed to change")
     }
 
-  if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
+  if tx.Statement.Changed("Name", "Admin") { // 如果 Name 或 Role 字段有变更
     tx.Statement.SetColumn("Age", 18)
   }
 
-  // any fields changed
+  // 如果任意字段有变更
     if tx.Statement.Changed() {
         tx.Statement.SetColumn("RefreshedAt", time.Now())
     }
@@ -174,18 +174,18 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"})
-// Changed("Name") => false, `Name` not changed
+// Changed("Name") => false, 因为 `Name` 没有变更
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{
   "name": "jinzhu2", "admin": false,
 })
-// Changed("Name") => false, `Name` not selected to update
+// Changed("Name") => false, 因为 `Name` 没有被 Select 选中并更新
 
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})
-// Changed("Name") => false, `Name` not changed
+// Changed("Name") => false, 因为 `Name` 没有变更
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"})
-// Changed("Name") => false, `Name` not selected to update
+// Changed("Name") => false, 因为 `Name` 没有被 Select 选中并更新
 ```
 
 ### Change Updating Values
