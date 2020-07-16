@@ -1,11 +1,11 @@
 ---
-title: Update
+title: 更新
 layout: page
 ---
 
-## Save All Fields
+## 保存所有字段
 
-`Save` will save all fields when performing the Updating SQL
+`Save` 会保存所有的字段，即使字段是零值
 
 ```go
 db.First(&user)
@@ -18,7 +18,7 @@ db.Save(&user)
 
 ## Update/Updates
 
-Use `Update`, `Updates` to update selected fields
+使用 `Update`、`Updates` 可以更新选定的字段
 
 ```go
 // Update single attribute
