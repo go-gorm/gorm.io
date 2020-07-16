@@ -318,13 +318,13 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// Найти все заказы оплаченные кредитной картой и суммой более 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// Найти все заказы с оплатой наложенным платежом и суммой более 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// Найти все оплаченные и отгруженные заказы с суммой более 1000
 ```
 
 ## <span id="count">Количество</span>
