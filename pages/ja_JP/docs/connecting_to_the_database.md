@@ -47,7 +47,7 @@ import (
   "gorm.io/gorm"
 )
 
-dsn := "user=gorm password=gorm DB.name=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
+dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
@@ -56,7 +56,7 @@ Postgresのdatabase/sqlドライバとして [pgx](https://github.com/jackc/pgx)
 ```go
 // https://github.com/go-gorm/postgres
 db, err := gorm.Open(postgres.New(postgres.Config{
-  DSN: "user=gorm password=gorm DB.name=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
+  DSN: "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
   PreferSimpleProtocol: true, // disables implicit prepared statement usage
 }), &gorm.Config{})
 ```
