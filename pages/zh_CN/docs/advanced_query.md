@@ -318,18 +318,18 @@ func PaidWithCod(db *gorm.DB) *gorm.DB {
 
 func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
   return func (db *gorm.DB) *gorm.DB {
-    return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
+    return db.Where("status IN (?)", status)
   }
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// 查找所有金额大于 1000 的信用卡订单
+// Find all credit card orders and amount greater than 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// 查找所有金额大于 1000 的 COD 订单
+// Find all COD orders and amount greater than 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// 查找所有金额大于1000 的已付款或已发货订单
+// Find all paid, shipped orders that amount greater than 1000
 ```
 
 ## <span id="count">Count</span>
