@@ -294,7 +294,7 @@ db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
-## Рамки
+## Области
 
 `Рамки` позволяют установить часто используемые запросы, которые можно использовать позже как методы
 
@@ -313,18 +313,18 @@ func PaidWithCod(db *gorm.DB) *gorm.DB {
 
 func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
   return func (db *gorm.DB) *gorm.DB {
-    return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
+    return db.Where("status IN (?)", status)
   }
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Найти все заказы по кредитной карте с суммой более 1000
+// Find all credit card orders and amount greater than 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Найти все заказы с оплатой наложенным платежом и суммой более 1000
+// Find all COD orders and amount greater than 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Найти все оплаченные и отгруженные заказы с суммой более 1000
+// Find all paid, shipped orders that amount greater than 1000
 ```
 
 ## <span id="count">Количество</span>
