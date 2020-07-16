@@ -151,7 +151,7 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello"})
 
 GORM 提供的 `Changed` 方法可以在 **Before** 钩子中检查字段是否有变更
 
-The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the value of `Update` / `Updates` equals model value's field value and will the field be saved or not, will returns true if not equal and it will be saved
+`Changed` 方法只能与 `Update`、`Updates` 方法一起使用，它只是检查 Model 对象字段的值与 `Update`、`Updates` 的值是否相等，以及该字段是否会被更新（例如，可以通过 Select、Omit 排除某些字段），如果不相等，则返回 true，并更新记录
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -188,9 +188,9 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 // Changed("Name") => false, 因为 `Name` 没有被 Select 选中并更新
 ```
 
-### Change Updating Values
+### 在更新时修改值
 
-To change updating values in Before Hooks, you should use `scope.SetColumn` unless it is a full updates with `Save`, for example:
+若要在 Before 钩子中改变要更新的值，如果它是一个完整的更新，可以使用 `Save`；否则，应该使用 `scope.SetColumn` ，例如：
 
 ```go
 func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
