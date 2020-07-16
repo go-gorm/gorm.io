@@ -3,18 +3,18 @@ title: Settings
 layout: page
 ---
 
-GORM provides `Set`, `Get`, `InstanceSet`, `InstanceGet` methods allow users pass values to [hooks](hooks.html) or other methods
+GORM 提供了 `Set`, `Get`, `InstanceSet`, `InstanceGet` 方法来允许用户传值给 [勾子](hooks.html) 或其他方法
 
-GORM uses this for some features, like pass creating table options when migrating table.
+GORM uses this for some features, like pass creating table options when migrating table. Gorm 中有一些特性用了这种机制，如迁移表格时传递表格选项。
 
 ```go
-// Add table suffix when creating tables
+// 创建表时添加表后缀
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
 ## Set / Get
 
-Use `Set` / `Get` pass settings to hooks methods, for example:
+使用 `Set` / `Get` 传递设置到钩子方法，例如：
 
 ```go
 type User struct {
