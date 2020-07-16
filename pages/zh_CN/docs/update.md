@@ -129,7 +129,7 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
-### 阻止钩子、时间追踪
+### 不使用钩子和时间追踪
 
 如果您想在更新时跳过 `钩子` 方法和自动更新时间追踪， 您可以使用 `UpdateColumn`、`UpdateColumns`
 
