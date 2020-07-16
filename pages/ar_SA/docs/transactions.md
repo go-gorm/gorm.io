@@ -5,12 +5,19 @@ layout: page
 
 ## Disable Default Transaction
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required
+GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required, you will gain about 30%+ performance improvement after that
 
 ```go
-db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
+// Globally disable
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   SkipDefaultTransaction: true,
 })
+
+// Continuous session mode
+tx := db.Session(&Session{PrepareStmt: true})
+tx.First(&user, 1)
+tx.Find(&users)
+tx.Model(&user).Update("Age", 18)
 ```
 
 ## Transaction
