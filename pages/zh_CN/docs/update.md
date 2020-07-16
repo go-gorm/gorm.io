@@ -89,7 +89,7 @@ db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface
 
 如果在没有任何条件的情况下执行批量更新，GORM 不会执行该操作，并返回` ErrMissingWhereClause `错误
 
-You can use conditions like `1 = 1` to force the global update
+您可以使用 `1 = 1` 之类的条件来强制全局更新
 
 ```go
 db.Model(&User{}).Update("name", "jinzhu").Error // gorm.ErrMissingWhereClause
@@ -98,22 +98,22 @@ db.Model(&User{}).Where("1 = 1").Update("name", "jinzhu")
 // UPDATE users SET `name` = "jinzhu" WHERE 1=1
 ```
 
-### Updated Records Count
+### 更新的记录数
 
 ```go
-// Get updated records count with `RowsAffected`
+// 通过 `RowsAffected` 得到更新的记录数
 result := db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE role = 'admin;
 
-result.RowsAffected // returns updated records count
-result.Error        // returns updating error
+result.RowsAffected // 更新的记录数
+result.Error        // 更新的错误
 ```
 
-## Advanced
+## 高级用法
 
-### Update with SQL Expression
+### 通过 SQL 表达式更新
 
-GORM allows updates column with SQL expression
+GORM 允许通过 SQL 表达式更新列
 
 ```go
 DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
@@ -129,25 +129,25 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
-### Without Hooks/Time Tracking
+### 阻止钩子、时间追踪
 
-If you want to skip `Hooks` methods and the auto-update time tracking when updating, you can use `UpdateColumn`, `UpdateColumns`
+如果您想在更新时跳过 `钩子` 方法和自动更新时间追踪， 您可以使用 `UpdateColumn`、`UpdateColumns`
 
 ```go
-// Update single attribute, similar with `Update`
+// 更新单列，用法类似于 `Update`
 db.Model(&user).UpdateColumn("name", "hello")
 // UPDATE users SET name='hello' WHERE id = 111;
 
-// Update attributes, similar with `Updates`
+// 更新多列，用法类似于 `Updates`
 db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE id = 111;
 
-// Update attributes with Select, similar with `Updates`
+// 配合 Select 更新多列，用法类似于 `Updates`
 db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello"})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
-### Check Field has changed?
+### 检查字段是否有更新？
 
 GORM provides `Changed` method could be used in **Before Hooks** when updating to check fields going to be updated or not
 
