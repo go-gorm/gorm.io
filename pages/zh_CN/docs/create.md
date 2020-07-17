@@ -112,7 +112,7 @@ type User struct {
 
 插入记录到数据库时，[零值](https://tour.golang.org/basics/12) 字段将使用默认值
 
-**注意** 像 `0`、`''`、`false` 等零值，不会将这些字段定义的默认值保存到数据库。您需要使用指针类型或 Scanner/Valuer 来避免这个问题
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 
 ```go
 type User struct {
@@ -123,17 +123,27 @@ type User struct {
 }
 ```
 
+**NOTE** You have to setup the `default` tag for fields having default value in databae or GORM will use the zero value of the field when creating, for example:
+
+```go
+type User struct {
+    ID   string `gorm:"default:uuid_generate_v3()"`
+    Name string
+    Age  uint8
+}
+```
+
 ### <span id="upsert">Upsert 及冲突</span>
 
-GORM 为不同数据库提供了兼容的 Upsert 支持
+GORM provides compatible Upsert support for different databases
 
 ```go
 import "gorm.io/gorm/clause"
 
-// 不处理冲突
+// Do nothing on conflict
 DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// `id` 冲突时，将字段值更新为默认值
+// Update columns to default value on `id` conflict
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -151,6 +161,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-也可以查看 [高级查询](advanced_query.html) 中的 `FirstOrInit`, `FirstOrCreate`
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-查看 [原生 SQL 及构造器](sql_builder.html) 获取更多细节
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
