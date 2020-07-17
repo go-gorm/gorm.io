@@ -1,11 +1,11 @@
 ---
-title: Migration
+title: マイグレーション
 layout: page
 ---
 
 ## Auto Migration
 
-Automatically migrate your schema, to keep your schema update to date.
+スキーマを自動的にマイグレーションし、スキーマを最新の状態に保ちます。
 
 **NOTE:** AutoMigrate will **ONLY** create tables, missing foreign keys, constraints, columns and indexes, it **WON'T** change existing column's type or delete unused columns to protect your data.
 
