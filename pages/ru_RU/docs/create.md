@@ -112,7 +112,7 @@ type User struct {
 
 Значение по умолчанию будет использовано при добавлении записи в БД для полей с [нулевыми-значениями](https://tour.golang.org/basics/12)
 
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**ПРИМЕЧАНИЕ** Любые нулевые значение, например `0`, `''`, `false` не будут сохранены в базу данных, для полей с определенным значением по умолчанию, вы можете использовать Scanner/Valuer для избежания этого, например:
 
 ```go
 type User struct {
@@ -123,7 +123,7 @@ type User struct {
 }
 ```
 
-**NOTE** You have to setup the `default` tag for fields having default value in databae or GORM will use the zero value of the field when creating, for example:
+**ПРИМЕЧАНИЕ** Вы должны установить тег `default` для полей, имеющих значение по умолчанию в БД или GORM будет использовать нулевое значение поля при создании, например:
 
 ```go
 type User struct {
@@ -135,7 +135,7 @@ type User struct {
 
 ### <span id="upsert">Upsert (Создать или обновить) / Конфликт</span>
 
-GORM provides compatible Upsert support for different databases
+GORM обеспечивает поддержку Upsert (Создать или обновить) для различных баз данных
 
 ```go
 import "gorm.io/gorm/clause"
