@@ -112,7 +112,7 @@ type User struct {
 
 Значение по умолчанию будет использовано при добавлении записи в БД для полей с [нулевыми-значениями](https://tour.golang.org/basics/12)
 
-**ПРИМЕЧАНИЕ** Любое нулевое значение, например `0`, `''`, `false` не будут сохранены в базу данных, для полей с определенным значением по умолчанию, вы можете использовать Scanner/Valuer для избежания этого
+**ПРИМЕЧАНИЕ** Любые нулевые значение, например `0`, `''`, `false` не будут сохранены в базу данных, для полей с определенным значением по умолчанию, вы можете использовать Scanner/Valuer для избежания этого, например:
 
 ```go
 type User struct {
@@ -120,6 +120,16 @@ type User struct {
   Name string
   Age  *int           `gorm:"default:18"`
   Active sql.NullBool `gorm:"default:true"`
+}
+```
+
+**ПРИМЕЧАНИЕ** Вы должны установить тег `default` для полей, имеющих значение по умолчанию в БД или GORM будет использовать нулевое значение поля при создании, например:
+
+```go
+type User struct {
+    ID   string `gorm:"default:uuid_generate_v3()"`
+    Name string
+    Age  uint8
 }
 ```
 
@@ -133,7 +143,7 @@ import "gorm.io/gorm/clause"
 // Ничего не делать при конфликте
 DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Сбросить данные в значения по умолчанию при конфликте по полю `id`
+// Обновить колонок значением default при конфликте по полю `id`
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -141,7 +151,7 @@ DB.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// Установить новые данные при конфликте по полю `id`
+// Обновить на новые данные при конфликте по полю `id`
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),

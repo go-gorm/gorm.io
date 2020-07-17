@@ -41,23 +41,22 @@ db, err := gorm. Open(mysql. New(mysql. Config{
 
 ```go
 import (
-  "gorm.io/driver/sqlserver"
+  "gorm.io/driver/postgres"
   "gorm.io/gorm"
 )
 
-// github.com/denisenkom/go-mssqldb
-dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
-db, err := gorm. Open(sqlserver. Open(dsn), &gorm.
+dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
+db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
 We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
 
 ```go
 // https://github.com/go-gorm/postgres
-db, err := gorm. Open(postgres. New(postgres. Config{
-  DSN: "user=gorm password=gorm DB.name=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
+db, err := gorm.Open(postgres.New(postgres.Config{
+  DSN: "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
   PreferSimpleProtocol: true, // disables implicit prepared statement usage
-}), &gorm.
+}), &gorm.Config{})
 ```
 
 ## SQLite

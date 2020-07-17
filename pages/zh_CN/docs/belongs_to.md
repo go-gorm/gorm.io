@@ -5,7 +5,7 @@ layout: page
 
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+`belongs to` 会与另一个模型建立了一对一的连接。 这种模型的每一个实例都“属于”另一个模型的一个实例。
 
 For example, if your application includes users and companies, and each user can be assigned to exactly one company
 

@@ -1,5 +1,5 @@
 ---
-title: Generic database interface sql.DB
+title: 一般的なデータベースインターフェース sql.DB
 layout: page
 ---
 

@@ -102,7 +102,7 @@ type User struct {
 
 Then the default value will be used when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 
 ```go
 type User struct {
@@ -110,6 +110,16 @@ type User struct {
   Name string
   Age  *int           `gorm:"default:18"`
   Active sql. NullBool `gorm:"default:true"`
+}
+```
+
+**NOTE** You have to setup the `default` tag for fields having default value in databae or GORM will use the zero value of the field when creating, for example:
+
+```go
+type User struct {
+    ID   string `gorm:"default:uuid_generate_v3()"`
+    Name string
+    Age  uint8
 }
 ```
 
@@ -121,17 +131,21 @@ GORM provides compatible Upsert support for different databases
 import "gorm.io/gorm/clause"
 
 // Do nothing on conflict
-DB. OnConflict{DoNothing: true}). Create(&user)
+DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
 // Update columns to default value on `id` conflict
-DB. Assignments(map[string]interface{}{"role": "user"}),
-}). Create(&users)
+DB.Clauses(clause.OnConflict{
+  Columns:   []clause.Column{{Name: "id"}},
+  DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
+}).Create(&users)
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
 // Update columns to new value on `id` conflict
-DB. AssignmentColumns([]string{"name", "age"}),
-}). Create(&users)
+DB.Clauses(clause.OnConflict{
+  Columns:   []clause.Column{{Name: "id"}},
+  DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
+}).Create(&users)
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET "name"="excluded"."name"; SQL Server
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL

@@ -112,7 +112,7 @@ type User struct {
 
 [ゼロ値](https://tour.golang.org/basics/12) フィールドは、データベースへの挿入の際にデフォルト値が使用されます。
 
-**注意**`0`, `''`, `false`のようなゼロ値は、デフォルト値を定義したフィールドに対しては、データベースに保存されないので、これを避けるためにポインタ型やScanner/Valuerを使用するとよいでしょう。
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 
 ```go
 type User struct {
@@ -123,9 +123,19 @@ type User struct {
 }
 ```
 
+**NOTE** You have to setup the `default` tag for fields having default value in databae or GORM will use the zero value of the field when creating, for example:
+
+```go
+type User struct {
+    ID   string `gorm:"default:uuid_generate_v3()"`
+    Name string
+    Age  uint8
+}
+```
+
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORMは異なるデータベースに対して互換性のあるUpsertのサポートを提供します。
+GORM provides compatible Upsert support for different databases
 
 ```go
 import "gorm.io/gorm/clause"
@@ -151,6 +161,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-`FirstOrInit`, `FirstOrCreate`については[Advanced Query](advanced_query.html)を参照してください。
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-詳細については、 [Raw SQL and SQL Builder](sql_builder.html) を参照してください。
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details

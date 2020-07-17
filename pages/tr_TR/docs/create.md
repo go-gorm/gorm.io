@@ -112,7 +112,7 @@ type User struct {
 
 Then the default value will be used when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 
 ```go
 type User struct {
@@ -120,6 +120,16 @@ type User struct {
   Name string
   Age  *int           `gorm:"default:18"`
   Active sql.NullBool `gorm:"default:true"`
+}
+```
+
+**NOTE** You have to setup the `default` tag for fields having default value in databae or GORM will use the zero value of the field when creating, for example:
+
+```go
+type User struct {
+    ID   string `gorm:"default:uuid_generate_v3()"`
+    Name string
+    Age  uint8
 }
 ```
 
