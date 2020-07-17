@@ -7,18 +7,18 @@ layout: page
 
 スキーマを自動的にマイグレーションし、スキーマを最新の状態に保ちます。
 
-**NOTE:** AutoMigrate will **ONLY** create tables, missing foreign keys, constraints, columns and indexes, it **WON'T** change existing column's type or delete unused columns to protect your data.
+**注：**AutoMigrateは、テーブル、欠落した外部キ​​ー、制約、列、インデックス**のみ**を作成します。データを保護するために、既存の列の型を変更したり、未使用の列を削除したりすることは**ありません**。
 
 ```go
 db.AutoMigrate(&User{})
 
 db.AutoMigrate(&User{}, &Product{}, &Order{})
 
-// Add table suffix when creating tables
+// テーブル作成時にテーブルの接尾辞を追加
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
-**NOTE** AutoMigrate creates database foreign key constraints automatically, you can disable this feature during initialization, for example:
+**注：**AutoMigrateはデータベースの外部キー制約を自動的に作成します。初期化時にこの機能を無効にできます。
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -178,15 +178,15 @@ db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 
 ## Constraints
 
-GORM creates constraints when auto migrating or creating table, checkout [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORMは、テーブルのオートマイグレーション時、または作成時に制約を作成します。詳細は [Constraints](constraints.html) または [Database Indexes](indexes.html) を参照してください。
 
 ## Other Migration Tools
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
+GORMのオートマイグレーションはほとんどの場合うまく機能しますが、より本格的な移行ツールをお探しの場合は、 GORMは一般的なDBインターフェースを提供します。
 
 ```go
-// returns `*sql.DB`
+// `*sql.DB` を返す
 db.DB()
 ```
 
-Refer [Generic Interface](generic_interface.html) for more details.
+詳細については、 [Generic Interface](generic_interface. html) を参照してください。
