@@ -1,29 +1,29 @@
 ---
-title: Error Handling
+title: 处理错误
 layout: page
 ---
 
-In Go, error handling is important.
+在 Go 中，处理错误是很重要的。
 
-You are encouraged to do error check after any [Finisher Methods](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
+我们鼓励您在调用任何 [Finisher 方法](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) 后，都进行错误检查
 
-## Error Handling
+## 处理错误
 
-Error handling in GORM is different than idiomatic Go code because of its chainable API.
+GORM 的错误处理与常见的 Go 代码不同，因为 GORM 提供的是链式 API。
 
-If any error occurs, GORM will set `*gorm.DB`'s `Error` field, you need to check it like this:
+如果遇到任何错误，GORM 会设置 `*gorm.DB` 的 `Error` 字段，您需要像这样检查它：
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-  // error handling...
+  // 处理错误...
 }
 ```
 
-Or
+或者
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-  // error handling...
+  // 处理错误...
 }
 ```
 
