@@ -1,12 +1,12 @@
 ---
-title: Session
+title: 会话
 layout: page
 ---
 
-GORM provides `Session` method, which is a [`New Session Method`](method_chaining.html), it allows create a new session mode with configuration:
+GORM 提供了 `Session` 方法，这是一个 [`新建会话方法`](method_chaining.html)，它允许创建带配置的新建会话模式：
 
 ```go
-// Session Configuration
+// 会话配置
 type Session struct {
   DryRun         bool
   PrepareStmt    bool
@@ -22,15 +22,15 @@ type Session struct {
 Generate `SQL` without executing, can be used to prepare or test generated SQL, for example:
 
 ```go
-// new session mode
+// 新建会话模式
 stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 
-// globally mode with DryRun
+// 全局 DryRun 模式
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{DryRun: true})
 
-// different databases generate different SQL
+// 不同的数据库生成不同的 SQL
 stmt := db.Find(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 // PostgreSQL
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
