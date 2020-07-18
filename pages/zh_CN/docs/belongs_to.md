@@ -7,10 +7,10 @@ layout: page
 
 `belongs to` 会与另一个模型建立了一对一的连接。 这种模型的每一个实例都“属于”另一个模型的一个实例。
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company
+例如，您的应用包含 user 和 company，并且每个 user 都可以分配给一个 company
 
 ```go
-// `User` belongs to `Company`, `CompanyID` is the foreign key
+// `User` 属于 `Company`，`CompanyID` 是外键
 type User struct {
   gorm.Model
   Name      string
@@ -24,13 +24,13 @@ type Company struct {
 }
 ```
 
-## Override Foreign Key
+## 重写外键
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+要定义一个 belongs to 关系，必须存在外键，默认的外键使用拥有者的类型名加上主字段名
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+对于上面例子，定义属于 `Company` 的 ` User`，其外键一般是 `CompanyID`
 
-GORM provides a way to customize the foreign key, for example:
+此外，GORM 还提供了一种自定义外键的方法，例如：
 
 ```go
 type User struct {
@@ -38,7 +38,7 @@ type User struct {
   Name         string
   CompanyRefer int
   Company      Company `gorm:"foreignKey:CompanyRefer"`
-  // use CompanyRefer as foreign key
+  // 使用 CompanyRefer 作为外键
 }
 
 type Company struct {
@@ -47,9 +47,9 @@ type Company struct {
 }
 ```
 
-## Override References
+## 重写引用
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+对于 belongs to 关系，GORM 通常使用拥有者的主字段作为外键的值。 对于上面的例子，它是 `Company` 的 `ID` 字段
 
 When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
 
