@@ -5,12 +5,12 @@ layout: page
 
 ## Many To Many
 
-Many to Many add a join table between two models.
+Many to Many 会在两个 model 中添加一张连接表。
 
-For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
+例如，您的应用包含了 user 和 language，且一个 user 可以说多种 language，多个 user 也可以说一种 language。
 
 ```go
-// User has and belongs to many languages, `user_languages` is the join table
+// User 拥有并属于多种 language，`user_languages` 是连接表
 type User struct {
   gorm.Model
   Languages []Language `gorm:"many2many:user_languages;"`
@@ -22,12 +22,12 @@ type Language struct {
 }
 ```
 
-When using GORM `AutoMigrate` to create a table for `User`, GORM will create the join table automatically
+当使用 GORM 的 `AutoMigrate` 为 `User` 创建表时，GORM 会自动创建连接表
 
-## Back-Reference
+## 反向引用
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// User 拥有并属于多种 language，`user_languages` 是连接表
 type User struct {
   gorm.Model
   Languages []*Language `gorm:"many2many:user_languages;"`
@@ -40,9 +40,9 @@ type Language struct {
 }
 ```
 
-## Override Foreign Key
+## 重写外键
 
-For a `many2many` relationship, the join table owns the foreign key which references two models, for example:
+对于 `many2many` 关系，连接表会同时拥有两个模型的外键，例如：
 
 ```go
 type User struct {
@@ -60,7 +60,7 @@ type Language struct {
 //   foreign key: language_id, reference: languages.id
 ```
 
-To override them, you can use tag `foreignKey`, `reference`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
+若要重写它们，可以使用标签 `foreignKey`、`reference`、`joinforeignKey`、`joinReferences`。当然，您不需要使用全部的标签，你可以仅使用其中的一个重写部分的外键、引用。
 
 ```go
 type User struct {
@@ -80,9 +80,9 @@ type Profile struct {
 //   foreign key: profile_refer, reference: profiles.user_refer
 ```
 
-## Self-Referential Many2Many
+## 自引用 Many2Many
 
-Self-referencing many2many relationship
+自引用 many2many 关系
 
 ```go
 type User struct {
@@ -95,7 +95,7 @@ type User struct {
 //   foreign key: friend_id, reference: users.id
 ```
 
-## Eager Loading
+## 预加载
 
 GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
 
