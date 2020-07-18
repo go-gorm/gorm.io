@@ -117,32 +117,32 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 
 ### 删除关联
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+如果存在，则删除源模型与参数之间的关系，只会删除引用，不会从数据库中删除这些对象。
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### 清空关联
 
-Remove all reference between source & association, won't delete those associations
+删除源模型与关联之间的所有引用，但不会删除这些关联
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### 关联计数
 
-Return the count of current associations
+返回当前关联的计数
 
 ```go
 db.Model(&user).Association("Languages").Count()
 ```
 
-### Batch Data
+### 批量处理数据
 
-Association Mode supports batch data, e.g:
+关联模式支持批量处理数据，例如：
 
 ```go
 // Find all roles for all users
