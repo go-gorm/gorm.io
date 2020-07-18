@@ -39,26 +39,26 @@ GROM 定义了 `Session`、`WithContext`、`Debug` 方法做为 `新建会话方
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db is new initialized *gorm.DB, which under `New Session Mode`
+// db 是一个刚完成初始化的 *gorm.DB 实例，这是一个 `新建会话`
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).Find(&users)
-// `Where("name = ?", "jinzhu")` is the first method call, it will creates a new `Statement`
-// `Where("age = ?", 18)` reuse the `Statement`, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// `Where("name = ?", "jinzhu")` 是调用的第一个方法，它会创建一个新 `Statement`
+// `Where("age = ?", 18)` 会复用 `Statement`，并将条件添加至这个 `Statement`
+// `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18;
 
 db.Where("name = ?", "jinzhu2").Where("age = ?", 20).Find(&users)
-// `Where("name = ?", "jinzhu2")` is also the first method call, it creates new `Statement` too
-// `Where("age = ?", 20)` reuse the `Statement`, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// `Where("name = ?", "jinzhu2")` 也是调用的第一个方法，也会创建一个新 `Statement`
+// `Where("age = ?", 20)` 会复用 `Statement`，并将条件添加至这个 `Statement`
+// `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
 // SELECT * FROM users WHERE name = 'jinzhu2' AND age = 20;
 
 db.Find(&users)
-// `Find(&users)` is a finisher method and also the first method call for a `New Session Mode` `*gorm.DB`
-// It creates a new `Statement` and executes registered Query Callbacks, generates and run following SQL
+// 对于这个 `新建会话模式` 的 `*gorm.DB` 实例来说，`Find(&users)` 是一个 finisher 方法也是第一个调用的方法。 
+// 它创建了一个新的 `Statement` 运行注册的查询回调，生成并运行下面这条 SQL：
 // SELECT * FROM users;
 ```
 
-Example 2:
+示例 2：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
