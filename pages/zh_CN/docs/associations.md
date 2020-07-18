@@ -3,9 +3,9 @@ title: 实体关联
 layout: page
 ---
 
-## 自动创建/更新
+## 自动创建、更新
 
-GROM会自动保持关联以及在使用[Upsert](create.html#upsert)的creating/updating时自动保存引用
+在创建、更新记录时，GORM 会通过 [Upsert](create.html#upsert) 自动保存关联及其引用记录。
 
 ```go
 user := User{
@@ -38,9 +38,9 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-## Skip Auto Create/Update
+## 跳过自动创建、更新
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+若要在创建、更新时跳过自动保存，您可以使用 `Select` 或 `Omit`，例如：
 
 ```go
 user := User{
@@ -61,41 +61,41 @@ db.Select("Name").Create(&user)
 // INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
 db.Omit("BillingAddress").Create(&user)
-// Skip create BillingAddress when creating a user
+// 创建 user 时，跳过自动创建 BillingAddress
 
 db.Omit(clause.Associations).Create(&user)
-// Skip all associations when creating a user
+// 创建 user 时，跳过自动创建所有关联记录
 ```
 
-## Association Mode
+## 关联模式
 
-Association Mode contains some commonly used helper methods to handle relationships
+关联模式包含一些在处理关系时有用的方法
 
 ```go
-// Start Association Mode
+// 开始关联模式
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two conditions matched, the AssociationMode should be started successfully, or it should return error
+// `user` 是源模型，它的主键不能为空
+// 关系的字段名是 `Languages`
+// 如果上面两个条件匹配，会开始关联模式，否则会返回错误
 db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### 查找关联
 
-Find matched associations
+查找所有匹配的关联记录
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 
-// Find with conditions
+// 带条件的查找
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### 添加关联
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+为 `many to many`、`has many` 添加新的关联；为 `has one`, `belongs to` 替换当前的关联
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -105,9 +105,9 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### 替换关联
 
-Replace current associations with new ones
+用一个新的关联替换当前的关联
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -115,7 +115,7 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### 删除关联
 
 Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
 
