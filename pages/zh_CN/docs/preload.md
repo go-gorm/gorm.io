@@ -1,11 +1,11 @@
 ---
-title: Preloading (Eager Loading)
+title: 预加载
 layout: page
 ---
 
-## Preload
+## 预加载
 
-GORM allows eager loading relations in other SQL with `Preload`, for example:
+GORM 允许在 `Preload` 的其它 SQL 中直接加载关系，例如：
 
 ```go
 type User struct {
@@ -20,7 +20,7 @@ type Order struct {
   Price  float64
 }
 
-// Preload Orders when find users
+// 查找 user 时预加载相关 Order
 db.Preload("Orders").Find(&users)
 // SELECT * FROM users;
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4);
@@ -32,7 +32,7 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 // SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
 ```
 
-## Joins Preloading
+## Joins 预加载
 
 `Preload` loads the association data in a separate query, `Join Preload` will loads association data using inner join, for example:
 
