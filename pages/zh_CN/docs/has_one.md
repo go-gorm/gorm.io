@@ -69,7 +69,7 @@ type CreditCard struct {
 
 ## 多态关联
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field, primary key value into the polymorphic field
+GORM 为 `has one` 和 `has many` 提供了多态关联支持，它会将拥有者实体的表名、主键都保存到多态类型的字段中。
 
 ```go
 type Cat struct {
@@ -96,7 +96,7 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs")
 ```
 
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
+您可以使用标签 `polymorphicValue` 来更改多态类型的值，例如：
 
 ```go
 type Dog struct {
@@ -117,15 +117,15 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master")
 ```
 
-## CRUD with Has One
+## Has One 的 CURD
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with `has one` relations
+查看 [关联模式](associations.html#Association-Mode) 获取 `has one` 相关的用法
 
-## Eager Loading
+## 预加载
 
-GORM allows eager loading `has one` associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM 可以通过 `Preload`、`Joins` 预加载 `has one` 关联的记录，查看 [预加载](preload.html) 获取详情
 
-## Self-Referential Has One
+## 自引用 Has One
 
 ```go
 type User struct {
@@ -136,9 +136,9 @@ type User struct {
 }
 ```
 
-## FOREIGN KEY Constraints
+## 外键约束
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+你可以通过标签 `constraint` 并带上 `OnUpdate`、`OnDelete` 实现外键约束，例如：
 
 ```go
 type User struct {
