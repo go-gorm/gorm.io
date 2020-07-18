@@ -1,41 +1,41 @@
 ---
-title: Method Chaining
+title: 链式方法
 layout: page
 ---
 
-GORM allows method chaining, so you can write code like this:
+GORM 允许进行链式操作，所以您可以像这样写代码：
 
 ```go
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 ```
 
-There are three kinds of methods in GORM: `Chain Method`, `Finisher Method`, `New Session Method`
+GORM 中有三种类型的方法： `链式方法`、`Finisher 方法`、`新建会话方法`
 
-## Chain Method
+## 链式方法
 
-Chain methods are methods to modify or add `Clauses` to current `Statement`, like:
+链式方法是将 `Clauses` 修改或添加到当前 `Statement` 的方法，例如：
 
 `Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
 
-Here is [the full lists](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), also check out the [SQL Builder](sql_builder.html) for more details about `Clauses`
+这是 [完整方法列表](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)，也可以查看 [SQL 构建器](sql_builder.html) 获取更多关于 `Clauses` 的信息
 
 ## Finisher Method
 
-Finishers are immediate methods that execute registered callbacks, which will generate and execute SQL, like those methods:
+Finishers 是会立即执行注册回调的方法，然后生成并执行 SQL，比如这些方法：
 
 `Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`...
 
-Check out [the full lists](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) here
+查看[完整方法列表](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
 
-## New Session Mode
+## 新建会话模式
 
-After new initialized `*gorm.DB` or a `New Session Method`, following methods call will create a new `Statement` instance instead of using the current one
+在初始化了 `*gorm.DB` 或 `新建会话方法` 后， 调用下面的方法会创建一个新的 `Statement` 实例而不是使用当前的
 
-GROM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details
+GROM 定义了 `Session`、`WithContext`、`Debug` 方法做为 `新建会话方法`，参考[会话](session.html) 获得详细
 
-Let explain it with examples:
+让我们用一些例子来解释它：
 
-Example 1:
+示例 1：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
