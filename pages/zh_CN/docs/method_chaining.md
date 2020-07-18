@@ -62,58 +62,58 @@ db.Find(&users)
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db is new initialized *gorm.DB, which under `New Session Mode`
+// db 是一个刚完成初始化的 *gorm.DB 实例，这是一个 `新建会话`
 tx := db.Where("name = ?", "jinzhu")
-// `Where("name = ?", "jinzhu")` is the first method call, it creates a new `Statement` and add conditions
+// `Where("name = ?", "jinzhu")` 是第一个被调用的方法，它创建了一个新的 `Statement` 并添加条件
 
 tx.Where("age = ?", 18).Find(&users)
-// `tx.Where("age = ?", 18)` REUSE above `Statement`, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// `tx.Where("age = ?", 18)` 会复用上面的那个 `Statement`，并向其添加条件
+// `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18
 
 tx.Where("age = ?", 28).Find(&users)
-// `tx.Where("age = ?", 18)` REUSE above `Statement` also, and add conditions to the `Statement`
-// `Find(&users)` is a finisher, it executes registered Query Callbacks, generate and run following SQL
+// `tx.Where("age = ?", 18)` 同样会复用上面的那个 `Statement`，并向其添加条件
+// `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
 ```
 
-**NOTE** In example 2, the first query affected the second generated SQL as GORM reused the `Statement`, this might cause unexpected issues, refer [Goroutine Safety](#goroutine_safe) for how to avoid it
+**注意** 在示例 2 中，第一个查询会影响第二个查询生成的 SQL ，因为 GORM 复用 `Statement` 这可能会引发预期之外的问题，请参考 [线程安全](#goroutine_safe) 了解如何避免该问题。
 
-## <span id="goroutine_safe">Goroutine Safety</span>
+## <span id="goroutine_safe">线程安全</span>
 
-Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
+新初始化的 `*gorm.DB` 或调用 `新建会话方法` 后，GORM 会创建新的 `Statement` 实例。因此想要复用 `*gorm.DB`，您需要确保它们处于 `新建会话模式`，例如：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// Safe for new initialized *gorm.DB
+// 安全的使用新初始化的 *gorm.DB
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// NOT Safe as reusing Statement
+// 不安全的复用 Statement
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.WithContext(ctx)
-// Safe after a `New Session Method`
+// 在 `新建会话方法` 之后是安全的
 for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// Safe after a `New Session Method`
+// 在 `新建会话方法` 之后是安全的
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` 会应用到每次循环中
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
-// Safe after a `New Session Method`
+// 在 `新建会话方法` 之后是安全的
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` 会应用到每次循环中
 }
 ```
