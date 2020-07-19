@@ -13,7 +13,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * 基于 `Preload`、`Joins` 的预加载
 * 事务、嵌套事务、Save Point、回滚至 Save Point
 * Context、Prepared Statment 模式、DryRun 模式
-* Batch Insert, FindInBatches, Find To Map
+* 批量插入、FindInBatches、查询至 Map
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
 * 复合主键
 * 自动迁移
