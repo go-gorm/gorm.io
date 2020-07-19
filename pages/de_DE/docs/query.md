@@ -8,40 +8,25 @@ layout: page
 GORM stellt die Methoden `First`, `Take` und `Last` zur Verfügung, um ein einzelnes Objekt aus der Datenbank abzufragen, es fügt die Bedingung `LIMIT 1` bei der Abfrage hinzu, und gibt den Fehler `ErrRecordNotFound` zurück, falls kein Eintrag gefunden wurde
 
 ```go
-// Get the first record ordered by primary key
+// Frage den ersten Eintrag ab, sortiert nach dem Primärschlüssel
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
-
-// Get one record, no specified order
-db.Take(&user)
-// SELECT * FROM users LIMIT 1;
-
-// Get last record, order by primary key desc
-db.Last(&user)
-// SELECT * FROM users ORDER BY id DESC LIMIT 1;
-
-result := db.First(&user)
-result.RowsAffected // returns found records count
-result.Error        // returns error
-
-// check record not found error
-errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
-## Retrieving objects
+## Abfragen mehrerer Objekte
 
 ```go
-// Get all records
+// Frage alle Einträge ab
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // returns found records count, equals `len(users)`
-result.Error        // returns error
+result.RowsAffected // Gibt die Anzahl der abgefragten Einträge zurück, identisch zu `len(users)`
+result.Error        // Gibt einen Fehler zurück
 ```
 
-## Conditions
+## Bedingungen
 
-### String Conditions
+### Bedingungen für Zeichenketten
 
 ```go
 // Get by primary key (only works for integer primary key)
@@ -64,27 +49,9 @@ db.Find(&users, User{Age: 20})
 
 // Map
 db.Find(&users, map[string]interface{}{"age": 20})
-// SELECT * FROM users WHERE age = 20; // Get by primary key (only works for integer primary key)
-db.First(&user, 23)
-// SELECT * FROM users WHERE id = 23;
-// Get by primary key if it were a non-integer type
-db.First(&user, "id = ?", "string_primary_key")
-// SELECT * FROM users WHERE id = 'string_primary_key';
+// SELECT * FROM users WHERE age = 20; 
 
-// Plain SQL
-db.Find(&user, "name = ?", "jinzhu")
-// SELECT * FROM users WHERE name = "jinzhu";
-
-db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
-// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
-
-// Struct
-db.Find(&users, User{Age: 20})
-// SELECT * FROM users WHERE age = 20;
-
-// Map
-db.Find(&users, map[string]interface{}{"age": 20})
-// SELECT * FROM users WHERE age = 20; // Get first matched record
+ // Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
