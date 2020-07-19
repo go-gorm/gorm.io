@@ -3,20 +3,20 @@ title: 数据类型
 layout: page
 ---
 
-GORM provides few interfaces that allow users to define well-supported customized data types for GORM, takes [json](https://github.com/go-gorm/datatypes/blob/master/json.go) as an example
+GORM 提供了少量接口，使用户能够为 GORM 定义支持的数据类型，这里以 [json](https://github.com/go-gorm/datatypes/blob/master/json.go) 为例
 
-## Implements Data Type
+## 实现数据类型
 
 ### Scanner / Valuer
 
-The customized data type has to implement the [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces, so GORM knowns to how to receive/save it into the database
+自定义的数据类型必须实现 [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) 和 [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) 接口，以便让 GORM 知道如何将该类型接收、保存到数据库
 
-For example:
+例如:
 
 ```go
 type JSON json.RawMessage
 
-// Scan scan value into Jsonb, implements sql.Scanner interface
+// 实现 sql.Scanner 接口，Scan 将 value 扫描至 Jsonb
 func (j *JSON) Scan(value interface{}) error {
   bytes, ok := value.([]byte)
   if !ok {
@@ -29,7 +29,7 @@ func (j *JSON) Scan(value interface{}) error {
   return err
 }
 
-// Value return json value, implement driver.Valuer interface
+// 实现 driver.Valuer 接口，Value 返回 json value
 func (j JSON) Value() (driver.Value, error) {
   if len(j) == 0 {
     return nil, nil
@@ -40,7 +40,7 @@ func (j JSON) Value() (driver.Value, error) {
 
 ### GormDataTypeInterface
 
-A customized data type might has different database types, you can implements the `GormDataTypeInterface` to set them up, for example:
+自定义数据类型在不同的数据库中可能是不同数据类型，您可以实现 `GormDataTypeInterface` 来设置它们，例如：
 
 ```go
 type GormDataTypeInterface interface {
@@ -48,10 +48,10 @@ type GormDataTypeInterface interface {
 }
 
 func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
-  // use field.Tag, field.TagSettings gets field's tags
-  // checkout https://github.com/go-gorm/gorm/blob/master/schema/field.go for all options
+  // 使用 field.Tag、field.TagSettings 获取字段的 tag
+  // 查看 https://github.com/go-gorm/gorm/blob/master/schema/field.go 获取全部的选项
 
-  // returns different database type based on driver name
+  // 根据不同的数据库驱动返回不同的数据类型
   switch db.Dialector.Name() {
   case "mysql":
     return "JSON"
@@ -64,7 +64,7 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 
 ### Clause Expression
 
-Customized data type possible needs specifically SQL which can't use current GORM API, you can define a `Builder` to implement interface `clause.Expression`
+自定义数据类型可能需要特殊的 SQL，此时 GORM 提供的 API 不适用。这时候您可以定义一个 `Builder` 来实现 `clause.Expression` 接口
 
 ```go
 type Expression interface {
@@ -72,10 +72,10 @@ type Expression interface {
 }
 ```
 
-Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) for implementation details
+查看 [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) 获取详情
 
 ```go
-// Generates SQL with clause Expression
+// 根据 Clause Expression 生成 SQL
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("role"))
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 
@@ -95,6 +95,6 @@ db.Find(&user, datatypes.JSONQuery("attributes").Equals("jinzhu", "name"))
 // SELECT * FROM "user" WHERE json_extract_path_text("attributes"::json,'name') = 'jinzhu'
 ```
 
-## Customized Data Types Collections
+## 自定义数据类型集合
 
-We created a Github repo for customized data types collections [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), pull request welcome ;)
+我们创建了一个 Github 仓库，用于收集各种自定义数据类型[https://github.com/go-gorm/datatype](https://github.com/go-gorm/datatypes)，非常欢迎同学们的 pull request ;)
