@@ -81,39 +81,39 @@ db.Migrator().CurrentDatabase()
 ### 表
 
 ```go
-// Create table for `User`
+// 为 `User` 创建表
 db.Migrator().CreateTable(&User{})
 
-// Append "ENGINE=InnoDB" to the creating table SQL for `User`
+// 将 "ENGINE=InnoDB" 添加到创建 `User` 的 SQL 里去
 db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
 
-// Check table for `User` exists or not
+// 检查 `User` 对应的表是否存在
 db.Migrator().HasTable(&User{})
 db.Migrator().HasTable("users")
 
-// Drop table if exists (will ignore or delete foreign key constraints when dropping)
+// 如果存在表则删除（删除时会忽略、删除外键约束)
 db.Migrator().DropTable(&User{})
 db.Migrator().DropTable("users")
 
-// Rename old table to new table
+// 重命名表
 db.Migrator().RenameTable(&User{}, &UserInfo{})
 db.Migrator().RenameTable("users", "user_infos")
 ```
 
-### Columns
+### 列
 
 ```go
 type User struct {
   Name string
 }
 
-// Add name field
+// 添加 name 字段
 db.Migrator().AddColumn(&User{}, "Name")
-// Drop name field
+// 删除 name 字段
 db.Migrator().DropColumn(&User{}, "Name")
-// Alter name field
+// 修改 name 字段
 db.Migrator().AlterColumn(&User{}, "Name")
-// Check column exists
+// 检查字段是否存在
 db.Migrator().HasColumn(&User{}, "Name")
 
 type User struct {
@@ -121,32 +121,32 @@ type User struct {
   NewName string
 }
 
-// Rename column to new name
+// 重命名字段
 db.Migrator().RenameColumn(&User{}, "Name", "NewName")
 db.Migrator().RenameColumn(&User{}, "name", "new_name")
 
-// ColumnTypes
+// 获取字段类型
 db.Migrator().ColumnTypes(&User{}) ([]*sql.ColumnType, error)
 ```
 
-### Constraints
+### 约束
 
 ```go
 type UserIndex struct {
   Name  string `gorm:"check:name_checker,name <> 'jinzhu'"`
 }
 
-// Create constraint
+// 创建约束
 db.Migrator().CreateConstraint(&User{}, "name_checker")
 
-// Drop constraint
+// 删除约束
 db.Migrator().DropConstraint(&User{}, "name_checker")
 
-// Check constraint exists
+// 检查约束是否存在
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
-### Indexes
+### 索引
 
 ```go
 type User struct {
