@@ -47,7 +47,7 @@ db.Set("my_value", myValue).Create(&User{})
 
 ## InstanceSet / InstanceGet
 
-Use `InstanceSet` / `InstanceGet` pass settings to current `*Statement`'s hooks methods, for example:
+使用 `InstanceSet` / `InstanceGet` 传递设置到 `*Statement` 的钩子方法，例如：
 
 ```go
 type User struct {
@@ -67,7 +67,7 @@ type CreditCard struct {
   // ...
 }
 
-// When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
+// 在创建关联时，GORM 创建了一个新 `*Statement`，所以它不能读取到其它实例的设置
 func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
   myValue, ok := tx.InstanceGet("my_value")
   // ok => false
