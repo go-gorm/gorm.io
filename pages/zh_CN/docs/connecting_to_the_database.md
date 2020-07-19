@@ -1,5 +1,5 @@
 ---
-title: Connecting to a Database
+title: 连接到数据库
 layout: page
 ---
 
@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-  // refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
+  // 参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name 获取详情
   dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
   db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
@@ -22,11 +22,11 @@ func main() {
 
 **注意：**
 
-To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters))
+想要 Gorm 正确的处理 `time.Time` ，您需要带上 `parseTime` 参数。 ([查看更多参数](https://github.com/go-sql-driver/mysql#parameters))
 
-To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+想要支持完整的 UTF-8 编码，您需要将 `charset=utf8` 更改为 `charset=utf8mb4`。 查看 [此文章](https://mathiasbynens.be/notes/mysql-utf8mb4) 获取详情
 
-MySQl Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
+MySQl 驱动程序提供了 [一些高级配置](https://github.com/go-gorm/mysql) 可以在初始化过程中使用，例如：
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
