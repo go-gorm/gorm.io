@@ -1,12 +1,12 @@
 ---
-title: Session
+title: 会话
 layout: page
 ---
 
-GORM provides `Session` method, which is a [`New Session Method`](method_chaining.html), it allows create a new session mode with configuration:
+GORM 提供了 `Session` 方法，这是一个 [`新建会话方法`](method_chaining.html)，它允许创建带配置的新建会话模式：
 
 ```go
-// Session Configuration
+// 会话配置
 type Session struct {
   DryRun         bool
   PrepareStmt    bool
@@ -19,18 +19,18 @@ type Session struct {
 
 ## DryRun
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, for example:
+DarRun 模式会生成但不执行 `SQL`，可以用于准备或测试生成的 SQL，详情请参考 Session：
 
 ```go
-// new session mode
+// 新建会话模式
 stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 
-// globally mode with DryRun
+// 全局 DryRun 模式
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{DryRun: true})
 
-// different databases generate different SQL
+// 不同的数据库生成不同的 SQL
 stmt := db.Find(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 // PostgreSQL
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
@@ -68,7 +68,7 @@ for sql, stmt := range stmtManger.Stmts {
 
 ## WithConditions
 
-Share `*gorm.DB` conditions with option `WithConditions`, for example:
+`WithCondition` 会共享 `*gorm.DB` 的条件，例如：
 
 ```go
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
@@ -79,7 +79,7 @@ tx.First(&user)
 tx.First(&user, "id = ?", 10)
 // SELECT * FROM users WHERE name = "jinzhu" AND id = 10 ORDER BY id
 
-// Without option `WithConditions`
+// 不共享 `WithConditions`
 tx2 := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: false})
 tx2.First(&user)
 // SELECT * FROM users ORDER BY id
@@ -87,17 +87,17 @@ tx2.First(&user)
 
 ## Context
 
-With the `Context` option, you can set the `Context` for following SQL operations, for example:
+`Context`，您可以通过 `Context` 来追踪 SQL 操作，例如：
 
 ```go
 timeoutCtx, _ := context.WithTimeout(context.Background(), time.Second)
 tx := db.Session(&Session{Context: timeoutCtx})
 
-tx.First(&user) // query with context timeoutCtx
-tx.Model(&user).Update("role", "admin") // update with context timeoutCtx
+tx.First(&user) // 带 timeoutCtx 的查询
+tx.Model(&user).Update("role", "admin") // 带 timeoutCtx 的更新
 ```
 
-GORM also provides shortcut method `WithContext`,  here is the definition:
+GORM 也提供快捷调用方法 `WithContext`，其实现如下：
 
 ```go
 func (db *DB) WithContext(ctx context.Context) *DB {
@@ -107,7 +107,7 @@ func (db *DB) WithContext(ctx context.Context) *DB {
 
 ## Logger
 
-Gorm allows customize built-in logger with the `Logger` option, for example:
+Gorm 允许使用 `Logger` 选项自定义内建 Logger，例如：
 
 ```go
 newLogger := logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags),
@@ -121,11 +121,11 @@ db.Session(&Session{Logger: newLogger})
 db.Session(&Session{Logger: logger.Default.LogMode(logger.Silent)})
 ```
 
-Checkout [Logger](logger.html) for more details
+查看 [Logger](logger.html) 获取详情
 
 ## NowFunc
 
-`NowFunc` allows change the function to get current time of GORM, for example:
+`NowFunc` 允许改变 GORM 获取当前时间的实现，例如：
 
 ```go
 db.Session(&Session{
@@ -137,7 +137,7 @@ db.Session(&Session{
 
 ## Debug
 
-`Debug` is a shortcut method to change session's `Logger` to debug mode,  here is the definition:
+`Debug` 只是将会话的 `Logger` 修改为调试模式的快捷方法，其实现如下：
 
 ```go
 func (db *DB) Debug() (tx *DB) {

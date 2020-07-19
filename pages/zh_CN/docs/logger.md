@@ -5,37 +5,37 @@ layout: page
 
 ## Logger
 
-Gorm has a [default logger implementation](https://github.com/go-gorm/gorm/blob/master/logger/logger.go), it will print Slow SQL and happening errors by default
+Gorm 有一个 [默认 logger 实现](https://github.com/go-gorm/gorm/blob/master/logger/logger.go)，默认情况下，它会打印慢 SQL 和错误
 
-The logger accepts few options, you can customize it during initialization, for example:
+Logger 接受的选项不多，您可以在初始化时自定义它，例如：
 
 ```go
 newLogger := logger.New(
   log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
   logger.Config{
-    SlowThreshold: time.Second,   // Slow SQL threshold
+    SlowThreshold: time.Second,   // 慢 SQL 阈值
     LogLevel:      logger.Silent, // Log level
-    Colorful:      false,         // Disable color
+    Colorful:      false,         // 禁用彩色打印
   },
 )
 
-// Globally mode
+// 全局模式
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
   Logger: newLogger,
 })
 
-// Continuous session mode
+// 新建会话模式
 tx := db.Session(&Session{Logger: newLogger})
 tx.First(&user)
 tx.Model(&user).Update("Age", 18)
 
-// Debug a single operation, change the session's log level to logger.Info
+// Debug 单个操作，会将该会话的日志级别调整为 logger.Info
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
-### Log Levels
+### 日志级别
 
-GORM defined log levels: `Silent`, `Error`, `Warn`, `Info`
+GORM 定义了这些日志级别：`Silent`、`Error`、`Warn`、`Info`
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
@@ -43,11 +43,11 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 })
 ```
 
-## Customize Logger
+## 自定义 Logger
 
-Refer to GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
+您可用参考 GORM 的 [默认 logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) 来定义您自己的 logger
 
-The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
+Logger 需要实现以下接口，它接受 `context`，所以你可以用它来追踪日志
 
 ```go
 type Interface interface {

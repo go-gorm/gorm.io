@@ -7,10 +7,10 @@ layout: page
 
 `belongs to` 会与另一个模型建立了一对一的连接。 这种模型的每一个实例都“属于”另一个模型的一个实例。
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company
+例如，您的应用包含 user 和 company，并且每个 user 都可以分配给一个 company
 
 ```go
-// `User` belongs to `Company`, `CompanyID` is the foreign key
+// `User` 属于 `Company`，`CompanyID` 是外键
 type User struct {
   gorm.Model
   Name      string
@@ -24,13 +24,13 @@ type Company struct {
 }
 ```
 
-## Override Foreign Key
+## 重写外键
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+要定义一个 belongs to 关系，必须存在外键，默认的外键使用拥有者的类型名加上主字段名
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+对于上面例子，定义属于 `Company` 的 ` User`，其外键一般是 `CompanyID`
 
-GORM provides a way to customize the foreign key, for example:
+此外，GORM 还提供了一种自定义外键的方法，例如：
 
 ```go
 type User struct {
@@ -38,7 +38,7 @@ type User struct {
   Name         string
   CompanyRefer int
   Company      Company `gorm:"foreignKey:CompanyRefer"`
-  // use CompanyRefer as foreign key
+  // 使用 CompanyRefer 作为外键
 }
 
 type Company struct {
@@ -47,20 +47,20 @@ type Company struct {
 }
 ```
 
-## Override References
+## 重写引用
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+对于 belongs to 关系，GORM 通常使用拥有者的主字段作为外键的值。 对于上面的例子，它是 `Company` 的 `ID` 字段
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+当您将 user 分配给某个 company 时，GORM 会将 company 的 `ID` 保存到用户的 `CompanyID` 字段
 
-You are able to change it with tag `references`, e.g:
+此外，您也可以使用标签 `references` 手动更改它，例如：
 
 ```go
 type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // use Code as references
+  Company   Company `gorm:"references:Code"` // 使用 Code 作为引用
 }
 
 type Company struct {
@@ -70,17 +70,17 @@ type Company struct {
 }
 ```
 
-## CRUD with Belongs To
+## Belongs to 的 CRUD
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+查看 [关联模式](associations.html#Association-Mode) 获取 belongs to 相关的用法
 
-## Eager Loading
+## 预加载
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM 可以通过 `Preload`、`Joins` 预加载 belongs to 关联的记录，查看 [预加载](preload.html) 获取详情
 
-## FOREIGN KEY Constraints
+## 外键约束
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+你可以通过标签 `constraint` 并带上 `OnUpdate`、`OnDelete` 实现外键约束，例如：
 
 ```go
 type User struct {

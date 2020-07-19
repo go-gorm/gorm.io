@@ -1,11 +1,11 @@
 ---
-title: Settings
+title: 设置
 layout: page
 ---
 
 GORM 提供了 `Set`, `Get`, `InstanceSet`, `InstanceGet` 方法来允许用户传值给 [勾子](hooks.html) 或其他方法
 
-GORM uses this for some features, like pass creating table options when migrating table. Gorm 中有一些特性用了这种机制，如迁移表格时传递表格选项。
+Gorm 中有一些特性用到了这种机制，如迁移表格时传递表格选项。
 
 ```go
 // 创建表时添加表后缀
@@ -47,7 +47,7 @@ db.Set("my_value", myValue).Create(&User{})
 
 ## InstanceSet / InstanceGet
 
-Use `InstanceSet` / `InstanceGet` pass settings to current `*Statement`'s hooks methods, for example:
+使用 `InstanceSet` / `InstanceGet` 传递设置到 `*Statement` 的钩子方法，例如：
 
 ```go
 type User struct {
@@ -67,7 +67,7 @@ type CreditCard struct {
   // ...
 }
 
-// When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
+// 在创建关联时，GORM 创建了一个新 `*Statement`，所以它不能读取到其它实例的设置
 func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
   myValue, ok := tx.InstanceGet("my_value")
   // ok => false

@@ -1,31 +1,31 @@
 ---
-title: GORM Community
+title: GORM 社区
 layout: page
 ---
 
-## Ask
+## 提问
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[如何提一个好问题？](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
 * Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
 
-## Chat
+## 聊天室
 
 * Gitter - [https://gitter.im/jinzhu/gorm](https://gitter.im/jinzhu/gorm)
 
-## Links
+## 链接
 
-* [GORM V2 article example link](#contribute)
+* [GORM V2 文章链接示例](#contribute)
 
-## Videos
+## 视频
 
-* [GORM V2 videos example link](#contribute)
+* [GORM V2 视频链接示例](#contribute)
 
-## Open Sources
+## 开源软件
 
-* [GORM V2 plugins example link](#contribute)
+* [GORM V2 插件链接示例](#contribute)
 
-## <span id="contribute">Contribute to this page</span>
+## <span id="contribute">完善本页面</span>
 
-Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) to add your awesome links
+请编辑 [此页面](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) 添加您的链接

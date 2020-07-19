@@ -1,15 +1,15 @@
 ---
-title: Database Indexes
+title: 数据库索引
 layout: page
 ---
 
-GORM allows create database index with tag `index`, `uniqueIndex`, those indexes will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORM 允许通过 `index`、`uniqueIndex` 标签创建索引，这些索引将在使用 GORM 进行[AutoMigrate 或 Createtable ](migration.html) 时创建
 
-## Index Tag
+## 索引标签
 
-GORM accepts lots of index settings, like `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`
+GORM 可以接受很多的索引设置，例如：`class`、`type`、`where`、`comment`、`expression`、`sort`、`collate`
 
-Check the following example for how to use it
+下面的示例演示了如何使用它：
 
 ```go
 type User struct {
@@ -22,9 +22,9 @@ type User struct {
 }
 ```
 
-### uniqueIndex
+### 唯一索引
 
-tag `uniqueIndex` works similar like `index`, it equals to `index:,unique`
+`uniqueIndex` 标签的作用与 `index` 类似，它等效于 `index:,unique`
 
 ```go
 type User struct {
@@ -33,9 +33,9 @@ type User struct {
 }
 ```
 
-## Composite Indexes
+## 复合索引
 
-Use same index name for two fields will creates composite indexes, for example:
+两个字段使用同一个索引名将创建复合索引，例如：
 
 ```go
 type User struct {
@@ -44,11 +44,11 @@ type User struct {
 }
 ```
 
-### Fields Priority
+### 字段优先级
 
-The column order of a composite index has an impact on its performance so it must be chosen carefully
+复合索引列的顺序会影响其性能，因此必须仔细考虑
 
-You can specify the order with the `priority` option, the default priority value is `10`, if priority value is the same, the order will be based on model struct's field index
+您可以使用 `priority` 指定顺序，默认优先级值是 `10`，如果优先级值相同，则顺序取决于模型结构体字段的顺序
 
 ```go
 type User struct {
@@ -70,9 +70,9 @@ type User struct {
 // column order: number, name
 ```
 
-## Multiple indexes
+## 多索引
 
-A field accepts multiple `index`, `uniqueIndex` tags that will create multiple indexes on a field
+一个字段接受多个 `index`、`uniqueIndex` 标签，这会在一个字段上创建多个索引
 
 ```go
 type UserIndex struct {

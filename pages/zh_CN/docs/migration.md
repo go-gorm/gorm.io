@@ -1,24 +1,24 @@
 ---
-title: Migration
+title: 迁移
 layout: page
 ---
 
-## Auto Migration
+## AutoMigrate
 
-Automatically migrate your schema, to keep your schema update to date.
+AutoMigrate 用于自动迁移您的 schema，保持您的 schema 是最新的。
 
-**NOTE:** AutoMigrate will **ONLY** create tables, missing foreign keys, constraints, columns and indexes, it **WON'T** change existing column's type or delete unused columns to protect your data.
+**注意：**AutoMigrate**** 只会创建表，它会忽略外键、约束、列和索引。为了保护您的数据，它**不会**更改现有列的类型或删除未使用的列。
 
 ```go
 db.AutoMigrate(&User{})
 
 db.AutoMigrate(&User{}, &Product{}, &Order{})
 
-// Add table suffix when creating tables
+// 创建表时添加后缀
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
-**NOTE** AutoMigrate creates database foreign key constraints automatically, you can disable this feature during initialization, for example:
+**注意** AutoMigrate 会自动创建数据库外键约束，您可以在初始化时禁用此功能，例如：
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -26,13 +26,13 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## Migrator Interface
+## Migrator 接口
 
-GORM provides migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
+GORM 提供了 Migrator 接口，该接口为每个数据库提供了统一的 API 接口，可用来为您的数据库构建独立迁移，例如：
 
-SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table
+SQLite 不支持 `ALTER COLUMN`、`DROP COLUMN`，当你试图修改表结构，GORM 将创建一个新表、复制所有数据、删除旧表、重命名新表。
 
-MySQL doesn't support rename column, index for some versions, GORM will perform different SQL based on the MySQL version you are using
+一些版本的 MySQL 不支持 rename 列，索引。GORM 将基于您使用 MySQL 的版本执行不同 SQL
 
 ```go
 type Migrator interface {
@@ -70,50 +70,50 @@ type Migrator interface {
 }
 ```
 
-### CurrentDatabase
+### 当前数据库
 
-Returns current using database name
+返回当前使用的数据库名
 
 ```go
 db.Migrator().CurrentDatabase()
 ```
 
-### Tables
+### 表
 
 ```go
-// Create table for `User`
+// 为 `User` 创建表
 db.Migrator().CreateTable(&User{})
 
-// Append "ENGINE=InnoDB" to the creating table SQL for `User`
+// 将 "ENGINE=InnoDB" 添加到创建 `User` 的 SQL 里去
 db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
 
-// Check table for `User` exists or not
+// 检查 `User` 对应的表是否存在
 db.Migrator().HasTable(&User{})
 db.Migrator().HasTable("users")
 
-// Drop table if exists (will ignore or delete foreign key constraints when dropping)
+// 如果存在表则删除（删除时会忽略、删除外键约束)
 db.Migrator().DropTable(&User{})
 db.Migrator().DropTable("users")
 
-// Rename old table to new table
+// 重命名表
 db.Migrator().RenameTable(&User{}, &UserInfo{})
 db.Migrator().RenameTable("users", "user_infos")
 ```
 
-### Columns
+### 列
 
 ```go
 type User struct {
   Name string
 }
 
-// Add name field
+// 添加 name 字段
 db.Migrator().AddColumn(&User{}, "Name")
-// Drop name field
+// 删除 name 字段
 db.Migrator().DropColumn(&User{}, "Name")
-// Alter name field
+// 修改 name 字段
 db.Migrator().AlterColumn(&User{}, "Name")
-// Check column exists
+// 检查字段是否存在
 db.Migrator().HasColumn(&User{}, "Name")
 
 type User struct {
@@ -121,32 +121,32 @@ type User struct {
   NewName string
 }
 
-// Rename column to new name
+// 重命名字段
 db.Migrator().RenameColumn(&User{}, "Name", "NewName")
 db.Migrator().RenameColumn(&User{}, "name", "new_name")
 
-// ColumnTypes
+// 获取字段类型
 db.Migrator().ColumnTypes(&User{}) ([]*sql.ColumnType, error)
 ```
 
-### Constraints
+### 约束
 
 ```go
 type UserIndex struct {
   Name  string `gorm:"check:name_checker,name <> 'jinzhu'"`
 }
 
-// Create constraint
+// 创建约束
 db.Migrator().CreateConstraint(&User{}, "name_checker")
 
-// Drop constraint
+// 删除约束
 db.Migrator().DropConstraint(&User{}, "name_checker")
 
-// Check constraint exists
+// 检查约束是否存在
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
-### Indexes
+### 索引
 
 ```go
 type User struct {
@@ -154,15 +154,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// Create index for Name field
+// 为 Name 字段创建索引
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// Drop index for Name field
+// 为 Name 字段删除索引
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// Check Index exists
+// 检查索引是否存在
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -171,22 +171,22 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// Rename index name
+// 修改索引名
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
-## Constraints
+## 约束
 
-GORM creates constraints when auto migrating or creating table, checkout [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORM 会在自动迁移和创建表时创建约束，查看 [约束](constraints.html) 或 [数据库索引](indexes.html) 获取详情
 
-## Other Migration Tools
+## 其他迁移工具
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
+GORM 的 AutoMigrate 在大多数情况下都工作得很好，但如果您正在寻找更严格的迁移工具，GORM 提供一个通用数据库接口，可能对您有帮助。
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-Refer [Generic Interface](generic_interface.html) for more details.
+查看 [通用接口](generic_interface.html) 获取详情。

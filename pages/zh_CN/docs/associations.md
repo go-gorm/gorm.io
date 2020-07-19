@@ -3,9 +3,9 @@ title: 实体关联
 layout: page
 ---
 
-## 自动创建/更新
+## 自动创建、更新
 
-GROM会自动保持关联以及在使用[Upsert](create.html#upsert)的creating/updating时自动保存引用
+在创建、更新记录时，GORM 会通过 [Upsert](create.html#upsert) 自动保存关联及其引用记录。
 
 ```go
 user := User{
@@ -38,9 +38,9 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-## Skip Auto Create/Update
+## 跳过自动创建、更新
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+若要在创建、更新时跳过自动保存，您可以使用 `Select` 或 `Omit`，例如：
 
 ```go
 user := User{
@@ -61,41 +61,41 @@ db.Select("Name").Create(&user)
 // INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
 db.Omit("BillingAddress").Create(&user)
-// Skip create BillingAddress when creating a user
+// 创建 user 时，跳过自动创建 BillingAddress
 
 db.Omit(clause.Associations).Create(&user)
-// Skip all associations when creating a user
+// 创建 user 时，跳过自动创建所有关联记录
 ```
 
-## Association Mode
+## 关联模式
 
-Association Mode contains some commonly used helper methods to handle relationships
+关联模式包含一些在处理关系时有用的方法
 
 ```go
-// Start Association Mode
+// 开始关联模式
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two conditions matched, the AssociationMode should be started successfully, or it should return error
+// `user` 是源模型，它的主键不能为空
+// 关系的字段名是 `Languages`
+// 如果上面两个条件匹配，会开始关联模式，否则会返回错误
 db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### 查找关联
 
-Find matched associations
+查找所有匹配的关联记录
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 
-// Find with conditions
+// 带条件的查找
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### 添加关联
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+为 `many to many`、`has many` 添加新的关联；为 `has one`, `belongs to` 替换当前的关联
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -105,9 +105,9 @@ db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### 替换关联
 
-Replace current associations with new ones
+用一个新的关联替换当前的关联
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -115,56 +115,56 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### 删除关联
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+如果存在，则删除源模型与参数之间的关系，只会删除引用，不会从数据库中删除这些对象。
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### 清空关联
 
-Remove all reference between source & association, won't delete those associations
+删除源模型与关联之间的所有引用，但不会删除这些关联
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### 关联计数
 
-Return the count of current associations
+返回当前关联的计数
 
 ```go
 db.Model(&user).Association("Languages").Count()
 ```
 
-### Batch Data
+### 批量处理数据
 
-Association Mode supports batch data, e.g:
+关联模式支持批量处理数据，例如：
 
 ```go
-// Find all roles for all users
+// 查询所有用户的所有角色
 gorm.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// 将 userA 移出所有的 Team
 gorm.Model(&users).Association("Team").Delete(&userA)
 
-// Get unduplicated count of members in all user's team
+// 获取所有 Team 成员的不重复计数。
 gorm.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
+// 对于 `Append`、`Replace` 的批量处理，参数与数据的长度必须相等，否则会返回错误
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// 例如：我们有 3 个 user，将 userA 添加到 user1 的 Team，将 userB 添加到 user2 的 Team，将 userA、userB、userC 添加到 user3 的 Team。
 gorm.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+//将 user1 的 Team 重置为 userA，将 user2的 team 重置为 userB，将 user3 的 team 重置为 userA、userB 和 userC。
 gorm.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">关联标签</span>
 
-| Tag              | Description                                     |
+| 标签               | 描述                                              |
 | ---------------- | ----------------------------------------------- |
 | foreignKey       | Specifies foreign key                           |
 | references       | Specifies references                            |

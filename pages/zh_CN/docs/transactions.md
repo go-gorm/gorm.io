@@ -1,34 +1,34 @@
 ---
-title: Transactions
+title: 事务
 layout: page
 ---
 
-## Disable Default Transaction
+## 禁用默认事务
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required, you will gain about 30%+ performance improvement after that
+为了确保数据一致性，GORM 会在事务里执行写入操作（创建、更新、删除）。如果没有这方面的要求，您可以在初始化时禁用它，这将获得大约 30%+ 性能提升。
 
 ```go
-// Globally disable
+// 全局禁用
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   SkipDefaultTransaction: true,
 })
 
-// Continuous session mode
+// 持续会话模式
 tx := db.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 ```
 
-## Transaction
+## 事务
 
-To perform a set of operations within a transaction, the general flow is as below.
+要在事务中执行一系列操作，一般流程如下：
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
-  // do some database operations in the transaction (use 'tx' from this point, not 'db')
+  // 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // return any error will rollback
+    // 返回任何错误都会回滚事务
     return err
   }
 
@@ -36,14 +36,14 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  // return nil will commit the whole transaction
+  // 返回 nil 提交事务
   return nil
 })
 ```
 
-### Nested Transactions
+### 嵌套事务
 
-GORM supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
+GORM 支持嵌套事务，您可以回滚较大事务内执行的一部分操作，例如：
 
 ```go
 DB.Transaction(func(tx *gorm.DB) error {
@@ -51,7 +51,7 @@ DB.Transaction(func(tx *gorm.DB) error {
 
   tx.Transaction(func(tx2 *gorm.DB) error {
     tx.Create(&user2)
-    return errors.New("rollback user2") // Rollback user2
+    return errors.New("rollback user2") // 回滚 user2
   })
 
   tx.Transaction(func(tx2 *gorm.DB) error {
@@ -62,32 +62,32 @@ DB.Transaction(func(tx *gorm.DB) error {
   return nil
 })
 
-// Commit user1, user3
+// 最终会提交 user1、user3
 ```
 
-## Transactions by manual
+## 手动事务
 
 ```go
-// begin a transaction
+// 开始事务
 tx := db.Begin()
 
-// do some database operations in the transaction (use 'tx' from this point, not 'db')
+// 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
 tx.Create(...)
 
 // ...
 
-// rollback the transaction in case of error
+// 遇到错误时回滚事务
 tx.Rollback()
 
-// Or commit the transaction
+// 否则，提交事务
 tx.Commit()
 ```
 
-### A Specific Example
+### 一个特殊的示例
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
-  // Note the use of tx as the database handle once you are within a transaction
+  // 再唠叨一下，事务一旦开始，你就应该使用 tx 处理数据
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
@@ -113,9 +113,9 @@ func CreateAnimals(db *gorm.DB) error {
 }
 ```
 
-## SavePoint, RollbackTo
+## SavePoint、RollbackTo
 
-GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
+GORM 提供了 `SavePoint`、`Rollbackto` 来提供保存点以及回滚至保存点，例如：
 
 ```go
 tx := DB.Begin()
@@ -123,7 +123,7 @@ tx.Create(&user1)
 
 tx.SavePoint("sp1")
 tx.Create(&user2)
-tx.RollbackTo("sp1") // Rollback user2
+tx.RollbackTo("sp1") // 回滚 user2
 
-tx.Commit() // Commit user1
+tx.Commit() // 最终仅提交 user1
 ```

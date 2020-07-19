@@ -1,13 +1,13 @@
 ---
-title: Hints
+title: 提示
 layout: page
 ---
 
-GOMR provides optimizer/index/comment hints support
+GOMR 提供了优化器、索引、备注提示支持
 
 https://github.com/go-gorm/hints
 
-## Optimizer Hints
+## 优化器提示
 
 ```go
 import "gorm.io/hints"
@@ -16,7 +16,7 @@ DB.Clauses(hints.New("hint")).Find(&User{})
 // SELECT * /*+ hint */ FROM `users`
 ```
 
-## Index Hints
+## 索引提示
 
 ```go
 import "gorm.io/hints"
@@ -34,7 +34,7 @@ DB.Clauses(
 // SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
 ```
 
-## Comment Hints
+## 备注提示
 
 ```go
 import "gorm.io/hints"

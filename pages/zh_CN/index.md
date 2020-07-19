@@ -5,17 +5,17 @@ subtitle: The fantastic ORM library for Golang
 comments: false
 ---
 
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Eager loading with Preload, Joins
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Context, Prepared Statment Mode, DryRun Mode
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Batch Insert, FindInBatches, Find To Map
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, NamedArg
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Composite Primary Key, Indexes, Constraints
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Auto Migrations
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, write Plugins based on GORM callbacks
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Every feature comes with tests
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Developer Friendly
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 全功能 ORM
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 关联 (Has One、Has Many、Belongs To、Many To Many、多态、单表继承)
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Create、Save、Update、Delete、Find 前/后的勾子
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 基于 Preload、Joins 的预加载
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 事务、嵌套事务、保存点、回滚至保存点
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Context、Prepared Statment 模式、DryRun 模式
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 批量插入、FindInBatches、查询至 Map
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 复合主键、索引、约束
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 自动迁移
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 自定义 Logger
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 可扩展性, 可基于 GORM callbacks 编写插件
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 所有特性都通过了测试
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 开发者友好

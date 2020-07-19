@@ -197,9 +197,9 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", Age: 20}
 ```
 
-## Optimizer/Index Hints
+## 优化器、索引提示
 
-Optimizer hints allow us to control the query optimizer to choose a certain query execution plan.
+优化器提示允许我们控制查询优化器选择某个查询执行计划。
 
 ```go
 import "gorm.io/hints"
@@ -208,7 +208,7 @@ DB.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allow passing index hints to the database in case the query planner gets confused.
+索引提示允许传递索引提示到数据库，以防查询计划器出现混乱。
 
 ```go
 import "gorm.io/hints"
@@ -220,7 +220,7 @@ DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-Refer [Optimizer Hints/Index/Comment](hints.html) for more details
+参考 [优化器提示、索引、备注](hints.html) 获取详情
 
 ## 迭代
 

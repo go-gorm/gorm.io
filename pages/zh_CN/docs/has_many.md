@@ -5,12 +5,12 @@ layout: page
 
 ## Has Many
 
-A `has many` association sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+`has many` 与另一个模型建立了一对多的连接。 不同于 `has one`，拥有者可以有零或多个关联模型。
 
-For example, if your application includes users and credit card, and each user can have many credit cards.
+例如，您的应用包含 user 和 credit card 模型，且每个 user 可以有多张 credit card。
 
 ```go
-// User has many CreditCards, UserID is the foreign key
+// User 有多张 CreditCard，UserID 是外键
 type User struct {
   gorm.Model
   CreditCards []CreditCard
@@ -23,13 +23,13 @@ type CreditCard struct {
 }
 ```
 
-## Override Foreign Key
+## 重写外键
 
-To define a `has many` relationship, a foreign key must exist. The default foreign key's name is the owner's type name plus the name of its primary key field
+要定义 `has many` 关系，同样必须存在外键。 默认的外键名是拥有者的类型名加上其主键字段名
 
-For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+例如，要定义一个属于 `User` 的模型，则其外键应该是 `UserID`。
 
-To use another field as foreign key, you can customize it with a `foreignKey` tag, e.g:
+此外，想要使用另一个字段作为外键，您可以使用 `foreignKey` 标签自定义它：
 
 ```go
 type User struct {
@@ -44,13 +44,13 @@ type CreditCard struct {
 }
 ```
 
-## Override References
+## 重写引用
 
-GORM usually uses the owner's primary key as the foreign key's value, for the above example, it is the `User`'s `ID`,
+GORM 通常使用拥有者的主键作为外键的值。 对于上面的例子，它是 `User` 的 `ID` 字段。
 
-When you assign credit cards to a user, GORM will save the user's `ID` into credit cards' `UserID` field.
+为 user 添加 credit card 时，GORM 会将 user 的 `ID` 字段保存到 credit card 的 `UserID` 字段。
 
-You are able to change it with tag `references`, e.g:
+同样的，您也可以使用标签 `references` 来更改它，例如：
 
 ```go
 type User struct {
@@ -66,9 +66,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## 多态关联
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key value into the polymorphic field
+GORM 为 `has one` 和 `has many` 提供了多态关联支持，它会将拥有者实体的表名、主键都保存到多态类型的字段中。
 
 ```go
 type Dog struct {
@@ -89,7 +89,7 @@ db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs"), ("toy2","1","dogs")
 ```
 
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
+您可以使用标签 `polymorphicValue` 来更改多态类型的值，例如：
 
 ```go
 type Dog struct {
@@ -110,15 +110,15 @@ db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
 ```
 
-## CRUD with Has Many
+## Has Many 的 CURD
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with has many relations
+查看 [关联模式](associations.html#Association-Mode) 获取 has many 相关的用法
 
-## Eager Loading
+## 预加载
 
-GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
+GORM 可以通过 `Preload` 预加载 has many 关联的记录，查看 [预加载](preload.html) 获取详情
 
-## Self-Referential Has Many
+## 自引用 Has Many
 
 ```go
 type User struct {
@@ -129,9 +129,9 @@ type User struct {
 }
 ```
 
-## FOREIGN KEY Constraints
+## 外键约束
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+你可以通过标签 `constraint` 并带上 `OnUpdate`、`OnDelete` 实现外键约束，例如：
 
 ```go
 type User struct {

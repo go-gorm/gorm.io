@@ -1,35 +1,35 @@
 ---
-title: Hooks
+title: 钩子
 layout: page
 ---
 
-## Object Life Cycle
+## 对象生命周期
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+钩子是在创建、查询、更新、删除等操作之前、之后调用的函数。
 
-If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+如果您已经为模型定义了指定的方法，它会在创建、更新、查询、删除时自动被调用。如果任何回调返回错误，GORM 将停止后续的操作并回滚事务。
 
-The type of hook methods should be `func(*gorm.DB) error`
+钩子方法的函数签名应该是 `func(*gorm.DB) error`
 
-## Hooks
+## 钩子
 
-### Creating an object
+### 创建对象
 
-Available hooks for creating
+创建时可用的钩子
 
 ```go
-// begin transaction
+// 开始事务
 BeforeSave
 BeforeCreate
-// save before associations
-// insert into database
-// save after associations
+// 关联前的 save
+// 插入记录至 db
+// 关联后的 save
 AfterCreate
 AfterSave
-// commit or rollback transaction
+// 提交或回滚事务
 ```
 
-Code Example:
+代码示例：
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -49,7 +49,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is committed, if you return any error in your hooks, the change will be rollbacked
+**注意** 在 GORM 中保存、删除操作会默认运行在事务上， 因此在事务完成之前该事务中所作的更改是不可见的，如果您的钩子返回了任何错误，则修改将被回滚。
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
@@ -60,23 +60,23 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### 更新对象
 
-Available hooks for updating
+更新时可用的钩子
 
 ```go
-// begin transaction
+// 开始事务
 BeforeSave
 BeforeUpdate
-// save before associations
-// update database
-// save after associations
+// 关联前的 save
+// 更新 db
+// 关联后的 save
 AfterUpdate
 AfterSave
-// commit or rollback transaction
+// 提交或回滚事务
 ```
 
-Code Example:
+代码示例：
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -86,7 +86,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
   return
 }
 
-// Updating data in same transaction
+// 在同一个事务中更新数据
 func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("verfied", true)
@@ -95,22 +95,22 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### 删除对象
 
-Available hooks for deleting
+更新时可用的钩子
 
 ```go
-// begin transaction
+// 开始事务
 BeforeDelete
-// delete from database
+// 删除 db 中的数据
 AfterDelete
-// commit or rollback transaction
+// 提交或回滚事务
 ```
 
-Code Example:
+代码示例：
 
 ```go
-// Updating data in same transaction
+// 在同一个事务中更新数据
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
@@ -119,17 +119,17 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Querying an object
+### 查询对象
 
-Available hooks for querying
+更新时可用的钩子
 
 ```go
-// load data from database
+// 从 db 中加载数据
 // Preloading (eager loading)
 AfterFind
 ```
 
-Code Example:
+代码示例：
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -140,16 +140,16 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 }
 ```
 
-## Modify current operation
+## 修改当前操作
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx.Statement, e.g:
+  // 通过 tx.Statement 修改当前操作，例如：
   tx.Statement.Select("Name", "Age")
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
-  // tx is new session mode without the `WithConditions` option
-  // operations based on it will run inside same transaction but without any current conditions
+  // 在没有 `WithConditions` 参数的清空下，tx 是一个新建会话模式
+  // 基于 tx 的操作会在同一个事务中，但不会带上任何当前的条件
   var role Role
   err := tx.First(&role, "name = ?", user.Role).Error
   // SELECT * FROM roles WHERE name = "admin"

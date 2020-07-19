@@ -3,9 +3,9 @@ title: Scopes
 layout: page
 ---
 
-Scopes allow you to easily re-use commonly logic
+Scopes 允许您轻松地复用常见的逻辑
 
-## Query
+## 查询
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -13,30 +13,30 @@ func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
 }
 
 func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
-  return db.Where("pay_mode = ?", "card")
+  return db.Where("pay_mode_sign = ?", "C")
 }
 
 func PaidWithCod(db *gorm.DB) *gorm.DB {
-  return db.Where("pay_mode = ?", "cod")
+  return db.Where("pay_mode_sign = ?", "C")
 }
 
 func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
   return func (db *gorm.DB) *gorm.DB {
-    return db.Scopes(AmountGreaterThan1000).Where("status IN (?)", status)
+    return db.Where("status IN (?)", status)
   }
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// 查找所有金额大于 1000 的信用卡订单
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// 查找所有金额大于 1000 的 COD 订单
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// 查找所有金额大于1000 的已付款或已发货订单
 ```
 
-## Pagination
+## 分页
 
 ```go
 func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
@@ -63,7 +63,7 @@ db.Scopes(Paginate(r)).Find(&users)
 db.Scopes(Paginate(r)).Find(&articles)
 ```
 
-## Updates
+## 更新
 
 ```go
 func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {

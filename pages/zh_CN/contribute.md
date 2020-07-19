@@ -1,50 +1,50 @@
 ---
-title: Contribute to GORM
+title: 为 GORM 做出贡献
 layout: page
 ---
 
-**You can help to deliver a better GORM! there are many things that you can do:**
+**你可以帮助打造一个更好的 GORM！ 您能做的事有很多：**
 
-## Help others to know GORM
+## 让别人知道 GORM
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forget to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
+* 通过社交渠道向全世界分享 GORM，或只需要告诉可能感兴趣的人
+* 在 [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm)、[Github Issues](https://github.com/go-gorm/gorm/issues) 和 [聊天室](/community.html#Chat) 帮助新手解决问题
+* 编写教程，录制视频，等等... (完成后不要忘记将它们添加到这个[列表](/community.html))
+* 在 GitHub 上给 [GORM](https://github.com/go-gorm/gorm) 来个三连，[Star](https://github.com/go-gorm/gorm/stargazers)、[Watch](https://github.com/go-gorm/gorm/watchers)、[Fork](https://github.com/go-gorm/gorm/network/members)
 
-## Documentation and Writing
+## 编写和翻译文档
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* 通过撰写新文档，修正现有文档，使 GORM 的文档变得更好
 
-### Translate this site
+### 翻译该网站
 
-You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
+您可以访问 [https://translate.gorm.io](https://translate.gorm.io) 参与本网站的翻译
 
-To translate GORM in your language you need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
+如果你想将本网站翻译到一个新语言，请提交一个 [Github issues](https://github.com/go-gorm/gorm.io/issues)，然后我们会将其添加到 [https://translate.gorm.io](https://translate.gorm.io) 中。
 
-## Program
+## 编程
 
-* Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
-* Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
+* 在 [Github](https://github.com/go-gorm/gorm) 提交 pull request 添加新特性、修复问题
+* 为 GORM 编写开源插件（不要忘记将它们添加到这个 [列表](/community.html#Open-Sources)）
 
-## Donations
+## 捐赠
 
-Many thanks to all our sponsors!
+非常感谢我们所有的赞助者！
 
-### One-time Donations
+### 一次性捐赠
 
-Your kindness and generosity is greatly appreciated
+非常感谢您的好意和慷慨
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[通过 Paypal 进行一次性捐赠](https://www.paypal.me/zhangjinzhu) [通过 OpenCollective 进行一次性捐赠](https://opencollective.com/gorm)
 
-### Recurring Donations
+### 定期捐赠
 
-Your kindness and generosity are greatly appreciated, and your name will be listed on this page or the home page of this website.
+非常感谢您的好意和慷慨，您的姓名将被列入网站的首页和此页面。
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[通过 OpenCollective 进行定期捐赠](https://opencollective.com/gorm) [通过 Patreon 进行定期捐款](https://www.patreon.com/jinzhu)
 
 <br>
 
-## Sponsors
+## 赞助商
 
-## Backers
+## 支持者

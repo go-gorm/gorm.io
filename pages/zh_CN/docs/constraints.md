@@ -1,13 +1,13 @@
 ---
-title: Constraints
+title: 约束
 layout: page
 ---
 
-GORM allows create database constraints with tag, constraints will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORM 允许通过标签创建数据库约束，约束会在通过 GORM 进行 [AutoMigrate 或创建数据表](migration.html)时被创建。
 
-## CHECK Constraint
+## 检查约束
 
-Create CHECK constraints with tag `check`
+通过 `check` 标签创建检查约束
 
 ```go
 type UserIndex struct {
@@ -17,13 +17,13 @@ type UserIndex struct {
 }
 ```
 
-## Index Constraint
+## 索引约束
 
-Checkout [Database Indexes](indexes.html)
+查看 [数据库索引](indexes.html) 获取详情
 
-## Foreign Key Constraint
+## 外键约束
 
-GORM will creates foreign keys constraints for associations, you can disable this feature during initialization:
+GORM 会为关联创建外键约束，您可以在初始化过程中禁用此功能：
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -31,7 +31,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-GORM allows you setup FOREIGN KEY constraints's `OnDelete`, `OnDelete` option with tag `constraint`, for example:
+GORM 允许您通过 `constraint` 标签的 `Ondelete`、`Ondelete` 选项设置外键约束，例如：
 
 ```go
 type User struct {
