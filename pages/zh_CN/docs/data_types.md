@@ -1,5 +1,5 @@
 ---
-title: Data Types
+title: 数据类型
 layout: page
 ---
 
