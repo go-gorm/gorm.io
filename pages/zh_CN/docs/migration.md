@@ -154,15 +154,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// Create index for Name field
+// 为 Name 字段创建索引
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// Drop index for Name field
+// 为 Name 字段删除索引
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// Check Index exists
+// 检查索引是否存在
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -171,22 +171,22 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// Rename index name
+// 修改索引名
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
-## Constraints
+## 约束
 
-GORM creates constraints when auto migrating or creating table, checkout [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORM 会在自动迁移和创建表时创建约束，查看 [约束](constraints.html) 或 [数据库索引](indexes.html) 获取详情
 
-## Other Migration Tools
+## 其他迁移工具
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
+GORM 的 AutoMigrate 在大多数情况下都工作得很好，但如果您正在寻找更严格的迁移工具，GORM 提供一个通用数据库接口，可能对您有帮助。
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-Refer [Generic Interface](generic_interface.html) for more details.
+查看 [通用接口](generic_interface.html) 获取详情。
