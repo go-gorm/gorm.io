@@ -114,4 +114,4 @@ db.Save(&user) // 将 `UpdatedAt` 设为当前时间
 db.Model(&user).Update("name", "jinzhu") // 也会将 `UpdatedAt` 设为当前时间
 ```
 
-**NOTE** GORM supports having multiple time tracking fields, track with other fields or track with UNIX second/UNIX nanosecond, check [Models](models.html#time_tracking) for more details
+**注意** GORM 支持拥有多种类型的时间追踪字段。可以根据 UNIX 秒、纳秒、其它类型追踪时间，查看 [模型](models.html#time_tracking) 获取详情
