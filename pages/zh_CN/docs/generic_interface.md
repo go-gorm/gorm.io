@@ -1,12 +1,12 @@
 ---
-title: Generic database interface sql.DB
+title: 常规数据库接口 sql.DB
 layout: page
 ---
 
-GORM provides the method `DB` which returns a generic database interface [\*sql.DB](https://pkg.go.dev/database/sql#DB) from the current `*gorm.DB`
+GORM 提供了 `DB` 方法，可用于从当前 `*gorm.DB` 返回一个通用的数据库接口 [*sql.DB](https://pkg.go.dev/database/sql#DB)
 
 ```go
-// Get generic database object sql.DB to use its functions
+// 获取通用数据库对象 sql.DB，然后使用其提供的功能
 sqlDB, err := db.DB()
 
 // Ping
@@ -15,24 +15,24 @@ sqlDB.Ping()
 // Close
 sqlDB.Close()
 
-// Returns database statistics
+// 返回数据库统计信息
 sqlDB.Stats()
 ```
 
-**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns error
+**注意** 如果底层连接的数据库不是 `*sql.DB`，它会返回错误
 
-## Connection Pool
+## 连接池
 
 ```go
-// Get generic database object sql.DB to use its functions
-sqlDB, err := db.DB()
+// 获取通用数据库对象 sql.DB ，然后使用其提供的功能
+sqlDB, err := db。 B()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
-sqlDB.SetMaxIdleConns(10)
+// SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。
+sqlDB.SetMaxIgleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns 设置打开数据库连接的最大数量。
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime 设置了连接可复用的最大时间。
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
