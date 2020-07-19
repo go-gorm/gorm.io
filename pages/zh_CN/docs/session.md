@@ -19,7 +19,7 @@ type Session struct {
 
 ## DryRun
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, for example:
+DarRun 模式会生成但不执行 `SQL`，可以用于准备或测试生成的 SQL，详情请参考 Session：
 
 ```go
 // 新建会话模式
@@ -68,7 +68,7 @@ for sql, stmt := range stmtManger.Stmts {
 
 ## WithConditions
 
-Share `*gorm.DB` conditions with option `WithConditions`, for example:
+`WithCondition` 会共享 `*gorm.DB` 的条件，例如：
 
 ```go
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
@@ -79,7 +79,7 @@ tx.First(&user)
 tx.First(&user, "id = ?", 10)
 // SELECT * FROM users WHERE name = "jinzhu" AND id = 10 ORDER BY id
 
-// Without option `WithConditions`
+// 不共享 `WithConditions`
 tx2 := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: false})
 tx2.First(&user)
 // SELECT * FROM users ORDER BY id
@@ -87,7 +87,7 @@ tx2.First(&user)
 
 ## Context
 
-With the `Context` option, you can set the `Context` for following SQL operations, for example:
+`Context`，您可以通过 `Context` 来追踪 SQL 操作，例如：
 
 ```go
 timeoutCtx, _ := context.WithTimeout(context.Background(), time.Second)
