@@ -11,14 +11,14 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * 关联 (Has One、Has Many、Belongs To、Many To Many、多态、单表继承)
 * Create、Save、Update、Delete、Find 前/后的勾子
 * 基于 `Preload`、`Joins` 的预加载
-* 事务、嵌套事务、Save Point、回滚至 Save Point
+* 事务、嵌套事务、保存点、回滚至保存点
 * Context、Prepared Statment 模式、DryRun 模式
 * 批量插入、FindInBatches、查询至 Map
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
 * 复合主键
 * 自动迁移
-* 自定义日志
-* 可扩展性, 可基于 GORM callback 编写插件
+* 自定义 Logger
+* 可扩展性, 可基于 GORM callbacks 编写插件
 * 所有特性都通过了测试
 * 开发者友好
 
