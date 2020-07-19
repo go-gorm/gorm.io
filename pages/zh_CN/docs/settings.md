@@ -1,11 +1,11 @@
 ---
-title: Settings
+title: 设置
 layout: page
 ---
 
 GORM 提供了 `Set`, `Get`, `InstanceSet`, `InstanceGet` 方法来允许用户传值给 [勾子](hooks.html) 或其他方法
 
-GORM uses this for some features, like pass creating table options when migrating table. Gorm 中有一些特性用了这种机制，如迁移表格时传递表格选项。
+Gorm 中有一些特性用到了这种机制，如迁移表格时传递表格选项。
 
 ```go
 // 创建表时添加表后缀
