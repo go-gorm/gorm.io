@@ -48,12 +48,12 @@ GORM 提供了一个示例，说明如何收集 MySQL 状态指标，查看 [pro
 
 ```go
 &prometheus.MySQL{
+  // 指标名前缀，默认为 `gorm_status_`
+  // 例如： Threads_running 的指标名就是 `gorm_status_Threads_running`
   Prefix: "gorm_status_",
-  // Metrics name prefix, default is `gorm_status_`
-  // For example, Threads_running's metric name is `gorm_status_Threads_running`
+  // 拉取频率，默认使用 Prometheus 的 RefreshInterval
   Interval: 100,
-  // Fetch interval, default use Prometheus's RefreshInterval
+  // 从 SHOW STATUS 选择变量变量，如果不设置，则使用全部的状态变量
   VariableNames: []string{"Threads_running"},
-  // Select variables from SHOW STATUS, if not set, uses all status variables
 }
 ```
