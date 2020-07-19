@@ -1,11 +1,11 @@
 ---
-title: Query
+title: Abfrage
 layout: page
 ---
 
-## Retrieving a single object
+## Abfragen eines einzelnen Objekts
 
-GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, when no record found, its returns error `ErrRecordNotFound`
+GORM stellt die Methoden `First`, `Take` und `Last` zur Verfügung, um ein einzelnes Objekt aus der Datenbank abzufragen, es fügt die Bedingung `LIMIT 1` bei der Abfrage hinzu, und gibt den Fehler `ErrRecordNotFound` zurück, falls kein Eintrag gefunden wurde
 
 ```go
 // Get the first record ordered by primary key
