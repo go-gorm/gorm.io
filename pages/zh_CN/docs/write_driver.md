@@ -1,15 +1,15 @@
 ---
-title: Write Driver
+title: 编写驱动
 layout: page
 ---
 
-## Write new driver
+## 编写新驱动
 
-GORM provides official support for `sqlite`, `mysql`, `postgres`, `sqlserver`.
+GORM 官方支持 `sqlite`、`mysql`、`postgres`、`sqlserver`。
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+有些数据库可能兼容 `mysql`、`postgres` 的方言，在这种情况下，你可以直接使用这些数据库的方言。
 
-For others, you can create a new driver, it needs to implement [the dialect interface](https://pkg.go.dev/gorm.io/gorm?tab=doc#Dialector).
+对于其它不兼容的情况，您可以自行编写一个新驱动，这需要实现 [方言接口](https://pkg.go.dev/gorm.io/gorm?tab=doc#Dialector)。
 
 ```go
 type Dialector interface {
@@ -24,4 +24,4 @@ type Dialector interface {
 }
 ```
 
-Checkout the [MySQL Driver](https://github.com/go-gorm/mysql) as example
+查看 [MySQL 驱动](https://github.com/go-gorm/mysql) 的例子
