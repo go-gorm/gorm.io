@@ -1,9 +1,9 @@
 ---
-title: Transactions
+title: 事务
 layout: page
 ---
 
-## Disable Default Transaction
+## 禁用默认事务
 
 GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required, you will gain about 30%+ performance improvement after that
 
