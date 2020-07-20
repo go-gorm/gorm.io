@@ -47,7 +47,7 @@ func (User) TableName() string {
 }
 ```
 
-### 临时指定表名
+### Temporarily specify a name
 
 您可以使用 `Table` 方法临时指定表名，例如：
 
@@ -64,13 +64,15 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
+Check out [From SubQuery](advanced_query.html#from_subquery) for how to use SubQuery in FROM clause
+
 ### <span id="naming_strategy">命名策略</span>
 
-GORM 允许用户通过覆盖默认的`命名策略`更改默认的命名约定，命名策略被用于构建： `TableName`、`ColumnName`、`JoinTableName`、`RelationshipFKName`、`CheckerName`、`IndexName`。查看 [GORM 配置](gorm_config.html) 获取详情
+GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html) for details
 
 ## 列名
 
-根据约定，数据表的列名使用的是 struct 字段名的 `蛇形命名`
+Column db name uses the field's name's `snake_case` by convention.
 
 ```go
 type User struct {
@@ -81,7 +83,7 @@ type User struct {
 }
 ```
 
-您可以使用标签 `column` 或 [`命名策略`](#naming_strategy) 来覆盖列名
+You can override the column name with tag `column`, or use [`NamingStrategy`](#naming_strategy)
 
 ```go
 type Animal struct {
@@ -95,7 +97,7 @@ type Animal struct {
 
 ### CreatedAt
 
-对于有 `CreatedAt` 字段的模型，创建记录时，如果该字段值为零值，则将该字段的值设为当前时间
+For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
 
 ```go
 db.Create(&user) // 将 `CreatedAt` 设为当前时间
@@ -106,7 +108,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-对于有 `UpdatedAt` 字段的模型，更新记录时，将该字段的值设为当前时间。创建记录时，如果该字段值为零值，则将该字段的值设为当前时间
+For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
 
 ```go
 db.Save(&user) // 将 `UpdatedAt` 设为当前时间
@@ -114,4 +116,4 @@ db.Save(&user) // 将 `UpdatedAt` 设为当前时间
 db.Model(&user).Update("name", "jinzhu") // 也会将 `UpdatedAt` 设为当前时间
 ```
 
-**注意** GORM 支持拥有多种类型的时间追踪字段。可以根据 UNIX 秒、纳秒、其它类型追踪时间，查看 [模型](models.html#time_tracking) 获取详情
+**NOTE** GORM supports having multiple time tracking fields, track with other fields or track with UNIX second/UNIX nanosecond, check [Models](models.html#time_tracking) for more details
