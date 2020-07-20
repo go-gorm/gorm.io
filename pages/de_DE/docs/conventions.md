@@ -47,7 +47,7 @@ func (User) TableName() string {
 }
 ```
 
-### Temporarily specify a table name
+### Temporarily specify a name
 
 Temporarily specify table name with `Table` method, for example:
 
@@ -63,6 +63,8 @@ db.Table("deleted_users").Find(&deletedUsers)
 db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
+
+Check out [From SubQuery](advanced_query.html#from_subquery) for how to use SubQuery in FROM clause
 
 ### <span id="naming_strategy">NamingStrategy</span>
 
