@@ -11,6 +11,21 @@ GORM stellt die Methoden `First`, `Take` und `Last` zur Verfügung, um ein einze
 // Frage den ersten Eintrag ab, sortiert nach dem Primärschlüssel
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
+
+// Get one record, no specified order
+db.Take(&user)
+// SELECT * FROM users LIMIT 1;
+
+// Get last record, order by primary key desc
+db.Last(&user)
+// SELECT * FROM users ORDER BY id DESC LIMIT 1;
+
+result := db.First(&user)
+result.RowsAffected // returns found records count
+result.Error        // returns error
+
+// check record not found error
+errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
 ## Abfragen mehrerer Objekte
@@ -51,32 +66,7 @@ db.Find(&users, User{Age: 20})
 db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20; 
 
- // Get first matched record
-db.Where("name = ?", "jinzhu").First(&user)
-// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
-
-// Get all matched records
-db.Where("name <> ?", "jinzhu").Find(&users)
-// SELECT * FROM users WHERE name <> 'jinzhu';
-
-// IN
-db.Where("name IN ?", []string{"jinzhu", "jinzhu 2"}).Find(&users)
-// SELECT * FROM users WHERE name in ('jinzhu','jinzhu 2');
-
-// LIKE
-db.Where("name LIKE ?", "%jin%").Find(&users)
-// SELECT * FROM users WHERE name LIKE '%jin%';
-
-// AND
-db.Where("name = ? AND age >= ?", "jinzhu", "22").Find(&users)
-// SELECT * FROM users WHERE name = 'jinzhu' AND age >= 22;
-
-// Time
-db.Where("updated_at > ?", lastWeek).Find(&users)
-// SELECT * FROM users WHERE updated_at > '2000-01-01 00:00:00';
-
-// BETWEEN
-db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
+ AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
