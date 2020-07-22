@@ -46,7 +46,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_insert">Batch Insert</span>
+## <span id="batch_insert">Massen-Erstellen von Einträgen</span>
 
 Pass slice data to method `Create`, GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
@@ -61,7 +61,7 @@ for _, user := range users {
 
 [Upsert](#upsert), [Create With Associations](#create_with_associations) supported for batch insert also
 
-## Advanced
+## Weiterführende Informationen
 
 ### <span id="create_with_associations">Create With Associations</span>
 
@@ -163,4 +163,4 @@ DB.Clauses(clause.OnConflict{
 
 Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+Überprüfe die Seite [Raw SQL and SQL Builder](sql_builder.html) für weitere Details
