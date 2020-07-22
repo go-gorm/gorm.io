@@ -28,9 +28,9 @@ Typ Company struct {
 
 Um eine Beziehung zu definieren, muss der Fremdschlüssel existieren, der vordefinierte Fremdschlüssel verwendet den Namen des Eigentümers, plus seinen primären Feldnamen.
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+Für das obige Beispiel, um das `User` Modell zu definieren, dass zu `Company` gehört. Dder Fremdschlüssel sollte, nach Konvention `CompanyID` sein
 
-GORM provides a way to customize the foreign key, for example:
+GORM ermöglicht es, den Fremdschlüssel nach Bedarf anzupassen:
 
 ```go
 type User struct {
@@ -51,16 +51,16 @@ type Company struct {
 
 Für eine `belongs to` Beziehung verwendet GORM normalerweise das Primärfeld des Besitzers als Wert des Fremdschlüssels. Für das obige Beispiel ist es das `ID` Feld von `Company`.
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+Wenn Sie einer `Company` einen `User` zuweisen, speichert GORM die `ID` der `Company` in das Feld `CompanyID` des `User`.
 
-You are able to change it with tag `references`, e.g:
+Es ist möglich die Referenz mit `references` zu ändern, z.B. :
 
 ```go
 type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // use Code as references
+  Company   Company `gorm:"references:Code"` // benutz Code als referenz
 }
 
 type Company struct {
@@ -70,17 +70,17 @@ type Company struct {
 }
 ```
 
-## CRUD with Belongs To
+## CRUD mit zugehörigkeit
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Weiteführende Informaionen um mit `belongs to` finded sich in [Association Mode](associations.html#Association-Mode)
 
 ## Eager Loading
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM erlaubt es `belongs to` Zugehörigkeiten mit `Preload` or `Joins` im Voraus zu laden. Weiteführende Informationen dazu, [Preloading (Eager loading)](preload.html)
 
-## FOREIGN KEY Constraints
+## Fremdschlüssel Bedingungen
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+Man kann `OnUpdate` (bei Update), `OnDelete` (beim Löschen) Bedingungen mit dem `constraint` tag hinzufügen, z.B. :
 
 ```go
 type User struct {
