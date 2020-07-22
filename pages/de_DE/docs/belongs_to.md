@@ -3,30 +3,30 @@ title: Belongs To
 layout: page
 ---
 
-## Belongs To
+## Gehört zu
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Eine `belongs to` Zuordnung stellt eine Einzel-zu-Eins-Verbindung mit einem anderen Modell her, so dass jede Instanz des deklarierenden Modells zu einer Instanz des anderen Modells gehört.
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company
+Zum Beispiel, wenn Ihre Anwendung Benutzer und Unternehmen umfasst, jeder Benutzer genau einem Unternehmen zugewiesen werden kann
 
 ```go
-// `User` belongs to `Company`, `CompanyID` is the foreign key
-type User struct {
+// `User` gehört zu `Company`, `CompanyID` ist der Fremdschlüssel
+Typ User struct {
   gorm.Model
-  Name      string
+  Name string
   CompanyID int
-  Company   Company
+  Company Company
 }
 
-type Company struct {
-  ID   int
+Typ Company struct {
+  ID int
   Name string
 }
 ```
 
-## Override Foreign Key
+## Fremdschlüssel Überschreiben
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Um eine Beziehung zu definieren, muss der Fremdschlüssel existieren, der vordefinierte Fremdschlüssel verwendet den Namen des Eigentümers, plus seinen primären Feldnamen.
 
 For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
 
@@ -38,7 +38,7 @@ type User struct {
   Name         string
   CompanyRefer int
   Company      Company `gorm:"foreignKey:CompanyRefer"`
-  // use CompanyRefer as foreign key
+  // benutze CompanyRefer als Fremdschlüssel
 }
 
 type Company struct {
@@ -47,9 +47,9 @@ type Company struct {
 }
 ```
 
-## Override References
+## Referenz Überschreiben
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+Für eine `belongs to` Beziehung verwendet GORM normalerweise das Primärfeld des Besitzers als Wert des Fremdschlüssels. Für das obige Beispiel ist es das `ID` Feld von `Company`.
 
 When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
 
