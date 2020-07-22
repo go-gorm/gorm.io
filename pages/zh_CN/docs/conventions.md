@@ -47,15 +47,31 @@ func (User) TableName() string {
 }
 ```
 
-### Temporarily specify a name
-
-您可以使用 `Table` 方法临时指定表名，例如：
+**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use the following code:
 
 ```go
-// 根据 User 的字段创建 `deleted_users` 表
+func UserTable(user User) func (db *gorm.DB) *gorm.DB {
+  return func (db *gorm.DB) *gorm.DB {
+    if user.Admin {
+      return db.Table("admin_users")
+    }
+
+    return db.Table("users")
+  }
+}
+
+DB.Scopes(UserTable(user)).Create(&user)
+```
+
+### Temporarily specify a name
+
+Temporarily specify table name with `Table` method, for example:
+
+```go
+// Create table `deleted_users` with struct User's fields
 db.Table("deleted_users").AutoMigrate(&User{})
 
-// 从另一张表查询数据
+// Query data from another table
 var deletedUsers []User
 db.Table("deleted_users").Find(&deletedUsers)
 // SELECT * FROM deleted_users;
@@ -76,10 +92,10 @@ Column db name uses the field's name's `snake_case` by convention.
 
 ```go
 type User struct {
-  ID        uint      // 列名是 `id`
-  Name      string    // 列名是 `name`
-  Birthday  time.Time // 列名是 `birthday`
-  CreatedAt time.Time // 列名是 `created_at`
+  ID        uint      // column name is `id`
+  Name      string    // column name is `name`
+  Birthday  time.Time // column name is `birthday`
+  CreatedAt time.Time // column name is `created_at`
 }
 ```
 
@@ -87,9 +103,9 @@ You can override the column name with tag `column`, or use [`NamingStrategy`](#n
 
 ```go
 type Animal struct {
-  AnimalID int64     `gorm:"column:beast_id"`         // 将列名设为 `beast_id`
-  Birthday time.Time `gorm:"column:day_of_the_beast"` // 将列名设为 `day_of_the_beast`
-  Age      int64     `gorm:"column:age_of_the_beast"` // 将列名设为 `age_of_the_beast`
+  AnimalID int64     `gorm:"column:beast_id"`         // set name to `beast_id`
+  Birthday time.Time `gorm:"column:day_of_the_beast"` // set name to `day_of_the_beast`
+  Age      int64     `gorm:"column:age_of_the_beast"` // set name to `age_of_the_beast`
 }
 ```
 
@@ -100,9 +116,9 @@ type Animal struct {
 For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
 
 ```go
-db.Create(&user) // 将 `CreatedAt` 设为当前时间
+db.Create(&user) // set `CreatedAt` to current time
 
-// 想要修改该字段的值，你可以使用 `Update`
+// To change its value, you could use `Update`
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
@@ -111,9 +127,9 @@ db.Model(&user).Update("CreatedAt", time.Now())
 For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
 
 ```go
-db.Save(&user) // 将 `UpdatedAt` 设为当前时间
+db.Save(&user) // set `UpdatedAt` to current time
 
-db.Model(&user).Update("name", "jinzhu") // 也会将 `UpdatedAt` 设为当前时间
+db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
 ```
 
 **NOTE** GORM supports having multiple time tracking fields, track with other fields or track with UNIX second/UNIX nanosecond, check [Models](models.html#time_tracking) for more details
