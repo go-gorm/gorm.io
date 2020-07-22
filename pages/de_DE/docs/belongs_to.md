@@ -7,7 +7,7 @@ layout: page
 
 Eine `belongs to` Zuordnung stellt eine Einzel-zu-Eins-Verbindung mit einem anderen Modell her, so dass jede Instanz des deklarierenden Modells zu einer Instanz des anderen Modells gehört.
 
-Zum Beispiel, wenn Ihre Anwendung Benutzer und Unternehmen umfasst, jeder Benutzer genau einem Unternehmen zugewiesen werden kann
+Zum Beispiel, wenn Ihre Anwendung Benutzer und Unternehmen umfasst, und jeder Benutzer genau einem Unternehmen zugewiesen werden kann
 
 ```go
 // `User` gehört zu `Company`, `CompanyID` ist der Fremdschlüssel
@@ -60,7 +60,7 @@ type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // benutz Code als referenz
+  Company   Company `gorm:"references:Code"` // benutze Code als Referenz
 }
 
 type Company struct {
@@ -74,7 +74,7 @@ type Company struct {
 
 Weiteführende Informaionen um mit `belongs to` finded sich in [Association Mode](associations.html#Association-Mode)
 
-## Eager Loading
+## Voraus-Laden
 
 GORM erlaubt es `belongs to` Zugehörigkeiten mit `Preload` or `Joins` im Voraus zu laden. Weiteführende Informationen dazu, [Preloading (Eager loading)](preload.html)
 
