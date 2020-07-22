@@ -5,30 +5,25 @@ layout: page
 
 ## Mengambil Satu Objek
 
-GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, when no record found, its returns error `ErrRecordNotFound`
+GORM menyediakan `First`, `Take`, `Last` metode untuk mengambil satu objek dari database, ia mengembalikan kondisi `LIMIT 1` ketika melakukan permintaan ke database, ketika tidak ada catatan ditemukan, dia akan mengembalikan error `ErrRecordNotFound`
 
 ```go
-// Get the first record ordered by primary key
+// Mendapatkan Struktur Pertama Berdasarkan Primary Key
 db.First(&user)
-// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// Mendapatkan Satu Catatan, Namun Tidak Spesifik
 db.Take(&user)
-// SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key desc
+// Mendapatkan Catatan Terakhir, Berdasarkan Primary Key Secara desc
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // returns found records count
-result.Error        // returns error
-
-// check record not found error
-errors.Is(result.Error, gorm.ErrRecordNotFound)
+result.RowsAffected // Mengembalikan Penghitungan Catatan
+result.Error        // Mengembalikan Error
 ```
 
-## Retrieving objects
+## Mengambil Satu Objek
 
 ```go
 // Get all records
@@ -39,9 +34,9 @@ result.RowsAffected // returns found records count, equals `len(users)`
 result.Error        // returns error
 ```
 
-## Conditions
+## Kondisi
 
-### String Conditions
+### Kodisi String
 
 ```go
 // Get first matched record
@@ -131,7 +126,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Not Conditions
+### Bukan Kondisi
 
 Build NOT conditions, works similar to `Where`
 
@@ -152,7 +147,7 @@ db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-### Or Conditions
+### Atau Kondisi
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -184,7 +179,7 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-## Order
+## Pesan
 
 Specify order when retrieving records from the database
 
