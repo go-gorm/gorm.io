@@ -49,8 +49,8 @@ Your kindness and generosity are greatly appreciated, and your name will be list
 
 ## Sponsors
 
-<object type="image/svg+xml" data="https://opencollective.com/gorm/sponsor.svg?avatarHeight=42&width=760"></object>
+<object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=72&width=760"></object>
 
 ## Backers
 
-<object type="image/svg+xml" data="https://opencollective.com/gorm/backer.svg?avatarHeight=42&width=760"></object>
+<object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=38&width=760"></object>
