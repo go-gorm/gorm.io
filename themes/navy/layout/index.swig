@@ -19,7 +19,7 @@
     <div class="inner">
       <div class="sponsors">
         <h1>Our Sponsors</h1>
-        <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=1080"></object>
+        <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=78&width=1080"></object>
       </div>
     </div>
   </div>
@@ -28,7 +28,7 @@
     <div class="inner">
       <div class="sponsors">
         <h1>Our Sponsors</h1>
-        <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=68&width=350"></object>
+        <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=62&width=350"></object>
       </div>
     </div>
   </div>
