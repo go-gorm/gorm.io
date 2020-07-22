@@ -1,18 +1,18 @@
 ---
-title: Create
+title: Erstellen
 layout: page
 ---
 
-## Create Record
+## Eintrag erstellen
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // pass pointer of data to Create
+result := db.Create(&user) // Übergebe einen Pointer auf die Daten, deren Eintrag erstellt werden soll
 
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+user.ID             // Gibt den Primärschlüssel der eingetragenen Daten zurück
+result.Error        // Gibt einen möglichen Fehler zurück
+result.RowsAffected // Gibt die Anzahl der erstellten Einträge zurück
 ```
 
 ## Create With Selected Fields
