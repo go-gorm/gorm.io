@@ -47,6 +47,22 @@ func (User) TableName() string {
 }
 ```
 
+**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use the following code:
+
+```go
+func UserTable(user User) func (db *gorm.DB) *gorm.DB {
+  return func (db *gorm.DB) *gorm.DB {
+    if user.Admin {
+      return db.Table("admin_users")
+    }
+
+    return db.Table("users")
+  }
+}
+
+DB.Scopes(UserTable(user)).Create(&user)
+```
+
 ### Temporarily specify a name
 
 Temporarily specify table name with `Table` method, for example:
