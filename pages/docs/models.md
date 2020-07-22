@@ -164,7 +164,7 @@ Tag Name case doesn't matter, `camelCase` is preferred to use.
 | Tag Name       | Description                                                            |
 | ---            | ---                                                                    |
 | column         | column db name                                                  |
-| type           | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, specified database data type like varbinary(8) also supported |
+| type           | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, which works with other tags, like `not null`, `size`, `autoIncrement`... specified database data type like `varbinary(8)` also supported, when using specified database data type, it needs to be a full database data type, for example: `MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT` |
 | size           | specifies column data size/length, e.g: `size:256`                                                  |
 | primaryKey     | specifies column as primary key                                        |
 | unique         | specifies column as unique                                             |
