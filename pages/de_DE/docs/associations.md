@@ -40,7 +40,7 @@ db.Save(&user)
 
 ## Automatisches Erstellen/Aktualisieren überspringen
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+Um die automatische Speicherung beim Erstellen/Aktualisieren zu überspringen, können Sie `Select` oder `Omit` verwenden, zum Beispiel:
 
 ```go
 user := User{
