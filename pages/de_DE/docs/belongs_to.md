@@ -3,34 +3,34 @@ title: Belongs To
 layout: page
 ---
 
-## Belongs To
+## Gehört zu
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Eine `belongs to` Zuordnung stellt eine Einzel-zu-Eins-Verbindung mit einem anderen Modell her, so dass jede Instanz des deklarierenden Modells zu einer Instanz des anderen Modells gehört.
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company
+Zum Beispiel, wenn Ihre Anwendung Benutzer und Unternehmen umfasst, und jeder Benutzer genau einem Unternehmen zugewiesen werden kann
 
 ```go
-// `User` belongs to `Company`, `CompanyID` is the foreign key
-type User struct {
+// `User` gehört zu `Company`, `CompanyID` ist der Fremdschlüssel
+Typ User struct {
   gorm.Model
-  Name      string
+  Name string
   CompanyID int
-  Company   Company
+  Company Company
 }
 
-type Company struct {
-  ID   int
+Typ Company struct {
+  ID int
   Name string
 }
 ```
 
-## Override Foreign Key
+## Fremdschlüssel Überschreiben
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Um eine Beziehung zu definieren, muss der Fremdschlüssel existieren, der vordefinierte Fremdschlüssel verwendet den Namen des Eigentümers, plus seinen primären Feldnamen.
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+Für das obige Beispiel, um das `User` Modell zu definieren, dass zu `Company` gehört. Dder Fremdschlüssel sollte, nach Konvention `CompanyID` sein
 
-GORM provides a way to customize the foreign key, for example:
+GORM ermöglicht es, den Fremdschlüssel nach Bedarf anzupassen:
 
 ```go
 type User struct {
@@ -38,7 +38,7 @@ type User struct {
   Name         string
   CompanyRefer int
   Company      Company `gorm:"foreignKey:CompanyRefer"`
-  // use CompanyRefer as foreign key
+  // benutze CompanyRefer als Fremdschlüssel
 }
 
 type Company struct {
@@ -47,20 +47,20 @@ type Company struct {
 }
 ```
 
-## Override References
+## Referenz Überschreiben
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+Für eine `belongs to` Beziehung verwendet GORM normalerweise das Primärfeld des Besitzers als Wert des Fremdschlüssels. Für das obige Beispiel ist es das `ID` Feld von `Company`.
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+Wenn Sie einer `Company` einen `User` zuweisen, speichert GORM die `ID` der `Company` in das Feld `CompanyID` des `User`.
 
-You are able to change it with tag `references`, e.g:
+Es ist möglich die Referenz mit `references` zu ändern, z.B. :
 
 ```go
 type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // use Code as references
+  Company   Company `gorm:"references:Code"` // benutze Code als Referenz
 }
 
 type Company struct {
@@ -70,17 +70,17 @@ type Company struct {
 }
 ```
 
-## CRUD with Belongs To
+## CRUD mit zugehörigkeit
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Weiteführende Informaionen um mit `belongs to` finded sich in [Association Mode](associations.html#Association-Mode)
 
-## Eager Loading
+## Voraus-Laden
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM erlaubt es `belongs to` Zugehörigkeiten mit `Preload` or `Joins` im Voraus zu laden. Weiteführende Informationen dazu, [Preloading (Eager loading)](preload.html)
 
-## FOREIGN KEY Constraints
+## Fremdschlüssel Bedingungen
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+Man kann `OnUpdate` (bei Update), `OnDelete` (beim Löschen) Bedingungen mit dem `constraint` tag hinzufügen, z.B. :
 
 ```go
 type User struct {

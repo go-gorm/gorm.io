@@ -56,6 +56,20 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
+### <span id="from_subquery">From SubQuery</span>
+
+GORM allows you using subquery in FROM clause with `Table`, for example:
+
+```go
+db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+// SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
+
+subQuery1 := DB.Model(&User{}).Select("name")
+subQuery2 := DB.Model(&Pet{}).Select("name")
+db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
+// SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
+```
+
 ## <span id="group_conditions">Group Conditions</span>
 
 Easier to write complicated SQL query with Group Conditions

@@ -1,18 +1,18 @@
 ---
-title: Change Log
+title: Change log
 layout: page
 ---
 
 ## v2.0 - 2020.07
 
-GORM 2.0 is rewritten from scratch based on feedback we received in the last few years, it introduces some incompatible-API change and many improvements
+GORM 2.0 wurde von Grund auf neu geschrieben, basierend auf dem Feedback, welches wir über die letzten Jahre erhalten habe. Es enthält einige nicht-abwärtskompatible Änderungen an der API und viele Verbesserungen
 
-* Performance Improvements
-* Modularity
+* Verbesserung der Geschwindigkeit
+* Modularität
 * Context, Batch Insert, Prepared Statment, DryRun Mode, Join Preload, Find To Map, FindInBatches
-* SavePoint/RollbackTo/Nested Transaction Support
+* Unterstützung für SavePoint / RollbackTo / Nested Transaction
 * Association improvements (On Delete/Update), Modify Join Table for Many2Many, Association Mode for batch data
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints supports
+* Unterstützung für SQL Builder, Upsert, Locking, Optimizer / Index / Comment Hints
 * Multiple fields support for auto-creating/updating time, which also support UNIX (nano) seconds
 * Field permissions support: read-only, write-only, create-only, update-only, ignored
 * All new Migrator, Logger

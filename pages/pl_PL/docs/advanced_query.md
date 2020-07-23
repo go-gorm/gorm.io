@@ -56,6 +56,20 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
+### <span id="from_subquery">From SubQuery</span>
+
+GORM allows you using subquery in FROM clause with `Table`, for example:
+
+```go
+db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+// SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
+
+subQuery1 := DB.Model(&User{}).Select("name")
+subQuery2 := DB.Model(&Pet{}).Select("name")
+db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
+// SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
+```
+
 ## <span id="group_conditions">Group Conditions</span>
 
 Easier to write complicated SQL query with Group Conditions
@@ -75,19 +89,14 @@ db.Where(
 GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
 ```go
-type Result struct {
-  Name string
-  Age  int
-}
+DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
+// SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-var result Result
-db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
-
-// Raw SQL
-db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
+DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
+// SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `named_users`.`id` LIMIT 1
 ```
 
-type Result struct { Name string Age  int } var result Result db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result) // Raw SQL db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
+Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
 
 ## Find To Map
 

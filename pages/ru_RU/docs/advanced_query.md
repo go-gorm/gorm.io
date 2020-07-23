@@ -56,6 +56,20 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
+### <span id="from_subquery">Из SubQuery (под запроса)</span>
+
+GORM позволяет вам использовать подзапрос в FROM при помощи `Table`, например:
+
+```go
+db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+// SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
+
+subQuery1 := DB.Model(&User{}).Select("name")
+subQuery2 := DB.Model(&Pet{}).Select("name")
+db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
+// SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
+```
+
 ## <span id="group_conditions">Группировка условий</span>
 
 Проще писать сложные SQL запросы с помощью группировки условий
@@ -72,7 +86,7 @@ db.Where(
 
 ## Именованные аргументы
 
-GORM поддерживает именованные аргументы при использовании [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) или `map[string]interface{}{}`, например:
+GORM поддерживает именованные аргументы при помощи [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) или `map[string]interface{}{}`, например:
 
 ```go
 DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -82,7 +96,7 @@ DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `named_users`.`id` LIMIT 1
 ```
 
-Посмотрите [Чистый SQL и Конструктор SQL](sql_builder.html#named_argument) для подробностей
+Смотрите [Чистый SQL и Конструктор SQL](sql_builder.html#named_argument) для подробностей
 
 ## Поиск в Map
 
@@ -114,7 +128,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // пользователь -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-инициализировать struct с дополнительными параметрами, если запись не найдена, эти `Атрибуты` не будут использованы в построении запроса SQL
+инициализировать struct с дополнительными параметрами, если запись не найдена, эти `Attrs` не будут использованы в построении запроса SQL
 
 ```go
 // Пользователь не найден, инициализировать struct с указанными параметрами и атрибутами

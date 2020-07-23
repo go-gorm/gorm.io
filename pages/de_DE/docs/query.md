@@ -1,90 +1,50 @@
 ---
-title: Query
+title: Abfrage
 layout: page
 ---
 
-## Retrieving a single object
+## Abfragen eines einzelnen Objekts
 
-GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, when no record found, its returns error `ErrRecordNotFound`
+GORM stellt die Methoden `First`, `Take` und `Last` zur Verfügung, um ein einzelnes Objekt aus der Datenbank abzufragen, es fügt die Bedingung `LIMIT 1` bei der Abfrage hinzu, und gibt den Fehler `ErrRecordNotFound` zurück, falls kein Eintrag gefunden wurde
 
 ```go
-// Get the first record ordered by primary key
+// Frage den ersten Eintrag ab, sortiert nach dem Primärschlüssel
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// Frage den ersten Eintrag ab, keine Spezifische Ordnung
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key desc
+// Frage den letzten Eintrag ab, geordnet nach dem Primärschlüssel in absteigend
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // returns found records count
+result.RowsAffected // gibt die Anzahl gefundener Einträge zurück
 result.Error        // returns error
 
-// check record not found error
+// Überprüft ob ein Eintrag nicht gefunden wurde
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
-## Retrieving objects
+## Abfragen mehrerer Objekte
 
 ```go
-// Get all records
+// Frage alle Einträge ab
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // returns found records count, equals `len(users)`
-result.Error        // returns error
+result.RowsAffected // Gibt die Anzahl der abgefragten Einträge zurück, identisch zu `len(users)`
+result.Error        // Gibt einen Fehler zurück
 ```
 
-## Conditions
+## Bedingungen
 
-### String Conditions
+### Bedingungen für Zeichenketten
 
 ```go
-// Get by primary key (only works for integer primary key)
-db.First(&user, 23)
-// SELECT * FROM users WHERE id = 23;
-// Get by primary key if it were a non-integer type
-db.First(&user, "id = ?", "string_primary_key")
-// SELECT * FROM users WHERE id = 'string_primary_key';
-
-// Plain SQL
-db.Find(&user, "name = ?", "jinzhu")
-// SELECT * FROM users WHERE name = "jinzhu";
-
-db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
-// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
-
-// Struct
-db.Find(&users, User{Age: 20})
-// SELECT * FROM users WHERE age = 20;
-
-// Map
-db.Find(&users, map[string]interface{}{"age": 20})
-// SELECT * FROM users WHERE age = 20; // Get by primary key (only works for integer primary key)
-db.First(&user, 23)
-// SELECT * FROM users WHERE id = 23;
-// Get by primary key if it were a non-integer type
-db.First(&user, "id = ?", "string_primary_key")
-// SELECT * FROM users WHERE id = 'string_primary_key';
-
-// Plain SQL
-db.Find(&user, "name = ?", "jinzhu")
-// SELECT * FROM users WHERE name = "jinzhu";
-
-db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
-// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
-
-// Struct
-db.Find(&users, User{Age: 20})
-// SELECT * FROM users WHERE age = 20;
-
-// Map
-db.Find(&users, map[string]interface{}{"age": 20})
-// SELECT * FROM users WHERE age = 20; // Get first matched record
+// Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
@@ -113,7 +73,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Struct & Map Conditions
+### Struct & Map Bedinungen
 
 ```go
 // Struct
@@ -124,28 +84,28 @@ db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice of primary keys
+// Slice aus Primärschlüsseln
 db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**HINWEIS** Bei der Abfrage mit struct, wird GORM nur mit nicht null Feldern abfragen, das bedeutet, wenn der Wert Ihres Feldes `0`, `''`, `false` oder andere [Null-Werte](https://tour.golang.org/basics/12) sind, wird es nicht verwendet, um Abfragebedingungen zu erstellen, zum Beispiel:
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build query conditions, e.g:
+Sie können `map` verwenden, um Abfragebedingungen zu erstellen, z. B.:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-### <span id="inline_conditions">Inline Condition</span>
+### <span id="inline_conditions">Integrierte Bedinungen</span>
 
-Works similar to `Where`.
+Funktioniert ähnlich wie `Where`.
 
 ```go
 // Get by primary key (only works for integer primary key)

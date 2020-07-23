@@ -3,9 +3,9 @@ title: Associations
 layout: page
 ---
 
-## Auto Create/Update
+## Automatisch erstellen/aktualisieren
 
-GORM will autosave associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORM speichert automatisch Vereinigungen und deren Referenz mit [Upsert](create.html#upsert) beim erstellen/updaten des Eintrag.
 
 ```go
 user := User{
@@ -38,9 +38,9 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-## Skip Auto Create/Update
+## Automatisches Erstellen/Aktualisieren überspringen
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+Um die automatische Speicherung beim Erstellen/Aktualisieren zu überspringen, können Sie `Select` oder `Omit` verwenden, zum Beispiel:
 
 ```go
 user := User{

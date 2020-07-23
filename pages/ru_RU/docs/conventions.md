@@ -47,7 +47,23 @@ func (User) TableName() string {
 }
 ```
 
-### Временно указать имя таблицы
+**ПРИМЕЧАНИЕ** `TableName` не допускает динамическое имя, его результат будет кэшироваться на будущее, для использования динамического имени, вы можете использовать следующий код:
+
+```go
+func UserTable(user User) func (db *gorm.DB) *gorm.DB {
+  return func (db *gorm.DB) *gorm.DB {
+    if user.Admin {
+      return db.Table("admin_users")
+    }
+
+    return db.Table("users")
+  }
+}
+
+DB.Scopes(UserTable(user)).Create(&user)
+```
+
+### Временно указать имя
 
 Временно указать имя таблицы с помощью метода `Table`, например:
 
@@ -63,6 +79,8 @@ db.Table("deleted_users").Find(&deletedUsers)
 db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
+
+Смотрите [из подзапроса](advanced_query.html#from_subquery) для того, чтобы использовать SubQuery в оговорке
 
 ### <span id="naming_strategy">Стратегия именования</span>
 

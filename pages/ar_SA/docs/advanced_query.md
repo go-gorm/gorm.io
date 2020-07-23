@@ -49,16 +49,30 @@ Count(&count)
 db. Select("count(distinct(name))").
 ```
 
+### <span id="from_subquery">From SubQuery</span>
+
+GORM allows you using subquery in FROM clause with `Table`, for example:
+
+```go
+db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+// SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
+
+subQuery1 := DB.Model(&User{}).Select("name")
+subQuery2 := DB.Model(&Pet{}).Select("name")
+db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
+// SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
+```
+
 ## <span id="group_conditions">Group Conditions</span>
 
 Easier to write complicated SQL query with Group Conditions
 
 ```go
-db. Where(
-    DB. Where("pizza = ?", "pepperoni"). Where(DB. Where("size = ?", "small"). Or("size = ?", "medium")),
-). Or(
-    DB. Where("pizza = ?", "hawaiian"). Where("size = ?", "xlarge"),
-). Find(&Pizza{}). Statement
+db.Where(
+    DB.Where("pizza = ?", "pepperoni").Where(DB.Where("size = ?", "small").Or("size = ?", "medium")),
+).Or(
+    DB.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
+).Find(&Pizza{}).Statement
 
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
@@ -68,10 +82,11 @@ db. Where(
 GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
 ```go
-Or("name = ?", "jinzhu 2"). Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
+// SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-db.
+DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
+// SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `named_users`.`id` LIMIT 1
 ```
 
 Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
@@ -82,10 +97,10 @@ GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}
 
 ```go
 var result map[string]interface{}
-DB. Model(&User{}). First(&result, "id = ?", 1)
+DB.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}
-DB. Table("users"). Find(&results)
+DB.Table("users").Find(&results)
 ```
 
 ## FirstOrInit
@@ -93,62 +108,49 @@ DB. Table("users"). Find(&results)
 Get first matched record, or initialize a new one with given conditions (only works with struct, map conditions)
 
 ```go
-import "gorm.io/hints"
+// User not found, initialize it with give conditions
+db.FirstOrInit(&user, User{Name: "non_existing"})
+// user -> User{Name: "non_existing"}
 
-DB. UseIndex("idx_user_name")). Find(&User{})
-// SELECT * FROM `users` USE INDEX (`idx_user_name`)
+// Found user with `name` = `jinzhu`
+db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
+// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-DB. ForceIndex("idx_user_name", "idx_user_id"). ForJoin()). Find(&User{})
-// SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
+// Found user with `name` = `jinzhu`
+db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
+// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
 initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
 
 ```go
-Or("name = ?", "jinzhu 2"). Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+// User not found, initialize it with give conditions and Attrs
+db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
+// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
+// user -> User{Name: "non_existing", Age: 20}
 
-db. Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu'; (count)
+// User not found, initialize it with give conditions and Attrs
+db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
+// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
+// user -> User{Name: "non_existing", Age: 20}
 
-db. Count(&count)
-// SELECT count(*) FROM deleted_users;
-
-// Count with Distinct
-DB. Distinct("name"). Count(&count)
-// SELECT COUNT(DISTINCT(`name`)) FROM `users`
-
-db. Select("count(distinct(name))"). Count(&count)
-// SELECT count(distinct(name)) FROM deleted_users
-
-// Count with Group
-users := []User{
-  {Name: "name1"},
-  {Name: "name2"},
-  {Name: "name3"},
-  {Name: "name3"},
-}
-
-DB.
+// Found user with `name` = `jinzhu`, attributes will be ignored
+db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
+// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
+// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
 `Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query
 
 ```go
-Find(&users). Pluck("age", &ages)
+// User not found, initialize it with give conditions and Assign attributes
+db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
+// user -> User{Name: "non_existing", Age: 20}
 
-var names []string
-db. Pluck("name", &names)
-
-db. Table("deleted_users"). Pluck("name", &names)
-
-// Distinct Pluck
-DB. Distinct(). Pluck("Name", &names)
-// SELECT DISTINCT `name` FROM `users`
-
-// Requesting more than one column, use `Scan` or `Find` like this:
-db. Scan(&users)
-db. Find(&users)
+// Found user with `name` = `jinzhu`, update it with Assign attributes
+db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
+// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
+// user -> User{ID: 111, Name: "Jinzhu", Age: 20}
 ```
 
 ## FirstOrCreate
@@ -156,62 +158,45 @@ db. Find(&users)
 Get first matched record, or create a new one with given conditions (only works with struct, map conditions)
 
 ```go
-Or("name = ?", "jinzhu 2"). Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+// User not found, create a new record with give conditions
+db.FirstOrCreate(&user, User{Name: "non_existing"})
+// INSERT INTO "users" (name) VALUES ("non_existing");
+// user -> User{ID: 112, Name: "non_existing"}
 
-db. Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu'; (count)
-
-db.
+// Found user with `name` = `jinzhu`
+db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
+// user -> User{ID: 111, Name: "jinzhu", "Age}: 18
 ```
 
 Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
 
 ```go
-Or("name = ?", "jinzhu 2"). Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+// User not found, create it with give conditions and Attrs
+db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
+// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
+// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
+// user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-db. Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu'; (count)
-
-db. Count(&count)
-// SELECT count(*) FROM deleted_users;
-
-// Count with Distinct
-DB. Distinct("name"). Count(&count)
-// SELECT COUNT(DISTINCT(`name`)) FROM `users`
-
-db. Select("count(distinct(name))"). Count(&count)
-// SELECT count(distinct(name)) FROM deleted_users
-
-// Count with Group
-users := []User{
-  {Name: "name1"},
-  {Name: "name2"},
-  {Name: "name3"},
-  {Name: "name3"},
-}
-
-DB.
+// Found user with `name` = `jinzhu`, attributes will be ignored
+db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
+// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
+// user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
 `Assign` attributes to the record regardless it is found or not, and save them back to the database.
 
 ```go
-Find(&users). Pluck("age", &ages)
+// User not found, initialize it with give conditions and Assign attributes
+db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
+// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
+// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
+// user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-var names []string
-db. Pluck("name", &names)
-
-db. Table("deleted_users"). Pluck("name", &names)
-
-// Distinct Pluck
-DB. Distinct(). Pluck("Name", &names)
-// SELECT DISTINCT `name` FROM `users`
-
-// Requesting more than one column, use `Scan` or `Find` like this:
-db. Scan(&users)
-db. Find(&users)
+// Found user with `name` = `jinzhu`, update it with Assign attributes
+db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
+// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
+// UPDATE users SET age=20 WHERE id = 111;
+// user -> User{ID: 111, Name: "jinzhu", Age: 20}
 ```
 
 ## Optimizer/Index Hints
@@ -221,22 +206,20 @@ Optimizer hints allow us to control the query optimizer to choose a certain quer
 ```go
 import "gorm.io/hints"
 
-DB. UseIndex("idx_user_name")). Find(&User{})
-// SELECT * FROM `users` USE INDEX (`idx_user_name`)
-
-DB.
+DB.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
+// SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
 Index hints allow passing index hints to the database in case the query planner gets confused.
 
 ```go
-Or("name = ?", "jinzhu 2"). Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+import "gorm.io/hints"
 
-db. Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu'; (count)
+DB.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
+// SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
-db.
+DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
+// SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
 Refer [Optimizer Hints/Index/Comment](hints.html) for more details
@@ -246,12 +229,16 @@ Refer [Optimizer Hints/Index/Comment](hints.html) for more details
 GORM supports iterating through Rows
 
 ```go
-Distinct(). Pluck("Name", &names)
-// SELECT DISTINCT `name` FROM `users`
+rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
+defer rows.Close()
 
-// Requesting more than one column, use `Scan` or `Find` like this:
-db. Scan(&users)
-db. Find(&users)
+for rows.Next() {
+  var user User
+  // ScanRows scan a row into user
+  db.ScanRows(rows, &user)
+
+  // do something
+}
 ```
 
 ## FindInBatches
@@ -260,14 +247,14 @@ Query and process records in batch
 
 ```go
 // batch size 100
-result := DB. Where("processed = ?", false). FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
+result := DB.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
     // batch processing found records
   }
 
-  tx. Save(&results)
+  tx.Save(&results)
 
-  tx. RowsAffected // number of records in this batch
+  tx.RowsAffected // number of records in this batch
 
   batch // Batch 1, 2, 3
 
@@ -275,8 +262,8 @@ result := DB. Where("processed = ?", false). FindInBatches(&results, 100, func(t
   return nil
 })
 
-result. Error // returned error
-result. RowsAffected // processed records count in all batches
+result.Error // returned error
+result.RowsAffected // processed records count in all batches
 ```
 
 ## Query Hooks
@@ -285,8 +272,8 @@ GORM allows hooks `AfterFind` for a query, it will be called when querying a rec
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
-  if u. Role == "" {
-    u. Role = "user"
+  if u.Role == "" {
+    u.Role = "user"
   }
   return
 }
@@ -297,32 +284,21 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 Query single column from database and scan into a slice, if you want to query multiple columns, use [`Scan`](#scan) instead
 
 ```go
-var count int64
-db. Or("name = ?", "jinzhu 2"). Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+var ages []int64
+db.Find(&users).Pluck("age", &ages)
 
-db. Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu'; (count)
+var names []string
+db.Model(&User{}).Pluck("name", &names)
 
-db. Count(&count)
-// SELECT count(*) FROM deleted_users;
+db.Table("deleted_users").Pluck("name", &names)
 
-// Count with Distinct
-DB. Distinct("name"). Count(&count)
-// SELECT COUNT(DISTINCT(`name`)) FROM `users`
+// Distinct Pluck
+DB.Model(&User{}).Distinct().Pluck("Name", &names)
+// SELECT DISTINCT `name` FROM `users`
 
-db. Select("count(distinct(name))"). Count(&count)
-// SELECT count(distinct(name)) FROM deleted_users
-
-// Count with Group
-users := []User{
-  {Name: "name1"},
-  {Name: "name2"},
-  {Name: "name3"},
-  {Name: "name3"},
-}
-
-DB.
+// Requesting more than one column, use `Scan` or `Find` like this:
+db.Select("name", "age").Scan(&users)
+db.Select("name", "age").Find(&users)
 ```
 
 ## Scopes
@@ -364,20 +340,20 @@ Get matched records count
 
 ```go
 var count int64
-db. Or("name = ?", "jinzhu 2"). Count(&count)
+db.Model(&User{}).Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Count(&count)
 // SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
 
-db. Count(&count)
+db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 // SELECT count(*) FROM users WHERE name = 'jinzhu'; (count)
 
-db. Count(&count)
+db.Table("deleted_users").Count(&count)
 // SELECT count(*) FROM deleted_users;
 
 // Count with Distinct
-DB. Distinct("name"). Count(&count)
+DB.Model(&User{}).Distinct("name").Count(&count)
 // SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
-db. Select("count(distinct(name))"). Count(&count)
+db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
 // SELECT count(distinct(name)) FROM deleted_users
 
 // Count with Group
@@ -388,5 +364,6 @@ users := []User{
   {Name: "name3"},
 }
 
-DB.
+DB.Model(&User{}).Group("name").Count(&count)
+count // => 3
 ```
