@@ -105,7 +105,7 @@ db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 
 ### <span id="inline_conditions">Inline Condition</span>
 
-Works similar to `Where`.
+`Where`と同様に機能します。
 
 ```go
 // Get by primary key (only works for integer primary key)
@@ -133,7 +133,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 
 ### Not Conditions
 
-Build NOT conditions, works similar to `Where`
+NOT条件も、`Where` と同様に動作します。
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
