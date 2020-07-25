@@ -3,7 +3,7 @@ title: Query
 layout: page
 ---
 
-## １つのオブジェクトを取得
+## Retrieving a single object
 
 GORMは、データベースから１つのオブジェクトを取得するために`First`, `Take`, `Last`メソッドを提供します、それは、データベースにクエリを実行する際に`LIMIT 1`の条件を追加し、レコードが見つからなかった場合、`ErrRecordNotFound`エラーを返します。
 
@@ -28,7 +28,7 @@ result.Error        // errorを返す
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
-## 複数のオブジェクトを取得
+## Retrieving objects
 
 ```go
 // すべてのレコードを取得
@@ -41,7 +41,7 @@ result.Error        // エラーを返す
 
 ## Where
 
-### 文字列での条件指定
+### String Conditions
 
 ```go
 // 最初にマッチしたレコードを取得
@@ -73,7 +73,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### 構造体やMapでの条件指定
+### Struct & Map Conditions
 
 ```go
 // 構造体
@@ -167,11 +167,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
 ```
 
-Also check out [Group Conditions in Advanced Query](advanced_query.html), it can write complicated SQL easier
+[Group Conditions in Advanced Query](advanced_query.html)もチェックしてください。複雑なSQLを簡単に書くことができます。
 
 ## Selecting Specific Fields
 
-Specify fields that you want to retrieve from database, by default, select all fields
+データベースから取得するフィールドを指定します。デフォルトでは、すべてのフィールドを選択します。
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -186,7 +186,7 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 
 ## Order
 
-Specify order when retrieving records from the database
+データベースからレコードを取得する際の順序を指定します
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -199,7 +199,7 @@ db.Order("age desc").Order("name").Find(&users)
 
 ## Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit`は取得するレコードの最大数を指定します。 `Offset`はレコードを返す前にスキップするレコードの数を指定します。
 
 ```go
 db.Limit(3).Find(&users)
@@ -256,17 +256,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+モデルから重複した行を削除する値を指定します。
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
+`Distinct`は[`Pluck`](advanced_query.html#pluck)や[`Count`](advanced_query.html#count)と同時に利用できます。
 
 ## Joins
 
-Specify Joins conditions
+結合条件を指定します。
 
 ```go
 type result struct {
@@ -296,11 +296,11 @@ db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Refer [Preloading (Eager Loading)](preload.html) for details
+詳細については、 [Preloading (Eager Loading)](preload.html) を参照してください。
 
 ## <span id="scan">Scan</span>
 
-Scan results into a struct work similar to `Find`
+`Find` と同様に構造体に結果をスキャンします。
 
 ```go
 type Result struct {
