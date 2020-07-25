@@ -1,9 +1,9 @@
 ---
-title: SQLビルダー
+title: SQL Builder
 layout: page
 ---
 
-## SQL文の利用
+## Raw SQL
 
 SQL文でQuery
 
@@ -33,7 +33,7 @@ db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,
 DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
-**注** GORMはパフォーマンスを向上のためにプリペアードステイトメントをキャッシュできます。詳細は [パフォーマンス](performance.html)
+**注** GORMはパフォーマンスを向上のためにプリペアードステイトメントをキャッシュできます。詳細は[Performance](performance.html)を参照してください。
 
 ## `Row` & `Rows`
 
@@ -73,7 +73,7 @@ for rows.Next() {
 
 バッチでレコードをクエリしたり処理したいなら、[FindInBatches](advanced_query.html)をチェックしてください。 複雑なSQLクエリを構築する方法については[Group Conditions](advanced_query.html#group_conditions) をチェックしてください。
 
-## <span id="named_argument">名前付き引数</span>
+## <span id="named_argument">Named Argument</span>
 
 GORMは [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) または `map[string]interface{}{}`を使用した名前付き引数をサポートしています。例えば:
 
@@ -94,7 +94,7 @@ DB.Raw("SELECT * FROM named_users WHERE (name1 = @name AND name3 = @name) AND na
 // SELECT * FROM named_users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
 ```
 
-## `*sql.Rows` を構造体にスキャン
+## Scan `*sql.Rows` into struct
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
@@ -109,7 +109,7 @@ for rows.Next() {
 }
 ```
 
-## ドライランモード
+## DryRun Mode
 
 実行せずに、`SQL`の生成だけを行います。生成されたSQLを確認したりテストしたりできます。詳細については[Session](session.html) を確認してください。
 
@@ -119,7 +119,7 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 ```
 
-## 高度な機能
+## Advanced
 
 ### Clauses
 
