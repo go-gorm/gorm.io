@@ -5,7 +5,7 @@ layout: page
 
 ## Smart Select Fields
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller API struct that select specific fields automatically
+GORMは [``Select](query.html)で特定のフィールドを選択することができます。アプリケーションでこれを頻繁に使用する場合は、特定のフィールドを自動的に選択するような小さなAPI構造体を定義するとよいでしょう。
 
 ```go
 type User struct {
@@ -28,7 +28,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 
 ## Locking (FOR UPDATE)
 
-GORM supports different types of locks, for example:
+GORMは異なるタイプのロックをサポートしています。例:
 
 ```go
 DB.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -41,11 +41,11 @@ DB.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+詳細については、[Raw SQL and SQL Builder](sql_builder.html)を参照してください。
 
 ## SubQuery
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+クエリ内にサブクエリをネストすることができます。GORMは、パラメータとして `*gorm.DB` オブジェクトを使用するとサブクエリを生成できます。
 
 ```go
 db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -58,7 +58,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From SubQuery</span>
 
-GORM allows you using subquery in FROM clause with `Table`, for example:
+GORMでは、`Table`を用いることで、FROM句でサブクエリを使用することができます。
 
 ```go
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -72,7 +72,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">Group Conditions</span>
 
-Easier to write complicated SQL query with Group Conditions
+グループ条件で複雑な SQL クエリを簡単に記述できます
 
 ```go
 db.Where(
@@ -86,7 +86,7 @@ db.Where(
 
 ## Named Argument
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORMは[`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg)や`map[string]interface{}{}`を使用した名前付き引数をサポートしています 。例：
 
 ```go
 DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -96,7 +96,7 @@ DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `named_users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+詳細については、 [Raw SQL and SQL Builder](sql_builder.html#named_argument)を参照してください。
 
 ## Find To Map
 
