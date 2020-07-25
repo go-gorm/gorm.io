@@ -100,7 +100,7 @@ DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 ## Find To Map
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forgot to specify `Model` or `Table`, for example:
+GORMでは結果を`map[string]interface{}`や`[]map[string]interface{}`にスキャンすることができます。`Model`や`Table`の指定を忘れないでください。。例：
 
 ```go
 var result map[string]interface{}
@@ -112,7 +112,7 @@ DB.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record, or initialize a new one with given conditions (only works with struct, map conditions)
+最初に一致するレコードを取得するか、指定された条件で新しいレコードを初期化します (構造体とmap条件のみで動作します)
 
 ```go
 // User not found, initialize it with give conditions
@@ -128,7 +128,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+レコードが見つからない場合のみ、struct をより多くの属性で初期化できます。これらの `Attrs` は 作成されるSQLクエリには使用されません。
 
 ```go
 // User not found, initialize it with give conditions and Attrs
@@ -147,7 +147,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query
+`Assign`はレコードが見つかったかどうかに関わらず、指定した属性を初期化します。属性は作成されるSQLクエリには使用されません。
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -162,7 +162,7 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record, or create a new one with given conditions (only works with struct, map conditions)
+最初に一致するレコードを取得するか、指定された条件で新しいレコードを作成します (構造体、map条件でのみ動作します)
 
 ```go
 // User not found, create a new record with give conditions
@@ -175,7 +175,7 @@ db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age}: 18
 ```
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+レコードが見つからない場合、より多くの属性を持つ構造体を作成します。それらの `Attrs` はSQLクエリのビルドには使用されません。
 
 ```go
 // User not found, create it with give conditions and Attrs
@@ -190,7 +190,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not, and save them back to the database.
+`Assign`はレコードが見つかるかどうかにかかわらず属性を初期化し、データベースに保存します。
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -208,7 +208,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## Optimizer/Index Hints
 
-Optimizer hints allow us to control the query optimizer to choose a certain query execution plan.
+最適化ヒントを使用すると、特定のクエリ実行計画を選択するクエリ最適化を制御できます。
 
 ```go
 import "gorm.io/hints"
@@ -217,7 +217,7 @@ DB.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allow passing index hints to the database in case the query planner gets confused.
+インデックスヒントでは、データベースのクエリプランナーが混乱した場合に備えて、インデックスヒントをデータベースに渡すことができます。
 
 ```go
 import "gorm.io/hints"
@@ -229,7 +229,7 @@ DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-Refer [Optimizer Hints/Index/Comment](hints.html) for more details
+詳細については、 [Optimizer Hints/Index/Comment](hints.html) を参照してください。
 
 ## Iteration
 
@@ -250,7 +250,7 @@ for rows.Next() {
 
 ## FindInBatches
 
-Query and process records in batch
+バッチ処理内でレコードをクエリしたり処理できます
 
 ```go
 // batch size 100
@@ -275,7 +275,7 @@ result.RowsAffected // processed records count in all batches
 
 ## Query Hooks
 
-GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
+GORMは`AfterFind`をフックできます。これはレコードを取得したときに呼び出されます。詳細は[Hooks](hooks.html)を参照してください。
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -343,7 +343,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 
 ## <span id="count">Count</span>
 
-Get matched records count
+一致したレコード数をカウントします
 
 ```go
 var count int64
