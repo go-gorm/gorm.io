@@ -3,7 +3,7 @@ title: Composite Primary Key
 layout: page
 ---
 
-Set multiple fields as primary key creates composite primary key, for example:
+複数のフィールドを主キーとして設定すると、次のように複合主キーが作成されます。
 
 ```go
 type Product struct {
@@ -14,7 +14,7 @@ type Product struct {
 }
 ```
 
-**Note** integer `PrioritizedPrimaryField` enables `AutoIncrement` by default, to disable it, you need to turn off `autoIncrement` for the int fields:
+**注** intの`PrioritizedPrimaryField`はデフォルトで`AutoIncrement`されます。 無効にしたいなら、`autoIncrement`をintフィールドでfalseにしてください。
 
 ```go
 type Product struct {
