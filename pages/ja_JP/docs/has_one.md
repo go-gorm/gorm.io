@@ -31,13 +31,13 @@ type CreditCard struct {
 
 ユーザーにクレジットカードを渡すと、ユーザーの `ID` が `UserID` フィールドに保存されます。
 
-If you want to use another field to save the relationship, you can change it with tag `foreignKey`, e.g:
+別のフィールドを使用したい場合は、`foreignKey`タグで変更できます。例：
 
 ```go
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // use UserName as foreign key
+  // UserNameを外部キーとして利用する。
 }
 
 type CreditCard struct {
@@ -51,7 +51,7 @@ type CreditCard struct {
 
 By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field, like using `Name` for the below example.
 
-You are able to change it with tag `references`, e.g:
+`references`タグを用いて変更することもできます。
 
 ```go
 type User struct {
@@ -119,7 +119,7 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 
 ## CRUD with Has One
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with `has one` relations
+`has one`と利用するには[Association Mode](associations.html#Association-Mode)を参照してください。
 
 ## Eager Loading
 
