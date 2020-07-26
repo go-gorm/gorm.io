@@ -5,7 +5,7 @@ layout: page
 
 ## Auto Create/Update
 
-GORM will autosave associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORMはレコードの作成・更新時に[Upsert](create.html#upsert)を使用して自動的にアソシエーションとその参照を保存します。
 
 ```go
 user := User{
@@ -34,7 +34,7 @@ db.Omit(clause.Associations).Create(&user)
 
 ## Skip Auto Create/Update
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+作成/更新時の自動保存をスキップするには、`Select` または`Omit`を使用します。例：
 
 ```go
 user := User{
@@ -69,7 +69,7 @@ db.Save(&user)
 
 ## Association Mode
 
-Association Mode contains some commonly used helper methods to handle relationships
+アソシエーションモードには、リレーションシップを処理するために一般的に使用されるヘルパーメソッドがいくつか含まれています。
 
 ```go
 // Start Association Mode
