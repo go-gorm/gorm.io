@@ -5,12 +5,12 @@ layout: page
 
 ## Has One
 
-A `has one` association sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+`has one` は、別のモデルとの一対一の接続を設定しますが、セマンティクス（とその結果）は多少異なります。 このアソシエーションは、モデルの各インスタンスが別のモデルの1つのインスタンスを含んでいるか、または所有していることを示します。
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+たとえば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを1枚しか持つことができないとします：
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+// Userは1つだけCreditCardを持ちます。CreditCardIDは外部キーです。
 type User struct {
   gorm.Model
   CreditCard CreditCard
@@ -25,11 +25,11 @@ type CreditCard struct {
 
 ## Override Foreign Key
 
-For a `has one` relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
+`has one`を定義する場合、外部キーフィールドも存在する必要があります。所有側のモデルは、この属するモデルの主キーをこのフィールドへ保存します。
 
-The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
+そのフィールドの名前は通常、 `has one`を持つモデルの型名に`primary key`を足したものとして作成されます。上記の例では `UserID`です。
 
-When you give a credit card to the user, it will save the User's `ID` into its `UserID` field.
+ユーザーにクレジットカードを渡すと、ユーザーの `ID` が `UserID` フィールドに保存されます。
 
 If you want to use another field to save the relationship, you can change it with tag `foreignKey`, e.g:
 
