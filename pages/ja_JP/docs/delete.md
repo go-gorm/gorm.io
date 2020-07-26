@@ -21,7 +21,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE FROM emails WHERE id=10 AND name = 'jinzhu'
 ```
 
-## Deleteフック
+## Delete Hooks
 
 GORMは `BeforeDelete`, `AfterDelete`をフックします。これらのメソッドはレコードを削除する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
 
@@ -34,7 +34,7 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## 一括削除
+## Batch Delete
 
 If we havn't specify a record having priamry key value, GORM will perform a batch delete all matched records
 
@@ -46,7 +46,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-### グローバルデリートのブロック
+### Block Global Delete
 
 何も条件を付けずにバッチ削除を行った場合、GORMは実行せず、`ErrMissingWhereClause`エラーを返します。
 
@@ -59,9 +59,9 @@ db.Where("1 = 1").Delete(&User{})
 // DELETE `users` WHERE 1=1
 ```
 
-## 論理削除
+## Soft Delete
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+モデルに`gorm.DeletedAt`フィールド (`gorm.Model`にも含まれています。) が含まれている場合、そのモデルは自動的に論理削除機能を取得します!
 
 When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
 
@@ -88,7 +88,7 @@ type User struct {
 }
 ```
 
-### 論理削除したレコードを検索する
+### Find soft deleted records
 
 You can find soft deleted records with `Unscoped`
 
@@ -97,7 +97,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### 完全削除
+### Delete permanently
 
 `Unscoped`で一致したレコードを永久に削除できます。
 
