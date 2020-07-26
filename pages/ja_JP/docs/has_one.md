@@ -49,7 +49,7 @@ type CreditCard struct {
 
 ## Override References
 
-By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field, like using `Name` for the below example.
+デフォルトでは、所有されているエンティティは`has one`モデルの主キーを外部キーに保存します。以下の例の`Name`のように、別のフィールドを保存するように変更することもできます。
 
 `references`タグを用いて変更することもできます。
 
@@ -96,7 +96,7 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs")
 ```
 
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
+`polymorphicValue`タグを使用して、ポリモーフィック型の値を変更できます。例：
 
 ```go
 type Dog struct {
