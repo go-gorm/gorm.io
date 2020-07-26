@@ -164,9 +164,9 @@ gorm.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, us
 
 ## <span id="tags">Association Tags</span>
 
-| Tag              | Description                                     |
+| タグ               | 説明                                              |
 | ---------------- | ----------------------------------------------- |
-| foreignKey       | Specifies foreign key                           |
+| foreignKey       | 外部キーを指定                                         |
 | references       | Specifies references                            |
 | polymorphic      | Specifies polymorphic type                      |
 | polymorphicValue | Specifies polymorphic value, default table name |
