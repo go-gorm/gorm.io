@@ -5,7 +5,7 @@ layout: page
 
 ## Preload
 
-GORM allows eager loading relations in other SQL with `Preload`, for example:
+GORMは、 `Preload`で他のSQL内のリレーションを事前読み込みできます。例：
 
 ```go
 type User struct {
@@ -34,7 +34,7 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 
 ## Joins Preloading
 
-`Preload` loads the association data in a separate query, `Join Preload` will loads association data using inner join, for example:
+`Preload` はアソシエーションデータを別々のクエリにロードします。 `Join Preload` は内部結合を使用してアソシエーションデータをロードします。例：
 
 ```go
 db.Joins("Company").Joins("Manager").Joins("Account").First(&user, 1)
@@ -42,11 +42,11 @@ db.Joins("Company").Joins("Manager").Joins("Account").First(&user, "users.name =
 db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2,3,4,5})
 ```
 
-**NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
+**注：** `Join Preload` は`has one`や`belongs to`のような1:1のリレーションで動作します。
 
 ## Preload All
 
-`clause.Associations` can works with `Preload` similar `Select` when creating/updating, you can use it to `Preload` all associations, for example:
+`clause.Associations`は `Select`と同様に`Preload `でも動作し、作成/更新時に全てのアソシエーションを `Preload`することができます。 例：
 
 ```go
 type User struct {
@@ -62,7 +62,7 @@ db.Preload(clause.Associations).Find(&users)
 
 ## Preload with conditions
 
-GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
+GORMは条件付きのPreloadが可能です。これは[Inline Conditions](query.html#inline_conditions)と同様に動作します。
 
 ```go
 // Preload Orders with conditions
@@ -77,7 +77,7 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 
 ## Custom Preloading SQL
 
-You are able to custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+`func(db *gorm.DB) *gorm.DB`を渡すことで、SQLのプリロードをカスタマイズできます。例：
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
@@ -89,7 +89,7 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 
 ## Nested Preloading
 
-GORM supports nested preloading, for example:
+GORMはネストしたPreloadをサポートしています。例：
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)
