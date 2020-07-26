@@ -113,7 +113,7 @@ type Animal struct {
 
 ### CreatedAt
 
-For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
+`CreatedAt`フィールドを持つモデルの場合、値がゼロ値であり、レコードが最初に作成されたとき、フィールドは現在時刻に設定されます
 
 ```go
 db.Create(&user) // set `CreatedAt` to current time
@@ -124,7 +124,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
+`UpdatedAt`フィールドを持つモデルの場合、値がゼロ値であり、レコードが更新または作成されると、フィールドは現在時刻に設定されます。
 
 ```go
 db.Save(&user) // set `UpdatedAt` to current time
@@ -132,4 +132,4 @@ db.Save(&user) // set `UpdatedAt` to current time
 db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
 ```
 
-**NOTE** GORM supports having multiple time tracking fields, track with other fields or track with UNIX second/UNIX nanosecond, check [Models](models.html#time_tracking) for more details
+**注：**GORMは複数の時間トラッキングフィールド、他のフィールドとのトラッキング、UNIX秒/UNIXナノ秒でのトラッキングをサポートしています。詳細は[ Models](models.html#time_tracking)を参照してください。
