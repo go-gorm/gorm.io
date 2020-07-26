@@ -5,12 +5,12 @@ layout: page
 
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+`belongs to`アソシエーションは、モデルの各インスタンスが他のモデルの1つのインスタンスに "属する "ように、他のモデルとの1対1の接続を設定します。
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company
+たとえば、アプリケーションにユーザーと会社が含まれ、各ユーザーが1つの会社に割り当てられる場合などです。
 
 ```go
-// `User` belongs to `Company`, `CompanyID` is the foreign key
+// `User`は`Company`に属します。 `CompanyID`は外部キーです。
 type User struct {
   gorm.Model
   Name      string
@@ -26,11 +26,11 @@ type Company struct {
 
 ## Override Foreign Key
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Belongs toを定義する場合、外部キーが存在する必要があります。デフォルトの外部キーは、所有型の型名にその主キーフィールド名を足したものです。
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+上記の例では、`Company`に属する`User`モデルを定義する際、規約に従い、外部キーを`CompanyID`とします。
 
-GORM provides a way to customize the foreign key, for example:
+GORMは外部キーをカスタマイズする方法を提供しています。例：
 
 ```go
 type User struct {
@@ -38,7 +38,7 @@ type User struct {
   Name         string
   CompanyRefer int
   Company      Company `gorm:"foreignKey:CompanyRefer"`
-  // use CompanyRefer as foreign key
+  // CompanyReferを外部キーとして利用する。
 }
 
 type Company struct {
@@ -49,11 +49,11 @@ type Company struct {
 
 ## Override References
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+Belongs toを定義する場合、GORMは通常、所有側の主キーフィールドを外部キーの値として使用します、。上記の例では`Company`のフィールド`ID`を使用します。
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+UserをComponyに割り当てると、GORMはComponyの `ID` をUserの `CompanyID`フィールドに保存します。
 
-You are able to change it with tag `references`, e.g:
+`references`タグを用いて変更することもできます。
 
 ```go
 type User struct {
@@ -72,7 +72,7 @@ type Company struct {
 
 ## CRUD with Belongs To
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+[Association Mode](associations.html#Association-Mode)を参照してください。
 
 ## Eager Loading
 
