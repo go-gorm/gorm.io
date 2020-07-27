@@ -14,7 +14,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 // Continuous session mode
-tx := db.Session(&Session{PrepareStmt: true})
+tx := db.Session(&Session{SkipDefaultTransaction: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
