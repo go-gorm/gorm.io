@@ -145,20 +145,20 @@ db.Model(&user).Association("Languages").Count()
 Режим ассоциации поддерживает пакетные данные, например:
 
 ```go
-// Find all roles for all users
+// Найти все роли для всех пользователей 
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// Удалить Пользователя A из всех команд ( Team )
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get unduplicated count of members in all user's team
+// Получить уникальное количество пользователей из всех команд
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
+// Для `Append`, `Replace` с пакетными данными, количество аргументов должно совпадать с числом данных или вернет ошибку 
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// например: у нас 3 пользователя, добавим в команду userA пользователя user1, добавим в команду userB пользователя user2, добавим в команду userA, userB и userC пользователя user3
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// Обнулим команды пользователя user1 до userA, обнулим команды пользователя user2 до userB, обнулим команды пользователя user3до userA, userB and userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
