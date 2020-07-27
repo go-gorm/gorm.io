@@ -8,13 +8,13 @@ layout: страница
 GORM выполняет операции записи (создания/обновления/удаления) внутри транзакции, чтобы обеспечить целостность данных, вы можете отключить транзакции в процессе инициализации, если они не требуются, что приводит к приросту производительности примерно в +30%
 
 ```go
-// Глобальное отключение
+// Globally disable
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   SkipDefaultTransaction: true,
 })
 
-// Режим непрерывной сессии
-tx := db.Session(&Session{PrepareStmt: true})
+// Continuous session mode
+tx := db.Session(&Session{SkipDefaultTransaction: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
