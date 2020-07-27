@@ -145,21 +145,21 @@ db.Model(&user).Association("Languages").Count()
 Режим ассоциации поддерживает пакетные данные, например:
 
 ```go
-// Найти все роли для всех пользователей
-gorm.Model(&users).Association("Role").Find(&roles)
+// Find all roles for all users
+db.Model(&users).Association("Role").Find(&roles)
 
-// Удалить пользователя UserA из всех команд
-gorm.Model(&users).Association("Team").Delete(&userA)
+// Delete User A from all users's team
+db.Model(&users).Association("Team").Delete(&userA)
 
-// Получить не сдублированное количество пользователей во всех командах
-gorm.Model(&users).Association("Team").Count()
+// Get unduplicated count of members in all user's team
+db.Model(&users).Association("Team").Count()
 
-// Для `Append`, `Replace` с пакетными данными, количество аргументов должно совпадать с числом данных или вернет ошибку
+// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
-gorm.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Обнулить команду пользователя user1 до userA, обнулить команду пользователя user2 до userB, обнулить команду пользователя user3' до userA, userB и userC
-gorm.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
+db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
+// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## <span id="tags">Теги связей</span>
