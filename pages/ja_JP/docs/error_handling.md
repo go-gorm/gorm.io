@@ -1,13 +1,13 @@
 ---
-title: エラーハンドリング
+title: Error Handling
 layout: page
 ---
 
 Goでは、エラー処理が重要です。
 
-[即時メソッド](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) の後にエラーチェックを行うことをおすすめします。
+[Finisher Methods](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) の後にエラーチェックを行うことをおすすめします。
 
-## エラーハンドリング
+## Error Handling
 
 GORMでのエラーハンドリングは、メソッドチェーン可能なAPIのため、ふつうのGoコードとは異なります。
 
@@ -37,6 +37,6 @@ err := db.First(&user, 100).Error
 errors.Is(tx.Error, ErrRecordNotFound)
 ```
 
-## エラーの種類
+## Errors
 
 [Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go)
