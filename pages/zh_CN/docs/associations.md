@@ -145,21 +145,21 @@ db.Model(&user).Association("Languages").Count()
 关联模式支持批量处理数据，例如：
 
 ```go
-// 查询所有用户的所有角色
-gorm.Model(&users).Association("Role").Find(&roles)
+// Find all roles for all users
+db.Model(&users).Association("Role").Find(&roles)
 
-// 将 userA 移出所有的 Team
-gorm.Model(&users).Association("Team").Delete(&userA)
+// Delete User A from all users's team
+db.Model(&users).Association("Team").Delete(&userA)
 
-// 获取所有 Team 成员的不重复计数。
-gorm.Model(&users).Association("Team").Count()
+// Get unduplicated count of members in all user's team
+db.Model(&users).Association("Team").Count()
 
-// 对于 `Append`、`Replace` 的批量处理，参数与数据的长度必须相等，否则会返回错误
+// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
 var users = []User{user1, user2, user3}
-// 例如：我们有 3 个 user，将 userA 添加到 user1 的 Team，将 userB 添加到 user2 的 Team，将 userA、userB、userC 添加到 user3 的 Team。
-gorm.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-//将 user1 的 Team 重置为 userA，将 user2的 team 重置为 userB，将 user3 的 team 重置为 userA、userB 和 userC。
-gorm.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
+// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
+// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## <span id="tags">关联标签</span>
