@@ -16,11 +16,12 @@ GORM 自身也是基于 `Callbacks` 的，包括 `Create`、`Query`、`Update`�
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // 裁剪图像字段并将其上传至 CDN 的伪代码
+    // crop image fields and upload them to CDN, dummy code
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
+          // Get value from field
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -28,21 +29,37 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); isZero {
+        // Get value from field
+        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
+
+        // Set value to field
+        err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
+    // All fields for current model
+    db.Statement.Schema.Fields
+
+    // All primary key fields for current model
+    db.Statement.Schema.PrimaryFields
+
+    // Prioritized primary key field: field with DB name `id` or the first defined primary key
+    db.Statement.Schema.PrioritizedPrimaryField
+
+    // All relationships for current model
+    db.Statement.Schema.Relationships
+
     field := db.Statement.Schema.LookUpField("Name")
-    // 处理中...
+    // processing
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// 为 Create 流程注册一个回调
+// register a callback for Create process
 ```
 
 ### 删除回调
