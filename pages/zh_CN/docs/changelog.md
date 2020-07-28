@@ -7,8 +7,8 @@ layout: page
 
 GORM 2.0 是根据我们在过去几年里收到的反馈从零重写的，它引入了一些不兼容的 API 更改和许多改进
 
-* 性能改进
-* 模块化
+* Performance Improvements
+* Modularity
 * Context, Batch Insert, Prepared Statment, DryRun Mode, Join Preload, Find To Map, FindInBatches
 * SavePoint/RollbackTo/Nested Transaction Support
 * Association improvements (On Delete/Update), Modify Join Table for Many2Many, Association Mode for batch data
