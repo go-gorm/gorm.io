@@ -56,7 +56,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
-### <span id="from_subquery">From SubQuery</span>
+### <span id="from_subquery">From 子查询</span>
 
 GORM allows you using subquery in FROM clause with `Table`, for example:
 
