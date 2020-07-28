@@ -332,18 +332,18 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// 查找所有金额大于 1000 的信用卡订单
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// 查找所有金额大于 1000 的货到付款订单
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// 查找所有金额大于 1000 且已付款或已发货的订单
 ```
 
 ## <span id="count">Count</span>
 
-Get matched records count
+Count 用于获取匹配的记录数
 
 ```go
 var count int64
@@ -356,14 +356,14 @@ db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 db.Table("deleted_users").Count(&count)
 // SELECT count(*) FROM deleted_users;
 
-// Count with Distinct
+// 去重计数
 DB.Model(&User{}).Distinct("name").Count(&count)
 // SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
 // SELECT count(distinct(name)) FROM deleted_users
 
-// Count with Group
+// 分组计数
 users := []User{
   {Name: "name1"},
   {Name: "name2"},
