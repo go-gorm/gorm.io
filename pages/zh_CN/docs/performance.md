@@ -20,21 +20,21 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 执行任何 SQL 时都创建 prepared statement 并缓存，可以提高后续的调用速度
 
 ```go
-// Globally mode
+// 全局模式
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
 
-// Session mode
+// 会话模式
 tx := db.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 ```
 
-### [SQL Builder with PreparedStmt](sql_builder.html)
+### [带 PreparedStmt 的 SQL 生成器](sql_builder.html)
 
-Prepared Statement works with RAW SQL also, for example:
+Prepared Statement 也可以和原生 SQL 一起使用，例如：
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -46,15 +46,15 @@ db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 
 You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
 
-## Select Fields
+## 选择字段
 
-By default GORM select all fields when querying, you can use `Select` to specify fields you want
+默认情况下，GORM 在查询时会选择所有的字段，您可以使用 `Select` 来指定您想要的字段
 
 ```go
 db.Select("Name", "Age").Find(&Users{})
 ```
 
-Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)
+或者定义一个较小的 API 结构体，使用 [智能选择字段功能](advanced_query.html)
 
 ```go
 type User struct {
