@@ -47,7 +47,7 @@ func (User) TableName() string {
 }
 ```
 
-**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use the following code:
+**注意：** `TableName` 不支持动态变化，它会被缓存下来以便后续使用。想要使用动态表名，你可以使用下面的代码：
 
 ```go
 func UserTable(user User) func (db *gorm.DB) *gorm.DB {
@@ -63,15 +63,15 @@ func UserTable(user User) func (db *gorm.DB) *gorm.DB {
 DB.Scopes(UserTable(user)).Create(&user)
 ```
 
-### Temporarily specify a name
+### 临时指定表明
 
-Temporarily specify table name with `Table` method, for example:
+您可以使用 `Table` 方法临时指定表名，例如：
 
 ```go
-// Create table `deleted_users` with struct User's fields
+// 根据 User 的字段创建 `deleted_users` 表
 db.Table("deleted_users").AutoMigrate(&User{})
 
-// Query data from another table
+// 从另一张表查询数据
 var deletedUsers []User
 db.Table("deleted_users").Find(&deletedUsers)
 // SELECT * FROM deleted_users;
@@ -80,32 +80,32 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-Check out [From SubQuery](advanced_query.html#from_subquery) for how to use SubQuery in FROM clause
+查看 [from 子查询](advanced_query.html#from_subquery) 了解如何在 FROM 子句中使用子查询
 
 ### <span id="naming_strategy">命名策略</span>
 
-GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html) for details
+GORM 允许用户通过覆盖默认的`命名策略`更改默认的命名约定，命名策略被用于构建： `TableName`、`ColumnName`、`JoinTableName`、`RelationshipFKName`、`CheckerName`、`IndexName`。查看 [GORM 配置](gorm_config.html) 获取详情
 
 ## 列名
 
-Column db name uses the field's name's `snake_case` by convention.
+根据约定，数据表的列名使用的是 struct 字段名的 `蛇形命名`
 
 ```go
 type User struct {
-  ID        uint      // column name is `id`
-  Name      string    // column name is `name`
-  Birthday  time.Time // column name is `birthday`
-  CreatedAt time.Time // column name is `created_at`
+  ID        uint      // 列名是 `id`
+  Name      string    // 列名是 `name`
+  Birthday  time.Time // 列名是 `birthday`
+  CreatedAt time.Time // 列名是 `created_at`
 }
 ```
 
-You can override the column name with tag `column`, or use [`NamingStrategy`](#naming_strategy)
+您可以使用标签 `column` 或 [`命名策略`](#naming_strategy) 来覆盖列名
 
 ```go
 type Animal struct {
-  AnimalID int64     `gorm:"column:beast_id"`         // set name to `beast_id`
-  Birthday time.Time `gorm:"column:day_of_the_beast"` // set name to `day_of_the_beast`
-  Age      int64     `gorm:"column:age_of_the_beast"` // set name to `age_of_the_beast`
+  AnimalID int64     `gorm:"column:beast_id"`         // 将列名设为 `beast_id`
+  Birthday time.Time `gorm:"column:day_of_the_beast"` // 将列名设为 `day_of_the_beast`
+  Age      int64     `gorm:"column:age_of_the_beast"` // 将列名设为 `age_of_the_beast`
 }
 ```
 
@@ -113,23 +113,23 @@ type Animal struct {
 
 ### CreatedAt
 
-For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
+对于有 `CreatedAt` 字段的模型，创建记录时，如果该字段值为零值，则将该字段的值设为当前时间
 
 ```go
-db.Create(&user) // set `CreatedAt` to current time
+db.Create(&user) // 将 `CreatedAt` 设为当前时间
 
-// To change its value, you could use `Update`
+// 想要修改该字段的值，你可以使用 `Update`
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
+对于有 `UpdatedAt` 字段的模型，更新记录时，将该字段的值设为当前时间。创建记录时，如果该字段值为零值，则将该字段的值设为当前时间
 
 ```go
-db.Save(&user) // set `UpdatedAt` to current time
+db.Save(&user) // 将 `UpdatedAt` 设为当前时间
 
-db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+db.Model(&user).Update("name", "jinzhu") // 也会将 `UpdatedAt` 设为当前时间
 ```
 
-**NOTE** GORM supports having multiple time tracking fields, track with other fields or track with UNIX second/UNIX nanosecond, check [Models](models.html#time_tracking) for more details
+**注意** GORM 支持拥有多种类型的时间追踪字段。可以根据 UNIX 秒、纳秒、其它类型追踪时间，查看 [模型](models.html#time_tracking) 获取详情
