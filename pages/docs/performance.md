@@ -20,14 +20,21 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 Creates a prepared statement when executing any SQL and caches them to speed up future calls
 
 ```go
+// Globally mode
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
+
+// Session mode
+tx := db.Session(&Session{PrepareStmt: true})
+tx.First(&user, 1)
+tx.Find(&users)
+tx.Model(&user).Update("Age", 18)
 ```
 
-## [SQL Builder with PreparedStmt](sql_builder.html)
+### [SQL Builder with PreparedStmt](sql_builder.html)
 
-GORM tries a lot to improve generate SQL, you can still choose to use raw SQL or prepare SQL before usage with GORM API ([DryRun Mode](session.html)), and execute it with prepared statement later, e.g:
+Prepared Statement works with RAW SQL also, for example:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -36,6 +43,8 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
+
+You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
 
 ## Select Fields
 
