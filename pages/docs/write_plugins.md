@@ -36,6 +36,18 @@ func cropImage(db *gorm.DB) {
       }
     }
 
+    // All fields for current model
+    db.Statement.Schema.Fields
+
+    // All primary key fields for current model
+    db.Statement.Schema.PrimaryFields
+
+    // Prioritized primary key field: field with DB name `id` or the first defined primary key
+    db.Statement.Schema.PrioritizedPrimaryField
+
+    // All relationships for current model
+    db.Statement.Schema.Relationships
+
     field := db.Statement.Schema.LookUpField("Name")
     // processing
   }
