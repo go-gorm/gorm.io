@@ -73,7 +73,7 @@ import (
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**注意：** 您也可以使用 `file::memory:?cache=shared` 替代文件路径。 这会告诉 SQLite 在系统内存中使用一个临时数据库。 (查看 [SQLite 文档](https://www.sqlite.org/inmemorydb.html) 获取详情)
 
 ## SQL Server
 
@@ -88,29 +88,29 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
-Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
+Microsoft 为 GO (GORM) 使用 SQL Server 提供了 [一份指南](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/)
 
 ## 连接池
 
-GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
+GORM 使用 [database/sql](https://pkg.go.dev/database/sql) 来维护连接池
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
-sqlDB.SetMaxIdleConns(10)
+// SetMaxIdleConns 设置空闲连接池中连接的最大数量
+sqlDB.SetMaxIgleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns 设置打开数据库连接的最大数量
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime 设置了连接可复用的最大时间
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+查看 [通用接口](generic_interface.html) 获取详情。
 
 ## 不支持的数据库
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+有些数据库可能兼容 `mysql`、`postgres` 的方言，在这种情况下，你可以直接使用这些数据库的方言。
 
-其次，[我们鼓励且欢迎大家伙开发更多数据库类型的驱动！](write_driver.html)
+对于其它不支持的数据，[我们鼓励且欢迎大家伙开发更多数据库类型的驱动！](write_driver.html)

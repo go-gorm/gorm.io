@@ -35,11 +35,34 @@ stmt. Vars         //=> []interface{}{1}
 `PreparedStmt` creates prepared statement when executing any SQL and caches them to speed up future calls, for example:
 
 ```go
-Second)
-tx := db. Session(&Session{Context: timeoutCtx})
+// globally mode, all DB operations will create prepared stmt and cache them
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  PrepareStmt: true,
+})
 
-tx. First(&user) // query with context timeoutCtx
-tx. Model(&user).
+// session mode
+tx := db.Session(&Session{PrepareStmt: true})
+tx.First(&user, 1)
+tx.Find(&users)
+tx.Model(&user).Update("Age", 18)
+
+// returns prepared statements manager
+stmtManger, ok := tx.ConnPool.(*PreparedStmtDB)
+
+// close prepared statements for *current session*
+stmtManger.Close()
+
+// prepared SQL for *current session*
+stmtManger.PreparedSQL
+
+// prepared statements for current database connection pool (all sessions)
+stmtManger.Stmts // map[string]*sql.Stmt
+
+for sql, stmt := range stmtManger.Stmts {
+  sql  // prepared SQL
+  stmt // prepared statement
+  stmt.Close() // close the prepared statement
+}
 ```
 
 ## WithConditions

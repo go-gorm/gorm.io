@@ -20,14 +20,21 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 Создает подготовленные данные при выполнении любого SQL и кэширует их для ускорения будущих вызовов
 
 ```go
+// Globally mode
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
+
+// Session mode
+tx := db.Session(&Session{PrepareStmt: true})
+tx.First(&user, 1)
+tx.Find(&users)
+tx.Model(&user).Update("Age", 18)
 ```
 
-## [Конструктор SQL с подготовкой](sql_builder.html)
+### [SQL Builder with PreparedStmt](sql_builder.html)
 
-GORM пытается многое улучшить при генерации SQL, вы все еще можете выбрать использование чистого SQL или подготовить SQL перед использованием в GORM API ([Режим DryRun](session.html)), и выполнить его подготовленным позднее, например:
+Prepared Statement works with RAW SQL also, for example:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -37,15 +44,17 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-## Выбрать поля
+You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
 
-По умолчанию GORM выбирает все поля при запросе, вы можете использовать `Select` для указания полей
+## Select Fields
+
+By default GORM select all fields when querying, you can use `Select` to specify fields you want
 
 ```go
 db.Select("Name", "Age").Find(&Users{})
 ```
 
-Или определите меньший struct API для использования функции [умных полей](advanced_query.html)
+Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)
 
 ```go
 type User struct {
@@ -66,13 +75,13 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
-## [Итерация / Поиск в пакете](advanced_query.html)
+## [Iteration / FindInBatches](advanced_query.html)
 
-Запрашивать и обрабатывать записи с итерациями или партиями
+Query and process records with iteration or in batches
 
-## [Подсказки индексирования](hints.html)
+## [Index Hints](hints.html)
 
-[Индекс](indexes.html) используется для ускорения поиска данных и производительности SQL-запроса. `Подсказки индексирования` дают оптимизатору информацию о том, как выбрать индексы во время обработки запроса, что дает гибкость выбора более эффективного плана выполнения, чем оптимизатор
+[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
 
 ```go
 import "gorm.io/hints"

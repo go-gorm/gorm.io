@@ -20,14 +20,21 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 执行任何 SQL 时都创建 prepared statement 并缓存，可以提高后续的调用速度
 
 ```go
+// Globally mode
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
+
+// Session mode
+tx := db.Session(&Session{PrepareStmt: true})
+tx.First(&user, 1)
+tx.Find(&users)
+tx.Model(&user).Update("Age", 18)
 ```
 
-## [带 PreparedStmt 的 SQL 生成器](sql_builder.html)
+### [SQL Builder with PreparedStmt](sql_builder.html)
 
-在生成 SQL 方面，GORM 做了大量的改进尝试，您仍然可以在使用 GORM API（[DryRun 模式](session.html)）之前选择使用原生 SQL 或 prepare SQL, 然后用 prepared statement 执行它，例如：
+Prepared Statement works with RAW SQL also, for example:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -37,15 +44,17 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-## 选择字段
+You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
 
-默认情况下，GORM 在查询时会选择所有的字段，您可以使用 `Select` 来指定您想要的字段
+## Select Fields
+
+By default GORM select all fields when querying, you can use `Select` to specify fields you want
 
 ```go
 db.Select("Name", "Age").Find(&Users{})
 ```
 
-或者定义一个较小的 API 结构，使用 [智能选择字段功能](advanced_query.html)
+Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)
 
 ```go
 type User struct {
@@ -66,13 +75,13 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
-## [迭代、FindInBatches](advanced_query.html)
+## [Iteration / FindInBatches](advanced_query.html)
 
-用迭代或批量进行记录的查询和处理
+Query and process records with iteration or in batches
 
-## [索引提示](hints.html)
+## [Index Hints](hints.html)
 
-[索引](indexes.html) 用于提高数据检索和 SQL 查询性能。 `索引提示` 提供了在查询处理过程中如何选择索引信息的优化器。与选择器相比，它可以更灵活地选择更有效的执行计划
+[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
 
 ```go
 import "gorm.io/hints"
