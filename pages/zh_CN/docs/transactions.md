@@ -8,12 +8,12 @@ layout: page
 为了确保数据一致性，GORM 会在事务里执行写入操作（创建、更新、删除）。如果没有这方面的要求，您可以在初始化时禁用它，这将获得大约 30%+ 性能提升。
 
 ```go
-// Globally disable
+// 全局禁用
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   SkipDefaultTransaction: true,
 })
 
-// Continuous session mode
+// 持续会话模式
 tx := db.Session(&Session{SkipDefaultTransaction: true})
 tx.First(&user, 1)
 tx.Find(&users)
