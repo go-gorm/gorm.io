@@ -21,6 +21,7 @@ func cropImage(db *gorm.DB) {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
+          // Get value from field
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -28,11 +29,15 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); isZero {
+        // Get value from field
+        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
+
+        // Set value to field
+        err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
