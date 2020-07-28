@@ -1,9 +1,9 @@
 ---
-title: 規約
+title: Conventions
 layout: page
 ---
 
-## 主キーとしての`ID`
+## `ID` as Primary Key
 
 GORMはデフォルトで、テーブルの主キーとして `ID` という名前のフィールドを使用します。
 
@@ -26,15 +26,15 @@ type Animal struct {
 }
 ```
 
-[複合プライマリキー](composite_primary_key.html) もチェックしてください
+[Composite Primary Key](composite_primary_key.html) も参照してください。
 
-## テーブル名は複数形
+## Pluralized Table Name
 
-GORM pluralizes struct name to `snake_cases` as table name, for struct `User`, its table name is `users` by convention
+GORMは構造体名をテーブル名として`snake_cases`のように複数形にします。構造体 `User` の場合、対応するテーブル名は規約により `users` となります。
 
 ### TableName
 
-You can change the default table name by implementing the `Tabler` interface, for example:
+`Tableer` インターフェイスを実装することで、デフォルトのテーブル名を変更することができます。例：
 
 ```go
 type Tabler interface {
@@ -47,7 +47,7 @@ func (User) TableName() string {
 }
 ```
 
-**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use the following code:
+**注：**`TableName`は動的な名前を許可していません、その結果は将来のためにキャッシュされます、動的な名前を使用するには、次のコードを使用することができます。
 
 ```go
 func UserTable(user User) func (db *gorm.DB) *gorm.DB {
@@ -65,7 +65,7 @@ DB.Scopes(UserTable(user)).Create(&user)
 
 ### Temporarily specify a name
 
-Temporarily specify table name with `Table` method, for example:
+`Table`メソッドで一時的にテーブル名を指定できます。例：
 
 ```go
 // Create table `deleted_users` with struct User's fields
@@ -80,15 +80,15 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-Check out [From SubQuery](advanced_query.html#from_subquery) for how to use SubQuery in FROM clause
+FROM句でサブクエリを使用する方法については、 [From SubQuery](advanced_query.html#from_subquery) を参照してください。
 
 ### <span id="naming_strategy">NamingStrategy</span>
 
-GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html) for details
+`TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`の構築に使用されている`NamingStrategy`をオーバーライドすることで、デフォルトの命名規則を変更できます。詳細は[GORM Config](gorm_config.html)を参照してください。
 
-## カラム名
+## Column Name
 
-Column db name uses the field's name's `snake_case` by convention.
+規約によって、データベースのカラム名はフィールドの名前の`snake_case`を使用します。
 
 ```go
 type User struct {
@@ -99,7 +99,7 @@ type User struct {
 }
 ```
 
-You can override the column name with tag `column`, or use [`NamingStrategy`](#naming_strategy)
+`column`タグか[`NamingStrategy`](#naming_strategy)を利用することでカラム名を上書きできます。
 
 ```go
 type Animal struct {
@@ -109,11 +109,11 @@ type Animal struct {
 }
 ```
 
-## タイムスタンプの追跡
+## Timestamp Tracking
 
 ### CreatedAt
 
-For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
+`CreatedAt`フィールドを持つモデルの場合、値がゼロ値であり、レコードが最初に作成されたとき、フィールドは現在時刻に設定されます
 
 ```go
 db.Create(&user) // set `CreatedAt` to current time
@@ -124,7 +124,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
+`UpdatedAt`フィールドを持つモデルの場合、値がゼロ値であり、レコードが更新または作成されると、フィールドは現在時刻に設定されます。
 
 ```go
 db.Save(&user) // set `UpdatedAt` to current time
@@ -132,4 +132,4 @@ db.Save(&user) // set `UpdatedAt` to current time
 db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
 ```
 
-**NOTE** GORM supports having multiple time tracking fields, track with other fields or track with UNIX second/UNIX nanosecond, check [Models](models.html#time_tracking) for more details
+**注：**GORMは複数の時間トラッキングフィールド、他のフィールドとのトラッキング、UNIX秒/UNIXナノ秒でのトラッキングをサポートしています。詳細は[ Models](models.html#time_tracking)を参照してください。

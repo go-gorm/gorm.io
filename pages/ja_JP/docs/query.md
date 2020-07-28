@@ -39,7 +39,7 @@ result.RowsAffected // 見つけたレコードの数を返す。`len(users)`と
 result.Error        // エラーを返す
 ```
 
-## Where
+## Conditions
 
 ### String Conditions
 

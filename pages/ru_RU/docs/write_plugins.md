@@ -16,11 +16,12 @@ layout: страница
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // обрезка изображений и загрузка их на сервер CDN, пример кода
+    // crop image fields and upload them to CDN, dummy code
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
+          // Get value from field
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -28,21 +29,37 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); isZero {
+        // Get value from field
+        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
+
+        // Set value to field
+        err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
+    // All fields for current model
+    db.Statement.Schema.Fields
+
+    // All primary key fields for current model
+    db.Statement.Schema.PrimaryFields
+
+    // Prioritized primary key field: field with DB name `id` or the first defined primary key
+    db.Statement.Schema.PrioritizedPrimaryField
+
+    // All relationships for current model
+    db.Statement.Schema.Relationships
+
     field := db.Statement.Schema.LookUpField("Name")
-    // обработка
+    // processing
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// регистрация функции callback для обработки Create
+// register a callback for Create process
 ```
 
 ### Удаление функций callback

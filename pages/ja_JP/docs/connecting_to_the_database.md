@@ -1,5 +1,5 @@
 ---
-title: データベースへの接続
+title: Connecting to a Database
 layout: page
 ---
 
@@ -90,7 +90,7 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
-## コネクションプーリング
+## Connection Pool
 
 GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
 

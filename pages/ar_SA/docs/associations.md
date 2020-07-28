@@ -123,20 +123,20 @@ Association Mode supports batch data, e.g:
 
 ```go
 // Find all roles for all users
-gorm. Association("Role"). Find(&roles)
+db.Model(&users).Association("Role").Find(&roles)
 
 // Delete User A from all users's team
-gorm. Delete(&userA)
+db.Model(&users).Association("Team").Delete(&userA)
 
 // Get unduplicated count of members in all user's team
-gorm. Count()
+db.Model(&users).Association("Team").Count()
 
 // For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
-gorm. Append(&userA, &userB, &[]User{userA, userB, userC})
+db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
 // Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
-gorm. Replace(&userA, &userB, &[]User{userA, userB, userC})
+db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## <span id="tags">Association Tags</span>

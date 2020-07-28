@@ -1,5 +1,5 @@
 ---
-title: マイグレーション
+title: Migration
 layout: page
 ---
 

@@ -13,8 +13,8 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   SkipDefaultTransaction: true,
 })
 
-// Режим непрерывной сессии
-tx := db.Session(&Session{PrepareStmt: true})
+// Режим сессии
+tx := db.Session(&Session{SkipDefaultTransaction: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)

@@ -1,9 +1,9 @@
 ---
-title: モデルの宣言
+title: Declaring Models
 layout: page
 ---
 
-## モデルの宣言
+## Declaring Models
 
 モデルは Goの基本型、ポインタ/エイリアス、 [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) および [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイスを実装するカスタム型を持つ通常の構造体です。
 
@@ -23,7 +23,7 @@ type User struct {
 }
 ```
 
-## 規約
+## Conventions
 
 GORMの方針は「設定より規約」です。デフォルトでは、GORMは主キーとしての`ID`、テーブル名を表すための複数形かつ`スネークケース`な構造体名、 `スネークケース`なカラム名、作成と更新の時間をトラッキングするための`CreatedAt`、`UpdatedAt`フィールドを利用します。
 
@@ -60,9 +60,9 @@ type User struct {
 }
 ```
 
-## 高度な機能
+## Advanced
 
-### フィールドレベルの権限
+### Field-Level Permission
 
 エクスポートされたフィールドはGORMでCRUDを実行するときにすべての権限を持ちますが、GORMはタグでフィールドレベルの権限を変更することができます。 これにより、読み取り専用、書き込み専用、作成専用、更新専用、または無視するフィールドを作成できます。
 
@@ -96,7 +96,7 @@ type User struct {
 }
 ```
 
-### <span id="embedded_struct">埋め込み構造体</span>
+### <span id="embedded_struct">Embedded Struct</span>
 
 匿名フィールドの場合、GORMはそのフィールドをその親の構造体に含めます。例えば:
 
@@ -155,7 +155,7 @@ type Blog struct {
 ```
 
 
-### フィールドタグ
+### Fields Tags
 
 タグはモデル宣言時に使用するオプションです。GORMは以下のタグをサポートしています。
 
@@ -183,6 +183,6 @@ type Blog struct {
 | ->             | フィールドの読み取り権限を設定                                                                                                                                                                                                                                                                                                                                                                                   |
 | -              | このフィールドを無視（読み取り/書き込み権限を無効にする）                                                                                                                                                                                                                                                                                                                                                                     |
 
-### アソシエーションタグ
+### Associations Tags
 
-GORMでは外部キー、制約、関連タグを介した多数のテーブルを設定できます。詳細は [アソシエーションセクション](associations. html#tags) をご覧ください。
+GORMでは外部キー、制約、関連タグを介した多数のテーブルを設定できます。詳細は [Associations section](associations. html#tags) をご覧ください。

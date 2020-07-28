@@ -5,12 +5,12 @@ layout: page
 
 ## Has One
 
-A `has one` association sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+`has one` は、別のモデルとの一対一の接続を設定しますが、セマンティクス（とその結果）は多少異なります。 このアソシエーションは、モデルの各インスタンスが別のモデルの1つのインスタンスを含んでいるか、または所有していることを示します。
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+たとえば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを1枚しか持つことができないとします：
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+// Userは1つだけCreditCardを持ちます。CreditCardIDは外部キーです。
 type User struct {
   gorm.Model
   CreditCard CreditCard
@@ -25,19 +25,19 @@ type CreditCard struct {
 
 ## Override Foreign Key
 
-For a `has one` relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
+`has one`を定義する場合、外部キーフィールドも存在する必要があります。所有側のモデルは、この属するモデルの主キーをこのフィールドへ保存します。
 
-The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
+そのフィールドの名前は通常、 `has one`を持つモデルの型名に`primary key`を足したものとして作成されます。上記の例では `UserID`です。
 
-When you give a credit card to the user, it will save the User's `ID` into its `UserID` field.
+ユーザーにクレジットカードを渡すと、ユーザーの `ID` が `UserID` フィールドに保存されます。
 
-If you want to use another field to save the relationship, you can change it with tag `foreignKey`, e.g:
+別のフィールドを使用したい場合は、`foreignKey`タグで変更できます。例：
 
 ```go
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // use UserName as foreign key
+  // UserNameを外部キーとして利用する。
 }
 
 type CreditCard struct {
@@ -49,9 +49,9 @@ type CreditCard struct {
 
 ## Override References
 
-By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field, like using `Name` for the below example.
+デフォルトでは、所有されているエンティティは`has one`モデルの主キーを外部キーに保存します。以下の例の`Name`のように、別のフィールドを保存するように変更することもできます。
 
-You are able to change it with tag `references`, e.g:
+`references`タグを用いて変更することもできます。
 
 ```go
 type User struct {
@@ -96,7 +96,7 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs")
 ```
 
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
+`polymorphicValue`タグを使用して、ポリモーフィック型の値を変更できます。例：
 
 ```go
 type Dog struct {
@@ -119,7 +119,7 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 
 ## CRUD with Has One
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with `has one` relations
+`has one`と利用するには[Association Mode](associations.html#Association-Mode)を参照してください。
 
 ## Eager Loading
 

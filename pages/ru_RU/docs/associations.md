@@ -145,21 +145,21 @@ db.Model(&user).Association("Languages").Count()
 Режим ассоциации поддерживает пакетные данные, например:
 
 ```go
-// Найти все роли для всех пользователей
-gorm.Model(&users).Association("Role").Find(&roles)
+// Найти все роли для всех пользователей 
+db.Model(&users).Association("Role").Find(&roles)
 
-// Удалить пользователя UserA из всех команд
-gorm.Model(&users).Association("Team").Delete(&userA)
+// Удалить Пользователя A из всех команд ( Team )
+db.Model(&users).Association("Team").Delete(&userA)
 
-// Получить не сдублированное количество пользователей во всех командах
-gorm.Model(&users).Association("Team").Count()
+// Получить уникальное количество пользователей из всех команд
+db.Model(&users).Association("Team").Count()
 
-// Для `Append`, `Replace` с пакетными данными, количество аргументов должно совпадать с числом данных или вернет ошибку
+// Для `Append`, `Replace` с пакетными данными, количество аргументов должно совпадать с числом данных или вернет ошибку 
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
-gorm.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Обнулить команду пользователя user1 до userA, обнулить команду пользователя user2 до userB, обнулить команду пользователя user3' до userA, userB и userC
-gorm.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
+// например: у нас 3 пользователя, добавим в команду userA пользователя user1, добавим в команду userB пользователя user2, добавим в команду userA, userB и userC пользователя user3
+db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
+// Обнулим команды пользователя user1 до userA, обнулим команды пользователя user2 до userB, обнулим команды пользователя user3до userA, userB and userC
+db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## <span id="tags">Теги связей</span>

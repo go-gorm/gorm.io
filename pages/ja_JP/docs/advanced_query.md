@@ -90,10 +90,10 @@ GORMは[`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg)や`ma
 
 ```go
 DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
-// SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
+// SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
 DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
-// SELECT * FROM `named_users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `named_users`.`id` LIMIT 1
+// SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
 詳細については、 [Raw SQL and SQL Builder](sql_builder.html#named_argument)を参照してください。
