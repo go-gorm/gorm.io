@@ -112,7 +112,7 @@ type User struct {
 
 插入记录到数据库时，[零值](https://tour.golang.org/basics/12) 字段将使用默认值
 
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**注意** 像 `0`、`''`、`false` 等零值，不会将这些字段定义的默认值保存到数据库。您需要使用指针类型或 Scanner/Valuer 来避免这个问题，例如：
 
 ```go
 type User struct {
