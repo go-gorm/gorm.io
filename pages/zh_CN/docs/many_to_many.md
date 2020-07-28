@@ -97,7 +97,7 @@ type User struct {
 
 ## 预加载
 
-GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
+GORM 允许通过 `Preload` 预加载 has many 关联的记录，查看 [预加载](preload.html) 获取详情
 
 ## Many2Many 的 CURD
 
