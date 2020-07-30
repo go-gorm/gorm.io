@@ -79,19 +79,20 @@ type User struct {
 }
 ```
 
-### <name id="time_tracking">Auto Creating/Updating Time/Unix (Nano) Second</span>
+### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
 
 GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
 
 To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
 
-If you prefer to save UNIX (nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
+If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
 
 ```go
 type User struct {
   CreatedAt time.Time // Set to current time if it is zero on creating
   UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix NANO seconds as updating time
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix Nano seconds as updating time
+  Updated   int64 `gorm:"autoUpdateTime:milli"` // Use unix Milli seconds as updating time
   Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
 }
 ```
@@ -174,8 +175,8 @@ Tag Name case doesn't matter, `camelCase` is preferred to use.
 | autoIncrement  | specifies column auto incrementable                                    |
 | embedded       | embed a field                                                          |
 | embeddedPrefix | prefix for embedded field                                              |
-| autoCreateTime | track creating time when creating, `autoCreateTime:nano` track unix nano time for `int` fields |
-| autoUpdateTime | track updating time when creating/updating, `autoUpdateTime:nano` track unix nano time for `int` fields                                                  |
+| autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano` |
+| autoUpdateTime | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli` |
 | index          | create index with options, same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details |
 | uniqueIndex    | same as `index`, but create uniqued index                              |
 | check          | creates check constraint, eg: `check:(age > 13)`, refer [Constraints](constraints.html) |
