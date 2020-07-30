@@ -79,19 +79,20 @@ type User struct {
 }
 ```
 
-### <name id="time_tracking">Auto Creating/Updating Time/Unix (Nano) Second</span>
+### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
 
 GORMでは、規約により、`CreatedAt`, `UpdatedAt`を使用して、作成/更新時間を追跡しています。定義されている場合、GORMは作成/更新時に[current time](gorm_config.html#current_time)を利用することができます。
 
 別の名前のフィールドを使用するには、タグ `autoCreateTime`、 `autoUpdateTime` を持つフィールドを設定できます。
 
-time.Timeの代わりにUNIX (nano)秒を保存したい場合は、フィールドのデータ型を `time.Time` から `int` に変更するだけです。
+If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
 
 ```go
 type User struct {
   CreatedAt time.Time // Set to current time if it is zero on creating
   UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix NANO seconds as updating time
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix Nano seconds as updating time
+  Updated   int64 `gorm:"autoUpdateTime:milli"` // Use unix Milli seconds as updating time
   Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
 }
 ```
@@ -174,8 +175,8 @@ type Blog struct {
 | autoIncrement  | 自動インクリメント可能な列として指定                                                                                                                                                                                                                                                                                                                                                                                |
 | embedded       | フィールドの埋め込み                                                                                                                                                                                                                                                                                                                                                                                        |
 | embeddedPrefix | 埋め込みフィールドのプレフィクス                                                                                                                                                                                                                                                                                                                                                                                  |
-| autoCreateTime | track creating time when creating, `autoCreateTime:nano` track unix nano time for `int` fields                                                                                                                                                                                                                                                                                                    |
-| autoUpdateTime | track updating time when creating/updating, `autoUpdateTime:nano` track unix nano time for `int` fields                                                                                                                                                                                                                                                                                           |
+| autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                                                                                                                                                                                             |
+| autoUpdateTime | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                                                                                                                                                                                   |
 | index          | create index with options, same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                                                                                                                                                                                                                                                     |
 | uniqueIndex    | `index`と同じですが、一意のインデックスを作成                                                                                                                                                                                                                                                                                                                                                                        |
 | check          | creates check constraint, eg: `check:(age > 13)`, refer [Constraints](constraints.html)                                                                                                                                                                                                                                                                                                        |
