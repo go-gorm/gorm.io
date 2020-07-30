@@ -39,15 +39,15 @@ stmt.Vars         //=> []interface{}{1}
 
 ## PrepareStmt
 
-`PreparedStmt` creates prepared statement when executing any SQL and caches them to speed up future calls, for example:
+`PreparedStmt` 在执行任何 SQL 时都会创建一个 prepared statement 并将其缓存，以提高后续的效率，例如：
 
 ```go
-// globally mode, all DB operations will create prepared stmt and cache them
+// 全局模式，所有 DB 操作都会 创建并缓存 prepared stmt
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
 
-// session mode
+// 会话模式
 tx := db.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
@@ -56,19 +56,19 @@ tx.Model(&user).Update("Age", 18)
 // returns prepared statements manager
 stmtManger, ok := tx.ConnPool.(*PreparedStmtDB)
 
-// close prepared statements for *current session*
+// 关闭 *当前会话* 的 prepared statements
 stmtManger.Close()
 
-// prepared SQL for *current session*
+// 为 *当前会话* prepared SQL
 stmtManger.PreparedSQL
 
-// prepared statements for current database connection pool (all sessions)
+// 开启当前数据库连接池（所有会话）的 prepared statements 
 stmtManger.Stmts // map[string]*sql.Stmt
 
 for sql, stmt := range stmtManger.Stmts {
   sql  // prepared SQL
   stmt // prepared statement
-  stmt.Close() // close the prepared statement
+  stmt.Close() // 关闭 prepared statement
 }
 ```
 

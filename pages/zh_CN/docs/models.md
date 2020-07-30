@@ -79,20 +79,21 @@ type User struct {
 }
 ```
 
-### <name id="time_tracking">自动的创建、更新时间</span>
+### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
 
 GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果您定义了他们，GORM 在创建/更新时会自动填充 [当前时间](gorm_config.html#current_time) 至这些字段，支持 time.Time，(纳) 秒级 UNIX 时间戳等形式。
 
 要使用不同名称的字段，您可以配置 `autoCreateTim`、`autoUpdateTim` 标签
 
-如果您想要保存（纳）秒级 UNIX 时间戳，而不是时间，您只需简单地将 `time.Time` 修改为 `int` 即可
+If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
 
 ```go
 type User struct {
-  CreatedAt time.Time // 在创建时，如果该字段为零值，则将其置为当前时间
-  UpdatedAt int       // 在创建时为零值，或更新时，将其 置为当前的 UNIX 秒数
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // 使用 UNIX 纳秒数作为更新时间
-  Created   int64 `gorm:"autoCreateTime"`      // 使用 UNIX 秒数作为创建时间
+  CreatedAt time.Time // Set to current time if it is zero on creating
+  UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix Nano seconds as updating time
+  Updated   int64 `gorm:"autoUpdateTime:milli"` // Use unix Milli seconds as updating time
+  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
 }
 ```
 
@@ -161,27 +162,27 @@ type Blog struct {
 
 标签名对大小写不敏感，但建议使用 `小驼峰（camelCase）` 的命名方式。
 
-| 标签名            | 说明                                                                                                                                                                                                                                                                                                                                                                                                |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| column         | column db name                                                                                                                                                                                                                                                                                                                                                                                    |
-| type           | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, which works with other tags, like `not null`, `size`, `autoIncrement`... specified database data type like `varbinary(8)` also supported, when using specified database data type, it needs to be a full database data type, for example: `MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT` |
-| size           | specifies column data size/length, e.g: `size:256`                                                                                                                                                                                                                                                                                                                                                |
-| primaryKey     | specifies column as primary key                                                                                                                                                                                                                                                                                                                                                                   |
-| unique         | specifies column as unique                                                                                                                                                                                                                                                                                                                                                                        |
-| default        | specifies column default value                                                                                                                                                                                                                                                                                                                                                                    |
-| precision      | specifies column precision                                                                                                                                                                                                                                                                                                                                                                        |
-| not null       | specifies column as NOT NULL                                                                                                                                                                                                                                                                                                                                                                      |
-| autoIncrement  | specifies column auto incrementable                                                                                                                                                                                                                                                                                                                                                               |
-| embedded       | embed a field                                                                                                                                                                                                                                                                                                                                                                                     |
-| embeddedPrefix | prefix for embedded field                                                                                                                                                                                                                                                                                                                                                                         |
-| autoCreateTime | track creating time when creating, `autoCreateTime:nano` track unix nano time for `int` fields                                                                                                                                                                                                                                                                                                    |
-| autoUpdateTime | track updating time when creating/updating, `autoUpdateTime:nano` track unix nano time for `int` fields                                                                                                                                                                                                                                                                                           |
-| index          | create index with options, same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                                                                                                                                                                                                                                                     |
-| uniqueIndex    | same as `index`, but create uniqued index                                                                                                                                                                                                                                                                                                                                                         |
-| check          | creates check constraint, eg: `check:(age > 13)`, refer [Constraints](constraints.html)                                                                                                                                                                                                                                                                                                        |
-| <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no permission                                                                                                                                                                                                                                                                     |
-| ->             | set field's read permission                                                                                                                                                                                                                                                                                                                                                                       |
-| -              | ignore this fields (disable read/write permission)                                                                                                                                                                                                                                                                                                                                                |
+| 标签名            | 说明                                                                                                                                                                                                                              |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| column         | 指定 db 列名                                                                                                                                                                                                                        |
+| type           | 列数据类型，推荐使用兼容性好的通用类型，例如：bool、int、uint、float、string、time、bytes。并可与其他标签一起使用，例如：`not null`、`size`, `autoIncrement`... 像 `varbinary(8)` 这样指定数据库数据类型也是支持的。在使用指定数据库数据类型时，它需要是完整的数据库数据类型，如：`MEDIUMINT UNSINED not NULL AUTO_INSTREMENT` |
+| size           | 指定列大小，例如：`size:256`                                                                                                                                                                                                             |
+| primaryKey     | 指定列为主键                                                                                                                                                                                                                          |
+| unique         | 指定列为唯一                                                                                                                                                                                                                          |
+| default        | 指定列的默认值                                                                                                                                                                                                                         |
+| precision      | 指定列的精度                                                                                                                                                                                                                          |
+| not null       | 指定列为 NOT NULL                                                                                                                                                                                                                   |
+| autoIncrement  | 指定列为自动增长                                                                                                                                                                                                                        |
+| embedded       | 嵌套字段                                                                                                                                                                                                                            |
+| embeddedPrefix | 嵌套字段的前缀                                                                                                                                                                                                                         |
+| autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                           |
+| autoUpdateTime | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                 |
+| index          | 根据参数创建索引，多个字段拥有相同的名称则创建复合索引，参考 [索引](indexes.html) 获取详情                                                                                                                                                                          |
+| uniqueIndex    | 与 `index` 相同，但创建的是唯一索引                                                                                                                                                                                                          |
+| check          | 创建检查约束，例如 `check:(age > 13)`，查看 [约束](constraints.html) 获取详情                                                                                                                                                                  |
+| <-             | 设置字段写入的权限， `<-:create` 只创建、`<-:update` 只更新、`<-:false` 无权限                                                                                                                                                              |
+| ->             | 设置字段读取权限                                                                                                                                                                                                                        |
+| -              | 忽略此字段（禁止读写）                                                                                                                                                                                                                     |
 
 ### 关联标签
 
