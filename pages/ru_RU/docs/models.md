@@ -79,7 +79,7 @@ type User struct {
 }
 ```
 
-### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
+### <name id="time_tracking">Создание/обновление Time/Unix (Milli/Nano) секунд отслеживания</span>
 
 GORM использует `CreatedAt`, `UpdatedAt` для отслеживания создания/обновления времени, GORM заполнит [текущее время](gorm_config.html#current_time) при создании/обновлении, если эти поля определены
 
