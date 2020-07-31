@@ -97,7 +97,7 @@ db.Omit("CreditCard").Create(&user)
 db.Omit(clause.Associations).Create(&user)
 ```
 
-### デフォルト値
+### Default Values
 
 `default`タグによって、フィールドのデフォルト値を定義できます。例:
 
@@ -135,7 +135,7 @@ type User struct {
 
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORM provides compatible Upsert support for different databases
+GORMは異なるデータベースに対して互換性のあるUpsertのサポートを提供します。
 
 ```go
 import "gorm.io/gorm/clause"
@@ -161,6 +161,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+`FirstOrInit`, `FirstOrCreate`については[Advanced Query](advanced_query.html)を参照してください。
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+詳細については、 [Raw SQL and SQL Builder](sql_builder.html) を参照してください。
