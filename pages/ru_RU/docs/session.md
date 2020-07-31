@@ -42,33 +42,33 @@ stmt.Vars         //=> []interface{}{1}
 `PreparedStmt` создает подготовленное объекты при выполнении любого SQL и кэширует их для ускорения будущих звонков, например:
 
 ```go
-// globally mode, all DB operations will create prepared stmt and cache them
+// глобальный режим, все запросы к БД будут проходить подготовку и кэшироваться
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
 
-// session mode
+// сессионный режим
 tx := db.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 
-// returns prepared statements manager
+// возвращает менеджер подготовленных состояний
 stmtManger, ok := tx.ConnPool.(*PreparedStmtDB)
 
-// close prepared statements for *current session*
+// закрыть режим подготовки для текущей сессии
 stmtManger.Close()
 
-// prepared SQL for *current session*
+// подготовленный SQL для текущей сессии
 stmtManger.PreparedSQL
 
-// prepared statements for current database connection pool (all sessions)
+// подготовленные методы для работы с текущим стеком соединений (все сессии)
 stmtManger.Stmts // map[string]*sql.Stmt
 
 for sql, stmt := range stmtManger.Stmts {
-  sql  // prepared SQL
-  stmt // prepared statement
-  stmt.Close() // close the prepared statement
+  sql  // подготовленный SQL
+  stmt // подготовленный statement
+  stmt.Close() // закрыть подготовленный statement
 }
 ```
 

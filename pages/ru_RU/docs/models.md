@@ -79,21 +79,21 @@ type User struct {
 }
 ```
 
-### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
+### <name id="time_tracking">Создание/обновление Time/Unix (Milli/Nano) секунд отслеживания</span>
 
 GORM использует `CreatedAt`, `UpdatedAt` для отслеживания создания/обновления времени, GORM заполнит [текущее время](gorm_config.html#current_time) при создании/обновлении, если эти поля определены
 
 Чтобы использовать поля с другим именем, вы можете настроить эти поля при помощи тегов `autoCreateTime`, `autoUpdateTime`
 
-If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
+Если вы предпочитаете сохранять UNIX (milli/nano) секунды вместо времени, вы можете просто изменить тип данных поля с `time.Time` на `int`
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix Nano seconds as updating time
-  Updated   int64 `gorm:"autoUpdateTime:milli"` // Use unix Milli seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  CreatedAt time.Time // Установить на текущее время если ноль при создании
+  UpdatedAt int       // Установить текущий unixtimestamp при обновлении или если ноль при создании
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // Установить unix Nano секунды как время обновления
+  Updated   int64 `gorm:"autoUpdateTime:milli"` // Установить unix Milli секунды как время обновления
+  Created   int64 `gorm:"autoCreateTime"`      // Установить unixtimestamp секунды как время создания
 }
 ```
 
@@ -175,8 +175,8 @@ type Blog struct {
 | autoIncrement  | определяет столбец с авто инкрементом                                                                                                                                                                                                                                                                                                                                                                                                    |
 | embedded       | встроенное поле                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | embeddedPrefix | префикс для встроенного поля                                                                                                                                                                                                                                                                                                                                                                                                             |
-| autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                                                                                                                                                                                                                                    |
-| autoUpdateTime | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                                                                                                                                                                                                                          |
+| autoCreateTime | отслеживать текущее время при создании, для `int` полей, он будет отслеживать unix секунд, используйте значение `nano`/`milli` для отслеживания unix nano/milli секунд, e.: `autoCreateTime:nano`                                                                                                                                                                                                                                        |
+| autoUpdateTime | отслеживать текущее время при создании/обновлении, для `int` полей, он будет отслеживать unix секунд, используйте значение `nano`/`milli` для отслеживания unix nano/milli секунд, e.: `autoUpdateTime:milli`                                                                                                                                                                                                                            |
 | index          | создать индекс с параметрами, одинаковое имя для нескольких полей создает составные индексы, смотрите [Индексы](indexes.html) для подробностей                                                                                                                                                                                                                                                                                           |
 | uniqueIndex    | то же самое, что и `index`, но создает уникальный индекс                                                                                                                                                                                                                                                                                                                                                                                 |
 | check          | создает ограничение проверки, например: `check:(age > 13)`, см. [Ограничения](constraints.html)                                                                                                                                                                                                                                                                                                                                       |

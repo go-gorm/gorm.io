@@ -16,12 +16,12 @@ layout: страница
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // crop image fields and upload them to CDN, dummy code
+    // обрезать изображения и загрузить в CDN, пример
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
-          // Get value from field
+          // Получить значение и поля
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -29,37 +29,37 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        // Get value from field
+        // Получить значение из поля
         if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
 
-        // Set value to field
+        // Установить значение в поле
         err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
-    // All fields for current model
+    // Все поля для текущей модели
     db.Statement.Schema.Fields
 
-    // All primary key fields for current model
+    // Все поля первичных ключей для текущей модели
     db.Statement.Schema.PrimaryFields
 
-    // Prioritized primary key field: field with DB name `id` or the first defined primary key
+    // Приоритетное поле первичного ключа: поле с именем `id` или первый найденный первичный ключ
     db.Statement.Schema.PrioritizedPrimaryField
 
-    // All relationships for current model
+    // Все связи текущей модели
     db.Statement.Schema.Relationships
 
     field := db.Statement.Schema.LookUpField("Name")
-    // processing
+    // обработка
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// register a callback for Create process
+// регистрирует callback для действия Create
 ```
 
 ### Удаление функций callback
