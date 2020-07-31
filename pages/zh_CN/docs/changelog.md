@@ -14,7 +14,7 @@ GORM 2.0 是根据我们在过去几年里收到的反馈从零重写的，它�
 * Association improvements (On Delete/Update), Modify Join Table for Many2Many, Association Mode for batch data
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints supports
 * Multiple fields support for auto-creating/updating time, which also support UNIX (nano) seconds
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
+* 你好
 * All new Migrator, Logger
 * Naming strategy (Unified table name, field name, join table name, foreign key, checker, index name rule)
 * Better customized data type support (e.g: JSON)
