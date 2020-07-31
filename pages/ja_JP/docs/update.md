@@ -3,7 +3,7 @@ title: Update
 layout: page
 ---
 
-## すべてのフィールドの更新（Save）
+## Save All Fields
 
 `Save`は 、SQLを実行するときにすべてのフィールドを更新します。
 
@@ -16,7 +16,7 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## 特定のフィールドの更新（Update/Updates）
+## Update/Updates
 
 `Update`, `Updates`は特定のフィールドを更新するために使います
 
@@ -41,7 +41,7 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 
 **注意** 構造体で更新された場合、GORMは非ゼロ値フィールドのみ更新します。更新に**map**を使用するか、 `Select` で更新するフィールドを指定してください。
 
-## 更新するフィールドを指定
+## Update Selected Fields
 
 更新時に特定のフィールドのみを更新するか、もしくはいくつかのフィールドを無視する場合は、 `Select`, `Omit` を使用できます。
 
@@ -59,7 +59,7 @@ DB.Model(&result).Select("Name", "Age").Updates(User{Name: "new_name"})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 ```
 
-## Updateフック
+## Update Hooks
 
 GORMは `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`をフックします。これらのメソッドはレコードを更新する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
 
@@ -72,7 +72,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-## バッチでの更新
+## Batch Updates
 
 `Model`で主キー値を持つレコードを指定していない場合、GORMはバッチ更新を行います。
 
@@ -87,9 +87,9 @@ db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface
 
 ### Block Global Updates
 
-If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error
+何も条件を付けずにバッチ更新を行った場合、GORMは実行せず、`ErrMissingWhereClause`エラーを返します。
 
-You can use conditions like `1 = 1` to force the global update
+`1 = 1` のような条件を使用して、全更新を強制できます。
 
 ```go
 db.Model(&User{}).Update("name", "jinzhu").Error // gorm.ErrMissingWhereClause
@@ -101,17 +101,17 @@ db.Model(&User{}).Where("1 = 1").Update("name", "jinzhu")
 ### Updated Records Count
 
 ```go
-// Get updated records count with `RowsAffected`
+//  `RowsAffected`で更新されたレコードの総数を取得する
 result := db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE role = 'admin;
 
-result.RowsAffected // returns updated records count
-result.Error        // returns updating error
+result.RowsAffected // 更新されたレコードの総数を返す
+result.Error        // 更新時のエラーを返す
 ```
 
-## 高度な機能
+## Advanced
 
-### SQL式で更新
+### Update with SQL Expression
 
 GORMはSQL式で列を更新できます
 
@@ -129,7 +129,7 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
-### フック/タイムトラッキングなしでの更新
+### Without Hooks/Time Tracking
 
 `フック` メソッドと更新時の自動更新タイムトラッキングをスキップしたい場合、 ` UpdateColumn `, `UpdateColumns`を使用できます。
 
