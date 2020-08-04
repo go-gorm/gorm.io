@@ -33,6 +33,7 @@ docs:
     conventions: conventions.html
     settings: settings.html
   advanced_topics:
+    dbresolver: dbresolver.html
     prometheus: prometheus.html
     hints: hints.html
     indexes: indexes.html
