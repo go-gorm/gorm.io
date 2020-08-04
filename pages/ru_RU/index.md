@@ -16,6 +16,6 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Композитный первичный ключ, индексы, ограничения
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Авто миграция
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Расширяемый, пишите плагины на основе методов GORM
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Каждая функция поставляется с тестами
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Дружественная для разработчиков
