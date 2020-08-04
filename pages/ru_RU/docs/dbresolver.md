@@ -1,20 +1,20 @@
 ---
 title: DBResolver
-layout: page
+layout: страница
 ---
 
-DBResolver adds multiple databases support to GORM, the following features are supported:
+DBResolver добавляет поддержку нескольких баз данных для GORM, поддерживаются следующие функции:
 
-* Multiple sources, replicas
-* Read/Write Splitting
-* Automatic connection switching based on the working table/struct
-* Manual connection switching
-* Sources/Replicas load balancing
-* Works for RAW SQL
+* Несколько источников, реплики
+* Разделение чтения/записи
+* Автоматическое переключение подключения на основе таблицы/struct
+* Ручное переключение подключения
+* Исходные/репликационные балансировки нагрузки
+* Работает для RAW SQL
 
 https://github.com/go-gorm/dbresolver
 
-## Usage
+## Использование
 
 ```go
 import (
@@ -26,33 +26,33 @@ import (
 DB, err := gorm.Open(mysql.Open("db1_dsn"), &gorm.Config{})
 
 DB.Use(dbresolver.Register(dbresolver.Config{
-  // use `db2` as sources, `db3`, `db4` as replicas
+  // используется `db2` как основная, `db3`, `db4` как реплика
   Sources:  []gorm.Dialector{mysql.Open("db2_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db3_dsn"), mysql.Open("db4_dsn")},
-  // sources/replicas load balancing policy
+  // основные/реплика политика балансировки нагрузки
   Policy: dbresolver.RandomPolicy{},
 }).Register(dbresolver.Config{
-  // use `db1` as sources (DB's default connection), `db5` as replicas for `User`, `Address`
+  // используется `db1` как основная (подключение по умолчанию для DB), `db5` как реплика  для `User`, `Address`
   Replicas: []gorm.Dialector{mysql.Open("db5_dsn")},
 }, &User{}, &Address{}).Register(dbresolver.Config{
-  // use `db6`, `db7` as sources, `db8` as replicas for `orders`, `Product`
+  // используется `db6`, `db7` как основная , `db8` как реплика для `orders`, `Product`
   Sources:  []gorm.Dialector{mysql.Open("db6_dsn"), mysql.Open("db7_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db8_dsn")},
 }, "orders", &Product{}, "secondary"))
 ```
 
-## Transaction
+## Транзакция
 
-When using transaction, DBResolver will use the transaction and won't switch to sources/replicas
+При использовании транзакции DBResolver будет использовать транзакцию и не будет переключаться на реплики
 
-## Automatic connection switching
+## Автоматическое переключение подключения
 
-DBResolver will automatically switch connection based on the working table/struct
+DBResolver автоматически переключит соединение на основе таблицы/struct
 
-For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT`, for example:
+Для RAW SQL, DBResolver извлечет имя таблицы из SQL в соответствии с резолвером, и будет использовать `sources`, если SQL не начинается с `SELECT`, например:
 
 ```go
-// `User` Resolver Examples
+// Пример `User` Resolver
 DB.Table("users").Rows() // replicas `db5`
 DB.Model(&User{}).Find(&AdvancedUser{}) // replicas `db5`
 DB.Exec("update users set name = ?", "jinzhu") // sources `db1`
@@ -61,16 +61,16 @@ DB.Create(&user) // sources `db1`
 DB.Delete(&User{}, "name = ?", "jinzhu") // sources `db1`
 DB.Table("users").Update("name", "jinzhu") // sources `db1`
 
-// Global Resolver Examples
+// Пример глобального Resolver
 DB.Find(&Pet{}) // replicas `db3`/`db4`
 DB.Save(&Pet{}) // sources `db2`
 
-// Orders Resolver Examples
+// Пример Resolver для Orders
 DB.Find(&Order{}) // replicas `db8`
 DB.Table("orders").Find(&Report{}) // replicas `db8`
 ```
 
-## Read/Write Splitting
+## Разделение чтения/записи
 
 Read/Write splitting with DBResolver based on the current using [GORM callback](https://gorm.io/docs/write_plugins.html).
 
