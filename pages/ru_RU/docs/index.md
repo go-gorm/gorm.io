@@ -18,7 +18,7 @@ layout: страница
 * Композитный первичный ключ
 * Автомиграция
 * Logger
-* Расширяемый, пишите плагины на основе методов GORM
+* Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
 * Каждая функция поставляется с тестами
 * Дружественная для разработчиков
 
@@ -49,26 +49,25 @@ func main() {
   if err != nil {
     panic("failed to connect database")
   }
-  defer db.Close()
 
-  // Миграция
+  // Migrate the schema
   db.AutoMigrate(&Product{})
 
-  // Создание
+  // Create
   db.Create(&Product{Code: "D42", Price: 100})
 
-  // Чтение
+  // Read
   var product Product
-  db.First(&product, 1) // найти товар с целочисленным первичным ключем
-  db.First(&product, "code = ?", "D42") // найти товар с кодом D42
+  db.First(&product, 1) // find product with integer primary key
+  db.First(&product, "code = ?", "D42") // find product with code D42
 
-  // Обновление - заменить цену товара на 200
+  // Update - update product's price to 200
   db.Model(&product).Update("Price", 200)
-  // Обновление - изменение нескольких полей
-  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // не нулевые поля
+  // Update - update multiple fields
+  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
   db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
 
-  // Удаление - удалить товар
+  // Delete - delete product
   db.Delete(&product, 1)
 }
 ```
