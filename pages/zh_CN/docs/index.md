@@ -18,7 +18,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * 复合主键
 * 自动迁移
 * 自定义 Logger
-* 可扩展性, 可基于 GORM callbacks 编写插件
+* Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
 * 所有特性都通过了测试
 * 开发者友好
 
@@ -49,26 +49,25 @@ func main() {
   if err != nil {
     panic("failed to connect database")
   }
-  defer db.Close()
 
-  // 自动迁移 schema
+  // Migrate the schema
   db.AutoMigrate(&Product{})
 
-  // 创建
+  // Create
   db.Create(&Product{Code: "D42", Price: 100})
 
-  // 查询首条记录
+  // Read
   var product Product
-  db.First(&product, 1) // 查询整型主键值为 1 的 product
-  db.First(&product, "code = ?", "D42") // 查询 code 为 D42 的 product
+  db.First(&product, 1) // find product with integer primary key
+  db.First(&product, "code = ?", "D42") // find product with code D42
 
-  // Update - 将 product 的 Price 更新为 200
+  // Update - update product's price to 200
   db.Model(&product).Update("Price", 200)
   // Update - update multiple fields
-  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // 仅更新非零值字段
+  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
   db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
 
-  // Delete - 删除 product
+  // Delete - delete product
   db.Delete(&product, 1)
 }
 ```
