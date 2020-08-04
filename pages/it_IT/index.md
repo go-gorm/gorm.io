@@ -16,6 +16,6 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Composite Primary Key, Indexes, Constraints
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Auto Migrations
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, write Plugins based on GORM callbacks
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Every feature comes with tests
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Developer Friendly
