@@ -72,26 +72,26 @@ DB.Table("orders").Find(&Report{}) // replicas `db8`
 
 ## Разделение чтения/записи
 
-Read/Write splitting with DBResolver based on the current using [GORM callback](https://gorm.io/docs/write_plugins.html).
+Разделение Чтения/Записи с DBResolver на основе [Обратного вызова GORM](https://gorm.io/docs/write_plugins.html).
 
-For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
+Для `Query`, `Row` обратного вызова, будет использовать `реплики`, если только указан режим `Write` Для `Raw` обратного вызова, считается только чтением и будут использоваться `реплики`, если SQL начинается с `SELECT`
 
-## Manual connection switching
+## Ручное переключение подключения
 
 ```go
-// Use Write Mode: read user from sources `db1`
+// Использовать режим Write: чтение данных пользователя из источника `db1`
 DB.Clauses(dbresolver.Write).First(&user)
 
-// Specify Resolver: read user from `secondary`'s replicas: db8
+// Установить Resolver: чтение данных пользователя из реплики: db8
 DB.Clauses(dbresolver.Use("secondary")).First(&user)
 
-// Specify Resolver and Write Mode: read user from `secondary`'s sources: db6 or db7
+// Установить Resolver и режим Write: чтение данных пользователя из реплики: db6 или db7
 DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 
-## Load Balancing
+## Балансировка Нагрузки
 
-GORM supports load balancing sources/replicas based on policy, the policy is an interface implements following interface:
+GORM поддерживает балансировку нагрузки мастер/реплики на основе политики, политика - это интерфейс реализующий следующий интерфейс:
 
 ```go
 type Policy interface {
@@ -99,9 +99,9 @@ type Policy interface {
 }
 ```
 
-Currently only the `RandomPolicy` implemented and it is the default option if no policy specified.
+В настоящее время реализована только `RandomPolicy` и это вариант по умолчанию, если не указана политика.
 
-## Connection Pool
+## Пул подключений
 
 ```go
 DB.Use(
