@@ -26,6 +26,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 
 ```sh
 go get -u gorm.io/gorm
+go get -u gorm.io/driver/sqlite
 ```
 
 ## 快速入门
