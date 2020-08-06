@@ -3,12 +3,12 @@ title: DBResolver
 layout: page
 ---
 
-DBResolver adds multiple databases support to GORM, the following features are supported:
+DBResolver 为 GORM 提供了多个数据库支持，支持以下功能：
 
-* Multiple sources, replicas
-* Read/Write Splitting
-* Automatic connection switching based on the working table/struct
-* Manual connection switching
+* 支持多个 sources、replicas
+* 读写分离
+* 根据表、struct 自动切换连接
+* 手动切换连接
 * Sources/Replicas load balancing
 * Works for RAW SQL
 
