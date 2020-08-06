@@ -14,7 +14,7 @@ GORM 2.0 是根据我们在过去几年里收到的反馈从零重写的，它�
 * Association improvements (On Delete/Update), Modify Join Table for Many2Many, Association Mode for batch data
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints supports
 * Multiple fields support for auto-creating/updating time, which also support UNIX (nano) seconds
-* 你好
+* Field permissions support: read-only, write-only, create-only, update-only, ignored
 * All new Migrator, Logger
 * Naming strategy (Unified table name, field name, join table name, foreign key, checker, index name rule)
 * Better customized data type support (e.g: JSON)
@@ -22,19 +22,19 @@ GORM 2.0 是根据我们在过去几年里收到的反馈从零重写的，它�
 
 ## v1.0 - 2016.04
 
-[GORM V1 Docs](https://v1.gorm.io)
+[GORM V1 文档](https://v1.gorm.io)
 
-Breaking Changes
+破坏性变更
 
-* `gorm.Open` return type `*gorm.DB` instead of `gorm.DB`
+* `gorm.Open` 返回类型是 `*gorm.DB` 而不是 `gorm.DB`
 
-* Updating will only update changed fields
+* Update 只会更新有变更的字段
 
-* Soft Delete's will only check `deleted_at IS NULL`
+* 开启软删除后，默认只会检查 `deleted_at IS NULL` 的记录
 
-* New ToDBName logic
+* 新的 ToDBName 逻辑
 
-  When GORM convert struct, field name to db name, only common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` were handled, so `HTTP`'s db name is `http`, but not `h_t_t_p`.
+  当 GORM 将 struct、字段转换为数据库名时，采用了类似于 [golint](https://github.com/golang/lint/blob/master/lint.go#L702) 处理 `HTTP` 和 `URI` 缩写的方式。因此，`HTTP` 的数据库名是 `http` ，而不是 `h_t_t_p`。
 
   But for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it.
 
