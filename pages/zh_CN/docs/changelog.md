@@ -7,18 +7,18 @@ layout: page
 
 GORM 2.0 是根据我们在过去几年里收到的反馈从零重写的，它引入了一些不兼容的 API 更改和许多改进
 
-* Performance Improvements
-* Modularity
-* Context, Batch Insert, Prepared Statment, DryRun Mode, Join Preload, Find To Map, FindInBatches
-* SavePoint/RollbackTo/Nested Transaction Support
-* Association improvements (On Delete/Update), Modify Join Table for Many2Many, Association Mode for batch data
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints supports
-* Multiple fields support for auto-creating/updating time, which also support UNIX (nano) seconds
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
-* All new Migrator, Logger
-* Naming strategy (Unified table name, field name, join table name, foreign key, checker, index name rule)
-* Better customized data type support (e.g: JSON)
-* All new plugin system, Hooks API
+* 性能改进
+* 模块化
+* Context、批量插入、Prepared Statment、DryRun 模式、Join Preload、Find To Map、FindInBatches
+* SavePoint、RollbackTo、嵌套事务
+* 关联改进（删除、更新时），修改 Many2Many 的连接表，批量数据关联模式
+* SQL 构建器、Upsert、Locking 和 Optimizer、Index、Comment 提示
+* 支持多个字段的自动追踪创建、更新时间，且支持纳秒级、毫秒级、秒级时间戳
+* 字段级权限控制：只读、只写、只创建、只更新、忽略
+* 全新的 Migrator、Logger
+* 命名策略(统一表名、字段名、连接表名、外键、检查器、索引名称规则)
+* 更好的自定义数据类型支持（例如：JSON）
+* 全新的插件系统、Hooks API
 
 ## v1.0 - 2016.04
 
@@ -36,10 +36,10 @@ GORM 2.0 是根据我们在过去几年里收到的反馈从零重写的，它�
 
   当 GORM 将 struct、字段转换为数据库名时，采用了类似于 [golint](https://github.com/golang/lint/blob/master/lint.go#L702) 处理 `HTTP` 和 `URI` 缩写的方式。因此，`HTTP` 的数据库名是 `http` ，而不是 `h_t_t_p`。
 
-  But for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it.
+  但是对于列表中没有的其他缩写，例如但是对于列表中没有的其他缩写，例如`SKU`，db名是 `s_k_u`，此次更新修复了该问题。
 
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
+* `RecordNotFound ` 错误已被重命名为 `ErrRecordNotFound `
 
-* `mssql` dialect has been renamed to "github.com/jinzhu/gorm/dialects/mssql"
+* `mssql` 已被重命名为 ”github.com/jinzhu/gorm/dialects/mssql”
 
-* `Hstore` has been moved to package "github.com/jinzhu/gorm/dialects/postgres"
+* `Hstore` 已移至 ”github.com/jinzhu/gorm/dialects/postgres”
