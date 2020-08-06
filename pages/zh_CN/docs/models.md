@@ -79,21 +79,21 @@ type User struct {
 }
 ```
 
-### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
+### <name id="time_tracking">创建/更新时间追踪（纳秒、毫秒、秒、Time）</span>
 
-GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果您定义了他们，GORM 在创建/更新时会自动填充 [当前时间](gorm_config.html#current_time) 至这些字段，支持 time.Time，(纳) 秒级 UNIX 时间戳等形式。
+GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果您定义了他们，GORM 在创建/更新时会自动填充 [当前时间](gorm_config.html#current_time) 至这些字段
 
 要使用不同名称的字段，您可以配置 `autoCreateTim`、`autoUpdateTim` 标签
 
-如果您想要保存（纳）秒级 UNIX 时间戳，而不是时间，您只需简单地将 `time.Time` 修改为 `int` 即可
+如果您想要保存纳秒、毫秒、秒级 UNIX 时间戳，而不是 time，您只需简单地将 `time.Time` 修改为 `int` 即可
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix Nano seconds as updating time
-  Updated   int64 `gorm:"autoUpdateTime:milli"` // Use unix Milli seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  CreatedAt time.Time // 在创建时，如果该字段值为零值，则使用当前时间填充
+  UpdatedAt int       // 在创建时该字段值为零值或者在更新时，使用当前秒级时间戳填充
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // 使用纳秒级时间戳填充更新时间
+  Updated   int64 `gorm:"autoUpdateTime:milli"` // 使用毫秒级时间戳填充更新时间
+  Created   int64 `gorm:"autoCreateTime"`      // 使用秒级时间戳填充创建时间
 }
 ```
 
@@ -175,8 +175,8 @@ type Blog struct {
 | autoIncrement  | 指定列为自动增长                                                                                                                                                                                                                        |
 | embedded       | 嵌套字段                                                                                                                                                                                                                            |
 | embeddedPrefix | 嵌套字段的前缀                                                                                                                                                                                                                         |
-| autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                           |
-| autoUpdateTime | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                 |
+| autoCreateTime | 创建时追踪当前时间，对于 `int` 字段，它会追踪秒级时间戳，您可以使用 `nano`/`milli` 来追踪纳秒、毫秒时间戳，例如：`autoCreateTime:nano`                                                                                                                                       |
+| autoUpdateTime | 创建/更新时追踪当前时间，对于 `int` 字段，它会追踪秒级时间戳，您可以使用 `nano`/`milli` 来追踪纳秒、毫秒时间戳，例如：`autoUpdateTime:milli`                                                                                                                                   |
 | index          | 根据参数创建索引，多个字段拥有相同的名称则创建复合索引，参考 [索引](indexes.html) 获取详情                                                                                                                                                                          |
 | uniqueIndex    | 与 `index` 相同，但创建的是唯一索引                                                                                                                                                                                                          |
 | check          | 创建检查约束，例如 `check:(age > 13)`，查看 [约束](constraints.html) 获取详情                                                                                                                                                                  |
