@@ -44,7 +44,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
+您也可以使用 GORM 的 API [DryRun 模式](session.html) 编写 SQL 并执行 prepared statement ，查看 [会话模式](session.html) 获取详情
 
 ## 选择字段
 
@@ -75,13 +75,13 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
-## [Iteration / FindInBatches](advanced_query.html)
+## [迭代、FindInBatches](advanced_query.html)
 
-Query and process records with iteration or in batches
+用迭代或 in batches 查询并处理记录
 
-## [Index Hints](hints.html)
+## [索引提示](hints.html)
 
-[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
+[索引](indexes.html) 用于提高数据检索和 SQL 查询性能。 `索引提示` 向优化器提供了在查询处理过程中如何选择索引的信息。与 optimizer 相比，它可以更灵活地选择更有效的执行计划
 
 ```go
 import "gorm.io/hints"
