@@ -18,7 +18,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * Composite Primary Key
 * Auto Migrations
 * Logger
-* Extendable, write Plugins based on GORM callbacks
+* Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
 * Every feature comes with tests
 * Developer Friendly
 
@@ -26,6 +26,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 
 ```sh
 go get -u gorm.io/gorm
+go get -u gorm.io/driver/sqlite
 ```
 
 ## Quick Start
@@ -49,7 +50,6 @@ func main() {
   if err != nil {
     panic("failed to connect database")
   }
-  defer db.Close()
 
   // Migrate the schema
   db.AutoMigrate(&Product{})

@@ -53,6 +53,7 @@ sidebar:
     scopes: Scope
     settings: 设置
     advanced_topics: 高级主题
+    dbresolver: Database Resolver
     prometheus: Prometheus
     hints: 提示
     indexes: 索引

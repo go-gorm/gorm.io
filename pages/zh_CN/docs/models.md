@@ -85,7 +85,7 @@ GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果�
 
 要使用不同名称的字段，您可以配置 `autoCreateTim`、`autoUpdateTim` 标签
 
-If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
+如果您想要保存（纳）秒级 UNIX 时间戳，而不是时间，您只需简单地将 `time.Time` 修改为 `int` 即可
 
 ```go
 type User struct {

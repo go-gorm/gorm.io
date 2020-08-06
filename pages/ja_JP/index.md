@@ -16,6 +16,6 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 複合主キー、インデックス、Constraints
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> オートマイグレーション
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> ロガー
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> GORMコールバックベースのプラグインを記述することで拡張可能
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> すべての機能に付属するテスト
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> デベロッパーフレンドリー

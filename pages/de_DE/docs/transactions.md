@@ -50,12 +50,12 @@ DB.Transaction(func(tx *gorm.DB) error {
   tx.Create(&user1)
 
   tx.Transaction(func(tx2 *gorm.DB) error {
-    tx.Create(&user2)
+    tx2.Create(&user2)
     return errors.New("rollback user2") // Rollback user2
   })
 
   tx.Transaction(func(tx2 *gorm.DB) error {
-    tx.Create(&user3)
+    tx2.Create(&user3)
     return nil
   })
 

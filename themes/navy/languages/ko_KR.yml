@@ -53,6 +53,7 @@ sidebar:
     scopes: Scopes
     settings: Settings
     advanced_topics: Advanced Topics
+    dbresolver: Database Resolver
     prometheus: Prometheus
     hints: Hints
     indexes: Indexes

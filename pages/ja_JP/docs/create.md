@@ -3,7 +3,7 @@ title: Create
 layout: page
 ---
 
-## レコードの作成
+## Create Record
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
@@ -15,7 +15,7 @@ result.Error        // エラーを返します。
 result.RowsAffected // 挿入されたレコード数を返します。
 ```
 
-## 選んだフィールドで作成
+## Create With Selected Fields
 
 選んだフィールドで作成
 
@@ -31,7 +31,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## フックの作成
+## Create Hooks
 
 GORMは `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`をフックします。これらのメソッドはレコードを作成する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
 
@@ -46,7 +46,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_insert">バッチインサート</span>
+## <span id="batch_insert">Batch Insert</span>
 
 スライスをメソッド `Create`に渡すと、GORMはすべてのデータを挿入する1つのSQL文を生成し、主キーの値をバックフィルします。フックメソッドも呼び出されます。
 
@@ -59,11 +59,11 @@ for _, user := range users {
 }
 ```
 
-[Upsert](#upsert), [アソシエーションによる作成](#create_with_associations) でもバッチインサートはサポートされています。
+[Upsert](#upsert), [Create With Associations](#create_with_associations) でもバッチインサートはサポートされています。
 
-## 高度な機能
+## Advanced
 
-### <span id="create_with_associations">アソシエーションによる作成</span>
+### <span id="create_with_associations">Create With Associations</span>
 
 モデルがリレーションを定義し、リレーションがゼロ以外の場合、そのデータは作成時に保存されます。
 
@@ -97,7 +97,7 @@ db.Omit("CreditCard").Create(&user)
 db.Omit(clause.Associations).Create(&user)
 ```
 
-### デフォルト値
+### Default Values
 
 `default`タグによって、フィールドのデフォルト値を定義できます。例:
 
@@ -135,7 +135,7 @@ type User struct {
 
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORM provides compatible Upsert support for different databases
+GORMは異なるデータベースに対して互換性のあるUpsertのサポートを提供します。
 
 ```go
 import "gorm.io/gorm/clause"
@@ -161,6 +161,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+`FirstOrInit`, `FirstOrCreate`については[Advanced Query](advanced_query.html)を参照してください。
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+詳細については、 [Raw SQL and SQL Builder](sql_builder.html) を参照してください。

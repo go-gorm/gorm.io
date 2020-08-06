@@ -16,6 +16,6 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 复合主键、索引、约束
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 自动迁移
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 自定义 Logger
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 可扩展性, 可基于 GORM callbacks 编写插件
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 所有特性都通过了测试
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 开发者友好
