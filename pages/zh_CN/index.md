@@ -12,10 +12,10 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 事务、嵌套事务、保存点、回滚至保存点
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Context、Prepared Statment 模式、DryRun 模式
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 批量插入、FindInBatches、查询至 Map
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL 构建器、Upsert、Locking 和 Optimizer、Index、Comment 提示
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 复合主键、索引、约束
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 自动迁移
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 自定义 Logger
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 灵活的可扩展插件 API：Database Resolver（读写分离）、Prometheus...
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 所有特性都通过了测试
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> 开发者友好

@@ -51,7 +51,7 @@ DB.Transaction(func(tx *gorm.DB) error {
 
   tx.Transaction(func(tx2 *gorm.DB) error {
     tx2.Create(&user2)
-    return errors.New("rollback user2") // Rollback user2
+    return errors.New("rollback user2") // 回滚 user2
   })
 
   tx.Transaction(func(tx2 *gorm.DB) error {
@@ -62,7 +62,7 @@ DB.Transaction(func(tx *gorm.DB) error {
   return nil
 })
 
-// Commit user1, user3
+// 仅提交 user1, user3
 ```
 
 ## 手动事务
