@@ -3,7 +3,7 @@ title: 提示
 layout: page
 ---
 
-GOMR 提供了优化器、索引、备注提示支持
+GORM 提供了优化器、索引、备注提示支持
 
 https://github.com/go-gorm/hints
 
