@@ -123,17 +123,32 @@ DB. Where("quantity > 1"). Expr("quantity - ?", 1))
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
+### Update from SubQuery
+
+Update a table by using SubQuery
+
+```go
+DB.Model(&user).Update("price", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
+DB.Table("users as u").Where("name = ?", "jinzhu").Update("name", DB.Table("companies as c").Select("name").Where("c.id = u.company_id"))
+DB.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{}{}{"name": DB.Table("companies as c").Select("name").Where("c.id = u.company_id")})
+```
+
 ### Without Hooks/Time Tracking
 
 If you want to skip `Hooks` methods and the auto-update time tracking when updating, you can use `UpdateColumn`, `UpdateColumns`
 
 ```go
-Updates(User{Name: "jinzhu2"})
-// Changed("Name") => true
-db. Updates(User{Name: "jinzhu"})
-// Changed("Name") => false, `Name` not changed
-db. Updates(User{Name: "jinzhu2"})
-// Changed("Name") => false, `Name` not selected to update
+// Update single attribute, similar with `Update`
+db.Model(&user).UpdateColumn("name", "hello")
+// UPDATE users SET name='hello' WHERE id = 111;
+
+// Update attributes, similar with `Updates`
+db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
+// UPDATE users SET name='hello', age=18 WHERE id = 111;
+
+// Update attributes with Select, similar with `Updates`
+db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello"})
+// UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
 ### Check Field has changed?
@@ -145,48 +160,48 @@ The `Changed` method only works with methods `Update`, `Updates`, and it only ch
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
   // role field changed
-    if tx. Changed("Role") {
-    return errors. New("role not allowed to change")
+    if tx.Statement.Changed("Role") {
+    return errors.New("role not allowed to change")
     }
 
-  if tx. Changed("Name", "Admin") { // if Name or Role changed
-    tx. SetColumn("Age", 18)
+  if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
+    tx.Statement.SetColumn("Age", 18)
   }
 
   // any fields changed
-    if tx. Changed() {
-        tx. SetColumn("RefreshedAt", time. Now())
+    if tx.Statement.Changed() {
+        tx.Statement.SetColumn("RefreshedAt", time.Now())
     }
     return nil
 }
 
-db. Updates(map[string]interface{"name": "jinzhu2"})
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"})
 // Changed("Name") => true
-db. Updates(map[string]interface{"name": "jinzhu"})
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"})
 // Changed("Name") => false, `Name` not changed
-db. Updates(map[string]interface{
+db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{
   "name": "jinzhu2", "admin": false,
 })
 // Changed("Name") => false, `Name` not selected to update
 
-db. Updates(User{Name: "jinzhu2"})
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"})
 // Changed("Name") => true
-db. Updates(User{Name: "jinzhu"})
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})
 // Changed("Name") => false, `Name` not changed
-db. Updates(User{Name: "jinzhu2"})
+db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"})
 // Changed("Name") => false, `Name` not selected to update
 ```
 
 ### Change Updating Values
 
-To change updating values in Before Hooks, you should use `scope. SetColumn` unless it is a full updates with `Save`, for example:
+To change updating values in Before Hooks, you should use `scope.SetColumn` unless it is a full updates with `Save`, for example:
 
 ```go
-func (user *User) BeforeSave(scope *gorm. Scope) (err error) {
-  if pw, err := bcrypt. GenerateFromPassword(user. Password, 0); err == nil {
-    scope. SetColumn("EncryptedPassword", pw)
+func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
+  if pw, err := bcrypt.GenerateFromPassword(user.Password, 0); err == nil {
+    scope.SetColumn("EncryptedPassword", pw)
   }
 }
 
-db. Model(&user). Update("Name", "jinzhu")
+db.Model(&user).Update("Name", "jinzhu")
 ```

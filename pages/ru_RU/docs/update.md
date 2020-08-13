@@ -129,42 +129,52 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
-### Без хуков/отслеживание времени
+### Update from SubQuery
 
-Если вы хотите пропустить методы `Хуков` и автоматическое обновление времени при обновлении, вы можете использовать `UpdateColumn`, `UpdateColumns`
+Update a table by using SubQuery
 
 ```go
-// Обновить один атрибут. аналогично `Update`
+DB.Model(&user).Update("price", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
+DB.Table("users as u").Where("name = ?", "jinzhu").Update("name", DB.Table("companies as c").Select("name").Where("c.id = u.company_id"))
+DB.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{}{}{"name": DB.Table("companies as c").Select("name").Where("c.id = u.company_id")})
+```
+
+### Without Hooks/Time Tracking
+
+If you want to skip `Hooks` methods and the auto-update time tracking when updating, you can use `UpdateColumn`, `UpdateColumns`
+
+```go
+// Update single attribute, similar with `Update`
 db.Model(&user).UpdateColumn("name", "hello")
 // UPDATE users SET name='hello' WHERE id = 111;
 
-// Обновить атрибуты, аналогично `Updates`
+// Update attributes, similar with `Updates`
 db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE id = 111;
 
-// Обновить атрибуты с помощью Select, аналогично `Updates`
+// Update attributes with Select, similar with `Updates`
 db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello"})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
-### Проверка, изменилось ли поле?
+### Check Field has changed?
 
-GORM предоставляет метод `Changed`, который может быть использован в **Before Hooks (Предварительные Хуки)** при обновлении для проверки полей, которые будут обновлены или не обновлены
+GORM provides `Changed` method could be used in **Before Hooks** when updating to check fields going to be updated or not
 
-Метод `Changed` работает только с методами `Update`, `Updates`, и проверяет только равно ли значение `Update` / `Updates` значению поля модели и будет ли поле сохранено или нет, вернет истину, если не равно и она будет сохранена
+The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the value of `Update` / `Updates` equals model value's field value and will the field be saved or not, will returns true if not equal and it will be saved
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
-  // поле Role изменено
+  // role field changed
     if tx.Statement.Changed("Role") {
     return errors.New("role not allowed to change")
     }
 
-  if tx.Statement.Changed("Name", "Admin") { // если Name или Role изменены
+  if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
     tx.Statement.SetColumn("Age", 18)
   }
 
-  // любое поле изменено
+  // any fields changed
     if tx.Statement.Changed() {
         tx.Statement.SetColumn("RefreshedAt", time.Now())
     }
@@ -174,23 +184,23 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"})
-// Changed("Name") => false, `Name` не изменено
+// Changed("Name") => false, `Name` not changed
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{
   "name": "jinzhu2", "admin": false,
 })
-// Changed("Name") => false, `Name` не выбрано для обновления
+// Changed("Name") => false, `Name` not selected to update
 
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})
-// Changed("Name") => false, `Name` не изменено
+// Changed("Name") => false, `Name` not changed
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"})
-// Changed("Name") => false, `Name` не выбрано для обновления
+// Changed("Name") => false, `Name` not selected to update
 ```
 
-### Изменить обновляемые данные
+### Change Updating Values
 
-Чтобы изменить значения в Предварительных Хуках, следует использовать `scope.SetColumn` если это не полное обновление с использованием `Save`, например:
+To change updating values in Before Hooks, you should use `scope.SetColumn` unless it is a full updates with `Save`, for example:
 
 ```go
 func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
