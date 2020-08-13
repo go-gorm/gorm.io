@@ -7,7 +7,7 @@ layout: page
 
 AutoMigrate 用于自动迁移您的 schema，保持您的 schema 是最新的。
 
-**注意：**AutoMigrate**** 只会创建表，它会忽略外键、约束、列和索引。为了保护您的数据，它**不会**更改现有列的类型或删除未使用的列。
+**注意：**AutoMigrate** 只会**创建表，缺失的外键、约束、列和索引。为了保护您的数据，它**不会**更改现有列的类型或删除未使用的列。
 
 ```go
 db.AutoMigrate(&User{})
