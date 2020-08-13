@@ -149,6 +149,16 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = '2' AND quantity > 1;
 ```
 
+### Update from SubQuery
+
+Update a table by using SubQuery
+
+```go
+DB.Model(&user).Update("price", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
+DB.Table("users as u").Where("name = ?", "jinzhu").Update("name", DB.Table("companies as c").Select("name").Where("c.id = u.company_id"))
+DB.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{}{}{"name": DB.Table("companies as c").Select("name").Where("c.id = u.company_id")})
+```
+
 ### Without Hooks/Time Tracking
 
 If you want to skip `Hooks` methods and the auto-update time tracking when updating, you can use `UpdateColumn`, `UpdateColumns`
