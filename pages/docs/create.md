@@ -61,6 +61,24 @@ for _, user := range users {
 
 [Upsert](#upsert), [Create With Associations](#create_with_associations) supported for batch insert also
 
+## Create From Map
+
+GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+
+```go
+DB.Model(&User{}).Create(map[string]interface{}{
+  "Name": "jinzhu", "Age": 18,
+})
+
+// batch insert from `[]map[string]interface{}{}`
+DB.Model(&User{}).Create([]map[string]interface{}{
+  {"Name": "jinzhu_1", "Age": 18},
+  {"Name": "jinzhu_2", "Age": 20},
+})
+```
+
+**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+
 ## Advanced
 
 ### <span id="create_with_associations">Create With Associations</span>
