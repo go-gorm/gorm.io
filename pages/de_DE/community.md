@@ -26,6 +26,6 @@ layout: page
 
 * [GORM V2 plugins example link](#contribute)
 
-## <span id="contribute">Contribute to this page</span>
+## <span id="contribute">Trage zu dieser Seite bei</span>
 
-Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) to add your awesome links
+Bitte bearbeiten Sie [diese Seite](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) um Ihre tollen Links hinzuzufügen
