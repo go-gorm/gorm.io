@@ -1,13 +1,13 @@
 ---
-title: GORM Guides
+title: GORM Anleitungen
 layout: page
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+Die fantastische ORM Bibliothek für Golang, stets auf Entwickler-Freundlichkeit aus.
 
-## Overview
+## Überblick
 
-* Full-Featured ORM
+* Voll-funktionales ORM
 * Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
 * Hooks (Before/After Create/Save/Update/Delete/Find)
 * Eager loading with `Preload`, `Joins`
@@ -20,16 +20,16 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * Logger
 * Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
 * Every feature comes with tests
-* Developer Friendly
+* Entwickler-freundlich
 
-## Install
+## Installation
 
 ```sh
 go get -u gorm.io/gorm
 go get -u gorm.io/driver/sqlite
 ```
 
-## Quick Start
+## Schnelleinstieg
 
 ```go
 package main
@@ -48,27 +48,27 @@ type Product struct {
 func main() {
   db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
   if err != nil {
-    panic("failed to connect database")
+    panic("Fehler bei der Verbindung zur Datenbank")
   }
 
-  // Migrate the schema
+  // Migrieren des Schemas
   db.AutoMigrate(&Product{})
 
-  // Create
+  // Erstellen
   db.Create(&Product{Code: "D42", Price: 100})
 
-  // Read
+  // Auslesen
   var product Product
   db.First(&product, 1) // find product with integer primary key
   db.First(&product, "code = ?", "D42") // find product with code D42
 
-  // Update - update product's price to 200
+  // Bearbeiten - ändern des Produkt-Preises auf 200
   db.Model(&product).Update("Price", 200)
-  // Update - update multiple fields
+  // Bearbeiten - ändern mehrerer Felder
   db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
   db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
 
-  // Delete - delete product
+  // Löschen - Produkt löschen
   db.Delete(&product, 1)
 }
 ```
