@@ -3,43 +3,37 @@ title: 更新日志
 layout: page
 ---
 
-## v2.0 - 2020.07
+## v2.0 - 2020.08
 
-GORM 2.0 是根据我们在过去几年里收到的反馈从零重写的，它引入了一些不兼容的 API 更改和许多改进
+GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
 
 * 性能改进
 * 模块化
-* Context、批量插入、Prepared Statment、DryRun 模式、Join Preload、Find To Map、FindInBatches
-* SavePoint、RollbackTo、嵌套事务
-* 关联改进（删除、更新时），修改 Many2Many 的连接表，批量数据关联模式
-* SQL 构建器、Upsert、Locking 和 Optimizer、Index、Comment 提示
-* 支持多个字段的自动追踪创建、更新时间，且支持纳秒级、毫秒级、秒级时间戳
+* Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
+* Nested Transaction/SavePoint/RollbackTo SavePoint supports
+* Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
+* Full self-reference relationships supports, Join Table improvements, Association Mode for batch data
+* Multiple fields support for tracking create/update time, which adds support for UNIX (milli/nano) seconds
 * 字段级权限控制：只读、只写、只创建、只更新、忽略
-* 全新的 Migrator、Logger
-* 命名策略(统一表名、字段名、连接表名、外键、检查器、索引名称规则)
-* 更好的自定义数据类型支持（例如：JSON）
-* 全新的插件系统、Hooks API
+* New plugin system: read/write splitting with plugin Database Resolver, prometheus integrations...
+* New Hooks API: unified interface with plugins
+* New Migrator: allows to create database foreign keys for relationships, constraints/checker support, enhanced index support
+* New Logger: context support, improved extensibility
+* Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
+* Better customized data type support (e.g: JSON)
+
+[GORM 2.0 Release Note](v2_release_note.html)
 
 ## v1.0 - 2016.04
 
-[GORM V1 文档](https://v1.gorm.io)
+[GORM V1 Docs](https://v1.gorm.io)
 
-破坏性变更
+Breaking Changes:
 
-* `gorm.Open` 返回类型是 `*gorm.DB` 而不是 `gorm.DB`
-
-* Update 只会更新有变更的字段
-
-* 开启软删除后，默认只会检查 `deleted_at IS NULL` 的记录
-
-* 新的 ToDBName 逻辑
-
-  当 GORM 将 struct、字段转换为数据库名时，采用了类似于 [golint](https://github.com/golang/lint/blob/master/lint.go#L702) 处理 `HTTP` 和 `URI` 缩写的方式。因此，`HTTP` 的数据库名是 `http` ，而不是 `h_t_t_p`。
-
-  但是对于列表中没有的其他缩写，例如但是对于列表中没有的其他缩写，例如`SKU`，db名是 `s_k_u`，此次更新修复了该问题。
-
+* `gorm.Open` returns `*gorm.DB` instead of `gorm.DB`
+* Updating will only update changed fields
+* Soft Delete's will only check `deleted_at IS NULL`
+* New ToDBName logic Common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` was converted to lowercase, so `HTTP`'s db name is `http`, but not `h_t_t_p`, but for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it to `sku`
 * `RecordNotFound ` 错误已被重命名为 `ErrRecordNotFound `
-
-* `mssql` 已被重命名为 ”github.com/jinzhu/gorm/dialects/mssql”
-
-* `Hstore` 已移至 ”github.com/jinzhu/gorm/dialects/postgres”
+* `mssql` dialect has been renamed to `github.com/jinzhu/gorm/dialects/mssql`
+* `Hstore` has been moved to package `github.com/jinzhu/gorm/dialects/postgres`
