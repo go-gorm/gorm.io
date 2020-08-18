@@ -37,6 +37,38 @@ db, err := gorm. Open(mysql. New(mysql. Config{
 }), &gorm. Config{})
 ```
 
+### Customize Driver
+
+GORM allows customize the MySQL driver with the `DriverName` option, for example:
+
+```go
+import (
+  _ "example.com/my_mysql_driver"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(mysql.New(mysql.Config{
+  DriverName: "my_mysql_driver",
+  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name, refer https://github.com/go-sql-driver/mysql#dsn-data-source-name
+}), &gorm.Config{})
+```
+
+### Existing database connection
+
+GORM allows to initialize `*gorm.DB` with an existing database connection
+
+```go
+import (
+  "database/sql"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("mysql", "mydb_dsn")
+gormDB, err := gorm.Open(mysql.New(mysql.Config{
+  Conn: sqlDB,
+}), &gorm.Config{})
+```
+
 ## PostgreSQL
 
 ```go
@@ -59,17 +91,48 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
+### Customize Driver
+
+GORM allows customize the PostgreSQL driver with the `DriverName` option, for example:
+
+```go
+import (
+  _ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/postgres"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(postgres.New(postgres.Config{
+  DriverName: "cloudsqlpostgres",
+  DSN: "host=project:region:instance user=postgres dbname=postgres password=password sslmode=disable",
+})
+```
+
+### Existing database connection
+
+GORM allows to initialize `*gorm.DB` with an existing database connection
+
+```go
+import (
+  "database/sql"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("postgres", "mydb_dsn")
+gormDB, err := gorm.Open(postgres.New(postgres.Config{
+  Conn: sqlDB,
+}), &gorm.Config{})
+```
+
 ## SQLite
 
 ```go
 import (
-  "gorm.io/driver/sqlserver"
+  "gorm.io/driver/sqlite"
   "gorm.io/gorm"
 )
 
-// github.com/denisenkom/go-mssqldb
-dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
-db, err := gorm. Open(sqlserver. Open(dsn), &gorm. Config{})
+// github.com/mattn/go-sqlite3
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
 **NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
@@ -84,7 +147,7 @@ import (
 
 // github.com/denisenkom/go-mssqldb
 dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
-db, err := gorm. Open(sqlserver. Open(dsn), &gorm. Config{})
+db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
 Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
@@ -97,13 +160,13 @@ GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connec
 sqlDB, err := db.DB()
 
 // SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
-SetMaxIdleConns(10)
+sqlDB.SetMaxIdleConns(10)
 
 // SetMaxOpenConns sets the maximum number of open connections to the database.
-SetMaxOpenConns(100)
+sqlDB.SetMaxOpenConns(100)
 
 // SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
-SetConnMaxLifetime(time. Hour)
+sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
 Refer [Generic Interface](generic_interface.html) for details

@@ -62,6 +62,24 @@ for _, user := range users {
 
 [Upsert](#upsert), [Create With Associations](#create_with_associations) supported for batch insert also
 
+## Create From Map
+
+GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+
+```go
+DB.Model(&User{}).Create(map[string]interface{}{
+  "Name": "jinzhu", "Age": 18,
+})
+
+// batch insert from `[]map[string]interface{}{}`
+DB.Model(&User{}).Create([]map[string]interface{}{
+  {"Name": "jinzhu_1", "Age": 18},
+  {"Name": "jinzhu_2", "Age": 20},
+})
+```
+
+**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+
 ## Advanced
 
 ### <span id="create_with_associations">Create With Associations</span>
@@ -69,22 +87,33 @@ for _, user := range users {
 If your model defined any relations, and it has non-zero relations, those data will be saved when creating
 
 ```go
-var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
-DB.
-Create(&users)
-
-for _, user := range users {
-  user.ID // 1,2,3
+type CreditCard struct {
+  gorm.Model
+  Number   string
+  UserID   uint
 }
+
+type User struct {
+  gorm.Model
+  Name       string
+  CreditCard CreditCard
+}
+
+db.Create(&User{
+  Name: "jinzhu",
+  CreditCard: CreditCard{Number: "411111111111"}
+})
+// INSERT INTO `users` ...
+// INSERT INTO `credit_cards` ...
 ```
 
 You can skip saving associations with `Select`, `Omit`
 
 ```go
-db. Omit("CreditCard"). Create(&user)
+db.Omit("CreditCard").Create(&user)
 
 // skip all associations
-db. Omit(clause. Associations). Create(&user)
+db.Omit(clause.Associations).Create(&user)
 ```
 
 ### Default Values
@@ -106,10 +135,10 @@ Then the default value will be used when inserting into the database for [zero-v
 
 ```go
 type User struct {
-  gorm. Model
+  gorm.Model
   Name string
   Age  *int           `gorm:"default:18"`
-  Active sql. NullBool `gorm:"default:true"`
+  Active sql.NullBool `gorm:"default:true"`
 }
 ```
 

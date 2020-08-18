@@ -1,11 +1,11 @@
 ---
 layout: index
-description: The fantastic ORM library for Golang aims to be developer friendly.
-subtitle: The fantastic ORM library for Golang
+description: Die fantastische ORM Bibliothek für Golang, stets auf Entwickler-Freundlichkeit aus.
+subtitle: Die fantastische ORM Bibliothek für Golang
 comments: false
 ---
 
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Full-Featured ORM
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Voll-funktionales ORM
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Hooks (Before/After Create/Save/Update/Delete/Find)
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Eager loading with Preload, Joins
@@ -18,4 +18,4 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Every feature comes with tests
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Developer Friendly
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Entwickler-freundlich

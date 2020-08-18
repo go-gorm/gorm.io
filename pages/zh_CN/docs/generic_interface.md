@@ -25,10 +25,10 @@ sqlDB.Stats()
 
 ```go
 // 获取通用数据库对象 sql.DB ，然后使用其提供的功能
-sqlDB, err := db。 B()
+sqlDB, err := db.DB()
 
 // SetMaxIdleConns 用于设置连接池中空闲连接的最大数量。
-sqlDB.SetMaxIgleConns(10)
+sqlDB.SetMaxIdleConns(10)
 
 // SetMaxOpenConns 设置打开数据库连接的最大数量。
 sqlDB.SetMaxOpenConns(100)

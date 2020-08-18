@@ -39,6 +39,38 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
+### Customize Driver
+
+GORM allows customize the MySQL driver with the `DriverName` option, for example:
+
+```go
+import (
+  _ "example.com/my_mysql_driver"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(mysql.New(mysql.Config{
+  DriverName: "my_mysql_driver",
+  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name, refer https://github.com/go-sql-driver/mysql#dsn-data-source-name
+}), &gorm.Config{})
+```
+
+### Existing database connection
+
+GORM allows to initialize `*gorm.DB` with an existing database connection
+
+```go
+import (
+  "database/sql"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("mysql", "mydb_dsn")
+gormDB, err := gorm.Open(mysql.New(mysql.Config{
+  Conn: sqlDB,
+}), &gorm.Config{})
+```
+
 ## PostgreSQL
 
 ```go
@@ -51,13 +83,45 @@ dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=A
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-我们使用 [pgx](https://github.com/jackc/pgx) 作为 postgres 的 database/sql 驱动器，默认情况下，它会启用 prepared statement 缓存，你可以这样禁用它：
+We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
 
 ```go
 // https://github.com/go-gorm/postgres
 db, err := gorm.Open(postgres.New(postgres.Config{
   DSN: "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
-  PreferSimpleProtocol: true, // 禁用隐式 prepared statement
+  PreferSimpleProtocol: true, // disables implicit prepared statement usage
+}), &gorm.Config{})
+```
+
+### Customize Driver
+
+GORM allows customize the PostgreSQL driver with the `DriverName` option, for example:
+
+```go
+import (
+  _ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/postgres"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(postgres.New(postgres.Config{
+  DriverName: "cloudsqlpostgres",
+  DSN: "host=project:region:instance user=postgres dbname=postgres password=password sslmode=disable",
+})
+```
+
+### Existing database connection
+
+GORM allows to initialize `*gorm.DB` with an existing database connection
+
+```go
+import (
+  "database/sql"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("postgres", "mydb_dsn")
+gormDB, err := gorm.Open(postgres.New(postgres.Config{
+  Conn: sqlDB,
 }), &gorm.Config{})
 ```
 
@@ -73,7 +137,7 @@ import (
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
-**注意：** 您也可以使用 `file::memory:?cache=shared` 替代文件路径。 这会告诉 SQLite 在系统内存中使用一个临时数据库。 (查看 [SQLite 文档](https://www.sqlite.org/inmemorydb.html) 获取详情)
+**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
 
 ## SQL Server
 
@@ -88,29 +152,29 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
-Microsoft 为 GO (GORM) 使用 SQL Server 提供了 [一份指南](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/)
+Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
 ## 连接池
 
-GORM 使用 [database/sql](https://pkg.go.dev/database/sql) 来维护连接池
+GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns 设置空闲连接池中连接的最大数量
+// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns 设置打开数据库连接的最大数量
+// SetMaxOpenConns sets the maximum number of open connections to the database.
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime 设置了连接可复用的最大时间
+// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-查看 [通用接口](generic_interface.html) 获取详情。
+Refer [Generic Interface](generic_interface.html) for details
 
 ## 不支持的数据库
 
-有些数据库可能兼容 `mysql`、`postgres` 的方言，在这种情况下，你可以直接使用这些数据库的方言。
+Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
-对于其它不支持的数据，[我们鼓励且欢迎大家伙开发更多数据库类型的驱动！](write_driver.html)
+For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)

@@ -61,11 +61,29 @@ for _, user := range users {
 
 [Upsert](#upsert), [Create With Associations](#create_with_associations) でもバッチインサートはサポートされています。
 
+## Create From Map
+
+GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+
+```go
+DB.Model(&User{}).Create(map[string]interface{}{
+  "Name": "jinzhu", "Age": 18,
+})
+
+// batch insert from `[]map[string]interface{}{}`
+DB.Model(&User{}).Create([]map[string]interface{}{
+  {"Name": "jinzhu_1", "Age": 18},
+  {"Name": "jinzhu_2", "Age": 20},
+})
+```
+
+**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+
 ## Advanced
 
 ### <span id="create_with_associations">Create With Associations</span>
 
-モデルがリレーションを定義し、リレーションがゼロ以外の場合、そのデータは作成時に保存されます。
+If your model defined any relations, and it has non-zero relations, those data will be saved when creating
 
 ```go
 type CreditCard struct {
@@ -88,18 +106,18 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-`Select`, `Omit` によってアソシエーションによる保存をスキップできます。
+You can skip saving associations with `Select`, `Omit`
 
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// すべてのアソシエーションをスキップ
+// skip all associations
 db.Omit(clause.Associations).Create(&user)
 ```
 
 ### Default Values
 
-`default`タグによって、フィールドのデフォルト値を定義できます。例:
+You can define default values for fields with tag `default`, for example:
 
 ```go
 type User struct {
@@ -110,7 +128,7 @@ type User struct {
 }
 ```
 
-[ゼロ値](https://tour.golang.org/basics/12) フィールドは、データベースへの挿入の際にデフォルト値が使用されます。
+Then the default value will be used when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
 **NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 
@@ -135,7 +153,7 @@ type User struct {
 
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORMは異なるデータベースに対して互換性のあるUpsertのサポートを提供します。
+GORM provides compatible Upsert support for different databases
 
 ```go
 import "gorm.io/gorm/clause"
@@ -161,6 +179,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-`FirstOrInit`, `FirstOrCreate`については[Advanced Query](advanced_query.html)を参照してください。
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-詳細については、 [Raw SQL and SQL Builder](sql_builder.html) を参照してください。
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details

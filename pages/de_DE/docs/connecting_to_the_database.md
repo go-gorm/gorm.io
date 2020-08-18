@@ -39,6 +39,38 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm. onfig{})
 ```
 
+### Customize Driver
+
+GORM allows customize the MySQL driver with the `DriverName` option, for example:
+
+```go
+import (
+  _ "example.com/my_mysql_driver"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(mysql.New(mysql.Config{
+  DriverName: "my_mysql_driver",
+  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name, refer https://github.com/go-sql-driver/mysql#dsn-data-source-name
+}), &gorm.Config{})
+```
+
+### Existing database connection
+
+GORM allows to initialize `*gorm.DB` with an existing database connection
+
+```go
+import (
+  "database/sql"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("mysql", "mydb_dsn")
+gormDB, err := gorm.Open(mysql.New(mysql.Config{
+  Conn: sqlDB,
+}), &gorm.Config{})
+```
+
 ## PostgreSQL
 
 ```go
@@ -51,13 +83,45 @@ dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=A
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-Wir verwenden [pgx](https://github.com/jackc/pgx) als Postgres-Datenbank/Sql-Treiber, der standardmäßig den vorbereiteten Anweisungs-Cache ermöglicht, um es zu deaktivieren:
+We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
 
 ```go
 // https://github.com/go-gorm/postgres
 db, err := gorm.Open(postgres.New(postgres.Config{
   DSN: "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
-  PreferSimpleProtocol: true, // deaktiviert die implizit vorbereitete Anweisungsnutzung
+  PreferSimpleProtocol: true, // disables implicit prepared statement usage
+}), &gorm.Config{})
+```
+
+### Customize Driver
+
+GORM allows customize the PostgreSQL driver with the `DriverName` option, for example:
+
+```go
+import (
+  _ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/postgres"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(postgres.New(postgres.Config{
+  DriverName: "cloudsqlpostgres",
+  DSN: "host=project:region:instance user=postgres dbname=postgres password=password sslmode=disable",
+})
+```
+
+### Existing database connection
+
+GORM allows to initialize `*gorm.DB` with an existing database connection
+
+```go
+import (
+  "database/sql"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("postgres", "mydb_dsn")
+gormDB, err := gorm.Open(postgres.New(postgres.Config{
+  Conn: sqlDB,
 }), &gorm.Config{})
 ```
 
@@ -73,7 +137,7 @@ import (
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
-**HINWEIS:** Sie können auch `file::memory:?cache=shared` verwenden, anstelle eines Pfades zu einer Datei. Dis wird SQLite anweisen eine Temporäre Datenbank im Systemspeicher anzulegen. (Siehe [SQLite-Dokumentation](https://www.sqlite.org/inmemorydb.html) hierfür)
+**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
 
 ## SQL Server
 
@@ -88,29 +152,29 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
-Microsoft bietet [eine Anleitung](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) für die Verwendung von SQL Server mit Go (und GORM).
+Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
 ## Verbindungspool
 
-GORM benutzt \[database/sql\]((https://pkg.go.dev/database/sql), um den Verbindungspool zu pflegen
+GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns legt die maximale Anzahl von Verbindungen im Pool der Leerlaufverbindung fest.
+// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
 sqlDB.SetMaxIdleConns(10)
 
 // SetMaxOpenConns sets the maximum number of open connections to the database.
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime legt die maximale Zeit fest, die eine Verbindung wiederverwendet werden kann.
+// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-[Allgemeine Schnittstelle](generic_interface.html) für Details anzeigen
+Refer [Generic Interface](generic_interface.html) for details
 
 ## Unsupported Databases
 
-Einige Datenbanken können mit dem `mysql` oder `postgres` Dialekt kompatibel sein, in diesem Fall können Sie einfach den Dialekt für diese Datenbanken verwenden.
+Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
-Für andere, [wir sind froh um eigen kreierte Treiber, pull request welcome!](write_driver.html)
+For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)

@@ -39,6 +39,38 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
+### Customize Driver
+
+GORM allows customize the MySQL driver with the `DriverName` option, for example:
+
+```go
+import (
+  _ "example.com/my_mysql_driver"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(mysql.New(mysql.Config{
+  DriverName: "my_mysql_driver",
+  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name, refer https://github.com/go-sql-driver/mysql#dsn-data-source-name
+}), &gorm.Config{})
+```
+
+### Existing database connection
+
+GORM allows to initialize `*gorm.DB` with an existing database connection
+
+```go
+import (
+  "database/sql"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("mysql", "mydb_dsn")
+gormDB, err := gorm.Open(mysql.New(mysql.Config{
+  Conn: sqlDB,
+}), &gorm.Config{})
+```
+
 ## PostgreSQL
 
 ```go
@@ -58,6 +90,38 @@ We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driv
 db, err := gorm.Open(postgres.New(postgres.Config{
   DSN: "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
   PreferSimpleProtocol: true, // disables implicit prepared statement usage
+}), &gorm.Config{})
+```
+
+### Customize Driver
+
+GORM allows customize the PostgreSQL driver with the `DriverName` option, for example:
+
+```go
+import (
+  _ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/postgres"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(postgres.New(postgres.Config{
+  DriverName: "cloudsqlpostgres",
+  DSN: "host=project:region:instance user=postgres dbname=postgres password=password sslmode=disable",
+})
+```
+
+### Existing database connection
+
+GORM allows to initialize `*gorm.DB` with an existing database connection
+
+```go
+import (
+  "database/sql"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("postgres", "mydb_dsn")
+gormDB, err := gorm.Open(postgres.New(postgres.Config{
+  Conn: sqlDB,
 }), &gorm.Config{})
 ```
 

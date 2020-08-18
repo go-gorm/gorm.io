@@ -61,11 +61,29 @@ for _, user := range users {
 
 [Создать или обновить](#upsert), [Создать со связями](#create_with_associations) поддерживается для пакетной вставки
 
-## Дополнительно
+## Create From Map
+
+GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+
+```go
+DB.Model(&User{}).Create(map[string]interface{}{
+  "Name": "jinzhu", "Age": 18,
+})
+
+// batch insert from `[]map[string]interface{}{}`
+DB.Model(&User{}).Create([]map[string]interface{}{
+  {"Name": "jinzhu_1", "Age": 18},
+  {"Name": "jinzhu_2", "Age": 20},
+})
+```
+
+**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+
+## Advanced
 
 ### <span id="create_with_associations">Создать со связями</span>
 
-Если в вашей модели определены связи, и она не имеет нулевых связей, эти данные будут сохранены при создании
+If your model defined any relations, and it has non-zero relations, those data will be saved when creating
 
 ```go
 type CreditCard struct {
@@ -88,31 +106,31 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-Вы можете пропустить сохранение связей с помощью `Select`, `Omit`
+You can skip saving associations with `Select`, `Omit`
 
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// пропустить все связи
+// skip all associations
 db.Omit(clause.Associations).Create(&user)
 ```
 
 ### Значения по умолчанию
 
-Вы можете определить значения по умолчанию для полей при помощи тега `default`, например:
+You can define default values for fields with tag `default`, for example:
 
 ```go
 type User struct {
   ID         int64
   Name       string `gorm:"default:'galeone'"`
   Age        int64  `gorm:"default:18"`
-    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // функция БД
+    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
 }
 ```
 
-Значение по умолчанию будет использовано при добавлении записи в БД для полей с [нулевыми-значениями](https://tour.golang.org/basics/12)
+Then the default value will be used when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
-**ПРИМЕЧАНИЕ** Любые нулевые значение, например `0`, `''`, `false` не будут сохранены в базу данных, для полей с определенным значением по умолчанию, вы можете использовать Scanner/Valuer для избежания этого, например:
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 
 ```go
 type User struct {
@@ -123,7 +141,7 @@ type User struct {
 }
 ```
 
-**ПРИМЕЧАНИЕ** Вы должны установить тег `default` для полей, имеющих значение по умолчанию в БД или GORM будет использовать нулевое значение поля при создании, например:
+**NOTE** You have to setup the `default` tag for fields having default value in databae or GORM will use the zero value of the field when creating, for example:
 
 ```go
 type User struct {
@@ -135,15 +153,15 @@ type User struct {
 
 ### <span id="upsert">Upsert (Создать или обновить) / Конфликт</span>
 
-GORM обеспечивает поддержку Upsert (Создать или обновить) для различных баз данных
+GORM provides compatible Upsert support for different databases
 
 ```go
 import "gorm.io/gorm/clause"
 
-// Ничего не делать при конфликте
+// Do nothing on conflict
 DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Обновить колонок значением default при конфликте по полю `id`
+// Update columns to default value on `id` conflict
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -151,7 +169,7 @@ DB.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// Обновить на новые данные при конфликте по полю `id`
+// Update columns to new value on `id` conflict
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
@@ -161,6 +179,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Смотрите также `FirstOrInit (первая или инициализировать)`, `FirstOrCreate (первая или создать)` в [Расширенный запрос SQL](advanced_query.html)
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-Смотрите [Чистый SQL и Конструктор SQL](sql_builder.html) для подробностей
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details

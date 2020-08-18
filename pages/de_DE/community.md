@@ -1,11 +1,11 @@
 ---
-title: GORM Community
+title: GORM-Community
 layout: page
 ---
 
-## Ask
+## Fragen
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[Wie stelle ich eine gute Frage?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
 * Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
@@ -16,16 +16,16 @@ layout: page
 
 ## Links
 
-* [GORM V2 article example link](#contribute)
+* [GORM V2 Artikel-Beispiellink](#contribute)
 
 ## Videos
 
-* [GORM V2 videos example link](#contribute)
+* [GORM V2 Video-Beispiel-Link](#contribute)
 
-## Open Sources
+## Offene Quellen
 
-* [GORM V2 plugins example link](#contribute)
+* [GORM V2 Plugins Beispiellink](#contribute)
 
-## <span id="contribute">Contribute to this page</span>
+## <span id="contribute">Trage zu dieser Seite bei</span>
 
-Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) to add your awesome links
+Bitte bearbeiten Sie [diese Seite](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) um Ihre tollen Links hinzuzufügen
