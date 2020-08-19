@@ -3,43 +3,37 @@ title: 更新履歴
 layout: page
 ---
 
-## v2.0 - 2020.07
+## v2.0 - 2020.08
 
-GORM2.0は、過去数年間で受け取ったフィードバックにもとづいて１から書き直されています。互換性のないAPIの変更や多くの改善点は以下です。
+GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
 
 * パフォーマンスの改善
 * モジュール性の向上
-* Context、バッチインサート、プリペアードステイトメント、ドライランモード、プリロードジョイン、マップ検索、FindInBatches
-* SavePoint/RollbackTo/Nested Transaction Support
-* アソシエーションの改善 (On Delete/Update), N: Nテーブルの結合の修正 バッチデータのためのアソシエーションモード
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints サポート
-* UNIX(nano) 秒も使える作成/更新時間の自動フィールド
+* Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
+* Nested Transaction/SavePoint/RollbackTo SavePoint supports
+* Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
+* Full self-reference relationships supports, Join Table improvements, Association Mode for batch data
+* Multiple fields support for tracking create/update time, which adds support for UNIX (milli/nano) seconds
 * フィールド権限のサポート: 読み取り専用、書き込み専用、作成専用、更新専用、無視するフィールド
-* 完全に新しいマイグレーター、ロガー
-* 名前付け戦略(統合テーブル名、フィールド名、結合テーブル名、外部キー、チェッカー、インデックス名ルール)
-* より良いカスタマイズされたデータ型のサポート（例：JSON）
-* 完全に新しいプラグインシステム、Hooks API
+* New plugin system: read/write splitting with plugin Database Resolver, prometheus integrations...
+* New Hooks API: unified interface with plugins
+* New Migrator: allows to create database foreign keys for relationships, constraints/checker support, enhanced index support
+* New Logger: context support, improved extensibility
+* Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
+* Better customized data type support (e.g: JSON)
+
+[GORM 2.0 Release Note](v2_release_note.html)
 
 ## v1.0 - 2016.04
 
-[GORM V1 ドキュメント](https://v1.gorm.io)
+[GORM V1 Docs](https://v1.gorm.io)
 
-重大な変更
+Breaking Changes:
 
-* `gorm.Open` は `*gorm.DB`型 ではなく`gorm.DB`型を返します
-
-* 更新は変更されたフィールドのみ反映されます
-
-* 論理削除は `deleted_at IS NULL`のチェックのみ行います
-
-* 新しい ToDBName ロジック
-
-  GORMを型やフィールド名からdb名に変換する際、 [golint](https://github.com/golang/lint/blob/master/lint.go#L702) の`HTTP`や`URI` に対する処理と同様の短縮形を採用します。よって、`HTTP`のdb名は`h_t_t_p`ではなく `http`になります
-
-  しかし `SKU`のようなリストにないその他の省略形においては、db名は, `s_k_u`となります。この変更はそれを修正します。
-
+* `gorm.Open` returns `*gorm.DB` instead of `gorm.DB`
+* Updating will only update changed fields
+* Soft Delete's will only check `deleted_at IS NULL`
+* New ToDBName logic Common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` was converted to lowercase, so `HTTP`'s db name is `http`, but not `h_t_t_p`, but for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it to `sku`
 * `RecordNotFound`エラー が `ErrRecordNotFound` に改名されました
-
-* `mssql` の方言は以下に改名されました。"github.com/jinzhu/gorm/dialects/mssql"
-
-* `Hstore` は以下のパッケージに移動しました。"github.com/jinzhu/gorm/dialects/postgres"
+* `mssql` dialect has been renamed to `github.com/jinzhu/gorm/dialects/mssql`
+* `Hstore` has been moved to package `github.com/jinzhu/gorm/dialects/postgres`

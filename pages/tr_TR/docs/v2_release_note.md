@@ -1,11 +1,15 @@
 ---
-title: Change Log
+title: GORM 2.0 Release Note (Draft)
 layout: page
 ---
 
-## v2.0 - 2020.08
+<style>
+li.toc-item.toc-level-4 { display: none; }
+</style>
 
 GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+
+**Highlights**
 
 * Performance Improvements
 * Modularity
@@ -22,18 +26,40 @@ GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change a
 * Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
 * Better customized data type support (e.g: JSON)
 
-[GORM 2.0 Release Note](v2_release_note.html)
+## How To Upgrade
 
-## v1.0 - 2016.04
+* GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and the import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm`
+* Database drivers have been split into separate projects, e.g: [github.com/go-gorm/sqlserver](https://github.com/go-gorm/sqlserver), and its import path also changed
 
-[GORM V1 Docs](https://v1.gorm.io)
+### Install
 
-Breaking Changes:
+```sh
+go get gorm.io/gorm
+```
 
-* `gorm.Open` returns `*gorm.DB` instead of `gorm.DB`
-* Updating will only update changed fields
-* Soft Delete's will only check `deleted_at IS NULL`
-* New ToDBName logic Common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` was converted to lowercase, so `HTTP`'s db name is `http`, but not `h_t_t_p`, but for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it to `sku`
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
-* `mssql` dialect has been renamed to `github.com/jinzhu/gorm/dialects/mssql`
-* `Hstore` has been moved to package `github.com/jinzhu/gorm/dialects/postgres`
+### Quick Start
+
+```go
+import (
+  "gorm.io/gorm"
+  "gorm.io/driver/sqlite"
+)
+
+func init() {
+  db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
+
+  // Most CRUD API kept compatibility
+  db.AutoMigrate(&Product{})
+  db.Create(&user)
+  db.First(&user, 1)
+  db.Model(&user).Update("Age", 18)
+  db.Model(&user).Omit("Role").Updates(map[string]interface{}{"Name": "jinzhu", "Role": "admin"})
+  db.Delete(&user)
+}
+```
+
+## Major Features
+
+## Breaking Changes
+
+## Happy Hacking!

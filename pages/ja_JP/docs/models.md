@@ -66,6 +66,8 @@ type User struct {
 
 エクスポートされたフィールドはGORMでCRUDを実行するときにすべての権限を持ちますが、GORMはタグでフィールドレベルの権限を変更することができます。 これにより、読み取り専用、書き込み専用、作成専用、更新専用、または無視するフィールドを作成できます。
 
+**NOTE** ignored fields won't be created when using GORM Migrator to create table
+
 ```go
 type User struct {
   Name string `gorm:"<-:create"` // 読み取り、作成が可能
@@ -81,9 +83,9 @@ type User struct {
 
 ### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
 
-GORMでは、規約により、`CreatedAt`, `UpdatedAt`を使用して、作成/更新時間を追跡しています。定義されている場合、GORMは作成/更新時に[current time](gorm_config.html#current_time)を利用することができます。
+GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
 
-別の名前のフィールドを使用するには、タグ `autoCreateTime`、 `autoUpdateTime` を持つフィールドを設定できます。
+To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
 
 If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
 
@@ -99,7 +101,7 @@ type User struct {
 
 ### <span id="embedded_struct">Embedded Struct</span>
 
-匿名フィールドの場合、GORMはそのフィールドをその親の構造体に含めます。例えば:
+For anonymous fields, GORM will include its fields into its parent struct, for example:
 
 ```go
 type User struct {
@@ -116,7 +118,7 @@ type User struct {
 }
 ```
 
-通常の struct フィールドでは、タグ `embedded`を埋め込むことができます。例:
+For a normal struct field, you can embed it with the tag `embedded`, for example:
 
 ```go
 type Author struct {
@@ -138,7 +140,7 @@ type Blog struct {
 }
 ```
 
-また、タグ `embeddedrefix` を使用して、埋め込みフィールドの db 名にプレフィックスを追加することができます。例：
+And you can use tag `embeddedrefix` to add prefix to embedded fields' db name, for example:
 
 ```go
 type Blog struct {
@@ -158,9 +160,9 @@ type Blog struct {
 
 ### Fields Tags
 
-タグはモデル宣言時に使用するオプションです。GORMは以下のタグをサポートしています。
+Tags are optional to use when declaring models, GORM supports the following tags:
 
-タグ名の場合たいした関心ごとではありませんが、どちらかといえば `キャメルケース` を使用するのが好ましいです。
+Tag Name case doesn't matter, `camelCase` is preferred to use.
 
 | タグ名            | 説明                                                                                                                                                                                                                                                                                                                                                                                                |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -186,4 +188,4 @@ type Blog struct {
 
 ### Associations Tags
 
-GORMでは外部キー、制約、関連タグを介した多数のテーブルを設定できます。詳細は [Associations section](associations. html#tags) をご覧ください。
+GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the [Associations section](associations.html#tags) for details
