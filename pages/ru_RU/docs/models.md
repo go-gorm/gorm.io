@@ -66,6 +66,8 @@ type User struct {
 
 Экспортированные поля имеют все разрешения при выполнении CRUD с помощью GORM, но GORM позволяет изменять права на уровне поля при помощи тега, так что вы можете сделать поле только для чтения, записи, только для создания, обновления или игнорирования
 
+**NOTE** ignored fields won't be created when using GORM Migrator to create table
+
 ```go
 type User struct {
   Name string `gorm:"<-:create"` // разрешить чтение и создание
@@ -81,11 +83,11 @@ type User struct {
 
 ### <name id="time_tracking">Создание/обновление Time/Unix (Milli/Nano) секунд отслеживания</span>
 
-GORM использует `CreatedAt`, `UpdatedAt` для отслеживания создания/обновления времени, GORM заполнит [текущее время](gorm_config.html#current_time) при создании/обновлении, если эти поля определены
+GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
 
-Чтобы использовать поля с другим именем, вы можете настроить эти поля при помощи тегов `autoCreateTime`, `autoUpdateTime`
+To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
 
-Если вы предпочитаете сохранять UNIX (milli/nano) секунды вместо времени, вы можете просто изменить тип данных поля с `time.Time` на `int`
+If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
 
 ```go
 type User struct {
@@ -99,7 +101,7 @@ type User struct {
 
 ### <span id="embedded_struct">Встроенный struct</span>
 
-Для анонимных полей, GORM будет включать свои поля в свою родительскую структуру, например:
+For anonymous fields, GORM will include its fields into its parent struct, for example:
 
 ```go
 type User struct {
@@ -116,7 +118,7 @@ type User struct {
 }
 ```
 
-Для обычных полей struct вы можете вставить их с тегом `embedded`, например:
+For a normal struct field, you can embed it with the tag `embedded`, for example:
 
 ```go
 type Author struct {
@@ -138,7 +140,7 @@ type Blog struct {
 }
 ```
 
-И вы можете использовать тег `embeddedrefix` для добавления префикса во встроенные поля в db, например:
+And you can use tag `embeddedrefix` to add prefix to embedded fields' db name, for example:
 
 ```go
 type Blog struct {
@@ -158,9 +160,9 @@ type Blog struct {
 
 ### Теги полей
 
-Теги необязательны для использования при определении моделей, GORM поддерживает следующие теги:
+Tags are optional to use when declaring models, GORM supports the following tags:
 
-Имя тега не имеет значения, предпочтительнее использовать `camelCase`.
+Tag Name case doesn't matter, `camelCase` is preferred to use.
 
 | Назвние тэга   | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -186,4 +188,4 @@ type Blog struct {
 
 ### Взаимосвязи
 
-GORM позволяет настраивать внешние ключи, ограничения, many2many через теги связей, загляните в [раздел Ассоциации](associations.html#tags) для получения подробной информации
+GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the [Associations section](associations.html#tags) for details
