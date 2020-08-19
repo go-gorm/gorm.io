@@ -51,6 +51,8 @@ type User struct {
 
 Exported fields have all permission when doing CRUD with GORM, but GORM allows you to change the field-level permission with tag, so you can make a field to read-only, write-only, create-only, update-only or ignored
 
+**NOTE** ignored fields won't be created when using GORM Migrator to create table
+
 ```go
 type User struct {
   Name string `gorm:"<-:create"` // allow read and create
