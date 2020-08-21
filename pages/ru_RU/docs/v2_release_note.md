@@ -3,14 +3,14 @@ title: GORM 2.0 Release Note (Draft)
 layout: page
 ---
 
-GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+GORM 2.0 это перезапись с нуля, представляет некоторые изменения несовместимых API и много улучшений
 
-**Highlights**
+**Ключевые моменты**
 
-* Performance Improvements
-* Modularity
-* Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
-* Nested Transaction/SavePoint/RollbackTo SavePoint supports
+* Улучшение производительности
+* Модульность
+* Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches
+* Вложенная транзакция/SavePoint/RollbackTo
 * Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
 * Full self-reference relationships supports, Join Table improvements, Association Mode for batch data
 * Multiple fields support for tracking create/update time, which adds support for UNIX (milli/nano) seconds
