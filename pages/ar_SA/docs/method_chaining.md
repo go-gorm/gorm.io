@@ -89,7 +89,7 @@ for i := 0; i < 100; i++ {
 
 **NOTE** In example 2, the first query affected the second generated SQL as GORM reused the `Statement`, this might cause unexpected issues, refer [Goroutine Safety](#goroutine_safe) for how to avoid it
 
-## <span id="goroutine_safe">Goroutine Safety</span>
+## <span id="goroutine_safe">Method Chain Safety/Goroutine Safety</span>
 
 Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
 
