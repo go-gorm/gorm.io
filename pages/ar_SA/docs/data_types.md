@@ -44,16 +44,16 @@ A customized data type might has different database types, you can implements th
 
 ```go
 type GormDataTypeInterface interface {
-  GormDBDataType(*gorm.DB, *schema. Field) string
+  GormDBDataType(*gorm.DB, *schema.Field) string
 }
 
-func (JSON) GormDBDataType(db *gorm.DB, field *schema. Field) string {
-  // use field. Tag, field. TagSettings gets field's tags
+func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
+  // use field.Tag, field.TagSettings gets field's tags
   // checkout https://github.com/go-gorm/gorm/blob/master/schema/field.go for all options
 
   // returns different database type based on driver name
-  switch db. Dialector. Name() {
-  case "mysql":
+  switch db.Dialector.Name() {
+  case "mysql", "sqlite":
     return "JSON"
   case "postgres":
     return "JSONB"
