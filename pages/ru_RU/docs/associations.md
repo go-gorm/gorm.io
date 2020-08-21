@@ -88,7 +88,7 @@ db.Model(&user).Association("Languages").Error
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 
-// Find with conditions
+// Найти с условиями 
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
 
