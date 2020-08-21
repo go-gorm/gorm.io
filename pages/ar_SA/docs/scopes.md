@@ -47,19 +47,21 @@ func CurOrganization(r *http. Request) func(db *gorm.DB) *gorm.DB {
 ## Updates
 
 ```go
-func CurOrganization(r *http. Request) func(db *gorm.DB) *gorm.DB {
+func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {
   return func (db *gorm.DB) *gorm.DB {
-    org := r. Query("org")
+    org := r.Query("org")
 
     if org != "" {
       var organization Organization
-      if db. Session(&Session{}). First(&organization, "name = ?", org). Error == nil {
-        return db. Where("organization_id = ?", org.ID)
+      if db.Session(&Session{}).First(&organization, "name = ?", org).Error == nil {
+        return db.Where("organization_id = ?", org.ID)
       }
     }
 
-    db. AddError("invalid organization")
+    db.AddError("invalid organization")
     return db
   }
 }
+
+db.Scopes(CurOrganization(r)).Save(&articles)
 ```
