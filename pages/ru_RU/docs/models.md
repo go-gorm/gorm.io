@@ -158,7 +158,7 @@ type Blog struct {
 ```
 
 
-### Теги полей
+### <span id="tags">Fields Tags</span>
 
 Tags are optional to use when declaring models, GORM supports the following tags:
 
