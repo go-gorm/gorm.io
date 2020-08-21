@@ -115,7 +115,7 @@ db.Omit("CreditCard").Create(&user)
 db.Omit(clause.Associations).Create(&user)
 ```
 
-### 默认值
+### <span id="default_values">Default Values</span>
 
 You can define default values for fields with tag `default`, for example:
 
