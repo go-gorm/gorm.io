@@ -48,10 +48,10 @@ type GormDataTypeInterface interface {
 }
 
 func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
-  // use field.Tag, field.TagSettings gets field's tags
-  // checkout https://github.com/go-gorm/gorm/blob/master/schema/field.go for all options
+  // 使用 field.Tag、field.TagSettings 获取字段的 tag
+  // 查看 https://github.com/go-gorm/gorm/blob/master/schema/field.go 获取全部的选项
 
-  // returns different database type based on driver name
+  // 根据不同的数据库驱动返回不同的数据类型
   switch db.Dialector.Name() {
   case "mysql", "sqlite":
     return "JSON"
