@@ -11,13 +11,13 @@ GORM 2.0 是基于用户过去几年中的反馈进行思考后的重写，在�
 * 代码模块化
 * Context、批量插入、Prepared Statment、DryRun 模式、Join Preload, Find 到 Map, FindInBatches 支持
 * SavePoint/RollbackTo/Nested Transaction 支持
-* Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
-* Full self-reference relationships supports, Join Table improvements, Association Mode for batch data
-* Multiple fields support for tracking create/update time, which adds support for UNIX (milli/nano) seconds
+* 命名参数、Group 条件、Upsert、锁定、优化/索引/评论提示支持、SubQuery 改进
+* 完整的自引用支持，连接表改进，批量数据的关联模式
+* 插入时间、更新时间可支持多个字段，加入了对 unix (nano) second 的支持
 * 字段级权限控制：只读、只写、只创建、只更新、忽略
-* New plugin system: read/write splitting with plugin Database Resolver, prometheus integrations...
-* New Hooks API: unified interface with plugins
-* New Migrator: allows to create database foreign keys for relationships, constraints/checker support, enhanced index support
+* 全新的插件系统：由 Database Resolver 提供的读写分离，Prometheus 集成，以及更多...
+* 全新的 Hook API：带插件的统一接口
+* 全新的 Migrator：允许为关系创建数据库外键，约束、检查其支持，增强索引支持
 * 全新的 Logger：context 支持、提高可扩展性
 * 统一命名策略（表名、字段名、连接表名、外键、检查器、索引名称规则）
 * 更好的数据类型定义支持（例如 JSON）
