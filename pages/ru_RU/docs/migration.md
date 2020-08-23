@@ -7,7 +7,7 @@ layout: страница
 
 Автоматически переносит вашу схему, чтобы поддерживать обновление вашей схемы.
 
-**ПРИМЕЧАНИЕ:** AutoMigrate будет **ТОЛЬКО** создавать таблицы, отсутствующие внешние ключи, ограничения, колонки и индексы, **НЕ МЕНЯЕТ** существующий тип столбцов или не удаляет неиспользуемые столбцы для защиты данных.
+**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes, and will change existing column's type if it's size, precision, nullable changed, it **WON'T** delete unused columns to protect your data.
 
 ```go
 db.AutoMigrate(&User{})
