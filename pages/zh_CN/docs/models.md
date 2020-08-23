@@ -140,7 +140,7 @@ type Blog struct {
 }
 ```
 
-并且，您可以使用标签 `embeddrefix` 来为 db 中的字段名添加前缀，例如：
+And you can use tag `embeddedPrefix` to add prefix to embedded fields' db name, for example:
 
 ```go
 type Blog struct {
