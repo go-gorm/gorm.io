@@ -531,12 +531,14 @@ type User struct {
 
 #### BlockGlobalUpdate
 
-GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL like:
+GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
-DB.Where("1 = 1 ").Delete(&User{})
+DB.Where("1 = 1").Delete(&User{})
 
 DB.Raw("delete from users")
+
+DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 ```
 
 #### ErrRecordNotFound
