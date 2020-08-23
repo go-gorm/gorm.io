@@ -87,15 +87,18 @@ db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface
 
 ### Block Global Updates
 
-何も条件を付けずにバッチ更新を行った場合、GORMは実行せず、`ErrMissingWhereClause`エラーを返します。
+If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error by default
 
-`1 = 1` のような条件を使用して、全更新を強制できます。
+You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Model(&User{}).Update("name", "jinzhu").Error // gorm.ErrMissingWhereClause
 
 db.Model(&User{}).Where("1 = 1").Update("name", "jinzhu")
 // UPDATE users SET `name` = "jinzhu" WHERE 1=1
+
+DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name", "jinzhu")
+// UPDATE users SET `name` = "jinzhu"
 ```
 
 ### Updated Records Count
