@@ -7,7 +7,7 @@ layout: page
 
 AutoMigrate 用于自动迁移您的 schema，保持您的 schema 是最新的。
 
-**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes, and will change existing column's type if it's size, precision, nullable changed, it **WON'T** delete unused columns to protect your data.
+**注意：** AutoMigrate 会创建表，缺少的外键，约束，列和索引，并且会更改现有列的类型（如果其大小、精度、是否为空可更改）。但 **不会** 删除未使用的列，以保护您的数据。
 
 ```go
 db.AutoMigrate(&User{})
