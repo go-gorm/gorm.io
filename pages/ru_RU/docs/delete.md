@@ -50,13 +50,16 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 Если вы выполняете пакетное удаление без условий, GORM не выполнит его и вернет ошибку `ErrMissingWhereClause`
 
-Вы можете использовать условие похожее на `1 = 1` для удаления всех записей
+You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
 // DELETE `users` WHERE 1=1
+
+DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
+// UPDATE users SET `name` = "jinzhu"
 ```
 
 ## Мягкое удаление
