@@ -44,11 +44,16 @@ db. Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 If you perform a batch delete without any conditions, GORM WON'T run it, and will returns `ErrMissingWhereClause` error
 
-You can use conditions like `1 = 1` to force the global delete
+You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
-db. Unscoped(). Delete(&order)
-// DELETE FROM orders WHERE id=10;
+db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
+
+db.Where("1 = 1").Delete(&User{})
+// DELETE `users` WHERE 1=1
+
+DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
+// UPDATE users SET `name` = "jinzhu"
 ```
 
 ## Soft Delete
