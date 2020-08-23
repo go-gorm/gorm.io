@@ -50,13 +50,16 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 如果在没有任何条件的情况下执行批量删除，GORM 不会执行该操作，并返回` ErrMissingWhereClause `错误
 
-您可以使用 `1 = 1` 之类的条件来强制全局删除
+You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
 // DELETE `users` WHERE 1=1
+
+DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
+// UPDATE users SET `name` = "jinzhu"
 ```
 
 ## 软删除
