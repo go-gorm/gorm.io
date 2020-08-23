@@ -3,6 +3,11 @@ title: GORM 2.0 Release Note (Draft)
 layout: page
 ---
 
+<style>
+li.toc-item { list-style: none; }
+li.toc-item.toc-level-4 { display: none; }
+</style>
+
 GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
 
 **Highlights**
@@ -11,26 +16,26 @@ GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change a
 * Modularity
 * Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
 * Nested Transaction/SavePoint/RollbackTo SavePoint supports
-* Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
-* Full self-reference relationships supports, Join Table improvements, Association Mode for batch data
-* Multiple fields support for tracking create/update time, which adds support for UNIX (milli/nano) seconds
+* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
+* Full self-reference relationships support, Join Table improvements, Association Mode for batch data
+* Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
 * Field permissions support: read-only, write-only, create-only, update-only, ignored
-* New plugin system: read/write splitting with plugin Database Resolver, prometheus integrations...
+* New plugin system, provides official plugins for reading/writing splitting, prometheus integrations...
 * New Hooks API: unified interface with plugins
-* New Migrator: allows to create database foreign keys for relationships, constraints/checker support, enhanced index support
+* New Migrator: allows to create database foreign keys for relationships, smarter AutoMigrate, constraints/checker support, enhanced index support
 * New Logger: context support, improved extensibility
 * Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
 * Better customized data type support (e.g: JSON)
 
 ## How To Upgrade
 
-* GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and the import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm`
+* GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and its import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm`
 * Database drivers have been split into separate projects, e.g: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite), and its import path also changed to `gorm.io/driver/sqlite`
 
 ### Install
 
 ```sh
-go get gorm.io/gorm@v0.2.35
+go get gorm.io/gorm@v0.2.36
 ```
 
 ### Quick Start
@@ -60,7 +65,7 @@ The release note only cover major changes introduced in GORM V2 as a quick refer
 
 #### Context Support
 
-* All database operations support context with `WithContext` method
+* Database operations support `context.Context` with the `WithContext` method
 * Logger also accepts context for tracing
 
 ```go
@@ -69,8 +74,8 @@ DB.WithContext(ctx).Find(&users)
 
 #### Batch Insert
 
-* Use slice data with `Create` will generates a single SQL statement to insert all the data and backfill primary key values
-* If those datas contain associations, all associations will be upserted with another SQL
+* Use slice data with `Create` will generate a single SQL statement to insert all the data and backfill primary key values
+* If those data contain associations, all associations will be upserted with another SQL
 * Batch inserted data will call its `Hooks` methods (Before/After Create/Save)
 
 ```go
@@ -110,7 +115,7 @@ stmt.Vars         //=> []interface{}{1}
 
 #### Join Preload
 
-Preload association using INNER JOIN, will handle null data to avoid failing to load
+Preload associations using INNER JOIN, and will handle null data to avoid failing to scan
 
 ```go
 DB.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2})
@@ -296,7 +301,7 @@ Check out [Hints](hints.html) for details
 
 #### Field permissions
 
-Field adds permissions support: readonly, writeonly, createonly, updateonly, ignored
+Field permissions support, permission levels: read-only, write-only, create-only, update-only, ignored
 
 ```go
 type User struct {
@@ -316,14 +321,14 @@ type User struct {
   CreatedAt time.Time // Set to current time if it is zero on creating
   UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
   Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix Nano seconds as updating time
-  Updated   int64 `gorm:"autoUpdateTime:milli"` // Use unix Milli seconds as updating time
+  Updated2  int64 `gorm:"autoUpdateTime:milli"` // Use unix Milli seconds as updating time
   Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
 }
 ```
 
 #### Read/Write Splitting
 
-GORM provides read/write splitting support with plugin `DB Resolver`, which also supports auto switching database/table based on current struct/table, and multiple sources、replicas supports with customized load balancing logic
+GORM provides read/write splitting support with plugin `DB Resolver`, which also supports auto-switching database/table based on current struct/table, and multiple sources、replicas supports with customized load-balancing logic
 
 Check out [Database Resolver](dbresolver.html) for details
 
@@ -345,8 +350,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 #### Logger
 
-In addition to the context support mentioned above, Logger has also optimized the following:
-
+* Context support
 * Customize/turn off the colors in the log
 * Slow SQL log, default slow SQL time is 100ms
 * Optimized the SQL log format so that it can be copied and executed in a database console
@@ -363,9 +367,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 #### DataTypes (JSON as example)
 
-GORM optimizes support for custom types, so you can define a data structure to support all databases
+GORM optimizes support for custom types, so you can define a struct to support all databases
 
-The following takes JSON as an example (which supports Sqlite, MySQL, Postgres, refer: https://github.com/go-gorm/datatypes/blob/master/json.go)
+The following takes JSON as an example (which supports SQLite, MySQL, Postgres, refer: https://github.com/go-gorm/datatypes/blob/master/json.go)
 
 ```go
 import "gorm.io/datatypes"
@@ -451,7 +455,7 @@ func (User) TableName() string {
 }
 ```
 
-Consider to use `Scopes` for dynamic tables, e.g:
+Please use `Scopes` for dynamic tables, for example:
 
 ```go
 func UserTable(u *User) func(*gorm.DB) *gorm.DB {
@@ -465,7 +469,7 @@ DB.Scopes(UserTable(&user)).Create(&user)
 
 #### Method Chain Safety/Goroutine Safety
 
-To reduce GC allocs, GORM V2 will share `Statement` when using method chains, and will only create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
+To reduce GC allocs, GORM V2 will share `Statement` when using method chains, and will only create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, to reuse a `*gorm.DB`, you need to make sure it just after a `New Session Method`, for example:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -476,19 +480,17 @@ for i := 0; i < 100; i++ {
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// NOT Safe as reusing Statement
+// NOT Safe for a shared condition
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
 
-ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.WithContext(ctx)
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user)
 }
 
-ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
@@ -506,39 +508,42 @@ Check out [Method Chain](method_chain.html) for details
 
 #### Default Value
 
-GORM V2 won't auto reload default values created with database function after creating, checkout [Default Values](create.html#default_values) for details
+GORM V2 won't auto-reload default values created with database function after creating, checkout [Default Values](create.html#default_values) for details
 
 #### Soft Delete
 
-GORM V1 will enable soft delete if the model has field `DeletedAt`, in V2, you need to use `gorm.DeletedAt` for the model wants to enable the feature, e.g:
+GORM V1 will enable soft delete if the model has a field named `DeletedAt`, in V2, you need to use `gorm.DeletedAt` for the model wants to enable the feature, e.g:
 
 ```go
-type User struct {
-  ID      uint
-  Deleted gorm.DeletedAt
-}
-
 type User struct {
   ID        uint
   DeletedAt gorm.DeletedAt
 }
+
+type User struct {
+  ID      uint
+  // field with different name
+  Deleted gorm.DeletedAt
+}
 ```
 
-**NOTE:** `gorm.Model` are using `gorm.DeletedAt`, if you are embedding it, nothing needs to change
+**NOTE:** `gorm.Model` is using `gorm.DeletedAt`, if you are embedding it, nothing needs to change
 
 #### BlockGlobalUpdate
 
-GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL like:
+GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
-DB.Where("1 = 1 ").Delete(&User{})
+DB.Where("1 = 1").Delete(&User{})
 
 DB.Raw("delete from users")
+
+DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 ```
 
 #### ErrRecordNotFound
 
-GORM V2 only returns `ErrRecordNotFound` when you are querying with method `First`, `Last`, `Take` which is expected to return some result, and we have also removed method `RecordNotFound` in V2, please use `errors.Is` to check the error, e.g:
+GORM V2 only returns `ErrRecordNotFound` when you are querying with methods `First`, `Last`, `Take` which is expected to return some result, and we have also removed method `RecordNotFound` in V2, please use `errors.Is` to check the error, e.g:
 
 ```go
 err := DB.First(&user).Error
@@ -557,7 +562,8 @@ func (user *User) BeforeCreate(tx *gorm.DB) error {
 
   // Operations based on tx will runs inside same transaction without clauses of current one
   var role Role
-  err := tx.First(&role, "name = ?", user.Role).Error // SELECT * FROM roles WHERE name = "admin"
+  err := tx.First(&role, "name = ?", user.Role).Error
+  // SELECT * FROM roles WHERE name = "admin"
   return err
 }
 ```
@@ -597,7 +603,7 @@ DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 
 #### Plugins
 
-Plugin callbacks also must be defined as a method of type `func(tx *gorm.DB) error`, check out [Write Plugins](write_plugins.html) for details
+Plugin callbacks also need be defined as a method of type `func(tx *gorm.DB) error`, check out [Write Plugins](write_plugins.html) for details
 
 #### Updating with struct
 
@@ -625,11 +631,11 @@ DB.Select("Company").Save(&user)
 db.Preload(clause.Associations).Find(&users)
 ```
 
-Also checkout field permissions, which can be used to skip creating/updating associations globally
+Also, checkout field permissions, which can be used to skip creating/updating associations globally
 
 #### Join Table
 
-In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and has more fields, e.g:
+In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and define other fields, e.g:
 
 ```go
 type Person struct {
@@ -660,13 +666,14 @@ err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 
 #### Count
 
-Count only accepts `*int64` as argument
+Count only accepts `*int64` as the argument
 
 #### Migrator
 
-* Migrator will create database foreign keys (use `DisableForeignKeyConstraintWhenMigrating` during initialization to disable this feature and ignore or delete foreign key constraint when `DropTable`)
-* Migrator is more independent, providing better support for each database and unified API interfaces. we can design better migrate tools based on it (for example SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table)
-* Support to set `check` constraint through the tag
+* Migrator will create database foreign keys by default
+* Migrator is more independent, many API renamed to provide better support for each database with unified API interfaces
+* AutoMigrate will alter column's type if its size, precision, nullable changed
+* Support Checker through tag `check`
 * Enhanced tag setting for `index`
 
 ```go
