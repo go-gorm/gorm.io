@@ -64,4 +64,4 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 
 ## Logger
 
-ロガーは `Context` も受け付けており、ログをトラッキングすることができます。詳細については [Logger](logger.html) を参照してください。
+Logger accepts `Context` too, you can use it for log tracking, refer [Logger](logger.html) for details
