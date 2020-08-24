@@ -79,7 +79,7 @@ tx.Where("age = ?", 28).Find(&users)
 
 **注意** 在示例 2 中，第一个查询会影响第二个查询生成的 SQL ，因为 GORM 复用 `Statement` 这可能会引发预期之外的问题，请参考 [线程安全](#goroutine_safe) 了解如何避免该问题。
 
-## <span id="goroutine_safe">线程安全</span>
+## <span id="goroutine_safe">方法链和协程安全</span>
 
 新初始化的 `*gorm.DB` 或调用 `新建会话方法` 后，GORM 会创建新的 `Statement` 实例。因此想要复用 `*gorm.DB`，您需要确保它们处于 `新建会话模式`，例如：
 

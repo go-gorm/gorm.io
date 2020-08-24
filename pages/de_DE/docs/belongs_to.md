@@ -80,7 +80,7 @@ GORM erlaubt es `belongs to` Zugehörigkeiten mit `Preload` or `Joins` im Voraus
 
 ## Fremdschlüssel Bedingungen
 
-Man kann `OnUpdate` (bei Update), `OnDelete` (beim Löschen) Bedingungen mit dem `constraint` tag hinzufügen, z.B. :
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {

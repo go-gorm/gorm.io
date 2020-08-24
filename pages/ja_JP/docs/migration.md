@@ -7,7 +7,7 @@ layout: page
 
 スキーマを自動的にマイグレーションし、スキーマを最新の状態に保ちます。
 
-**注：**AutoMigrateは、テーブルを作成し、「スキーマにあってテーブルにない」外部キ​​ーや制約、カラム、インデックス**だけ**を作成します。データを保護するために、テーブルに既存のカラムの型を変更したり、未使用のカラムを削除したりすることは**ありません**。
+**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes, and will change existing column's type if it's size, precision, nullable changed, it **WON'T** delete unused columns to protect your data.
 
 ```go
 db.AutoMigrate(&User{})

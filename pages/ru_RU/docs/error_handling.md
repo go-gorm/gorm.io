@@ -5,7 +5,7 @@ layout: страница
 
 В Go, очень важна обработка ошибок.
 
-Вам рекомендуется проверять ошибки после [Методов окончания](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
+You are encouraged to do error check after any [Finisher Methods](method_chaining.html#finisher_method)
 
 ## Обработка ошибок
 

@@ -5,7 +5,7 @@ layout: страница
 
 ## Чистый SQL
 
-Запрос сырого SQL
+Query Raw SQL with `Scan`
 
 ```go
 type Result struct {
@@ -23,59 +23,21 @@ var age int
 DB.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-Выполнение сырого SQL
+`Exec` with Raw SQL
 
 ```go
 db.Exec("DROP TABLE users")
 db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,3})
 
-// SQL Выражение
+// Exec with SQL Expression
 DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
 **ПРИМЕЧАНИЕ** GORM позволяет кэшировать подготовленное утверждение для повышения производительности, смотрите [Производительность](performance.html) для подробностей
 
-## `Строка` & `Строки`
+## <span id="named_argument">Named Argument</span>
 
-Получить результат в `*sql.Row`
-
-```go
-// Использовать GORM API построитель SQL
-row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
-row.Scan(&name, &age)
-
-// Использовать сырой SQL
-row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row()
-row.Scan(&name, &age, &email)
-```
-
-Получить результат как `*sql.Rows`
-
-```go
-// Использовать GORM API построитель SQL
-rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows()
-defer rows.Close()
-for rows.Next() {
-  rows.Scan(&name, &age, &email)
-
-  // что-то делаем
-}
-
-// Сырой SQL
-rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows()
-defer rows.Close()
-for rows.Next() {
-  rows.Scan(&name, &age, &email)
-
-  // что-то делаем
-}
-```
-
-Смотрите [FindInBatches](advanced_query.html), для подробностей как запрашивать и обрабатывать записи в пакете Ознакомьтесь с [Групповые Условия](advanced_query.html#group_conditions) для создания сложных SQL запросов
-
-## <span id="named_argument">Именованные аргументы</span>
-
-GORM поддерживает именованные аргументы при помощи [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) или `map[string]interface{}{}`, например:
+GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
 ```go
 DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -84,6 +46,7 @@ DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&us
 DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
 // SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
 
+// Named Argument with Raw SQL
 DB.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name", sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
 // SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
 
@@ -94,24 +57,9 @@ DB.Raw("SELECT * FROM users WHERE (name1 = @name AND name3 = @name) AND name2 = 
 // SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
 ```
 
-## Сканировать `*sql.Rows` в struct
+## DryRun Mode
 
-```go
-rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
-defer rows.Close()
-
-for rows.Next() {
-  var user User
-  // ScanRows сканирует строку в user
-  db.ScanRows(rows, &user)
-
-  // что-то делаем
-}
-```
-
-## Режим DryRun
-
-Генерировать `SQL` без выполнения, может быть использован для подготовки или тестирования сгенерированного SQL, смотрите [Session](session.html) для подробностей
+Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
 
 ```go
 stmt := DB.Session(&Session{DryRun: true}).First(&user, 1).Statement
@@ -119,13 +67,68 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 ```
 
+## `Row` & `Rows`
+
+Get result as `*sql.Row`
+
+```go
+// Use GORM API build SQL
+row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
+row.Scan(&name, &age)
+
+// Use Raw SQL
+row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row()
+row.Scan(&name, &age, &email)
+```
+
+Get result as `*sql.Rows`
+
+```go
+// Use GORM API build SQL
+rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows()
+defer rows.Close()
+for rows.Next() {
+  rows.Scan(&name, &age, &email)
+
+  // do something
+}
+
+// Raw SQL
+rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows()
+defer rows.Close()
+for rows.Next() {
+  rows.Scan(&name, &age, &email)
+
+  // do something
+}
+```
+
+Checkout [FindInBatches](advanced_query.html) for how to query and process records in batch Checkout [Group Conditions](advanced_query.html#group_conditions) for how to build complicated SQL Query
+
+## Scan `*sql.Rows` into struct
+
+Use `ScanRows` to scan a row into a struct, for example:
+
+```go
+rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
+defer rows.Close()
+
+var user User
+for rows.Next() {
+  // ScanRows scan a row into user
+  db.ScanRows(rows, &user)
+
+  // do something
+}
+```
+
 ## Дополнительно
 
 ### Оговорки
 
-GORM использует SQL конструктор при генерации SQL для каждой операции, GORM создает объект `*gorm.Statement`, применяет все GORM API добавлять/изменять `Clause (Оговорки)` для `Statement`, и в конце генерирует GORM SQL на основе этих выражений
+GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
 
-Например, при запросе с помощью `First` он добавляет следующие оговорки в `Statement`
+For example, when querying with `First`, it adds the following clauses to the `Statement`
 
 ```go
 clause.Select{Columns: "*"}
@@ -136,25 +139,25 @@ clause.OrderByColumn{
 }
 ```
 
-Затем GORM наконец-то выполняет запрос SQL в callback функции, например:
+Then GORM build finally querying SQL in the `Query` callbacks like:
 
 ```go
 Statement.Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")
 ```
 
-Который генерирует SQL:
+Which generate SQL:
 
 ```sql
 SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 ```
 
-Вы можете определить `Clause` и использовать его с GORM, он должен реализовывать [Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface)
+You can define your own `Clause` and use it with GORM, it needs to implements [Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface)
 
-Ознакомьтесь с [примерами](https://github.com/go-gorm/gorm/tree/master/clause)
+Check out [examples](https://github.com/go-gorm/gorm/tree/master/clause) for reference
 
 ### Построитель оговорок
 
-Для различных баз данных Оговорки могут генерировать разные SQL, например:
+For different databases, Clauses may generate different SQL, for example:
 
 ```go
 db.Offset(10).Limit(5).Find(&users)
@@ -164,13 +167,13 @@ db.Offset(10).Limit(5).Find(&users)
 // SELECT * FROM `users` LIMIT 5 OFFSET 10
 ```
 
-Что поддерживается, потому что GORM позволяет зарегистрировать драйвер базы данных Clause Builder, чтобы заменить стандартный, например, [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45)
+Which is supported because GORM allows database driver register Clause Builder to replace the default one, take the [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45) as example
 
 ### Варианты оговорок
 
-GORM определяет [Многие оговорки](https://github.com/go-gorm/gorm/tree/master/clause), а некоторые оговорки предоставляют расширенные опции и могут быть использованы для вашего приложения
+GORM defined [Many Clauses](https://github.com/go-gorm/gorm/tree/master/clause), and some clauses provide advanced options can be used for your application
 
-Хотя большинство из них редко используется, если вы обнаружили, что публичный GORM API не соответствует вашим требованиям, может быть полезно проверить их, например:
+Although most of them are rarely used, if you find GORM public API can't match your requirements, may be good to check them out, for example:
 
 ```go
 DB.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
@@ -179,7 +182,7 @@ DB.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
 
 ### StatementModifier
 
-GORM предоставляет интерфейс [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier), который позволяет вам изменить statement в соответствии с вашими требованиями, смотрите [Hints](hints.html) в качестве примера
+GORM provides interface [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier) allows you modify statement to match your requirements, take [Hints](hints.html) as example
 
 ```go
 import "gorm.io/hints"

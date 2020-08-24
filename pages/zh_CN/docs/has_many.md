@@ -131,7 +131,7 @@ type User struct {
 
 ## 外键约束
 
-你可以通过标签 `constraint` 并带上 `OnUpdate`、`OnDelete` 实现外键约束，例如：
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {

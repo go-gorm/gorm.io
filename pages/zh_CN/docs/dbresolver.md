@@ -49,7 +49,7 @@ DB.Use(dbresolver.Register(dbresolver.Config{
 
 DBResolver 会根据工作表、struct 自动切换连接
 
-对于原生 SQL，DBResolver 会从 SQL 中提取表名以匹配 Resolver，除非 SQL 开头为 `SELECT`，否则 DBResolver 总是会使用 `sources`，例如：
+For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
 
 ```go
 // `User` Resolver 示例
@@ -72,7 +72,7 @@ DB.Table("orders").Find(&Report{}) // replicas `db8`
 
 ## 读写分离
 
-DBResolver 的读写分离目前是基于 [GORM callback](https://gorm.io/docs/write_plugins.html) 实现的。
+Read/Write splitting with DBResolver based on the current used [GORM callbacks](https://gorm.io/docs/write_plugins.html).
 
 对于 `Query`、`Row` callback，如果手动指定为 `Write` 模式，此时会使用 `sources`，否则使用 `replicas`。 对于 `Raw` callback，如果 SQL 是以 `SELECT` 开头，语句会被认为是只读的，会使用 `replicas`，否则会使用 `sources`。
 
@@ -91,7 +91,7 @@ DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 
 ## 负载均衡
 
-GORM 支持基于策略的 sources/replicas 负载均衡，自定义策略需实现以下接口：
+GORM supports load balancing sources/replicas based on policy, the policy should be a struct implements following interface:
 
 ```go
 type Policy interface {
@@ -99,7 +99,7 @@ type Policy interface {
 }
 ```
 
-当前只实现了一个 `RandomPolicy` 策略，如果没有指定策略，它就是默认策略。
+Currently only the `RandomPolicy` implemented and it is the default option if no other policy specified.
 
 ## 连接池
 

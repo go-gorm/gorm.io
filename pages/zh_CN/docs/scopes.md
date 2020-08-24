@@ -81,4 +81,6 @@ func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {
     return db
   }
 }
+
+db.Scopes(CurOrganization(r)).Save(&articles)
 ```

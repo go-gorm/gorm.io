@@ -46,7 +46,7 @@ db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN 
 
 ## Предзагрузить все
 
-`clause.Associations` может работать с `Preload` аналогично `Select` при создании/обновлении, вы можете использовать его для `предзагрузки` всех связей, например:
+`clause.Associations` can works with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
 
 ```go
 type User struct {

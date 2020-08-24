@@ -3,9 +3,9 @@ title: Advanced Query
 layout: page
 ---
 
-## Smart Select Fields
+## <span id="smart_select">Smart Select Fields</span>
 
-GORMは [``Select](query.html)で特定のフィールドを選択することができます。アプリケーションでこれを頻繁に使用する場合は、特定のフィールドを自動的に選択するような小さなAPI構造体を定義するとよいでしょう。
+GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
 
 ```go
 type User struct {
@@ -21,7 +21,7 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when query
+// Select `id`, `name` automatically when querying
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
@@ -58,7 +58,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From SubQuery</span>
 
-GORMでは、`Table`を用いることで、FROM句でサブクエリを使用することができます。
+GORM allows you using subquery in FROM clause with method `Table`, for example:
 
 ```go
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -112,7 +112,7 @@ DB.Table("users").Find(&results)
 
 ## FirstOrInit
 
-最初に一致するレコードを取得するか、指定された条件で新しいレコードを初期化します (構造体とmap条件のみで動作します)
+Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
 
 ```go
 // User not found, initialize it with give conditions
@@ -147,7 +147,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign`はレコードが見つかったかどうかに関わらず、指定した属性を初期化します。属性は作成されるSQLクエリには使用されません。
+`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -162,7 +162,7 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-最初に一致するレコードを取得するか、指定された条件で新しいレコードを作成します (構造体、map条件でのみ動作します)
+Get first matched record or create a new one with given conditions (only works with struct, map conditions)
 
 ```go
 // User not found, create a new record with give conditions
@@ -172,7 +172,7 @@ db.FirstOrCreate(&user, User{Name: "non_existing"})
 
 // Found user with `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
-// user -> User{ID: 111, Name: "jinzhu", "Age}: 18
+// user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
 レコードが見つからない場合、より多くの属性を持つ構造体を作成します。それらの `Attrs` はSQLクエリのビルドには使用されません。
@@ -190,7 +190,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign`はレコードが見つかるかどうかにかかわらず属性を初期化し、データベースに保存します。
+`Assign` attributes to the record regardless it is found or not and save them back to the database.
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -208,7 +208,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## Optimizer/Index Hints
 
-最適化ヒントを使用すると、特定のクエリ実行計画を選択するクエリ最適化を制御できます。
+Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
 
 ```go
 import "gorm.io/hints"
@@ -241,7 +241,7 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows scan a row into user
+  // ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
   db.ScanRows(rows, &user)
 
   // do something
@@ -288,7 +288,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use [`Scan`](#scan) instead
+Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
 
 ```go
 var ages []int64
@@ -341,9 +341,11 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Find all paid, shipped orders that amount greater than 1000
 ```
 
+Checout [Scopes](scopes.html) for details
+
 ## <span id="count">Count</span>
 
-一致したレコード数をカウントします
+Get matched records count
 
 ```go
 var count int64

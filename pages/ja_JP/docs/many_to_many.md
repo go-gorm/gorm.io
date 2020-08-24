@@ -65,7 +65,7 @@ To override them, you can use tag `foreignKey`, `reference`, `joinForeignKey`, `
 ```go
 type User struct {
     gorm.Model
-    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:ProfileRefer"`
+    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:UserRefer"`
     Refer    uint
 }
 
@@ -130,13 +130,14 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// PersonAddress must defined all required foreign keys, or it will raise error
-db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
+// Change model Person's field Addresses's join table to PersonAddress
+// PersonAddress must defined all required foreign keys or it will raise error
+err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
 ## FOREIGN KEY Constraints
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {
@@ -171,8 +172,8 @@ type Blog struct {
   Subject    string
   Body       string
   Tags       []Tag `gorm:"many2many:blog_tags;"`
-  SharedTags []Tag `gorm:"many2many:shared_blog_tags;ForeignKey:id;References:id"`
   LocaleTags []Tag `gorm:"many2many:locale_blog_tags;ForeignKey:id,locale;References:id"`
+  SharedTags []Tag `gorm:"many2many:shared_blog_tags;ForeignKey:id;References:id"`
 }
 
 // Join Table: blog_tags
@@ -181,13 +182,13 @@ type Blog struct {
 //   foreign key: tag_id, reference: tags.id
 //   foreign key: tag_locale, reference: tags.locale
 
-// Join Table: shared_blog_tags
-//   foreign key: blog_id, reference: blogs.id
-//   foreign key: tag_id, reference: tags.id
-
 // Join Table: locale_blog_tags
 //   foreign key: blog_id, reference: blogs.id
 //   foreign key: blog_locale, reference: blogs.locale
+//   foreign key: tag_id, reference: tags.id
+
+// Join Table: shared_blog_tags
+//   foreign key: blog_id, reference: blogs.id
 //   foreign key: tag_id, reference: tags.id
 ```
 

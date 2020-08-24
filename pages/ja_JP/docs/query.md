@@ -5,26 +5,26 @@ layout: page
 
 ## Retrieving a single object
 
-GORMは、データベースから１つのオブジェクトを取得するために`First`, `Take`, `Last`メソッドを提供します、それは、データベースにクエリを実行する際に`LIMIT 1`の条件を追加し、レコードが見つからなかった場合、`ErrRecordNotFound`エラーを返します。
+GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return error `ErrRecordNotFound` if no record found.
 
 ```go
-// 主キーでソートし、最初のレコードを取得する
+// Get the first record ordered by primary key
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
 
-// ソートせずにレコードを1行取得する
+// Get one record, no specified order
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// 主キーでソートし、最後のレコードを取得する
+// Get last record, order by primary key desc
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // 見つけたレコードの数を返す
-result.Error        // errorを返す
+result.RowsAffected // returns found records count
+result.Error        // returns error
 
-// ErrRecordNotFoundエラーかどうか検査する
+// check error ErrRecordNotFound
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
@@ -44,17 +44,17 @@ result.Error        // エラーを返す
 ### String Conditions
 
 ```go
-// 最初にマッチしたレコードを取得
+// Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
-// マッチしたレコードすべて取得
+// Get all matched records
 db.Where("name <> ?", "jinzhu").Find(&users)
 // SELECT * FROM users WHERE name <> 'jinzhu';
 
 // IN
 db.Where("name IN ?", []string{"jinzhu", "jinzhu 2"}).Find(&users)
-// SELECT * FROM users WHERE name in ('jinzhu','jinzhu 2');
+// SELECT * FROM users WHERE name IN ('jinzhu','jinzhu 2');
 
 // LIKE
 db.Where("name LIKE ?", "%jin%").Find(&users)
@@ -164,10 +164,10 @@ db.Where("name = 'jinzhu'").Or(User{Name: "jinzhu 2", Age: 18}).Find(&users)
 
 // Map
 db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age": 18}).Find(&users)
-// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
+// SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-[Group Conditions in Advanced Query](advanced_query.html)もチェックしてください。複雑なSQLを簡単に書くことができます。
+Also check out [Group Conditions in Advanced Query](advanced_query.html#group_conditions), it can be used to write complicated SQL
 
 ## Selecting Specific Fields
 
@@ -184,9 +184,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
+Also check out [Smart Select Fields](advanced_query.html#smart_select)
+
 ## Order
 
-データベースからレコードを取得する際の順序を指定します
+Specify order when retrieving records from the database
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -199,7 +201,7 @@ db.Order("age desc").Order("name").Find(&users)
 
 ## Limit & Offset
 
-`Limit`は取得するレコードの最大数を指定します。 `Offset`はレコードを返す前にスキップするレコードの数を指定します。
+`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
 
 ```go
 db.Limit(3).Find(&users)
@@ -221,6 +223,8 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
 ```
+
+Checkout [Pagination](scopes.html#pagination) for how to make a paginator
 
 ## Group & Having
 
@@ -256,17 +260,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-モデルから重複した行を削除する値を指定します。
+Selecting distinct values from the model
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct`は[`Pluck`](advanced_query.html#pluck)や[`Count`](advanced_query.html#count)と同時に利用できます。
+`Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
 
 ## Joins
 
-結合条件を指定します。
+Specify Joins conditions
 
 ```go
 type result struct {
@@ -296,11 +300,11 @@ db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-詳細については、 [Preloading (Eager Loading)](preload.html) を参照してください。
+Refer [Preloading (Eager Loading)](preload.html) for details
 
 ## <span id="scan">Scan</span>
 
-`Find` と同様に構造体に結果をスキャンします。
+Scan results into a struct work similar to `Find`
 
 ```go
 type Result struct {

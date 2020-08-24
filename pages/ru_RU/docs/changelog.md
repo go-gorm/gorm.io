@@ -15,7 +15,7 @@ GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change a
 * Full self-reference relationships supports, Join Table improvements, Association Mode for batch data
 * Multiple fields support for tracking create/update time, which adds support for UNIX (milli/nano) seconds
 * Поддержка прав доступа полей: только для чтения, только для записи, только для создания, только для обновления, игнорируется
-* New plugin system: read/write splitting with plugin Database Resolver, prometheus integrations...
+* New plugin system: multiple databases, read/write splitting support with plugin Database Resolver, prometheus integrations...
 * New Hooks API: unified interface with plugins
 * New Migrator: allows to create database foreign keys for relationships, constraints/checker support, enhanced index support
 * New Logger: context support, improved extensibility

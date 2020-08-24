@@ -6,14 +6,15 @@ layout: страница
 GORM предоставляет методы `Session`, которые являются [`Методами новой сессии`](method_chaining.html), и позволяют создавать новый режим сеанса с настройками:
 
 ```go
-// Настройки Session
+// Session Configuration
 type Session struct {
-  DryRun         bool
-  PrepareStmt    bool
-  WithConditions bool
-  Context        context.Context
-  Logger         logger.Interface
-  NowFunc        func() time.Time
+  DryRun            bool
+  PrepareStmt       bool
+  WithConditions    bool
+  AllowGlobalUpdate bool
+  Context           context.Context
+  Logger            logger.Interface
+  NowFunc           func() time.Time
 }
 ```
 
@@ -22,15 +23,15 @@ type Session struct {
 Генерировать `SQL` без выполнения, может быть использован для подготовки или тестирования сгенерированных SQL, например:
 
 ```go
-// режим новой сессии
+// session mode
 stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 
-// глобальный режим DryRun
+// globally mode with DryRun
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{DryRun: true})
 
-// разные БД генерируют разные SQL запросы
+// different databases generate different SQL
 stmt := db.Find(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 // PostgreSQL
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
@@ -42,33 +43,33 @@ stmt.Vars         //=> []interface{}{1}
 `PreparedStmt` создает подготовленное объекты при выполнении любого SQL и кэширует их для ускорения будущих звонков, например:
 
 ```go
-// глобальный режим, все запросы к БД будут проходить подготовку и кэшироваться
+// globally mode, all DB operations will create prepared stmt and cache them
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
 
-// сессионный режим
+// session mode
 tx := db.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 
-// возвращает менеджер подготовленных состояний
+// returns prepared statements manager
 stmtManger, ok := tx.ConnPool.(*PreparedStmtDB)
 
-// закрыть режим подготовки для текущей сессии
+// close prepared statements for *current session*
 stmtManger.Close()
 
-// подготовленный SQL для текущей сессии
-stmtManger.PreparedSQL
+// prepared SQL for *current session*
+stmtManger.PreparedSQL // => []string{}
 
-// подготовленные методы для работы с текущим стеком соединений (все сессии)
+// prepared statements for current database connection pool (all sessions)
 stmtManger.Stmts // map[string]*sql.Stmt
 
 for sql, stmt := range stmtManger.Stmts {
-  sql  // подготовленный SQL
-  stmt // подготовленный statement
-  stmt.Close() // закрыть подготовленный statement
+  sql  // prepared SQL
+  stmt // prepared statement
+  stmt.Close() // close the prepared statement
 }
 ```
 
@@ -91,19 +92,30 @@ tx2.First(&user)
 // SELECT * FROM users ORDER BY id
 ```
 
-## Контекст
+## AllowGlobalUpdate
 
-С параметром `Context`, вы можете установить `Context` для следующих операций SQL, например:
+GORM doesn't allow global update/delete by default, will return `ErrMissingWhereClause` error, you can set this option to true to enable it, for example:
+
+```go
+DB.Session(&gorm.Session{
+  AllowGlobalUpdate: true,
+}).Model(&User{}).Update("name", "jinzhu")
+// UPDATE users SET `name` = "jinzhu"
+```
+
+## Context
+
+With the `Context` option, you can set the `Context` for following SQL operations, for example:
 
 ```go
 timeoutCtx, _ := context.WithTimeout(context.Background(), time.Second)
 tx := db.Session(&Session{Context: timeoutCtx})
 
-tx.First(&user) // запрос с контекстом timeoutCtx
-tx.Model(&user).Update("role", "admin") // обновление с контекстом timeoutCtx
+tx.First(&user) // query with context timeoutCtx
+tx.Model(&user).Update("role", "admin") // update with context timeoutCtx
 ```
 
-GORM также предоставляет сокращение для `WithContext`, при помощи:
+GORM also provides shortcut method `WithContext`,  here is the definition:
 
 ```go
 func (db *DB) WithContext(ctx context.Context) *DB {
@@ -113,7 +125,7 @@ func (db *DB) WithContext(ctx context.Context) *DB {
 
 ## Logger
 
-Gorm позволяет настроить встроенный логгер, используя опцию `Logger`, например:
+Gorm allows customize built-in logger with the `Logger` option, for example:
 
 ```go
 newLogger := logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags),
@@ -127,11 +139,11 @@ db.Session(&Session{Logger: newLogger})
 db.Session(&Session{Logger: logger.Default.LogMode(logger.Silent)})
 ```
 
-Смотрите [Logger](logger.html) для получения дополнительной информации
+Checkout [Logger](logger.html) for more details
 
 ## NowFunc
 
-`NowFunc` позволяет изменить функцию, чтобы получить текущее время GORM, например:
+`NowFunc` allows change the function to get current time of GORM, for example:
 
 ```go
 db.Session(&Session{
@@ -141,9 +153,9 @@ db.Session(&Session{
 })
 ```
 
-## Отладка
+## Debug
 
-`Debug` это краткий метод изменения `Logger` сессии на режим отладки, вот определение:
+`Debug` is a shortcut method to change session's `Logger` to debug mode,  here is the definition:
 
 ```go
 func (db *DB) Debug() (tx *DB) {

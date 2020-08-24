@@ -28,9 +28,6 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 tx := db.Session(&Session{Logger: newLogger})
 tx.First(&user)
 tx.Model(&user).Update("Age", 18)
-
-// Debug a single operation, change the session's log level to logger.Info
-db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
 ### ログレベル
@@ -43,11 +40,19 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 })
 ```
 
+### Debug
+
+Debug a single operation, change current operation's log level to logger.Info
+
+```go
+db.Debug().Where("name = ?", "jinzhu").First(&User{})
+```
+
 ## ロガーのカスタマイズ
 
-独自のロガーを定義する方法については、GORMの [デフォルトロガー](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) を参照してください。
+Refer to GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
 
-ロガーは次のインターフェイスを実装する必要があります。 `context`を受け付けるため、ログトレースに使用できます。
+The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
 
 ```go
 type Interface interface {

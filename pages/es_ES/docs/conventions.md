@@ -47,7 +47,7 @@ func (User) TableName() string {
 }
 ```
 
-**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use the following code:
+**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use `Scopes`, for example:
 
 ```go
 func UserTable(user User) func (db *gorm.DB) *gorm.DB {
@@ -84,7 +84,7 @@ Check out [From SubQuery](advanced_query.html#from_subquery) for how to use SubQ
 
 ### <span id="naming_strategy">NamingStrategy</span>
 
-GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html) for details
+GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html#naming_strategy) for details
 
 ## Column Name
 
@@ -99,7 +99,7 @@ type User struct {
 }
 ```
 
-You can override the column name with tag `column`, or use [`NamingStrategy`](#naming_strategy)
+You can override the column name with tag `column` or use [`NamingStrategy`](#naming_strategy)
 
 ```go
 type Animal struct {
@@ -118,6 +118,9 @@ For models having `CreatedAt` field, the field will be set to the current time w
 ```go
 db.Create(&user) // set `CreatedAt` to current time
 
+user2 := User{Name: "jinzhu", CreatedAt: time.Now()}
+db.Create(&user2) // user2's `CreatedAt` won't be changed
+
 // To change its value, you could use `Update`
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
@@ -130,6 +133,14 @@ For models having `UpdatedAt` field, the field will be set to the current time w
 db.Save(&user) // set `UpdatedAt` to current time
 
 db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+
+db.Model(&user).UpdateColumn("name", "jinzhu") // `UpdatedAt` won't be changed
+
+user2 := User{Name: "jinzhu", UpdatedAt: time.Now()}
+db.Create(&user2) // user2's `UpdatedAt` won't be changed when creating
+
+user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
+db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
 ```
 
-**NOTE** GORM supports having multiple time tracking fields, track with other fields or track with UNIX second/UNIX nanosecond, check [Models](models.html#time_tracking) for more details
+**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details

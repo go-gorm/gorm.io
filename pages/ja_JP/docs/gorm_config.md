@@ -7,14 +7,15 @@ GORMは初期化時にConfigを使用できます
 
 ```go
 type Config struct {
-    SkipDefaultTransaction bool
-    NamingStrategy schema.Namer
-    Logger logger.Interface
-    NowFunc func() time.Time
-    DryRun bool
-    PrepareStmt bool
-    DisableAutomaticPing bool
-    DisableForeignKeyConstraintWhenMigrating bool
+  SkipDefaultTransaction bool
+  NamingStrategy         schema.Namer
+  Logger                 logger.Interface
+  NowFunc                func() time.Time
+  DryRun                 bool
+  PrepareStmt            bool
+  AllowGlobalUpdate      bool
+  DisableAutomaticPing   bool
+  DisableForeignKeyConstraintWhenMigrating bool
 }
 ```
 
@@ -28,7 +29,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## NamingStrategy
+## <span id="naming_strategy">NamingStrategy</span>
 
 GORMでは、`Namer` インターフェイスを実装する必要があるデフォルトの `NamingStrategy`をオーバーライドすることで、命名規則を変更できます。
 
@@ -56,9 +57,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## ロガー
 
-GORMのデフォルトのロガーをこのオプションでオーバーライドすることで変更できます。詳細は [ロガー](logger.html) を参照してください。
+Allow to change GORM's default logger by overriding this option, refer [Logger](logger.html) for more details
 
-## NowFunc
+## <span id="now_func">NowFunc</span>
 
 新しいタイムスタンプを作成するときに使用する関数を変更します
 
@@ -90,9 +91,13 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
+## AllowGlobalUpdate
+
+Enable global update/delete, refer [Session](session.html) for details
+
 ## DisableAutomaticPing
 
-GORMはデータベースの可用性をチェックするために初期化後に自動的にデータベースをpingします。 `true`に設定して無効にできます
+GORM automatically ping database after initialized to check database availability, disable it by setting it to `true`
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -102,7 +107,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DisableForeignKeyConstraintWhenMigrating
 
-GORMは、`AutoMigrate`または`CreateTable`のときにデータベースの外部キー制約を自動的に作成します。これを`true`に設定して無効できます。詳細については、[マイグレーション](migration.html)を参照してください。
+GORM creates database foreign key constraints automatically when `AutoMigrate` or `CreateTable`, disable this by setting it to `true`, refer [Migration](migration.html) for details
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{

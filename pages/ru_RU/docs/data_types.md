@@ -48,12 +48,12 @@ type GormDataTypeInterface interface {
 }
 
 func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
-  // использет field.Tag, field.TagSettings для получения тегов поля
-  // смотрите https://github.com/go-gorm/gorm/blob/master/schema/field.go для всех настроек
+  // use field.Tag, field.TagSettings gets field's tags
+  // checkout https://github.com/go-gorm/gorm/blob/master/schema/field.go for all options
 
-  // возвращает тип БД в зависимости от имени драйвера
+  // returns different database type based on driver name
   switch db.Dialector.Name() {
-  case "mysql":
+  case "mysql", "sqlite":
     return "JSON"
   case "postgres":
     return "JSONB"

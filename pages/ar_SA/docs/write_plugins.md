@@ -53,7 +53,9 @@ func cropImage(db *gorm.DB) {
     // All relationships for current model
     db.Statement.Schema.Relationships
 
+    // Find field with field name or db name
     field := db.Statement.Schema.LookUpField("Name")
+
     // processing
   }
 }
@@ -85,19 +87,38 @@ db. Callback(). Create(). Replace("gorm:create", newCreateFunction)
 Register callbacks with orders
 
 ```go
-db. After("gorm:create"). Query(). After("gorm:query"). Register("my_plugin:after_query", afterQuery)
-db. Delete(). After("gorm:delete"). Register("my_plugin:after_delete", afterDelete)
-db. Update(). Before("gorm:update"). Register("my_plugin:before_update", beforeUpdate)
-db. After("gorm:before_create"). Register("my_plugin:before_create", beforeCreate)
+// before gorm:create
+db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
+
+// after gorm:create
+db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
+
+// before gorm:query
+db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
+
+// after gorm:delete
+db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
+
+// before gorm:update
+db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
+
+// before gorm:create and after gorm:before_create
+db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
+
+// before any other callbacks
+db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
+
+// after any other callbacks
+db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
 ### Defined Callbacks
 
-GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to support current GORM features, check them out before starting your plugins
+GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to power current GORM features, check them out before starting your plugins
 
 ## Plugin
 
-GORM provides `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
+GORM provides a `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
 
 ```go
 type Plugin interface {

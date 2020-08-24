@@ -87,15 +87,18 @@ db.Table("users").Where("id IN (?)", []int{10, 11}).Updates(map[string]interface
 
 ### 阻止全局更新
 
-如果在没有任何条件的情况下执行批量更新，GORM 不会执行该操作，并返回` ErrMissingWhereClause `错误
+If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error by default
 
-您可以使用 `1 = 1` 之类的条件来强制全局更新
+You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Model(&User{}).Update("name", "jinzhu").Error // gorm.ErrMissingWhereClause
 
 db.Model(&User{}).Where("1 = 1").Update("name", "jinzhu")
 // UPDATE users SET `name` = "jinzhu" WHERE 1=1
+
+DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name", "jinzhu")
+// UPDATE users SET `name` = "jinzhu"
 ```
 
 ### 更新的记录数
@@ -131,7 +134,7 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 
 ### Update from SubQuery
 
-Update a table by using SubQuery
+使用子查询更新表
 
 ```go
 DB.Model(&user).Update("price", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
@@ -139,42 +142,42 @@ DB.Table("users as u").Where("name = ?", "jinzhu").Update("name", DB.Table("comp
 DB.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{}{}{"name": DB.Table("companies as c").Select("name").Where("c.id = u.company_id")})
 ```
 
-### Without Hooks/Time Tracking
+### 不使用钩子和时间追踪
 
-If you want to skip `Hooks` methods and the auto-update time tracking when updating, you can use `UpdateColumn`, `UpdateColumns`
+如果您想在更新时跳过 `钩子` 方法和自动更新时间追踪， 您可以使用 `UpdateColumn`、`UpdateColumns`
 
 ```go
-// Update single attribute, similar with `Update`
+// 更新单列，用法类似于 `Update`
 db.Model(&user).UpdateColumn("name", "hello")
 // UPDATE users SET name='hello' WHERE id = 111;
 
-// Update attributes, similar with `Updates`
+// 更新多列，用法类似于 `Updates`
 db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE id = 111;
 
-// Update attributes with Select, similar with `Updates`
+// 配合 Select 更新多列，用法类似于 `Updates`
 db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello"})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
-### Check Field has changed?
+### 检查字段是否有变更？
 
-GORM provides `Changed` method could be used in **Before Hooks** when updating to check fields going to be updated or not
+GORM 提供的 `Changed` 方法可以在 **Before** 钩子中检查字段是否有变更
 
-The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the value of `Update` / `Updates` equals model value's field value and will the field be saved or not, will returns true if not equal and it will be saved
+`Changed` 方法只能与 `Update`、`Updates` 方法一起使用，它只是检查 Model 对象字段的值与 `Update`、`Updates` 的值是否相等，以及该字段是否会被更新（例如，可以通过 Select、Omit 排除某些字段），如果不相等，则返回 true，并更新记录
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
-  // role field changed
+  // 如果 role 字段有变更
     if tx.Statement.Changed("Role") {
     return errors.New("role not allowed to change")
     }
 
-  if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
+  if tx.Statement.Changed("Name", "Admin") { // 如果 Name 或 Role 字段有变更
     tx.Statement.SetColumn("Age", 18)
   }
 
-  // any fields changed
+  // 如果任意字段有变更
     if tx.Statement.Changed() {
         tx.Statement.SetColumn("RefreshedAt", time.Now())
     }
@@ -184,23 +187,23 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"})
-// Changed("Name") => false, `Name` not changed
+// Changed("Name") => false, 因为 `Name` 没有变更
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{
   "name": "jinzhu2", "admin": false,
 })
-// Changed("Name") => false, `Name` not selected to update
+// Changed("Name") => false, 因为 `Name` 没有被 Select 选中并更新
 
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})
-// Changed("Name") => false, `Name` not changed
+// Changed("Name") => false, 因为 `Name` 没有变更
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"})
-// Changed("Name") => false, `Name` not selected to update
+// Changed("Name") => false, 因为 `Name` 没有被 Select 选中并更新
 ```
 
-### Change Updating Values
+### 在更新时修改值
 
-To change updating values in Before Hooks, you should use `scope.SetColumn` unless it is a full updates with `Save`, for example:
+若要在 Before 钩子中改变要更新的值，如果它是一个完整的更新，可以使用 `Save`；否则，应该使用 `scope.SetColumn` ，例如：
 
 ```go
 func (user *User) BeforeSave(scope *gorm.Scope) (err error) {

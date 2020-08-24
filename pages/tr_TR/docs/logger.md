@@ -28,9 +28,6 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 tx := db.Session(&Session{Logger: newLogger})
 tx.First(&user)
 tx.Model(&user).Update("Age", 18)
-
-// Debug a single operation, change the session's log level to logger.Info
-db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
 ### Log Levels
@@ -41,6 +38,14 @@ GORM defined log levels: `Silent`, `Error`, `Warn`, `Info`
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
   Logger: logger.Default.LogMode(logger.Silent),
 })
+```
+
+### Debug
+
+Debug a single operation, change current operation's log level to logger.Info
+
+```go
+db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
 ## Customize Logger

@@ -131,7 +131,7 @@ type User struct {
 
 ## FOREIGN KEY Constraints
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {

@@ -50,13 +50,16 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 何も条件を付けずにバッチ削除を行った場合、GORMは実行せず、`ErrMissingWhereClause`エラーを返します。
 
-`1 = 1` のような条件を使用して、全削除を強制できます。
+You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
 // DELETE `users` WHERE 1=1
+
+DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
+// UPDATE users SET `name` = "jinzhu"
 ```
 
 ## Soft Delete

@@ -53,7 +53,7 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 
   // 根据不同的数据库驱动返回不同的数据类型
   switch db.Dialector.Name() {
-  case "mysql":
+  case "mysql", "sqlite":
     return "JSON"
   case "postgres":
     return "JSONB"

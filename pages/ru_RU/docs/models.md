@@ -45,45 +45,30 @@ type Model struct {
 
 Вы можете вставить его (gorm.Model) в свой struct, чтобы включить эти поля, смотрите [Встроенный struct](#embedded_struct)
 
-```go
-type User struct {
-  gorm.Model
-  Name string
-}
-// идентичен
-type User struct {
-  ID        uint           `gorm:"primaryKey"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt gorm.DeletedAt `gorm:"index"`
-  Name string
-}
-```
-
 ## Дополнительно
 
 ### Разрешения на уровне поля
 
-Экспортированные поля имеют все разрешения при выполнении CRUD с помощью GORM, но GORM позволяет изменять права на уровне поля при помощи тега, так что вы можете сделать поле только для чтения, записи, только для создания, обновления или игнорирования
+Exported fields have all permission when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
 
 **NOTE** ignored fields won't be created when using GORM Migrator to create table
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // разрешить чтение и создание
-  Name string `gorm:"<-:update"` // разрешить чтение и обновление
-  Name string `gorm:"<-"`        // разрешить чтение и запись (создание и обновление)
-  Name string `gorm:"<-:false"`  // разрешить чтение, запретить запись
-  Name string `gorm:"->"`        // только чтение (запрещает запись после создания)
-  Name string `gorm:"->;<-:create"` // разрешить чтение и создание
-  Name string `gorm:"->:false;<-:create"` // только создание (запрещает чтение из БД)
-  Name string `gorm:"-"`  // игнорировать это поле при чтении и записи
+  Name string `gorm:"<-:create"` // allow read and create
+  Name string `gorm:"<-:update"` // allow read and update
+  Name string `gorm:"<-"`        // allow read and write (create and update)
+  Name string `gorm:"<-:false"`  // allow read, disable write permission
+  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
+  Name string `gorm:"->;<-:create"` // allow read and create
+  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
+  Name string `gorm:"-"`  // ignore this field when write and read
 }
 ```
 
 ### <name id="time_tracking">Создание/обновление Time/Unix (Milli/Nano) секунд отслеживания</span>
 
-GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
+GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#now_func) into it when creating/updating if they are defined
 
 To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
 
@@ -91,11 +76,11 @@ If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply 
 
 ```go
 type User struct {
-  CreatedAt time.Time // Установить на текущее время если ноль при создании
-  UpdatedAt int       // Установить текущий unixtimestamp при обновлении или если ноль при создании
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Установить unix Nano секунды как время обновления
-  Updated   int64 `gorm:"autoUpdateTime:milli"` // Установить unix Milli секунды как время обновления
-  Created   int64 `gorm:"autoCreateTime"`      // Установить unixtimestamp секунды как время создания
+  CreatedAt time.Time // Set to current time if it is zero on creating
+  UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix nano seconds as updating time
+  Updated   int64 `gorm:"autoUpdateTime:milli"`// Use unix milli seconds as updating time
+  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
 }
 ```
 
@@ -108,7 +93,7 @@ type User struct {
   gorm.Model
   Name string
 }
-// идентичен
+// equals
 type User struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
@@ -131,7 +116,7 @@ type Blog struct {
   Author  Author `gorm:"embedded"`
   Upvotes int32
 }
-// идентично
+// equals
 type Blog struct {
   ID    int64
     Name  string
@@ -140,7 +125,7 @@ type Blog struct {
 }
 ```
 
-And you can use tag `embeddedrefix` to add prefix to embedded fields' db name, for example:
+And you can use tag `embeddedPrefix` to add prefix to embedded fields' db name, for example:
 
 ```go
 type Blog struct {
@@ -148,7 +133,7 @@ type Blog struct {
   Author  Author `gorm:"embedded;embeddedPrefix:author_"`
   Upvotes int32
 }
-// идентично
+// equals
 type Blog struct {
   ID          int64
     AuthorName  string
@@ -158,33 +143,32 @@ type Blog struct {
 ```
 
 
-### Теги полей
+### <span id="tags">Fields Tags</span>
 
-Tags are optional to use when declaring models, GORM supports the following tags:
+Tags are optional to use when declaring models, GORM supports the following tags: Tag name case doesn't matter, `camelCase` is preferred to use.
 
-Tag Name case doesn't matter, `camelCase` is preferred to use.
-
-| Назвние тэга   | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| column         | название столбца                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| type           | тип данных столбца, используйте совместимый общий тип, например.: bool, int, uint, float, string, time, bytes, которые работают с тегами типа `not null`, `size`, `autoIncrement`... специфические типы данных базы данных, такие как `varbinary(8)`, также поддерживается, при использовании указанного типа данных базы данных, он должен быть полным типом данных базы данных, например: `MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT` |
-| size           | задает размер/длину столбца, например: `size:256`                                                                                                                                                                                                                                                                                                                                                                                        |
-| primaryKey     | указать столбец в качестве первичного ключа                                                                                                                                                                                                                                                                                                                                                                                              |
-| unique         | указать столбец как уникальный                                                                                                                                                                                                                                                                                                                                                                                                           |
-| default        | задает значение столбца по умолчанию                                                                                                                                                                                                                                                                                                                                                                                                     |
-| precision      | определяет точность столбца                                                                                                                                                                                                                                                                                                                                                                                                              |
-| not null       | определяет столбец как НЕ NULL                                                                                                                                                                                                                                                                                                                                                                                                           |
-| autoIncrement  | определяет столбец с авто инкрементом                                                                                                                                                                                                                                                                                                                                                                                                    |
-| embedded       | встроенное поле                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| embeddedPrefix | префикс для встроенного поля                                                                                                                                                                                                                                                                                                                                                                                                             |
-| autoCreateTime | отслеживать текущее время при создании, для `int` полей, он будет отслеживать unix секунд, используйте значение `nano`/`milli` для отслеживания unix nano/milli секунд, e.: `autoCreateTime:nano`                                                                                                                                                                                                                                        |
-| autoUpdateTime | отслеживать текущее время при создании/обновлении, для `int` полей, он будет отслеживать unix секунд, используйте значение `nano`/`milli` для отслеживания unix nano/milli секунд, e.: `autoUpdateTime:milli`                                                                                                                                                                                                                            |
-| index          | создать индекс с параметрами, одинаковое имя для нескольких полей создает составные индексы, смотрите [Индексы](indexes.html) для подробностей                                                                                                                                                                                                                                                                                           |
-| uniqueIndex    | то же самое, что и `index`, но создает уникальный индекс                                                                                                                                                                                                                                                                                                                                                                                 |
-| check          | создает ограничение проверки, например: `check:(age > 13)`, см. [Ограничения](constraints.html)                                                                                                                                                                                                                                                                                                                                       |
-| <-             | задать разрешение на запись, `<-:create` только для создания, `<-:update` только обновление, `<-:false` Нет разрешения                                                                                                                                                                                                                                                                                                          |
-| ->             | установить права на чтение полей                                                                                                                                                                                                                                                                                                                                                                                                         |
-| -              | игнорировать эти поля (отключить разрешение на чтение/запись)                                                                                                                                                                                                                                                                                                                                                                            |
+| Назвние тэга   | Описание                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| column         | название столбца                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| type           | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, which works for all databases, and can be used with other tags together, like `not null`, `size`, `autoIncrement`... specified database data type like `varbinary(8)` also supported, when using specified database data type, it needs to be a full database data type, for example: `MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT` |
+| size           | задает размер/длину столбца, например: `size:256`                                                                                                                                                                                                                                                                                                                                                                                             |
+| primaryKey     | указать столбец в качестве первичного ключа                                                                                                                                                                                                                                                                                                                                                                                                   |
+| unique         | указать столбец как уникальный                                                                                                                                                                                                                                                                                                                                                                                                                |
+| default        | задает значение столбца по умолчанию                                                                                                                                                                                                                                                                                                                                                                                                          |
+| precision      | определяет точность столбца                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| scale          | specifies column scale                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| not null       | specifies column as NOT NULL                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| autoIncrement  | specifies column auto incrementable                                                                                                                                                                                                                                                                                                                                                                                                           |
+| embedded       | embed the field                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| embeddedPrefix | column name prefix for embedded fields                                                                                                                                                                                                                                                                                                                                                                                                        |
+| autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                                                                                                                                                                                                                                         |
+| autoUpdateTime | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                                                                                                                                                                                                                               |
+| index          | create index with options, use same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                                                                                                                                                                                                                                                                                             |
+| uniqueIndex    | same as `index`, but create uniqued index                                                                                                                                                                                                                                                                                                                                                                                                     |
+| check          | creates check constraint, eg: `check:age > 13`, refer [Constraints](constraints.html)                                                                                                                                                                                                                                                                                                                                                      |
+| <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no write permission, `<-` create and update permission                                                                                                                                                                                                                                                                     |
+| ->             | set field's read permission, `->:false` no read permission                                                                                                                                                                                                                                                                                                                                                                                 |
+| -              | ignore this fields, `-` no read/write permission                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ### Взаимосвязи
 

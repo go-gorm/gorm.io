@@ -3,22 +3,18 @@ title: Delete
 layout: page
 ---
 
-## Delete Record
+## Delete a Record
 
-Delete a record
+When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
 
 ```go
-// Delete an existing record, email's primary key value is 10
+// Email's ID is `10`
 db.Delete(&email)
-// DELETE from emails where id=10;
+// DELETE from emails where id = 10;
 
-// DELETE with inline condition
-db.Delete(&Email{}, 20)
-// DELETE from emails where id=20;
-
-// DELETE with additional conditions
+// Delete with additional conditions
 db.Where("name = ?", "jinzhu").Delete(&email)
-// DELETE FROM emails WHERE id=10 AND name = 'jinzhu'
+// DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
 ## Delete Hooks
@@ -34,9 +30,9 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## Batch Delete
+## <span id="batch_delete">Batch Delete</span>
 
-If we havn't specify a record having priamry key value, GORM will perform a batch delete all matched records
+The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -48,15 +44,21 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ### Block Global Delete
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will returns `ErrMissingWhereClause` error
+If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
 
-You can use conditions like `1 = 1` to force the global delete
+You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
-// DELETE `users` WHERE 1=1
+// DELETE FROM `users` WHERE 1=1
+
+db.Exec("DELETE FROM users")
+// DELETE FROM users
+
+DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
+// DELETE FROM users
 ```
 
 ## Soft Delete
@@ -66,6 +68,7 @@ If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Mode
 When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
 
 ```go
+// user's ID is `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 

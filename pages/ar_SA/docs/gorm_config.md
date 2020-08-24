@@ -7,14 +7,15 @@ GORM provides Config can be used during initialization
 
 ```go
 type Config struct {
-    SkipDefaultTransaction bool
-    NamingStrategy schema. Namer
-    Logger logger. Interface
-    NowFunc func() time. Time
-    DryRun bool
-    PrepareStmt bool
-    DisableAutomaticPing bool
-    DisableForeignKeyConstraintWhenMigrating bool
+  SkipDefaultTransaction bool
+  NamingStrategy         schema.Namer
+  Logger                 logger.Interface
+  NowFunc                func() time.Time
+  DryRun                 bool
+  PrepareStmt            bool
+  AllowGlobalUpdate      bool
+  DisableAutomaticPing   bool
+  DisableForeignKeyConstraintWhenMigrating bool
 }
 ```
 
@@ -28,7 +29,7 @@ db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
 })
 ```
 
-## NamingStrategy
+## <span id="naming_strategy">NamingStrategy</span>
 
 GORM allows users to change the naming conventions by overriding the default `NamingStrategy` which need to implements interface `Namer`
 
@@ -53,9 +54,9 @@ db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
 
 ## Logger
 
-Allow changes GORM's default logger by overriding this option, refer [Logger](logger.html) for more details
+Allow to change GORM's default logger by overriding this option, refer [Logger](logger.html) for more details
 
-## NowFunc
+## <span id="now_func">NowFunc</span>
 
 Change the function to be used when creating a new timestamp
 
@@ -84,6 +85,10 @@ db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
   DisableAutomaticPing: true,
 })
 ```
+
+## AllowGlobalUpdate
+
+Enable global update/delete, refer [Session](session.html) for details
 
 ## DisableAutomaticPing
 

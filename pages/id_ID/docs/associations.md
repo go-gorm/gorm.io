@@ -91,6 +91,8 @@ db.Model(&user).Association("Languages").Find(&languages)
 // Find with conditions
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
+
+db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
 ### Append Associations

@@ -7,7 +7,7 @@ layout: page
 
 `has one` は、別のモデルとの一対一の接続を設定しますが、セマンティクス（とその結果）は多少異なります。 このアソシエーションは、モデルの各インスタンスが別のモデルの1つのインスタンスを含んでいるか、または所有していることを示します。
 
-たとえば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを1枚しか持つことができないとします：
+For example, if your application includes users and credit cards, and each user can only have one credit card.
 
 ```go
 // Userは1つだけCreditCardを持ちます。CreditCardIDは外部キーです。
@@ -49,7 +49,7 @@ type CreditCard struct {
 
 ## Override References
 
-デフォルトでは、所有されているエンティティは`has one`モデルの主キーを外部キーに保存します。以下の例の`Name`のように、別のフィールドを保存するように変更することもできます。
+By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field's value, like using `Name` for the below example.
 
 `references`タグを用いて変更することもできます。
 
@@ -69,7 +69,7 @@ type CreditCard struct {
 
 ## Polymorphism Association
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field, primary key value into the polymorphic field
+GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field
 
 ```go
 type Cat struct {
@@ -138,7 +138,7 @@ type User struct {
 
 ## FOREIGN KEY Constraints
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {

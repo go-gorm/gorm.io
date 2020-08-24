@@ -63,16 +63,20 @@ To override them, you can use tag `foreignKey`, `reference`, `joinForeignKey`, `
 
 ```go
 type User struct {
-  gorm. Model
-  Languages []Language `gorm:"many2many:user_speaks;"`
+    gorm.Model
+    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:UserRefer"`
+    Refer    uint
 }
 
-type Language struct {
-  Code string `gorm:"primarykey"`
-  Name string
+type Profile struct {
+    gorm.Model
+    Name      string
+    UserRefer uint
 }
 
-// CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
+// Which creates join table: user_profiles
+//   foreign key: user_refer_id, reference: users.refer
+//   foreign key: profile_refer, reference: profiles.user_refer
 ```
 
 ## Self-Referential Many2Many
@@ -108,18 +112,16 @@ Please checkout [Association Mode](associations.html#Association-Mode) for worki
 ```go
 type User struct {
   gorm.
-Model
-    Friends []*User `gorm:"many2many:user_friends"`
 }
 
-// Which creates join table: user_friends
-//   foreign key: user_id, reference: users.id
-//   foreign key: friend_id, reference: users.id
+// Change model Person's field Addresses's join table to PersonAddress
+// PersonAddress must defined all required foreign keys or it will raise error
+err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
 ## FOREIGN KEY Constraints
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {
@@ -154,8 +156,8 @@ type Blog struct {
   Subject    string
   Body       string
   Tags       []Tag `gorm:"many2many:blog_tags;"`
-  SharedTags []Tag `gorm:"many2many:shared_blog_tags;ForeignKey:id;References:id"`
   LocaleTags []Tag `gorm:"many2many:locale_blog_tags;ForeignKey:id,locale;References:id"`
+  SharedTags []Tag `gorm:"many2many:shared_blog_tags;ForeignKey:id;References:id"`
 }
 
 // Join Table: blog_tags
@@ -164,13 +166,13 @@ type Blog struct {
 //   foreign key: tag_id, reference: tags.id
 //   foreign key: tag_locale, reference: tags.locale
 
-// Join Table: shared_blog_tags
-//   foreign key: blog_id, reference: blogs.id
-//   foreign key: tag_id, reference: tags.id
-
 // Join Table: locale_blog_tags
 //   foreign key: blog_id, reference: blogs.id
 //   foreign key: blog_locale, reference: blogs.locale
+//   foreign key: tag_id, reference: tags.id
+
+// Join Table: shared_blog_tags
+//   foreign key: blog_id, reference: blogs.id
 //   foreign key: tag_id, reference: tags.id
 ```
 

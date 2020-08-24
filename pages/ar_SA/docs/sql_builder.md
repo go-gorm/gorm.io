@@ -5,7 +5,7 @@ layout: page
 
 ## Raw SQL
 
-Query Raw SQL
+Query Raw SQL with `Scan`
 
 ```go
 Select("name, age, email"). Rows() // (*sql. Rows, error)
@@ -20,51 +20,17 @@ for rows. Next() {
 }
 ```
 
-Exec Raw SQL
+`Exec` with Raw SQL
 
 ```go
 db. Exec("DROP TABLE users")
-db. Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time. Now(), []int64{1,2,3})
+db. Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,3})
 
-// SQL Expression
-DB. Exec("update users set money=? Where("name = ?", "jinzhu"). + ?", 10000, 1), "jinzhu")
+// Exec with SQL Expression
+DB.Exec("update users set money=? Where("name = ?", "jinzhu"). + ?", 10000, 1), "jinzhu")
 ```
 
 **NOTE** GORM allows cache prepared statement to increase performance, checkout [Performance](performance.html) for details
-
-## `Row` & `Rows`
-
-Rows() // (*sql.
-
-```go
-Where("name = ?", "jinzhu"). Select("name, age, email"). Rows() // (*sql. Rows, error)
-defer rows. Close()
-
-for rows. Next() {
-  var user User
-  // ScanRows scan a row into user
-  db. ScanRows(rows, &user)
-
-  // do something
-}
-```
-
-Rows() // (*sql.
-
-```go
-rows, err := db. Model(&User{}). Where("name = ?", "jinzhu"). Select("name, age, email"). Rows() // (*sql. Rows, error)
-defer rows. Close()
-
-for rows. Next() {
-  var user User
-  // ScanRows scan a row into user
-  db. ScanRows(rows, &user)
-
-  // do something
-}
-```
-
-Checkout [FindInBatches](advanced_query.html) for how to query and process records in batch Checkout [Group Conditions](advanced_query.html#group_conditions) for how to build complicated SQL Query
 
 ## <span id="named_argument">Named Argument</span>
 
@@ -77,6 +43,7 @@ DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&us
 DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
 // SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
 
+// Named Argument with Raw SQL
 DB.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name", sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
 // SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
 
@@ -87,36 +54,76 @@ DB.Raw("SELECT * FROM users WHERE (name1 = @name AND name3 = @name) AND name2 = 
 // SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
 ```
 
-## Scan `*sql. Rows` into struct
-
-```go
-rows, err := db. Model(&User{}). Where("name = ?", "jinzhu"). Select("name, age, email"). Rows() // (*sql. Rows, error)
-defer rows. Close()
-
-for rows. Next() {
-  var user User
-  // ScanRows scan a row into user
-  db. ScanRows(rows, &user)
-
-  // do something
-}
-```
-
 ## DryRun Mode
 
 Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
 
 ```go
-stmt := DB. Session(&Session{DryRun: true}). First(&user, 1). Statement
-stmt.SQL. String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
-stmt. Vars         //=> []interface{}{1}
+stmt := DB.Session(&Session{DryRun: true}).First(&user, 1).Statement
+stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
+stmt.Vars         //=> []interface{}{1}
+```
+
+## `Row` & `Rows`
+
+Get result as `*sql.Row`
+
+```go
+// Use GORM API build SQL
+row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
+row.Scan(&name, &age)
+
+// Use Raw SQL
+row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row()
+row.Scan(&name, &age, &email)
+```
+
+Get result as `*sql.Rows`
+
+```go
+// Use GORM API build SQL
+rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows()
+defer rows.Close()
+for rows.Next() {
+  rows.Scan(&name, &age, &email)
+
+  // do something
+}
+
+// Raw SQL
+rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows()
+defer rows.Close()
+for rows.Next() {
+  rows.Scan(&name, &age, &email)
+
+  // do something
+}
+```
+
+Checkout [FindInBatches](advanced_query.html) for how to query and process records in batch Checkout [Group Conditions](advanced_query.html#group_conditions) for how to build complicated SQL Query
+
+## Scan `*sql.Rows` into struct
+
+Use `ScanRows` to scan a row into a struct, for example:
+
+```go
+rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
+defer rows.Close()
+
+var user User
+for rows.Next() {
+  // ScanRows scan a row into user
+  db.ScanRows(rows, &user)
+
+  // do something
+}
 ```
 
 ## Advanced
 
 ### Clauses
 
-GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm. Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
+GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
 
 For example, when querying with `First`, it adds the following clauses to the `Statement`
 
@@ -129,7 +136,7 @@ clause. OrderByColumn{
 }
 ```
 
-Then GORM build finally querying SQL in callbacks like:
+Then GORM build finally querying SQL in the `Query` callbacks like:
 
 ```go
 Statement. Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")

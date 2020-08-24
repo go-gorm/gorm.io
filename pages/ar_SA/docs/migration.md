@@ -7,7 +7,7 @@ layout: page
 
 Automatically migrate your schema, to keep your schema update to date.
 
-**NOTE:** AutoMigrate will **ONLY** create tables, missing foreign keys, constraints, columns and indexes, it **WON'T** change existing column's type or delete unused columns to protect your data.
+**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes, and will change existing column's type if it's size, precision, nullable changed, it **WON'T** delete unused columns to protect your data.
 
 ```go
 // Create table for `User`
@@ -40,7 +40,7 @@ type Migrator interface {
 
   // Database
   CurrentDatabase() string
-  FullDataTypeOf(*schema. Field) clause. Expr
+  FullDataTypeOf(*schema.Field) clause.Expr
 
   // Tables
   CreateTable(dst ...interface{}) error
@@ -54,7 +54,8 @@ type Migrator interface {
   AlterColumn(dst interface{}, field string) error
   HasColumn(dst interface{}, field string) bool
   RenameColumn(dst interface{}, oldName, field string) error
-  ColumnTypes(dst interface{}) ([]*sql. ColumnType, error)
+  MigrateColumn(dst interface{}, field *schema.Field, columnType *sql.ColumnType) error
+  ColumnTypes(dst interface{}) ([]*sql.ColumnType, error)
 
   // Constraints
   CreateConstraint(dst interface{}, name string) error

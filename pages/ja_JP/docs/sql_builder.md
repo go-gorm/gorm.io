@@ -5,7 +5,7 @@ layout: page
 
 ## Raw SQL
 
-SQL文でQuery
+Query Raw SQL with `Scan`
 
 ```go
 type Result struct {
@@ -23,33 +23,65 @@ var age int
 DB.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-SQL文でEXEC
+`Exec` with Raw SQL
 
 ```go
 db.Exec("DROP TABLE users")
 db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,3})
 
-// SQL Expression
+// Exec with SQL Expression
 DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
 **注** GORMはパフォーマンスを向上のためにプリペアードステイトメントをキャッシュできます。詳細は[Performance](performance.html)を参照してください。
 
-## `Row` & `Rows`
+## <span id="named_argument">Named Argument</span>
 
-`*sql.Row` として結果を取得します
+GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
 ```go
-// GORMのAPIを利用
+DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
+// SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
+
+DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
+// SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
+
+// Named Argument with Raw SQL
+DB.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name", sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
+// SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
+
+DB.Exec("UPDATE users SET name1 = @name, name2 = @name2, name3 = @name", sql.Named("name", "jinzhunew"), sql.Named("name2", "jinzhunew2"))
+// UPDATE users SET name1 = "jinzhunew", name2 = "jinzhunew2", name3 = "jinzhunew"
+
+DB.Raw("SELECT * FROM users WHERE (name1 = @name AND name3 = @name) AND name2 = @name2", map[string]interface{}{"name": "jinzhu", "name2": "jinzhu2"}).Find(&user)
+// SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
+```
+
+## DryRun Mode
+
+Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
+
+```go
+stmt := DB.Session(&Session{DryRun: true}).First(&user, 1).Statement
+stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
+stmt.Vars         //=> []interface{}{1}
+```
+
+## `Row` & `Rows`
+
+Get result as `*sql.Row`
+
+```go
+// Use GORM API build SQL
 row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
 row.Scan(&name, &age)
 
-// SQL文を利用
+// Use Raw SQL
 row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row()
 row.Scan(&name, &age, &email)
 ```
 
-`*sql.Rows` として結果を取得します
+Get result as `*sql.Rows`
 
 ```go
 // Use GORM API build SQL
@@ -71,37 +103,18 @@ for rows.Next() {
 }
 ```
 
-バッチでレコードをクエリしたり処理したいなら、[FindInBatches](advanced_query.html)をチェックしてください。 複雑なSQLクエリを構築する方法については[Group Conditions](advanced_query.html#group_conditions) をチェックしてください。
-
-## <span id="named_argument">Named Argument</span>
-
-GORMは [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) または `map[string]interface{}{}`を使用した名前付き引数をサポートしています。例えば:
-
-```go
-DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
-// SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
-
-DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
-// SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
-
-DB.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name", sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
-// SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
-
-DB.Exec("UPDATE users SET name1 = @name, name2 = @name2, name3 = @name", sql.Named("name", "jinzhunew"), sql.Named("name2", "jinzhunew2"))
-// UPDATE users SET name1 = "jinzhunew", name2 = "jinzhunew2", name3 = "jinzhunew"
-
-DB.Raw("SELECT * FROM users WHERE (name1 = @name AND name3 = @name) AND name2 = @name2", map[string]interface{}{"name": "jinzhu", "name2": "jinzhu2"}).Find(&user)
-// SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
-```
+Checkout [FindInBatches](advanced_query.html) for how to query and process records in batch Checkout [Group Conditions](advanced_query.html#group_conditions) for how to build complicated SQL Query
 
 ## Scan `*sql.Rows` into struct
+
+Use `ScanRows` to scan a row into a struct, for example:
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
 defer rows.Close()
 
+var user User
 for rows.Next() {
-  var user User
   // ScanRows scan a row into user
   db.ScanRows(rows, &user)
 
@@ -109,23 +122,13 @@ for rows.Next() {
 }
 ```
 
-## DryRun Mode
-
-実行せずに、`SQL`の生成だけを行います。生成されたSQLを確認したりテストしたりできます。詳細については[Session](session.html) を確認してください。
-
-```go
-stmt := DB.Session(&Session{DryRun: true}).First(&user, 1).Statement
-stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
-stmt.Vars         //=> []interface{}{1}
-```
-
 ## Advanced
 
 ### Clauses
 
-GORMはSQLビルダーを使用して内部的にSQLを生成します。各操作に対し、GORMは`*gorm.Statement`オブジェクトを作成し、すべてのGORM APIで`Statement`に`Clause`を追加/変更し、最後にこれらの`Clause`にもとづいてSQLを生成します。
+GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
 
-たとえば、 `First`でクエリを行う場合、`First`は内部的に、次の`Clauses`を`Statement`に追加します。
+For example, when querying with `First`, it adds the following clauses to the `Statement`
 
 ```go
 clause.Select{Columns: "*"}
@@ -136,25 +139,25 @@ clause.OrderByColumn{
 }
 ```
 
-それから、Gormは最終的にコールバックでSQLをクエリするように作成します。以下のように：
+Then GORM build finally querying SQL in the `Query` callbacks like:
 
 ```go
 Statement.Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")
 ```
 
-作成されるSQL：
+Which generate SQL:
 
 ```sql
 SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 ```
 
-独自の`Clause`を定義し、GORMで利用できます。[Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface)を実装する必要があります。
+You can define your own `Clause` and use it with GORM, it needs to implements [Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface)
 
-[examples](https://github.com/go-gorm/gorm/tree/master/clause) を参照してください。
+Check out [examples](https://github.com/go-gorm/gorm/tree/master/clause) for reference
 
 ### Clause Builder
 
-データベースの種類によって、Clausesは違うSQLを生成します。例：
+For different databases, Clauses may generate different SQL, for example:
 
 ```go
 db.Offset(10).Limit(5).Find(&users)
@@ -164,13 +167,13 @@ db.Offset(10).Limit(5).Find(&users)
 // SELECT * FROM `users` LIMIT 5 OFFSET 10
 ```
 
-GORMは、データベースドライバがデフォルトのものを置き換えることによってClauseビルダーを登録できるようにしているので、この機能がサポートされています。 [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45)を例に取りました。
+Which is supported because GORM allows database driver register Clause Builder to replace the default one, take the [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45) as example
 
 ### Clause Options
 
-GORMは[さまざまなClauses](https://github.com/go-gorm/gorm/tree/master/clause)を定義しています。いくつかのClausesは、高度なオプションを提供し、アプリケーションに使用することができます。
+GORM defined [Many Clauses](https://github.com/go-gorm/gorm/tree/master/clause), and some clauses provide advanced options can be used for your application
 
-ほとんど使われることはありませんが、もし、GORMの公開APIがあなたの要求にマッチしない場合は、調べてみるのもいいかもしれません。例：
+Although most of them are rarely used, if you find GORM public API can't match your requirements, may be good to check them out, for example:
 
 ```go
 DB.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
@@ -179,7 +182,7 @@ DB.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
 
 ### StatementModifier
 
-GORMはあなたの要求に合うようにstatementを修正することを許可する[StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier)。 [Hints](hints.html)を例にとります。
+GORM provides interface [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier) allows you modify statement to match your requirements, take [Hints](hints.html) as example
 
 ```go
 import "gorm.io/hints"

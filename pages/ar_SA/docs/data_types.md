@@ -1,5 +1,5 @@
 ---
-title: Data Types
+title: Customize Data Types
 layout: page
 ---
 
@@ -40,20 +40,20 @@ func (j JSON) Value() (driver. Value, error) {
 
 ### GormDataTypeInterface
 
-A customized data type might has different database types, you can implements the `GormDataTypeInterface` to set them up, for example:
+A customized data type might has different database types for databases, you can implements the `GormDataTypeInterface` to set them up, for example:
 
 ```go
 type GormDataTypeInterface interface {
-  GormDBDataType(*gorm.DB, *schema. Field) string
+  GormDBDataType(*gorm.DB, *schema.Field) string
 }
 
-func (JSON) GormDBDataType(db *gorm.DB, field *schema. Field) string {
-  // use field. Tag, field. TagSettings gets field's tags
+func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
+  // use field.Tag, field.TagSettings gets field's tags
   // checkout https://github.com/go-gorm/gorm/blob/master/schema/field.go for all options
 
   // returns different database type based on driver name
-  switch db. Dialector. Name() {
-  case "mysql":
+  switch db.Dialector.Name() {
+  case "mysql", "sqlite":
     return "JSON"
   case "postgres":
     return "JSONB"
@@ -64,7 +64,7 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema. Field) string {
 
 ### Clause Expression
 
-Customized data type possible needs specifically SQL which can't use current GORM API, you can define a `Builder` to implement interface `clause. Expression`
+Customized data type possible needs specifically SQL which can't use current GORM API, you can define a `Builder` method for the struct to implement interface `clause.Expression`
 
 ```go
 type Expression interface {
@@ -72,7 +72,7 @@ type Expression interface {
 }
 ```
 
-Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) for implementation details
+Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) for implementation details, usage:
 
 ```go
 // Generates SQL with clause Expression

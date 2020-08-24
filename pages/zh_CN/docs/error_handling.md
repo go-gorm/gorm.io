@@ -5,7 +5,7 @@ layout: page
 
 在 Go 中，处理错误是很重要的。
 
-我们鼓励您在调用任何 [Finisher 方法](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) 后，都进行错误检查
+You are encouraged to do error check after any [Finisher Methods](method_chaining.html#finisher_method)
 
 ## 处理错误
 

@@ -3,9 +3,9 @@ title: Расширенный запрос
 layout: страница
 ---
 
-## Умный выбор полей
+## <span id="smart_select">Smart Select Fields</span>
 
-GORM позволяет выбирать определенные поля с помощью [`Select`](query.html), если вы часто используете их в своем приложении, вы можете использовать более короткий struct для выбора определенных полей автоматически
+GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // тысячи полей
+  // hundreds of fields
 }
 
 type APIUser struct {
@@ -21,7 +21,7 @@ type APIUser struct {
   Name string
 }
 
-// Выбирает поля `id`, `name` автоматически при запросе
+// Select `id`, `name` automatically when querying
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
@@ -58,7 +58,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">Из SubQuery (под запроса)</span>
 
-GORM позволяет вам использовать подзапрос в FROM при помощи `Table`, например:
+GORM allows you using subquery in FROM clause with method `Table`, for example:
 
 ```go
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -112,7 +112,7 @@ DB.Table("users").Find(&results)
 
 ## Первый или новый (FirstOrInit)
 
-Получить первую найденную запись, или инициализировать новую с заданными параметрами (работает только с struct и map)
+Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
 
 ```go
 // Пользователь не найден, инициализировать его с параметрами 
@@ -147,7 +147,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // пользователь -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` назначение атрибутов в struct, независимо от того, найдена запись или нет, эти атрибуты не будут участвовать в генерации запроса SQL
+`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
 
 ```go
 // Пользователь не найден, с указанными параметрами, инициализировать запись с указанными параметрами и назначенными assign атрибутами
@@ -162,17 +162,17 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## Первый или создать (FirstOrCreate)
 
-Получить первую найденную запись, или создать новую с указанными параметрами (работает только с struct, map)
+Get first matched record or create a new one with given conditions (only works with struct, map conditions)
 
 ```go
-// Пользователь не найден, создать новую запись с указанными параметрами
+// User not found, create a new record with give conditions
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
-// пользователь -> User{ID: 112, Name: "non_existing"}
+// user -> User{ID: 112, Name: "non_existing"}
 
-// Найдена запись с параметрами `name` = `jinzhu`
+// Found user with `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
-// пользователь -> User{ID: 111, Name: "jinzhu", "Age}: 18
+// user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
 Создать struct с дополнительными атрибутами если запись не найдена, эти `Attrs` атрибуты не будут использованы в генерации SQL
@@ -190,7 +190,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // пользователь -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` назначение атрибутов к записи, будет работать независимо от того, найдена запись или нет.
+`Assign` attributes to the record regardless it is found or not and save them back to the database.
 
 ```go
 // Пользователь не найден, инициализировать новую запись с параметрами и назначить Assign атрибуты
@@ -208,7 +208,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## Оптимизатор/Индексирование подсказки
 
-Подсказки оптимизатора позволяют просматривать план выполнения запроса.
+Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
 
 ```go
 import "gorm.io/hints"
@@ -241,10 +241,10 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows записывает строки в user
+  // ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
   db.ScanRows(rows, &user)
 
-  // делаем что-то
+  // do something
 }
 ```
 
@@ -288,7 +288,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Запросить один столбец из БД и записать в slice, если вы хотите получить несколько столбцов, используйте [`Scan`](#scan)
+Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
 
 ```go
 var ages []int64
@@ -341,9 +341,11 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Найти все оплаченные и отгруженные заказы с суммой более 1000
 ```
 
+Checout [Scopes](scopes.html) for details
+
 ## <span id="count">Количество</span>
 
-Получить количество найденных записей
+Get matched records count
 
 ```go
 var count int64
