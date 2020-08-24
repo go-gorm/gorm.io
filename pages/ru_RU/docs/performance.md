@@ -98,3 +98,7 @@ DB.Clauses(
 ).Find(&User{})
 // SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
 ```
+
+## Read/Write Splitting
+
+Increase data throughput through read/write splitting, check out [Database Resolver](dbresolver.html)
