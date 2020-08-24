@@ -47,7 +47,7 @@ func (User) TableName() string {
 }
 ```
 
-**ПРИМЕЧАНИЕ** `TableName` не допускает динамическое имя, его результат будет кэшироваться на будущее, для использования динамического имени, вы можете использовать следующий код:
+**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use `Scopes`, for example:
 
 ```go
 func UserTable(user User) func (db *gorm.DB) *gorm.DB {
@@ -84,7 +84,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 
 ### <span id="naming_strategy">Стратегия именования</span>
 
-GORM позволяет пользователям изменять стратегию именования по умолчанию, переопределяя стандартную `NamingStrategy`, которая используется для сборки `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Смотрите [Настройки GORM](gorm_config.html) для подробностей
+GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html#naming_strategy) for details
 
 ## Название столбца
 
@@ -99,7 +99,7 @@ type User struct {
 }
 ```
 
-Вы можете переопределить имя столбца с помощью тега `column`, или использовать [`NamingStrategy`](#naming_strategy)
+You can override the column name with tag `column` or use [`NamingStrategy`](#naming_strategy)
 
 ```go
 type Animal struct {
@@ -116,9 +116,12 @@ type Animal struct {
 Для моделей, имеющих поле `CreatedAt`, оно будет установлено в текущее время при создании записи, если её значение равно нулю
 
 ```go
-db.Create(&user) // уствноит текущее время в `CreatedAt`
+db.Create(&user) // set `CreatedAt` to current time
 
-// Для смены значения, вы можете использовать `Update`
+user2 := User{Name: "jinzhu", CreatedAt: time.Now()}
+db.Create(&user2) // user2's `CreatedAt` won't be changed
+
+// To change its value, you could use `Update`
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
@@ -127,9 +130,17 @@ db.Model(&user).Update("CreatedAt", time.Now())
 Для моделей, имеющих поле `CreatedAt`, оно будет установлено в текущее время при обновлении или создании записи, если её значение равно нулю
 
 ```go
-db.Save(&user) // установит текущее время в `UpdatedAt`
+db.Save(&user) // set `UpdatedAt` to current time
 
-db.Model(&user).Update("name", "jinzhu") // установит текущее время в `UpdatedAt`
+db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+
+db.Model(&user).UpdateColumn("name", "jinzhu") // `UpdatedAt` won't be changed
+
+user2 := User{Name: "jinzhu", UpdatedAt: time.Now()}
+db.Create(&user2) // user2's `UpdatedAt` won't be changed when creating
+
+user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
+db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
 ```
 
-**ПРИМЕЧАНИЕ** GORM поддерживает множество полей отслеживания времени, отслеживание с другими полями или отслеживание в UNIX секундах/UNIX наносекундах, смотрите [Модели](models.html#time_tracking) для подробностей
+**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
