@@ -5,26 +5,26 @@ layout: page
 
 ## Abfragen eines einzelnen Objekts
 
-GORM stellt die Methoden `First`, `Take` und `Last` zur Verfügung, um ein einzelnes Objekt aus der Datenbank abzufragen, es fügt die Bedingung `LIMIT 1` bei der Abfrage hinzu, und gibt den Fehler `ErrRecordNotFound` zurück, falls kein Eintrag gefunden wurde
+GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return error `ErrRecordNotFound` if no record found.
 
 ```go
-// Frage den ersten Eintrag ab, sortiert nach dem Primärschlüssel
+// Get the first record ordered by primary key
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Frage den ersten Eintrag ab, keine Spezifische Ordnung
+// Get one record, no specified order
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// Frage den letzten Eintrag ab, geordnet nach dem Primärschlüssel in absteigend
+// Get last record, order by primary key desc
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // gibt die Anzahl gefundener Einträge zurück
+result.RowsAffected // returns found records count
 result.Error        // returns error
 
-// Überprüft ob ein Eintrag nicht gefunden wurde
+// check error ErrRecordNotFound
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
@@ -54,7 +54,7 @@ db.Where("name <> ?", "jinzhu").Find(&users)
 
 // IN
 db.Where("name IN ?", []string{"jinzhu", "jinzhu 2"}).Find(&users)
-// SELECT * FROM users WHERE name in ('jinzhu','jinzhu 2');
+// SELECT * FROM users WHERE name IN ('jinzhu','jinzhu 2');
 
 // LIKE
 db.Where("name LIKE ?", "%jin%").Find(&users)
@@ -184,10 +184,10 @@ db.Where("name = 'jinzhu'").Or(User{Name: "jinzhu 2", Age: 18}).Find(&users)
 
 // Map
 db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age": 18}).Find(&users)
-// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
+// SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-Also check out [Group Conditions in Advanced Query](advanced_query.html), it can write complicated SQL easier
+Also check out [Group Conditions in Advanced Query](advanced_query.html#group_conditions), it can be used to write complicated SQL
 
 ## Selecting Specific Fields
 
@@ -203,6 +203,8 @@ db.Select([]string{"name", "age"}).Find(&users)
 db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
+
+Also check out [Smart Select Fields](advanced_query.html#smart_select)
 
 ## Order
 
@@ -241,6 +243,8 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
 ```
+
+Checkout [Pagination](scopes.html#pagination) for how to make a paginator
 
 ## Group & Having
 
