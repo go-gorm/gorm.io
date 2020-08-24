@@ -1,5 +1,5 @@
 ---
-title: 数据类型
+title: Customize Data Types
 layout: page
 ---
 
@@ -40,7 +40,7 @@ func (j JSON) Value() (driver.Value, error) {
 
 ### GormDataTypeInterface
 
-自定义数据类型在不同的数据库中可能是不同数据类型，您可以实现 `GormDataTypeInterface` 来设置它们，例如：
+A customized data type might has different database types for databases, you can implements the `GormDataTypeInterface` to set them up, for example:
 
 ```go
 type GormDataTypeInterface interface {
@@ -64,7 +64,7 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 
 ### Clause Expression
 
-自定义数据类型可能需要特殊的 SQL，此时 GORM 提供的 API 不适用。这时候您可以定义一个 `Builder` 来实现 `clause.Expression` 接口
+Customized data type possible needs specifically SQL which can't use current GORM API, you can define a `Builder` method for the struct to implement interface `clause.Expression`
 
 ```go
 type Expression interface {
@@ -72,7 +72,7 @@ type Expression interface {
 }
 ```
 
-查看 [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) 获取详情
+Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) for implementation details, usage:
 
 ```go
 // 根据 Clause Expression 生成 SQL
