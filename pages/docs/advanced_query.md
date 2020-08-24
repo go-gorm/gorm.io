@@ -3,9 +3,9 @@ title: Advanced Query
 layout: page
 ---
 
-## Smart Select Fields
+## <span id="smart_select">Smart Select Fields</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller API struct that select specific fields automatically
+GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
 
 ```go
 type User struct {
@@ -21,7 +21,7 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when query
+// Select `id`, `name` automatically when querying
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
@@ -58,7 +58,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From SubQuery</span>
 
-GORM allows you using subquery in FROM clause with `Table`, for example:
+GORM allows you using subquery in FROM clause with method `Table`, for example:
 
 ```go
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -112,7 +112,7 @@ DB.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record, or initialize a new one with given conditions (only works with struct, map conditions)
+Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
 
 ```go
 // User not found, initialize it with give conditions
@@ -147,7 +147,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query
+`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -162,7 +162,7 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record, or create a new one with given conditions (only works with struct, map conditions)
+Get first matched record or create a new one with given conditions (only works with struct, map conditions)
 
 ```go
 // User not found, create a new record with give conditions
@@ -172,7 +172,7 @@ db.FirstOrCreate(&user, User{Name: "non_existing"})
 
 // Found user with `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
-// user -> User{ID: 111, Name: "jinzhu", "Age}: 18
+// user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
 Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
@@ -190,7 +190,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not, and save them back to the database.
+`Assign` attributes to the record regardless it is found or not and save them back to the database.
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -208,7 +208,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## Optimizer/Index Hints
 
-Optimizer hints allow us to control the query optimizer to choose a certain query execution plan.
+Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
 
 ```go
 import "gorm.io/hints"
@@ -241,7 +241,7 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows scan a row into user
+  // ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
   db.ScanRows(rows, &user)
 
   // do something
@@ -288,7 +288,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use [`Scan`](#scan) instead
+Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
 
 ```go
 var ages []int64
@@ -340,6 +340,8 @@ db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
 // Find all paid, shipped orders that amount greater than 1000
 ```
+
+Checout [Scopes](scopes.html) for details
 
 ## <span id="count">Count</span>
 

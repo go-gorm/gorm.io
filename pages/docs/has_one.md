@@ -7,8 +7,7 @@ layout: page
 
 A `has one` association sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
 
-For example, if your application includes users and credit cards, and each user
-can only have one credit card.
+For example, if your application includes users and credit cards, and each user can only have one credit card.
 
 ```go
 // User has one CreditCard, CreditCardID is the foreign key
@@ -50,7 +49,7 @@ type CreditCard struct {
 
 ## Override References
 
-By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field, like using `Name` for the below example.
+By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field's value, like using `Name` for the below example.
 
 You are able to change it with tag `references`, e.g:
 
@@ -70,7 +69,7 @@ type CreditCard struct {
 
 ## Polymorphism Association
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field, primary key value into the polymorphic field
+GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field
 
 ```go
 type Cat struct {
@@ -139,7 +138,7 @@ type User struct {
 
 ## FOREIGN KEY Constraints
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, for example:
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {
