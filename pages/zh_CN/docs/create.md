@@ -59,7 +59,7 @@ for _, user := range users {
 }
 ```
 
-[Upsert](#upsert)、[关联创建](#create_with_associations) 同样支持批量插入
+Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
 
 ## Create From Map
 
@@ -83,7 +83,7 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 
 ### <span id="create_with_associations">关联创建</span>
 
-如果您的模型定义了任何关系（relation），并且它有非零关系，那么在创建时这些数据也会被保存
+When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
 
 ```go
 type CreditCard struct {
@@ -106,7 +106,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-您也可以通过 `Select`、 `Omit` 跳过关联保存
+You can skip saving associations with `Select`, `Omit`, for example:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -122,13 +122,13 @@ db.Omit(clause.Associations).Create(&user)
 ```go
 type User struct {
   ID         int64
-  Name       string `gorm:"default:'galeone'"`
+  Name       string `gorm:"default:galeone"`
   Age        int64  `gorm:"default:18"`
-    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db 函数
+    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
 }
 ```
 
-插入记录到数据库时，[零值](https://tour.golang.org/basics/12) 字段将使用默认值
+Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
 **注意** 像 `0`、`''`、`false` 等零值，不会将这些字段定义的默认值保存到数据库。您需要使用指针类型或 Scanner/Valuer 来避免这个问题，例如：
 
