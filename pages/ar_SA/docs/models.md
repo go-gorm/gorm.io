@@ -40,16 +40,11 @@ type User struct {
 
 You can embed it into your struct to include those fields, refer [Embedded Struct](#embedded_struct)
 
-```go
-type User struct {
-  CreatedAt time.
-```
-
 ## Advanced
 
 ### Field-Level Permission
 
-Exported fields have all permission when doing CRUD with GORM, but GORM allows you to change the field-level permission with tag, so you can make a field to read-only, write-only, create-only, update-only or ignored
+Exported fields have all permission when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
 
 **NOTE** ignored fields won't be created when using GORM Migrator to create table
 
@@ -68,7 +63,7 @@ type User struct {
 
 ### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
 
-GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#current_time) into it when creating/updating if they are defined
+GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#now_func) into it when creating/updating if they are defined
 
 To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
 
@@ -78,8 +73,8 @@ If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply 
 type User struct {
   CreatedAt time.Time // Set to current time if it is zero on creating
   UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix Nano seconds as updating time
-  Updated   int64 `gorm:"autoUpdateTime:milli"` // Use unix Milli seconds as updating time
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix nano seconds as updating time
+  Updated   int64 `gorm:"autoUpdateTime:milli"`// Use unix milli seconds as updating time
   Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
 }
 ```
@@ -90,7 +85,17 @@ For anonymous fields, GORM will include its fields into its parent struct, for e
 
 ```go
 type User struct {
-  CreatedAt time.
+  gorm.Model
+  Name string
+}
+// equals
+type User struct {
+  ID        uint           `gorm:"primaryKey"`
+  CreatedAt time.Time
+  UpdatedAt time.Time
+  DeletedAt gorm.DeletedAt `gorm:"index"`
+  Name string
+}
 ```
 
 For a normal struct field, you can embed it with the tag `embedded`, for example:
@@ -135,31 +140,30 @@ type Blog struct {
 
 ### <span id="tags">Fields Tags</span>
 
-Tags are optional to use when declaring models, GORM supports the following tags:
+Tags are optional to use when declaring models, GORM supports the following tags: Tag name case doesn't matter, `camelCase` is preferred to use.
 
-Tag Name case doesn't matter, `camelCase` is preferred to use.
-
-| Tag Name       | Description                                                                                                                                                                                                                                                                                                                                                                                       |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| column         | column db name                                                                                                                                                                                                                                                                                                                                                                                    |
-| type           | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, which works with other tags, like `not null`, `size`, `autoIncrement`... specified database data type like `varbinary(8)` also supported, when using specified database data type, it needs to be a full database data type, for example: `MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT` |
-| size           | specifies column data size/length, e.g: `size:256`                                                                                                                                                                                                                                                                                                                                                |
-| primaryKey     | specifies column as primary key                                                                                                                                                                                                                                                                                                                                                                   |
-| unique         | specifies column as unique                                                                                                                                                                                                                                                                                                                                                                        |
-| default        | specifies column default value                                                                                                                                                                                                                                                                                                                                                                    |
-| precision      | specifies column precision                                                                                                                                                                                                                                                                                                                                                                        |
-| not null       | specifies column as NOT NULL                                                                                                                                                                                                                                                                                                                                                                      |
-| autoIncrement  | specifies column auto incrementable                                                                                                                                                                                                                                                                                                                                                               |
-| embedded       | embed a field                                                                                                                                                                                                                                                                                                                                                                                     |
-| embeddedPrefix | prefix for embedded field                                                                                                                                                                                                                                                                                                                                                                         |
-| autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                                                                                                                                                                                             |
-| autoUpdateTime | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                                                                                                                                                                                   |
-| index          | create index with options, same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                                                                                                                                                                                                                                                     |
-| uniqueIndex    | same as `index`, but create uniqued index                                                                                                                                                                                                                                                                                                                                                         |
-| check          | creates check constraint, eg: `check:(age > 13)`, refer [Constraints](constraints.html)                                                                                                                                                                                                                                                                                                        |
-| <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no permission                                                                                                                                                                                                                                                                     |
-| ->             | set field's read permission                                                                                                                                                                                                                                                                                                                                                                       |
-| -              | ignore this fields (disable read/write permission)                                                                                                                                                                                                                                                                                                                                                |
+| Tag Name       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| column         | column db name                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| type           | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, which works for all databases, and can be used with other tags together, like `not null`, `size`, `autoIncrement`... specified database data type like `varbinary(8)` also supported, when using specified database data type, it needs to be a full database data type, for example: `MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT` |
+| size           | specifies column data size/length, e.g: `size:256`                                                                                                                                                                                                                                                                                                                                                                                            |
+| primaryKey     | specifies column as primary key                                                                                                                                                                                                                                                                                                                                                                                                               |
+| unique         | specifies column as unique                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| default        | specifies column default value                                                                                                                                                                                                                                                                                                                                                                                                                |
+| precision      | specifies column precision                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| scale          | specifies column scale                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| not null       | specifies column as NOT NULL                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| autoIncrement  | specifies column auto incrementable                                                                                                                                                                                                                                                                                                                                                                                                           |
+| embedded       | embed the field                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| embeddedPrefix | column name prefix for embedded fields                                                                                                                                                                                                                                                                                                                                                                                                        |
+| autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                                                                                                                                                                                                                                         |
+| autoUpdateTime | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                                                                                                                                                                                                                               |
+| index          | create index with options, use same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                                                                                                                                                                                                                                                                                             |
+| uniqueIndex    | same as `index`, but create uniqued index                                                                                                                                                                                                                                                                                                                                                                                                     |
+| check          | creates check constraint, eg: `check:age > 13`, refer [Constraints](constraints.html)                                                                                                                                                                                                                                                                                                                                                      |
+| <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no write permission, `<-` create and update permission                                                                                                                                                                                                                                                                     |
+| ->             | set field's read permission, `->:false` no read permission                                                                                                                                                                                                                                                                                                                                                                                 |
+| -              | ignore this fields, `-` no read/write permission                                                                                                                                                                                                                                                                                                                                                                                              |
 
 ### Associations Tags
 
