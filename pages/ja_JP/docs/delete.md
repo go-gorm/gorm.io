@@ -3,22 +3,18 @@ title: Delete
 layout: page
 ---
 
-## Delete Record
+## Delete a Record
 
-レコードを削除する
+When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
 
 ```go
-// Delete an existing record, email's primary key value is 10
+// Email's ID is `10`
 db.Delete(&email)
-// DELETE from emails where id=10;
+// DELETE from emails where id = 10;
 
-// DELETE with inline condition
-db.Delete(&Email{}, 20)
-// DELETE from emails where id=20;
-
-// DELETE with additional conditions
+// Delete with additional conditions
 db.Where("name = ?", "jinzhu").Delete(&email)
-// DELETE FROM emails WHERE id=10 AND name = 'jinzhu'
+// DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
 ## Delete Hooks
@@ -34,9 +30,9 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## Batch Delete
+## <span id="batch_delete">Batch Delete</span>
 
-もし、レコードが持つ主キーの値を指定しなかった場合、GORMはバッチ削除を実行し、指定した条件に一致したすべてのレコードを削除します。
+The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -48,7 +44,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ### Block Global Delete
 
-何も条件を付けずにバッチ削除を行った場合、GORMは実行せず、`ErrMissingWhereClause`エラーを返します。
+If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
 
 You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
@@ -56,10 +52,13 @@ You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mod
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
-// DELETE `users` WHERE 1=1
+// DELETE FROM `users` WHERE 1=1
+
+db.Exec("DELETE FROM users")
+// DELETE FROM users
 
 DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
-// UPDATE users SET `name` = "jinzhu"
+// DELETE FROM users
 ```
 
 ## Soft Delete
@@ -69,6 +68,7 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 `Delete`メソッドを呼び出しても、 レコードはデータベースから削除されません。代わりに、GORMは`DeletedAt`フィールドの値に現在の時刻を設定し、そのレコードは通常のクエリメソッドでは検索できなくなります。
 
 ```go
+// user's ID is `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
