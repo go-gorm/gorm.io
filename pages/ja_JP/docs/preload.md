@@ -46,7 +46,7 @@ db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN 
 
 ## Preload All
 
-`clause.Associations`は `Select`と同様に`Preload `でも動作し、作成/更新時に全てのアソシエーションを `Preload`することができます。 例：
+`clause.Associations` can works with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
 
 ```go
 type User struct {
