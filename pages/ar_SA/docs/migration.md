@@ -40,7 +40,7 @@ type Migrator interface {
 
   // Database
   CurrentDatabase() string
-  FullDataTypeOf(*schema. Field) clause. Expr
+  FullDataTypeOf(*schema.Field) clause.Expr
 
   // Tables
   CreateTable(dst ...interface{}) error
@@ -54,7 +54,8 @@ type Migrator interface {
   AlterColumn(dst interface{}, field string) error
   HasColumn(dst interface{}, field string) bool
   RenameColumn(dst interface{}, oldName, field string) error
-  ColumnTypes(dst interface{}) ([]*sql. ColumnType, error)
+  MigrateColumn(dst interface{}, field *schema.Field, columnType *sql.ColumnType) error
+  ColumnTypes(dst interface{}) ([]*sql.ColumnType, error)
 
   // Constraints
   CreateConstraint(dst interface{}, name string) error
