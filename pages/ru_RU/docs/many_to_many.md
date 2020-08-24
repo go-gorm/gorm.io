@@ -65,7 +65,7 @@ type Language struct {
 ```go
 type User struct {
     gorm.Model
-    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:ProfileRefer"`
+    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:UserRefer"`
     Refer    uint
 }
 
@@ -75,9 +75,9 @@ type Profile struct {
     UserRefer uint
 }
 
-// Который создает таблицу связей: user_profiles
-//   внешний ключ: user_refer_id, ссылается на: users.refer
-//   внешний ключ: profile_refer, ссылается на: profiles.user_refer
+// Which creates join table: user_profiles
+//   foreign key: user_refer_id, reference: users.refer
+//   foreign key: profile_refer, reference: profiles.user_refer
 ```
 
 ## Самосвязанный Many2Many
@@ -130,13 +130,14 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// в PersonAddress должны быть определены все необходимые внешние ключи, или выкинет ошибку
-db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
+// Change model Person's field Addresses's join table to PersonAddress
+// PersonAddress must defined all required foreign keys or it will raise error
+err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
 ## Ограничения внешних ключей
 
-Вы можете настроить `OnUpdate`, `OnDelete` ограничения с помощью тега `constraint`, например:
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {
@@ -171,24 +172,24 @@ type Blog struct {
   Subject    string
   Body       string
   Tags       []Tag `gorm:"many2many:blog_tags;"`
-  SharedTags []Tag `gorm:"many2many:shared_blog_tags;ForeignKey:id;References:id"`
   LocaleTags []Tag `gorm:"many2many:locale_blog_tags;ForeignKey:id,locale;References:id"`
+  SharedTags []Tag `gorm:"many2many:shared_blog_tags;ForeignKey:id;References:id"`
 }
 
-// таблица связей: blog_tags
-//   внешний ключ: blog_id, ссылается на: blogs.id
-//   внешний ключ: blog_locale, ссылается на: blogs.locale
-//   внешний ключ: tag_id, ссылается на: tags.id
-//   внешний ключ: tag_locale, ссылается на: tags.locale
+// Join Table: blog_tags
+//   foreign key: blog_id, reference: blogs.id
+//   foreign key: blog_locale, reference: blogs.locale
+//   foreign key: tag_id, reference: tags.id
+//   foreign key: tag_locale, reference: tags.locale
 
-// таблица связей: shared_blog_tags
-//   внешний ключ: blog_id, ссылается на: blogs.id
-//   внешний ключ: tag_id, ссылается на: tags.id
+// Join Table: locale_blog_tags
+//   foreign key: blog_id, reference: blogs.id
+//   foreign key: blog_locale, reference: blogs.locale
+//   foreign key: tag_id, reference: tags.id
 
-// таблица связей: locale_blog_tags
-//   внешний ключ: blog_id, ссылается на: blogs.id
-//   внешний ключ: blog_locale, ссылается на: blogs.locale
-//   внешний ключ: tag_id, ссылается на: tags.id
+// Join Table: shared_blog_tags
+//   foreign key: blog_id, reference: blogs.id
+//   foreign key: tag_id, reference: tags.id
 ```
 
 Также смотрите [Композитный первичный Ключ](composite_primary_key.html)
