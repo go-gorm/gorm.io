@@ -20,7 +20,7 @@ GORM 2.0 это перезапись с нуля, представляет не�
 * Full self-reference relationships support, Join Table improvements, Association Mode for batch data
 * Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
 * Field permissions support: read-only, write-only, create-only, update-only, ignored
-* New plugin system, provides official plugins for reading/writing splitting, prometheus integrations...
+* New plugin system, provides official plugins for multiple databases, read/write splitting, prometheus integrations...
 * New Hooks API: unified interface with plugins
 * New Migrator: allows to create database foreign keys for relationships, smarter AutoMigrate, constraints/checker support, enhanced index support
 * New Logger: context support, improved extensibility
@@ -326,9 +326,9 @@ type User struct {
 }
 ```
 
-#### Read/Write Splitting
+#### Multiple Databases, Read/Write Splitting
 
-GORM provides read/write splitting support with plugin `DB Resolver`, which also supports auto-switching database/table based on current struct/table, and multiple sources、replicas supports with customized load-balancing logic
+GORM provides multiple databases, read/write splitting support with plugin `DB Resolver`, which also supports auto-switching database/table based on current struct/table, and multiple sources、replicas supports with customized load-balancing logic
 
 Check out [Database Resolver](dbresolver.html) for details
 
@@ -480,7 +480,7 @@ for i := 0; i < 100; i++ {
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// NOT Safe for a shared condition
+// NOT Safe as reusing Statement
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
@@ -494,13 +494,13 @@ for i := 0; i < 100; i++ {
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 ```
 
