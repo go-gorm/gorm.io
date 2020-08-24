@@ -15,7 +15,7 @@ GORM 2.0 是基于用户过去几年中的反馈进行思考后的重写，在�
 * 完整的自引用支持，连接表改进，批量数据的关联模式
 * 插入时间、更新时间可支持多个字段，加入了对 unix (nano) second 的支持
 * 字段级权限控制：只读、只写、只创建、只更新、忽略
-* 全新的插件系统：由 Database Resolver 提供的读写分离，Prometheus 集成，以及更多...
+* New plugin system: multiple databases, read/write splitting support with plugin Database Resolver, prometheus integrations...
 * 全新的 Hook API：带插件的统一接口
 * 全新的 Migrator：允许为关系创建数据库外键，约束、检查其支持，增强索引支持
 * 全新的 Logger：context 支持、提高可扩展性
