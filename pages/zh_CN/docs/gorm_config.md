@@ -7,14 +7,15 @@ GORM 提供的配置可以在初始化时使用
 
 ```go
 type Config struct {
-    SkipDefaultTransaction bool
-    NamingStrategy schema.Namer
-    Logger logger.Interface
-    NowFunc func() time.Time
-    DryRun bool
-    PrepareStmt bool
-    DisableAutomaticPing bool
-    DisableForeignKeyConstraintWhenMigrating bool
+  SkipDefaultTransaction bool
+  NamingStrategy         schema.Namer
+  Logger                 logger.Interface
+  NowFunc                func() time.Time
+  DryRun                 bool
+  PrepareStmt            bool
+  AllowGlobalUpdate      bool
+  DisableAutomaticPing   bool
+  DisableForeignKeyConstraintWhenMigrating bool
 }
 ```
 
@@ -28,7 +29,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## 命名策略
+## <span id="naming_strategy">NamingStrategy</span>
 
 GORM 允许用户通过覆盖默认的`命名策略`更改默认的命名约定，这需要实现接口 `Namer`
 
@@ -56,9 +57,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Logger
 
-允许通过覆盖此选项更改 GORM 的默认 logger，参考 [Logger](logger.html) 获取详情
+Allow to change GORM's default logger by overriding this option, refer [Logger](logger.html) for more details
 
-## NowFunc
+## <span id="now_func">NowFunc</span>
 
 更改创建时间使用的函数
 
@@ -90,9 +91,13 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
+## AllowGlobalUpdate
+
+Enable global update/delete, refer [Session](session.html) for details
+
 ## DisableAutomaticPing
 
-在完成初始化后，GORM 会自动 ping 数据库以检查数据库的可用性，若要禁用该特性，可将其设置为 `true`
+GORM automatically ping database after initialized to check database availability, disable it by setting it to `true`
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -102,7 +107,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DisableForeignKeyConstraintWhenMigrating
 
-在 `AutoMigrate` 或 `CreateTable` 时，GORM 会自动创建外键约束，若要禁用该特性，可将其设置为 `true`，参考 [迁移](migration.html) 获取详情。
+GORM creates database foreign key constraints automatically when `AutoMigrate` or `CreateTable`, disable this by setting it to `true`, refer [Migration](migration.html) for details
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
