@@ -30,13 +30,13 @@ MySQl Driver предоставляет [несколько расширенны
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
-  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // имя источника данных
-  DefaultStringSize: 256, // размер по умолчанию для строковых полей
-  DisableDatetimePrecision: true, // выключаем точность datetime, которая не поддерживается до MySQL 5.
-  DontSupportRenameIndex: true, // drop & create когда переименовывается индекс переименование индекса не поддерживается до MySQL 5. , MariaDB
+  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name
+  DefaultStringSize: 256, // default size for string fields
+  DisableDatetimePrecision: true, // disable datetime precision, which not supported before MySQL 5.6
+  DontSupportRenameIndex: true, // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
   DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-  SkipInitializeWithVersion: false, // auto configure based on used version
-}), &gorm. нарисовать {})
+  SkipInitializeWithVersion: false, // auto configure based on currently MySQL version
+}), &gorm.Config{})
 ```
 
 ### Customize Driver
@@ -151,8 +151,6 @@ import (
 dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
-
-Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
 ## Пул подключений
 
