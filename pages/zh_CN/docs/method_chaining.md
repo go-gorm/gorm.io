@@ -19,7 +19,7 @@ GORM 中有三种类型的方法： `链式方法`、`Finisher 方法`、`新建
 
 这是 [完整方法列表](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)，也可以查看 [SQL 构建器](sql_builder.html) 获取更多关于 `Clauses` 的信息
 
-## Finisher Method
+## <span id="finisher_method">Finisher Method</span>
 
 Finishers 是会立即执行注册回调的方法，然后生成并执行 SQL，比如这些方法：
 
@@ -86,34 +86,34 @@ tx.Where("age = ?", 28).Find(&users)
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// 安全的使用新初始化的 *gorm.DB
+// Safe for new initialized *gorm.DB
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// 不安全的复用 Statement
+// NOT Safe as reusing Statement
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.WithContext(ctx)
-// 在 `新建会话方法` 之后是安全的
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// 在 `新建会话方法` 之后是安全的
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` 会应用到每次循环中
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
-// 在 `新建会话方法` 之后是安全的
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` 会应用到每次循环中
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 ```
