@@ -5,26 +5,26 @@ layout: page
 
 ## 检索单个对象
 
-GORM 提供 `First`, `Take`, `Last` 方法，以便从数据库中检索单个对象。当查询数据库时它添加了 `LIMIT 1` 条件。当没有找到记录时，它会返回错误 `ErrRecordNotFound`
+GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return error `ErrRecordNotFound` if no record found.
 
 ```go
-// 获取第一条记录（主键升序）
+// Get the first record ordered by primary key
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
 
-// 获取一条记录，没有指定排序字段
+// Get one record, no specified order
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// 获取最后一条记录（主键降序）
+// Get last record, order by primary key desc
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // 返回找到的记录数
+result.RowsAffected // returns found records count
 result.Error        // returns error
 
-// 检查 ErrRecordNotFound 错误
+// check error ErrRecordNotFound
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
@@ -44,17 +44,17 @@ result.Error        // returns error
 ### String 条件
 
 ```go
-// 获取第一条匹配的记录
+// Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
-// 获取全部匹配的记录
+// Get all matched records
 db.Where("name <> ?", "jinzhu").Find(&users)
 // SELECT * FROM users WHERE name <> 'jinzhu';
 
 // IN
 db.Where("name IN ?", []string{"jinzhu", "jinzhu 2"}).Find(&users)
-// SELECT * FROM users WHERE name in ('jinzhu','jinzhu 2');
+// SELECT * FROM users WHERE name IN ('jinzhu','jinzhu 2');
 
 // LIKE
 db.Where("name LIKE ?", "%jin%").Find(&users)
@@ -164,10 +164,10 @@ db.Where("name = 'jinzhu'").Or(User{Name: "jinzhu 2", Age: 18}).Find(&users)
 
 // Map
 db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age": 18}).Find(&users)
-// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
+// SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-您还可以在高级查询中查看 [Group 条件](advanced_query.html)，更轻松地编写复杂 SQL
+Also check out [Group Conditions in Advanced Query](advanced_query.html#group_conditions), it can be used to write complicated SQL
 
 ## 选择特定字段
 
@@ -184,9 +184,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
+Also check out [Smart Select Fields](advanced_query.html#smart_select)
+
 ## Order
 
-指定从数据库检索记录时的排序方式
+Specify order when retrieving records from the database
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -199,7 +201,7 @@ db.Order("age desc").Order("name").Find(&users)
 
 ## Limit & Offset
 
-`Limit` 指定获取记录的最大数量 `Offset` 指定在开始返回记录之前要跳过的记录数量
+`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
 
 ```go
 db.Limit(3).Find(&users)
@@ -221,6 +223,8 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
 ```
+
+Checkout [Pagination](scopes.html#pagination) for how to make a paginator
 
 ## Group & Having
 
@@ -256,17 +260,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-从模型中选择不相同的值
+Selecting distinct values from the model
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` 也可以配合 [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) 使用
+`Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
 
 ## Joins
 
-指定 Joins 条件
+Specify Joins conditions
 
 ```go
 type result struct {
@@ -289,18 +293,18 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ### Joins 预加载
 
-您可以使用 `Joins` 实现单条 SQL 预加载关联记录，例如：
+You can use `Joins` eager loading associations with a single SQL, for example:
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-参考 [预加载](preload.html) 了解详情
+Refer [Preloading (Eager Loading)](preload.html) for details
 
 ## <span id="scan">Scan</span>
 
-Scan 结果至 struct，用法与 `Find` 类似
+Scan results into a struct work similar to `Find`
 
 ```go
 type Result struct {
