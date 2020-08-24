@@ -3,9 +3,9 @@ title: 高级查询
 layout: page
 ---
 
-## 智能选择字段
+## <span id="smart_select">Smart Select Fields</span>
 
-GORM 允许通过 [`Select`](query.html) 方法选择特定的字段，如果您在应用程序中经常使用此功能，你可以定义一个较小的 API 结构体，以实现自动选择特定的字段。
+GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // 假设后面还有几百个字段...
+  // hundreds of fields
 }
 
 type APIUser struct {
@@ -21,7 +21,7 @@ type APIUser struct {
   Name string
 }
 
-// 查询时会自动选择 `id`, `name` 字段
+// Select `id`, `name` automatically when querying
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
@@ -58,7 +58,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From 子查询</span>
 
-GORM 允许您在 `Table` 方法中通过 FROM 子句使用子查询，例如：
+GORM allows you using subquery in FROM clause with method `Table`, for example:
 
 ```go
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -112,7 +112,7 @@ DB.Table("users").Find(&results)
 
 ## FirstOrInit
 
-获取第一条匹配的记录，或者根据给定的条件初始化一个 struct（仅支持 sturct 和 map 条件）
+Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
 
 ```go
 // 未找到 user，根据给定的条件初始化 struct
@@ -147,7 +147,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-不管是否找到记录，`Assign` 都会将属性赋值给 struct，但这些属性不会被用于生成查询 SQL
+`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
 
 ```go
 // 未找到 user，根据条件和 Assign 属性初始化 struct
@@ -162,17 +162,17 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-获取第一条匹配的记录，或者根据给定的条件创建一条新纪录（仅支持 sturct 和 map 条件）
+Get first matched record or create a new one with given conditions (only works with struct, map conditions)
 
 ```go
-// 未找到 user，则根据给定条件创建一条新纪录
+// User not found, create a new record with give conditions
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// 找到了 `name` = `jinzhu` 的 user
+// Found user with `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
-// user -> User{ID: 111, Name: "jinzhu", "Age}: 18
+// user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
 如果没有找到记录，可以使用包含更多的属性的结构体创建记录，`Attrs` 不会被用于生成查询 SQL 。
@@ -190,7 +190,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-不管是否找到记录，`Assign` 都会将属性赋值给 struct，并将结果写回数据库
+`Assign` attributes to the record regardless it is found or not and save them back to the database.
 
 ```go
 // 未找到 user，根据条件和 Assign 属性创建记录
@@ -208,7 +208,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## 优化器、索引提示
 
-优化器提示允许我们控制查询优化器选择某个查询执行计划。
+Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
 
 ```go
 import "gorm.io/hints"
@@ -241,10 +241,10 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows 将一行记录扫描至 user
+  // ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
   db.ScanRows(rows, &user)
 
-  // 业务逻辑...
+  // do something
 }
 ```
 
@@ -288,7 +288,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Pluck 用于从数据库查询单个列，并将结果扫描到切片。如果您想要查询多列，您应该使用 [`Scan`](#scan)
+Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
 
 ```go
 var ages []int64
@@ -341,9 +341,11 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // 查找所有金额大于 1000 且已付款或已发货的订单
 ```
 
+Checout [Scopes](scopes.html) for details
+
 ## <span id="count">Count</span>
 
-Count 用于获取匹配的记录数
+Get matched records count
 
 ```go
 var count int64
