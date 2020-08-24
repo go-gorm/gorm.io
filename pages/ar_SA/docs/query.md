@@ -5,18 +5,27 @@ layout: page
 
 ## Retrieving a single object
 
-GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, when no record found, its returns error `ErrRecordNotFound`
+GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return error `ErrRecordNotFound` if no record found.
 
 ```go
-db. Limit(3). Find(&users)
-// SELECT * FROM users LIMIT 3;
+// Get the first record ordered by primary key
+db.First(&user)
+// SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Cancel limit condition with -1
-db. Limit(-1). Find(&users2)
-// SELECT * FROM users LIMIT 10; (users1)
-// SELECT * FROM users; (users2)
+// Get one record, no specified order
+db.Take(&user)
+// SELECT * FROM users LIMIT 1;
 
-db.
+// Get last record, order by primary key desc
+db.Last(&user)
+// SELECT * FROM users ORDER BY id DESC LIMIT 1;
+
+result := db.First(&user)
+result.RowsAffected // returns found records count
+result.Error        // returns error
+
+// check error ErrRecordNotFound
+errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
 ## Retrieving objects
@@ -35,7 +44,24 @@ for rows. Next() {
 ### String Conditions
 
 ```go
-db. Where(&User{Name: "jinzhu", Age: 0}). Find(&users)
+// Get first matched record
+db.Where("name = ?", "jinzhu").First(&user)
+// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
+
+// Get all matched records
+db.Where("name <> ?", "jinzhu").Find(&users)
+// SELECT * FROM users WHERE name <> 'jinzhu';
+
+// IN
+db.Where("name IN ?", []string{"jinzhu", "jinzhu 2"}).Find(&users)
+// SELECT * FROM users WHERE name IN ('jinzhu','jinzhu 2');
+
+// LIKE
+db.Where("name LIKE ?", "%jin%").Find(&users)
+// SELECT * FROM users WHERE name LIKE '%jin%';
+
+// AND
+db.Where("name = ? Where(&User{Name: "jinzhu", Age: 0}). Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
@@ -106,19 +132,19 @@ db. Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinz
 ### Or Conditions
 
 ```go
-db. Where("role = ?", "admin"). Or("role = ?", "super_admin"). Find(&users)
+db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
 // SELECT * FROM users WHERE role = 'admin' OR role = 'super_admin';
 
 // Struct
-db. Or(User{Name: "jinzhu 2", Age: 18}). Find(&users)
+db.Where("name = 'jinzhu'").Or(User{Name: "jinzhu 2", Age: 18}).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 
 // Map
-db. Or(map[string]interface{}{"name": "jinzhu 2", "age": 18}). Find(&users)
-// SELECT * FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2';
+db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age": 18}).Find(&users)
+// SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-Also check out [Group Conditions in Advanced Query](advanced_query.html), it can write complicated SQL easier
+Also check out [Group Conditions in Advanced Query](advanced_query.html#group_conditions), it can be used to write complicated SQL
 
 ## Selecting Specific Fields
 
@@ -127,6 +153,8 @@ Specify fields that you want to retrieve from database, by default, select all f
 ```go
 db. Distinct("name", "age"). Order("name, age desc"). Find(&results)
 ```
+
+Also check out [Smart Select Fields](advanced_query.html#smart_select)
 
 ## Order
 
@@ -160,6 +188,8 @@ db. Offset(10). Offset(-1). Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
 ```
+
+Checkout [Pagination](scopes.html#pagination) for how to make a paginator
 
 ## Group & Having
 
