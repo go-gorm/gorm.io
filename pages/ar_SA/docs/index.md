@@ -18,7 +18,7 @@ layout: page
 * Composite Primary Key
 * Auto Migrations
 * Logger
-* Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
+* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
 * Every feature comes with tests
 * Developer Friendly
 
