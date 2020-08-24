@@ -25,7 +25,7 @@ Chain methods are methods to modify or add `Clauses` to current `Statement`, lik
 
 Here is [the full lists](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), also check out the [SQL Builder](sql_builder.html) for more details about `Clauses`
 
-## Finisher Method
+## <span id="finisher_method">Finisher Method</span>
 
 Finishers are immediate methods that execute registered callbacks, which will generate and execute SQL, like those methods:
 
@@ -94,22 +94,36 @@ for i := 0; i < 100; i++ {
 Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
 
 ```go
-db, err := gorm. Open(sqlite. Open("test.db"), &gorm. Config{})
+db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
 // Safe for new initialized *gorm.DB
 for i := 0; i < 100; i++ {
-  go db. First(&user)
+  go db.Where(...).First(&user)
 }
 
-tx := db. Where("name = ?", "jinzhu")
+tx := db.Where("name = ?", "jinzhu")
 // NOT Safe as reusing Statement
 for i := 0; i < 100; i++ {
-  go tx. First(&user) // `name = 'jinzhu'` will applies to all
+  go tx.Where(...).First(&user)
 }
 
-tx := db. Session(&gorm. Session{WithConditions: true})
+ctx, _ := context.WithTimeout(context.Background(), time.Second)
+ctxDB := db.WithContext(ctx)
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go tx. First(&user) // `name = 'jinzhu'` will applies to all
+  go ctxDB.Where(...).First(&user)
+}
+
+ctx, _ := context.WithTimeout(context.Background(), time.Second)
+ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
+// Safe after a `New Session Method`
+for i := 0; i < 100; i++ {
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+}
+
+tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
+// Safe after a `New Session Method`
+for i := 0; i < 100; i++ {
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 ```
