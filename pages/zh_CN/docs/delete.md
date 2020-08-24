@@ -3,22 +3,18 @@ title: 删除
 layout: page
 ---
 
-## 删除记录
+## Delete a Record
 
-删除一条记录
+When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
 
 ```go
-// 删除一条已有的记录（email 的主键值为 10）
+// Email's ID is `10`
 db.Delete(&email)
-// DELETE from emails where id=10;
+// DELETE from emails where id = 10;
 
-// 通过内联条件删除记录
-db.Delete(&Email{}, 20)
-// DELETE from emails where id=20;
-
-// 带上其它条件
+// Delete with additional conditions
 db.Where("name = ?", "jinzhu").Delete(&email)
-// DELETE FROM emails WHERE id=10 AND name = 'jinzhu'
+// DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
 ## 删除钩子
@@ -34,9 +30,9 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## 批量删除
+## <span id="batch_delete">Batch Delete</span>
 
-如果没有指定带有主键值的记录，GORM 将执行批量删除，删除所有匹配的记录
+The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -48,7 +44,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ### 阻止全局删除
 
-如果在没有任何条件的情况下执行批量删除，GORM 不会执行该操作，并返回` ErrMissingWhereClause `错误
+If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
 
 对此，你必须加一些条件，或者使用原生 SQL，或者启用 `AllowGlobalUpdate` 模式，例如：
 
@@ -56,10 +52,13 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
-// DELETE `users` WHERE 1=1
+// DELETE FROM `users` WHERE 1=1
+
+db.Exec("DELETE FROM users")
+// DELETE FROM users
 
 DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
-// UPDATE users SET `name` = "jinzhu"
+// DELETE FROM users
 ```
 
 ## 软删除
@@ -69,14 +68,15 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 拥有软删除能力的模型调用 `Delete` 时，记录不会被数据库。但 GORM 会将 `DeletedAt` 置为当前时间， 并且你不能再通过普通的查询方法找到该记录。
 
 ```go
+// user's ID is `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// 批量删除
+// Batch Delete
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// 在查询时会忽略被软删除的记录
+// Soft deleted records will be ignored when querying
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
