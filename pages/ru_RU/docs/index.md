@@ -18,7 +18,7 @@ layout: страница
 * Композитный первичный ключ
 * Автомиграция
 * Logger
-* Расширяемый плагин API: Резолвер Баз данных (Разделение чтения/записи) / Prometheus...
+* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
 * Каждая функция поставляется с тестами
 * Дружественная для разработчиков
 
