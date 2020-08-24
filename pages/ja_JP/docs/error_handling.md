@@ -5,7 +5,7 @@ layout: page
 
 Goでは、エラー処理が重要です。
 
-[Finisher Methods](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) の後にエラーチェックを行うことをおすすめします。
+You are encouraged to do error check after any [Finisher Methods](method_chaining.html#finisher_method)
 
 ## Error Handling
 
