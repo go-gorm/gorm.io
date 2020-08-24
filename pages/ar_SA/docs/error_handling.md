@@ -5,7 +5,7 @@ layout: page
 
 In Go, error handling is important.
 
-You are encouraged to do error check after any [Finisher Methods](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
+You are encouraged to do error check after any [Finisher Methods](method_chaining.html#finisher_method)
 
 ## Error Handling
 
