@@ -49,7 +49,7 @@ DB.Use(dbresolver.Register(dbresolver.Config{
 
 DBResolver автоматически переключит соединение на основе таблицы/struct
 
-Для RAW SQL, DBResolver извлечет имя таблицы из SQL в соответствии с резолвером, и будет использовать `sources`, если SQL не начинается с `SELECT`, например:
+For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
 
 ```go
 // Пример `User` Resolver
@@ -72,7 +72,7 @@ DB.Table("orders").Find(&Report{}) // replicas `db8`
 
 ## Разделение чтения/записи
 
-Разделение Чтения/Записи с DBResolver на основе [Обратного вызова GORM](https://gorm.io/docs/write_plugins.html).
+Read/Write splitting with DBResolver based on the current used [GORM callbacks](https://gorm.io/docs/write_plugins.html).
 
 Для `Query`, `Row` обратного вызова, будет использовать `реплики`, если только указан режим `Write` Для `Raw` обратного вызова, считается только чтением и будут использоваться `реплики`, если SQL начинается с `SELECT`
 
@@ -91,7 +91,7 @@ DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 
 ## Балансировка Нагрузки
 
-GORM поддерживает балансировку нагрузки мастер/реплики на основе политики, политика - это интерфейс реализующий следующий интерфейс:
+GORM supports load balancing sources/replicas based on policy, the policy should be a struct implements following interface:
 
 ```go
 type Policy interface {
@@ -99,7 +99,7 @@ type Policy interface {
 }
 ```
 
-В настоящее время реализована только `RandomPolicy` и это вариант по умолчанию, если не указана политика.
+Currently only the `RandomPolicy` implemented and it is the default option if no other policy specified.
 
 ## Пул подключений
 
