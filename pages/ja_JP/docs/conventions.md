@@ -47,7 +47,7 @@ func (User) TableName() string {
 }
 ```
 
-**注：**`TableName`は動的な名前を許可していません、その結果は将来のためにキャッシュされます、動的な名前を使用するには、次のコードを使用することができます。
+**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use `Scopes`, for example:
 
 ```go
 func UserTable(user User) func (db *gorm.DB) *gorm.DB {
@@ -84,7 +84,7 @@ FROM句でサブクエリを使用する方法については、 [From SubQuery]
 
 ### <span id="naming_strategy">NamingStrategy</span>
 
-`TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`の構築に使用されている`NamingStrategy`をオーバーライドすることで、デフォルトの命名規則を変更できます。詳細は[GORM Config](gorm_config.html)を参照してください。
+GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html#naming_strategy) for details
 
 ## Column Name
 
@@ -99,7 +99,7 @@ type User struct {
 }
 ```
 
-`column`タグか[`NamingStrategy`](#naming_strategy)を利用することでカラム名を上書きできます。
+You can override the column name with tag `column` or use [`NamingStrategy`](#naming_strategy)
 
 ```go
 type Animal struct {
@@ -118,6 +118,9 @@ type Animal struct {
 ```go
 db.Create(&user) // set `CreatedAt` to current time
 
+user2 := User{Name: "jinzhu", CreatedAt: time.Now()}
+db.Create(&user2) // user2's `CreatedAt` won't be changed
+
 // To change its value, you could use `Update`
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
@@ -130,6 +133,14 @@ db.Model(&user).Update("CreatedAt", time.Now())
 db.Save(&user) // set `UpdatedAt` to current time
 
 db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+
+db.Model(&user).UpdateColumn("name", "jinzhu") // `UpdatedAt` won't be changed
+
+user2 := User{Name: "jinzhu", UpdatedAt: time.Now()}
+db.Create(&user2) // user2's `UpdatedAt` won't be changed when creating
+
+user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
+db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
 ```
 
-**注：**GORMは複数の時間トラッキングフィールド、他のフィールドとのトラッキング、UNIX秒/UNIXナノ秒でのトラッキングをサポートしています。詳細は[ Models](models.html#time_tracking)を参照してください。
+**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
