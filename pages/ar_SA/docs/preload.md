@@ -29,7 +29,7 @@ db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN 
 
 ## Preload All
 
-`clause. Associations` can works with `Preload` similar `Select` when creating/updating, you can use it to `Preload` all associations, for example:
+`clause.Associations` can works with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
 
 ```go
 type User struct {
