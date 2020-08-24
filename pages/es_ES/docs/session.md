@@ -8,12 +8,13 @@ GORM provides `Session` method, which is a [`New Session Method`](method_chainin
 ```go
 // Session Configuration
 type Session struct {
-  DryRun         bool
-  PrepareStmt    bool
-  WithConditions bool
-  Context        context.Context
-  Logger         logger.Interface
-  NowFunc        func() time.Time
+  DryRun            bool
+  PrepareStmt       bool
+  WithConditions    bool
+  AllowGlobalUpdate bool
+  Context           context.Context
+  Logger            logger.Interface
+  NowFunc           func() time.Time
 }
 ```
 
@@ -22,7 +23,7 @@ type Session struct {
 Generate `SQL` without executing, can be used to prepare or test generated SQL, for example:
 
 ```go
-// new session mode
+// session mode
 stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
@@ -60,7 +61,7 @@ stmtManger, ok := tx.ConnPool.(*PreparedStmtDB)
 stmtManger.Close()
 
 // prepared SQL for *current session*
-stmtManger.PreparedSQL
+stmtManger.PreparedSQL // => []string{}
 
 // prepared statements for current database connection pool (all sessions)
 stmtManger.Stmts // map[string]*sql.Stmt
@@ -89,6 +90,17 @@ tx.First(&user, "id = ?", 10)
 tx2 := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: false})
 tx2.First(&user)
 // SELECT * FROM users ORDER BY id
+```
+
+## AllowGlobalUpdate
+
+GORM doesn't allow global update/delete by default, will return `ErrMissingWhereClause` error, you can set this option to true to enable it, for example:
+
+```go
+DB.Session(&gorm.Session{
+  AllowGlobalUpdate: true,
+}).Model(&User{}).Update("name", "jinzhu")
+// UPDATE users SET `name` = "jinzhu"
 ```
 
 ## Context
