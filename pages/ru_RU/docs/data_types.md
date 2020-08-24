@@ -1,5 +1,5 @@
 ---
-title: Типы данных
+title: Customize Data Types
 layout: страница
 ---
 
@@ -40,7 +40,7 @@ func (j JSON) Value() (driver.Value, error) {
 
 ### Интерфейс GormDataTypeInterface
 
-Настраиваемый тип данных может работать в различных типах баз данных, вы можете использовать `GormDataTypeInterface` для их установки, например:
+A customized data type might has different database types for databases, you can implements the `GormDataTypeInterface` to set them up, for example:
 
 ```go
 type GormDataTypeInterface interface {
@@ -64,7 +64,7 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 
 ### Настраиваемые исключения
 
-Настраиваемый тип данных требует специфического SQL, который не может использовать текущий GORM API, вы можете определить `Builder` для реализации `clause.Expression (исключений)`
+Customized data type possible needs specifically SQL which can't use current GORM API, you can define a `Builder` method for the struct to implement interface `clause.Expression`
 
 ```go
 type Expression interface {
@@ -72,7 +72,7 @@ type Expression interface {
 }
 ```
 
-Смотрите [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) как пример реализации
+Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) for implementation details, usage:
 
 ```go
 // Generates SQL with clause Expression
