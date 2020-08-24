@@ -18,7 +18,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * 复合主键
 * 自动迁移
 * 自定义 Logger
-* 灵活的可扩展插件 API：Database Resolver（读写分离）、Prometheus...
+* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
 * 所有特性都通过了测试
 * 开发者友好
 
