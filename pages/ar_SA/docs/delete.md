@@ -3,16 +3,18 @@ title: Delete
 layout: page
 ---
 
-## Delete Record
+## Delete a Record
 
-Delete a record
+When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
 
 ```go
-Delete(Email{})
-// DELETE from emails where email LIKE "%jinzhu%";
+// Email's ID is `10`
+db.Delete(&email)
+// DELETE from emails where id = 10;
 
-db. Delete(Email{}, "email LIKE ?", "%jinzhu%")
-// DELETE from emails where email LIKE "%jinzhu%";
+// Delete with additional conditions
+db.Where("name = ?", "jinzhu").Delete(&email)
+// DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
 ## Delete Hooks
@@ -28,9 +30,9 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## Batch Delete
+## <span id="batch_delete">Batch Delete</span>
 
-If we havn't specify a record having priamry key value, GORM will perform a batch delete all matched records
+The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
 
 ```go
 db. Where("email LIKE ?", "%jinzhu%"). Delete(Email{})
@@ -42,7 +44,7 @@ db. Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ### Block Global Delete
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will returns `ErrMissingWhereClause` error
+If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
 
 You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
@@ -50,10 +52,13 @@ You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mod
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
-// DELETE `users` WHERE 1=1
+// DELETE FROM `users` WHERE 1=1
+
+db.Exec("DELETE FROM users")
+// DELETE FROM users
 
 DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
-// UPDATE users SET `name` = "jinzhu"
+// DELETE FROM users
 ```
 
 ## Soft Delete
@@ -63,8 +68,17 @@ If you don't want to include `gorm. Model`, you can enable the soft delete featu
 When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
 
 ```go
-db. Unscoped(). Where("age = 20"). Find(&users)
-// SELECT * FROM users WHERE age = 20;
+// user's ID is `111`
+db.Delete(&user)
+// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
+
+// Batch Delete
+db.Where("age = ?", 20).Delete(&User{})
+// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
+
+// Soft deleted records will be ignored when querying
+db.Where("age = 20").Find(&user)
+// SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
 If you don't want to include `gorm. Model`, you can enable the soft delete feature like:
