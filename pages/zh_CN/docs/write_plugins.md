@@ -16,12 +16,12 @@ GORM 自身也是基于 `Callbacks` 的，包括 `Create`、`Query`、`Update`�
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // 伪代码：裁剪图片字段并将其上传至 CDN
+    // crop image fields and upload them to CDN, dummy code
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
-          // 从字段获取 value
+          // Get value from field
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -29,37 +29,39 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        // 从字段获取 value
+        // Get value from field
         if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
 
-        // 设置字段的 value
+        // Set value to field
         err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
-    // 当前 model 的所有字段
+    // All fields for current model
     db.Statement.Schema.Fields
 
-    // 当前 model 的所有主键字段
+    // All primary key fields for current model
     db.Statement.Schema.PrimaryFields
 
-    // 优先的主键字段：DB 列名为 `id` 或定义的第一个主键
+    // Prioritized primary key field: field with DB name `id` or the first defined primary key
     db.Statement.Schema.PrioritizedPrimaryField
 
-    // 当前 model 的所有关系
+    // All relationships for current model
     db.Statement.Schema.Relationships
 
+    // Find field with field name or db name
     field := db.Statement.Schema.LookUpField("Name")
-    // 处理...
+
+    // processing
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// 为 Crete 流程注册一个回调
+// register a callback for Create process
 ```
 
 ### 删除回调
@@ -85,21 +87,38 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 注册带顺序的回调
 
 ```go
+// before gorm:create
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
+
+// after gorm:create
 db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
+
+// before gorm:query
 db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
+
+// after gorm:delete
 db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
+
+// before gorm:update
 db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
+
+// before gorm:create and after gorm:before_create
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
+
+// before any other callbacks
+db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
+
+// after any other callbacks
+db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
 ### 预定义回调
 
-GORM 已经定义了 [一些回调](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) 来支持当前的 GORM 功能，在启动您的插件之前可以先看看这些回调
+GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to power current GORM features, check them out before starting your plugins
 
 ## 插件
 
-GORM 提供了 `Use` 方法来注册插件，插件需要实现 `Plugin` 接口
+GORM provides a `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
 
 ```go
 type Plugin interface {
