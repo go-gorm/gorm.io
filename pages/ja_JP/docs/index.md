@@ -18,7 +18,7 @@ layout: page
 * 複合主キー
 * オートマイグレーション
 * ロガー
-* Extendable, flexible plugin API: Database Resolver (Read/Write Splitting) / Prometheus...
+* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
 * すべての機能に付属するテストコード
 * デベロッパーフレンドリー
 
