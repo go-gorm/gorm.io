@@ -5,7 +5,7 @@ layout: page
 
 ## Auto Create/Update
 
-GORM will autosave associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
 
 ```go
 user := User{
@@ -24,15 +24,11 @@ user := User{
 
 db.Create(&user)
 // BEGIN TRANSACTION;
-// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "addresses" (address1) VALUES ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
 // INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('ZH') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1) ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('EN') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 2) ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "languages" ("name") VALUES ('ZH'), ('EN') ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1), (111, 2) ON DUPLICATE KEY DO NOTHING;
 // COMMIT;
 
 db.Save(&user)
@@ -77,7 +73,7 @@ var user User
 db.Model(&user).Association("Languages")
 // `user` is the source model, it must contains primary key
 // `Languages` is a relationship's field name
-// If the above two conditions matched, the AssociationMode should be started successfully, or it should return error
+// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
 db.Model(&user).Association("Languages").Error
 ```
 
@@ -87,8 +83,11 @@ Find matched associations
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
+```
 
-// Find with conditions
+Find associations with conditions
+
+```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
 
@@ -140,6 +139,10 @@ Return the count of current associations
 
 ```go
 db.Model(&user).Association("Languages").Count()
+
+// Count with conditions
+codes := []string{"zh-CN", "en-US", "ja-JP"}
+db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
 ### Batch Data
@@ -156,7 +159,7 @@ db.Model(&users).Association("Team").Delete(&userA)
 // Get unduplicated count of members in all user's team
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
+// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will return error
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
@@ -166,13 +169,13 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 
 ## <span id="tags">Association Tags</span>
 
-| Tag              | Description                                     |
-| ---------------- | ----------------------------------------------- |
-| foreignKey       | Specifies foreign key                           |
-| references       | Specifies references                            |
-| polymorphic      | Specifies polymorphic type                      |
-| polymorphicValue | Specifies polymorphic value, default table name |
-| many2many        | Specifies join table name                       |
-| jointForeignKey  | Specifies foreign key of jointable              |
-| joinReferences   | Specifies references' foreign key of jointable  |
-| constraint       | Relations constraint                            |
+| Tag              | Description                                      |
+| ---------------- | ------------------------------------------------ |
+| foreignKey       | Specifies foreign key                            |
+| references       | Specifies references                             |
+| polymorphic      | Specifies polymorphic type                       |
+| polymorphicValue | Specifies polymorphic value, default table name  |
+| many2many        | Specifies join table name                        |
+| jointForeignKey  | Specifies foreign key of jointable               |
+| joinReferences   | Specifies references' foreign key of jointable   |
+| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete` |
