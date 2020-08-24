@@ -13,24 +13,21 @@ Logger 接受的选项不多，您可以在初始化时自定义它，例如：
 newLogger := logger.New(
   log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
   logger.Config{
-    SlowThreshold: time.Second,   // 慢 SQL 阈值
+    SlowThreshold: time.Second,   // Slow SQL threshold
     LogLevel:      logger.Silent, // Log level
-    Colorful:      false,         // 禁用彩色打印
+    Colorful:      false,         // Disable color
   },
 )
 
-// 全局模式
+// Globally mode
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
   Logger: newLogger,
 })
 
-// 新建会话模式
+// Continuous session mode
 tx := db.Session(&Session{Logger: newLogger})
 tx.First(&user)
 tx.Model(&user).Update("Age", 18)
-
-// Debug 单个操作，会将该会话的日志级别调整为 logger.Info
-db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
 ### 日志级别
@@ -43,11 +40,19 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 })
 ```
 
+### Debug
+
+Debug a single operation, change current operation's log level to logger.Info
+
+```go
+db.Debug().Where("name = ?", "jinzhu").First(&User{})
+```
+
 ## 自定义 Logger
 
-您可用参考 GORM 的 [默认 logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) 来定义您自己的 logger
+Refer to GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
 
-Logger 需要实现以下接口，它接受 `context`，所以你可以用它来追踪日志
+The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
 
 ```go
 type Interface interface {
