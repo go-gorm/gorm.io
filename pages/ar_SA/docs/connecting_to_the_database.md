@@ -27,14 +27,14 @@ To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=u
 MySQl Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
 
 ```go
-db, err := gorm. Open(mysql. New(mysql. Config{
+db, err := gorm.Open(mysql.New(mysql.Config{
   DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name
   DefaultStringSize: 256, // default size for string fields
   DisableDatetimePrecision: true, // disable datetime precision, which not supported before MySQL 5.6
   DontSupportRenameIndex: true, // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
   DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-  SkipInitializeWithVersion: false, // auto configure based on used version
-}), &gorm. Config{})
+  SkipInitializeWithVersion: false, // auto configure based on currently MySQL version
+}), &gorm.Config{})
 ```
 
 ### Customize Driver
@@ -149,8 +149,6 @@ import (
 dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
-
-Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
 
 ## Connection Pool
 
