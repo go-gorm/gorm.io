@@ -5,7 +5,7 @@ layout: страница
 
 ## Авто Создание/Обновление
 
-GORM будет автоматически сохранять ассоциации и их ссылки с помощью [Upsert](create.html#upsert) при создании/обновлении записи.
+GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
 
 ```go
 user := User{
@@ -24,15 +24,11 @@ user := User{
 
 db.Create(&user)
 // BEGIN TRANSACTION;
-// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "addresses" (address1) VALUES ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
 // INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('ZH') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1) ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('EN') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 2) ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "languages" ("name") VALUES ('ZH'), ('EN') ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1), (111, 2) ON DUPLICATE KEY DO NOTHING;
 // COMMIT;
 
 db.Save(&user)
@@ -72,12 +68,12 @@ db.Omit(clause.Associations).Create(&user)
 Режим связи содержит некоторые часто используемые методы для управления отношениями
 
 ```go
-// Начало режима связей
+// Start Association Mode
 var user User
 db.Model(&user).Association("Languages")
-// `user` это исходная модель, должна содержать первичный ключ
-// `Languages` это название поля для связи
-// Если оба выше указанных условия совпадают, режим связи AssociationMode должен быть запущен успешно, или вернет ошибку
+// `user` is the source model, it must contains primary key
+// `Languages` is a relationship's field name
+// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
 db.Model(&user).Association("Languages").Error
 ```
 
@@ -87,8 +83,11 @@ db.Model(&user).Association("Languages").Error
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
+```
 
-// Найти с условиями 
+Find associations with conditions
+
+```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
 
@@ -97,7 +96,7 @@ db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Langua
 
 ### Добавить связи
 
-Добавление новых связей `многие ко многим`, `один ко многим`, замена текущих связей для `имеет одну`, `принадлежит`
+Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -109,7 +108,7 @@ db.Model(&user).Association("CreditCard").Append(CreditCard{Number: "41111111111
 
 ### Заменить связи
 
-Заменить текущие связи новыми
+Replace current associations with new ones
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -119,7 +118,7 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 
 ### Удалить связи
 
-Удалить связь между источником & аргументом, если таковые существуют, только удалить ссылку, не удалять эти объекты из БД.
+Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
@@ -128,7 +127,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### Очистить связи
 
-Удалить все связи между источником & связанной таблицей, не будут удалять эти записи в связанной таблице
+Remove all reference between source & association, won't delete those associations
 
 ```go
 db.Model(&user).Association("Languages").Clear()
@@ -136,31 +135,35 @@ db.Model(&user).Association("Languages").Clear()
 
 ### Количество связей
 
-Возвращает количество существующих связей
+Return the count of current associations
 
 ```go
 db.Model(&user).Association("Languages").Count()
+
+// Count with conditions
+codes := []string{"zh-CN", "en-US", "ja-JP"}
+db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
 ### Пакетные данные
 
-Режим ассоциации поддерживает пакетные данные, например:
+Association Mode supports batch data, e.g:
 
 ```go
-// Найти все роли для всех пользователей 
+// Find all roles for all users
 db.Model(&users).Association("Role").Find(&roles)
 
-// Удалить Пользователя A из всех команд ( Team )
+// Delete User A from all users's team
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Получить уникальное количество пользователей из всех команд
+// Get unduplicated count of members in all user's team
 db.Model(&users).Association("Team").Count()
 
-// Для `Append`, `Replace` с пакетными данными, количество аргументов должно совпадать с числом данных или вернет ошибку 
+// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will return error
 var users = []User{user1, user2, user3}
-// например: у нас 3 пользователя, добавим в команду userA пользователя user1, добавим в команду userB пользователя user2, добавим в команду userA, userB и userC пользователя user3
+// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Обнулим команды пользователя user1 до userA, обнулим команды пользователя user2 до userB, обнулим команды пользователя user3до userA, userB and userC
+// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
@@ -175,4 +178,4 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 | many2many        | Указывает имя таблицы связи                                                 |
 | jointForeignKey  | Определяет внешний ключ объединения                                         |
 | joinReferences   | Определяет внешний ключ объединения                                         |
-| constraint       | Ограничение связей                                                          |
+| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`                            |
