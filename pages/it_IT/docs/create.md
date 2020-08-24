@@ -59,7 +59,7 @@ for _, user := range users {
 }
 ```
 
-[Upsert](#upsert), [Create With Associations](#create_with_associations) supported for batch insert also
+Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
 
 ## Create From Map
 
@@ -83,7 +83,7 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 
 ### <span id="create_with_associations">Create With Associations</span>
 
-If your model defined any relations, and it has non-zero relations, those data will be saved when creating
+When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
 
 ```go
 type CreditCard struct {
@@ -106,7 +106,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`
+You can skip saving associations with `Select`, `Omit`, for example:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -122,13 +122,13 @@ You can define default values for fields with tag `default`, for example:
 ```go
 type User struct {
   ID         int64
-  Name       string `gorm:"default:'galeone'"`
+  Name       string `gorm:"default:galeone"`
   Age        int64  `gorm:"default:18"`
     uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
 }
 ```
 
-Then the default value will be used when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
 **NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 
