@@ -504,7 +504,7 @@ for i := 0; i < 100; i++ {
 }
 ```
 
-Check out [Method Chain](method_chain.html) for details
+Check out [Method Chain](method_chaining.html) for details
 
 #### Default Value
 
