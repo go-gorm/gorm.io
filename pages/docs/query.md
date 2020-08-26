@@ -28,6 +28,21 @@ result.Error        // returns error
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
+### Retrieving with primary key
+
+GORM allows to retrieve objects using primary key(s) with inline condition, it works with numbers, using string might cause SQL Injection, check out [Inline Conditions](#inline_conditions), [Security](security.html) for details
+
+```go
+db.First(&user, 10)
+// SELECT * FROM users WHERE id = 10;
+
+db.First(&user, "10")
+// SELECT * FROM users WHERE id = 10;
+
+db.Find(&users, []int{1,2,3})
+// SELECT * FROM users WHERE id IN (1,2,3);
+```
+
 ## Retrieving objects
 
 ```go
@@ -108,8 +123,6 @@ db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 Works similar to `Where`.
 
 ```go
-// Get by primary key (only works for integer primary key)
-db.First(&user, 23)
 // SELECT * FROM users WHERE id = 23;
 // Get by primary key if it were a non-integer type
 db.First(&user, "id = ?", "string_primary_key")
