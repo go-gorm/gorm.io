@@ -28,20 +28,35 @@ result.Error        // returns error
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
+### Retrieving with primary key
+
+GORM allows to retrieve objects using primary key(s) with inline condition, it works with numbers, using string might cause SQL Injection, check out [Inline Conditions](#inline_conditions), [Security](security.html) for details
+
+```go
+db.First(&user, 10)
+// SELECT * FROM users WHERE id = 10;
+
+db.First(&user, "10")
+// SELECT * FROM users WHERE id = 10;
+
+db.Find(&users, []int{1,2,3})
+// SELECT * FROM users WHERE id IN (1,2,3);
+```
+
 ## Abfragen mehrerer Objekte
 
 ```go
-// Frage alle Einträge ab
+// Get all records
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // Gibt die Anzahl der abgefragten Einträge zurück, identisch zu `len(users)`
-result.Error        // Gibt einen Fehler zurück
+result.RowsAffected // returns found records count, equals `len(users)`
+result.Error        // returns error
 ```
 
 ## Bedingungen
 
-### Bedingungen für Zeichenketten
+### String Conditions
 
 ```go
 // Get first matched record
@@ -73,7 +88,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Struct & Map Bedinungen
+### Struct & Map Conditions
 
 ```go
 // Struct
@@ -84,52 +99,30 @@ db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice aus Primärschlüsseln
+// Slice of primary keys
 db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**HINWEIS** Bei der Abfrage mit struct, wird GORM nur mit nicht null Feldern abfragen, das bedeutet, wenn der Wert Ihres Feldes `0`, `''`, `false` oder andere [Null-Werte](https://tour.golang.org/basics/12) sind, wird es nicht verwendet, um Abfragebedingungen zu erstellen, zum Beispiel:
+**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-Sie können `map` verwenden, um Abfragebedingungen zu erstellen, z. B.:
+You can use map to build query conditions, e.g:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-### <span id="inline_conditions">Integrierte Bedinungen</span>
+### <span id="inline_conditions">Inline Condition</span>
 
-Funktioniert ähnlich wie `Where`.
+Works similar to `Where`.
 
 ```go
-// Get by primary key (only works for integer primary key)
-db.First(&user, 23)
-// SELECT * FROM users WHERE id = 23;
-// Get by primary key if it were a non-integer type
-db.First(&user, "id = ?", "string_primary_key")
-// SELECT * FROM users WHERE id = 'string_primary_key';
-
-// Plain SQL
-db.Find(&user, "name = ?", "jinzhu")
-// SELECT * FROM users WHERE name = "jinzhu";
-
-db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
-// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
-
-// Struct
-db.Find(&users, User{Age: 20})
-// SELECT * FROM users WHERE age = 20;
-
-// Map
-db.Find(&users, map[string]interface{}{"age": 20})
-// SELECT * FROM users WHERE age = 20; // Get by primary key (only works for integer primary key)
-db.First(&user, 23)
 // SELECT * FROM users WHERE id = 23;
 // Get by primary key if it were a non-integer type
 db.First(&user, "id = ?", "string_primary_key")
@@ -250,49 +243,6 @@ Checkout [Pagination](scopes.html#pagination) for how to make a paginator
 
 ```go
 type result struct {
-  Name  string
-  Email string
-}
-db.Model(&User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result{})
-// SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
-
-rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
-for rows.Next() {
-  ...
-}
-
-db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
-
-// multiple joins with parameter
-db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
-type result struct {
-  Date  time.Time
-  Total int
-}
-
-db.Model(&User{}).Select("name, sum(age) as total").Where("name LIKE ?", "group%").Group("name").First(&result)
-// SELECT name, sum(age) as total FROM `users` WHERE name LIKE "group%" GROUP BY `name`
-
-
-db.Model(&User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "group").Find(&result)
-// SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "group"
-
-rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Rows()
-for rows.Next() {
-  ...
-}
-
-rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Rows()
-for rows.Next() {
-  ...
-}
-
-type Result struct {
-  Date  time.Time
-  Total int64
-}
-db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Scan(&results)
-type result struct {
   Date  time.Time
   Total int
 }
@@ -352,22 +302,6 @@ db.Table("users").Select("users.name, emails.email").Joins("left join emails on 
 
 // multiple joins with parameter
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
-type result struct {
-  Name  string
-  Email string
-}
-db.Model(&User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result{})
-// SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
-
-rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
-for rows.Next() {
-  ...
-}
-
-db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
-
-// multiple joins with parameter
-db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
 ### Joins Preloading
@@ -386,20 +320,14 @@ Refer [Preloading (Eager Loading)](preload.html) for details
 Scan results into a struct work similar to `Find`
 
 ```go
-type result struct {
-  Name  string
-  Email string
-}
-db.Model(&User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result{})
-// SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
-
-rows, err := db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Rows()
-for rows.Next() {
-  ...
+type Result struct {
+  Name string
+  Age  int
 }
 
-db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
+var result Result
+db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
 
-// multiple joins with parameter
-db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
+// Raw SQL
+db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
