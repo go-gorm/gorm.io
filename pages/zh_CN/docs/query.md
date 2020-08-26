@@ -28,20 +28,35 @@ result.Error        // returns error
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
+### Retrieving with primary key
+
+GORM allows to retrieve objects using primary key(s) with inline condition, it works with numbers, using string might cause SQL Injection, check out [Inline Conditions](#inline_conditions), [Security](security.html) for details
+
+```go
+db.First(&user, 10)
+// SELECT * FROM users WHERE id = 10;
+
+db.First(&user, "10")
+// SELECT * FROM users WHERE id = 10;
+
+db.Find(&users, []int{1,2,3})
+// SELECT * FROM users WHERE id IN (1,2,3);
+```
+
 ## 检索对象
 
 ```go
-// 获取全部记录
+// Get all records
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // 返回找到的记录数，相当于 `len(users)`
+result.RowsAffected // returns found records count, equals `len(users)`
 result.Error        // returns error
 ```
 
 ## 条件
 
-### String 条件
+### String Conditions
 
 ```go
 // Get first matched record
@@ -73,7 +88,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Struct & Map 条件
+### Struct & Map Conditions
 
 ```go
 // Struct
@@ -84,34 +99,32 @@ db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// 主键切片条件
+// Slice of primary keys
 db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**注意** 当使用结构作为条件查询时，GORM 只会查询非零值字段。这意味着如果您的字段值为 `0`、`''`、`false` 或其他 [零值](https://tour.golang.org/basics/12)，该字段不会被用于构建查询条件，例如：
+**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-您可以使用 map 来构建查询条件，例如：
+You can use map to build query conditions, e.g:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-### <span id="inline_conditions">内联条件</span>
+### <span id="inline_conditions">Inline Condition</span>
 
-用法与 `Where` 类似
+Works similar to `Where`.
 
 ```go
-// 根据主键获取记录（仅适用于整型主键）
-db.First(&user, 23)
 // SELECT * FROM users WHERE id = 23;
-// 根据主键获取记录，如果是非整型主键
+// Get by primary key if it were a non-integer type
 db.First(&user, "id = ?", "string_primary_key")
 // SELECT * FROM users WHERE id = 'string_primary_key';
 
@@ -131,9 +144,9 @@ db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Not 条件
+### Not Conditions
 
-构建 NOT 条件，用法与 `Where` 类似
+Build NOT conditions, works similar to `Where`
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -147,12 +160,12 @@ db.Not(map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}).Find(&use
 db.Not(User{Name: "jinzhu", Age: 18}).First(&user)
 // SELECT * FROM users WHERE name <> "jinzhu" AND age <> 18 ORDER BY id LIMIT 1;
 
-// 不在主键切片中的记录
+// Not In slice of primary keys
 db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-### Or 条件
+### Or Conditions
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -171,7 +184,7 @@ Also check out [Group Conditions in Advanced Query](advanced_query.html#group_co
 
 ## 选择特定字段
 
-选择您想从数据库中检索的字段，默认情况下会选择全部字段
+Specify fields that you want to retrieve from database, by default, select all fields
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -207,7 +220,7 @@ db.Order("age desc").Order("name").Find(&users)
 db.Limit(3).Find(&users)
 // SELECT * FROM users LIMIT 3;
 
-// 通过 -1 消除 Limit 条件
+// Cancel limit condition with -1
 db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 // SELECT * FROM users LIMIT 10; (users1)
 // SELECT * FROM users; (users2)
@@ -218,7 +231,7 @@ db.Offset(3).Find(&users)
 db.Limit(10).Offset(5).Find(&users)
 // SELECT * FROM users OFFSET 5 LIMIT 10;
 
-// 通过 -1 消除 Offset 条件
+// Cancel offset condition with -1
 db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
@@ -287,11 +300,11 @@ for rows.Next() {
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// 带参数的多表连接
+// multiple joins with parameter
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
-### Joins 预加载
+### Joins Preloading
 
 You can use `Joins` eager loading associations with a single SQL, for example:
 
@@ -315,6 +328,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
 
-// 原生 SQL
+// Raw SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
