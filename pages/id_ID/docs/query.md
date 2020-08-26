@@ -28,6 +28,21 @@ result.Error        // returns error
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
+### Retrieving with primary key
+
+GORM allows to retrieve objects using primary key(s) with inline condition, it works with numbers, using string might cause SQL Injection, check out [Inline Conditions](#inline_conditions), [Security](security.html) for details
+
+```go
+db.First(&user, 10)
+// SELECT * FROM users WHERE id = 10;
+
+db.First(&user, "10")
+// SELECT * FROM users WHERE id = 10;
+
+db.Find(&users, []int{1,2,3})
+// SELECT * FROM users WHERE id IN (1,2,3);
+```
+
 ## Mengambil Satu Objek
 
 ```go
@@ -41,7 +56,7 @@ result.Error        // returns error
 
 ## Kondisi
 
-### Kodisi String
+### String Conditions
 
 ```go
 // Get first matched record
@@ -108,8 +123,6 @@ db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 Works similar to `Where`.
 
 ```go
-// Get by primary key (only works for integer primary key)
-db.First(&user, 23)
 // SELECT * FROM users WHERE id = 23;
 // Get by primary key if it were a non-integer type
 db.First(&user, "id = ?", "string_primary_key")
@@ -131,7 +144,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Bukan Kondisi
+### Not Conditions
 
 Build NOT conditions, works similar to `Where`
 
@@ -152,7 +165,7 @@ db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-### Atau Kondisi
+### Or Conditions
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
