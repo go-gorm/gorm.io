@@ -28,15 +28,30 @@ result.Error        // returns error
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
+### Retrieving with primary key
+
+GORM allows to retrieve objects using primary key(s) with inline condition, it works with numbers, using string might cause SQL Injection, check out [Inline Conditions](#inline_conditions), [Security](security.html) for details
+
+```go
+db.First(&user, 10)
+// SELECT * FROM users WHERE id = 10;
+
+db.First(&user, "10")
+// SELECT * FROM users WHERE id = 10;
+
+db.Find(&users, []int{1,2,3})
+// SELECT * FROM users WHERE id IN (1,2,3);
+```
+
 ## Retrieving objects
 
 ```go
-// すべてのレコードを取得
+// Get all records
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // 見つけたレコードの数を返す。`len(users)`と同じ
-result.Error        // エラーを返す
+result.RowsAffected // returns found records count, equals `len(users)`
+result.Error        // returns error
 ```
 
 ## Conditions
@@ -76,7 +91,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 ### Struct & Map Conditions
 
 ```go
-// 構造体
+// Struct
 db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20 ORDER BY id LIMIT 1;
 
@@ -84,19 +99,19 @@ db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// 主キーのスライス
+// Slice of primary keys
 db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
-**注** 構造体を使ってクエリするとき、GORMは非ゼロ値なフィールドのみを利用します。つまり、フィールドの値が `0`, `''`, `false` または他の [ゼロ値](https://tour.golang.org/basics/12)の場合、 クエリ条件の作成に使用されません。例：
+**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-Mapを使用することで、ゼロ値でもクエリ条件を作成することができます。例:
+You can use map to build query conditions, e.g:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
@@ -105,11 +120,9 @@ db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 
 ### <span id="inline_conditions">Inline Condition</span>
 
-`Where`と同様に機能します。
+Works similar to `Where`.
 
 ```go
-// Get by primary key (only works for integer primary key)
-db.First(&user, 23)
 // SELECT * FROM users WHERE id = 23;
 // Get by primary key if it were a non-integer type
 db.First(&user, "id = ?", "string_primary_key")
@@ -133,7 +146,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 
 ### Not Conditions
 
-NOT条件も、`Where` と同様に動作します。
+Build NOT conditions, works similar to `Where`
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -171,7 +184,7 @@ Also check out [Group Conditions in Advanced Query](advanced_query.html#group_co
 
 ## Selecting Specific Fields
 
-データベースから取得するフィールドを指定します。デフォルトでは、すべてのフィールドを選択します。
+Specify fields that you want to retrieve from database, by default, select all fields
 
 ```go
 db.Select("name", "age").Find(&users)
