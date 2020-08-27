@@ -676,6 +676,8 @@ Count only accepts `*int64` as the argument
 * Support Checker through tag `check`
 * Enhanced tag setting for `index`
 
+Checkout [Migration](migration.html) for details
+
 ```go
 type UserIndex struct {
   Name  string `gorm:"check:named_checker,(name <> 'jinzhu')"`
