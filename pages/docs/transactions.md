@@ -25,6 +25,8 @@ tx.Model(&user).Update("Age", 18)
 To perform a set of operations within a transaction, the general flow is as below.
 
 ```go
+lion := Animal{Name: "Lion"}
+
 db.Transaction(func(tx *gorm.DB) error {
   // do some database operations in the transaction (use 'tx' from this point, not 'db')
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
@@ -32,7 +34,12 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
+  if err := tx.Create(&lion).Error; err != nil {
+    return err
+  }
+  
+  // Association transaction
+  if err := tx.Model(&lion).Association("Parent").Append(&Parent{Name: "ParentLion"}); err != nil {
     return err
   }
 
