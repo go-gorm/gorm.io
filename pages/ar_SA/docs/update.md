@@ -125,7 +125,7 @@ result.Error        // returns updating error
 
 ## Advanced
 
-### Update with SQL Expression
+### <span id="update_from_sql_expr">Update with SQL Expression</span>
 
 GORM allows updates column with SQL expression, e.g:
 
@@ -142,6 +142,28 @@ DB.Model(&product).UpdateColumn("quantity", gorm.Expr("quantity - ?", 1))
 
 DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("quantity - ?", 1))
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity > 1;
+```
+
+And GORM also allows update with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
+
+```go
+// Create from customized data type
+type Location struct {
+    X, Y int
+}
+
+func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
+  return clause.Expr{
+    SQL:  "ST_PointFromText(?)",
+    Vars: []interface{}{fmt.Sprintf("POINT(%d %d)", loc.X, loc.Y)},
+  }
+}
+
+DB.Model(&User{ID: 1}).Updates(User{
+  Name:  "jinzhu",
+  Point: Point{X: 100, Y: 100},
+})
+// UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
 ### Update from SubQuery
