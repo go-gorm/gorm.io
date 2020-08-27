@@ -30,18 +30,18 @@ MySQl Driver предоставляет [несколько расширенны
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
-  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name
-  DefaultStringSize: 256, // default size for string fields
-  DisableDatetimePrecision: true, // disable datetime precision, which not supported before MySQL 5.6
-  DontSupportRenameIndex: true, // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
+  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // имя источника данных
+  DefaultStringSize: 256, // значение по умолчанию для строковых полей
+  DisableDatetimePrecision: true, // отключить точность полей типа datetime, которая не поддерживается до версии MySQL 5.6
+  DontSupportRenameIndex: true, // drop & create при переименовании индекса, переименование индекса не поддерживается с версии MySQL 5.7, MariaDB
   DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-  SkipInitializeWithVersion: false, // auto configure based on currently MySQL version
+  SkipInitializeWithVersion: false, // авто найтройка в зависимости от текущей весрии MySQL
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### Настройка драйвера
 
-GORM allows customize the MySQL driver with the `DriverName` option, for example:
+GORM позволяет настроить драйвер MYSQL, используя опции `DriverName`, например:
 
 ```go
 import (
@@ -55,9 +55,9 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Existing database connection
+### Существующие подключения к базе данных
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM позволяет инициализировать `*gorm.DB` с существующим соединением с базой данных
 
 ```go
 import (
