@@ -102,16 +102,20 @@ type User struct {
 }
 ```
 
-### GormValuerInterface
+### <span id="gorm_valuer_interface">GormValuerInterface</span>
 
-GORM provides a `GormValuerInterface` interface, which can allow to create/update from SQL Expr, for example:
+GORM provides a `GormValuerInterface` interface, which can allow to create/update from SQL Expr or value based on context, for example:
 
 ```go
 // GORM Valuer interface
 type GormValuerInterface interface {
   GormValue(ctx context.Context, db *gorm.DB) clause.Expr
 }
+```
 
+#### Create/Update from SQL Expr
+
+```go
 type Location struct {
 	X, Y int
 }
@@ -152,6 +156,26 @@ DB.Model(&User{ID: 1}).Updates(User{
 ```
 
 You can also create/update with SQL Expr from map, checkout [Create From SQL Expr](create.html#create_from_sql_expr) and [Update with SQL Expression](update.html#update_from_sql_expr) for details
+
+#### Value based on Context
+
+If you want to create or update a value depends on current context, you can also implements the `GormValuerInterface` interface, for example:
+
+```go
+type EncryptedString struct {
+  Value string
+}
+
+func (es EncryptedString) GormValue(ctx context.Context, db *gorm.DB) (expr clause.Expr) {
+  if encryptionKey, ok := ctx.Value("TenantEncryptionKey").(string); ok {
+    return clause.Expr{SQL: "?", Vars: []interface{}{Encrypt(es.Value, encryptionKey)}}
+  } else {
+    db.AddError(errors.New("invalid encryption key"))
+  }
+
+  return
+}
+```
 
 ### Clause Expression
 

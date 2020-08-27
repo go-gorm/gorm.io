@@ -11,8 +11,8 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Eager loading with Preload, Joins
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Context, Prepared Statment Mode, DryRun Mode
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Batch Insert, FindInBatches, Find To Map
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, NamedArg, Search/Update/Create with SQL Expr
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Composite Primary Key, Indexes, Constraints
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Auto Migrations
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
