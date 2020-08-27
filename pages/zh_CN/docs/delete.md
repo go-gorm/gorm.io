@@ -17,9 +17,24 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
-## 删除钩子
+## Delete with priamry key
 
-对于删除操作，GORM 支持 `BeforeDelete`、`AfterDelete` 钩子，在删除记录时会调用这些方法，详情请参考 [钩子](hooks.html)
+GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out check out [Query Inline Conditions](query.thml#inline_conditions) for details
+
+```go
+db.Delete(&User{}, 10)
+// DELETE FROM users WHERE id = 10;
+
+db.Delete(&User{}, "10")
+// DELETE FROM users WHERE id = 10;
+
+db.Delete(&users, []int{1,2,3})
+// DELETE FROM users WHERE id IN (1,2,3);
+```
+
+## Delete Hooks
+
+GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -46,7 +61,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
 
-对此，你必须加一些条件，或者使用原生 SQL，或者启用 `AllowGlobalUpdate` 模式，例如：
+You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -61,11 +76,11 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-## 软删除
+## Soft Delete
 
-如果您的模型包含了一个 `gorm.deletedat` 字段（`gorm.Model` 已经包含了该字段)，它将自动获得软删除的能力！
+If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
 
-拥有软删除能力的模型调用 `Delete` 时，记录不会被数据库。但 GORM 会将 `DeletedAt` 置为当前时间， 并且你不能再通过普通的查询方法找到该记录。
+When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
 
 ```go
 // user's ID is `111`
@@ -81,7 +96,7 @@ db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-如果您不想引入 `gorm.Model`，您也可以这样启用软删除特性：
+If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
 
 ```go
 type User struct {
@@ -93,7 +108,7 @@ type User struct {
 
 ### 查找被软删除的记录
 
-您可以使用 `Unscoped` 找到被软删除的记录
+You can find soft deleted records with `Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
@@ -102,7 +117,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ### 永久删除
 
-您也可以使用 `Unscoped` 永久删除匹配的记录
+You can delete matched records permanently with `Unscoped`
 
 ```go
 db.Unscoped().Delete(&order)
