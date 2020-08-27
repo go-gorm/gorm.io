@@ -17,6 +17,21 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
+## Delete with priamry key
+
+GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out check out [Query Inline Conditions](query.thml#inline_conditions) for details
+
+```go
+db.Delete(&User{}, 10)
+// DELETE FROM users WHERE id = 10;
+
+db.Delete(&User{}, "10")
+// DELETE FROM users WHERE id = 10;
+
+db.Delete(&users, []int{1,2,3})
+// DELETE FROM users WHERE id IN (1,2,3);
+```
+
 ## Delete Hooks
 
 GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
