@@ -13,9 +13,9 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * 基于 `Preload`、`Joins` 的预加载
 * 事务、嵌套事务、保存点、回滚至保存点
 * Context、Prepared Statment 模式、DryRun 模式
-* 批量插入、FindInBatches、查询至 Map
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
-* 复合主键
+* Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
+* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
+* Composite Primary Key, Indexes, Constraints
 * 自动迁移
 * 自定义 Logger
 * Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
