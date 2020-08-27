@@ -79,6 +79,51 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 
 **NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
 
+## <span id="create_from_sql_expr">Create From SQL Expr/Context Valuer</span>
+
+GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+
+```go
+// Create from map
+DB.Model(User{}).Create(map[string]interface{}{
+  "Name": "jinzhu",
+  "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
+})
+// INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
+
+// Create from customized data type
+type Location struct {
+	X, Y int
+}
+
+// Scan implements the sql.Scanner interface
+func (loc *Location) Scan(v interface{}) error {
+  // Scan a value into struct from database driver
+}
+
+func (loc Location) GormDataType() string {
+  return "geometry"
+}
+
+func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
+  return clause.Expr{
+    SQL:  "ST_PointFromText(?)",
+    Vars: []interface{}{fmt.Sprintf("POINT(%d %d)", loc.X, loc.Y)},
+  }
+}
+
+type User struct {
+  Name     string
+  Location Location
+}
+
+DB.Create(&User{
+  Name:     "jinzhu",
+  Location: Location{X: 100, Y: 100},
+})
+// INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
+```
+
 ## Advanced
 
 ### <span id="create_with_associations">Create With Associations</span>
