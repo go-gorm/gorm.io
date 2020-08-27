@@ -208,7 +208,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## Оптимизатор/Индексирование подсказки
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
+Подсказки оптимизатора позволяют контролировать оптимизатор запросов для выбора определенного плана выполнения запроса, GORM поддерживает его с помощью `gorm.io/hints`, например:
 
 ```go
 import "gorm.io/hints"
@@ -241,10 +241,10 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
+  // ScanRows это метод `gorm.DB`, может быть использован для сканирования записи в struct
   db.ScanRows(rows, &user)
 
-  // do something
+  // что-то делаем
 }
 ```
 
@@ -288,7 +288,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
+Запросить один столбец из БД и записать в slice, если вы хотите получить несколько столбцов - используйте `Select` вместе с [`Scan`](query.html#scan) для этого
 
 ```go
 var ages []int64
@@ -341,11 +341,11 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Найти все оплаченные и отгруженные заказы с суммой более 1000
 ```
 
-Checout [Scopes](scopes.html) for details
+Смотрите [Scopes](scopes.html) для получения дополнительной информации
 
 ## <span id="count">Количество</span>
 
-Get matched records count
+Получить количество найденных записей
 
 ```go
 var count int64
