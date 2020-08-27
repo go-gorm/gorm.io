@@ -125,7 +125,7 @@ for rows.Next() {
 
 ## Advanced
 
-### Clauses
+### <span id="clauses">Clauses</span>
 
 GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
 
