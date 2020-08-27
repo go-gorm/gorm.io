@@ -5,7 +5,7 @@ layout: page
 
 GORM provides few interfaces that allow users to define well-supported customized data types for GORM, takes [json](https://github.com/go-gorm/datatypes/blob/master/json.go) as an example
 
-## Implements Data Type
+## Implements Customized Data Type
 
 ### Scanner / Valuer
 
@@ -40,13 +40,40 @@ func (j JSON) Value() (driver.Value, error) {
 
 ### GormDataTypeInterface
 
-A customized data type might has different database types for databases, you can implements the `GormDataTypeInterface` to set them up, for example:
+GORM will read column's database type from [tag](models.html#tags) `type`, if not found, will check if the struct implemented interface `GormDBDataTypeInterface` or `GormDataTypeInterface` and will use its result as data type
 
 ```go
 type GormDataTypeInterface interface {
-  GormDBDataType(*gorm.DB, *schema.Field) string
+  GormDataType() string
 }
 
+type GormDBDataTypeInterface interface {
+  GormDBDataType(*gorm.DB, *schema.Field) string
+}
+```
+
+The result of `GormDataType` will be used as the general data type and can be obtained from `schema.Field`'s field `DataType`, which might be helpful when [writing plugins](write_plugins.html) or [hooks](hooks.html) for example:
+
+```go
+func (JSON) GormDataType() string {
+  return "json"
+}
+
+type User struct {
+  Attrs JSON
+}
+
+func (user User) BeforeCreate(tx *gorm.DB) {
+  field := tx.Statement.Schema.LookUpField("Attrs")
+  if field.DataType == "json" {
+    // do something
+  }
+}
+```
+
+`GormDBDataType` usually returns the right data type for current driver when migrating, for example:
+
+```go
 func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
   // use field.Tag, field.TagSettings gets field's tags
   // checkout https://github.com/go-gorm/gorm/blob/master/schema/field.go for all options
@@ -62,9 +89,73 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 }
 ```
 
+If the struct hasn't implemented the `GormDBDataTypeInterface` or `GormDataTypeInterface` interface, GORM will guess its data type from the struct's first field, for example, will use `string` for `NullString`
+
+```go
+type NullString struct {
+  String string // use the first field's data type
+  Valid  bool
+}
+
+type User struct {
+  Name NullString // data type will be string
+}
+```
+
+### GormValuerInterface
+
+GORM provides a `GormValuerInterface` interface, which can allow to create/update from SQL Expr, for example:
+
+```go
+// GORM Valuer interface
+type GormValuerInterface interface {
+  GormValue(ctx context.Context, db *gorm.DB) clause.Expr
+}
+
+type Location struct {
+	X, Y int
+}
+
+func (loc Location) GormDataType() string {
+  return "geometry"
+}
+
+func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
+  return clause.Expr{
+    SQL:  "ST_PointFromText(?)",
+    Vars: []interface{}{fmt.Sprintf("POINT(%d %d)", loc.X, loc.Y)},
+  }
+}
+
+// Scan implements the sql.Scanner interface
+func (loc *Location) Scan(v interface{}) error {
+  // Scan a value into struct from database driver
+}
+
+type User struct {
+  ID       int
+  Name     string
+  Location Location
+}
+
+DB.Create(&User{
+  Name:     "jinzhu",
+  Location: Location{X: 100, Y: 100},
+})
+// INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
+
+DB.Model(&User{ID: 1}).Updates(User{
+  Name:  "jinzhu",
+  Point: Point{X: 100, Y: 100},
+})
+// UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
+```
+
+You can also create/update with SQL Expr from map, checkout [Create From SQL Expr](create.html#create_from_sql_expr) and [Update with SQL Expression](update.html#update_from_sql_expr) for details
+
 ### Clause Expression
 
-Customized data type possible needs specifically SQL which can't use current GORM API, you can define a `Builder` method for the struct to implement interface `clause.Expression`
+If you want to build some query helpers, you can make a struct that implements the `clause.Expression` interface:
 
 ```go
 type Expression interface {
@@ -72,7 +163,7 @@ type Expression interface {
 }
 ```
 
-Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) for implementation details, usage:
+Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) and [SQL Builder](sql_builder.html#clauses) for details, the following is an example of usage:
 
 ```go
 // Generates SQL with clause Expression
