@@ -11,8 +11,8 @@ comments: false
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Нетерпеливая загрузка при помощи Preload, Joins
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Транзакции, вложенные транзакции, точки сохранения, откат к сохраненной точке
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Контекст, Режим подготовки, Режим DryRun
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Batch Insert, FindInBatches, Find To Map
-* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
+* <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Композитный первичный ключ, индексы, ограничения
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Авто миграция
 * <i class="fa fa-arrow-circle-right" aria-hidden="true"></i> Logger
