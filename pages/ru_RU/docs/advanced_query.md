@@ -3,9 +3,9 @@ title: Расширенный запрос
 layout: страница
 ---
 
-## <span id="smart_select">Smart Select Fields</span>
+## <span id="smart_select">Умный выбор полей</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM позволяет выбрать конкретные поля при помощи [`Select`](query.html), если вы часто используете объект в вашем приложении, возможно вы захотите определить меньший struct для использования с API, который может выбирать конкретные поля автоматически, например:
 
 ```go
 type User struct {
@@ -21,7 +21,7 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// Выбор`id`, `name` автоматически при выборке
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
@@ -58,7 +58,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">Из SubQuery (под запроса)</span>
 
-GORM allows you using subquery in FROM clause with method `Table`, for example:
+GORM позволяет вам использовать подзапрос в FROM при помощи метода `Table`, например:
 
 ```go
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -112,7 +112,7 @@ DB.Table("users").Find(&results)
 
 ## Первый или новый (FirstOrInit)
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+Получить первую найденную запись, или инициализировать новую с заданными параметрами (работает только с struct и map)
 
 ```go
 // Пользователь не найден, инициализировать его с параметрами 
@@ -147,7 +147,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // пользователь -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+`Assign` назначение атрибутов в struct, независимо от того, найдена запись или нет, эти атрибуты не будут участвовать в генерации запроса SQL и не будут сохранены в БД
 
 ```go
 // Пользователь не найден, с указанными параметрами, инициализировать запись с указанными параметрами и назначенными assign атрибутами
@@ -162,15 +162,15 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## Первый или создать (FirstOrCreate)
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions)
+Получить первую найденную запись или создать новую с указанными параметрами (работает только с struct, map)
 
 ```go
-// User not found, create a new record with give conditions
+// Пользователь не найден, создать новую запись с заданными параметрами
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Найлен пользователь `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
@@ -190,7 +190,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // пользователь -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+`Assign` назначение атрибутов к записи, будет работать независимо от того, найдена запись или нет.
 
 ```go
 // Пользователь не найден, инициализировать новую запись с параметрами и назначить Assign атрибуты
