@@ -16,7 +16,7 @@ GORM 2.0 это перезапись с нуля, представляет не�
 * Модульность
 * Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches
 * Вложенная транзакция/SavePoint/RollbackTo
-* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
+* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements, CRUD with SQL Expr and Context Valuer
 * Full self-reference relationships support, Join Table improvements, Association Mode for batch data
 * Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
 * Field permissions support: read-only, write-only, create-only, update-only, ignored
@@ -298,6 +298,39 @@ DB.Clauses(hints.Comment("select", "master")).Find(&User{})
 ```
 
 Check out [Hints](hints.html) for details
+
+#### CRUD From SQL Expr/Context Valuer
+
+```go
+type Location struct {
+    X, Y int
+}
+
+func (loc Location) GormDataType() string {
+  return "geometry"
+}
+
+func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
+  return clause.Expr{
+    SQL:  "ST_PointFromText(?)",
+    Vars: []interface{}{fmt.Sprintf("POINT(%d %d)", loc.X, loc.Y)},
+  }
+}
+
+DB.Create(&User{
+  Name:     "jinzhu",
+  Location: Location{X: 100, Y: 100},
+})
+// INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
+
+DB.Model(&User{ID: 1}).Updates(User{
+  Name:  "jinzhu",
+  Point: Point{X: 100, Y: 100},
+})
+// UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
+```
+
+Check out [Customize Data Types](data_types.html#gorm_valuer_interface) for details
 
 #### Field permissions
 
