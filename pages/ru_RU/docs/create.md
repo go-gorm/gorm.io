@@ -59,7 +59,7 @@ for _, user := range users {
 }
 ```
 
-[Создать или обновить](#upsert), [Создать со связями](#create_with_associations) поддерживается для пакетной вставки
+Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
 
 ## Create From Map
 
@@ -79,11 +79,56 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 
 **NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
 
+## <span id="create_from_sql_expr">Create From SQL Expr/Context Valuer</span>
+
+GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+
+```go
+// Create from map
+DB.Model(User{}).Create(map[string]interface{}{
+  "Name": "jinzhu",
+  "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
+})
+// INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
+
+// Create from customized data type
+type Location struct {
+    X, Y int
+}
+
+// Scan implements the sql.Scanner interface
+func (loc *Location) Scan(v interface{}) error {
+  // Scan a value into struct from database driver
+}
+
+func (loc Location) GormDataType() string {
+  return "geometry"
+}
+
+func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
+  return clause.Expr{
+    SQL:  "ST_PointFromText(?)",
+    Vars: []interface{}{fmt.Sprintf("POINT(%d %d)", loc.X, loc.Y)},
+  }
+}
+
+type User struct {
+  Name     string
+  Location Location
+}
+
+DB.Create(&User{
+  Name:     "jinzhu",
+  Location: Location{X: 100, Y: 100},
+})
+// INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
+```
+
 ## Advanced
 
 ### <span id="create_with_associations">Создать со связями</span>
 
-If your model defined any relations, and it has non-zero relations, those data will be saved when creating
+When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
 
 ```go
 type CreditCard struct {
@@ -106,7 +151,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`
+You can skip saving associations with `Select`, `Omit`, for example:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -122,13 +167,13 @@ You can define default values for fields with tag `default`, for example:
 ```go
 type User struct {
   ID         int64
-  Name       string `gorm:"default:'galeone'"`
+  Name       string `gorm:"default:galeone"`
   Age        int64  `gorm:"default:18"`
     uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
 }
 ```
 
-Then the default value will be used when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
 **NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 

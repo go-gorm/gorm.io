@@ -3,40 +3,51 @@ title: Удалить
 layout: страница
 ---
 
-## Удалить запись
+## Delete a Record
 
-Удалить запись
+When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
 
 ```go
-// Удалить существующую запись в таблице emails, где первичный ключ равен 10, переданный в переменной email
+// Email's ID is `10`
 db.Delete(&email)
-// DELETE from emails where id=10;
+// DELETE from emails where id = 10;
 
-// УДАЛИТЬ с помощью передаваемых значений
-db.Delete(&Email{}, 20)
-// DELETE from emails where id=20;
-
-// УДАЛИТЬ с помощью дополнительных условий
+// Delete with additional conditions
 db.Where("name = ?", "jinzhu").Delete(&email)
-// DELETE FROM emails WHERE id=10 AND name = 'jinzhu'
+// DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
-## Хуки удаления
+## Delete with priamry key
 
-GORM поддерживает хуки `BeforeDelete (перед удалением)`, `AfterDelete (после удаления)`, эти методы будут вызваны при удалении записи, смотрите [Хуки](hooks.html) для подробностей
+GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out check out [Query Inline Conditions](query.thml#inline_conditions) for details
+
+```go
+db.Delete(&User{}, 10)
+// DELETE FROM users WHERE id = 10;
+
+db.Delete(&User{}, "10")
+// DELETE FROM users WHERE id = 10;
+
+db.Delete(&users, []int{1,2,3})
+// DELETE FROM users WHERE id IN (1,2,3);
+```
+
+## Delete Hooks
+
+GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
     if u.Role == "admin" {
-        return errors.New("пользователь с ролью admin не может быть удален")
+        return errors.New("admin user not allowed to delete")
     }
     return
 }
 ```
 
-## Пакетное удаление
+## <span id="batch_delete">Batch Delete</span>
 
-Если мы не указали первичный ключ, GORM выполнит пакетное удаление всех совпадающих записей
+The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -48,7 +59,7 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ### Глобальное удаление
 
-Если вы выполняете пакетное удаление без условий, GORM не выполнит его и вернет ошибку `ErrMissingWhereClause`
+If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
 
 You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
@@ -56,32 +67,36 @@ You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mod
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
-// DELETE `users` WHERE 1=1
+// DELETE FROM `users` WHERE 1=1
+
+db.Exec("DELETE FROM users")
+// DELETE FROM users
 
 DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
-// UPDATE users SET `name` = "jinzhu"
+// DELETE FROM users
 ```
 
-## Мягкое удаление
+## Soft Delete
 
-Если ваша модель включает в себя поле `gorm.DeletedAt` (которое включено в `gorm.Model`), она получит возможность магкого удаления автоматически!
+If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
 
-При вызове метода `Delete`, запись не будет удалена из базы данных, GORM установит значение `DeletedAt`в текущее время, и данная запись больше не будет участвовать в обычном поиске.
+When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
 
 ```go
+// user's ID is `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Пакетное удаление
+// Batch Delete
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Мягкое удаление записей, будет проигнорировано при получении записей из БД
+// Soft deleted records will be ignored when querying
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-Если вы не хотите использовать `gorm.Model`, вы можете включить мягкое удаление:
+If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
 
 ```go
 type User struct {
@@ -93,7 +108,7 @@ type User struct {
 
 ### Найти мягко удаленные записи
 
-Вы можете найти мягко удаленные записи с помощью `Unscoped`
+You can find soft deleted records with `Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
@@ -102,7 +117,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ### Удалить безвозвратно
 
-Вы можете удалить записи навсегда с помощью `Unscoped`
+You can delete matched records permanently with `Unscoped`
 
 ```go
 db.Unscoped().Delete(&order)

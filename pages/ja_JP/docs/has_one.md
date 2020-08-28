@@ -7,7 +7,7 @@ layout: page
 
 `has one` は、別のモデルとの一対一の接続を設定しますが、セマンティクス（とその結果）は多少異なります。 このアソシエーションは、モデルの各インスタンスが別のモデルの1つのインスタンスを含んでいるか、または所有していることを示します。
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+例えば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを1枚しか持つことができないとします。
 
 ```go
 // Userは1つだけCreditCardを持ちます。CreditCardIDは外部キーです。
@@ -49,7 +49,7 @@ type CreditCard struct {
 
 ## Override References
 
-By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field's value, like using `Name` for the below example.
+デフォルトでは, 所有されているエンティティは `has one`モデルの主キーを外部キーとして保持します。以下の`Name`の例のように別のフィールドを保持するように変更することもできます。
 
 `references`タグを用いて変更することもできます。
 

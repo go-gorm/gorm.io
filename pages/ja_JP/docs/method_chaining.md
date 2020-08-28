@@ -19,7 +19,7 @@ Chain Methodsは現在の`Statement`に`Clauses`を変更または追加する�
 
 こちらが[Chain Methodの一覧](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)です。`Clauses`についての詳細は [SQL Builder](sql_builder.html)を参照してください。
 
-## Finisher Method
+## <span id="finisher_method">Finisher Method</span>
 
 Finishersは登録されたコールバックを実行する即時メソッドで、SQLを生成して実行します。
 
@@ -108,12 +108,12 @@ ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will applies to all
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 ```

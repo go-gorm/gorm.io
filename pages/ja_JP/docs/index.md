@@ -13,9 +13,9 @@ layout: page
 * `Preload`, `Joins`を使ったイーガーロード
 * トランザクション、ネスティング、セーブポイント、セーブポイントへのロールバック
 * Context、プリペアドステートメント、ドライラン
-* バッチインサート、FindInBatches,、Find To Map
-* SQLビルダー、Upsert、 Locking、Optimizer/Index/Commentヒント
-* 複合主キー
+* Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
+* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
+* Composite Primary Key, Indexes, Constraints
 * オートマイグレーション
 * ロガー
 * Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...

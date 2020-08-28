@@ -3,9 +3,11 @@ title: Scopes
 layout: page
 ---
 
-Scopes 允许您轻松地复用常见的逻辑
+Scopes allow you to re-use commonly logic, the shared logic needs to defined as type `func(*gorm.DB) *gorm.DB`
 
 ## 查询
+
+Scope examples for querying
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -36,7 +38,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // 查找所有金额大于1000 的已付款或已发货订单
 ```
 
-## 分页
+### <span id="pagination">Pagination</span>
 
 ```go
 func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
@@ -63,7 +65,9 @@ db.Scopes(Paginate(r)).Find(&users)
 db.Scopes(Paginate(r)).Find(&articles)
 ```
 
-## 更新
+## Updates
+
+Scope examples for updating/deleting
 
 ```go
 func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {
@@ -73,7 +77,7 @@ func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {
     if org != "" {
       var organization Organization
       if db.Session(&Session{}).First(&organization, "name = ?", org).Error == nil {
-        return db.Where("organization_id = ?", org.ID)
+        return db.Where("org_id = ?", org.ID)
       }
     }
 
@@ -82,5 +86,8 @@ func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {
   }
 }
 
-db.Scopes(CurOrganization(r)).Save(&articles)
+db.Model(&article).Scopes(CurOrganization(r)).Update("Name", "name 1")
+// UPDATE articles SET name = "name 1" WHERE org_id = 111
+db.Scopes(CurOrganization(r)).Delete(&Article{})
+// DELETE FROM articles WHERE org_id = 111
 ```

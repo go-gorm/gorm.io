@@ -80,7 +80,7 @@ GORM разрешает загрузку связей belongs to с помощь
 
 ## Ограничения внешних ключей
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+Вы можете настроить `OnUpdate`, `OnDelete` ограничения с помощью тега `constraint`, они будут созданы при миграции, например:
 
 ```go
 type User struct {

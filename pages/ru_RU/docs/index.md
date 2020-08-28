@@ -13,12 +13,12 @@ layout: страница
 * Нетерпеливая загрузка с помощью `Preload`, `Joins`
 * Транзакции, вложенные транзакции, точки сохранения, откат к сохраненной точке
 * Контекст, Режим подготовки, Режим DryRun
-* Пакетная вставка, найти в пакете, поиск в map
-* Конструктор SQL, Upsert(Создать или обновить), Блокировка, Подсказки Оптимизатор/Индексирование/Комментарий, NamedArg
-* Композитный первичный ключ
+* Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
+* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
+* Composite Primary Key, Indexes, Constraints
 * Автомиграция
 * Logger
-* Расширяемый плагин API: Резолвер Баз данных (Разделение чтения/записи) / Prometheus...
+* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
 * Каждая функция поставляется с тестами
 * Дружественная для разработчиков
 

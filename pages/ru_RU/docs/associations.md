@@ -24,15 +24,11 @@ user := User{
 
 db.Create(&user)
 // BEGIN TRANSACTION;
-// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "addresses" (address1) VALUES ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
 // INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('ZH') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1) ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('EN') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 2) ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "languages" ("name") VALUES ('ZH'), ('EN') ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1), (111, 2) ON DUPLICATE KEY DO NOTHING;
 // COMMIT;
 
 db.Save(&user)
@@ -87,8 +83,11 @@ db.Model(&user).Association("Languages").Error
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
+```
 
-// Найти с условиями 
+Найти связи по условиям
+
+```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
 
@@ -97,7 +96,7 @@ db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Langua
 
 ### Добавить связи
 
-Добавление новых связей `многие ко многим`, `один ко многим`, замена текущих связей для `имеет одну`, `принадлежит`
+Добавление новых связей `many to many`, `has many`, замена текущих связей для `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -128,7 +127,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### Очистить связи
 
-Удалить все связи между источником & связанной таблицей, не будут удалять эти записи в связанной таблице
+Удалить все связи между источником & связанной таблицей, не будет удалять эти записи в связанной таблице
 
 ```go
 db.Model(&user).Association("Languages").Clear()
@@ -140,6 +139,10 @@ db.Model(&user).Association("Languages").Clear()
 
 ```go
 db.Model(&user).Association("Languages").Count()
+
+// Подсчет с условиями
+codes := []string{"zh-CN", "en-US", "ja-JP"}
+db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
 ### Пакетные данные
@@ -147,32 +150,26 @@ db.Model(&user).Association("Languages").Count()
 Режим ассоциации поддерживает пакетные данные, например:
 
 ```go
-// Найти все роли для всех пользователей 
+// Найти все роли для всех пользователей
 db.Model(&users).Association("Role").Find(&roles)
 
-// Удалить Пользователя A из всех команд ( Team )
+// Удалить пользователя User A сщ всех команд
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Получить уникальное количество пользователей из всех команд
+// Получить количество уникальных участников всех команд
 db.Model(&users).Association("Team").Count()
 
-// Для `Append`, `Replace` с пакетными данными, количество аргументов должно совпадать с числом данных или вернет ошибку 
+// Для `Append`, `Replace` с пакетными данными, количество параметров должно быть идентично количеству строкили вернет ошибку
 var users = []User{user1, user2, user3}
-// например: у нас 3 пользователя, добавим в команду userA пользователя user1, добавим в команду userB пользователя user2, добавим в команду userA, userB и userC пользователя user3
+// имеем 3 пользователей, добавить userA в команду user1, добавить userB в команду user2, добавить userA, userB и userC в команду user3
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Обнулим команды пользователя user1 до userA, обнулим команды пользователя user2 до userB, обнулим команды пользователя user3до userA, userB and userC
+// Обнулить пользователей команды user1 до userA，обнулить команду user2 до userB, обнулить user3 до userA, userB and userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## <span id="tags">Теги связей</span>
 
-| Тег              | Описание                                                                    |
-| ---------------- | --------------------------------------------------------------------------- |
-| foreignKey       | Определяет внешний ключ                                                     |
-| references       | Указывает ссылки                                                            |
-| polymorphic      | Определяет полиморфический тип                                              |
-| polymorphicValue | Указывает значение полиморфического значения, название таблицы по умолчанию |
-| many2many        | Указывает имя таблицы связи                                                 |
-| jointForeignKey  | Определяет внешний ключ объединения                                         |
-| joinReferences   | Определяет внешний ключ объединения                                         |
-| constraint       | Ограничение связей                                                          |
+Правила связей, например: OnUpdate<code>,<0>OnDelete<0></td>
+</tr>
+</tbody>
+</table>

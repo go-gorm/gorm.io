@@ -49,7 +49,7 @@ When using transaction, DBResolver will use the transaction and won't switch to 
 
 DBResolver will automatically switch connection based on the working table/struct
 
-For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT`, for example:
+For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
 
 ```go
 // `User` Resolver Examples
@@ -72,7 +72,7 @@ DB.Table("orders").Find(&Report{}) // replicas `db8`
 
 ## Read/Write Splitting
 
-Read/Write splitting with DBResolver based on the current using [GORM callback](https://gorm.io/docs/write_plugins.html).
+Read/Write splitting with DBResolver based on the current used [GORM callbacks](https://gorm.io/docs/write_plugins.html).
 
 For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
 
@@ -91,7 +91,7 @@ DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 
 ## Load Balancing
 
-GORM supports load balancing sources/replicas based on policy, the policy is an interface implements following interface:
+GORM supports load balancing sources/replicas based on policy, the policy should be a struct implements following interface:
 
 ```go
 type Policy interface {
@@ -99,7 +99,7 @@ type Policy interface {
 }
 ```
 
-Currently only the `RandomPolicy` implemented and it is the default option if no policy specified.
+Currently only the `RandomPolicy` implemented and it is the default option if no other policy specified.
 
 ## Connection Pool
 

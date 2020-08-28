@@ -31,17 +31,17 @@ MySQl Driver предоставляет [несколько расширенны
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
   DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // имя источника данных
-  DefaultStringSize: 256, // размер по умолчанию для строковых полей
-  DisableDatetimePrecision: true, // выключаем точность datetime, которая не поддерживается до MySQL 5.
-  DontSupportRenameIndex: true, // drop & create когда переименовывается индекс переименование индекса не поддерживается до MySQL 5. , MariaDB
+  DefaultStringSize: 256, // значение по умолчанию для строковых полей
+  DisableDatetimePrecision: true, // отключить точность полей типа datetime, которая не поддерживается до версии MySQL 5.6
+  DontSupportRenameIndex: true, // drop & create при переименовании индекса, переименование индекса не поддерживается с версии MySQL 5.7, MariaDB
   DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-  SkipInitializeWithVersion: false, // auto configure based on used version
-}), &gorm. нарисовать {})
+  SkipInitializeWithVersion: false, // авто найтройка в зависимости от текущей весрии MySQL
+}), &gorm.Config{})
 ```
 
-### Customize Driver
+### Настройка драйвера
 
-GORM allows customize the MySQL driver with the `DriverName` option, for example:
+GORM позволяет настроить драйвер MYSQL, используя опции `DriverName`, например:
 
 ```go
 import (
@@ -55,9 +55,9 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Existing database connection
+### Существующие подключения к базе данных
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM позволяет инициализировать `*gorm.DB` с существующим соединением с базой данных
 
 ```go
 import (
@@ -83,7 +83,7 @@ dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=A
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+Мы используем [pgx](https://github.com/jackc/pgx) в качестве драйвера sql базы данных postgres, он включает кэш подготовленных выражений по умолчанию, чтобы отключить его:
 
 ```go
 // https://github.com/go-gorm/postgres
@@ -93,9 +93,9 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### Настройка драйвера
 
-GORM allows customize the PostgreSQL driver with the `DriverName` option, for example:
+GORM позволяет настроить драйвер PostgreSQL, используя опции `DriverName`, например:
 
 ```go
 import (
@@ -109,9 +109,9 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 })
 ```
 
-### Existing database connection
+### Существующие подключения к базе данных
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM позволяет инициализировать `*gorm.DB` с существующим соединением с базой данных
 
 ```go
 import (
@@ -137,7 +137,7 @@ import (
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**ПРИМЕЧАНИЕ:** Вы также можете использовать `file::memory:?cache=shared` вместо пути к файлу. Это позволит SQLite использовать временную базу данных в системной памяти. (Смотрите [SQLite документацию](https://www.sqlite.org/inmemorydb.html) для подробностей)
 
 ## SQL Server
 
@@ -152,29 +152,27 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
-Microsoft offers [a guide](https://sqlchoice.azurewebsites.net/en-us/sql-server/developer-get-started/) for using SQL Server with Go (and GORM).
-
 ## Пул подключений
 
-GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
+GORM использует \[database/sql\]((https://pkg.go.dev/database/sql) для поддержки пула подключения
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleConns устанавливает максимальное количество подключений в режиме простоя.
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns устанавливает макстмальное количество открытых подключений к БД.
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime устанавливает максимальное количество повторного использования подключений.
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+Смотрите [Общий интерфейс](generic_interface.html) для подробностей
 
 ## Неподдерживаемые базы данных
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Некоторые базы данных могут быть совместимы с `mysql` или `postgres` диалектами, в этом случае можно просто использовать диалект для этих баз данных.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+Для других, [вам предлагается сделать драйвер, pull request приветствуется!](write_driver.html)

@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 
 Вот [полный список](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), также ознакомьтесь с [Конструктор SQL](sql_builder.html) для получения более подробной информации о `Условиях`
 
-## Метод завершения
+## <span id="finisher_method">Finisher Method</span>
 
 Завершители - это методы, которые выполняют зарегистрированные callback, которые будут генерировать и выполнять SQL, такие как эти методы:
 
@@ -86,34 +86,34 @@ tx.Where("age = ?", 28).Find(&users)
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// Безопасно для новой инициализации *gorm.DB
+// Safe for new initialized *gorm.DB
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// НЕ Безопасно для повторного использования
+// NOT Safe as reusing Statement
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.WithContext(ctx)
-// Безопасно после `Метода новой сессии`
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// Безопасно после `Метода новой сессии`
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` применит ко всем
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
-// Безопасно после `Метода новой сессии`
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` применит ко всем
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 ```
