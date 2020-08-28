@@ -77,9 +77,9 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 })
 ```
 
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**ПРИМЕЧАНИЕ** При создании из map, хуки не будут вызываться, связи не будут сохранены и значения первичных ключей не будут возвращены
 
-## <span id="create_from_sql_expr">Create From SQL Expr/Context Valuer</span>
+## <span id="create_from_sql_expr">Создать из SQL Expr/Context Valuer</span>
 
 GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
 
