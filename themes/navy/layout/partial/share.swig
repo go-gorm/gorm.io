@@ -15,8 +15,12 @@
     <img alt="GitHub followers" src="https://img.shields.io/github/followers/jinzhu?color=1e94de&style=for-the-badge&logo=github">
   </a>
 
+  <a href="https://twitter.com/zhangjinzhu">
+    <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/zhangjinzhu?label=Jinzhu&style=for-the-badge&logo=twitter&logoColor=%23FFF&color=%234494D8">
+  </a>
+
   <a href="https://github.com/go-gorm">
-    <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Release&color=1e94de&&style=for-the-badge&logo=go&logoColor=4BABD4">
+    <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Release&color=1e94de&&style=for-the-badge&logo=go&logoColor=%23FFF">
   </a>
 </div>
 
