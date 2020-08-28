@@ -19,8 +19,8 @@
     <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/zhangjinzhu?label=Jinzhu&style=for-the-badge&logo=twitter&logoColor=%23FFF&color=%234494D8">
   </a>
 
-  <a href="https://github.com/go-gorm">
-    <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Release&color=1e94de&&style=for-the-badge&logo=go&logoColor=%23FFF">
+  <a href="/docs/v2_release_note.html">
+    <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=V2 Release Note&color=red&&style=for-the-badge&logo=go&logoColor=%23FFF">
   </a>
 </div>
 
