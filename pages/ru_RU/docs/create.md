@@ -59,18 +59,18 @@ for _, user := range users {
 }
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+Пакетная вставка также поддерживается при использовании [Upsert](#upsert) и [Создать с ассоциациями](#create_with_associations)
 
-## Create From Map
+## Создать из Map
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORM поддерживает создание из `map[string]interface{}` и `[]map[string]interface{}{}`, например:
 
 ```go
 DB.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// batch insert from `[]map[string]interface{}{}`
+// пакетная вставка из `[]map[string]interface{}{}`
 DB.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
