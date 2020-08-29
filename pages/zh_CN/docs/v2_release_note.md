@@ -448,40 +448,40 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
-#### Associations Batch Mode
+#### 批量关联模式
 
-Association Mode supports batch data, e.g:
+关联模式也支持批量处理，例如：
 
 ```go
-// Find all roles for all users
+// 查询所有用户的所有角色
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// 将 userA 移出所有的 Team
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get unduplicated count of members in all user's team
+// 获取所有 Team 成员的不重复计数
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
+// 对于 `Append`、`Replace` 的批量处理，参数与数据的长度必须相等，否则会返回错误
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// 例如：我们有 3 个 user，将 userA 添加到 user1 的 Team，将 userB 添加到 user2 的 Team，将 userA、userB、userC 添加到 user3 的 Team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// 将 user1 的 Team 重置为 userA，将 user2的 team 重置为 userB，将 user3 的 team 重置为 userA、userB 和 userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## Breaking Changes
+## 破坏性变更
 
-We are trying to list big breaking changes or those changes can't be caught by the compilers, please create an issue or pull request [here](https://github.com/go-gorm/gorm.io) if you found any unlisted breaking changes
+我们尽可能的列出破坏性、无法被编译器捕获的变更。如果您发现了任何遗漏的内容，欢迎在 [这里](https://github.com/go-gorm/gorm.io) 创建 issue 或 pr
 
-#### Tags
+#### Tag
 
-* GORM V2 prefer write tag name in `camelCase`, tags in `snake_case` won't works anymore, for example: `auto_increment`, `unique_index`, `polymorphic_value`, `embedded_prefix`, check out [Model Tags](models.html#tags)
-* Tags used to specify foreign keys changed to `foreignKey`, `references`, check out [Associations Tags](associations.html#tags)
+* GORM V2 使用 `camelCase` 风格的 tag 名。`snake_case` 风格的 tag 已经失效，例如： `auto_increment`、`unique_index`、`polymorphic_value`、`embeded_prefix`，查看 [Model Tag](models.html#tags) 获取详情
+* 用于指定外键的 tag 已变更为 `foreignKey`，`references`，查看 [Association Tag](associations.html#tags) 获取详情
 
 #### Table Name
 
-`TableName` will *not* allow dynamic table name anymore, the result of `TableName` will be cached for future
+`TableName` *不再* 允许动态表名， 因为 `TableName` 的返回值会被缓存下来
 
 ```go
 func (User) TableName() string {
@@ -489,7 +489,7 @@ func (User) TableName() string {
 }
 ```
 
-Please use `Scopes` for dynamic tables, for example:
+动态表名请使用 `Scopes`，例如：
 
 ```go
 func UserTable(u *User) func(*gorm.DB) *gorm.DB {
@@ -501,7 +501,7 @@ func UserTable(u *User) func(*gorm.DB) *gorm.DB {
 DB.Scopes(UserTable(&user)).Create(&user)
 ```
 
-#### Method Chain Safety/Goroutine Safety
+#### 链式方法和协程安全
 
 To reduce GC allocs, GORM V2 will share `Statement` when using method chains, and will only create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, to reuse a `*gorm.DB`, you need to make sure it just after a `New Session Method`, for example:
 
