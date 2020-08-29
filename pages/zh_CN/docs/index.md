@@ -8,12 +8,12 @@ The fantastic ORM library for Golang aims to be developer friendly.
 ## 特性
 
 * 全功能 ORM
-* 关联 (Has One、Has Many、Belongs To、Many To Many、多态、单表继承)
-* Create、Save、Update、Delete、Find 前/后的勾子
+* 关联 (Has One，Has Many，Belongs To，Many To Many，多态，单表继承)
+* Create，Save，Update，Delete，Find 前/后的 Hook
 * 基于 `Preload`、`Joins` 的预加载
-* 事务、嵌套事务、保存点、回滚至保存点
-* Context、Prepared Statment 模式、DryRun 模式
-* Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
+* 事务，嵌套事务，Save Point，Rollback To Saved Point
+* Context，预编译模式，DryRun 模式
+* 批量插入，FindInBatches，Find/Create with Map，使用 SQL 表达式、Content Valuer 进行 CRUD
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * Composite Primary Key, Indexes, Constraints
 * 自动迁移
