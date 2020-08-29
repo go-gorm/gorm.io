@@ -62,22 +62,22 @@ func init() {
 
 ## 主要特性
 
-The release note only cover major changes introduced in GORM V2 as a quick reference list
+此发布说明仅涵盖了 GORM V2 中的重大更改，作为快速参考
 
-#### Context Support
+#### Context 支持
 
-* Database operations support `context.Context` with the `WithContext` method
-* Logger also accepts context for tracing
+* 通过 `WithContext` 方法提供 `context.Context` 支持
+* Logger 也支持用于追踪的 context
 
 ```go
 DB.WithContext(ctx).Find(&users)
 ```
 
-#### Batch Insert
+#### 批量插入
 
-* Use slice data with `Create` will generate a single SQL statement to insert all the data and backfill primary key values
-* If those data contain associations, all associations will be upserted with another SQL
-* Batch inserted data will call its `Hooks` methods (Before/After Create/Save)
+* 将切片数据传递给 `Create` 方法，GORM 将生成单个 SQL 语句来插入所有数据，并回填主键的值。
+* 如果这些数据包含关联，将使用另一个 SQL 语句 upsert 所有关联
+* 批量插入的数据依然会调用它的 `钩子` 方法（Before/After Create/Save）
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
