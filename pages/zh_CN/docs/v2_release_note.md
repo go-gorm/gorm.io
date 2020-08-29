@@ -352,29 +352,29 @@ type User struct {
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix Nano seconds as updating time
-  Updated2  int64 `gorm:"autoUpdateTime:milli"` // Use unix Milli seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  CreatedAt time.Time // 在创建时，如果该字段值为零值，则使用当前时间填充
+  UpdatedAt int       // 在创建时该字段值为零值或者在更新时，使用当前时间戳的秒数填充
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // 使用时间戳的纳秒数填充更新时间
+  Updated2   int64 `gorm:"autoUpdateTime:milli"` // 使用时间戳的毫秒数填充更新时间
+  Created   int64 `gorm:"autoCreateTime"`      // 使用时间戳的秒数填充创建时间
 }
 ```
 
-#### Multiple Databases, Read/Write Splitting
+#### 多数据库，读写分离
 
-GORM provides multiple databases, read/write splitting support with plugin `DB Resolver`, which also supports auto-switching database/table based on current struct/table, and multiple sources、replicas supports with customized load-balancing logic
+GORM 通过 `DB Resolver` 插件提供了多数据库，读写分离支持。该插件还支持基于当前 struct 和表自动切换数据库和表，自定义负载均衡逻辑的多 source、replica
 
-Check out [Database Resolver](dbresolver.html) for details
+查看 [Database Resolver](dbresolver.html) 获取详情
 
 #### Prometheus
 
-GORM provides plugin `Prometheus` to collect `DBStats` and user-defined metrics
+GORM 提供了 `Prometheus` 插件来收集 `DBStats` 和用户自定义指标
 
-Check out [Prometheus](prometheus.html) for details
+查看 [Prometheus](prometheus.html) 获取详情
 
-#### Naming Strategy
+#### 命名策略
 
-GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html) for details
+GORM 允许用户通过覆盖默认的 `命名策略` 更改默认的命名约定，命名策略被用于构建： `TableName`、`ColumnName`、`JoinTableName`、`RelationshipFKName`、`CheckerName`、`IndexName`。查看 [GORM 配置](gorm_config.html) 获取详情
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -384,14 +384,14 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 #### Logger
 
-* Context support
-* Customize/turn off the colors in the log
-* Slow SQL log, default slow SQL time is 100ms
-* Optimized the SQL log format so that it can be copied and executed in a database console
+* Context 支持
+* 自定义或关闭日志的颜色
+* 慢 SQL 日志，慢 SQL 默认阈值是 100ms
+* 优化了 SQL 日志格式，可以更方便的复制到数据库控制台中执行
 
-#### Transaction Mode
+#### 事务模式
 
-By default, all GORM write operations run inside a transaction to ensure data consistency, you can disable it during initialization to speed up write operations if it is not required
+默认情况下，GORM 所有的写操作都会在事务中运行，以确保数据的一致性。 如果不需要，您可以在初始化时禁用它来加速写入操作
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -399,11 +399,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-#### DataTypes (JSON as example)
+#### 数据类型（以 JSON 为例）
 
-GORM optimizes support for custom types, so you can define a struct to support all databases
+GORM 优化了对自定义类型的支持，现在您可以定义一个 struct 来支持所有类型的数据库
 
-The following takes JSON as an example (which supports SQLite, MySQL, Postgres, refer: https://github.com/go-gorm/datatypes/blob/master/json.go)
+下面以 JSON 为例（支持 SQLite、MySQL、Postgres。参考自：https://github.com/go-gorm/datamypes/blob/master/json.go）
 
 ```go
 import "gorm.io/datatypes"
@@ -419,15 +419,15 @@ DB.Create(&User{
   Attributes: datatypes.JSON([]byte(`{"name": "jinzhu", "age": 18, "tags": ["tag1", "tag2"], "orgs": {"orga": "orga"}}`)),
 }
 
-// Query user having a role field in attributes
+// 查询 attributes 中有 role 字段的 user
 DB.First(&user, datatypes.JSONQuery("attributes").HasKey("role"))
-// Query user having orgs->orga field in attributes
+// 查询 attributes 中有 orgs->orga 字段的 user
 DB.First(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 ```
 
 #### Smart Select
 
-GORM allows select specific fields with [`Select`](query.html), and in V2, GORM provides smart select mode if you are querying with a smaller struct
+GORM 可以通过 [`Select`](query.html) 选择指定的字段，而在 V2 中，通过一个较小的 struct，可以使用 GORM 提供的 smart select 模式
 
 ```go
 type User struct {
@@ -435,7 +435,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // 假设后面还有几百个字段
 }
 
 type APIUser struct {
@@ -443,7 +443,7 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when query
+// 查询时会自动 select `id`, `name`
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
