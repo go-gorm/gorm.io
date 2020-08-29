@@ -59,27 +59,27 @@ for _, user := range users {
 }
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+Пакетная вставка также поддерживается при использовании [Upsert](#upsert) и [Создать с ассоциациями](#create_with_associations)
 
-## Create From Map
+## Создать из Map
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORM поддерживает создание из `map[string]interface{}` и `[]map[string]interface{}{}`, например:
 
 ```go
 DB.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// batch insert from `[]map[string]interface{}{}`
+// пакетная вставка из `[]map[string]interface{}{}`
 DB.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
 })
 ```
 
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**ПРИМЕЧАНИЕ** При создании из map, хуки не будут вызываться, связи не будут сохранены и значения первичных ключей не будут возвращены
 
-## <span id="create_from_sql_expr">Create From SQL Expr/Context Valuer</span>
+## <span id="create_from_sql_expr">Создать из SQL Expr/Context Valuer</span>
 
 GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
 

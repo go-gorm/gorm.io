@@ -75,7 +75,7 @@ type Profile struct {
     UserRefer uint
 }
 
-// Which creates join table: user_profiles
+// 会创建连接表：user_profiles
 //   foreign key: user_refer_id, reference: users.refer
 //   foreign key: profile_refer, reference: profiles.user_refer
 ```
@@ -90,7 +90,7 @@ type User struct {
     Friends []*User `gorm:"many2many:user_friends"`
 }
 
-// Which creates join table: user_friends
+// 会创建连接表：user_friends
 //   foreign key: user_id, reference: users.id
 //   foreign key: friend_id, reference: users.id
 ```
@@ -130,14 +130,14 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// Change model Person's field Addresses's join table to PersonAddress
-// PersonAddress must defined all required foreign keys or it will raise error
+// 修改 Person 的 Addresses 字段的连接表为 PersonAddress
+// PersonAddress 必须定义好所需的外键，否则会报错
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
 ## 外键约束
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+你可以通过为标签 `constraint` 配置 `OnUpdate`、`OnDelete` 实现外键约束，在使用 GORM 进行迁移时它会被创建，例如：
 
 ```go
 type User struct {
@@ -176,18 +176,18 @@ type Blog struct {
   SharedTags []Tag `gorm:"many2many:shared_blog_tags;ForeignKey:id;References:id"`
 }
 
-// Join Table: blog_tags
+// 连接表：blog_tags
 //   foreign key: blog_id, reference: blogs.id
 //   foreign key: blog_locale, reference: blogs.locale
 //   foreign key: tag_id, reference: tags.id
 //   foreign key: tag_locale, reference: tags.locale
 
-// Join Table: locale_blog_tags
+// 连接表：locale_blog_tags
 //   foreign key: blog_id, reference: blogs.id
 //   foreign key: blog_locale, reference: blogs.locale
 //   foreign key: tag_id, reference: tags.id
 
-// Join Table: shared_blog_tags
+// 连接表：shared_blog_tags
 //   foreign key: blog_id, reference: blogs.id
 //   foreign key: tag_id, reference: tags.id
 ```

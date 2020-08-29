@@ -7,7 +7,7 @@ layout: page
 
 `has one` 与另一个模型建立一对一的关联，但它和一对一关系有些许不同。 这种关联表明一个模型的每个实例都包含或拥有另一个模型的一个实例。
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+例如，您的应用包含 user 和 credit card 模型，且每个 user 只能有一张 credit card。
 
 ```go
 // User 有一张 CreditCard，CreditCardID 是外键
@@ -49,7 +49,7 @@ type CreditCard struct {
 
 ## 重写引用
 
-By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field's value, like using `Name` for the below example.
+默认情况下，拥有者实体会将 `has one` 对应模型的主键保存为外键，您也可以修改它，用另一个字段来保存，例如下个这个使用 `Name` 来保存的例子。
 
 您可以使用标签 `references` 来更改它，例如：
 
@@ -69,7 +69,7 @@ type CreditCard struct {
 
 ## 多态关联
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field
+GORM 为 `has one` 和 `has many` 提供了多态关联支持，它会将拥有者实体的表名、主键值都保存到多态类型的字段中。
 
 ```go
 type Cat struct {
@@ -138,7 +138,7 @@ type User struct {
 
 ## 外键约束
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+你可以通过为标签 `constraint` 配置 `OnUpdate`、`OnDelete` 实现外键约束，在使用 GORM 进行迁移时它会被创建，例如：
 
 ```go
 type User struct {

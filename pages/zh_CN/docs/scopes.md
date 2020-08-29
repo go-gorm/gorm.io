@@ -56,7 +56,7 @@ func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
       pageSize = 10
     }
 
-    offset := (page - 1) * perPasge
+    offset := (page - 1) * pageSize
     return db.Offset(offset).Limit(pageSize)
   }
 }
