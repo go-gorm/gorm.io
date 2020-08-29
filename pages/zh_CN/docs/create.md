@@ -79,24 +79,24 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 
 **注意：** 根据 map 创建记录时，association 不会被调用，且主键也不会自动填充
 
-## <span id="create_from_sql_expr">使用 SQL 表达式、Content Valuer 进行 Create</span>
+## <span id="create_from_sql_expr">使用 SQL 表达式、Context Valuer 创建记录</span>
 
 GORM 允许使用 SQL 表达式插入数据，有两种方法实现这个目标。根据 `map[string]interface{}` 或 [自定义数据类型](data_types.html#gorm_valuer_interface) 创建，例如：
 
 ```go
-// Create from map
+// 根据 map Create
 DB.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// Create from customized data type
+// 根据自定义数据类型 Create
 type Location struct {
     X, Y int
 }
 
-// Scan implements the sql.Scanner interface
+// Scan 实现了 sql.Scanner 接口
 func (loc *Location) Scan(v interface{}) error {
   // Scan a value into struct from database driver
 }
@@ -124,11 +124,11 @@ DB.Create(&User{
 // INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
 ```
 
-## Advanced
+## 高级选项
 
 ### <span id="create_with_associations">关联创建</span>
 
-When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
+创建关联数据时，如果关联值是非零值，这些关联会被 upsert，且它们的 `Hook` 方法也会被调用
 
 ```go
 type CreditCard struct {
@@ -151,31 +151,31 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`, for example:
+您也可以通过 `Select`、 `Omit` 跳过关联保存，例如：
 
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// skip all associations
+// 跳过所有关联
 db.Omit(clause.Associations).Create(&user)
 ```
 
 ### <span id="default_values">默认值</span>
 
-You can define default values for fields with tag `default`, for example:
+您可以通过标签 `default` 为字段定义默认值，如：
 
 ```go
 type User struct {
   ID         int64
   Name       string `gorm:"default:galeone"`
   Age        int64  `gorm:"default:18"`
-    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
+    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // 数据库函数
 }
 ```
 
-Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+插入记录到数据库时，默认值 *会被用于* 填充值为 [零值](https://tour.golang.org/basics/12) 的字段
 
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**注意** 像 `0`、`''`、`false` 等零值，不会将这些字段定义的默认值保存到数据库。您需要使用指针类型或 Scanner/Valuer 来避免这个问题，例如：
 
 ```go
 type User struct {
@@ -186,7 +186,7 @@ type User struct {
 }
 ```
 
-**NOTE** You have to setup the `default` tag for fields having default value in databae or GORM will use the zero value of the field when creating, for example:
+**注意** 对于在数据库中有默认值的字段，你必须为其 struct 设置 `default` 标签，否则 GORM 将在创建时使用该字段的零值，例如：
 
 ```go
 type User struct {
@@ -198,15 +198,15 @@ type User struct {
 
 ### <span id="upsert">Upsert 及冲突</span>
 
-GORM provides compatible Upsert support for different databases
+GORM 为不同数据库提供了兼容的 Upsert 支持
 
 ```go
 import "gorm.io/gorm/clause"
 
-// Do nothing on conflict
+// 不处理冲突
 DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Update columns to default value on `id` conflict
+// `id` 冲突时，将字段值更新为默认值
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -224,6 +224,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+也可以查看 [高级查询](advanced_query.html) 中的 `FirstOrInit`, `FirstOrCreate`
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+查看 [原生 SQL 及构造器](sql_builder.html) 获取详情
