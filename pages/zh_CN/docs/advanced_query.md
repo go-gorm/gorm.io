@@ -208,7 +208,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## 优化器、索引提示
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
+优化器提示用于控制查询优化器选择某个查询执行计划，GORM 通过 `gorm.io/hints` 提供支持，例如：
 
 ```go
 import "gorm.io/hints"
@@ -241,10 +241,10 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
+  // ScanRows 方法用于将一行记录扫描至结构体
   db.ScanRows(rows, &user)
 
-  // do something
+  // 业务逻辑...
 }
 ```
 
@@ -288,7 +288,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
+Pluck 用于从数据库查询单个列，并将结果扫描到切片。如果您想要查询多列，您应该使用 `Select` 和 [`Scan`](query.html#scan)
 
 ```go
 var ages []int64
@@ -341,11 +341,11 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // 查找所有金额大于 1000 且已付款或已发货的订单
 ```
 
-Checout [Scopes](scopes.html) for details
+查看 [Scopes](scopes.html) 获取详情
 
 ## <span id="count">Count</span>
 
-Get matched records count
+Count 用于获取匹配的记录数
 
 ```go
 var count int64
