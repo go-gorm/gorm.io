@@ -14,14 +14,14 @@ GORM 2.0 完全从零开始，引入了一些不兼容的 API 变更和许多改
 
 * 性能改进
 * 代码模块化
-* Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
-* Nested Transaction/SavePoint/RollbackTo SavePoint supports
-* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements, CRUD with SQL Expr and Context Valuer
-* Full self-reference relationships support, Join Table improvements, Association Mode for batch data
-* Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
-* New plugin system, provides official plugins for multiple databases, read/write splitting, prometheus integrations...
-* New Hooks API: unified interface with plugins
+* Context，批量插入，预编译模式，DryRun 模式，Join 预加载，Find To Map，Create From Map，FindInBatches
+* 嵌套事务，SavePoint，Rollback To SavePoint 支持
+* SQL 生成器，命名参数，分组条件，Upsert，锁，Optimizer/Index/Comment Hint 支持，子查询改进，使用SQL表达式、Content Valuer 进行 CRUD
+* 完整的自引用支持，连接表改进，批量数据的关联模式
+* 允许多个字段用于追踪 create、update 时间 ，支持 UNIX （毫/纳）秒
+* 字段权限支持：只读、只写、只创建、只更新、忽略
+* 新的插件系统，为多个数据库提供了官方插件，读写分离，prometheus 集成...
+* 全新的 Hook API：带插件的统一接口
 * New Migrator: allows to create database foreign keys for relationships, smarter AutoMigrate, constraints/checker support, enhanced index support
 * New Logger: context support, improved extensibility
 * Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
