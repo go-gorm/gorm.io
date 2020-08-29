@@ -14,11 +14,11 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * 事务，嵌套事务，Save Point，Rollback To Saved Point
 * Context，预编译模式，DryRun 模式
 * 批量插入，FindInBatches，Find/Create with Map，使用 SQL 表达式、Content Valuer 进行 CRUD
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
-* Composite Primary Key, Indexes, Constraints
-* 自动迁移
+* SQL 构建器，Upsert，锁，Optimizer/Index/Comment Hint，命名参数，子查询
+* 复合主键，索引，约束
+* Auto Migration
 * 自定义 Logger
-* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
+* 灵活的可扩展插件 API：Database Resolver（多数据库，读写分离）、Prometheus...
 * 所有特性都通过了测试
 * 开发者友好
 
