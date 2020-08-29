@@ -30,12 +30,12 @@ MySQl 驱动程序提供了 [一些高级配置](https://github.com/go-gorm/mysq
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
-  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name
-  DefaultStringSize: 256, // default size for string fields
-  DisableDatetimePrecision: true, // disable datetime precision, which not supported before MySQL 5.6
-  DontSupportRenameIndex: true, // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
-  DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-  SkipInitializeWithVersion: false, // auto configure based on currently MySQL version
+  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // DSN data source name
+  DefaultStringSize: 256, // string 类型字段的默认长度
+  DisableDatetimePrecision: true, // 禁用 datetime 精度，MySQL 5.6 之前的数据库不支持
+  DontSupportRenameIndex: true, // 重命名索引时采用删除并新建的方式，MySQL 5.7 之前的数据库和 MariaDB 不支持重命名索引
+  DontSupportRenameColumn: true, // 用 `change` 重命名列，MySQL 8 之前的数据库和 MariaDB 不支持重命名列
+  SkipInitializeWithVersion: false, // 根据当前 MySQL 版本自动配置
 }), &gorm.Config{})
 ```
 
@@ -51,7 +51,7 @@ import (
 
 db, err := gorm.Open(mysql.New(mysql.Config{
   DriverName: "my_mysql_driver",
-  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name, refer https://github.com/go-sql-driver/mysql#dsn-data-source-name
+  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // Data Source Name，参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name
 }), &gorm.Config{})
 ```
 
@@ -154,7 +154,7 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## 连接池
 
-GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
+GORM 使用 \[database/sql\](https://pkg.go.dev/database/sql) 来维护连接池
 
 ```go
 sqlDB, err := db.DB()
@@ -169,10 +169,10 @@ sqlDB.SetMaxOpenConns(100)
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+查看 [通用接口](generic_interface.html) 获取详情。
 
 ## 不支持的数据库
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+有些数据库可能兼容 `mysql`、`postgres` 的方言，在这种情况下，你可以直接使用这些数据库的方言。
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+对于其它不支持的数据，[我们鼓励且欢迎大家伙开发更多数据库类型的驱动！](write_driver.html)
