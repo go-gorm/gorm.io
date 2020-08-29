@@ -41,9 +41,28 @@ db. Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})). Fin
 ### <span id="pagination">Pagination</span>
 
 ```go
-func CurOrganization(r *http. Request) func(db *gorm.DB) *gorm.DB {
+func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
   return func (db *gorm.DB) *gorm.DB {
-    org := r.
+    page, _ := strconv.Atoi(r.Query("page"))
+    if page == 0 {
+      page = 1
+    }
+
+    pageSize, _ := strconv.Atoi(r.Query("page_size"))
+    switch {
+    case pageSize > 100:
+      pageSize = 100
+    case pageSize <= 0:
+      pageSize = 10
+    }
+
+    offset := (page - 1) * pageSize
+    return db.Offset(offset).Limit(pageSize)
+  }
+}
+
+db.Scopes(Paginate(r)).Find(&users)
+db.Scopes(Paginate(r)).Find(&articles)
 ```
 
 ## Updates
