@@ -27,19 +27,19 @@ GORM 2.0 完全从零开始，引入了一些不兼容的 API 变更和许多改
 * Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
 * Better customized data type support (e.g: JSON)
 
-## How To Upgrade
+## 如何升级
 
-* GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and its import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/)
-* Database drivers have been split into separate projects, e.g: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite), and its import path also changed to `gorm.io/driver/sqlite`
+* GORM 的开发已经迁移至 [github.com/go-gorm](https://github.com/go-gorm)，import 路径也修改为 `gorm.io/gorm` ，对于以前的项目，您可以继续使用 `github.com/jinzhu/gorm` 和 [GORM V1 文档](http://v1.gorm.io/zh_CN/)
+* 数据库驱动被拆分为独立的项目，例如：[github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite)，且它的 improt 路径也变更为 `gorm.io/driver/sqlite`
 
-### Install
+### 安装
 
 ```go
 go get gorm.io/gorm
-// **NOTE** GORM `v2.0.0` released with git tag `v1.20.0`
+// **注意** GORM `v2.0.0.0` 发布的 git tag 是 `v1.20.0`
 ```
 
-### Quick Start
+### 快速开始
 
 ```go
 import (
@@ -50,7 +50,7 @@ import (
 func init() {
   db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 
-  // Most CRUD API kept compatibility
+  // 大部分 CRUD API 都是兼容的
   db.AutoMigrate(&Product{})
   db.Create(&user)
   db.First(&user, 1)
@@ -60,7 +60,7 @@ func init() {
 }
 ```
 
-## Major Features
+## 主要特性
 
 The release note only cover major changes introduced in GORM V2 as a quick reference list
 
