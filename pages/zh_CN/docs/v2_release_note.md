@@ -339,12 +339,12 @@ DB.Model(&User{ID: 1}).Updates(User{
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"->:false;<-:create"` // createonly
-  Name string `gorm:"->"` // readonly
-  Name string `gorm:"-"`  // ignored
+  Name string `gorm:"<-:create"` // 允许读和创建
+  Name string `gorm:"<-:update"` // 允许读和更新
+  Name string `gorm:"<-"`        // 允许读和写（创建和更新）
+  Name string `gorm:"->:false;<-:create"` // 只创建
+  Name string `gorm:"->"` // 只读
+  Name string `gorm:"-"`  // 忽略
 }
 ```
 
@@ -641,15 +641,15 @@ DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 
 #### 使用 struct 更新
 
-When updating with struct, GORM V2 allows to use `Select` to select zero-value fields to update them, for example:
+使用 struct 更新时，GORM V2 允许使用 `Select` 来选择要更新的零值字段，例如：
 
 ```go
 DB.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
 ```
 
-#### Associations
+#### 关联
 
-GORM V1 allows to use some settings to skip create/update associations, in V2, you can use `Select` to do the job, for example:
+GORM V1允许使用一些设置来跳过 create/update 关联。在 V2 中，您可以使用 `Select` 来完成这项工作，例如：
 
 ```go
 DB.Omit(clause.Associations).Create(&user)
@@ -658,18 +658,18 @@ DB.Omit(clause.Associations).Save(&user)
 DB.Select("Company").Save(&user)
 ```
 
-`clause.Associations` also works with `Preload`, e.g:
+`clause.Associations` 也可以配合 `Preload` 使用，例如：
 
 ```go
-// preload all associations
+// 预加载所有关联
 db.Preload(clause.Associations).Find(&users)
 ```
 
-Also, checkout field permissions, which can be used to skip creating/updating associations globally
+此外，还可以查看字段权限，它可以用来全局跳过 creating/updating 关联
 
 #### Join Table
 
-In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and define other fields, e.g:
+在 GORM V2 中，`JoinTable` 可以是一个带有 `软删除`、`Hook` 且定义了其它字段的全功能 model，例如：
 
 ```go
 type Person struct {
@@ -694,23 +694,23 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// PersonAddress must defined all required foreign keys, or it will raise error
+// PersonAddress 必须定义好所需的外键，否则会报错
 err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
 #### Count
 
-Count only accepts `*int64` as the argument
+Count 仅支持 `*int64` 作为参数
 
 #### Migrator
 
-* Migrator will create database foreign keys by default
-* Migrator is more independent, many API renamed to provide better support for each database with unified API interfaces
-* AutoMigrate will alter column's type if its size, precision, nullable changed
-* Support Checker through tag `check`
-* Enhanced tag setting for `index`
+* Migrator 默认会创建数据库外键
+* Migrator 更加独立，重命名了很多 API，以便使用统一 API 接口为每个数据库提供更好的支持
+* 如果大小、精度、是否为空可以更改，则 AutoMigrate 会改变列的类型
+* 通过 `check` 标签支持检查器
+* 增强 `index` 标签的设置
 
-Checkout [Migration](migration.html) for details
+查看 [Migration](migration.html) 获取详情
 
 ```go
 type UserIndex struct {
