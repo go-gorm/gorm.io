@@ -20,7 +20,7 @@
   </a>
 
   <a href="/docs/v2_release_note.html">
-    <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=V2 Release Note&color=red&&style=for-the-badge&logo=go&logoColor=%23FFF">
+    <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=V2 Release Note&color=red&&style=for-the-badge&logo=go&logoColor=%23FFF">
   </a>
 </div>
 

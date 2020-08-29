@@ -16,6 +16,15 @@
               <div class="article-content" itemprop="articleBody">
                 {{ page_anchor(page.content) }}
               </div>
+
+              {% if page.path.substring(0,3) == "doc" %}
+              <div>
+                <a href="/docs/v2_release_note.html">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=V2 Release Note&color=red&&style=for-the-badge&logo=go&logoColor=%23FFF">
+                </a>
+              </div>
+              {% endif %}
+
               <footer class="article-footer">
                 <time class="article-footer-updated" datetime="{{ date_xml(page.updated) }}" itemprop="dateModified">{{ __('page.last_updated', date(page.updated)) }}</time>
 {{ page_nav() }}
