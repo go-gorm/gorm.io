@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // 假设后面还有几百个字段...
 }
 
 type APIUser struct {
@@ -21,7 +21,7 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// 查询时会自动选择 `id`, `name` 字段
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
@@ -58,7 +58,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From 子查询</span>
 
-GORM allows you using subquery in FROM clause with method `Table`, for example:
+GORM 允许您在 `Table` 方法中通过 FROM 子句使用子查询，例如：
 
 ```go
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -112,7 +112,7 @@ DB.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+获取第一条匹配的记录，或者根据给定的条件初始化一个实例（仅支持 sturct 和 map 条件）
 
 ```go
 // 未找到 user，根据给定的条件初始化 struct
@@ -147,7 +147,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+不管是否找到记录，`Assign` 都会将属性赋值给 struct，但这些属性不会被用于生成查询 SQL，也不会被保存到数据库
 
 ```go
 // 未找到 user，根据条件和 Assign 属性初始化 struct
@@ -162,15 +162,15 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions)
+获取第一条匹配的记录，或者根据给定的条件创建一条新纪录（仅支持 sturct 和 map 条件）
 
 ```go
-// User not found, create a new record with give conditions
+// 未找到 user，则根据给定条件创建一条新纪录
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// 找到了 `name` = `jinzhu` 的 user
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
@@ -190,7 +190,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+不管是否找到记录，`Assign` 都会将属性赋值给 struct，并将结果写回数据库
 
 ```go
 // 未找到 user，根据条件和 Assign 属性创建记录
