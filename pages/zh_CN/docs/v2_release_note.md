@@ -503,7 +503,7 @@ DB.Scopes(UserTable(&user)).Create(&user)
 
 #### 链式方法和协程安全
 
-To reduce GC allocs, GORM V2 will share `Statement` when using method chains, and will only create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, to reuse a `*gorm.DB`, you need to make sure it just after a `New Session Method`, for example:
+为了减少 GC 分配，在使用链式方法时，GORM V2 会共享 `Statement`，且只在初始化 `*gorm.DB` 或调用 `New Session Method` 时创建新的 `Statement`。想要复用 `*gorm.DB`，您需要确保该它刚调用过 `New Session Method`，例如：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
