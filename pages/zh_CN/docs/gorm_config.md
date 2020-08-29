@@ -93,7 +93,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## AllowGlobalUpdate
 
-Enable global update/delete, refer [Session](session.html) for details
+启用全局 update/delete，查看 [Session](session.html) 获取详情
 
 ## DisableAutomaticPing
 
