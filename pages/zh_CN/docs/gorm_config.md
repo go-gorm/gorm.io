@@ -29,7 +29,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## <span id="naming_strategy">NamingStrategy</span>
+## <span id="naming_strategy">命名策略</span>
 
 GORM 允许用户通过覆盖默认的`命名策略`更改默认的命名约定，这需要实现接口 `Namer`
 
@@ -57,7 +57,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Logger
 
-Allow to change GORM's default logger by overriding this option, refer [Logger](logger.html) for more details
+允许通过覆盖此选项更改 GORM 的默认 logger，参考 [Logger](logger.html) 获取详情
 
 ## <span id="now_func">NowFunc</span>
 
