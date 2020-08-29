@@ -49,7 +49,7 @@ sidebar:
     logger: Logger
     generic_interface: 通用数据库接口
     performance: 性能
-    data_types: Custimize Data Types
+    data_types: 自定义数据类型
     scopes: Scope
     settings: 设置
     advanced_topics: 高级主题
