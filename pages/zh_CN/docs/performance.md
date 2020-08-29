@@ -99,6 +99,6 @@ DB.Clauses(
 // SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
 ```
 
-## Read/Write Splitting
+## 读写分离
 
-Increase data throughput through read/write splitting, check out [Database Resolver](dbresolver.html)
+通过读写分离提高数据吞吐量，查看 [Database Resolver](dbresolver.html) 获取详情
