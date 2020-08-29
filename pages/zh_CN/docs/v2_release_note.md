@@ -3,11 +3,6 @@ title: GORM 2.0 发布说明
 layout: page
 ---
 
-<style>
-li.toc-item { list-style: none; }
-li.toc-item.toc-level-4 { display: none; }
-</style>
-
 GORM 2.0 完全从零开始，引入了一些不兼容的 API 变更和许多改进
 
 **摘要**
@@ -723,3 +718,8 @@ type UserIndex struct {
 ```
 
 ## Happy Hacking!
+
+<style>
+li.toc-item { list-style: none; }
+li.toc-item.toc-level-4 { display: none; }
+</style>
