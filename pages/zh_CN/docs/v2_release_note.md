@@ -15,17 +15,17 @@ GORM 2.0 完全从零开始，引入了一些不兼容的 API 变更和许多改
 * 性能改进
 * 代码模块化
 * Context，批量插入，预编译模式，DryRun 模式，Join 预加载，Find To Map，Create From Map，FindInBatches
-* 嵌套事务，SavePoint，Rollback To SavePoint 支持
-* SQL 生成器，命名参数，分组条件，Upsert，锁，Optimizer/Index/Comment Hint 支持，子查询改进，使用SQL表达式、Content Valuer 进行 CRUD
-* 完整的自引用支持，连接表改进，批量数据的关联模式
+* 支持嵌套事务，SavePoint，Rollback To SavePoint
+* SQL 生成器，命名参数，分组条件，Upsert，锁， 支持 Optimizer/Index/Comment Hint，子查询改进，使用SQL表达式、Content Valuer 进行 CRUD
+* 支持完整的自引用，改进 Join Table，批量数据的关联模式
 * 允许多个字段用于追踪 create、update 时间 ，支持 UNIX （毫/纳）秒
-* 字段权限支持：只读、只写、只创建、只更新、忽略
+* 支持字段权限：只读、只写、只创建、只更新、忽略
 * 新的插件系统，为多个数据库提供了官方插件，读写分离，prometheus 集成...
 * 全新的 Hook API：带插件的统一接口
-* New Migrator: allows to create database foreign keys for relationships, smarter AutoMigrate, constraints/checker support, enhanced index support
-* New Logger: context support, improved extensibility
-* Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
-* Better customized data type support (e.g: JSON)
+* 全新的 Migrator：允许为关系创建数据库外键，更智能的 AutoMigrate，支持约束、检查器，增强索引支持
+* 全新的 Logger：支持 context、改进可扩展性
+* 统一命名策略：表名、字段名、连接表名、外键、检查器、索引名称规则
+* 更好的自定义类型支持（例如： JSON）
 
 ## 如何升级
 
@@ -88,24 +88,24 @@ for _, user := range users {
 }
 ```
 
-#### Prepared Statment Mode
+#### 预编译模式
 
-Prepared Statement Mode creates prepared stmt and caches them to speed up future calls
+预编译模式会预编译 SQL 执行语句，以加速后续执行速度
 
 ```go
-// globally mode, all operations will create prepared stmt and cache to speed up
+// 全局模式，所有的操作都会创建并缓存预编译语句，以加速后续执行速度
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{PrepareStmt: true})
 
-// session mode, create prepares stmt and speed up current session operations
+// 会话模式，当前会话中的操作会创建并缓存预编译语句
 tx := DB.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 ```
 
-#### DryRun Mode
+#### DryRun 模式
 
-Generates SQL without executing, can be used to check or test generated SQL
+DarRun 模式会生成但不执行 SQL，可以用于检查、测试生成的 SQL
 
 ```go
 stmt := DB.Session(&Session{DryRun: true}).Find(&user, 1).Statement
@@ -114,9 +114,9 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
-#### Join Preload
+#### Joins 预加载
 
-Preload associations using INNER JOIN, and will handle null data to avoid failing to scan
+使用 INNER JOIN 预加载关联，并处理 null 数据避免 scan 失败
 
 ```go
 DB.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2})
@@ -124,7 +124,7 @@ DB.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN 
 
 #### Find To Map
 
-Scan result to `map[string]interface{}` or `[]map[string]interface{}`
+Scan 结果到 `map[string]interface{}` 或 `[]map[string]interface{}`
 
 ```go
 var result map[string]interface{}
@@ -133,7 +133,7 @@ DB.Model(&User{}).First(&result, "id = ?", 1)
 
 #### Create From Map
 
-Create from map `map[string]interface{}` or `[]map[string]interface{}`
+根据 `map[string]interface{}` 或 `[]map[string]interface{}` Create
 
 ```go
 DB.Model(&User{}).Create(map[string]interface{}{"Name": "jinzhu", "Age": 18})
@@ -148,16 +148,16 @@ DB.Model(&User{}).Create(datas)
 
 #### FindInBatches
 
-Query and process records in batch
+批量查询并处理记录
 
 ```go
 result := DB.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
-  // batch processing
+  // 批量处理
   return nil
 })
 ```
 
-#### Nested Transaction
+#### 嵌套事务
 
 ```go
 DB.Transaction(func(tx *gorm.DB) error {
@@ -177,7 +177,7 @@ DB.Transaction(func(tx *gorm.DB) error {
 })
 ```
 
-#### SavePoint, RollbackTo
+#### SavePoint，RollbackTo
 
 ```go
 tx := DB.Begin()
@@ -190,9 +190,9 @@ tx.RollbackTo("sp1") // rollback user2
 tx.Commit() // commit user1
 ```
 
-#### Named Argument
+#### 命名参数
 
-GORM supports use `sql.NamedArg`, `map[string]interface{}` as named arguments
+GORM 支持使用 `sql.NamedArg`，`map[string]interface{}` 作为命名参数
 
 ```go
 DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -214,7 +214,7 @@ DB.Exec(
 // UPDATE users SET name1 = "jinzhu", name2 = "jinzhu2", name3 = "jinzhu"
 ```
 
-#### Group Conditions
+#### 分组条件
 
 ```go
 db.Where(
@@ -226,17 +226,17 @@ db.Where(
 // SELECT * FROM pizzas WHERE (pizza = 'pepperoni' AND (size = 'small' OR size = 'medium')) OR (pizza = 'hawaiian' AND size = 'xlarge')
 ```
 
-#### SubQuery
+#### 子查询
 
 ```go
-// Where SubQuery
+// Where 子查询
 db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 
-// From SubQuery
+// From 子查询
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE age = 18
 
-// Update SubQuery
+// Update 子查询
 DB.Model(&user).Update(
   "price", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"),
 )
@@ -244,7 +244,7 @@ DB.Model(&user).Update(
 
 #### Upsert
 
-`clause.OnConflict` provides compatible Upsert support for different databases (SQLite, MySQL, PostgreSQL, SQL Server)
+`clause.OnConflict` 为不同的数据库（SQLite，MySQL，PostgreSQL，SQL Server）提供了兼容的 Upsert 支持
 
 ```go
 import "gorm.io/gorm/clause"
@@ -280,27 +280,27 @@ DB.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-#### Optimizer/Index/Comment Hints
+#### Optimizer/Index/Comment Hint
 
 ```go
 import "gorm.io/hints"
 
-// Optimizer Hints
+// Optimizer Hint
 DB.Clauses(hints.New("hint")).Find(&User{})
 // SELECT * /*+ hint */ FROM `users`
 
-// Index Hints
+// Index Hint
 DB.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
 // SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
-// Comment Hints
+// Comment Hint
 DB.Clauses(hints.Comment("select", "master")).Find(&User{})
 // SELECT /*master*/ * FROM `users`;
 ```
 
-Check out [Hints](hints.html) for details
+查看 [Hint](hints.html) 获取详情
 
-#### CRUD From SQL Expr/Context Valuer
+#### 使用 SQL 表达式、Content Valuer 进行 CRUD
 
 ```go
 type Location struct {
@@ -331,11 +331,11 @@ DB.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-Check out [Customize Data Types](data_types.html#gorm_valuer_interface) for details
+查看 [自定义数据类型](data_types.html#gorm_valuer_interface) 获取详情
 
-#### Field permissions
+#### 字段权限
 
-Field permissions support, permission levels: read-only, write-only, create-only, update-only, ignored
+支持字段权限，权限级别有：只读、只写、只创建、只更新、忽略
 
 ```go
 type User struct {
@@ -348,7 +348,7 @@ type User struct {
 }
 ```
 
-#### Track creating/updating time/unix (milli/nano) seconds for multiple fields
+#### 支持多个字段追踪 create/update 时间（ time、unix (毫/纳) 秒）
 
 ```go
 type User struct {
