@@ -80,7 +80,7 @@ GORM 可以通过 `Preload`、`Joins` 预加载 belongs to 关联的记录，查
 
 ## 外键约束
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+你可以通过为标签 `constraint` 配置 `OnUpdate`、`OnDelete` 实现外键约束，在使用 GORM 进行迁移时它会被创建，例如：
 
 ```go
 type User struct {
