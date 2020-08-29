@@ -501,20 +501,20 @@ func UserTable(u *User) func(*gorm.DB) *gorm.DB {
 DB.Scopes(UserTable(&user)).Create(&user)
 ```
 
-#### 链式方法和协程安全
+#### 方法链和协程安全
 
-为了减少 GC 分配，在使用链式方法时，GORM V2 会共享 `Statement`，且只在初始化 `*gorm.DB` 或调用 `New Session Method` 时创建新的 `Statement`。想要复用 `*gorm.DB`，您需要确保该它刚调用过 `New Session Method`，例如：
+为了减少 GC 分配，在使用链式调用时，GORM V2 会共享 `Statement`，且只在初始化 `*gorm.DB` 或调用 `New Session Method` 后创建新的 `Statement`。想要复用 `*gorm.DB`，您需要确保该它刚调用过 `New Session Method`，例如：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// Safe for new initialized *gorm.DB
+// 对于刚初始化的 *gorm.DB 是安全的
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// NOT Safe as reusing Statement
+// 不安全，因为复用了 Statement
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
@@ -526,27 +526,27 @@ for i := 0; i < 100; i++ {
 }
 
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// Safe after a `New Session Method`
+// 调用 `New Session Method` 后是安全的
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` 会应用至该查询
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
-// Safe after a `New Session Method`
+// 调用 `New Session Method` 后是安全的
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` 会应用至该查询
 }
 ```
 
-Check out [Method Chain](method_chaining.html) for details
+查看 [方法链](method_chaining.html) 获取详情
 
-#### Default Value
+#### 默认值
 
-GORM V2 won't auto-reload default values created with database function after creating, checkout [Default Values](create.html#default_values) for details
+创建记录后，GORM V2 不会自动加载由数据库生成的默认值，查看 [默认值](create.html#default_values) 获取详情
 
-#### Soft Delete
+#### 软删除
 
-GORM V1 will enable soft delete if the model has a field named `DeletedAt`, in V2, you need to use `gorm.DeletedAt` for the model wants to enable the feature, e.g:
+在 GORM V1 中，如果 model 中有一个名为 `DeletedAt` 的字段则自动开启软删除。在V2，您需要在想启用软删除的 model 中使用 `gorm.DeletedAt`，例如：
 
 ```go
 type User struct {
@@ -556,16 +556,16 @@ type User struct {
 
 type User struct {
   ID      uint
-  // field with different name
+  // 字段名无要求
   Deleted gorm.DeletedAt
 }
 ```
 
-**NOTE:** `gorm.Model` is using `gorm.DeletedAt`, if you are embedding it, nothing needs to change
+**注意：** `gorm.Model` 使用了 `gorm.DeletedAt`，如果你已经嵌入了它，则不需要做什么修改
 
 #### BlockGlobalUpdate
 
-GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+GORM V2 默认启用了 `BlockGlobalUpdate` 模式。想要触发全局 update/delete，你必须使用一些条件、原生 SQL 或者启用 `AllowGlobalUpdate` 模式，例如：
 
 ```go
 DB.Where("1 = 1").Delete(&User{})
@@ -577,16 +577,16 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 #### ErrRecordNotFound
 
-GORM V2 only returns `ErrRecordNotFound` when you are querying with methods `First`, `Last`, `Take` which is expected to return some result, and we have also removed method `RecordNotFound` in V2, please use `errors.Is` to check the error, e.g:
+GORM V2 只有在你使用 `First`、`Last`、`Take` 这些预期会返回结果的方法查询记录时，才会返回 `ErrRecordNotFound`，我们还移除了 `RecordNotFound` 方法，请使用 `errors.Is` 来检查错误，例如：
 
 ```go
 err := DB.First(&user).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
-#### Hooks Method
+#### Hook 方法
 
-Before/After Create/Update/Save/Find/Delete must be defined as a method of type `func(tx *gorm.DB) error` in V2, which has unified interfaces like plugin callbacks, if defined as other types, a warning log will be printed and it won't take effect, check out [Hooks](hooks.html) for details
+在 V2 中，Before/After Create/Update/Save/Find/Delete 必须定义为 `func(tx *gorm.DB) error` 类型的方法，这是类似于插件 callback 的统一接口。如果定义为其它类型，它不会生效，并且会打印一个警告日志，查看 [Hook](hooks.html) 获取详情
 
 ```go
 func (user *User) BeforeCreate(tx *gorm.DB) error {
