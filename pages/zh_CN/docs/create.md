@@ -59,7 +59,7 @@ for _, user := range users {
 }
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+[Upsert](#upsert) 和 [Create With Associations](#create_with_associations) 也支持批量插入
 
 ## Create From Map
 
@@ -79,9 +79,9 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 
 **注意：** 根据 map 创建记录时，association 不会被调用，且主键也不会自动填充
 
-## <span id="create_from_sql_expr">Create From SQL Expr/Context Valuer</span>
+## <span id="create_from_sql_expr">使用 SQL 表达式、Content Valuer 进行 Create</span>
 
-GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+GORM 允许使用 SQL 表达式插入数据，有两种方法实现这个目标。根据 `map[string]interface{}` 或 [自定义数据类型](data_types.html#gorm_valuer_interface) 创建，例如：
 
 ```go
 // Create from map
