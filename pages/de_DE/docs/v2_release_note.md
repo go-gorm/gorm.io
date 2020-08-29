@@ -3,11 +3,6 @@ title: GORM 2.0 Release Note
 layout: page
 ---
 
-<style>
-li.toc-item { list-style: none; }
-li.toc-item.toc-level-4 { display: none; }
-</style>
-
 GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
 
 **Highlights**
@@ -723,3 +718,8 @@ type UserIndex struct {
 ```
 
 ## Happy Hacking!
+
+<style>
+li.toc-item { list-style: none; }
+li.toc-item.toc-level-4 { display: none; }
+</style>
