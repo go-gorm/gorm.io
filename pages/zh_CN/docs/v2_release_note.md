@@ -590,11 +590,11 @@ errors.Is(err, gorm.ErrRecordNotFound)
 
 ```go
 func (user *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx.Statement, e.g:
+  // 通过 tx.Statement 修改当前操作，例如：
   tx.Statement.Select("Name", "Age")
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
-  // Operations based on tx will runs inside same transaction without clauses of current one
+  // 除了当前子句，基于 tx 的操作会运行在同一个事务中
   var role Role
   err := tx.First(&role, "name = ?", user.Role).Error
   // SELECT * FROM roles WHERE name = "admin"
@@ -602,44 +602,44 @@ func (user *User) BeforeCreate(tx *gorm.DB) error {
 }
 ```
 
-#### Update Hooks support `Changed` to check fields changed or not
+#### Update Hook 支持 `Changed`
 
-When updating with `Update`, `Updates`, You can use `Changed` method in Hooks `BeforeUpdate`, `BeforeSave` to check a field changed or not
+当使用 `Update`，`Updates` 更新时，您可以在 `BeforeUpdate`, `BeforeSave` Hook 中使用 `Changed` 方法来检查字段是否有更改
 
 ```go
 func (user *User) BeforeUpdate(tx *gorm.DB) error {
-  if tx.Statement.Changed("Name", "Admin") { // if Name or Admin changed
+  if tx.Statement.Changed("Name", "Admin") { // 如果 Name 或 Admin 有更改
     tx.Statement.SetColumn("Age", 18)
   }
 
-  if tx.Statement.Changed() { // if any fields changed
+  if tx.Statement.Changed() { // 如果任意字段有更改
     tx.Statement.SetColumn("Age", 18)
   }
   return nil
 }
 
-DB.Model(&user).Update("Name", "Jinzhu") // update field `Name` to `Jinzhu`
-DB.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // update field `Name` to `Jinzhu`, `Admin` to false
-DB.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // Update none zero fields when using struct as argument, will only update `Name` to `Jinzhu`
+DB.Model(&user).Update("Name", "Jinzhu") // 更新 `Name` 字段值为 `Jinzhu`
+DB.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // 更新 `Name` 字段值为 `Jinzhu`，`Admin` 字段值为 false
+DB.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // 使用 struct 作为参数时，仅更新非零值字段，所以这里仅更新 `Name` 字段值为 `Jinzhu`
 
-DB.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // update selected fields `Name`, `Admin`，`Admin` will be updated to zero value (false)
-DB.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // update selected fields exists in the map, will only update field `Name` to `Jinzhu`
+DB.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // 更新选中的字段 `Name`, `Admin`，其中 `Admin` 字段会被更新为零值（false）
+DB.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // 更新选择的且在 map 中的字段，仅更新 `Name` 字段值为 `Jinzhu`
 
-// Attention: `Changed` will only check the field value of `Update` / `Updates` equals `Model`'s field value, it returns true if not equal and the field will be saved
+// 注意: `Changed` 只检查 `Update` / `Updates` 的值是否等于 `Model` 字段的值，不相等则返回 true，并保存该字段的值
 DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"}) // Changed("Name") => true
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"}) // Changed("Name") => false, `Name` not changed
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{"name": "jinzhu2", "admin": false}) // Changed("Name") => false, `Name` not selected to update
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"}) // Changed("Name") => false, `Name` 没有更改
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{"name": "jinzhu2", "admin": false}) // Changed("Name") => false, `Name` 字段没有被选择
 
 DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"}) // Changed("Name") => true
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed("Name") => false, `Name` not changed
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` not selected to update
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed("Name") => false, `Name` 没有更改
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` 字段没有被选择
 ```
 
-#### Plugins
+#### 插件
 
-Plugin callbacks also need be defined as a method of type `func(tx *gorm.DB) error`, check out [Write Plugins](write_plugins.html) for details
+插件 callback 也需要被定义为 `func(tx *gorm.DB) error` 类型的方法，查看 [Write Plugins](write_plugins.html) 获取详情
 
-#### Updating with struct
+#### 使用 struct 更新
 
 When updating with struct, GORM V2 allows to use `Select` to select zero-value fields to update them, for example:
 
