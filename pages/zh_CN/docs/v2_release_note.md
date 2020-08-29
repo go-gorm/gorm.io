@@ -1,5 +1,5 @@
 ---
-title: GORM 2.0 Release Note
+title: GORM 2.0 发布说明
 layout: page
 ---
 
@@ -8,12 +8,12 @@ li.toc-item { list-style: none; }
 li.toc-item.toc-level-4 { display: none; }
 </style>
 
-GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+GORM 2.0 完全从零开始，引入了一些不兼容的 API 变更和许多改进
 
-**Highlights**
+**摘要**
 
-* Performance Improvements
-* Modularity
+* 性能改进
+* 代码模块化
 * Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
 * Nested Transaction/SavePoint/RollbackTo SavePoint supports
 * SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements, CRUD with SQL Expr and Context Valuer
