@@ -77,7 +77,9 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 })
 ```
 
-**NOTE** Map를 이용하여 생성하면 Hooks가 호출되지 않으며, 연결이 저장되지 않고, 기본키가 채워지지 않습니다.
+{% note warn %}
+**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+{% endnote %}
 
 ## <span id="create_from_sql_expr">SQL Expr/Context Valuer로 생성</span>
 
