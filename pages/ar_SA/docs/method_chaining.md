@@ -87,7 +87,9 @@ for i := 0; i < 100; i++ {
 }
 ```
 
+{% note warn %}
 **NOTE** In example 2, the first query affected the second generated SQL as GORM reused the `Statement`, this might cause unexpected issues, refer [Goroutine Safety](#goroutine_safe) for how to avoid it
+{% endnote %}
 
 ## <span id="goroutine_safe">Method Chain Safety/Goroutine Safety</span>
 
