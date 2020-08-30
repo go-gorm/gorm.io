@@ -77,7 +77,9 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 })
 ```
 
-**ПРИМЕЧАНИЕ** При создании из map, хуки не будут вызываться, связи не будут сохранены и значения первичных ключей не будут возвращены
+{% note warn %}
+**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+{% endnote %}
 
 ## <span id="create_from_sql_expr">Создать из SQL Expr/Context Valuer</span>
 

@@ -77,11 +77,13 @@ tx.Where("age = ?", 28).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
 ```
 
-**注** 例２では、 GORMが`Statement`を再利用したため、最初のクエリが2回目に生成されたSQLに影響しました。これにより予期しない問題が発生する可能性があります。回避方法については[Goroutine Safety](#goroutine_safe)を参照してください
+{% note warn %}
+**NOTE** In example 2, the first query affected the second generated SQL as GORM reused the `Statement`, this might cause unexpected issues, refer [Goroutine Safety](#goroutine_safe) for how to avoid it
+{% endnote %}
 
 ## <span id="goroutine_safe">Method Chain Safety/Goroutine Safety</span>
 
-メソッドは、新しい`* gorm.DB`の初期化または`New Session Method`の後に新しい`Statement`インスタンスを作成するため、`* gorm.DB`を再利用するには、それらが`New Session Mode`であることを確認する必要があります。次に例を示します。
+Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})

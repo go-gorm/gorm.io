@@ -42,7 +42,9 @@ db.Joins("Company").Joins("Manager").Joins("Account").First(&user, "users.name =
 db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2,3,4,5})
 ```
 
-**注：** `Join Preload` は`has one`や`belongs to`のような1:1のリレーションで動作します。
+{% note warn %}
+**NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
+{% endnote %}
 
 ## Preload All
 
@@ -62,7 +64,7 @@ db.Preload(clause.Associations).Find(&users)
 
 ## Preload with conditions
 
-GORMは条件付きのPreloadが可能です。これは[Inline Conditions](query.html#inline_conditions)と同様に動作します。
+GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
 
 ```go
 // Preload Orders with conditions
@@ -77,7 +79,7 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 
 ## Custom Preloading SQL
 
-`func(db *gorm.DB) *gorm.DB`を渡すことで、SQLのプリロードをカスタマイズできます。例：
+You are able to custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
@@ -89,7 +91,7 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 
 ## Nested Preloading
 
-GORMはネストしたPreloadをサポートしています。例：
+GORM supports nested preloading, for example:
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)

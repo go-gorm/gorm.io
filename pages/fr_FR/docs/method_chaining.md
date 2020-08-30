@@ -77,7 +77,9 @@ tx.Where("age = ?", 28).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
 ```
 
+{% note warn %}
 **NOTE** In example 2, the first query affected the second generated SQL as GORM reused the `Statement`, this might cause unexpected issues, refer [Goroutine Safety](#goroutine_safe) for how to avoid it
+{% endnote %}
 
 ## <span id="goroutine_safe">Method Chain Safety/Goroutine Safety</span>
 

@@ -47,7 +47,9 @@ func (User) TableName() string {
 }
 ```
 
-**ПРИМЕЧАНИЕ** `TableName` не допускает динамическое имя, его результат будет кэшироваться на будущее, для использования динамического имени, вы можете использовать следующий код:
+{% note warn %}
+**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use `Scopes`, for example:
+{% endnote %}
 
 ```go
 func UserTable(user User) func (db *gorm.DB) *gorm.DB {
@@ -65,7 +67,7 @@ DB.Scopes(UserTable(user)).Create(&user)
 
 ### Временно указать имя
 
-Временно указать имя таблицы с помощью метода `Table`, например:
+Temporarily specify table name with `Table` method, for example:
 
 ```go
 // Создать таблицу `deleted_users` с полями struct User
@@ -80,15 +82,15 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-Смотрите [из подзапроса](advanced_query.html#from_subquery) для того, чтобы использовать SubQuery в оговорке
+Check out [From SubQuery](advanced_query.html#from_subquery) for how to use SubQuery in FROM clause
 
 ### <span id="naming_strategy">Стратегия именования</span>
 
-GORM позволяет пользователям изменять стратегию именования по умолчанию, переопределяя стандартную `NamingStrategy`, которая используется для сборки `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Смотрите [Настройки GORM](gorm_config.html#naming_strategy) для подробностей
+GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html#naming_strategy) for details
 
 ## Название столбца
 
-Имя столбца db использует имя поля в формате `snake_case`.
+Column db name uses the field's name's `snake_case` by convention.
 
 ```go
 type User struct {
@@ -99,7 +101,7 @@ type User struct {
 }
 ```
 
-Вы можете переопределить имя столбца с помощью тега `column`, или использовать [`NamingStrategy`](#naming_strategy)
+You can override the column name with tag `column` or use [`NamingStrategy`](#naming_strategy)
 
 ```go
 type Animal struct {
@@ -113,7 +115,7 @@ type Animal struct {
 
 ### CreatedAt
 
-Для моделей, имеющих поле `CreatedAt`, оно будет установлено в текущее время при создании записи, если её значение равно нулю
+For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
 
 ```go
 db.Create(&user) // установить`CreatedAt` в текущее время
@@ -127,7 +129,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-Для моделей, имеющих поле `CreatedAt`, оно будет установлено в текущее время при обновлении или создании записи, если её значение равно нулю
+For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
 
 ```go
 db.Save(&user) // установить `UpdatedAt` в текущее время
@@ -143,4 +145,6 @@ user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
 db.Save(&user3) // `UpdatedAt` будет обновлено в текуще время при обновлении
 ```
 
-**ПРИМЕЧАНИЕ** GORM поддерживает множество полей отслеживания времени, отслеживание с другими полями или отслеживание в UNIX (nano/milli), смотрите [Модели](models.html#time_tracking) для подробностей
+{% note %}
+**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
+{% endnote %}

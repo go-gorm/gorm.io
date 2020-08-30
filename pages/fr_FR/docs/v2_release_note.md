@@ -556,7 +556,9 @@ type User struct {
 }
 ```
 
+{% note warn %}
 **NOTE:** `gorm.Model` is using `gorm.DeletedAt`, if you are embedding it, nothing needs to change
+{% endnote %}
 
 #### BlockGlobalUpdate
 

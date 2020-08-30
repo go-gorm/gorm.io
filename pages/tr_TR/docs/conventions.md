@@ -47,7 +47,9 @@ func (User) TableName() string {
 }
 ```
 
+{% note warn %}
 **NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use `Scopes`, for example:
+{% endnote %}
 
 ```go
 func UserTable(user User) func (db *gorm.DB) *gorm.DB {
@@ -143,4 +145,6 @@ user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
 db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
 ```
 
+{% note %}
 **NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
+{% endnote %}

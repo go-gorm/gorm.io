@@ -49,7 +49,9 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
+{% note warn %}
 **NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is committed, if you return any error in your hooks, the change will be rollbacked
+{% endnote %}
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {

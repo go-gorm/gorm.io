@@ -104,7 +104,9 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
+{% note warn %}
 **NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+{% endnote %}
 
 ```go
 db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)

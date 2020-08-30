@@ -60,7 +60,9 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 })
 ```
 
-**注** `Context`を`WithContext`で設定するのはgoroutine-safeです。 詳細は[Session](session.html)を参照してください。
+{% note %}
+**NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+{% endnote %}
 
 ## Logger
 

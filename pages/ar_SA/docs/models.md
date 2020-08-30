@@ -46,7 +46,9 @@ You can embed it into your struct to include those fields, refer [Embedded Struc
 
 Exported fields have all permission when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
 
+{% note warn %}
 **NOTE** ignored fields won't be created when using GORM Migrator to create table
+{% endnote %}
 
 ```go
 type User struct {

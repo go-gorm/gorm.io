@@ -20,11 +20,9 @@ func main() {
 }
 ```
 
-**注:**
-
-`time.Time` を正しく処理するには、パラメータとして `parseTime` を含める必要があります。 ([more parameters](https://github.com/go-sql-driver/mysql#parameters))
-
-UTF-8 エンコーディングを完全にサポートするには、 `charset=utf8` を `charset=utf8mb4` に変更する必要があります。 詳細な説明は [この記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
+{% note warn %}
+**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+{% endnote %}
 
 MySQLドライバは、初期化中に利用できる [高度な設定](https://github.com/go-gorm/mysql) をいくつか用意しています。例えば、：
 
@@ -137,7 +135,9 @@ import (
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
+{% note warn %}
 **NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+{% endnote %}
 
 ## SQL Server
 

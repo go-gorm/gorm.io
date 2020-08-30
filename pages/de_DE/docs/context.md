@@ -60,7 +60,9 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 })
 ```
 
+{% note %}
 **NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+{% endnote %}
 
 ## Logger
 

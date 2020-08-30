@@ -77,7 +77,9 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 })
 ```
 
+{% note warn %}
 **NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+{% endnote %}
 
 ## <span id="create_from_sql_expr">Create From SQL Expr/Context Valuer</span>
 

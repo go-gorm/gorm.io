@@ -7,7 +7,9 @@ layout: страница
 
 Автоматически переносит вашу схему, чтобы поддерживать обновление вашей схемы.
 
+{% note warn %}
 **NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes, and will change existing column's type if it's size, precision, nullable changed, it **WON'T** delete unused columns to protect your data.
+{% endnote %}
 
 ```go
 db.AutoMigrate(&User{})
@@ -18,7 +20,9 @@ db.AutoMigrate(&User{}, &Product{}, &Order{})
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
-**ПРИМЕЧАНИЕ** AutoMigrate создает ограничения внешних ключей автоматически, вы можете отключить эту функцию во время инициализации, например:
+{% note warn %}
+**NOTE** AutoMigrate creates database foreign key constraints automatically, you can disable this feature during initialization, for example:
+{% endnote %}
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -28,11 +32,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Интерфейс Мигратора
 
-GORM предоставляет интерфейс миграции, который содержит единый интерфейс API для каждой базы данных, которые могут быть использованы для построения независимой от баз данных миграции, например:
+GORM provides migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
 
-SQLite не поддерживает `ALTER COLUMN`, `DROP COLUMN`, GORM создаст новую таблицу аналогичную той, которую вы пытаетесь изменить, скопирует все данные, сбросит старую таблицу, переименовав новую таблицу
+SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table
 
-MySQL не поддерживает переименование столбца, индекса для некоторых версий, GORM будет выполнять разные SQL, основанные на версии MySQL, которую вы используете
+MySQL doesn't support rename column, index for some versions, GORM will perform different SQL based on the MySQL version you are using
 
 ```go
 type Migrator interface {
@@ -73,7 +77,7 @@ type Migrator interface {
 
 ### CurrentDatabase
 
-Возвращает имя текущей используемой базы данных
+Returns current using database name
 
 ```go
 db.Migrator().CurrentDatabase()
@@ -179,15 +183,15 @@ db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 
 ## Ограничения
 
-GORM создает ограничения при автоматическом переносе или создании таблицы, смогтрите [Ограничения](constraints.html) или [Индексы баз данных](indexes.html) для подробностей
+GORM creates constraints when auto migrating or creating table, checkout [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
 
 ## Другие инструменты миграции
 
-GORM AutoMigrate хорошо работает для большинства случаев, но если вы ищете более серьезные инструменты миграции, GORM предоставляет универсальный интерфейс базы данных, который может быть полезным для вас.
+GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-Смотрите [Общий интерфейс](generic_interface.html) для подробностей.
+Refer [Generic Interface](generic_interface.html) for more details.

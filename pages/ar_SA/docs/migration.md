@@ -7,7 +7,9 @@ layout: page
 
 Automatically migrate your schema, to keep your schema update to date.
 
+{% note warn %}
 **NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes, and will change existing column's type if it's size, precision, nullable changed, it **WON'T** delete unused columns to protect your data.
+{% endnote %}
 
 ```go
 // Create table for `User`
@@ -17,7 +19,9 @@ db. CreateTable(&User{})
 db. Set("gorm:table_options", "ENGINE=InnoDB").
 ```
 
+{% note warn %}
 **NOTE** AutoMigrate creates database foreign key constraints automatically, you can disable this feature during initialization, for example:
+{% endnote %}
 
 ```go
 db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{

@@ -51,7 +51,9 @@ type Model struct {
 
 일반적인 필드는 모든 권한을 가지지만 태그를 사용하여 필드의 권한을 read-only, write-only, create-only, update-only 또는 무시하도록 설정할 수 있습니다.
 
-**NOTE** 무시한 필드는 GORM Migrator가 테이블에 추가하지 않습니다
+{% note warn %}
+**NOTE** ignored fields won't be created when using GORM Migrator to create table
+{% endnote %}
 
 ```go
 type User struct {
@@ -68,11 +70,11 @@ type User struct {
 
 ### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
 
-GORM은 `CreatedAt`, `UpdatedAt` 을 사용하여 규칙에 따라 생성/업데이트 시간을 추적하고 정의 된 경우 생성/업데이트시 [현재 시간](gorm_config.html#now_func)이 필드에 입력됩니다.
+GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#now_func) into it when creating/updating if they are defined
 
-다른 이름의 필드를 사용하고 싶다면 `autoCreateTime`, `autoUpdateTime` 태그를 사용하세요.
+To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
 
-만약 UnixTime(milli/nano)를 선호한다면 `time.Time` 대신에 `int`를 사용하세요.
+If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
 
 ```go
 type User struct {
@@ -86,7 +88,7 @@ type User struct {
 
 ### <span id="embedded_struct">Embedded Struct</span>
 
-익명 필드의 경우 GORM은 해당 필드를 상위 구조체에 포함합니다. 예를 들면 다음과 같습니다.
+For anonymous fields, GORM will include its fields into its parent struct, for example:
 
 ```go
 type User struct {
@@ -103,7 +105,7 @@ type User struct {
 }
 ```
 
-일반 구조체 필드의 경우 ` embedded ` 태그를 사용하여 포함할 수 있습니다. 예를 들면 다음과 같습니다.
+For a normal struct field, you can embed it with the tag `embedded`, for example:
 
 ```go
 type Author struct {
@@ -125,7 +127,7 @@ type Blog struct {
 }
 ```
 
-또한 embedPrefix 태그를 사용하여 포함 된 필드의 이름에 접두사를 추가 할 수 있습니다. 예를 들면 다음과 같습니다.
+And you can use tag `embeddedPrefix` to add prefix to embedded fields' db name, for example:
 
 ```go
 type Blog struct {
@@ -145,7 +147,7 @@ type Blog struct {
 
 ### <span id="tags">Fields Tags</span>
 
-태그는 모델을 선언 할 때 사용할 수 있으며 GORM은 다음 태그들을 지원합니다. 태그의 대소문자는 중요하지 않으나 `camelCase `를 권장합니다.
+Tags are optional to use when declaring models, GORM supports the following tags: Tag name case doesn't matter, `camelCase` is preferred to use.
 
 | 태그 이름          | 설명                                                                                                                                                                                                                                                                                                               |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -172,4 +174,4 @@ type Blog struct {
 
 ### Associations Tags
 
-GORM은 설정을 통해 통해 foreign keys, constraints, many2many 테이블을 구성 할 수 있습니다. 자세한 내용은[Associations](associations.html#tags)섹션을 확인하세요.
+GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the [Associations section](associations.html#tags) for details

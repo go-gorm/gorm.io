@@ -33,7 +33,9 @@ db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,
 DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
-**注** GORMはパフォーマンスを向上のためにプリペアードステイトメントをキャッシュできます。詳細は[Performance](performance.html)を参照してください。
+{% note warn %}
+**NOTE** GORM allows cache prepared statement to increase performance, checkout [Performance](performance.html) for details
+{% endnote %}
 
 ## <span id="named_argument">Named Argument</span>
 
