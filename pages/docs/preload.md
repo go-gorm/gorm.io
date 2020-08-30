@@ -42,7 +42,9 @@ db.Joins("Company").Joins("Manager").Joins("Account").First(&user, "users.name =
 db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2,3,4,5})
 ```
 
+{% note warn %}
 **NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
+{% endnote %}
 
 ## Preload All
 
