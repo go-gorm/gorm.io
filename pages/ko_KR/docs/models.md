@@ -86,7 +86,7 @@ type User struct {
 
 ### <span id="embedded_struct">Embedded Struct</span>
 
-For anonymous fields, GORM will include its fields into its parent struct, for example:
+익명 필드의 경우 GORM은 해당 필드를 상위 구조체에 포함합니다. 예를 들면 다음과 같습니다:
 
 ```go
 type User struct {
@@ -166,8 +166,8 @@ type Blog struct {
 | index          | 옵션과 함께 index를 생성합니다. multiple fields creates composite indexes와 같은 이름들을 사용합니다. 자세한 사항은 [Indexes](indexes.html)를 참조하세요.                                                                                                                                                                                           |
 | uniqueIndex    | `index`와 같으나, unique index로 지정함                                                                                                                                                                                                                                                                                  |
 | check          | check constraint를 생성합니다. 예: `check:age > 13`, [Constraints](constraints.html) 를 확인하세요                                                                                                                                                                                                                         |
-| <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no write permission, `<-` create and update permission                                                                                                                                        |
-| ->             | set field's read permission, `->:false` no read permission                                                                                                                                                                                                                                                    |
+| <-             | 필드의 쓰기 권한을 설정합니다. `<-:create` 생성만 가능, `<-:update` 수정만 가능, `<-:false` 쓰기권한 없에기, `<-` 생성/수정 권한                                                                                                                                                                                                         |
+| ->             | 필드의 읽기 권한을 설정합니다, `->:false` 읽기권한 없에기                                                                                                                                                                                                                                                                         |
 | -              | 해당필드 무시                                                                                                                                                                                                                                                                                                          |
 
 ### Associations Tags
