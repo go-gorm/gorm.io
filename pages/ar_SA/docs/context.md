@@ -66,7 +66,9 @@ r. Get("/user", func(w http. Value("DB").(*gorm.DB)
 })
 ```
 
+{% note %}
 **NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+{% endnote %}
 
 ## Logger
 
