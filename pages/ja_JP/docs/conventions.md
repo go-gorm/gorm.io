@@ -47,7 +47,9 @@ func (User) TableName() string {
 }
 ```
 
+{% note warn %}
 **NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use `Scopes`, for example:
+{% endnote %}
 
 ```go
 func UserTable(user User) func (db *gorm.DB) *gorm.DB {
@@ -65,7 +67,7 @@ DB.Scopes(UserTable(user)).Create(&user)
 
 ### Temporarily specify a name
 
-`Table`メソッドで一時的にテーブル名を指定できます。例：
+Temporarily specify table name with `Table` method, for example:
 
 ```go
 // Create table `deleted_users` with struct User's fields
@@ -80,7 +82,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-FROM句でサブクエリを使用する方法については、 [From SubQuery](advanced_query.html#from_subquery) を参照してください。
+Check out [From SubQuery](advanced_query.html#from_subquery) for how to use SubQuery in FROM clause
 
 ### <span id="naming_strategy">NamingStrategy</span>
 
@@ -88,7 +90,7 @@ GORM allows users change the default naming conventions by overriding the defaul
 
 ## Column Name
 
-規約によって、データベースのカラム名はフィールドの名前の`snake_case`を使用します。
+Column db name uses the field's name's `snake_case` by convention.
 
 ```go
 type User struct {
@@ -113,7 +115,7 @@ type Animal struct {
 
 ### CreatedAt
 
-`CreatedAt`フィールドを持つモデルの場合、値がゼロ値であり、レコードが最初に作成されたとき、フィールドは現在時刻に設定されます
+For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
 
 ```go
 db.Create(&user) // set `CreatedAt` to current time
@@ -127,7 +129,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-`UpdatedAt`フィールドを持つモデルの場合、値がゼロ値であり、レコードが更新または作成されると、フィールドは現在時刻に設定されます。
+For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
 
 ```go
 db.Save(&user) // set `UpdatedAt` to current time
@@ -143,4 +145,6 @@ user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
 db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
 ```
 
+{% note %}
 **NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
+{% endnote %}
