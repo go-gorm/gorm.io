@@ -18,7 +18,7 @@ layout: page
 * Composite Primary Key, Indexes, Constraints
 * Auto Migrations
 * Logger
-* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
+* 확장 가능하고 유연한 플러그인 API: Database Resolver (다중 데이터베이스, 읽기 / 쓰기 분할) / Prometheus...
 * 모든 기능들은 테스트와 함께 제공됩니다
 * 개발자 친화적
 
