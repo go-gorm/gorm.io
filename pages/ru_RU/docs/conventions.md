@@ -17,7 +17,7 @@ type User struct {
 Вы можете установить другие поля в качестве первичного ключа при помощи тега `primaryKey`
 
 ```go
-// Установить поле `AnimalID` в качестве первичного ключа
+// Set field `UUID` as primary field
 type Animal struct {
   ID     int64
   UUID   string `gorm:"primaryKey"`
