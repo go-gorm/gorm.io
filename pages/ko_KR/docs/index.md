@@ -3,11 +3,11 @@ title: GORM Guides
 layout: page
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+개발자 친화적인 것을 목표로 하는 Go언어 ORM 라이브러리
 
-## Overview
+## 개요
 
-* Full-Featured ORM
+* 완전한 기능을 가진 ORM
 * Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
 * Hooks (Before/After Create/Save/Update/Delete/Find)
 * Eager loading with `Preload`, `Joins`
@@ -19,8 +19,8 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * Auto Migrations
 * Logger
 * Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
-* Every feature comes with tests
-* Developer Friendly
+* 모든 기능들은 테스트와 함께 제공됩니다
+* 개발자 친화적
 
 ## 설치
 
@@ -29,7 +29,7 @@ go get -u gorm.io/gorm
 go get -u gorm.io/driver/sqlite
 ```
 
-## Quick Start
+## 빠르게 시작하기
 
 ```go
 package main
