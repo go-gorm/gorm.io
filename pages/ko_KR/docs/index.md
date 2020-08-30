@@ -1,5 +1,5 @@
 ---
-title: GORM Guides
+title: GORM Guide
 layout: page
 ---
 
@@ -10,7 +10,7 @@ layout: page
 * 완전한 기능을 가진 ORM
 * Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
 * Hooks (Before/After Create/Save/Update/Delete/Find)
-* Eager loading with `Preload`, `Joins`
+* `Preload`, `Joins`를 통한 데이터 가져오기
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
 * Context, Prepared Statment Mode, DryRun Mode
 * Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
