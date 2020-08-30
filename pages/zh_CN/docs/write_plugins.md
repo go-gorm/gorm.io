@@ -9,19 +9,19 @@ GORM 自身也是基于 `Callbacks` 的，包括 `Create`、`Query`、`Update`�
 
 回调会注册到全局 `*gorm.DB`，而不是会话级别。如果您想要 `*gorm.DB` 具有不同的回调，您需要初始化另一个 `*gorm.DB`
 
-### 注册回调
+### 注册 Callback
 
-注册回调至 callbacks
+注册 callback 至 callbacks
 
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // crop image fields and upload them to CDN, dummy code
+    // 伪代码：裁剪图片并上传至 CDN
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
-          // Get value from field
+          // 从字段获取值
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -29,39 +29,39 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        // Get value from field
+        // 从字段获取值
         if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
 
-        // Set value to field
+        // 设置字段值
         err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
-    // All fields for current model
+    // 当前 Model 的所有字段
     db.Statement.Schema.Fields
 
-    // All primary key fields for current model
+    // 当前 Model 的所有主键字段
     db.Statement.Schema.PrimaryFields
 
-    // Prioritized primary key field: field with DB name `id` or the first defined primary key
+    // 优先主键字段：带有 db 名为 `id` 或定义的第一个主键字段。
     db.Statement.Schema.PrioritizedPrimaryField
 
-    // All relationships for current model
+    // 当前 Model 的所有关系
     db.Statement.Schema.Relationships
 
-    // Find field with field name or db name
+    // 根据 db 名或字段名查找字段
     field := db.Statement.Schema.LookUpField("Name")
 
-    // processing
+    // 处理...
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// register a callback for Create process
+// 为 Create 流程注册一个 callback
 ```
 
 ### 删除回调
