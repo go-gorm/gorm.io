@@ -1,5 +1,5 @@
 ---
-title: Customize Data Types
+title: 自定义数据类型
 layout: page
 ---
 
