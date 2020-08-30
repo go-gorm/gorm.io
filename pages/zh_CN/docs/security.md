@@ -5,11 +5,13 @@ layout: page
 
 GORM 使用 `database/sql` 的参数占位符来构造 SQL 语句，这可以自动转义参数，避免 SQL 注入数据
 
-**注意** Logger 打印的 SQL 并不像最终执行的 SQL 那样已经转义，复制和运行这些 SQL 时应当注意。
+{% note warn %}
+**NOTE** The SQL from Logger is not fully escaped like the one executed, be careful when copying and executing it in SQL console
+{% endnote %}
 
 ## 查询条件
 
-用户的输入只能作为参数，例如：
+User's input should be only used as an argument, for example:
 
 ```go
 userInput := "jinzhu;drop table users;"
@@ -33,7 +35,7 @@ db..First(&user, fmt.Sprintf("name = %v", userInput))
 
 ## SQL 注入方法
 
-为了支持某些功能，一些输入不会被转义，调用方法时要小心用户输入的参数。
+To support some features, some inputs are not escaped, be careful when using user's input with those methods
 
 ```go
 db.Select("name; drop table users;").First(&user)
@@ -50,4 +52,4 @@ db.Raw("select name from users; drop table users;").First(&user)
 db.Exec("select name from users; drop table users;")
 ```
 
-避免 SQL 注入的一般原则是，不信任用户提交的数据。您可以进行白名单验证来测试用户的输入是否为已知安全的、已批准、已定义的输入，并且在使用用户的输入时，仅将它们作为参数。
+The general rule to avoid SQL injection is don't trust user-submitted data, you can perform whitelist validation to test user input against an existing set of known, approved, and defined input, and when using user's input, only use them as an argument.
