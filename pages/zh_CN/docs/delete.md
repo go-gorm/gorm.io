@@ -3,23 +3,23 @@ title: 删除
 layout: page
 ---
 
-## Delete a Record
+## 删除一条记录
 
-When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
+删除一条记录时，删除对象需要指定主键，否则会触发 [批量 Delete](#batch_delete)，例如：
 
 ```go
-// Email's ID is `10`
+// Email 的 ID 是 `10`
 db.Delete(&email)
 // DELETE from emails where id = 10;
 
-// Delete with additional conditions
+// 带额外条件的删除
 db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
-## Delete with primary key
+## 根据主键删除
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out check out [Query Inline Conditions](query.thml#inline_conditions) for details
+GORM 允许使用内联条件指定删除对象的主键，但只支持整形主键，查看 [查询内联条件](query.thml#inline_conditions) 获取详情。
 
 ```go
 db.Delete(&User{}, 10)
@@ -32,9 +32,9 @@ db.Delete(&users, []int{1,2,3})
 // DELETE FROM users WHERE id IN (1,2,3);
 ```
 
-## Delete Hooks
+## Delete Hook
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+对于删除操作，GORM 支持 `BeforeDelete`、`AfterDelete` Hook，在删除记录时会调用这些方法，查看 [Hook](hooks.html) 获取详情
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -45,9 +45,9 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_delete">Batch Delete</span>
+## <span id="batch_delete">批量删除</span>
 
-The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
+如果指定的值不包括主属性，那么 GORM 会执行批量删除，它将删除所有匹配的记录
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -59,9 +59,9 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ### 阻止全局删除
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
+如果在没有任何条件的情况下执行批量删除，GORM 不会执行该操作，并返回 `ErrMissingWhereClause ` 错误
 
-You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+对此，你必须加一些条件，或者使用原生 SQL，或者启用 `AllowGlobalUpdate` 模式，例如：
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -76,27 +76,27 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-## Soft Delete
+## 软删除
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+如果您的模型包含了一个 `gorm.deletedat` 字段（`gorm.Model` 已经包含了该字段)，它将自动获得软删除的能力！
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+拥有软删除能力的模型调用 `Delete` 时，记录不会被从数据库中真正删除。但 GORM 会将 `DeletedAt` 置为当前时间， 并且你不能再通过正常的查询方法找到该记录。
 
 ```go
-// user's ID is `111`
+// user 的 ID 是 `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// 批量删除
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when querying
+// 在查询时会忽略被软删除的记录
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+如果您不想引入 `gorm.Model`，您也可以这样启用软删除特性：
 
 ```go
 type User struct {
@@ -108,7 +108,7 @@ type User struct {
 
 ### 查找被软删除的记录
 
-You can find soft deleted records with `Unscoped`
+您可以使用 `Unscoped` 找到被软删除的记录
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
@@ -117,7 +117,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ### 永久删除
 
-You can delete matched records permanently with `Unscoped`
+您也可以使用 `Unscoped` 永久删除匹配的记录
 
 ```go
 db.Unscoped().Delete(&order)
