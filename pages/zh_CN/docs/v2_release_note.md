@@ -11,7 +11,7 @@ GORM 2.0 完全从零开始，引入了一些不兼容的 API 变更和许多改
 * 代码模块化
 * Context，批量插入，预编译模式，DryRun 模式，Join 预加载，Find To Map，Create From Map，FindInBatches
 * 支持嵌套事务，SavePoint，Rollback To SavePoint
-* SQL 生成器，命名参数，分组条件，Upsert，锁， 支持 Optimizer/Index/Comment Hint，子查询改进，使用SQL表达式、Content Valuer 进行 CRUD
+* SQL 生成器，命名参数，分组条件，Upsert，锁， 支持 Optimizer/Index/Comment Hint，子查询改进，使用SQL表达式、Context Valuer 进行 CRUD
 * 支持完整的自引用，改进 Join Table，批量数据的关联模式
 * 允许多个字段用于追踪 create、update 时间 ，支持 UNIX （毫/纳）秒
 * 支持字段权限：只读、只写、只创建、只更新、忽略
@@ -295,7 +295,7 @@ DB.Clauses(hints.Comment("select", "master")).Find(&User{})
 
 查看 [Hint](hints.html) 获取详情
 
-#### 使用 SQL 表达式、Content Valuer 进行 CRUD
+#### 使用 SQL 表达式、Context Valuer 进行 CRUD
 
 ```go
 type Location struct {
