@@ -5,7 +5,9 @@ layout: page
 
 GORM uses the `database/sql`'s argument placeholders to construct the SQL statement, which will automatically escape arguments to avoid SQL injection
 
+{% note warn %}
 **NOTE** The SQL from Logger is not fully escaped like the one executed, be careful when copying and executing it in SQL console
+{% endnote %}
 
 ## Query Condition
 
