@@ -155,7 +155,7 @@ DB.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-You can also create/update with SQL Expr from map, checkout [Create From SQL Expr](create.html#create_from_sql_expr) and [Update with SQL Expression](update.html#update_from_sql_expr) for details
+你也可以根据 SQL 表达式进行 create/update，查看 [Create From SQL Expr](create.html#create_from_sql_expr) 和 [Update with SQL Expression](update.html#update_from_sql_expr) 获取详情
 
 #### 基于 Context 的值
 
@@ -179,7 +179,7 @@ func (es EncryptedString) GormValue(ctx context.Context, db *gorm.DB) (expr clau
 
 ### 条件表达式
 
-If you want to build some query helpers, you can make a struct that implements the `clause.Expression` interface:
+如果你想构建一些查询 helper，你可以让 struct 实现 `clause.Expression` 接口：
 
 ```go
 type Expression interface {
@@ -187,10 +187,10 @@ type Expression interface {
 }
 ```
 
-Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) and [SQL Builder](sql_builder.html#clauses) for details, the following is an example of usage:
+查看 [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) 和 [SQL Builder](sql_builder.html#clauses) 获取详情，下面是一个示例：
 
 ```go
-// Generates SQL with clause Expression
+// 根据 Clause Expression 生成 SQL
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("role"))
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 
@@ -212,4 +212,4 @@ db.Find(&user, datatypes.JSONQuery("attributes").Equals("jinzhu", "name"))
 
 ## 自定义数据类型集合
 
-We created a Github repo for customized data types collections [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), pull request welcome ;)
+我们创建了一个 Github 仓库，用于收集各种自定义数据类型[https://github.com/go-gorm/datatype](https://github.com/go-gorm/datatypes)，非常欢迎同学们的 pull request ;)
