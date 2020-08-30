@@ -1,39 +1,39 @@
 ---
-title: Create
+title: 생성
 layout: page
 ---
 
-## Create Record
+## 레코드 생성
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // pass pointer of data to Create
+result := db.Create(&user) // 생성할 데이터의 포인터 넘기기
 
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+user.ID             // 입력된 데이터의 primary key를 반환합니다
+result.Error        // 에러를 반환합니다
+result.RowsAffected // 입력된 레코드의 개수를 반환합니다.
 ```
 
-## Create With Selected Fields
+## Selected Fields를 이용하여 생성
 
-Create with selected fields
+Selected Fields를 이용하여 생성
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create without selected fields
+Selected Fields없이 생성
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## Create Hooks
+## Hooks 생성하기
 
-GORM allows hooks `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`, those methods will be called when creating a record, refer [Hooks](hooks.html) for details
+GORM은 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` Hooks를 허용합니다. 해당 메서드는 레코드를 만들 때 호출됩니다. 자세한 내용은 [Hooks](hooks.html)를 참조하십시오.
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -46,9 +46,9 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_insert">Batch Insert</span>
+## <span id="batch_insert">일괄 삽입</span>
 
-Pass slice data to method `Create`, GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+Create 메서드에 슬라이스 데이터를 전달하면 GORM은 모든 데이터를 삽입하고 기본 키를 채우기위한 단일 SQL 문을 생성하며, Hooks 메서드또한 호출됩니다.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -59,27 +59,27 @@ for _, user := range users {
 }
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+일괄 삽입은 [Upsert](#upsert) 및 [Create With Associations](#create_with_associations)에도 지원됩니다.
 
-## Create From Map
+## Map으로 생성하기
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORM은 `map[string]interface{}` 및 `[]map[string]interface{}{}` 을 이용하여 레코드를 생성하는것을 지원합니다. 예시:
 
 ```go
 DB.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// batch insert from `[]map[string]interface{}{}`
+// `[]map[string]interface{}{}` 를 이용한 일괄 삽입
 DB.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
 })
 ```
 
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**NOTE** Map를 이용하여 생성하면 Hooks가 호출되지 않으며, 연결이 저장되지 않고, 기본키가 채워지지 않습니다.
 
-## <span id="create_from_sql_expr">Create From SQL Expr/Context Valuer</span>
+## <span id="create_from_sql_expr">SQL Expr/Context Valuer로 생성</span>
 
 GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
 
