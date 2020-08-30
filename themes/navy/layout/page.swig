@@ -19,8 +19,8 @@
 
               {% if page.path.match("doc") %}
               <div>
-                <a href="v2_release_note.html">
-                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=V2 Release Note&color=red&&style=for-the-badge&logo=go&logoColor=%23FFF">
+                <a href="v2_release_note.html" target="_blank">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Latest GORM Release&color=red&&style=for-the-badge&logo=go&logoColor=red">
                 </a>
               </div>
               {% endif %}
