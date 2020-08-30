@@ -17,7 +17,7 @@ type User struct {
 You can set other fields as primary key with tag `primaryKey`
 
 ```go
-// Set field `AnimalID` as primary field
+// Set field `UUID` as primary field
 type Animal struct {
   ID     int64
   UUID   string `gorm:"primaryKey"`
