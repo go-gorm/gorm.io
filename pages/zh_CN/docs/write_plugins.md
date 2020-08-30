@@ -64,7 +64,7 @@ db.Callback().Create().Register("crop_image", cropImage)
 // 为 Create 流程注册一个 callback
 ```
 
-### 删除回调
+### 删除 Callback
 
 从 callbacks 中删除回调
 
@@ -73,7 +73,7 @@ db.Callback().Create().Remove("gorm:create")
 // 从 Create 的 callbacks 中删除 `gorm:create`
 ```
 
-### 替换回调
+### 替换 Callback
 
 用一个新的回调替换已有的同名回调
 
@@ -82,43 +82,43 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 // 用新函数 `newCreateFunction` 替换 Create 流程目前的 `gorm:create`
 ```
 
-### 注册带顺序的回调
+### 注册带顺序的 Callback
 
-注册带顺序的回调
+注册带顺序的 Callback
 
 ```go
-// before gorm:create
+// gorm:create 之前
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
 
-// after gorm:create
+// gorm:create 之后
 db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
 
-// before gorm:query
+// gorm:query 之前
 db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
 
-// after gorm:delete
+// gorm:delete 之后
 db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
 
-// before gorm:update
+// gorm:update 之前
 db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
 
-// before gorm:create and after gorm:before_create
+// 位于 gorm:before_create 之后 gorm:create 之前
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 
-// before any other callbacks
+// 所有其它 callback 之前
 db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
 
-// after any other callbacks
+// 所有其它 callback 之后
 db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
-### 预定义回调
+### 预定义 Callback
 
-GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to power current GORM features, check them out before starting your plugins
+GORM 已经定义了 [一些 callback](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) 来支持当前的 GORM 功能，在启动您的插件之前可以先看看这些 callback
 
 ## 插件
 
-GORM provides a `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
+GORM 提供了 `Use` 方法来注册插件，插件需要实现 `Plugin` 接口
 
 ```go
 type Plugin interface {
