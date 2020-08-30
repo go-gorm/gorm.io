@@ -86,7 +86,7 @@ type User struct {
 
 ### <span id="embedded_struct">Embedded Struct</span>
 
-익명 필드의 경우 GORM은 해당 필드를 상위 구조체에 포함합니다. 예를 들면 다음과 같습니다:
+익명 필드의 경우 GORM은 해당 필드를 상위 구조체에 포함합니다. 예를 들면 다음과 같습니다.
 
 ```go
 type User struct {
@@ -103,7 +103,7 @@ type User struct {
 }
 ```
 
-For a normal struct field, you can embed it with the tag `embedded`, for example:
+일반 구조체 필드의 경우 ` embedded ` 태그를 사용하여 포함할 수 있습니다. 예를 들면 다음과 같습니다.
 
 ```go
 type Author struct {
@@ -125,7 +125,7 @@ type Blog struct {
 }
 ```
 
-And you can use tag `embeddedPrefix` to add prefix to embedded fields' db name, for example:
+또한 embedPrefix 태그를 사용하여 포함 된 필드의 이름에 접두사를 추가 할 수 있습니다. 예를 들면 다음과 같습니다.
 
 ```go
 type Blog struct {
@@ -155,14 +155,14 @@ type Blog struct {
 | primaryKey     | column을 primary key로 지정                                                                                                                                                                                                                                                                                          |
 | unique         | column을 unique로 지정                                                                                                                                                                                                                                                                                               |
 | default        | column의 기본값 지정                                                                                                                                                                                                                                                                                                   |
-| precision      | specifies column precision                                                                                                                                                                                                                                                                                       |
-| scale          | specifies column scale                                                                                                                                                                                                                                                                                           |
+| precision      | column 자릿수 설정                                                                                                                                                                                                                                                                                                    |
+| scale          | column 크기 지정                                                                                                                                                                                                                                                                                                     |
 | not null       | column을 NOT NULL로 지정                                                                                                                                                                                                                                                                                             |
 | autoIncrement  | column을 auto incrementable로 지정                                                                                                                                                                                                                                                                                   |
-| embedded       | embed the field                                                                                                                                                                                                                                                                                                  |
-| embeddedPrefix | column name prefix for embedded fields                                                                                                                                                                                                                                                                           |
-| autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                                                                                                            |
-| autoUpdateTime | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                                                                                                  |
+| embedded       | embed the field (상단 내용 참고)                                                                                                                                                                                                                                                                                       |
+| embeddedPrefix | embedded field에 prefix 추가                                                                                                                                                                                                                                                                                        |
+| autoCreateTime | 필드 생성 시간을 기록합니다. 만약 타입이 `int`일 경우에는 UnixTime을 `nano` 또는 `milli`로 지정할 수 있습니다. 예: `autoCreateTime:nano`                                                                                                                                                                                                            |
+| autoUpdateTime | 필드 수정 시간을 기록합니다. 만약 타입이 `int`일 경우에는 UnixTime을 `nano` 또는 `milli`로 지정할 수 있습니다. 예: `autoCreateTime:nano`                                                                                                                                                                                                            |
 | index          | 옵션과 함께 index를 생성합니다. multiple fields creates composite indexes와 같은 이름들을 사용합니다. 자세한 사항은 [Indexes](indexes.html)를 참조하세요.                                                                                                                                                                                           |
 | uniqueIndex    | `index`와 같으나, unique index로 지정함                                                                                                                                                                                                                                                                                  |
 | check          | check constraint를 생성합니다. 예: `check:age > 13`, [Constraints](constraints.html) 를 확인하세요                                                                                                                                                                                                                         |
