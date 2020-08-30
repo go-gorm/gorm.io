@@ -19,7 +19,9 @@ sqlDB.Close()
 sqlDB.Stats()
 ```
 
-**ПРИМЕЧАНИЕ** Если соединение с базой данных не является `*sql.DB`, как в транзакции, возвращается ошибка
+{% note warn %}
+**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns error
+{% endnote %}
 
 ## Пул подключений
 
