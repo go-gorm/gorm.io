@@ -3,11 +3,11 @@ title: Scopes
 layout: page
 ---
 
-Scopes allow you to re-use commonly logic, the shared logic needs to defined as type `func(*gorm.DB) *gorm.DB`
+Scopes 使你可以复用通用的逻辑，共享的逻辑需要定义为 `func(*gorm.DB) *gorm.DB` 类型
 
 ## 查询
 
-Scope examples for querying
+Scope 查询示例：
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -38,7 +38,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // 查找所有金额大于1000 的已付款或已发货订单
 ```
 
-### <span id="pagination">Pagination</span>
+### <span id="pagination">分页</span>
 
 ```go
 func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
@@ -65,9 +65,9 @@ db.Scopes(Paginate(r)).Find(&users)
 db.Scopes(Paginate(r)).Find(&articles)
 ```
 
-## Updates
+## 更新
 
-Scope examples for updating/deleting
+Scope 更新、删除示例：
 
 ```go
 func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {
