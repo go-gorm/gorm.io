@@ -42,7 +42,9 @@ db.Joins("Company").Joins("Manager").Joins("Account").First(&user, "users.name =
 db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2,3,4,5})
 ```
 
-**ПРИМЕЧАНИЕ** `Join Preload` работает со связями один к одному, например: `has one`, `belongs to`
+{% note warn %}
+**NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
+{% endnote %}
 
 ## Предзагрузить все
 
@@ -62,7 +64,7 @@ db.Preload(clause.Associations).Find(&users)
 
 ## Предзагрузка с условиями
 
-GORM позволяет предварительно загрузить связи с условиями, это работает аналогично [Строчным Условиям](query.html#inline_conditions)
+GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
 
 ```go
 // Предзагрузка заказов Orders с условиями
@@ -77,7 +79,7 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 
 ## Пользовательский SQL
 
-Вы можете самостоятельно загрузить SQL, передав `func(db *gorm.DB) *gorm.DB`, например:
+You are able to custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
@@ -89,7 +91,7 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 
 ## Вложенная предварительная загрузка
 
-GORM поддерживает вложенную предварительную загрузку, например:
+GORM supports nested preloading, for example:
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)
