@@ -49,7 +49,9 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-**ПРИМЕЧАНИЕ** По умолчанию в GORM операции сохранения/удаления выполняются в транзакции, так что изменения, внесенные в эту транзакцию, не будут видны до тех пор, пока она не будет сохранена транзакция, если вы вернете ошибку в хуках, транзакция откатиться
+{% note warn %}
+**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is committed, if you return any error in your hooks, the change will be rollbacked
+{% endnote %}
 
 ```go
 func (u *User) AfterCreate(tx *gorm.DB) (err error) {
@@ -62,7 +64,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 
 ### Обновление объекта
 
-Доступные хуки для обновления
+Available hooks for updating
 
 ```go
 // начинаем транзакцию
@@ -97,7 +99,7 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 
 ### Удаление объекта
 
-Доступные хуки для удаления
+Available hooks for deleting
 
 ```go
 // начинаем транзакцию
@@ -121,7 +123,7 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 
 ### Запрос объекта
 
-Доступные хуки для выборки
+Available hooks for querying
 
 ```go
 // загрузка данных из базы данных
@@ -129,7 +131,7 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 AfterFind
 ```
 
-Пример кода:
+Code Example:
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
