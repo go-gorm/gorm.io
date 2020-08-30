@@ -22,7 +22,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * Every feature comes with tests
 * Developer Friendly
 
-## Install
+## 설치
 
 ```sh
 go get -u gorm.io/gorm
