@@ -33,7 +33,7 @@ GORM 2.0은 처음부터 다시 작성되었으며 일부 호환되지 않는 AP
 * `gorm.Open`가 `gorm.DB`대신 `*gorm.DB`를 반환합니다
 * 업데이트하면 변경된 필드 만 업데이트됩니다
 * Soft Delete는 `deleted_at IS NULL`인지만 확인합니다
-* New ToDBName logic Common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` was converted to lowercase, so `HTTP`'s db name is `http`, but not `h_t_t_p`, but for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it to `sku`
+* 새로운 ToDBName 로직 GO린터의 일반적인 이니셜 `HTTP`, `URI`들이 소문자로 변경됨. 따라서 `HTTP`의 db이름은 `http`로 변경됨 ( `h_t_t_p` 아님). 하지만 목록에 없는 몇몇 이니셜 `SKU`같은건 `s_k_u`였으나, `sku`로 변경됨
 * RecordNotFound가 ErrRecordNotFound로 이름이 변경되었습니다
 * `mssql` 의 이름이 `github.com/jinzhu/gorm/dialects/mssql` 로 변경되었습니다
 * `Hstore` 가 `github.com/jinzhu/gorm/dialects/postgres` 패키지로 이동되었습니다
