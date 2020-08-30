@@ -17,7 +17,7 @@ type User struct {
 你可以通过标签 `primaryKey` 将其它字段设为主键
 
 ```go
-// 将 `AnimalID` 设为主键
+// Set field `UUID` as primary field
 type Animal struct {
   ID     int64
   UUID   string `gorm:"primaryKey"`
