@@ -5,9 +5,9 @@ layout: page
 
 ## Declaring Models
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+모델은 기본 Go 유형, 포인터 / 별칭 또는 [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) 및 [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) 인터페이스를 구현하는 사용자 정의 유형이있는 일반 구조체입니다.
 
-For Example:
+예를 들면 다음과 같습니다:
 
 ```go
 type User struct {
@@ -25,13 +25,13 @@ type User struct {
 
 ## Conventions
 
-GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+GORM은 구성보다 규칙을 선호합니다. 기본적으로 GORM은 `ID`를 기본 키로 사용하고, 구조체/변수 이름을 `snake_cases`화 한것을 테이블/열 이름으로 사용하고, `CreatedAt`, `UpdatedAt`을 사용하여 생성 / 업데이트 시간을 추적합니다.
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code, If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+GORM에서 사용하는 규칙을 따르는 경우 구성/코드를 거의 작성하지 않아도됩니다. 규칙이 마음에 들지 않으면 [원하는 데로 구성할 수도 있습니다 ](conventions.html).
 
 ## gorm.Model
 
-GORM defined a `gorm.Model` struct, which includes fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
+GORM은 `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` 필드를 포함하는 `gorm.Model` 구조체를 정의합니다.
 
 ```go
 // gorm.Model definition
@@ -43,26 +43,26 @@ type Model struct {
 }
 ```
 
-You can embed it into your struct to include those fields, refer [Embedded Struct](#embedded_struct)
+해당 필드를 포함하도록 구조체를 만들 할 수 있습니다. [Embedded Struct를 참조하세요.](#embedded_struct)
 
 ## Advanced
 
 ### Field-Level Permission
 
-Exported fields have all permission when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
+일반적인 필드는 모든 권한을 가지지만 태그를 사용하여 필드의 권한을 read-only, write-only, create-only, update-only 또는 무시하도록 설정할 수 있습니다.
 
-**NOTE** ignored fields won't be created when using GORM Migrator to create table
+**NOTE** 무시한 필드는 GORM Migrator가 테이블에 추가하지 않습니다
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
-  Name string `gorm:"->;<-:create"` // allow read and create
-  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`  // ignore this field when write and read
+  Name string `gorm:"<-:create"` // 읽기/생성 허용
+  Name string `gorm:"<-:update"` // 읽기/수정 허용
+  Name string `gorm:"<-"`        // 읽기/쓰기 허용 생성 및 수정)
+  Name string `gorm:"<-:false"`  // 읽기전용, 쓰기 불가능
+  Name string `gorm:"->"`        // 읽기허용 (설정되지 않은경우 쓰기 불가능)
+  Name string `gorm:"->;<-:create"` //읽기/생성 허용
+  Name string `gorm:"->:false;<-:create"` // 생성만 가능 (읽기 불가능)
+  Name string `gorm:"-"`  // gorm 에서 이 필드 무시
 }
 ```
 
