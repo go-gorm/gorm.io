@@ -20,11 +20,9 @@ func main() {
 }
 ```
 
-**ПРИМЕЧАНИЕ:**
-
-Для корректной обработки `time.Time`, вам нужно включить `parseTime` в качестве параметра. ([больше параметров](https://github.com/go-sql-driver/mysql#parameters))
-
-Чтобы полностью поддерживать кодировку UTF-8, необходимо изменить `charset=utf8` на `charset=utf8mb4`. Смотрите [эту статью](https://mathiasbynens.be/notes/mysql-utf8mb4) для подробностей
+{% note warn %}
+**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+{% endnote %}
 
 MySQl Driver предоставляет [несколько расширенных настроек](https://github.com/go-gorm/mysql), которые можно использовать при инициализации, например:
 
@@ -137,7 +135,9 @@ import (
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
-**ПРИМЕЧАНИЕ:** Вы также можете использовать `file::memory:?cache=shared` вместо пути к файлу. Это позволит SQLite использовать временную базу данных в системной памяти. (Смотрите [SQLite документацию](https://www.sqlite.org/inmemorydb.html) для подробностей)
+{% note warn %}
+**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+{% endnote %}
 
 ## SQL Server
 
@@ -154,7 +154,7 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## Пул подключений
 
-GORM использует \[database/sql\]((https://pkg.go.dev/database/sql) для поддержки пула подключения
+GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
 
 ```go
 sqlDB, err := db.DB()
@@ -169,10 +169,10 @@ sqlDB.SetMaxOpenConns(100)
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Смотрите [Общий интерфейс](generic_interface.html) для подробностей
+Refer [Generic Interface](generic_interface.html) for details
 
 ## Неподдерживаемые базы данных
 
-Некоторые базы данных могут быть совместимы с `mysql` или `postgres` диалектами, в этом случае можно просто использовать диалект для этих баз данных.
+Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
-Для других, [вам предлагается сделать драйвер, pull request приветствуется!](write_driver.html)
+For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
