@@ -77,11 +77,13 @@ tx.Where("age = ?", 28).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
 ```
 
-**ПРИМЕЧАНИЕ** В примере 2, первый запрос повлиял на второй сгенерированный SQL, так как GORM повторно использовал `Экземпляр`, это может вызвать непредвиденные проблемы, смотрите [Гороутинная Безопасность](#goroutine_safe) для того, чтобы избежать этого
+{% note warn %}
+**NOTE** In example 2, the first query affected the second generated SQL as GORM reused the `Statement`, this might cause unexpected issues, refer [Goroutine Safety](#goroutine_safe) for how to avoid it
+{% endnote %}
 
 ## <span id="goroutine_safe">Method Chain Safety/Goroutine Safety</span>
 
-Методы создадут новый `Экземпляр` при новой инициализации `*gorm. B` или после `Метода новой сессии`, поэтому для повторного использования `*gorm. B`, вам нужно убедиться, что они находятся в `Методе новой сессии`, например:
+Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB`, you need to make sure they are under `New Session Mode`, for example:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
