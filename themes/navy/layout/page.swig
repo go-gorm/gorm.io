@@ -17,9 +17,9 @@
                 {{ page_anchor(page.content) }}
               </div>
 
-              {% if page.path.substring(0,3) == "doc" %}
+              {% if page.path.match("doc") %}
               <div>
-                <a href="/docs/v2_release_note.html">
+                <a href="v2_release_note.html">
                   <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=V2 Release Note&color=red&&style=for-the-badge&logo=go&logoColor=%23FFF">
                 </a>
               </div>
