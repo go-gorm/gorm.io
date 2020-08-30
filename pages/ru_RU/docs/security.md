@@ -5,11 +5,13 @@ layout: страница
 
 GORM использует плейсхолдеры аргументов `database/sql`для построения запросов SQL, которые автоматически экранирует аргументы во избежание инъекции SQL
 
-**ПРИМЕЧАНИЕ** SQL в Logger экранируется не полностью, как тот, который выполняется, будьте осторожны при копировании и выполнении SQL запросов из Logger
+{% note warn %}
+**NOTE** The SQL from Logger is not fully escaped like the one executed, be careful when copying and executing it in SQL console
+{% endnote %}
 
 ## Условие запроса
 
-Переданные пользователем значения должны использоваться только в качестве аргумента, например:
+User's input should be only used as an argument, for example:
 
 ```go
 userInput := "jinzhu;drop table users;"
@@ -33,7 +35,7 @@ db..First(&user, fmt.Sprintf("name = %v", userInput))
 
 ## Методы SQL инъекции
 
-Для поддержки некоторых функций, некоторые входные параметры не экранируются, будьте осторожны при использовании пользовательского ввода этими методами
+To support some features, some inputs are not escaped, be careful when using user's input with those methods
 
 ```go
 db.Select("name; drop table users;").First(&user)
@@ -50,4 +52,4 @@ db.Raw("select name from users; drop table users;").First(&user)
 db.Exec("select name from users; drop table users;")
 ```
 
-Общее правило, чтобы избежать инъекции SQL, не доверяйте пользовательским данным, вы можете выполнить проверку по белому списку для проверки входных данных пользователя в существующем наборе известных утверждений, при использовании пользовательских данных ввода, используйте их только в качестве аргумента.
+The general rule to avoid SQL injection is don't trust user-submitted data, you can perform whitelist validation to test user input against an existing set of known, approved, and defined input, and when using user's input, only use them as an argument.
