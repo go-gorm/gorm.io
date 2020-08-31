@@ -557,12 +557,12 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE:** `gorm.Model` is using `gorm.DeletedAt`, if you are embedding it, nothing needs to change
+**注意：** `gorm.Model` 使用了 `gorm.DeletedAt`，如果你已经嵌入了它，则不需要做什么修改
 {% endnote %}
 
 #### BlockGlobalUpdate
 
-GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+GORM V2 默认启用了 `BlockGlobalUpdate` 模式。想要触发全局 update/delete，你必须使用一些条件、原生 SQL 或者启用 `AllowGlobalUpdate` 模式，例如：
 
 ```go
 DB.Where("1 = 1").Delete(&User{})
@@ -574,7 +574,7 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 #### ErrRecordNotFound
 
-GORM V2 only returns `ErrRecordNotFound` when you are querying with methods `First`, `Last`, `Take` which is expected to return some result, and we have also removed method `RecordNotFound` in V2, please use `errors.Is` to check the error, e.g:
+GORM V2 只有在你使用 `First`、`Last`、`Take` 这些预期会返回结果的方法查询记录时，才会返回 `ErrRecordNotFound`，我们还移除了 `RecordNotFound` 方法，请使用 `errors.Is` 来检查错误，例如：
 
 ```go
 err := DB.First(&user).Error
@@ -583,7 +583,7 @@ errors.Is(err, gorm.ErrRecordNotFound)
 
 #### Hook 方法
 
-Before/After Create/Update/Save/Find/Delete must be defined as a method of type `func(tx *gorm.DB) error` in V2, which has unified interfaces like plugin callbacks, if defined as other types, a warning log will be printed and it won't take effect, check out [Hooks](hooks.html) for details
+在 V2 中，Before/After Create/Update/Save/Find/Delete 必须定义为 `func(tx *gorm.DB) error` 类型的方法，这是类似于插件 callback 的统一接口。如果定义为其它类型，它不会生效，并且会打印一个警告日志，查看 [Hook](hooks.html) 获取详情
 
 ```go
 func (user *User) BeforeCreate(tx *gorm.DB) error {
@@ -601,7 +601,7 @@ func (user *User) BeforeCreate(tx *gorm.DB) error {
 
 #### Update Hook 支持 `Changed`
 
-When updating with `Update`, `Updates`, You can use `Changed` method in Hooks `BeforeUpdate`, `BeforeSave` to check a field changed or not
+当使用 `Update`，`Updates` 更新时，您可以在 `BeforeUpdate`, `BeforeSave` Hook 中使用 `Changed` 方法来检查字段是否有更改
 
 ```go
 func (user *User) BeforeUpdate(tx *gorm.DB) error {
@@ -634,11 +634,11 @@ DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 
 #### 插件
 
-Plugin callbacks also need be defined as a method of type `func(tx *gorm.DB) error`, check out [Write Plugins](write_plugins.html) for details
+插件 callback 也需要被定义为 `func(tx *gorm.DB) error` 类型的方法，查看 [Write Plugins](write_plugins.html) 获取详情
 
 #### 使用 struct 更新
 
-When updating with struct, GORM V2 allows to use `Select` to select zero-value fields to update them, for example:
+使用 struct 更新时，GORM V2 允许使用 `Select` 来选择要更新的零值字段，例如：
 
 ```go
 DB.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
@@ -646,7 +646,7 @@ DB.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age:
 
 #### 关联
 
-GORM V1 allows to use some settings to skip create/update associations, in V2, you can use `Select` to do the job, for example:
+GORM V1允许使用一些设置来跳过 create/update 关联。在 V2 中，您可以使用 `Select` 来完成这项工作，例如：
 
 ```go
 DB.Omit(clause.Associations).Create(&user)
@@ -655,18 +655,18 @@ DB.Omit(clause.Associations).Save(&user)
 DB.Select("Company").Save(&user)
 ```
 
-`clause.Associations` also works with `Preload`, e.g:
+`clause.Associations` 也可以配合 `Preload` 使用，例如：
 
 ```go
 // 预加载所有关联
 db.Preload(clause.Associations).Find(&users)
 ```
 
-Also, checkout field permissions, which can be used to skip creating/updating associations globally
+此外，还可以查看字段权限，它可以用来全局跳过 creating/updating 关联
 
 #### Join Table
 
-In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and define other fields, e.g:
+在 GORM V2 中，`JoinTable` 可以是一个带有 `软删除`、`Hook` 且定义了其它字段的全功能 model，例如：
 
 ```go
 type Person struct {
@@ -697,7 +697,7 @@ err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 
 #### Count
 
-Count only accepts `*int64` as the argument
+Count 仅支持 `*int64` 作为参数
 
 #### Migrator
 
@@ -707,7 +707,7 @@ Count only accepts `*int64` as the argument
 * 通过 `check` 标签支持检查器
 * 增强 `index` 标签的设置
 
-Checkout [Migration](migration.html) for details
+查看 [Migration](migration.html) 获取详情
 
 ```go
 type UserIndex struct {
