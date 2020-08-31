@@ -43,12 +43,12 @@ db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN 
 ```
 
 {% note warn %}
-**NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
+**注意** `Join Preload` 适用于一对一的关系，例如： `has one`, `belongs to`
 {% endnote %}
 
 ## 预加载全部
 
-`clause.Associations` can works with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
+与创建、更新时使用 `Select` 类似，`clause.Associations` 也可以和 `Preload` 一起使用，它可以用来 `预加载` 全部关联，例如：
 
 ```go
 type User struct {
@@ -64,7 +64,7 @@ db.Preload(clause.Associations).Find(&users)
 
 ## 带条件的预加载
 
-GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
+GORM 允许带条件的 Preload 关联，类似于[内联条件](query.html#inline_conditions)
 
 ```go
 // 带条件的预加载 Order
@@ -79,7 +79,7 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 
 ## 自定义预加载 SQL
 
-You are able to custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+您可以通过 `func(db *gorm.DB) *gorm.DB` 实现自定义预加载 SQL，例如：
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
@@ -91,7 +91,7 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 
 ## 嵌套预加载
 
-GORM supports nested preloading, for example:
+GORM 支持嵌套预加载，例如：
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)

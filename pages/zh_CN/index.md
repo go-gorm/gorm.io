@@ -7,7 +7,7 @@ comments: false
 
 * <i class="fa fa-rocket" aria-hidden="true"></i> 全功能 ORM
 * <i class="fa fa-rocket" aria-hidden="true"></i> 关联 (has one，has many，belongs to，many to many，多态，单表继承)
-* <i class="fa fa-rocket" aria-hidden="true"></i> Create，save，update，delete，find 前/后的 hook
+* <i class="fa fa-rocket" aria-hidden="true"></i> Create，Save，Update，Delete，Find 中钩子方法
 * <i class="fa fa-rocket" aria-hidden="true"></i> 支持 Preload、Joins 的预加载
 * <i class="fa fa-rocket" aria-hidden="true"></i> 事务，嵌套事务，Save Point，Rollback To to Saved Point
 * <i class="fa fa-rocket" aria-hidden="true"></i> Context、预编译模式、DryRun 模式

@@ -52,7 +52,7 @@ type Model struct {
 可导出的字段在使用 GORM 进行 CRUD 时拥有全部的权限，此外，GORM 允许您用标签控制字段级别的权限。这样您就可以让一个字段的权限是只读、只写、只创建、只更新或者被忽略
 
 {% note warn %}
-**NOTE** ignored fields won't be created when using GORM Migrator to create table
+**注意：** 使用 GORM Migrator 创建表时，不会创建被忽略的字段
 {% endnote %}
 
 ```go
@@ -70,11 +70,11 @@ type User struct {
 
 ### <name id="time_tracking">创建/更新时间追踪（纳秒、毫秒、秒、Time）</span>
 
-GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#now_func) into it when creating/updating if they are defined
+GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果您定义了他们，GORM 在创建/更新时会自动填充 [当前时间](gorm_config.html#now_func) 至这些字段
 
-To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
+要使用不同名称的字段，您可以配置 `autoCreateTim`、`autoUpdateTim` 标签
 
-If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
+如果您想要保存 UNIX（毫/纳）秒时间戳，而不是 time，您只需简单地将 `time.Time` 修改为 `int` 即可
 
 ```go
 type User struct {
@@ -88,7 +88,7 @@ type User struct {
 
 ### <span id="embedded_struct">嵌入结构体</span>
 
-For anonymous fields, GORM will include its fields into its parent struct, for example:
+对于匿名字段，GORM 会将其字段包含在父结构体中，例如：
 
 ```go
 type User struct {
@@ -105,7 +105,7 @@ type User struct {
 }
 ```
 
-For a normal struct field, you can embed it with the tag `embedded`, for example:
+对于正常的结构体字段，你也可以通过标签 `embedded` 将其嵌入，例如：
 
 ```go
 type Author struct {
@@ -127,7 +127,7 @@ type Blog struct {
 }
 ```
 
-And you can use tag `embeddedPrefix` to add prefix to embedded fields' db name, for example:
+并且，您可以使用标签 `embeddedPrefix` 来为 db 中的字段名添加前缀，例如：
 
 ```go
 type Blog struct {
@@ -147,7 +147,7 @@ type Blog struct {
 
 ### <span id="tags">字段标签</span>
 
-Tags are optional to use when declaring models, GORM supports the following tags: Tag name case doesn't matter, `camelCase` is preferred to use.
+声明 model 时，tag 是可选的，GORM 支持以下 tag：tag 名大小写不敏感，但建议使用 `camelCase` 风格
 
 | 标签名            | 说明                                                                                                                                                                                                                                         |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -174,4 +174,4 @@ Tags are optional to use when declaring models, GORM supports the following tags
 
 ### 关联标签
 
-GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the [Associations section](associations.html#tags) for details
+GORM 允许通过标签为关联配置外键、约束、many2many 表，详情请参考 [关联部分](associations.html#tags)

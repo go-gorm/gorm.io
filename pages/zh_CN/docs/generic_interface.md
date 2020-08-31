@@ -20,7 +20,7 @@ sqlDB.Stats()
 ```
 
 {% note warn %}
-**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns error
+**注意** 如果底层连接的数据库不是 `*sql.DB`，它会返回错误
 {% endnote %}
 
 ## 连接池

@@ -50,7 +50,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 ```
 
 {% note warn %}
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is committed, if you return any error in your hooks, the change will be rollbacked
+**注意** 在 GORM 中保存、删除操作会默认运行在事务上， 因此在事务完成之前该事务中所作的更改是不可见的，如果您的钩子返回了任何错误，则修改将被回滚。
 {% endnote %}
 
 ```go
@@ -64,7 +64,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 
 ### 更新对象
 
-Available hooks for updating
+更新时可用的 hook
 
 ```go
 // 开始事务
@@ -99,7 +99,7 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 
 ### 删除对象
 
-Available hooks for deleting
+删除时可用的 hook
 
 ```go
 // 开始事务
@@ -123,7 +123,7 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 
 ### 查询对象
 
-Available hooks for querying
+查询时可用的 hook
 
 ```go
 // 从 db 中加载数据
@@ -131,7 +131,7 @@ Available hooks for querying
 AfterFind
 ```
 
-Code Example:
+代码示例：
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
