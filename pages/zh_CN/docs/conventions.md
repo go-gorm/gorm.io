@@ -101,7 +101,7 @@ type User struct {
 }
 ```
 
-You can override the column name with tag `column` or use [`NamingStrategy`](#naming_strategy)
+您可以使用 `column` 标签或 [`命名策略`](#naming_strategy) 来覆盖列名
 
 ```go
 type Animal struct {
@@ -115,7 +115,7 @@ type Animal struct {
 
 ### CreatedAt
 
-For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
+对于有 `CreatedAt` 字段的模型，创建记录时，如果该字段值为零值，则将该字段的值设为当前时间
 
 ```go
 db.Create(&user) // 将 `CreatedAt` 设为当前时间
@@ -129,7 +129,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
+对于有 `UpdatedAt` 字段的模型，更新记录时，将该字段的值设为当前时间。创建记录时，如果该字段值为零值，则将该字段的值设为当前时间
 
 ```go
 db.Save(&user) // 将 `UpdatedAt` 设为当前时间
@@ -146,5 +146,5 @@ db.Save(&user3) // 更新世，user3 的 `UpdatedAt` 会修改为当前时间
 ```
 
 {% note %}
-**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
+**注意** GORM 支持拥有多种类型的时间追踪字段。可以根据 UNIX（毫/纳）秒，查看 [Model](models.html#time_tracking) 获取详情
 {% endnote %}
