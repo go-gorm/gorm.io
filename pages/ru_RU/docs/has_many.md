@@ -131,7 +131,7 @@ type User struct {
 
 ## Ограничения внешних ключей
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+Вы можете настроить `OnUpdate`, `OnDelete` ограничения с помощью тега `constraint`, они будут созданы при миграции с помощью GORM, например:
 
 ```go
 type User struct {
