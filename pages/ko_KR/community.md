@@ -25,6 +25,7 @@ layout: page
 ## 오픈소스
 
 * [GORM V2 플러그인 예시 링크](#contribute)
+* [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
 
 ## <span id="contribute">이 페이지에 기여하세요</span>
 
