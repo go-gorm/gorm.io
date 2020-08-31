@@ -3,9 +3,9 @@ title: Удалить
 layout: страница
 ---
 
-## Delete a Record
+## Удалить запись
 
-When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
+При удалении записи, удаляемое значение должно иметь первичный ключ или сработает [пакетное удаление](#batch_delete), например:
 
 ```go
 // Email's ID is `10`
