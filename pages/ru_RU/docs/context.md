@@ -61,9 +61,9 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 ```
 
 {% note %}
-**NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**ПРИМЕЧАНИЕ** Установка `Context` с `WithContext` является goroutine-безопасным, смотрите [Сессии](session.html) для подробностей
 {% endnote %}
 
 ## Logger
 
-Logger accepts `Context` too, you can use it for log tracking, refer [Logger](logger.html) for details
+Logger также принимает `Context`, вы можете им отслеживать журналы, см. [Logger](logger.html) для подробностей
