@@ -198,17 +198,17 @@ type User struct {
 }
 ```
 
-### <span id="upsert">Upsert (Создать или обновить) / Конфликт</span>
+### <span id="upsert">Upsert (Создать или обновить) / При конфликте</span>
 
-GORM provides compatible Upsert support for different databases
+GORM обеспечивает поддержку Upsert (Создать или обновить) для различных баз данных
 
 ```go
 import "gorm.io/gorm/clause"
 
-// Do nothing on conflict
+// Ничего не делать при конфликте
 DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Update columns to default value on `id` conflict
+// Обновить колонки в значение по умолчанию при конфликте по полю `id`
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -216,7 +216,7 @@ DB.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// Update columns to new value on `id` conflict
+// Обновить колонки в новые значения при конфликте по полю `id`
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
@@ -226,6 +226,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+Смотрите также `FirstOrInit (первая или инициализировать)`, `FirstOrCreate (первая или создать)` в [Расширенный запрос SQL](advanced_query.html)
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+Смотрите [Чистый SQL и Конструктор SQL](sql_builder.html) для подробностей
