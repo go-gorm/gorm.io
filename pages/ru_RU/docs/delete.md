@@ -78,25 +78,25 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 ## Мягкое удаление
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+Если ваша модель включает в себя поле `gorm.DeletedAt` (которое включено в `gorm.Model`), она получит возможность магкого удаления автоматически!
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+При вызове метода `Delete`, запись не будет удалена из базы данных, GORM установит значение `DeletedAt`в текущее время, и данная запись больше не будет участвовать в обычном поиске.
 
 ```go
-// user's ID is `111`
+// ID пользователя `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// Пакетное удаление
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when querying
+// Записи удаленные магким удалением, будут пропущены при обычном запросе
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+Если вы не хотите использовать `gorm.Model`, вы можете включить мягкое удаление:
 
 ```go
 type User struct {
@@ -108,7 +108,7 @@ type User struct {
 
 ### Найти мягко удаленные записи
 
-You can find soft deleted records with `Unscoped`
+Вы можете найти мягко удаленные записи с помощью `Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
@@ -117,7 +117,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ### Удалить безвозвратно
 
-You can delete matched records permanently with `Unscoped`
+Вы можете удалить записи навсегда с помощью `Unscoped`
 
 ```go
 db.Unscoped().Delete(&order)
