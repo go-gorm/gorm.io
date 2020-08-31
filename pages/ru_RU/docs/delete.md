@@ -47,7 +47,7 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 ## <span id="batch_delete">Пакетное удаление</span>
 
-The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
+Указанное условие не является первичным ключем. GORM будет выполнять пакетное удаление, он удалит все соответствующие записи
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -59,9 +59,9 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ### Глобальное удаление
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
+Если вы выполняете пакетное удаление без условий, GORM не выполнит его и вернет ошибку `ErrMissingWhereClause`
 
-You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+Вы должны использовать любые условия, использовать raw SQL или включить режим `AllowGlobalUpdate` , например:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -76,7 +76,7 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-## Soft Delete
+## Мягкое удаление
 
 If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
 
