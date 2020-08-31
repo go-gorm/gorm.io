@@ -8,7 +8,7 @@ layout: page
 AutoMigrate 用于自动迁移您的 schema，保持您的 schema 是最新的。
 
 {% note warn %}
-**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes, and will change existing column's type if it's size, precision, nullable changed, it **WON'T** delete unused columns to protect your data.
+**注意：** AutoMigrate 会创建表，缺少的外键，约束，列和索引，并且会更改现有列的类型（如果其大小、精度、是否为空可更改）。但 **不会** 删除未使用的列，以保护您的数据。
 {% endnote %}
 
 ```go
@@ -21,7 +21,7 @@ db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
 {% note warn %}
-**NOTE** AutoMigrate creates database foreign key constraints automatically, you can disable this feature during initialization, for example:
+**注意** AutoMigrate 会自动创建数据库外键约束，您可以在初始化时禁用此功能，例如：
 {% endnote %}
 
 ```go
@@ -32,11 +32,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Migrator 接口
 
-GORM provides migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
+GORM 提供了 Migrator 接口，该接口为每个数据库提供了统一的 API 接口，可用来为您的数据库构建独立迁移，例如：
 
-SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table
+SQLite 不支持 `ALTER COLUMN`、`DROP COLUMN`，当你试图修改表结构，GORM 将创建一个新表、复制所有数据、删除旧表、重命名新表。
 
-MySQL doesn't support rename column, index for some versions, GORM will perform different SQL based on the MySQL version you are using
+一些版本的 MySQL 不支持 rename 列，索引。GORM 将基于您使用 MySQL 的版本执行不同 SQL
 
 ```go
 type Migrator interface {
@@ -77,7 +77,7 @@ type Migrator interface {
 
 ### 当前数据库
 
-Returns current using database name
+返回当前使用的数据库名
 
 ```go
 db.Migrator().CurrentDatabase()
@@ -183,15 +183,15 @@ db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 
 ## 约束
 
-GORM creates constraints when auto migrating or creating table, checkout [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORM 会在自动迁移和创建表时创建约束，查看 [约束](constraints.html) 或 [数据库索引](indexes.html) 获取详情
 
 ## 其他迁移工具
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
+GORM 的 AutoMigrate 在大多数情况下都工作得很好，但如果您正在寻找更严格的迁移工具，GORM 提供一个通用数据库接口，可能对您有帮助。
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-Refer [Generic Interface](generic_interface.html) for more details.
+查看 [通用接口](generic_interface.html) 获取详情。
