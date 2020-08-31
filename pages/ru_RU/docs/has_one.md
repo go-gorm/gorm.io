@@ -7,7 +7,7 @@ layout: страница
 
 Связь `has one` устанавливает связь с другой моделью, но с несколько разными семантиками (и последствиями). Эта ассоциация указывает, что каждый экземпляр модели содержит или обладает одной другой моделью.
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+Например, если ваше приложение включает пользователей и кредитные карты, и каждый пользователь может иметь только одну кредитную карту.
 
 ```go
 // User имеет одну CreditCard, CreditCardID это внешний ключ
@@ -49,7 +49,7 @@ type CreditCard struct {
 
 ## Переопределить связи
 
-By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field's value, like using `Name` for the below example.
+По умолчанию принадлежащая сущность сохранит первичный ключ модели `has one` во внешний ключ, вы можете изменить это, чтобы сохранялось в другое поле, например `Name` как в примере ниже.
 
 Вы можете изменить поле связи с помощью тега `references`, например:
 
@@ -69,7 +69,7 @@ type CreditCard struct {
 
 ## Полиморфическая связь
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field
+GORM поддерживает полиморфическую связь между `has one (имеет одну)` и `has many (имеет много)`, он сохранит название таблицы принадлежащего сущности в поле полиморфического типа, значение первичного ключа в полиморфическое поле
 
 ```go
 type Cat struct {
@@ -138,7 +138,7 @@ type User struct {
 
 ## Ограничения внешних ключей
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+Вы можете настроить `OnUpdate`, `OnDelete` ограничения с помощью тега `constraint`, они будут созданы при миграции с помощью GORM, например:
 
 ```go
 type User struct {
