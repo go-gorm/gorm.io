@@ -17,7 +17,7 @@ type User struct {
 Вы можете установить другие поля в качестве первичного ключа при помощи тега `primaryKey`
 
 ```go
-// Set field `UUID` as primary field
+// Установить поле `UUID` как первичный ключ
 type Animal struct {
   ID     int64
   UUID   string `gorm:"primaryKey"`
@@ -48,7 +48,7 @@ func (User) TableName() string {
 ```
 
 {% note warn %}
-**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use `Scopes`, for example:
+**ПРИМЕЧАНИЕ** `TableName` не допускает динамическое имя, его результат будет кэшироваться на будущее, для использования динамического имени, вы можете использовать `Scopes`, например:
 {% endnote %}
 
 ```go
@@ -67,7 +67,7 @@ DB.Scopes(UserTable(user)).Create(&user)
 
 ### Временно указать имя
 
-Temporarily specify table name with `Table` method, for example:
+Временно указать имя таблицы с помощью метода `Table`, например:
 
 ```go
 // Создать таблицу `deleted_users` с полями struct User
@@ -82,7 +82,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-Check out [From SubQuery](advanced_query.html#from_subquery) for how to use SubQuery in FROM clause
+Смотрите [SubQuery](advanced_query.html#from_subquery) для того, чтобы использовать SubQuery в выражении FROM
 
 ### <span id="naming_strategy">Стратегия именования</span>
 
