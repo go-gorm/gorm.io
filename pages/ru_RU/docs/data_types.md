@@ -1,11 +1,11 @@
 ---
-title: Customize Data Types
+title: Настройка типов данных
 layout: страница
 ---
 
 GORM предоставляет некоторые интерфейсы, которые позволяют пользователям определять поддерживаемые типы данных для GORM, например [json](https://github.com/go-gorm/datatypes/blob/master/json.go)
 
-## Implements Customized Data Type
+## Реализация настраиваемого типа данных
 
 ### Scanner / Valuer
 
@@ -40,7 +40,7 @@ func (j JSON) Value() (driver.Value, error) {
 
 ### Интерфейс GormDataTypeInterface
 
-GORM will read column's database type from [tag](models.html#tags) `type`, if not found, will check if the struct implemented interface `GormDBDataTypeInterface` or `GormDataTypeInterface` and will use its result as data type
+GORM будет читать тип столбца базы данных из [tag](models.html#tags) `type`, если не найдено, проверит, реализован ли интерфейс struct `GormDBDataTypeInterface` или `GormDataTypeInterface` и будет использовать его результат в качестве типа данных
 
 ```go
 type GormDataTypeInterface interface {
@@ -52,7 +52,7 @@ type GormDBDataTypeInterface interface {
 }
 ```
 
-The result of `GormDataType` will be used as the general data type and can be obtained from `schema.Field`'s field `DataType`, which might be helpful when [writing plugins](write_plugins.html) or [hooks](hooks.html) for example:
+Результат `GormDataType` будет использован в качестве общего типа данных и может быть получен из `schema.Field` `DataType` поля, что может быть полезно при [написании плагинов](write_plugins.html) или [хуков](hooks.html) , например:
 
 ```go
 func (JSON) GormDataType() string {
@@ -66,19 +66,19 @@ type User struct {
 func (user User) BeforeCreate(tx *gorm.DB) {
   field := tx.Statement.Schema.LookUpField("Attrs")
   if field.DataType == "json" {
-    // do something
+    // делаем что-то
   }
 }
 ```
 
-`GormDBDataType` usually returns the right data type for current driver when migrating, for example:
+`GormDBDataType` обычно возвращает правильный тип данных для текущего драйвера при миграции, например:
 
 ```go
 func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
-  // use field.Tag, field.TagSettings gets field's tags
-  // checkout https://github.com/go-gorm/gorm/blob/master/schema/field.go for all options
+  // использовать field.Tag, field.TagSettings получает теги поля
+  // смотрите https://github.com/go-gorm/gorm/blob/master/schema/field.go для все возможностей
 
-  // returns different database type based on driver name
+  //возвращает разный тип в зависимости от имени драйвера
   switch db.Dialector.Name() {
   case "mysql", "sqlite":
     return "JSON"
@@ -89,31 +89,31 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 }
 ```
 
-If the struct hasn't implemented the `GormDBDataTypeInterface` or `GormDataTypeInterface` interface, GORM will guess its data type from the struct's first field, for example, will use `string` for `NullString`
+Если в struct не реализован интерфейс `GormDBDataTypeInterface` или `GormDataTypeInterface` , GORM возьмет первичный тип данных поля из struct, например, будет использовать `string` для `NullString`
 
 ```go
 type NullString struct {
-  String string // use the first field's data type
+  String string // использовать первичный тип поля
   Valid  bool
 }
 
 type User struct {
-  Name NullString // data type will be string
+  Name NullString // тип будет string
 }
 ```
 
-### <span id="gorm_valuer_interface">GormValuerInterface</span>
+### <span id="gorm_valuer_interface">Интерфейс GormValuerInterface</span>
 
-GORM provides a `GormValuerInterface` interface, which can allow to create/update from SQL Expr or value based on context, for example:
+GORM предоставляет интерфейс `GormValuerInterface`, который позволяет создать/обновить SQL Expr или значение на основе контекста, например:
 
 ```go
-// GORM Valuer interface
+// Интерейс GORM Valuer
 type GormValuerInterface interface {
   GormValue(ctx context.Context, db *gorm.DB) clause.Expr
 }
 ```
 
-#### Create/Update from SQL Expr
+#### Создание/Обновление из SQL Expr
 
 ```go
 type Location struct {
@@ -131,9 +131,9 @@ func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
   }
 }
 
-// Scan implements the sql.Scanner interface
+// Scan имплементирует интерфейс sql.Scanner
 func (loc *Location) Scan(v interface{}) error {
-  // Scan a value into struct from database driver
+  // Сканировать значение в struct из драйвера БД
 }
 
 type User struct {
@@ -155,11 +155,11 @@ DB.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-You can also create/update with SQL Expr from map, checkout [Create From SQL Expr](create.html#create_from_sql_expr) and [Update with SQL Expression](update.html#update_from_sql_expr) for details
+Вы также можете создавать/обновлять SQL Expr из map, смотрите [Создать из SQL Expr](create.html#create_from_sql_expr) и [Обновить с помощью SQL Expression](update.html#update_from_sql_expr) для подробностей
 
-#### Value based on Context
+#### Значение на основе контекста
 
-If you want to create or update a value depends on current context, you can also implements the `GormValuerInterface` interface, for example:
+Если вы хотите создать или обновить значение зависящее от текущего контекста, вы можете реализовать интерфейс `GormValuerInterface`, например:
 
 ```go
 type EncryptedString struct {
@@ -177,9 +177,9 @@ func (es EncryptedString) GormValue(ctx context.Context, db *gorm.DB) (expr clau
 }
 ```
 
-### Clause Expression
+### Выражения совпадения
 
-If you want to build some query helpers, you can make a struct that implements the `clause.Expression` interface:
+Если вы хотите собрать несколько помощников запросов, вы можете создать struct, который реализует интерфейс `clause.Expression`:
 
 ```go
 type Expression interface {
@@ -187,10 +187,10 @@ type Expression interface {
 }
 ```
 
-Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) and [SQL Builder](sql_builder.html#clauses) for details, the following is an example of usage:
+Сотрите [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) и [SQL Builder](sql_builder.html#clauses) для деталей, пример:
 
 ```go
-// Generates SQL with clause Expression
+// Генерация SQL с поиском совпадений
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("role"))
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 
@@ -212,4 +212,4 @@ db.Find(&user, datatypes.JSONQuery("attributes").Equals("jinzhu", "name"))
 
 ## Настраиваемые наборы типов данных
 
-We created a Github repo for customized data types collections [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), pull request welcome ;)
+Мы создали репозиторий Github для настраиваемых коллекций типов данных [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), pull request приветсвуется ;)
