@@ -105,7 +105,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**注意** 当使用结构作为条件查询时，GORM 只会查询非零值字段。这意味着如果您的字段值为 `0`、`''`、`false` 或其他 [零值](https://tour.golang.org/basics/12)，该字段不会被用于构建查询条件，例如：
 {% endnote %}
 
 ```go
@@ -113,7 +113,7 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build query conditions, e.g:
+您可以使用 map 来构建查询条件，例如：
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
@@ -122,7 +122,7 @@ db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 
 ### <span id="inline_conditions">内联条件</span>
 
-Works similar to `Where`.
+用法与 `Where` 类似
 
 ```go
 // SELECT * FROM users WHERE id = 23;
@@ -148,7 +148,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 
 ### Not 条件
 
-Build NOT conditions, works similar to `Where`
+构建 NOT 条件，用法与 `Where` 类似
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -182,11 +182,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-Also check out [Group Conditions in Advanced Query](advanced_query.html#group_conditions), it can be used to write complicated SQL
+您还可以查看高级查询中的 [分组条件](advanced_query.html#group_conditions)，它被用于编写复杂 SQL
 
 ## 选择特定字段
 
-Specify fields that you want to retrieve from database, by default, select all fields
+选择您想从数据库中检索的字段，默认情况下会选择全部字段
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -199,11 +199,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-Also check out [Smart Select Fields](advanced_query.html#smart_select)
+还可以看一看 [智能选择字段](advanced_query.html#smart_select)
 
 ## Order
 
-Specify order when retrieving records from the database
+指定从数据库检索记录时的排序方式
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -216,7 +216,7 @@ db.Order("age desc").Order("name").Find(&users)
 
 ## Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit` 指定获取记录的最大数量 `Offset` 指定在开始返回记录之前要跳过的记录数量
 
 ```go
 db.Limit(3).Find(&users)
@@ -239,7 +239,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-Checkout [Pagination](scopes.html#pagination) for how to make a paginator
+查看 [Pagination](scopes.html#pagination) 学习如何写一个分页器
 
 ## Group & Having
 
@@ -275,17 +275,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+从模型中选择不相同的值
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
+`Distinct` 也可以配合 [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) 使用
 
 ## Joins
 
-Specify Joins conditions
+指定 Joins 条件
 
 ```go
 type result struct {
@@ -306,20 +306,20 @@ db.Table("users").Select("users.name, emails.email").Joins("left join emails on 
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
-### Join 预加载
+### Joins 预加载
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+您可以使用 `Joins` 实现单条 SQL 预加载关联记录，例如：
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Refer [Preloading (Eager Loading)](preload.html) for details
+参考 [预加载](preload.html) 了解详情
 
 ## <span id="scan">Scan</span>
 
-Scan results into a struct work similar to `Find`
+Scan 结果至 struct，用法与 `Find` 类似
 
 ```go
 type Result struct {
