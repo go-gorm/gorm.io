@@ -8,18 +8,18 @@ layout: страница
 При удалении записи, удаляемое значение должно иметь первичный ключ или сработает [пакетное удаление](#batch_delete), например:
 
 ```go
-// Email's ID is `10`
+// ID в struct Email равно `10`
 db.Delete(&email)
 // DELETE from emails where id = 10;
 
-// Delete with additional conditions
+// Удаление по условию
 db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
-## Delete with primary key
+## Удалить с помощью первичного ключа
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out check out [Query Inline Conditions](query.thml#inline_conditions) for details
+GORM позволяет удалять объекты, используя первичный ключ(и) в строковом состоянии, работает с числами, смотрите [Запрос Inline Conditions](query.thml#inline_conditions) для получения подробностей
 
 ```go
 db.Delete(&User{}, 10)
@@ -32,9 +32,9 @@ db.Delete(&users, []int{1,2,3})
 // DELETE FROM users WHERE id IN (1,2,3);
 ```
 
-## Delete Hooks
+## Хуки удаления
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+GORM поддерживает хуки `BeforeDelete (перед удалением)`, `AfterDelete (после удаления)`, эти методы будут вызваны при удалении записи, смотрите [Хуки](hooks.html) для подробностей
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -45,7 +45,7 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_delete">Batch Delete</span>
+## <span id="batch_delete">Пакетное удаление</span>
 
 The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
 
