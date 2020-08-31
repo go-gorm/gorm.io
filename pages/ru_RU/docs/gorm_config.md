@@ -57,7 +57,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Logger
 
-Allow to change GORM's default logger by overriding this option, refer [Logger](logger.html) for more details
+Разрешены изменения логирования по умолчанию в GORM, переопределяя эту опцию, смотрите [Logger](logger.html) для получения более подробной информации
 
 ## <span id="now_func">NowFunc</span>
 
@@ -93,11 +93,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## AllowGlobalUpdate
 
-Enable global update/delete, refer [Session](session.html) for details
+Включение глобального обновления/удаления, смотрите [сессии](session.html) для подробностей
 
 ## DisableAutomaticPing
 
-GORM automatically ping database after initialized to check database availability, disable it by setting it to `true`
+GORM автоматически опрашивает базу данных после инициализации для проверки доступности базы данных, отключается установкой в `true`
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -107,7 +107,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DisableForeignKeyConstraintWhenMigrating
 
-GORM creates database foreign key constraints automatically when `AutoMigrate` or `CreateTable`, disable this by setting it to `true`, refer [Migration](migration.html) for details
+GORM создает ограничения внешних ключей автоматически, когда `AutoMigrate (авто миграция)` или `CreateTable (создание таблицы)`, отключите это, установив `true`, смотрите [Миграции](migration.html) для подробностей
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
