@@ -32,9 +32,9 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 GORM возвращает `ErrRecordNotFound`, когда не удалось найти данные при помощи `First`, `Last`, `Take`, если произошло несколько ошибок, вы можете проверить `ErrRecordNotFound` при помощи `errors.Is`, например:
 
 ```go
-// Проверяет вернулась ли ошибка RecordNotFound
+// Check if returns RecordNotFound error
 err := db.First(&user, 100).Error
-errors.Is(tx.Error, ErrRecordNotFound)
+errors.Is(err, ErrRecordNotFound)
 ```
 
 ## Ошибки
