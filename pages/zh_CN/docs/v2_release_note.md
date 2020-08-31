@@ -25,7 +25,7 @@ GORM 2.0 完全从零开始，引入了一些不兼容的 API 变更和许多改
 ## 如何升级
 
 * GORM 的开发已经迁移至 [github.com/go-gorm](https://github.com/go-gorm)，import 路径也修改为 `gorm.io/gorm` ，对于以前的项目，您可以继续使用 `github.com/jinzhu/gorm` 和 [GORM V1 文档](http://v1.gorm.io/zh_CN/)
-* 数据库驱动被拆分为独立的项目，例如：[github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite)，且它的 improt 路径也变更为 `gorm.io/driver/sqlite`
+* 数据库驱动被拆分为独立的项目，例如：[github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite)，且它的 import 路径也变更为 `gorm.io/driver/sqlite`
 
 ### 安装
 

@@ -13,18 +13,18 @@ Gorm реализует [логгер по умолчанию](https://github.co
 newLogger := logger.New(
   log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
   logger.Config{
-    SlowThreshold: time.Second,   // Slow SQL threshold
-    LogLevel:      logger.Silent, // Log level
-    Colorful:      false,         // Disable color
+    SlowThreshold: time.Second,   // Временной зазор определения медленных запросов SQL
+    LogLevel:      logger.Silent, // Уровень логирования
+    Colorful:      false,         // Отключить цвета
   },
 )
 
-// Globally mode
+// Глобальный режим
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
   Logger: newLogger,
 })
 
-// Continuous session mode
+// Сессионный режим
 tx := db.Session(&Session{Logger: newLogger})
 tx.First(&user)
 tx.Model(&user).Update("Age", 18)
@@ -40,9 +40,9 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 })
 ```
 
-### Debug
+### Отладка
 
-Debug a single operation, change current operation's log level to logger.Info
+Отладка одиночной операции, изменить уровень журнала текущей операции на logger.Info
 
 ```go
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
@@ -50,9 +50,9 @@ db.Debug().Where("name = ?", "jinzhu").First(&User{})
 
 ## Настройка логгера
 
-Refer to GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
+Смотрите [ логирование по умолчанию](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) для определения своего собственного
 
-The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
+Логгер должен реализовать следующий интерфейс, он принимает `context`, чтобы вы могли использовать его для отслеживания журнала
 
 ```go
 type Interface interface {

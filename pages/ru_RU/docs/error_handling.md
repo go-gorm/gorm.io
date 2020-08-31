@@ -5,7 +5,7 @@ layout: страница
 
 В Go, очень важна обработка ошибок.
 
-You are encouraged to do error check after any [Finisher Methods](method_chaining.html#finisher_method)
+Вам рекомендуется проверять ошибки после [Методов окончания](method_chaining.html#finisher_method)
 
 ## Обработка ошибок
 
@@ -32,7 +32,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 GORM возвращает `ErrRecordNotFound`, когда не удалось найти данные при помощи `First`, `Last`, `Take`, если произошло несколько ошибок, вы можете проверить `ErrRecordNotFound` при помощи `errors.Is`, например:
 
 ```go
-// Check if returns RecordNotFound error
+// Проверяем не вернлась ли ошибка RecordNotFound
 err := db.First(&user, 100).Error
 errors.Is(err, ErrRecordNotFound)
 ```

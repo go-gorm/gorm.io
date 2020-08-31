@@ -78,29 +78,29 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**ПРИМЕЧАНИЕ** При создании из map, хуки не будут вызываться, связи не будут сохранены и значения первичных ключей не будут возвращены
 {% endnote %}
 
 ## <span id="create_from_sql_expr">Создать из SQL Expr/Context Valuer</span>
 
-GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+GORM позволяет вставить данные при помощи выражения SQL, существует два способа достижения этой цели, создать из `map[string]interface{}` или [Пользовательские типы данных](data_types.html#gorm_valuer_interface), например:
 
 ```go
-// Create from map
+// Создание из map
 DB.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// Create from customized data type
+// Создание из пользовательского типа данных
 type Location struct {
     X, Y int
 }
 
-// Scan implements the sql.Scanner interface
+// Scan имплементирует интерфейс sql.Scanner
 func (loc *Location) Scan(v interface{}) error {
-  // Scan a value into struct from database driver
+  // Сканировать значение в struct из драйвера БД
 }
 
 func (loc Location) GormDataType() string {
@@ -126,11 +126,11 @@ DB.Create(&User{
 // INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
 ```
 
-## Advanced
+## Дополнительно
 
 ### <span id="create_with_associations">Создать со связями</span>
 
-When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
+При создании со связями, если значение связей не равно нулю, эти связи будут добавлены, и будут применены методы их `хуков`.
 
 ```go
 type CreditCard struct {
@@ -153,18 +153,18 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`, for example:
+Вы можете пропустить сохранение связей с помощью `Select`, `Omit`, например:
 
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// skip all associations
+// пропустить все связи 
 db.Omit(clause.Associations).Create(&user)
 ```
 
-### <span id="default_values">Default Values</span>
+### <span id="default_values">Значения по умолчанию</span>
 
-You can define default values for fields with tag `default`, for example:
+Вы можете определить значения по умолчанию для полей при помощи тега `default`, например:
 
 ```go
 type User struct {
@@ -175,9 +175,9 @@ type User struct {
 }
 ```
 
-Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+Значение по умолчанию *будет использовано* при добавлении записи в БД для полей с [нулевыми-значениями](https://tour.golang.org/basics/12)
 
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**ПРИМЕЧАНИЕ** Любые нулевые значение, например `0`, `''`, `false` не будут сохранены в базу данных, для полей с определенным значением по умолчанию, вы можете использовать Scanner/Valuer для избежания этого, например:
 
 ```go
 type User struct {
@@ -188,7 +188,7 @@ type User struct {
 }
 ```
 
-**NOTE** You have to setup the `default` tag for fields having default value in databae or GORM will use the zero value of the field when creating, for example:
+**ПРИМЕЧАНИЕ** Вы должны установить тег `default` для полей, имеющих значение по умолчанию в БД или GORM будет использовать нулевое значение поля при создании, например:
 
 ```go
 type User struct {
@@ -198,17 +198,17 @@ type User struct {
 }
 ```
 
-### <span id="upsert">Upsert (Создать или обновить) / Конфликт</span>
+### <span id="upsert">Upsert (Создать или обновить) / При конфликте</span>
 
-GORM provides compatible Upsert support for different databases
+GORM обеспечивает поддержку Upsert (Создать или обновить) для различных баз данных
 
 ```go
 import "gorm.io/gorm/clause"
 
-// Do nothing on conflict
+// Ничего не делать при конфликте
 DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Update columns to default value on `id` conflict
+// Обновить колонки в значение по умолчанию при конфликте по полю `id`
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -216,7 +216,7 @@ DB.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// Update columns to new value on `id` conflict
+// Обновить колонки в новые значения при конфликте по полю `id`
 DB.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
@@ -226,6 +226,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+Смотрите также `FirstOrInit (первая или инициализировать)`, `FirstOrCreate (первая или создать)` в [Расширенный запрос SQL](advanced_query.html)
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+Смотрите [Чистый SQL и Конструктор SQL](sql_builder.html) для подробностей
