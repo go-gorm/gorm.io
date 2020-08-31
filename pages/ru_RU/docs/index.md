@@ -15,10 +15,10 @@ layout: страница
 * Контекст, Режим подготовки, Режим DryRun
 * Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
-* Composite Primary Key, Indexes, Constraints
+* Композитный первичный ключ, Индексы, Зависимости
 * Автомиграция
 * Logger
-* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
+* Расширяемый плагин API: Резолвер Баз данных (Множество БД, Разделение чтения/записи) / Prometheus...
 * Каждая функция поставляется с тестами
 * Дружественная для разработчиков
 
