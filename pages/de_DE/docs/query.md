@@ -28,6 +28,37 @@ result.Error        // returns error
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
+The `First`, `Last` method will find the first/last record order by primary key, it only works when querying with struct or provides model value, if no primary key defined for current model, will order by the first field, for example:
+
+```go
+var user User
+
+// works
+DB.First(&user)
+// SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
+
+// works
+result := map[string]interface{}{}
+DB.Model(&User{}).First(&result)
+// SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
+
+// doesn't work
+result := map[string]interface{}{}
+DB.Table("users").First(&result)
+
+// works with Take
+result := map[string]interface{}{}
+DB.Table("users").Take(&result)
+
+// order by first field
+type Language struct {
+  Code string
+  Name string
+}
+DB.First(&Language{})
+// SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
+```
+
 ### Retrieving with primary key
 
 GORM allows to retrieve objects using primary key(s) with inline condition, it works with numbers, using string might cause SQL Injection, check out [Inline Conditions](#inline_conditions), [Security](security.html) for details
