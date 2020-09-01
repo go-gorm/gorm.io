@@ -109,8 +109,8 @@ type User struct {
 
 ```go
 type Author struct {
-    Name  string
-    Email string
+  Name  string
+  Email string
 }
 
 type Blog struct {
@@ -121,8 +121,8 @@ type Blog struct {
 // 等效于
 type Blog struct {
   ID    int64
-    Name  string
-    Email string
+  Name  string
+  Email string
   Upvotes  int32
 }
 ```
@@ -138,8 +138,8 @@ type Blog struct {
 // 等效于
 type Blog struct {
   ID          int64
-    AuthorName  string
-    AuthorEmail string
+  AuthorName  string
+  AuthorEmail string
   Upvotes     int32
 }
 ```

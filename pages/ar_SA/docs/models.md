@@ -104,8 +104,8 @@ For a normal struct field, you can embed it with the tag `embedded`, for example
 
 ```go
 type Author struct {
-    Name  string
-    Email string
+  Name  string
+  Email string
 }
 
 type Blog struct {
@@ -116,8 +116,8 @@ type Blog struct {
 // equals
 type Blog struct {
   ID    int64
-    Name  string
-    Email string
+  Name  string
+  Email string
   Upvotes  int32
 }
 ```
@@ -133,8 +133,8 @@ type Blog struct {
 // equals
 type Blog struct {
   ID          int64
-    AuthorName  string
-    AuthorEmail string
+  AuthorName  string
+  AuthorEmail string
   Upvotes     int32
 }
 ```
