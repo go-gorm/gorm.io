@@ -15,9 +15,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## [缓存 Prepared Statement](session.html)
+## [缓存预编译语句](session.html)
 
-执行任何 SQL 时都创建 prepared statement 并缓存，可以提高后续的调用速度
+执行任何 SQL 时都创建并缓存预编译语句，可以提高后续的调用速度
 
 ```go
 // 全局模式
@@ -79,9 +79,9 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 
 用迭代或 in batches 查询并处理记录
 
-## [索引提示](hints.html)
+## [Index Hints](hints.html)
 
-[索引](indexes.html) 用于提高数据检索和 SQL 查询性能。 `索引提示` 向优化器提供了在查询处理过程中如何选择索引的信息。与 optimizer 相比，它可以更灵活地选择更有效的执行计划
+[Index](indexes.html) 用于提高数据检索和 SQL 查询性能。 `Index Hints` 向优化器提供了在查询处理过程中如何选择索引的信息。与 optimizer 相比，它可以更灵活地选择更有效的执行计划
 
 ```go
 import "gorm.io/hints"
