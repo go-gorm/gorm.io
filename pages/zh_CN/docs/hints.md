@@ -3,7 +3,7 @@ title: Hints
 layout: page
 ---
 
-GORM 提供了 optimizer/index/comment hint 支持
+GORM provides optimizer/index/comment hints support
 
 https://github.com/go-gorm/hints
 
