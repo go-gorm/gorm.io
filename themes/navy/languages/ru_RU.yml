@@ -49,7 +49,7 @@ sidebar:
     logger: Logger
     generic_interface: Универсальный интерфейс базы данных
     performance: Производительность
-    data_types: Custimize Data Types
+    data_types: Customize Data Types
     scopes: Области
     settings: Настройки
     advanced_topics: Дополнительные возможности
