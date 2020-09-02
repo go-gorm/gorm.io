@@ -38,6 +38,21 @@ func (j JSON) Value() (driver.Value, error) {
 }
 ```
 
+There are many third party packages implement the `Scanner`/`Valuer` interface, which can be used with GORM together, for example:
+
+```go
+import (
+  "github.com/google/uuid"
+  "github.com/lib/pq"
+)
+
+type Post struct {
+  ID     uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4()"`
+  Title  string
+  Tags   pq.StringArray `gorm:"type:text[]"`
+}
+```
+
 ### GormDataTypeInterface
 
 GORM will read column's database type from [tag](models.html#tags) `type`, if not found, will check if the struct implemented interface `GormDBDataTypeInterface` or `GormDataTypeInterface` and will use its result as data type
