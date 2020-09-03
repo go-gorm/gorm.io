@@ -11,11 +11,11 @@ comments: false
 * <i class="fa fa-rocket" aria-hidden="true"></i> Нетерпеливая загрузка при помощи Preload, Joins
 * <i class="fa fa-rocket" aria-hidden="true"></i> Транзакции, вложенные транзакции, точки сохранения, откат к сохраненной точке
 * <i class="fa fa-rocket" aria-hidden="true"></i> Контекст, Режим подготовки, Режим DryRun
-* <i class="fa fa-rocket" aria-hidden="true"></i> Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
-* <i class="fa fa-rocket" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
+* <i class="fa fa-rocket" aria-hidden="true"></i> Пакетная вставка, Найти в пакете, Найти/Создать из Map, CRUD с SQL Expr и Context Valuer
+* <i class="fa fa-rocket" aria-hidden="true"></i> Конструктор SQL, Upsert(Создать или обновить), Блокировка, Подсказки Оптимизатор/Индексирование/Комментарий, Именованный аргумент, Подзапрос
 * <i class="fa fa-rocket" aria-hidden="true"></i> Композитный первичный ключ, индексы, ограничения
 * <i class="fa fa-rocket" aria-hidden="true"></i> Авто миграция
 * <i class="fa fa-rocket" aria-hidden="true"></i> Logger
-* <i class="fa fa-rocket" aria-hidden="true"></i> Extendable, flexible plugin API: Database Resolver (multiple databases, read/write splitting) / Prometheus...
+* <i class="fa fa-rocket" aria-hidden="true"></i> Расширяемый плагин API: Резолвер Баз данных (нножество БД, разделение чтения/записи) / Prometheus...
 * <i class="fa fa-rocket" aria-hidden="true"></i> Каждая функция поставляется с тестами
 * <i class="fa fa-rocket" aria-hidden="true"></i> Дружественная для разработчиков
