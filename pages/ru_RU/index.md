@@ -6,8 +6,8 @@ comments: false
 ---
 
 * <i class="fa fa-rocket" aria-hidden="true"></i> Полнофункциональный ORM
-* <i class="fa fa-rocket" aria-hidden="true"></i> Associations (has one, has many, belongs to, many to many, polymorphism, single-table inheritance)
-* <i class="fa fa-rocket" aria-hidden="true"></i> Hooks (before/after create/save/update/delete/find)
+* <i class="fa fa-rocket" aria-hidden="true"></i> Связи (has one (имеет одну), has many (имеет много), belongs to (принадлежит), many to many (многие ко многим), polymorphism (полиморфизм), single-table inheritance (одно табличное представление))
+* <i class="fa fa-rocket" aria-hidden="true"></i> Хуки (before/after create/save/update/delete/find)
 * <i class="fa fa-rocket" aria-hidden="true"></i> Нетерпеливая загрузка при помощи Preload, Joins
 * <i class="fa fa-rocket" aria-hidden="true"></i> Транзакции, вложенные транзакции, точки сохранения, откат к сохраненной точке
 * <i class="fa fa-rocket" aria-hidden="true"></i> Контекст, Режим подготовки, Режим DryRun
