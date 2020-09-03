@@ -88,10 +88,10 @@ for _, user := range users {
 Prepared Statement Mode creates prepared stmt and caches them to speed up future calls
 
 ```go
-// globally mode, all operations will create prepared stmt and cache to speed up
+// глобальный режим, все операции будут создавать подготовленный stmt и кешировать для ускорения
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{PrepareStmt: true})
 
-// session mode, create prepares stmt and speed up current session operations
+// сессионный режим, создает подготовленный stmt и ускоряет работу текущей сессии
 tx := DB.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
@@ -119,7 +119,7 @@ DB.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN 
 
 #### Поиск в Map
 
-Scan result to `map[string]interface{}` or `[]map[string]interface{}`
+Сканировать результат в `map[string]interface{}` или `[]map[string]interface{}`
 
 ```go
 var result map[string]interface{}
@@ -147,7 +147,7 @@ Query and process records in batch
 
 ```go
 result := DB.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
-  // batch processing
+  // пакетная обработка
   return nil
 })
 ```
@@ -168,7 +168,7 @@ DB.Transaction(func(tx *gorm.DB) error {
     return nil
   })
 
-  return nil // commit user1 and user3
+  return nil // commit user1 и user3
 })
 ```
 
@@ -326,20 +326,20 @@ DB.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-Check out [Customize Data Types](data_types.html#gorm_valuer_interface) for details
+Смотрите [Настраиваемые типы данных](data_types.html#gorm_valuer_interface) для подробностей
 
 #### Права доступа к полю
 
-Field permissions support, permission levels: read-only, write-only, create-only, update-only, ignored
+Поддержка прав доступа полей, уровни доступа: только для чтения, только для записи, только для создания, только для обновления, игнорируется
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"->:false;<-:create"` // createonly
-  Name string `gorm:"->"` // readonly
-  Name string `gorm:"-"`  // ignored
+  Name string `gorm:"<-:create"` // разрешить читать и создавать
+  Name string `gorm:"<-:update"` // разрешить читать и обновлять
+  Name string `gorm:"<-"`        // разрешить читать и записывать (создавать и обновлять)
+  Name string `gorm:"->:false;<-:create"` // только создание
+  Name string `gorm:"->"` // только чтение
+  Name string `gorm:"-"`  // игнорируется
 }
 ```
 
@@ -469,12 +469,12 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 
 We are trying to list big breaking changes or those changes can't be caught by the compilers, please create an issue or pull request [here](https://github.com/go-gorm/gorm.io) if you found any unlisted breaking changes
 
-#### Tags
+#### Теги
 
 * GORM V2 prefer write tag name in `camelCase`, tags in `snake_case` won't works anymore, for example: `auto_increment`, `unique_index`, `polymorphic_value`, `embedded_prefix`, check out [Model Tags](models.html#tags)
 * Tags used to specify foreign keys changed to `foreignKey`, `references`, check out [Associations Tags](associations.html#tags)
 
-#### Table Name
+#### Название таблицы
 
 `TableName` will *not* allow dynamic table name anymore, the result of `TableName` will be cached for future
 
@@ -523,23 +523,23 @@ for i := 0; i < 100; i++ {
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` будет добавлено в запрос
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` будет добавлено в запрос
 }
 ```
 
 Check out [Method Chain](method_chaining.html) for details
 
-#### Default Value
+#### Значение по умолчанию
 
 GORM V2 won't auto-reload default values created with database function after creating, checkout [Default Values](create.html#default_values) for details
 
-#### Soft Delete
+#### Мягкое удаление
 
 GORM V1 will enable soft delete if the model has a field named `DeletedAt`, in V2, you need to use `gorm.DeletedAt` for the model wants to enable the feature, e.g:
 
@@ -551,7 +551,7 @@ type User struct {
 
 type User struct {
   ID      uint
-  // field with different name
+  // поле с другим названием
   Deleted gorm.DeletedAt
 }
 ```
@@ -586,16 +586,15 @@ errors.Is(err, gorm.ErrRecordNotFound)
 Before/After Create/Update/Save/Find/Delete must be defined as a method of type `func(tx *gorm.DB) error` in V2, which has unified interfaces like plugin callbacks, if defined as other types, a warning log will be printed and it won't take effect, check out [Hooks](hooks.html) for details
 
 ```go
-func (user *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx.Statement, e.g:
+func (u *User) BeforeCreate(tx *gorm.DB) error {
+  // Изменить текущую операцию через tx.Statement, например:
   tx.Statement.Select("Name", "Age")
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
-  // Operations based on tx will runs inside same transaction without clauses of current one
+  // операции на основе tx будут выполняться внутри той же транзакции, но без каких-либо текущих условий
   var role Role
   err := tx.First(&role, "name = ?", user.Role).Error
   // SELECT * FROM roles WHERE name = "admin"
-  return err
 }
 ```
 
@@ -605,38 +604,38 @@ When updating with `Update`, `Updates`, You can use `Changed` method in Hooks `B
 
 ```go
 func (user *User) BeforeUpdate(tx *gorm.DB) error {
-  if tx.Statement.Changed("Name", "Admin") { // if Name or Admin changed
+  if tx.Statement.Changed("Name", "Admin") { // Если изменились Name или Admin
     tx.Statement.SetColumn("Age", 18)
   }
 
-  if tx.Statement.Changed() { // if any fields changed
+  if tx.Statement.Changed() { // если изменилось любое поле
     tx.Statement.SetColumn("Age", 18)
   }
   return nil
 }
 
-DB.Model(&user).Update("Name", "Jinzhu") // update field `Name` to `Jinzhu`
-DB.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // update field `Name` to `Jinzhu`, `Admin` to false
-DB.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // Update none zero fields when using struct as argument, will only update `Name` to `Jinzhu`
+DB.Model(&user).Update("Name", "Jinzhu") // обновит поле `Name` в `Jinzhu`
+DB.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // обновит поле `Name` в `Jinzhu`, `Admin` в false
+DB.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // обновит не нелевые поля при использовании struct в качестве аргумента, оновит только `Name` в `Jinzhu`
 
-DB.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // update selected fields `Name`, `Admin`，`Admin` will be updated to zero value (false)
-DB.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // update selected fields exists in the map, will only update field `Name` to `Jinzhu`
+DB.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // обновит выбранные поля `Name`, `Admin`，`Admin` будет обновлен в нулевое значение (false)
+DB.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // обновит выбранные поля и существующие в map, обновит только `Name` в `Jinzhu`
 
-// Attention: `Changed` will only check the field value of `Update` / `Updates` equals `Model`'s field value, it returns true if not equal and the field will be saved
+// Внимание: `Changed` будет проверять только равено ли значение в `Update` / `Updates` и поле модели `Model`, вернет true еслин не равнои поле будет сохранено
 DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"}) // Changed("Name") => true
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"}) // Changed("Name") => false, `Name` not changed
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{"name": "jinzhu2", "admin": false}) // Changed("Name") => false, `Name` not selected to update
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"}) // Changed("Name") => false, `Name` не изменено
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{"name": "jinzhu2", "admin": false}) // Changed("Name") => false, `Name` не выбрано для обновления
 
 DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"}) // Changed("Name") => true
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed("Name") => false, `Name` not changed
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` not selected to update
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed("Name") => false, `Name` не изменено
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` не выбрано для обновления
 ```
 
-#### Plugins
+#### Плагины
 
 Plugin callbacks also need be defined as a method of type `func(tx *gorm.DB) error`, check out [Write Plugins](write_plugins.html) for details
 
-#### Updating with struct
+#### Обновление с struct
 
 When updating with struct, GORM V2 allows to use `Select` to select zero-value fields to update them, for example:
 
@@ -644,7 +643,7 @@ When updating with struct, GORM V2 allows to use `Select` to select zero-value f
 DB.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
 ```
 
-#### Associations
+#### Связи
 
 GORM V1 allows to use some settings to skip create/update associations, in V2, you can use `Select` to do the job, for example:
 
@@ -658,13 +657,13 @@ DB.Select("Company").Save(&user)
 and GORM V2 doesn't allow preload with `Set("gorm:auto_preload", true)` anymore, you can use `Preload` with `clause.Associations`, e.g:
 
 ```go
-// preload all associations
+// предзагрузка всех связей
 db.Preload(clause.Associations).Find(&users)
 ```
 
 Also, checkout field permissions, which can be used to skip creating/updating associations globally
 
-#### Join Table
+#### Join таблицы
 
 In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and define other fields, e.g:
 
@@ -691,15 +690,15 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// PersonAddress must defined all required foreign keys, or it will raise error
+// В PersonAddress должны быть определены все внешние ключи, или выбросит ошибку
 err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
 #### Count
 
-Count only accepts `*int64` as the argument
+Count принимает только `*int64` в качестве аргумента
 
-#### Migrator
+#### Мигратор
 
 * Migrator will create database foreign keys by default
 * Migrator is more independent, many API renamed to provide better support for each database with unified API interfaces
