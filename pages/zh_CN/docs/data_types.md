@@ -38,6 +38,21 @@ func (j JSON) Value() (driver.Value, error) {
 }
 ```
 
+有许多第三方包实现了 `Scanner`/`Valuer` 接口，可与 GORM 一起使用，例如：
+
+```go
+import (
+  "github.com/google/uuid"
+  "github.com/lib/pq"
+)
+
+type Post struct {
+  ID     uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4()"`
+  Title  string
+  Tags   pq.StringArray `gorm:"type:text[]"`
+}
+```
+
 ### GormDataTypeInterface
 
 GORM 会从 `type` [标签](models.html#tags) 中读取字段的数据库类型，如果找不到，则会检查该结构体是否实现了 `GormDBDataTypeInterface` 或 `GormDataTypeInterface` 接口，然后使用接口返回值作为数据类型

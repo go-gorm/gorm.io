@@ -3,7 +3,7 @@ title: Подсказки
 layout: страница
 ---
 
-GOMR обеспечивает поддержку оптимизатора/индексов/комментариев
+GORM provides optimizer/index/comment hints support
 
 https://github.com/go-gorm/hints
 

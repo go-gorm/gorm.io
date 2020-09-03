@@ -49,7 +49,7 @@ sidebar:
     logger: Logger
     generic_interface: Generic Database Interface
     performance: Performance
-    data_types: Data Type 커스터마이징
+    data_types: Customize Data Types
     scopes: Scopes
     settings: 설정
     advanced_topics: Advanced Topics

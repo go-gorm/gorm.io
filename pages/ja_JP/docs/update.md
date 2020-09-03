@@ -18,7 +18,7 @@ db.Save(&user)
 
 ## Update single column
 
-When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
+`Update`メソッドで単一のカラムを更新する際には、何らかの条件を持っていないと、`ErrMissingWhereClause`エラーが発生します。詳細については、[Block Global Updates](#block_global_updates) をチェックしてください。`Model`メソッドを使用し、その実体が主キーに値するフィールドを持つ場合、条件として実体が持つ主キーが指定されます。
 
 ```go
 // Update with conditions
