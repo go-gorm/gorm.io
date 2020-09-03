@@ -655,7 +655,7 @@ DB.Omit(clause.Associations).Save(&user)
 DB.Select("Company").Save(&user)
 ```
 
-`clause.Associations` also works with `Preload`, e.g:
+and GORM V2 doesn't allow preload with `Set("gorm:auto_preload", true)` anymore, you can use `Preload` with `clause.Associations`, e.g:
 
 ```go
 // preload all associations
