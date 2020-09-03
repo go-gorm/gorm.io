@@ -8,11 +8,11 @@ layout: page
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // データのポインタを渡す。
+result := db.Create(&user) // pass pointer of data to Create
 
-user.ID             // 挿入されたデータの主キーを返します。
-result.Error        // エラーを返します。
-result.RowsAffected // 挿入されたレコード数を返します。
+user.ID             // returns inserted data's primary key
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
 ```
 
 ## Create With Selected Fields
@@ -48,7 +48,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 
 ## <span id="batch_insert">Batch Insert</span>
 
-スライスをメソッド `Create`に渡すと、GORMはすべてのデータを挿入する1つのSQL文を生成し、主キーの値をバックフィルします。フックメソッドも呼び出されます。
+スライスをメソッド `Create`メソッドに渡すと、GORMはすべてのデータを挿入する1つのSQL文を生成します（主キーの値は埋め戻しされます）。フックメソッドも呼び出されます。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -59,7 +59,7 @@ for _, user := range users {
 }
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+[Upsert](#upsert) や [Create With Associations](#create_with_associations) を使用する場合もバッチインサートはサポートされています。
 
 ## Create From Map
 
@@ -200,7 +200,7 @@ type User struct {
 
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORM provides compatible Upsert support for different databases
+GORMは異なるデータベースに対して互換性のあるUpsertのサポートを提供します。
 
 ```go
 import "gorm.io/gorm/clause"
@@ -226,6 +226,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+`FirstOrInit`, `FirstOrCreate`については[Advanced Query](advanced_query.html)を参照してください。
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+詳細については、 [Raw SQL and SQL Builder](sql_builder.html) を参照してください。
