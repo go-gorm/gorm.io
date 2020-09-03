@@ -22,19 +22,19 @@ GORM 2.0 это перезапись с нуля, представляет не�
 * Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
 * Better customized data type support (e.g: JSON)
 
-## How To Upgrade
+## Как обновить
 
 * GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and its import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/)
 * Database drivers have been split into separate projects, e.g: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite), and its import path also changed to `gorm.io/driver/sqlite`
 
-### Install
+### Установка
 
 ```go
 go get gorm.io/gorm
-// **NOTE** GORM `v2.0.0` released with git tag `v1.20.0`
+// **ПРИМЕЧАНИЕ** GORM `v2.0.0` релиз выложен с тегом `v1.20.0`
 ```
 
-### Quick Start
+### Быстрый старт
 
 ```go
 import (
@@ -55,20 +55,20 @@ func init() {
 }
 ```
 
-## Major Features
+## Основные возможности
 
-The release note only cover major changes introduced in GORM V2 as a quick reference list
+Примечание к выпуску содержит только основные изменения, внесенные в GORM V2 в качестве краткого справочного списка
 
-#### Context Support
+#### Поддержка контекста
 
-* Database operations support `context.Context` with the `WithContext` method
-* Logger also accepts context for tracing
+* Операции с БД поддерживают `context.Context` при помощи метода `WithContext`
+* Logger также принимает контекст для отслеживания
 
 ```go
 DB.WithContext(ctx).Find(&users)
 ```
 
-#### Batch Insert
+#### Пакетная вставка
 
 * Use slice data with `Create` will generate a single SQL statement to insert all the data and backfill primary key values
 * If those data contain associations, all associations will be upserted with another SQL
@@ -83,7 +83,7 @@ for _, user := range users {
 }
 ```
 
-#### Prepared Statment Mode
+#### Подготовленный подготовленного Statment
 
 Prepared Statement Mode creates prepared stmt and caches them to speed up future calls
 
@@ -98,7 +98,7 @@ tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 ```
 
-#### DryRun Mode
+#### Режим DryRun
 
 Generates SQL without executing, can be used to check or test generated SQL
 
@@ -109,7 +109,7 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
-#### Join Preload
+#### Join с предварительной загрузкой
 
 Preload associations using INNER JOIN, and will handle null data to avoid failing to scan
 
@@ -117,7 +117,7 @@ Preload associations using INNER JOIN, and will handle null data to avoid failin
 DB.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2})
 ```
 
-#### Find To Map
+#### Поиск в Map
 
 Scan result to `map[string]interface{}` or `[]map[string]interface{}`
 
@@ -126,7 +126,7 @@ var result map[string]interface{}
 DB.Model(&User{}).First(&result, "id = ?", 1)
 ```
 
-#### Create From Map
+#### Создать из Map
 
 Create from map `map[string]interface{}` or `[]map[string]interface{}`
 
@@ -141,7 +141,7 @@ datas := []map[string]interface{}{
 DB.Model(&User{}).Create(datas)
 ```
 
-#### FindInBatches
+#### Найти в пакете(FindInBatches)
 
 Query and process records in batch
 
@@ -152,7 +152,7 @@ result := DB.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, b
 })
 ```
 
-#### Nested Transaction
+#### Вложенные транзакции
 
 ```go
 DB.Transaction(func(tx *gorm.DB) error {
@@ -185,7 +185,7 @@ tx.RollbackTo("sp1") // rollback user2
 tx.Commit() // commit user1
 ```
 
-#### Named Argument
+#### Именованные аргументы
 
 GORM supports use `sql.NamedArg`, `map[string]interface{}` as named arguments
 
@@ -209,7 +209,7 @@ DB.Exec(
 // UPDATE users SET name1 = "jinzhu", name2 = "jinzhu2", name3 = "jinzhu"
 ```
 
-#### Group Conditions
+#### Группировка условий
 
 ```go
 db.Where(
@@ -221,7 +221,7 @@ db.Where(
 // SELECT * FROM pizzas WHERE (pizza = 'pepperoni' AND (size = 'small' OR size = 'medium')) OR (pizza = 'hawaiian' AND size = 'xlarge')
 ```
 
-#### SubQuery
+#### Под Запрос
 
 ```go
 // Where SubQuery
@@ -237,7 +237,7 @@ DB.Model(&user).Update(
 )
 ```
 
-#### Upsert
+#### Upsert (обновить или создать)
 
 `clause.OnConflict` provides compatible Upsert support for different databases (SQLite, MySQL, PostgreSQL, SQL Server)
 
@@ -262,7 +262,7 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-#### Locking
+#### Блокировка
 
 ```go
 DB.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -295,7 +295,7 @@ DB.Clauses(hints.Comment("select", "master")).Find(&User{})
 
 Check out [Hints](hints.html) for details
 
-#### CRUD From SQL Expr/Context Valuer
+#### CRUD из SQL Expr/Context Valuer
 
 ```go
 type Location struct {
@@ -328,7 +328,7 @@ DB.Model(&User{ID: 1}).Updates(User{
 
 Check out [Customize Data Types](data_types.html#gorm_valuer_interface) for details
 
-#### Field permissions
+#### Права доступа к полю
 
 Field permissions support, permission levels: read-only, write-only, create-only, update-only, ignored
 
@@ -343,7 +343,7 @@ type User struct {
 }
 ```
 
-#### Track creating/updating time/unix (milli/nano) seconds for multiple fields
+#### Отслеживать создание/обновление времени/unix (мили/нано) секунд для нескольких полей
 
 ```go
 type User struct {
@@ -355,7 +355,7 @@ type User struct {
 }
 ```
 
-#### Multiple Databases, Read/Write Splitting
+#### Множественные базы данных, разделение чтения/записи
 
 GORM provides multiple databases, read/write splitting support with plugin `DB Resolver`, which also supports auto-switching database/table based on current struct/table, and multiple sources、replicas supports with customized load-balancing logic
 
@@ -367,7 +367,7 @@ GORM provides plugin `Prometheus` to collect `DBStats` and user-defined metrics
 
 Check out [Prometheus](prometheus.html) for details
 
-#### Naming Strategy
+#### Cтратегия именования
 
 GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html) for details
 
@@ -384,7 +384,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 * Slow SQL log, default slow SQL time is 100ms
 * Optimized the SQL log format so that it can be copied and executed in a database console
 
-#### Transaction Mode
+#### Режим транзакции
 
 By default, all GORM write operations run inside a transaction to ensure data consistency, you can disable it during initialization to speed up write operations if it is not required
 
@@ -394,7 +394,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-#### DataTypes (JSON as example)
+#### Типы данных (JSON в качестве примера)
 
 GORM optimizes support for custom types, so you can define a struct to support all databases
 
@@ -420,7 +420,7 @@ DB.First(&user, datatypes.JSONQuery("attributes").HasKey("role"))
 DB.First(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 ```
 
-#### Smart Select
+#### Умный выбор
 
 GORM allows select specific fields with [`Select`](query.html), and in V2, GORM provides smart select mode if you are querying with a smaller struct
 
@@ -443,7 +443,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
-#### Associations Batch Mode
+#### Пакетный режим связей
 
 Association Mode supports batch data, e.g:
 
@@ -465,7 +465,7 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## Breaking Changes
+## Критические изменения
 
 We are trying to list big breaking changes or those changes can't be caught by the compilers, please create an issue or pull request [here](https://github.com/go-gorm/gorm.io) if you found any unlisted breaking changes
 
