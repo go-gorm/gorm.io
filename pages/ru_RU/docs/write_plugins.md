@@ -16,12 +16,12 @@ layout: страница
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // crop image fields and upload them to CDN, dummy code
+    // обрезать поля картинок и загрузить на CDN, пример кода
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
-          // Get value from field
+          // Получить значение из поля
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -29,39 +29,39 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        // Get value from field
+        // Получить значение из поля
         if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
 
-        // Set value to field
+        // Установить значение в поле
         err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
-    // All fields for current model
+    // Все поля для текущей модели
     db.Statement.Schema.Fields
 
-    // All primary key fields for current model
+    // Все первичные ключи для текущей модели
     db.Statement.Schema.PrimaryFields
 
-    // Prioritized primary key field: field with DB name `id` or the first defined primary key
+    // Приоритетный первичный ключ: поле в названием id или первый определенный первичный ключ
     db.Statement.Schema.PrioritizedPrimaryField
 
-    // All relationships for current model
+    // Все связи для текущей модели
     db.Statement.Schema.Relationships
 
-    // Find field with field name or db name
+    // Найти поле при помощи названия поля или названия в БД
     field := db.Statement.Schema.LookUpField("Name")
 
-    // processing
+    // работа
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// register a callback for Create process
+// Регистрация callback для процесса Create
 ```
 
 ### Удаление функций callback
@@ -87,38 +87,38 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 Регистрация функций callback с порядком выполнения
 
 ```go
-// before gorm:create
+// перед gorm:create
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
 
-// after gorm:create
+// после gorm:create
 db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
 
-// before gorm:query
+// перед gorm:query
 db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
 
-// after gorm:delete
+// после gorm:delete
 db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
 
-// before gorm:update
+// перед gorm:update
 db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
 
-// before gorm:create and after gorm:before_create
+// перед gorm:create и помле gorm:before_create
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 
-// before any other callbacks
+// перед любым другим callback
 db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
 
-// after any other callbacks
+// после любого другого callback
 db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
 ### Существующие функции callback
 
-GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to power current GORM features, check them out before starting your plugins
+GORM предоставляет [некоторые функции callback](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) для поддержки текущих функций GORM, ознакомьтесь с ними перед началом написания своих плагинов
 
 ## Плагин
 
-GORM provides a `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
+GORM предоставляет метод `Use` для регистрации плагинов, плагин должен реализовывать интерфейс `Plugin`
 
 ```go
 type Plugin interface {

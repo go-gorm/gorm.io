@@ -121,12 +121,12 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name",
 Get the number of rows affected by a update
 
 ```go
-// Get updated records count with `RowsAffected`
+// Получить количество обновленных строк при помощи `RowsAffected`
 result := db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE role = 'admin;
 
-result.RowsAffected // returns updated records count
-result.Error        // returns updating error
+result.RowsAffected // возвращает количество обновленных записей
+result.Error        // возвращает ошибку обновления
 ```
 
 ## Advanced
@@ -136,7 +136,7 @@ result.Error        // returns updating error
 GORM allows updates column with SQL expression, e.g:
 
 ```go
-// product's ID is `3`
+// ID товара `3`
 DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
 // UPDATE "products" SET "price" = price * 2 + 100, "updated_at" = '2013-11-17 21:34:10' WHERE "id" = 3;
 
@@ -153,7 +153,7 @@ DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 And GORM also allows update with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
 
 ```go
-// Create from customized data type
+// Создать из настраимого типа данных
 type Location struct {
     X, Y int
 }
@@ -190,15 +190,15 @@ DB.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{
 If you want to skip `Hooks` methods and don't track the update time when updating, you can use `UpdateColumn`, `UpdateColumns`, it works like `Update`, `Updates`
 
 ```go
-// Update single column
+// Обновить одну колонку
 db.Model(&user).UpdateColumn("name", "hello")
 // UPDATE users SET name='hello' WHERE id = 111;
 
-// Update multiple columns
+// Обновить несколько колонок
 db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE id = 111;
 
-// Update selected columns
+// Обновить выбранные колонки
 db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
@@ -211,16 +211,16 @@ The `Changed` method only works with methods `Update`, `Updates`, and it only ch
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
-  // if Role changed
+  // если изменилось поле Role
     if tx.Statement.Changed("Role") {
     return errors.New("role not allowed to change")
     }
 
-  if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
+  if tx.Statement.Changed("Name", "Admin") { // если изменилось поле Name или Role
     tx.Statement.SetColumn("Age", 18)
   }
 
-  // if any fields changed
+  // если изменилось любое поле
     if tx.Statement.Changed() {
         tx.Statement.SetColumn("RefreshedAt", time.Now())
     }
@@ -230,18 +230,18 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"})
-// Changed("Name") => false, `Name` not changed
+// Changed("Name") => false, `Name` не изменилось
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{
   "name": "jinzhu2", "admin": false,
 })
-// Changed("Name") => false, `Name` not selected to update
+// Changed("Name") => false, `Name` не выбрано для обновления
 
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})
-// Changed("Name") => false, `Name` not changed
+// Changed("Name") => false, `Name` не изменилось
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"})
-// Changed("Name") => false, `Name` not selected to update
+// Changed("Name") => false, `Name` не выбрано для обновления
 ```
 
 ### Change Updating Values
