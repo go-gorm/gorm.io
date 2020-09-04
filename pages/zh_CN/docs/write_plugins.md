@@ -93,7 +93,7 @@ db.Callback().Create().Before("gorm:create").Register("update_created_at", updat
 // gorm:create 之后
 db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
 
-// gorm:query 之前
+// gorm:query 之后
 db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
 
 // gorm:delete 之后
