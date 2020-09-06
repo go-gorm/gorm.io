@@ -699,6 +699,29 @@ err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 
 Count 仅支持 `*int64` 作为参数
 
+#### Transactions
+
+some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
+
+```go
+db.Transaction(func(tx *gorm.DB) error {
+  // do some database operations in the transaction (use 'tx' from this point, not 'db')
+  if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
+    // return any error will rollback
+    return err
+  }
+
+  if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
+    return err
+  }
+
+  // return nil will commit the whole transaction
+  return nil
+})
+```
+
+Checkout [Transactions](transactions.html) for details
+
 #### Migrator
 
 * Migrator 默认会创建数据库外键
@@ -707,7 +730,7 @@ Count 仅支持 `*int64` 作为参数
 * 通过 `check` 标签支持检查器
 * 增强 `index` 标签的设置
 
-查看 [Migration](migration.html) 获取详情
+Checkout [Migration](migration.html) for details
 
 ```go
 type UserIndex struct {
