@@ -5,7 +5,7 @@ layout: страница
 
 ## Объявление моделей
 
-Модели являются обычными stuct с основными типами Go, указателями/псевдонимами или пользовательскими типами, реализующими интерфейсы [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) и [Valuer](https://pkg.go.dev/database/sql/driver#Valuer)
+Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
 
 Например:
 
