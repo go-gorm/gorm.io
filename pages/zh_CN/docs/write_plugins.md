@@ -87,28 +87,28 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 注册带顺序的 Callback
 
 ```go
-// before gorm:create
+// gorm:create 之前
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
 
-// after gorm:create
+// gorm:create 之后
 db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
 
-// after gorm:query
+// gorm:query 之后
 db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
 
-// after gorm:delete
+// gorm:delete 之后
 db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
 
-// before gorm:update
+// gorm:update 之前
 db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
 
-// before gorm:create and after gorm:before_create
+// 位于 gorm:before_create 之后 gorm:create 之前
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 
-// before any other callbacks
+// 所有其它 callback 之前
 db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
 
-// after any other callbacks
+// 所有其它 callback 之后
 db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
