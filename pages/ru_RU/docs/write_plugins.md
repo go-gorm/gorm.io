@@ -87,28 +87,28 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 Регистрация функций callback с порядком выполнения
 
 ```go
-// перед gorm:create
+// before gorm:create
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
 
-// после gorm:create
+// after gorm:create
 db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
 
-// перед gorm:query
+// after gorm:query
 db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
 
-// после gorm:delete
+// after gorm:delete
 db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
 
-// перед gorm:update
+// before gorm:update
 db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
 
-// перед gorm:create и помле gorm:before_create
+// before gorm:create and after gorm:before_create
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 
-// перед любым другим callback
+// before any other callbacks
 db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
 
-// после любого другого callback
+// after any other callbacks
 db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 

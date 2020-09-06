@@ -698,7 +698,30 @@ err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 
 Count принимает только `*int64` в качестве аргумента
 
-#### Мигратор
+#### Transactions
+
+some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
+
+```go
+db.Transaction(func(tx *gorm.DB) error {
+  // do some database operations in the transaction (use 'tx' from this point, not 'db')
+  if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
+    // return any error will rollback
+    return err
+  }
+
+  if err := tx.Create(&Animal{Name: "Lion"}).Error; err != nil {
+    return err
+  }
+
+  // return nil will commit the whole transaction
+  return nil
+})
+```
+
+Checkout [Transactions](transactions.html) for details
+
+#### Migrator
 
 * Migrator will create database foreign keys by default
 * Migrator is more independent, many API renamed to provide better support for each database with unified API interfaces

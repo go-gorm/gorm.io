@@ -5,7 +5,7 @@ layout: page
 
 ## Declaring Models
 
-모델은 기본 Go 유형, 포인터 / 별칭 또는 [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) 및 [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) 인터페이스를 구현하는 사용자 정의 유형이있는 일반 구조체입니다.
+Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
 
 예를 들면 다음과 같습니다:
 

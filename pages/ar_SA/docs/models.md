@@ -5,7 +5,7 @@ layout: صفحة
 
 ## التصريح بالنماذج
 
-النماذج هي هياكل Golang عادية، سواء أنواع Go الأساسية أو pointers، الواجهات [ sql.Scanner ](https://pkg.go.dev/database/sql/sql#Scanner) و [ driver.Valuer ](https://pkg.go.dev/database/sql/driver#Valuer) أيضا مدعومة
+Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
 
 مثلاً:
 
