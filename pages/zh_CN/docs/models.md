@@ -5,7 +5,7 @@ layout: page
 
 ## 模型定义
 
-模型一般基于 Go 的基本数据类型、实现了 [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) 和 [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) 接口的自定义类型以及它们的指针/别名
+Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
 
 例如：
 
