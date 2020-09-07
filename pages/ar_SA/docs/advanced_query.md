@@ -99,7 +99,7 @@ Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more de
 
 ## Find To Map
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forgot to specify `Model` or `Table`, for example:
+GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
 
 ```go
 var result map[string]interface{}
@@ -340,7 +340,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Find all paid, shipped orders that amount greater than 1000
 ```
 
-Checout [Scopes](scopes.html) for details
+Checkout [Scopes](scopes.html) for details
 
 ## <span id="count">Count</span>
 
