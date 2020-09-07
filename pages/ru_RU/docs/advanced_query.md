@@ -100,7 +100,7 @@ DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 ## Поиск в Map
 
-GORM позволяет записывать результат запроса в `map[string]interface{}` или `[]map[string]interface{}`, не забудьте указать `Model` или `Table`, например:
+GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
 
 ```go
 var result map[string]interface{}
@@ -341,7 +341,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Найти все оплаченные и отгруженные заказы с суммой более 1000
 ```
 
-Смотрите [Scopes](scopes.html) для получения дополнительной информации
+Checkout [Scopes](scopes.html) for details
 
 ## <span id="count">Количество</span>
 
