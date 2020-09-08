@@ -699,7 +699,7 @@ err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 
 Count only accepts `*int64` as the argument
 
-#### Transactions
+#### Transaksi
 
 some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
 
