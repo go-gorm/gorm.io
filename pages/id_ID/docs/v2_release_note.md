@@ -701,7 +701,7 @@ Count only accepts `*int64` as the argument
 
 #### Transaksi
 
-some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
+beberapa metoda transaksi seperti `RollbackUnlessCommitted` di hapus, lebih disarankan menggunakan metoda `Transaction` untuk membungkus transaksi anda
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
