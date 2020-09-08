@@ -20,7 +20,6 @@
   <!-- build:css build/css/navy.css -->
   {{ css('css/navy') }}
   <!-- endbuild -->
-  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
   <!-- RSS -->
