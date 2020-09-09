@@ -48,7 +48,7 @@ DB.Clauses(clause.Locking{
 クエリ内にサブクエリをネストすることができます。GORMは、パラメータとして `*gorm.DB` オブジェクトを使用するとサブクエリを生成できます。
 
 ```go
-db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 // SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
 subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
