@@ -48,7 +48,7 @@ DB.Clauses(clause.Locking{
 子查询可以嵌套在查询中，GORM 允许在使用 `*gorm.DB` 对象作为参数时生成子查询
 
 ```go
-db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 // SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
 subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
