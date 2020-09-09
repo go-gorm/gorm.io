@@ -48,7 +48,7 @@ Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
 A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
 
 ```go
-db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 // SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
 subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
