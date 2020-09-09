@@ -176,6 +176,6 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 | polymorphic      | Specifies polymorphic type                      |
 | polymorphicValue | Specifies polymorphic value, default table name |
 | many2many        | Specifies join table name                       |
-| jointForeignKey  | Specifies foreign key of jointable              |
+| joinForeignKey   | Specifies foreign key of jointable              |
 | joinReferences   | Specifies references' foreign key of jointable  |
 | constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`|
