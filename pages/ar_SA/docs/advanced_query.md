@@ -49,10 +49,12 @@ Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
 A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
 
 ```go
-Count(&count)
-// SELECT COUNT(DISTINCT(`name`)) FROM `users`
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
+// SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
-db. Select("count(distinct(name))").
+subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
+db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery).Find(&results)
+// SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
 ### <span id="from_subquery">From SubQuery</span>
