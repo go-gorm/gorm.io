@@ -225,7 +225,7 @@ db.Where(
 
 ```go
 // Where SubQuery
-db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 
 // From SubQuery
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -699,9 +699,9 @@ err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 
 Count only accepts `*int64` as the argument
 
-#### Transactions
+#### Transaksi
 
-some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
+beberapa metoda transaksi seperti `RollbackUnlessCommitted` di hapus, lebih disarankan menggunakan metoda `Transaction` untuk membungkus transaksi anda
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {

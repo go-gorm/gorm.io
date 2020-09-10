@@ -168,16 +168,17 @@ db.Omit(clause.Associations).Create(&user)
 
 ```go
 type User struct {
-  ID         int64
-  Name       string `gorm:"default:galeone"`
-  Age        int64  `gorm:"default:18"`
-    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // 数据库函数
+  ID   int64
+  Name string `gorm:"default:galeone"`
+  Age  int64  `gorm:"default:18"`
 }
 ```
 
 插入记录到数据库时，默认值 *会被用于* 填充值为 [零值](https://tour.golang.org/basics/12) 的字段
 
-**注意** `0`、`''`、`false` 之类零值，这些字段定义的默认值不会被保存到数据库，您需要使用指针类型或 Scanner/Valuer 来避免这个问题，例如：
+{% note warn %}
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+{% endnote %}
 
 ```go
 type User struct {
@@ -188,19 +189,25 @@ type User struct {
 }
 ```
 
-**注意** 对于在数据库中有默认值的字段，你必须为其 struct 设置 `default` 标签，否则 GORM 将在创建时使用该字段的零值，例如：
+{% note warn %}
+**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+{% endnote %}
 
 ```go
 type User struct {
-    ID   string `gorm:"default:uuid_generate_v3()"`
-    Name string
-    Age  uint8
+  ID        string `gorm:"default:uuid_generate_v3()"` // db func
+  FirstName string
+  LastName  string
+  Age       uint8
+  FullName  string `gorm:"->;type:GENERATED ALWAYS AS (concat(firstname,' ',lastname));default:(-);`
 }
 ```
 
+When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+
 ### <span id="upsert">Upsert 及冲突</span>
 
-GORM 为不同数据库提供了兼容的 Upsert 支持
+GORM provides compatible Upsert support for different databases
 
 ```go
 import "gorm.io/gorm/clause"
@@ -226,6 +233,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-也可以查看 [高级查询](advanced_query.html) 中的 `FirstOrInit`, `FirstOrCreate`
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-查看 [原生 SQL 及构造器](sql_builder.html) 获取更多细节
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details

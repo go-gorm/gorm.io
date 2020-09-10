@@ -14,7 +14,7 @@ type Product struct {
 }
 ```
 
-**注意：**默认情况下，整形 `PrioritizedPrimaryField` 启用了 `AutoIncrement`，要禁用它，您需要为整形字段关闭 `autoIncrement`：
+**注意：**默认情况下，整型 `PrioritizedPrimaryField` 启用了 `AutoIncrement`，要禁用它，您需要为整型字段关闭 `autoIncrement`：
 
 ```go
 type Product struct {

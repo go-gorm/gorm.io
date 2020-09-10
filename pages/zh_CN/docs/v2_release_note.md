@@ -224,14 +224,14 @@ db.Where(
 #### 子查询
 
 ```go
-// Where 子查询
-db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
+// Where SubQuery
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 
-// From 子查询
+// From SubQuery
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE age = 18
 
-// Update 子查询
+// Update SubQuery
 DB.Model(&user).Update(
   "price", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"),
 )
@@ -699,15 +699,15 @@ err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 
 Count 仅支持 `*int64` 作为参数
 
-#### Transactions
+#### 事务
 
-some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
+移除了 `RollbackUnlessCommitted` 之类的事务方法，建议使用 `Transaction` 方法包裹事务
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
-  // do some database operations in the transaction (use 'tx' from this point, not 'db')
+  // 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // return any error will rollback
+    // 返回任何错误都会回滚事务
     return err
   }
 
@@ -715,12 +715,12 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  // return nil will commit the whole transaction
+  // 返回 nil 提交事务
   return nil
 })
 ```
 
-Checkout [Transactions](transactions.html) for details
+查看 [事务](transactions.html) 获取详情
 
 #### Migrator
 
@@ -730,7 +730,7 @@ Checkout [Transactions](transactions.html) for details
 * 通过 `check` 标签支持检查器
 * 增强 `index` 标签的设置
 
-Checkout [Migration](migration.html) for details
+查看 [Migration](migration.html) 获取详情
 
 ```go
 type UserIndex struct {

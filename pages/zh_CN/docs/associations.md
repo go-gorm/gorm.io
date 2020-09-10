@@ -176,6 +176,6 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 | polymorphic      | 指定多态类型                        |
 | polymorphicValue | 指定多态值、默认表名                    |
 | many2many        | 指定连接表表名                       |
-| jointForeignKey  | 指定连接表的外键                      |
+| joinForeignKey   | 指定连接表的外键                      |
 | joinReferences   | 指定连接表的引用外键                    |
 | constraint       | 关系约束，例如：`OnUpdate`、`OnDelete` |

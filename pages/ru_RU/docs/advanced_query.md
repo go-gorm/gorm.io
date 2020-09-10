@@ -48,7 +48,7 @@ DB.Clauses(clause.Locking{
 Подзапрос может быть вложен в запрос, GORM сгенерирует подзапрос при использовании `*gorm.DB` объекта в качестве параметра
 
 ```go
-db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 // SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
 subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
@@ -100,7 +100,7 @@ DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 ## Поиск в Map
 
-GORM позволяет записывать результат запроса в `map[string]interface{}` или `[]map[string]interface{}`, не забудьте указать `Model` или `Table`, например:
+GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
 
 ```go
 var result map[string]interface{}
@@ -341,7 +341,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Найти все оплаченные и отгруженные заказы с суммой более 1000
 ```
 
-Смотрите [Scopes](scopes.html) для получения дополнительной информации
+Checkout [Scopes](scopes.html) for details
 
 ## <span id="count">Количество</span>
 

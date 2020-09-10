@@ -168,16 +168,17 @@ db.Omit(clause.Associations).Create(&user)
 
 ```go
 type User struct {
-  ID         int64
-  Name       string `gorm:"default:galeone"`
-  Age        int64  `gorm:"default:18"`
-    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
+  ID   int64
+  Name string `gorm:"default:galeone"`
+  Age  int64  `gorm:"default:18"`
 }
 ```
 
 Значение по умолчанию *будет использовано* при добавлении записи в БД для полей с [нулевыми-значениями](https://tour.golang.org/basics/12)
 
-**ПРИМЕЧАНИЕ** Любые нулевые значение, например `0`, `''`, `false` не будут сохранены в базу данных, для полей с определенным значением по умолчанию, вы можете использовать Scanner/Valuer для избежания этого, например:
+{% note warn %}
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+{% endnote %}
 
 ```go
 type User struct {
@@ -188,19 +189,25 @@ type User struct {
 }
 ```
 
-**ПРИМЕЧАНИЕ** Вы должны установить тег `default` для полей, имеющих значение по умолчанию в БД или GORM будет использовать нулевое значение поля при создании, например:
+{% note warn %}
+**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+{% endnote %}
 
 ```go
 type User struct {
-    ID   string `gorm:"default:uuid_generate_v3()"`
-    Name string
-    Age  uint8
+  ID        string `gorm:"default:uuid_generate_v3()"` // db func
+  FirstName string
+  LastName  string
+  Age       uint8
+  FullName  string `gorm:"->;type:GENERATED ALWAYS AS (concat(firstname,' ',lastname));default:(-);`
 }
 ```
 
+When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+
 ### <span id="upsert">Upsert (Создать или обновить) / При конфликте</span>
 
-GORM обеспечивает поддержку Upsert (Создать или обновить) для различных баз данных
+GORM provides compatible Upsert support for different databases
 
 ```go
 import "gorm.io/gorm/clause"
@@ -226,6 +233,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Смотрите также `FirstOrInit (первая или инициализировать)`, `FirstOrCreate (первая или создать)` в [Расширенный запрос SQL](advanced_query.html)
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-Смотрите [Чистый SQL и Конструктор SQL](sql_builder.html) для подробностей
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
