@@ -100,7 +100,7 @@ DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 ## Find 至 map
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORM 允许扫描结果至 `map[string]interface{}` 或 `[]map[string]interface{}`，此时别忘了指定 `Model` 或 `Table`，例如：
 
 ```go
 var result map[string]interface{}
@@ -341,7 +341,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // 查找所有金额大于 1000 且已付款或已发货的订单
 ```
 
-Checkout [Scopes](scopes.html) for details
+查看 [Scopes](scopes.html) 获取详情
 
 ## <span id="count">Count</span>
 
