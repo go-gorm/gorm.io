@@ -152,7 +152,7 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## Connection Pool
 
-GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
+GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
 
 ```go
 sqlDB, err := db.DB()
