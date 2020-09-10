@@ -1,6 +1,6 @@
 ---
-title: Advanced Query
-layout: page
+title: Query Avanzada
+layout: páginas
 ---
 
 ## <span id="smart_select">Smart Select Fields</span>
