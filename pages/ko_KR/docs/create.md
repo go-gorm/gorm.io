@@ -168,16 +168,17 @@ db.Omit(clause.Associations).Create(&user)
 
 ```go
 type User struct {
-  ID         int64
-  Name       string `gorm:"default:galeone"`
-  Age        int64  `gorm:"default:18"`
-    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
+  ID   int64
+  Name string `gorm:"default:galeone"`
+  Age  int64  `gorm:"default:18"`
 }
 ```
 
 기본값은 [zero-value](https://tour.golang.org/basics/12) 필드에 사용됩니다
 
-**NOTE** `0`, `''`, `false`와 같은 null값은 기본 값으로 정의 된 해당 필드에 대해 데이터베이스에 저장되지 않습니다. 이를 방지하기 위해 포인터 또는 Scanner/Valuer를 사용할 수 있습니다. 예를 들면 다음과 같습니다.
+{% note warn %}
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+{% endnote %}
 
 ```go
 type User struct {
@@ -188,19 +189,25 @@ type User struct {
 }
 ```
 
-**NOTE** database 또는 GORM에 기본값이있는 필드에 대해서 기본 기본값을 설정해야합니다. 그렇지 않으면 GORM에서 다음과 같이 생성 할 때 필드의 0 값을 사용합니다.
+{% note warn %}
+**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+{% endnote %}
 
 ```go
 type User struct {
-    ID   string `gorm:"default:uuid_generate_v3()"`
-    Name string
-    Age  uint8
+  ID        string `gorm:"default:uuid_generate_v3()"` // db func
+  FirstName string
+  LastName  string
+  Age       uint8
+  FullName  string `gorm:"->;type:GENERATED ALWAYS AS (concat(firstname,' ',lastname));default:(-);`
 }
 ```
 
+When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORM은 서로 다른 데이터베이스에 대해 호환 가능한 Upsert 지원을 제공합니다.
+GORM provides compatible Upsert support for different databases
 
 ```go
 import "gorm.io/gorm/clause"
@@ -226,6 +233,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-또한 [고급 쿼리 문서](advanced_query.html)에서 `FirstOrInit`, `FirstOrCreate`에 대하여 확인하십시오.
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-자세한 내용은 [Raw SQL 및 SQL Builder](sql_builder.html)를 확인하십시오.
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
