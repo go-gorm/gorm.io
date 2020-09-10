@@ -154,7 +154,7 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## 连接池
 
-GORM 使用 \[database/sql\](https://pkg.go.dev/database/sql) 来维护连接池
+GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
 
 ```go
 sqlDB, err := db.DB()
