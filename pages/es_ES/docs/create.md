@@ -168,16 +168,17 @@ You can define default values for fields with tag `default`, for example:
 
 ```go
 type User struct {
-  ID         int64
-  Name       string `gorm:"default:galeone"`
-  Age        int64  `gorm:"default:18"`
-    uuid.UUID  UUID   `gorm:"type:uuid;default:gen_random_uuid()"` // db func
+  ID   int64
+  Name string `gorm:"default:galeone"`
+  Age  int64  `gorm:"default:18"`
 }
 ```
 
 Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
+{% note warn %}
 **NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+{% endnote %}
 
 ```go
 type User struct {
@@ -188,15 +189,21 @@ type User struct {
 }
 ```
 
-**NOTE** You have to setup the `default` tag for fields having default value in databae or GORM will use the zero value of the field when creating, for example:
+{% note warn %}
+**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+{% endnote %}
 
 ```go
 type User struct {
-    ID   string `gorm:"default:uuid_generate_v3()"`
-    Name string
-    Age  uint8
+  ID        string `gorm:"default:uuid_generate_v3()"` // db func
+  FirstName string
+  LastName  string
+  Age       uint8
+  FullName  string `gorm:"->;type:GENERATED ALWAYS AS (concat(firstname,' ',lastname));default:(-);`
 }
 ```
+
+When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
 
 ### <span id="upsert">Upsert / On Conflict</span>
 
