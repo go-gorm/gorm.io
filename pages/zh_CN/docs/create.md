@@ -177,7 +177,7 @@ type User struct {
 插入记录到数据库时，默认值 *会被用于* 填充值为 [零值](https://tour.golang.org/basics/12) 的字段
 
 {% note warn %}
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**注意** `0`、`''`、`false` 之类零值，这些字段定义的默认值不会被保存到数据库，您需要使用指针类型或 Scanner/Valuer 来避免这个问题，例如：
 {% endnote %}
 
 ```go
@@ -190,12 +190,12 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+**注意** 若要数据库有默认、虚拟/生成的值，你必须为字段设置 `default` 标签。若要在迁移时跳过默认值定义，你可以使用 `default:(-)`，例如：
 {% endnote %}
 
 ```go
 type User struct {
-  ID        string `gorm:"default:uuid_generate_v3()"` // db func
+  ID        string `gorm:"default:uuid_generate_v3()"` // 数据库函数
   FirstName string
   LastName  string
   Age       uint8
@@ -203,11 +203,11 @@ type User struct {
 }
 ```
 
-When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+使用虚拟/生成的值时，你可能需要禁用它的创建、更新权限，查看 [字段级权限](models.html#field_permission) 获取详情
 
 ### <span id="upsert">Upsert 及冲突</span>
 
-GORM provides compatible Upsert support for different databases
+GORM 为不同数据库提供了兼容的 Upsert 支持
 
 ```go
 import "gorm.io/gorm/clause"
@@ -233,6 +233,6 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+也可以查看 [高级查询](advanced_query.html) 中的 `FirstOrInit`, `FirstOrCreate`
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+查看 [原生 SQL 及构造器](sql_builder.html) 获取详情
