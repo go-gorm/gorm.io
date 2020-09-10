@@ -224,14 +224,14 @@ db.Where(
 #### 子查询
 
 ```go
-// Where SubQuery
+// Where 子查询
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 
-// From SubQuery
+// From 子查询
 db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE age = 18
 
-// Update SubQuery
+// Update 子查询
 DB.Model(&user).Update(
   "price", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"),
 )
