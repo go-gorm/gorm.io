@@ -1,11 +1,11 @@
 ---
-title: Query Avanzada
-layout: páginas
+title: Advanced Query
+layout: page
 ---
 
 ## <span id="smart_select">Smart Select Fields</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM te permite seleccionar campos específicos con [`Select`](query.html), si a menudo usas esto en tu aplicación, quizás quieras definir un struct más pequeño para usar en tu API en el que puedas seleccionar campos específicos automáticamente. Por ejemplo:
 
 ```go
 type User struct {
