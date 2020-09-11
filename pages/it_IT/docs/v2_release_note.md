@@ -465,6 +465,24 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
+#### Delete Associations when deleting
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+
+```go
+// delete user's account when deleting user
+db.Select("Account").Delete(&user)
+
+// delete user's Orders, CreditCards relations when deleting user
+db.Select("Orders", "CreditCards").Delete(&user)
+
+// delete user's has one/many/many2many relations when deleting user
+db.Select(clause.Associations).Delete(&user)
+
+// delete users's account when deleting users
+db.Select("Account").Delete(&users)
+```
+
 ## Breaking Changes
 
 We are trying to list big breaking changes or those changes can't be caught by the compilers, please create an issue or pull request [here](https://github.com/go-gorm/gorm.io) if you found any unlisted breaking changes
@@ -693,6 +711,17 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
 
 // PersonAddress must defined all required foreign keys, or it will raise error
 err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
+```
+
+After that, you could use normal GORM methods to operate the join table data, for example:
+
+```go
+var results []PersonAddress
+DB.Where("person_id = ?", person.ID).Find(&results)
+
+DB.Where("address_id = ?", address.ID).Delete(&PersonAddress{})
+
+DB.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
 ```
 
 #### Count

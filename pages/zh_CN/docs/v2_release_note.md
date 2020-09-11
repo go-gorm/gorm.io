@@ -465,18 +465,36 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
+#### Delete Associations when deleting
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+
+```go
+// delete user's account when deleting user
+db.Select("Account").Delete(&user)
+
+// delete user's Orders, CreditCards relations when deleting user
+db.Select("Orders", "CreditCards").Delete(&user)
+
+// delete user's has one/many/many2many relations when deleting user
+db.Select(clause.Associations).Delete(&user)
+
+// delete users's account when deleting users
+db.Select("Account").Delete(&users)
+```
+
 ## 破坏性变更
 
-我们尽可能的列出破坏性、无法被编译器捕获的变更。如果您发现了任何遗漏的内容，欢迎在 [这里](https://github.com/go-gorm/gorm.io) 创建 issue 或 pr
+We are trying to list big breaking changes or those changes can't be caught by the compilers, please create an issue or pull request [here](https://github.com/go-gorm/gorm.io) if you found any unlisted breaking changes
 
-#### Tag
+#### Tags
 
 * GORM V2 使用 `camelCase` 风格的 tag 名。`snake_case` 风格的 tag 已经失效，例如： `auto_increment`、`unique_index`、`polymorphic_value`、`embeded_prefix`，查看 [Model Tag](models.html#tags) 获取详情
 * 用于指定外键的 tag 已变更为 `foreignKey`，`references`，查看 [Association Tag](associations.html#tags) 获取详情
 
 #### Table Name
 
-`TableName` *不再* 允许动态表名， 因为 `TableName` 的返回值会被缓存下来
+`TableName` will *not* allow dynamic table name anymore, the result of `TableName` will be cached for future
 
 ```go
 func (User) TableName() string {
@@ -484,7 +502,7 @@ func (User) TableName() string {
 }
 ```
 
-动态表名请使用 `Scopes`，例如：
+Please use `Scopes` for dynamic tables, for example:
 
 ```go
 func UserTable(u *User) func(*gorm.DB) *gorm.DB {
@@ -496,20 +514,20 @@ func UserTable(u *User) func(*gorm.DB) *gorm.DB {
 DB.Scopes(UserTable(&user)).Create(&user)
 ```
 
-#### 方法链和协程安全
+#### Method Chain Safety/Goroutine Safety
 
-为了减少 GC 分配，在使用链式调用时，GORM V2 会共享 `Statement`，且只在初始化 `*gorm.DB` 或调用 `New Session Method` 后创建新的 `Statement`。想要复用 `*gorm.DB`，您需要确保该它刚调用过 `New Session Method`，例如：
+To reduce GC allocs, GORM V2 will share `Statement` when using method chains, and will only create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, to reuse a `*gorm.DB`, you need to make sure it just after a `New Session Method`, for example:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// 对于刚初始化的 *gorm.DB 是安全的
+// Safe for new initialized *gorm.DB
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// 不安全，因为复用了 Statement
+// NOT Safe as reusing Statement
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
@@ -521,27 +539,27 @@ for i := 0; i < 100; i++ {
 }
 
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// 调用 `New Session Method` 后是安全的
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` 会应用至该查询
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
-// 调用 `New Session Method` 后是安全的
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` 会应用至该查询
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 ```
 
-查看 [方法链](method_chaining.html) 获取详情
+Check out [Method Chain](method_chaining.html) for details
 
-#### 默认值
+#### Default Value
 
-创建记录后，GORM V2 不会自动加载由数据库生成的默认值，查看 [默认值](create.html#default_values) 获取详情
+GORM V2 won't auto-reload default values created with database function after creating, checkout [Default Values](create.html#default_values) for details
 
-#### 软删除
+#### Soft Delete
 
-在 GORM V1 中，如果 model 中有一个名为 `DeletedAt` 的字段则自动开启软删除。在V2，您需要在想启用软删除的 model 中使用 `gorm.DeletedAt`，例如：
+GORM V1 will enable soft delete if the model has a field named `DeletedAt`, in V2, you need to use `gorm.DeletedAt` for the model wants to enable the feature, e.g:
 
 ```go
 type User struct {
@@ -551,18 +569,18 @@ type User struct {
 
 type User struct {
   ID      uint
-  // 字段名无要求
+  // field with different name
   Deleted gorm.DeletedAt
 }
 ```
 
 {% note warn %}
-**注意：** `gorm.Model` 使用了 `gorm.DeletedAt`，如果你已经嵌入了它，则不需要做什么修改
+**NOTE:** `gorm.Model` is using `gorm.DeletedAt`, if you are embedding it, nothing needs to change
 {% endnote %}
 
 #### BlockGlobalUpdate
 
-GORM V2 默认启用了 `BlockGlobalUpdate` 模式。想要触发全局 update/delete，你必须使用一些条件、原生 SQL 或者启用 `AllowGlobalUpdate` 模式，例如：
+GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
 DB.Where("1 = 1").Delete(&User{})
@@ -574,24 +592,24 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 #### ErrRecordNotFound
 
-GORM V2 只有在你使用 `First`、`Last`、`Take` 这些预期会返回结果的方法查询记录时，才会返回 `ErrRecordNotFound`，我们还移除了 `RecordNotFound` 方法，请使用 `errors.Is` 来检查错误，例如：
+GORM V2 only returns `ErrRecordNotFound` when you are querying with methods `First`, `Last`, `Take` which is expected to return some result, and we have also removed method `RecordNotFound` in V2, please use `errors.Is` to check the error, e.g:
 
 ```go
 err := DB.First(&user).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
-#### Hook 方法
+#### Hooks Method
 
-在 V2 中，Before/After Create/Update/Save/Find/Delete 必须定义为 `func(tx *gorm.DB) error` 类型的方法，这是类似于插件 callback 的统一接口。如果定义为其它类型，它不会生效，并且会打印一个警告日志，查看 [Hook](hooks.html) 获取详情
+Before/After Create/Update/Save/Find/Delete must be defined as a method of type `func(tx *gorm.DB) error` in V2, which has unified interfaces like plugin callbacks, if defined as other types, a warning log will be printed and it won't take effect, check out [Hooks](hooks.html) for details
 
 ```go
 func (user *User) BeforeCreate(tx *gorm.DB) error {
-  // 通过 tx.Statement 修改当前操作，例如：
+  // Modify current operation through tx.Statement, e.g:
   tx.Statement.Select("Name", "Age")
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
-  // 除了当前子句，基于 tx 的操作会运行在同一个事务中
+  // Operations based on tx will runs inside same transaction without clauses of current one
   var role Role
   err := tx.First(&role, "name = ?", user.Role).Error
   // SELECT * FROM roles WHERE name = "admin"
@@ -599,54 +617,54 @@ func (user *User) BeforeCreate(tx *gorm.DB) error {
 }
 ```
 
-#### Update Hook 支持 `Changed`
+#### Update Hooks support `Changed` to check fields changed or not
 
-当使用 `Update`，`Updates` 更新时，您可以在 `BeforeUpdate`, `BeforeSave` Hook 中使用 `Changed` 方法来检查字段是否有更改
+When updating with `Update`, `Updates`, You can use `Changed` method in Hooks `BeforeUpdate`, `BeforeSave` to check a field changed or not
 
 ```go
 func (user *User) BeforeUpdate(tx *gorm.DB) error {
-  if tx.Statement.Changed("Name", "Admin") { // 如果 Name 或 Admin 有更改
+  if tx.Statement.Changed("Name", "Admin") { // if Name or Admin changed
     tx.Statement.SetColumn("Age", 18)
   }
 
-  if tx.Statement.Changed() { // 如果任意字段有更改
+  if tx.Statement.Changed() { // if any fields changed
     tx.Statement.SetColumn("Age", 18)
   }
   return nil
 }
 
-DB.Model(&user).Update("Name", "Jinzhu") // 更新 `Name` 字段值为 `Jinzhu`
-DB.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // 更新 `Name` 字段值为 `Jinzhu`，`Admin` 字段值为 false
-DB.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // 使用 struct 作为参数时，仅更新非零值字段，所以这里仅更新 `Name` 字段值为 `Jinzhu`
+DB.Model(&user).Update("Name", "Jinzhu") // update field `Name` to `Jinzhu`
+DB.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // update field `Name` to `Jinzhu`, `Admin` to false
+DB.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // Update none zero fields when using struct as argument, will only update `Name` to `Jinzhu`
 
-DB.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // 更新选中的字段 `Name`, `Admin`，其中 `Admin` 字段会被更新为零值（false）
-DB.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // 更新选择的且在 map 中的字段，仅更新 `Name` 字段值为 `Jinzhu`
+DB.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // update selected fields `Name`, `Admin`，`Admin` will be updated to zero value (false)
+DB.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // update selected fields exists in the map, will only update field `Name` to `Jinzhu`
 
-// 注意: `Changed` 只检查 `Update` / `Updates` 的值是否等于 `Model` 字段的值，不相等则返回 true，并保存该字段的值
+// Attention: `Changed` will only check the field value of `Update` / `Updates` equals `Model`'s field value, it returns true if not equal and the field will be saved
 DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"}) // Changed("Name") => true
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"}) // Changed("Name") => false, `Name` 没有更改
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{"name": "jinzhu2", "admin": false}) // Changed("Name") => false, `Name` 字段没有被选择
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"}) // Changed("Name") => false, `Name` not changed
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{"name": "jinzhu2", "admin": false}) // Changed("Name") => false, `Name` not selected to update
 
 DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"}) // Changed("Name") => true
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed("Name") => false, `Name` 没有更改
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` 字段没有被选择
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed("Name") => false, `Name` not changed
+DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` not selected to update
 ```
 
-#### 插件
+#### Plugins
 
-插件 callback 也需要被定义为 `func(tx *gorm.DB) error` 类型的方法，查看 [Write Plugins](write_plugins.html) 获取详情
+Plugin callbacks also need be defined as a method of type `func(tx *gorm.DB) error`, check out [Write Plugins](write_plugins.html) for details
 
-#### 使用 struct 更新
+#### Updating with struct
 
-使用 struct 更新时，GORM V2 允许使用 `Select` 来选择要更新的零值字段，例如：
+When updating with struct, GORM V2 allows to use `Select` to select zero-value fields to update them, for example:
 
 ```go
 DB.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
 ```
 
-#### 关联
+#### Associations
 
-GORM V1允许使用一些设置来跳过 create/update 关联。在 V2 中，您可以使用 `Select` 来完成这项工作，例如：
+GORM V1 allows to use some settings to skip create/update associations, in V2, you can use `Select` to do the job, for example:
 
 ```go
 DB.Omit(clause.Associations).Create(&user)
@@ -655,18 +673,18 @@ DB.Omit(clause.Associations).Save(&user)
 DB.Select("Company").Save(&user)
 ```
 
-此外，GORM V2 不再允许通过 `Set("gorm:auto_preload", true)` 进行预加载，你可以将 `Preload` 和 `clause.Associations` 配合使用，例如：
+and GORM V2 doesn't allow preload with `Set("gorm:auto_preload", true)` anymore, you can use `Preload` with `clause.Associations`, e.g:
 
 ```go
-// 预加载所有关联
+// preload all associations
 db.Preload(clause.Associations).Find(&users)
 ```
 
-此外，还可以查看字段权限，它可以用来全局跳过 creating/updating 关联
+Also, checkout field permissions, which can be used to skip creating/updating associations globally
 
 #### Join Table
 
-在 GORM V2 中，`JoinTable` 可以是一个带有 `软删除`、`Hook` 且定义了其它字段的全功能 model，例如：
+In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and define other fields, e.g:
 
 ```go
 type Person struct {
@@ -691,23 +709,34 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// PersonAddress 必须定义好所需的外键，否则会报错
+// PersonAddress must defined all required foreign keys, or it will raise error
 err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
+```
+
+After that, you could use normal GORM methods to operate the join table data, for example:
+
+```go
+var results []PersonAddress
+DB.Where("person_id = ?", person.ID).Find(&results)
+
+DB.Where("address_id = ?", address.ID).Delete(&PersonAddress{})
+
+DB.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
 ```
 
 #### Count
 
-Count 仅支持 `*int64` 作为参数
+Count only accepts `*int64` as the argument
 
-#### 事务
+#### Transactions
 
-移除了 `RollbackUnlessCommitted` 之类的事务方法，建议使用 `Transaction` 方法包裹事务
+some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
-  // 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
+  // do some database operations in the transaction (use 'tx' from this point, not 'db')
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // 返回任何错误都会回滚事务
+    // return any error will rollback
     return err
   }
 
@@ -715,12 +744,12 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  // 返回 nil 提交事务
+  // return nil will commit the whole transaction
   return nil
 })
 ```
 
-查看 [事务](transactions.html) 获取详情
+Checkout [Transactions](transactions.html) for details
 
 #### Migrator
 
@@ -730,7 +759,7 @@ db.Transaction(func(tx *gorm.DB) error {
 * 通过 `check` 标签支持检查器
 * 增强 `index` 标签的设置
 
-查看 [Migration](migration.html) 获取详情
+Checkout [Migration](migration.html) for details
 
 ```go
 type UserIndex struct {

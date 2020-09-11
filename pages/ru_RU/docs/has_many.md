@@ -145,3 +145,5 @@ type CreditCard struct {
   UserID uint
 }
 ```
+
+You are also allowed to delete selected has many associations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details

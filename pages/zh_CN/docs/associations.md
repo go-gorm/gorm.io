@@ -167,6 +167,24 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
+## <span id="delete_with_select">Delete with Select</span>
+
+你也可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
+
+```go
+// 删除 user 时，也删除 user 的 account
+db.Select("Account").Delete(&user)
+
+// 删除 user 时，也删除 user 的 Orders、CreditCards 记录
+db.Select("Orders", "CreditCards").Delete(&user)
+
+// 删除 user 时，也删除用户所有 has one/many、many2many 记录
+db.Select(clause.Associations).Delete(&user)
+
+// 删除 user 时，也删除 user 的 account
+db.Select("Account").Delete(&users)
+```
+
 ## <span id="tags">关联标签</span>
 
 | 标签               | 描述                            |

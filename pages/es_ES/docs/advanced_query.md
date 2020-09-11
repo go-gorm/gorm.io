@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Smart Select Fields</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM te permite seleccionar campos específicos con [`Select`](query.html), si a menudo usas esto en tu aplicación, quizás quieras definir un struct más pequeño para usar en tu API en el que puedas seleccionar campos específicos automáticamente. Por ejemplo:
 
 ```go
 type User struct {
@@ -350,13 +350,13 @@ Get matched records count
 ```go
 var count int64
 db.Model(&User{}).Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+// SELECT count(1) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
 
 db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu'; (count)
+// SELECT count(1) FROM users WHERE name = 'jinzhu'; (count)
 
 db.Table("deleted_users").Count(&count)
-// SELECT count(*) FROM deleted_users;
+// SELECT count(1) FROM deleted_users;
 
 // Count with Distinct
 DB.Model(&User{}).Distinct("name").Count(&count)

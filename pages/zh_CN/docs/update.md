@@ -246,7 +246,7 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 
 ### 在更新时修改值
 
-To change updating values in Before Hooks, you should use `SetColumn` unless it is a full updates with `Save`, for example:
+若要在 Before 钩子中改变要更新的值，如果它是一个完整的更新，可以使用 `Save`；否则，应该使用 `SetColumn` ，例如：
 
 ```go
 func (user *User) BeforeSave(tx *gorm.DB) (err error) {

@@ -153,11 +153,13 @@ type Language struct {
 // CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
+You are also allowed to delete selected many2many relations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+
 ## Композитные внешние ключи
 
-При использовании [Композитных первичных ключей](composite_primary_key.html) для моделей, GORM по умолчанию включит композитные внешние ключи
+If you are using [Composite Primary Keys](composite_primary_key.html) for your models, GORM will enable composite foreign keys by default
 
-Вам разрешено переопределить внешние ключи по умолчанию, для указания нескольких внешних ключей, просто разделите их имя запятыми, например:
+You are allowed to override the default foreign keys, to specify multiple foreign keys, just separate those keys' name by commas, for example:
 
 ```go
 type Tag struct {
@@ -192,4 +194,4 @@ type Blog struct {
 //   foreign key: tag_id, reference: tags.id
 ```
 
-Также смотрите [Композитный первичный Ключ](composite_primary_key.html)
+Also check out [Composite Primary Keys](composite_primary_key.html)

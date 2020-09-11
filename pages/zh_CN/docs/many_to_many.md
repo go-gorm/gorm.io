@@ -153,6 +153,8 @@ type Language struct {
 // CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
+你也可以在删除记录时通过 `Select` 来删除 many2many 关系的记录，查看 [Delete with Select](associations.html#delete_with_select) 获取详情
+
 ## 复合外键
 
 如果您的模型使用了 [复合主键](composite_primary_key.html)，GORM 会默认启用复合外键。
@@ -192,4 +194,4 @@ type Blog struct {
 //   foreign key: tag_id, reference: tags.id
 ```
 
-还可以查看 [复合主键](composite_primary_key.html)
+查看 [复合主键](composite_primary_key.html) 获取详情
