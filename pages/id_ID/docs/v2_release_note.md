@@ -695,13 +695,24 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
 err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
+After that, you could use normal GORM methods to operate the join table data, for example:
+
+```go
+var results []PersonAddress
+DB.Where("person_id = ?", person.ID).Find(&results)
+
+DB.Where("address_id = ?", address.ID).Delete(&PersonAddress{})
+
+DB.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
+```
+
 #### Count
 
 Count only accepts `*int64` as the argument
 
 #### Transaksi
 
-beberapa metoda transaksi seperti `RollbackUnlessCommitted` di hapus, lebih disarankan menggunakan metoda `Transaction` untuk membungkus transaksi anda
+some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
