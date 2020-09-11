@@ -350,13 +350,13 @@ Get matched records count
 ```go
 var count int64
 db.Model(&User{}).Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+// SELECT count(1) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
 
 db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu'; (count)
+// SELECT count(1) FROM users WHERE name = 'jinzhu'; (count)
 
 db.Table("deleted_users").Count(&count)
-// SELECT count(*) FROM deleted_users;
+// SELECT count(1) FROM deleted_users;
 
 // Count with Distinct
 DB.Model(&User{}).Distinct("name").Count(&count)
