@@ -146,4 +146,4 @@ type CreditCard struct {
 }
 ```
 
-You are also allowed to delete selected has many associations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+你也可以在删除记录时通过 `Select` 来删除 has many 关联的记录，查看 [Delete with Select](associations.html#delete_with_select) 获取详情
