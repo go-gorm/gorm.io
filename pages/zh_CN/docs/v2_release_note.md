@@ -695,19 +695,30 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
 err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
+After that, you could use normal GORM methods to operate the join table data, for example:
+
+```go
+var results []PersonAddress
+DB.Where("person_id = ?", person.ID).Find(&results)
+
+DB.Where("address_id = ?", address.ID).Delete(&PersonAddress{})
+
+DB.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
+```
+
 #### Count
 
-Count 仅支持 `*int64` 作为参数
+Count only accepts `*int64` as the argument
 
 #### 事务
 
-移除了 `RollbackUnlessCommitted` 之类的事务方法，建议使用 `Transaction` 方法包裹事务
+some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
-  // 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
+  // do some database operations in the transaction (use 'tx' from this point, not 'db')
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // 返回任何错误都会回滚事务
+    // return any error will rollback
     return err
   }
 
@@ -715,12 +726,12 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  // 返回 nil 提交事务
+  // return nil will commit the whole transaction
   return nil
 })
 ```
 
-查看 [事务](transactions.html) 获取详情
+Checkout [Transactions](transactions.html) for details
 
 #### Migrator
 
@@ -730,7 +741,7 @@ db.Transaction(func(tx *gorm.DB) error {
 * 通过 `check` 标签支持检查器
 * 增强 `index` 标签的设置
 
-查看 [Migration](migration.html) 获取详情
+Checkout [Migration](migration.html) for details
 
 ```go
 type UserIndex struct {
