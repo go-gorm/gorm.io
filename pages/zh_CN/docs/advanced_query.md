@@ -350,22 +350,22 @@ Count 用于获取匹配的记录数
 ```go
 var count int64
 db.Model(&User{}).Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+// SELECT count(1) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
 
 db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu'; (count)
+// SELECT count(1) FROM users WHERE name = 'jinzhu'; (count)
 
 db.Table("deleted_users").Count(&count)
-// SELECT count(*) FROM deleted_users;
+// SELECT count(1) FROM deleted_users;
 
-// 去重计数
+// Count with Distinct
 DB.Model(&User{}).Distinct("name").Count(&count)
 // SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
 // SELECT count(distinct(name)) FROM deleted_users
 
-// 分组计数
+// Count with Group
 users := []User{
   {Name: "name1"},
   {Name: "name2"},
