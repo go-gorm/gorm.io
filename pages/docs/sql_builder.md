@@ -8,19 +8,20 @@ layout: page
 Query Raw SQL with `Scan`
 
 ```go
-type Result struct {
+type Users struct {
   ID   int
   Name string
   Age  int
+  Role
 }
 
-var result Result
+var result Users
 db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
 
 db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
 
 var age int
-DB.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
+db.Raw("select sum(age) from users where role = ?", "admin").Row().Scan(&age)
 ```
 
 `Exec` with Raw SQL
