@@ -8,14 +8,14 @@ layout: page
 Query Raw SQL with `Scan`
 
 ```go
-type Users struct {
+type User struct {
   ID   int
   Name string
   Age  int
   Role
 }
 
-var result Users
+var result User
 db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
 
 db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
