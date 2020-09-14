@@ -60,7 +60,7 @@ type Language struct {
 //   внешний ключ: language_id, ссылается на: languages.id
 ```
 
-To override them, you can use tag `foreignKey`, `references`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
+Чтобы перезаписать их, вы можете использовать тэг `foreignKey`, `references`, `joinForeignKey`, `joinReferences`, необязательно использовать их вместе, вы можете просто использовать один из них, чтобы перезаписать внешние ключи
 
 ```go
 type User struct {
