@@ -63,7 +63,7 @@ type User struct {
 db.Preload(clause.Associations).Find(&users)
 ```
 
-`clause.Associations` won't preload nested associations, but you can use it with [Nested Preloading](#nested_preloading) together, e.g:
+`clause.Associations` 不会预加载嵌套的关联，但你可以使用[嵌套预加载](#nested_preloading) 例如：
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload(clause.Associations).Find(&users)
@@ -71,10 +71,10 @@ db.Preload("Orders.OrderItems.Product").Preload(clause.Associations).Find(&users
 
 ## 带条件的预加载
 
-GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
+GORM 允许带条件的 Preload 关联，类似于[内联条件](query.html#inline_conditions)
 
 ```go
-// Preload Orders with conditions
+// 带条件的预加载 Order
 db.Preload("Orders", "state NOT IN (?)", "cancelled").Find(&users)
 // SELECT * FROM users;
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4) AND state NOT IN ('cancelled');
@@ -86,7 +86,7 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 
 ## 自定义预加载 SQL
 
-You are able to custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+您可以通过 `func(db *gorm.DB) *gorm.DB` 实现自定义预加载 SQL，例如：
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
@@ -96,14 +96,14 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.amount DESC;
 ```
 
-## <span id="nested_preloading">Nested Preloading</span>
+## <span id="nested_preloading">嵌套预加载</span>
 
-GORM supports nested preloading, for example:
+GORM 支持嵌套预加载，例如：
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)
 
-// Customize Preload conditions for `Orders`
-// And GORM won't preload unmatched order's OrderItems then
+// 自定义预加载 `Orders` 的条件
+// 这样，GORM 就不会加载不匹配的 order 记录
 db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
 ```
