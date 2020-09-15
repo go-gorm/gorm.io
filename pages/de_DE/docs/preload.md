@@ -57,9 +57,16 @@ type User struct {
   CompanyID  uint
   Company    Company
   Role       Role
+  Orders     []Order
 }
 
 db.Preload(clause.Associations).Find(&users)
+```
+
+`clause.Associations` won't preload nested associations, but you can use it with [Nested Preloading](#nested_preloading) together, e.g:
+
+```go
+db.Preload("Orders.OrderItems.Product").Preload(clause.Associations).Find(&users)
 ```
 
 ## Preload with conditions
@@ -89,7 +96,7 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.amount DESC;
 ```
 
-## Nested Preloading
+## <span id="nested_preloading">Nested Preloading</span>
 
 GORM supports nested preloading, for example:
 
