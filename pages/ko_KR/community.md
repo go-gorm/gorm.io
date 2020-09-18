@@ -16,7 +16,7 @@ layout: page
 
 ## 링크
 
-* [GORM V2 강좌 예시 링크](#contribute)
+* An admin system based on GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
 ## 영상
 
