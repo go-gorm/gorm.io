@@ -682,9 +682,36 @@ db.Preload(clause.Associations).Find(&users)
 
 此外，还可以查看字段权限，它可以用来全局跳过 creating/updating 关联
 
+GORM V2 will use upsert to save associations when creating/updating a record, won't save full associations data anymore to protect your data from saving uncompleted data, for example:
+
+```go
+user := User{
+  Name:            "jinzhu",
+  BillingAddress:  Address{Address1: "Billing Address - Address 1"},
+  ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
+  Emails:          []Email{
+    {Email: "jinzhu@example.com"},
+    {Email: "jinzhu-2@example.com"},
+  },
+  Languages:       []Language{
+    {Name: "ZH"},
+    {Name: "EN"},
+  },
+}
+
+db.Create(&user)
+// BEGIN TRANSACTION;
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "languages" ("name") VALUES ('ZH'), ('EN') ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1), (111, 2) ON DUPLICATE KEY DO NOTHING;
+// COMMIT;
+  ```
+
 #### Join Table
 
-在 GORM V2 中，`JoinTable` 可以是一个带有 `软删除`、`Hook` 且定义了其它字段的全功能 model，例如：
+In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and define other fields, e.g:
 
 ```go
 type Person struct {
@@ -709,11 +736,11 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// PersonAddress 必须定义好所需的外键，否则会报错
+// PersonAddress must defined all required foreign keys, or it will raise error
 err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
-然后，您可以使用标准的 GORM 方法来操作连接表的数据，例如：
+After that, you could use normal GORM methods to operate the join table data, for example:
 
 ```go
 var results []PersonAddress
@@ -726,17 +753,17 @@ DB.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
 
 #### Count
 
-Count 仅支持 `*int64` 作为参数
+Count only accepts `*int64` as the argument
 
 #### 事务
 
-移除了 `RollbackUnlessCommitted` 之类的事务方法，建议使用 `Transaction` 方法包裹事务
+some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
-  // 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
+  // do some database operations in the transaction (use 'tx' from this point, not 'db')
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // 返回任何错误都会回滚事务
+    // return any error will rollback
     return err
   }
 
@@ -744,12 +771,12 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  // 返回 nil 提交事务
+  // return nil will commit the whole transaction
   return nil
 })
 ```
 
-查看 [事务](transactions.html) 获取详情
+Checkout [Transactions](transactions.html) for details
 
 #### Migrator
 
@@ -759,7 +786,7 @@ db.Transaction(func(tx *gorm.DB) error {
 * 通过 `check` 标签支持检查器
 * 增强 `index` 标签的设置
 
-查看 [Migration](migration.html) 获取详情
+Checkout [Migration](migration.html) for details
 
 ```go
 type UserIndex struct {
