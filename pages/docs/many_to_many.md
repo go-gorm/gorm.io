@@ -66,19 +66,24 @@ To override them, you can use tag `foreignKey`, `references`, `joinForeignKey`, 
 type User struct {
 	gorm.Model
 	Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:UserRefer"`
-	Refer    uint
+	Refer    uint      `gorm:"index:,unique"`
 }
 
 type Profile struct {
 	gorm.Model
 	Name      string
-	UserRefer uint
+	UserRefer uint `gorm:"index:,unique"`
 }
 
 // Which creates join table: user_profiles
 //   foreign key: user_refer_id, reference: users.refer
 //   foreign key: profile_refer, reference: profiles.user_refer
 ```
+
+{% note warn %}
+**NOTE:**
+Some databases only allow create database foreign keys that reference on a field having unique index, so you need to specify the `unique index` tag if you are creating database foreign keys when migrating
+{% endnote %}
 
 ## Self-Referential Many2Many
 
