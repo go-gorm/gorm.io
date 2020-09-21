@@ -711,7 +711,7 @@ db.Create(&user)
 
 #### Join Table
 
-In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and define other fields, e.g:
+在 GORM V2 中，`JoinTable` 可以是一个带有 `软删除`、`Hook` 且定义了其它字段的全功能 model，例如：
 
 ```go
 type Person struct {
@@ -736,11 +736,11 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// PersonAddress must defined all required foreign keys, or it will raise error
+// PersonAddress 必须定义好所需的外键，否则会报错
 err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
-After that, you could use normal GORM methods to operate the join table data, for example:
+然后，您可以使用标准的 GORM 方法来操作连接表的数据，例如：
 
 ```go
 var results []PersonAddress
@@ -753,17 +753,17 @@ DB.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
 
 #### Count
 
-Count only accepts `*int64` as the argument
+Count 仅支持 `*int64` 作为参数
 
 #### 事务
 
-some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
+移除了 `RollbackUnlessCommitted` 之类的事务方法，建议使用 `Transaction` 方法包裹事务
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
-  // do some database operations in the transaction (use 'tx' from this point, not 'db')
+  // 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // return any error will rollback
+    // 返回任何错误都会回滚事务
     return err
   }
 
@@ -771,12 +771,12 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  // return nil will commit the whole transaction
+  // 返回 nil 提交事务
   return nil
 })
 ```
 
-Checkout [Transactions](transactions.html) for details
+查看 [事务](transactions.html) 获取详情
 
 #### Migrator
 
@@ -786,7 +786,7 @@ Checkout [Transactions](transactions.html) for details
 * 通过 `check` 标签支持检查器
 * 增强 `index` 标签的设置
 
-Checkout [Migration](migration.html) for details
+查看 [Migration](migration.html) 获取详情
 
 ```go
 type UserIndex struct {
