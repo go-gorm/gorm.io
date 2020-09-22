@@ -66,13 +66,13 @@ type Language struct {
 type User struct {
     gorm.Model
     Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:UserRefer"`
-    Refer    uint
+    Refer    uint      `gorm:"index:,unique"`
 }
 
 type Profile struct {
     gorm.Model
     Name      string
-    UserRefer uint
+    UserRefer uint `gorm:"index:,unique"`
 }
 
 // Which creates join table: user_profiles
@@ -80,9 +80,13 @@ type Profile struct {
 //   foreign key: profile_refer, reference: profiles.user_refer
 ```
 
+{% note warn %}
+**NOTE:** Some databases only allow create database foreign keys that reference on a field having unique index, so you need to specify the `unique index` tag if you are creating database foreign keys when migrating
+{% endnote %}
+
 ## Самосвязанный Many2Many
 
-Самосвязанная связь Many2Many
+Self-referencing many2many relationship
 
 ```go
 type User struct {
@@ -97,15 +101,15 @@ type User struct {
 
 ## Нетерпеливая загрузка
 
-GORM позволяет использовать нетерпеливую загрузку для связей has many (имеет много) с помощью `Preload`, смотрите [Предзагрузка (Нетерпеливая загрузка)](preload.html) для подробностей
+GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
 
 ## CRUD с Many2Many
 
-Пожалуйста, смотрите [режим связей](associations.html#Association-Mode) для работы с many2many связями
+Please checkout [Association Mode](associations.html#Association-Mode) for working with many2many relations
 
 ## Настроить таблицу связей
 
-`Таблица связей` может быть полнофункциональной моделью, например `Soft Delete`,`Хуки` поддерживают и определяют больше полей, вы можете настроить его при помощи `SetupJoinTable`, например:
+`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports, and define more fields, you can setup it with `SetupJoinTable`, for example:
 
 ```go
 type Person struct {
