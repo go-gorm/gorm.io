@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## 根据主键删除
 
-GORM 允许使用内联条件指定删除对象的主键，但只支持整形主键，查看 [查询内联条件](query.thml#inline_conditions) 获取详情。
+GORM 允许通过内联条件指定主键来检索对象，但只支持整型数值，因为 string 可能导致 SQL 注入。查看 [内联条件、安全](query.thml#inline_conditions) 获取详情
 
 ```go
 db.Delete(&User{}, 10)
