@@ -24,8 +24,7 @@ layout: страница
 
 ## Открытый исходный код
 
-* [GORM V2 пример ссылки на плагин](#contribute)
-* [gormt - GORM mysql в golang struct](https://github.com/xxjwxc/gormt)
+* [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
 
 ## <span id="contribute">Внести изменения в эту страницу</span>
 
