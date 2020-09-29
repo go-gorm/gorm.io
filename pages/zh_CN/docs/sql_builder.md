@@ -39,7 +39,7 @@ DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10
 
 ## <span id="named_argument">命名参数</span>
 
-GORM 支持 [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) 和 `map[string]interface{}{}` 形式的命名参数，例如：
+GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg), `map[string]interface{}{}` or struct, for example:
 
 ```go
 DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -48,14 +48,26 @@ DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&us
 DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
 // SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
 
-// 命名参数和原生 SQL
-DB.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name", sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
+// Named Argument with Raw SQL
+DB.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
+   sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
 // SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
 
-DB.Exec("UPDATE users SET name1 = @name, name2 = @name2, name3 = @name", sql.Named("name", "jinzhunew"), sql.Named("name2", "jinzhunew2"))
+DB.Exec("UPDATE users SET name1 = @name, name2 = @name2, name3 = @name",
+   sql.Named("name", "jinzhunew"), sql.Named("name2", "jinzhunew2"))
 // UPDATE users SET name1 = "jinzhunew", name2 = "jinzhunew2", name3 = "jinzhunew"
 
-DB.Raw("SELECT * FROM users WHERE (name1 = @name AND name3 = @name) AND name2 = @name2", map[string]interface{}{"name": "jinzhu", "name2": "jinzhu2"}).Find(&user)
+DB.Raw("SELECT * FROM users WHERE (name1 = @name AND name3 = @name) AND name2 = @name2",
+   map[string]interface{}{"name": "jinzhu", "name2": "jinzhu2"}).Find(&user)
+// SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
+
+type NamedArgument struct {
+    Name string
+    Name2 string
+}
+
+DB.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = @Name2",
+     NamedArgument{Name: "jinzhu", Name2: "jinzhu2"}).Find(&user)
 // SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
 ```
 
