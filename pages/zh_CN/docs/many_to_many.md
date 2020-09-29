@@ -86,7 +86,7 @@ type Profile struct {
 
 ## 自引用 Many2Many
 
-Self-referencing many2many relationship
+自引用 many2many 关系
 
 ```go
 type User struct {

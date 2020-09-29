@@ -24,8 +24,7 @@ layout: page
 
 ## 开源软件
 
-* [GORM V2 插件链接示例](#contribute)
-* [gormt - 数据库 到 golang 结构体映射工具](https://github.com/xxjwxc/gormt)
+* [gormt - 将 mysql 转换为 golang struct](https://github.com/xxjwxc/gormt)
 
 ## <span id="contribute">完善本页面</span>
 

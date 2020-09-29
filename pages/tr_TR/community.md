@@ -24,7 +24,6 @@ layout: page
 
 ## Open Sources
 
-* [GORM V2 plugins example link](#contribute)
 * [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
 
 ## <span id="contribute">Contribute to this page</span>
