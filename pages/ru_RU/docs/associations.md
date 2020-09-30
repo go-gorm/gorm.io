@@ -101,9 +101,9 @@ db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Langua
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 
-db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
+db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 
-db.Model(&user).Association("CreditCard").Append(CreditCard{Number: "411111111111"})
+db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
 ### Заменить связи
