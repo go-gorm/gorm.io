@@ -3,21 +3,21 @@ title: Create
 layout: page
 ---
 
-## Create Record
+## Crear Registro
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // pass pointer of data to Create
+result := db.Create(&user) // puntero de la data a crear
 
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+user.ID             // devuelve la clave primaria
+result.Error        // devuelve el error
+result.RowsAffected // devuelve la cantidad de registros creados
 ```
 
-## Create With Selected Fields
+## Crear con campos específicos
 
-Create with selected fields
+Crear con campos específicos
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
