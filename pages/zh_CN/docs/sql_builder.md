@@ -48,7 +48,7 @@ DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&us
 DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
 // SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
 
-// Named Argument with Raw SQL
+// 原生 SQL 的命名参数
 DB.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
    sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
 // SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
