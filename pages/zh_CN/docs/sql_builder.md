@@ -39,7 +39,7 @@ DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10
 
 ## <span id="named_argument">命名参数</span>
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg), `map[string]interface{}{}` or struct, for example:
+GORM 支持 [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg)、`map[string]interface{}{}` 或 struct 形式的命名参数，例如：
 
 ```go
 DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
