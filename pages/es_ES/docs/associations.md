@@ -5,7 +5,7 @@ layout: page
 
 ## Crear/ actualizar Automaticamente
 
-GORM guardará automáticamente asociaciones y su referencia usando [Upsert](create.html#upsert) al crear/actualizar un registro.
+GORM guardará automáticamente asociaciones y su referencia al usar [Upsert](create.html#upsert), cuando se crear/actualiza un registro.
 
 ```go
 user := User{
