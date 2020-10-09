@@ -15,16 +15,16 @@ result.Error        // 에러를 반환합니다
 result.RowsAffected // 입력된 레코드의 개수를 반환합니다.
 ```
 
-## Selected Fields를 이용하여 생성
+## Create Record With Selected Fields
 
-Selected Fields를 이용하여 생성
+Create a record and assign a value to the fields specified.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Selected Fields없이 생성
+Create a record and assign a value to the fields omitted.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +33,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## Hooks 생성하기
 
-GORM은 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` Hooks를 허용합니다. 해당 메서드는 레코드를 만들 때 호출됩니다. 자세한 내용은 [Hooks](hooks.html)를 참조하십시오.
+GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -48,7 +48,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 
 ## <span id="batch_insert">일괄 삽입</span>
 
-Create 메서드에 슬라이스 데이터를 전달하면 GORM은 모든 데이터를 삽입하고 기본 키를 채우기위한 단일 SQL 문을 생성하며, Hooks 메서드또한 호출됩니다.
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -81,7 +81,7 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 **NOTE** map으로 생성하면, hooks가 호출되지 않으며, 연결이 저장되지 않고, 기본키가 채워지지 않습니다.
 {% endnote %}
 
-## <span id="create_from_sql_expr">SQL Expr/Context Valuer로 생성</span>
+## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
 
 GORM을 사용하면 SQL 표현식을 사용하여 데이터를 삽입 할 수 있습니다.이 목표를 달성하는 데는 두 가지 방법이 있습니다. `map [string] interface {`} 또는 [사용자 정의 데이터 유형](data_types.html#gorm_valuer_interface)에서 생성합니다.
 

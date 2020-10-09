@@ -3,7 +3,7 @@ title: Подключение к базе данных
 layout: страница
 ---
 
-GORM официально поддерживает базы данных MySQL, PostgreSQL, SQlite, SQL Server
+GORM officially supports databases MySQL, PostgreSQL, SQLite, SQL Server
 
 ## MySQL
 
@@ -24,7 +24,7 @@ func main() {
 **ПРИМЕЧАНИЕ:** Для корректной обработки `time.Time`, вам нужно включить `parseTime` как параметр. ([больше параметров](https://github.com/go-sql-driver/mysql#parameters)) Для полной поддержки кодировки UTF-8, вам необходимо изменить `charset=utf8` на `charset=utf8mb4`. Смотрите [эту статью](https://mathiasbynens.be/notes/mysql-utf8mb4) для подробностей
 {% endnote %}
 
-MySQl Driver предоставляет [несколько расширенных настроек](https://github.com/go-gorm/mysql), которые можно использовать при инициализации, например:
+MySQL Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{

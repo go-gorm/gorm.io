@@ -70,7 +70,7 @@ type User struct {
 
 ### <name id="time_tracking">创建/更新时间追踪（纳秒、毫秒、秒、Time）</span>
 
-GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果您定义了他们，GORM 在创建/更新时会自动填充 [当前时间](gorm_config.html#now_func) 至这些字段
+GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will set the  [current time](gorm_config.html#now_func) when creating/updating if the fields are defined
 
 要使用不同名称的字段，您可以配置 `autoCreateTim`、`autoUpdateTim` 标签
 
@@ -147,7 +147,7 @@ type Blog struct {
 
 ### <span id="tags">字段标签</span>
 
-声明 model 时，tag 是可选的，GORM 支持以下 tag：tag 名大小写不敏感，但建议使用 `camelCase` 风格
+Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however `camelCase` is preferred.
 
 | 标签名            | 说明                                                                                                                                                                                                                                         |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -170,7 +170,7 @@ type Blog struct {
 | check          | 创建检查约束，例如 `check:age > 13`，查看 [约束](constraints.html) 获取详情                                                                                                                                                                               |
 | <-             | 设置字段写入的权限， `<-:create` 只创建、`<-:update` 只更新、`<-:false` 无写入权限、`<-` 创建和更新权限                                                                                                                                                       |
 | ->             | 设置字段读的权限，`->:false` 无读权限                                                                                                                                                                                                                |
-| -              | 忽略该字段，`-` 无读写权限                                                                                                                                                                                                                            |
+| -              | ignore this field, `-` no read/write permission                                                                                                                                                                                            |
 
 ### 关联标签
 

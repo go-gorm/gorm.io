@@ -103,19 +103,32 @@ DB.Session(&gorm.Session{
 // UPDATE users SET `name` = "jinzhu"
 ```
 
+## FullSaveAssociations
+
+GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record, if you want to update associations's data, you should use the `FullSaveAssociations` mode, e.g:
+
+```go
+db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
+// ...
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY SET address1=VALUES(address1);
+// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY SET email=VALUES(email);
+// ...
+```
+
 ## Context
 
-通过 `Context` 选项，您可以传入 `Context` 来追踪 SQL 操作，例如：
+With the `Context` option, you can set the `Context` for following SQL operations, for example:
 
 ```go
 timeoutCtx, _ := context.WithTimeout(context.Background(), time.Second)
 tx := db.Session(&Session{Context: timeoutCtx})
 
-tx.First(&user) // 带 timeoutCtx 的查询
-tx.Model(&user).Update("role", "admin") // 带 timeoutCtx 的更新
+tx.First(&user) // query with context timeoutCtx
+tx.Model(&user).Update("role", "admin") // update with context timeoutCtx
 ```
 
-GORM 也提供了快捷调用方法 `WithContext`，其实现如下：
+GORM also provides shortcut method `WithContext`,  here is the definition:
 
 ```go
 func (db *DB) WithContext(ctx context.Context) *DB {
@@ -125,7 +138,7 @@ func (db *DB) WithContext(ctx context.Context) *DB {
 
 ## Logger
 
-Gorm 允许使用 `Logger` 选项自定义内建 Logger，例如：
+Gorm allows customize built-in logger with the `Logger` option, for example:
 
 ```go
 newLogger := logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags),
@@ -139,11 +152,11 @@ db.Session(&Session{Logger: newLogger})
 db.Session(&Session{Logger: logger.Default.LogMode(logger.Silent)})
 ```
 
-查看 [Logger](logger.html) 获取详情
+Checkout [Logger](logger.html) for more details
 
 ## NowFunc
 
-`NowFunc` 允许改变 GORM 获取当前时间的实现，例如：
+`NowFunc` allows change the function to get current time of GORM, for example:
 
 ```go
 db.Session(&Session{
@@ -155,7 +168,7 @@ db.Session(&Session{
 
 ## Debug
 
-`Debug` 只是将会话的 `Logger` 修改为调试模式的快捷方法，其实现如下：
+`Debug` is a shortcut method to change session's `Logger` to debug mode,  here is the definition:
 
 ```go
 func (db *DB) Debug() (tx *DB) {

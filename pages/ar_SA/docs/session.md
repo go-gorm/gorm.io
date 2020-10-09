@@ -94,6 +94,19 @@ DB.Session(&gorm.Session{
 // UPDATE users SET `name` = "jinzhu"
 ```
 
+## FullSaveAssociations
+
+GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record, if you want to update associations's data, you should use the `FullSaveAssociations` mode, e.g:
+
+```go
+db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
+// ...
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY SET address1=VALUES(address1);
+// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY SET email=VALUES(email);
+// ...
+```
+
 ## Context
 
 With the `Context` option, you can set the `Context` for following SQL operations, for example:

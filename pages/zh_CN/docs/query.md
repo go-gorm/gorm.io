@@ -59,9 +59,9 @@ DB.First(&Language{})
 // SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
 ```
 
-### 根据主键检索
+### Retrieving objects with primary key
 
-GORM 允许通过内联条件指定主键来检索对象，但只支持整形数值，因为 string 可能导致 SQL 注入。查看 [内联条件](#inline_conditions)、[安全](security.html) 获取详情
+Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions). Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
 
 ```go
 db.First(&user, 10)
@@ -74,7 +74,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-## 检索对象
+## Retrieving all objects
 
 ```go
 // 获取全部记录
