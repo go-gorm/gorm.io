@@ -15,16 +15,16 @@ result.Error        // 返回 error
 result.RowsAffected // 返回插入记录的条数
 ```
 
-## 选定字段创建
+## Create Record With Selected Fields
 
-用选定字段的来创建
+Create a record and assign a value to the fields specified.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-创建时排除选定字段
+Create a record and assign a value to the fields omitted.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +33,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## 创建钩子
 
-GORM 允许 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` 等钩子，创建记录时会调用这些方法, 详情请参阅 [钩子](hooks.html)
+GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -48,7 +48,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 
 ## <span id="batch_insert">批量插入</span>
 
-将切片数据传递给 `Create` 方法，GORM 将生成一个单一的 SQL 语句来插入所有数据，并回填主键的值，钩子方法也会被调用。
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -81,7 +81,7 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 **注意：** 根据 map 创建记录时，association 不会被调用，且主键也不会自动填充
 {% endnote %}
 
-## <span id="create_from_sql_expr">使用 SQL 表达式、Context Valuer 创建记录</span>
+## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
 
 GORM 允许使用 SQL 表达式插入数据，有两种方法实现这个目标。根据 `map[string]interface{}` 或 [自定义数据类型](data_types.html#gorm_valuer_interface) 创建，例如：
 
