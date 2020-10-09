@@ -70,7 +70,7 @@ type User struct {
 
 ### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
 
-GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will fill [current time](gorm_config.html#now_func) into it when creating/updating if they are defined
+GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will set the  [current time](gorm_config.html#now_func) when creating/updating if the fields are defined
 
 To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
 
@@ -147,7 +147,7 @@ type Blog struct {
 
 ### <span id="tags">Fields Tags</span>
 
-Tags are optional to use when declaring models, GORM supports the following tags: Tag name case doesn't matter, `camelCase` is preferred to use.
+Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however `camelCase` is preferred.
 
 | 태그 이름          | 설명                                                                                                                                                                                                                                                                                                               |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -170,7 +170,7 @@ Tags are optional to use when declaring models, GORM supports the following tags
 | check          | check constraint를 생성합니다. 예: `check:age > 13`, [Constraints](constraints.html) 를 확인하세요                                                                                                                                                                                                                         |
 | <-             | 필드의 쓰기 권한을 설정합니다. `<-:create` 생성만 가능, `<-:update` 수정만 가능, `<-:false` 쓰기권한 없에기, `<-` 생성/수정 권한                                                                                                                                                                                                         |
 | ->             | 필드의 읽기 권한을 설정합니다, `->:false` 읽기권한 없에기                                                                                                                                                                                                                                                                         |
-| -              | 해당필드 무시                                                                                                                                                                                                                                                                                                          |
+| -              | ignore this field, `-` no read/write permission                                                                                                                                                                                                                                                                  |
 
 ### Associations Tags
 
