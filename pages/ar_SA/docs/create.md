@@ -10,9 +10,9 @@ db. Omit("Name", "Age", "CreatedAt"). Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## Create With Selected Fields
+## Create Record With Selected Fields
 
-Create with selected fields
+Create a record and assign a value to the fields specified.
 
 ```go
 AssignmentColumns([]string{"name", "age"}),
@@ -22,7 +22,7 @@ AssignmentColumns([]string{"name", "age"}),
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Create without selected fields
+Create a record and assign a value to the fields omitted.
 
 ```go
 AssignmentColumns([]string{"name", "age"}),
@@ -34,7 +34,7 @@ AssignmentColumns([]string{"name", "age"}),
 
 ## Create Hooks
 
-GORM allows hooks `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`, those methods will be called when creating a record, refer [Hooks](hooks.html) for details
+GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -49,7 +49,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 
 ## <span id="batch_insert">Batch Insert</span>
 
-Pass slice data to method `Create`, GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -82,7 +82,7 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 **NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
 {% endnote %}
 
-## <span id="create_from_sql_expr">Create From SQL Expr/Context Valuer</span>
+## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
 
 GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
 
