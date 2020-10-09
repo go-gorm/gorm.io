@@ -38,7 +38,7 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Find all paid, shipped orders that amount greater than 1000
 ```
 
-### <span id="pagination">Pagination</span>
+### <span id="pagination">ページング</span>
 
 ```go
 func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {

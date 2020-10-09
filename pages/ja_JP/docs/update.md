@@ -36,7 +36,7 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 
 ## Updates multiple columns
 
-`Updates` supports update with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
+`Updates`は`構造体`もしくは`map[string]interface{}`での更新に対応しています。`構造体`での更新時のみ、非ゼロ値のフィールドはデフォルト値が設定されます
 
 ```go
 // Update attributes with `struct`, will only update non-zero fields

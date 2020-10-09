@@ -682,7 +682,7 @@ db.Preload(clause.Associations).Find(&users)
 
 此外，还可以查看字段权限，它可以用来全局跳过 creating/updating 关联
 
-GORM V2 will use upsert to save associations when creating/updating a record, won't save full associations data anymore to protect your data from saving uncompleted data, for example:
+在创建、更新记录时，GORM V2 将使用 upsert 来保存关联记录。不会再保存完整的关联数据，避免受未完成数据的影响，以保护您的数据，例如：
 
 ```go
 user := User{
