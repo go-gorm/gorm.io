@@ -59,10 +59,9 @@ DB.First(&Language{})
 // SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
 ```
 
-### Retrieving objects with primary key
+### Retrieving with primary key
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions).
-Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
+GORM allows to retrieve objects using primary key(s) with inline condition, it works with numbers, using string might cause SQL Injection, check out [Inline Conditions](#inline_conditions), [Security](security.html) for details
 
 ```go
 db.First(&user, 10)
@@ -75,7 +74,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-## Retrieving all objects
+## Retrieving objects
 
 ```go
 // Get all records
