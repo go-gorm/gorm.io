@@ -34,6 +34,17 @@ db.Create(&user)
 db.Save(&user)
 ```
 
+If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+
+```go
+db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
+// ...
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY SET address1=VALUES(address1);
+// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY SET email=VALUES(email);
+// ...
+```
+
 ## Skip Auto Create/Update
 
 To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
