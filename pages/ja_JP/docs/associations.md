@@ -34,9 +34,20 @@ db.Create(&user)
 db.Save(&user)
 ```
 
+If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+
+```go
+db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
+// ...
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY SET address1=VALUES(address1);
+// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY SET email=VALUES(email);
+// ...
+```
+
 ## Skip Auto Create/Update
 
-作成/更新時の自動保存をスキップするには、`Select` または`Omit`を使用します。例：
+To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
 
 ```go
 user := User{
@@ -53,25 +64,19 @@ user := User{
   },
 }
 
-db.Create(&user)
-// BEGIN TRANSACTION;
-// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "addresses" (address1) VALUES ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('ZH') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1) ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('EN') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 2) ON DUPLICATE KEY DO NOTHING;
-// COMMIT;
+db.Select("Name").Create(&user)
+// INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
-db.Save(&user)
+db.Omit("BillingAddress").Create(&user)
+// Skip create BillingAddress when creating a user
+
+db.Omit(clause.Associations).Create(&user)
+// Skip all associations when creating a user
 ```
 
 ## Association Mode
 
-アソシエーションモードには、リレーションシップを処理するために一般的に使用されるヘルパーメソッドがいくつか含まれています。
+Association Mode contains some commonly used helper methods to handle relationships
 
 ```go
 // Start Association Mode
