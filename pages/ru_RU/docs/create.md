@@ -15,16 +15,16 @@ result.Error        // возвращает ошибку
 result.RowsAffected // возвращает количество вставленных записей
 ```
 
-## Создать с указанными полями
+## Create Record With Selected Fields
 
-Создать с указанными полями
+Create a record and assign a value to the fields specified.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Создать без указанных полей
+Create a record and assign a value to the fields omitted.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +33,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## Создать хуки
 
-GORM позволяет хуки `BeforeSave (перед сохранением)`, `BeforeCreate (перед созданием)`, `AfterSave (после сохранения)`, `AfterCreate (после создания)`, эти методы будут вызваны при создании записи, смотрите [Хуки](hooks.html) для подробностей
+GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -48,7 +48,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 
 ## <span id="batch_insert">Пакетная вставка</span>
 
-Передайте массив с данными в метод `Create`, GORM создаст запрос SQL для вставки и заполнит первичными ключами массив, будут также вызваны методы хуков.
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -81,7 +81,7 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 **ПРИМЕЧАНИЕ** При создании из map, хуки не будут вызываться, связи не будут сохранены и значения первичных ключей не будут возвращены
 {% endnote %}
 
-## <span id="create_from_sql_expr">Создать из SQL Expr/Context Valuer</span>
+## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
 
 GORM позволяет вставить данные при помощи выражения SQL, существует два способа достижения этой цели, создать из `map[string]interface{}` или [Пользовательские типы данных](data_types.html#gorm_valuer_interface), например:
 
