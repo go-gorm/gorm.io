@@ -15,16 +15,16 @@ result.Error        // returns error
 result.RowsAffected // returns inserted records count
 ```
 
-## Create With Selected Fields
+## Create Record With Selected Fields
 
-選んだフィールドで作成
+Create a record and assign a value to the fields specified.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-選んだフィールド以外で作成
+Create a record and assign a value to the fields omitted.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +33,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## Create Hooks
 
-GORMは `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`をフックします。これらのメソッドはレコードを作成する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
+GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -48,7 +48,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 
 ## <span id="batch_insert">Batch Insert</span>
 
-スライスをメソッド `Create`メソッドに渡すと、GORMはすべてのデータを挿入する1つのSQL文を生成します（主キーの値は埋め戻しされます）。フックメソッドも呼び出されます。
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -81,7 +81,7 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 **NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
 {% endnote %}
 
-## <span id="create_from_sql_expr">Create From SQL Expr/Context Valuer</span>
+## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
 
 GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
 
