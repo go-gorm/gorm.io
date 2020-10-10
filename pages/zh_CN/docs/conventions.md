@@ -65,7 +65,7 @@ func UserTable(user User) func (db *gorm.DB) *gorm.DB {
 DB.Scopes(UserTable(user)).Create(&user)
 ```
 
-### 临时指定表明
+### 临时指定表名
 
 您可以使用 `Table` 方法临时指定表名，例如：
 
