@@ -51,7 +51,7 @@ type Company struct {
 
 Belongs toを定義する場合、GORMは通常、所有側の主キーフィールドを外部キーの値として使用します、。上記の例では`Company`のフィールド`ID`を使用します。
 
-UserをComponyに割り当てると、GORMはComponyの `ID` をUserの `CompanyID`フィールドに保存します。
+UserをCompanyに割り当てると、GORMはCompanyの `ID` をUserの `CompanyID`フィールドに保存します。
 
 `references`タグを用いて変更することもできます。
 
