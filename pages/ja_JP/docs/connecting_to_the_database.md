@@ -77,11 +77,11 @@ import (
   "gorm.io/gorm"
 )
 
-dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
+dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/shanghai"
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+Postgresのdatabase/sqlドライバとして [pgx](https://github.com/jackc/pgx) を使用しています。これはデフォルトでprepared statement cacheを有効にしています。無効にするには:
 
 ```go
 // https://github.com/go-gorm/postgres
@@ -91,9 +91,9 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### ドライバーのカスタマイズ
 
-GORM allows customize the PostgreSQL driver with the `DriverName` option, for example:
+GORMでは、 `DriverName` オプションを使用してPostgreSQLドライバをカスタマイズできます。例:
 
 ```go
 import (
@@ -107,9 +107,9 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 })
 ```
 
-### Existing database connection
+### 既存のデータベース接続
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORMでは、既存のデータベース接続で `*gorm.DB` を初期化することができます
 
 ```go
 import (
