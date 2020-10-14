@@ -128,7 +128,7 @@ tx.First(&user) // query with context timeoutCtx
 tx.Model(&user).Update("role", "admin") // update with context timeoutCtx
 ```
 
-GORM also provides shortcut method `WithContext`,  here is the definition:
+GORM 也提供了简写形式的方法 `WithContext`，其实现如下：
 
 ```go
 func (db *DB) WithContext(ctx context.Context) *DB {
@@ -138,7 +138,7 @@ func (db *DB) WithContext(ctx context.Context) *DB {
 
 ## Logger
 
-Gorm allows customize built-in logger with the `Logger` option, for example:
+Gorm 允许使用 `Logger` 选项自定义内置 Logger，例如：
 
 ```go
 newLogger := logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags),
@@ -168,7 +168,7 @@ db.Session(&Session{
 
 ## Debug
 
-`Debug` 只是将会话的 `Logger` 修改为调试模式的缩写方法，其实现如下：
+`Debug` 只是将会话的 `Logger` 修改为调试模式的简写形式，其实现如下：
 
 ```go
 func (db *DB) Debug() (tx *DB) {
