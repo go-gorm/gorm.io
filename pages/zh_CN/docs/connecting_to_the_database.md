@@ -3,7 +3,7 @@ title: 连接到数据库
 layout: page
 ---
 
-GORM officially supports databases MySQL, PostgreSQL, SQLite, SQL Server
+GORM 官方支持的数据库类型有： MySQL, PostgreSQL, SQlite, SQL Server
 
 ## MySQL
 
@@ -24,7 +24,7 @@ func main() {
 **注意：**想要正确的处理 `time.Time` ，您需要带上 `parseTime` 参数， ([更多参数](https://github.com/go-sql-driver/mysql#parameters)) 要支持完整的 UTF-8 编码，您需要将 `charset=utf8` 更改为 `charset=utf8mb4` 查看 [此文章](https://mathiasbynens.be/notes/mysql-utf8mb4) 获取详情
 {% endnote %}
 
-MySQL Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
+MySQl 驱动程序提供了 [一些高级配置](https://github.com/go-gorm/mysql) 可以在初始化过程中使用，例如：
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
