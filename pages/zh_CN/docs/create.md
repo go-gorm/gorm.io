@@ -15,9 +15,9 @@ result.Error        // 返回 error
 result.RowsAffected // 返回插入记录的条数
 ```
 
-## Create Record With Selected Fields
+## 用指定的字段创建记录
 
-Create a record and assign a value to the fields specified.
+创建记录并更新给出的字段。
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
