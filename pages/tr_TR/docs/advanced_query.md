@@ -1,5 +1,5 @@
 ---
-title: Advanced Query
+title: Gelişmiş Sorgu
 layout: page
 ---
 
