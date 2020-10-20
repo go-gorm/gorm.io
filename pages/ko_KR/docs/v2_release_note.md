@@ -13,28 +13,28 @@ GORM 2.0은 처음부터 다시 만들어졌으며, 일부 호환되지 않는 A
 * Nested Transaction/SavePoint/SavePoint로 Rollback하기가 지원됩니다
 * SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints 지원, SubQuery 개선, SQL Expr로 CRUD하기, Context Valuer
 * 자기참조 관계(self-reference relationship) 를 완전하게 제공, Join Table 개선, Batch 데이터를 위한 Association Mode
-* Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
-* New plugin system, provides official plugins for multiple databases, read/write splitting, prometheus integrations...
-* New Hooks API: unified interface with plugins
-* New Migrator: allows to create database foreign keys for relationships, smarter AutoMigrate, constraints/checker support, enhanced index support
-* New Logger: context support, improved extensibility
-* Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
-* Better customized data type support (e.g: JSON)
+* 생성/수정 시간을 추적할 수 있는 다중 필드 지원, UNIX(milli/nano) 초 지원
+* 필드 권한 지원: read-only, write-only, create-only, update-only, ignored
+* 새로운 플러그인 시스템, 여러 데이터베이스에 대한 공식 플러그인 제공, 읽기/쓰기 분할, 프로메테우스 통합...
+* 새로운 Hooks API: 플러그인과 통합 된 인터페이스
+* 새로운 Migrator: 관계, 제약 / 체커 지원, 향상된 인덱스 지원을위한 데이터베이스 외래 키 생성 가능
+* 새로운 Logger: context 지원, 향상된 확장성
+* 이름규칙 통합: 테이블 이름, 필드 이름, join table이름, 외래키, 체커, index 이름 규칙
+* 더 나은 데이터타입 커스터마이징(예: JSON)
 
-## How To Upgrade
+## 업그레이드 방법
 
-* GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and its import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/)
-* Database drivers have been split into separate projects, e.g: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite), and its import path also changed to `gorm.io/driver/sqlite`
+* GORM의 개발은 [github.com/go-gorm](https://github.com/go-gorm)로 이동되었으며, import path는 `gorm.io/gorm`로 변경되었습니다. 이전의 프로젝트는 `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/)에서 계속 사용할 수 있습니다.
+* 데이터베이스 드라이버가 각각의 프로젝트로 분리되었습니다 (예: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite)) 그리고 import path 또한 `gorm.io/driver/sqlite`로 변경되었습니다.
 
-### Install
+### 설치하기
 
 ```go
 go get gorm.io/gorm
 // **NOTE** GORM `v2.0.0` released with git tag `v1.20.0`
 ```
 
-### Quick Start
+### 빠른 시작
 
 ```go
 import (
@@ -55,11 +55,11 @@ func init() {
 }
 ```
 
-## Major Features
+## 주요 기능
 
-The release note only cover major changes introduced in GORM V2 as a quick reference list
+릴리즈 노트는 GORM V2에 도입된 주요 변경 사항만을 빠른 참조 목록으로 다룹니다.
 
-#### Context Support
+#### Context 지원
 
 * Database operations support `context.Context` with the `WithContext` method
 * Logger also accepts context for tracing
