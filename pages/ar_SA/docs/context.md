@@ -31,6 +31,18 @@ tx. First(&user, 1)
 tx. Model(&user). Update("role", "admin")
 ```
 
+## Context in Hooks/Callbacks
+
+You could access the `Context` object from current `Statement`, for example:
+
+```go
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+  ctx := tx.Statement.Context
+  // ...
+  return
+}
+```
+
 ## Chi Middleware Example
 
 Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
@@ -38,29 +50,31 @@ Continuous session mode which might be helpful when handling API requests, for e
 Following is a Chi middleware example:
 
 ```go
-func SetDBMiddleware(next http. Handler) http. Handler {
-  return http. HandlerFunc(func(w http. Request) {
-    timeoutContext, _ := context. WithTimeout(context. Background(), time. Second)
-    ctx := context. WithValue(r. Context(), "DB", db. WithContext(timeoutContext))
-    next. ServeHTTP(w, r. WithContext(ctx))
+func SetDBMiddleware(next http.Handler) http.Handler {
+  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    timeoutContext, _ := context.WithTimeout(context.Background(), time.Second)
+    ctx := context.WithValue(r.Context(), "DB", db.WithContext(timeoutContext))
+    next.ServeHTTP(w, r.WithContext(ctx))
   })
 }
 
-r := chi. NewRouter()
-r. Use(SetDBMiddleware)
+r := chi.NewRouter()
+r.Use(SetDBMiddleware)
 
-r. Get("/", func(w http. Value("DB").(*gorm.DB)
+r.Get("/", func(w http.ResponseWriter, r *http.Request) {
+  db, ok := ctx.Value("DB").(*gorm.DB)
 
   var users []User
-  db. Find(&users)
+  db.Find(&users)
 
   // lots of db operations
 })
 
-r. Get("/user", func(w http. Value("DB").(*gorm.DB)
+r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
+  db, ok := ctx.Value("DB").(*gorm.DB)
 
   var user User
-  db. First(&user)
+  db.First(&user)
 
   // lots of db operations
 })

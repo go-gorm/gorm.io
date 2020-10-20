@@ -9,7 +9,7 @@ GORM 2.0 это перезапись с нуля, представляет не�
 
 * Улучшение производительности
 * Модульность
-* Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches
+* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
 * Вложенная транзакция/SavePoint/RollbackTo
 * SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements, CRUD with SQL Expr and Context Valuer
 * Full self-reference relationships support, Join Table improvements, Association Mode for batch data
@@ -83,7 +83,7 @@ for _, user := range users {
 }
 ```
 
-#### Подготовленный подготовленного Statment
+#### Prepared Statement Mode
 
 Prepared Statement Mode creates prepared stmt and caches them to speed up future calls
 
@@ -451,13 +451,13 @@ Association Mode supports batch data, e.g:
 // Find all roles for all users
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// Delete User A from all user's team
 db.Model(&users).Association("Team").Delete(&userA)
 
 // Get unduplicated count of members in all user's team
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
+// For `Append`, `Replace` with batch data, argument's length need to equal to data's length or will returns error
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
@@ -479,7 +479,7 @@ db.Select("Orders", "CreditCards").Delete(&user)
 // delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
 
-// delete users's account when deleting users
+// delete user's account when deleting users
 db.Select("Account").Delete(&users)
 ```
 
