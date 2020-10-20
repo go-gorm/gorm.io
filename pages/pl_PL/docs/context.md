@@ -23,6 +23,18 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
+## Context in Hooks/Callbacks
+
+You could access the `Context` object from current `Statement`, for example:
+
+```go
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+  ctx := tx.Statement.Context
+  // ...
+  return
+}
+```
+
 ## Chi Middleware Example
 
 Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
