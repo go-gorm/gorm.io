@@ -1,18 +1,18 @@
 ---
-title: GORM 2.0 Release Note
+title: GORM 2.0 릴리즈 노트
 layout: page
 ---
 
-GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+GORM 2.0은 처음부터 다시 만들어졌으며, 일부 호환되지 않는 API 변경 및 많은 개선 사항을 도입했습니다.
 
-**Highlights**
+**하이라이트**
 
-* Performance Improvements
-* Modularity
-* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
-* Nested Transaction/SavePoint/RollbackTo SavePoint supports
-* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements, CRUD with SQL Expr and Context Valuer
-* Full self-reference relationships support, Join Table improvements, Association Mode for batch data
+* 성능 향상
+* 모듈성
+* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Map에서 검색하기, Map으로 생성하기, FindInBatches가 지원됩니다
+* Nested Transaction/SavePoint/SavePoint로 Rollback하기가 지원됩니다
+* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints 지원, SubQuery 개선, SQL Expr로 CRUD하기, Context Valuer
+* 자기참조 관계(self-reference relationship) 를 완전하게 제공, Join Table 개선, Batch 데이터를 위한 Association Mode
 * Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
 * Field permissions support: read-only, write-only, create-only, update-only, ignored
 * New plugin system, provides official plugins for multiple databases, read/write splitting, prometheus integrations...
