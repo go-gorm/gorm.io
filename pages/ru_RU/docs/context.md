@@ -23,11 +23,23 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-## Пример Chi Middleware
+## Context in Hooks/Callbacks
 
-Режим непрерывной сессии, который может оказаться полезным при обработке запросов API, например, можно настроить `*gorm. B` с контекстом таймаута в middlewares, а затем использовать `*gorm.DB` при обработке всех запросов
+You could access the `Context` object from current `Statement`, for example:
 
-Пример middleware Chi:
+```go
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+  ctx := tx.Statement.Context
+  // ...
+  return
+}
+```
+
+## Chi Middleware Example
+
+Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
+
+Following is a Chi middleware example:
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {
@@ -47,7 +59,7 @@ r.Get("/", func(w http.ResponseWriter, r *http.Request) {
   var users []User
   db.Find(&users)
 
-  // много операций с БД
+  // lots of db operations
 })
 
 r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -56,14 +68,14 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
   var user User
   db.First(&user)
 
-  // много операций с БД
+  // lots of db operations
 })
 ```
 
 {% note %}
-**ПРИМЕЧАНИЕ** Установка `Context` с `WithContext` является goroutine-безопасным, смотрите [Сессии](session.html) для подробностей
+**NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
 {% endnote %}
 
 ## Logger
 
-Logger также принимает `Context`, вы можете им отслеживать журналы, см. [Logger](logger.html) для подробностей
+Logger accepts `Context` too, you can use it for log tracking, refer [Logger](logger.html) for details
