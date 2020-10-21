@@ -70,9 +70,9 @@ DB.WithContext(ctx).Find(&users)
 
 #### 일괄 Insert
 
-* `Create`에 슬라이스 데이터를 전달하면 모든 데이터를 삽입하고 primary key 값을 다시 채우기위한 단일 SQL문을 생성합니다
-* If those data contain associations, all associations will be upserted with another SQL
-* Batch inserted data will call its `Hooks` methods (Before/After Create/Save)
+* `Create`에 슬라이스 데이터를 전달하면 GORM은 모든 데이터를 삽입하고 primary key 값을 다시 채우기 위한 단일 SQL문을 생성합니다
+* 만일 해당 데이터들이 association을 포함한다면, 모든 association은 다른 SQL에서 upsert처리됩니다
+* 일괄 insert된 데이터는 `Hooks` 메서드 (Before/After Create/Save)를 호출합니다
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
