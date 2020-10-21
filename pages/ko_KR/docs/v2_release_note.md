@@ -61,16 +61,16 @@ func init() {
 
 #### Context 지원
 
-* Database operations support `context.Context` with the `WithContext` method
-* Logger also accepts context for tracing
+* 데이터베이스 작업은 `WithContext` 함수를 사용하여 `context.Context`를 지원합니다
+* Logger 또한 tracing을 위한 context를 허용합니다
 
 ```go
 DB.WithContext(ctx).Find(&users)
 ```
 
-#### Batch Insert
+#### 일괄 Insert
 
-* Use slice data with `Create` will generate a single SQL statement to insert all the data and backfill primary key values
+* `Create`에 슬라이스 데이터를 전달하면 모든 데이터를 삽입하고 primary key 값을 다시 채우기위한 단일 SQL문을 생성합니다
 * If those data contain associations, all associations will be upserted with another SQL
 * Batch inserted data will call its `Hooks` methods (Before/After Create/Save)
 
