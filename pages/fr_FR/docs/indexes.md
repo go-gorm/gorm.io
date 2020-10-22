@@ -7,7 +7,7 @@ GORM allows create database index with tag `index`, `uniqueIndex`, those indexes
 
 ## Index Tag
 
-GORM accepts lots of index settings, like `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`
+GORM accepts lots of index settings, like `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`, `option`
 
 Check the following example for how to use it
 
@@ -17,6 +17,7 @@ type User struct {
     Name2 string `gorm:"index:idx_name,unique"`
     Name3 string `gorm:"index:,sort:desc,collate:utf8,type:btree,length:10,where:name3 != 'jinzhu'"`
     Name4 string `gorm:"uniqueIndex"`
+    Name5 string `gorm:"index:,class:FULLTEXT,option:WITH PARSER ngram"`
     Age   int64  `gorm:"index:,class:FULLTEXT,comment:hello \\, world,where:age > 10"`
     Age2  int64  `gorm:"index:,expression:ABS(age)"`
 }

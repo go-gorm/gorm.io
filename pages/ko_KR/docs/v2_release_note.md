@@ -1,40 +1,40 @@
 ---
-title: GORM 2.0 Release Note
+title: GORM 2.0 릴리즈 노트
 layout: page
 ---
 
-GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+GORM 2.0은 처음부터 다시 만들어졌으며, 일부 호환되지 않는 API 변경 및 많은 개선 사항을 도입했습니다.
 
-**Highlights**
+**하이라이트**
 
-* Performance Improvements
-* Modularity
-* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
-* Nested Transaction/SavePoint/RollbackTo SavePoint supports
-* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements, CRUD with SQL Expr and Context Valuer
-* Full self-reference relationships support, Join Table improvements, Association Mode for batch data
-* Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
-* New plugin system, provides official plugins for multiple databases, read/write splitting, prometheus integrations...
-* New Hooks API: unified interface with plugins
-* New Migrator: allows to create database foreign keys for relationships, smarter AutoMigrate, constraints/checker support, enhanced index support
-* New Logger: context support, improved extensibility
-* Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
-* Better customized data type support (e.g: JSON)
+* 성능 향상
+* 모듈성
+* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Map에서 검색하기, Map으로 생성하기, FindInBatches가 지원됩니다
+* Nested Transaction/SavePoint/SavePoint로 Rollback하기가 지원됩니다
+* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints 지원, SubQuery 개선, SQL Expr로 CRUD하기, Context Valuer
+* 자기참조 관계(self-reference relationship) 를 완전하게 제공, Join Table 개선, Batch 데이터를 위한 Association Mode
+* 생성/수정 시간을 추적할 수 있는 다중 필드 지원, UNIX(milli/nano) 초 지원
+* 필드 권한 지원: read-only, write-only, create-only, update-only, ignored
+* 새로운 플러그인 시스템, 여러 데이터베이스에 대한 공식 플러그인 제공, 읽기/쓰기 분할, 프로메테우스 통합...
+* 새로운 Hooks API: 플러그인과 통합 된 인터페이스
+* 새로운 Migrator: 관계, 제약 / 체커 지원, 향상된 인덱스 지원을위한 데이터베이스 외래 키 생성 가능
+* 새로운 Logger: context 지원, 향상된 확장성
+* 이름규칙 통합: 테이블 이름, 필드 이름, join table이름, 외래키, 체커, index 이름 규칙
+* 더 나은 데이터타입 커스터마이징(예: JSON)
 
-## How To Upgrade
+## 업그레이드 방법
 
-* GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and its import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/)
-* Database drivers have been split into separate projects, e.g: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite), and its import path also changed to `gorm.io/driver/sqlite`
+* GORM의 개발은 [github.com/go-gorm](https://github.com/go-gorm)로 이동되었으며, import path는 `gorm.io/gorm`로 변경되었습니다. 이전의 프로젝트는 `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/)에서 계속 사용할 수 있습니다.
+* 데이터베이스 드라이버가 각각의 프로젝트로 분리되었습니다 (예: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite)) 그리고 import path 또한 `gorm.io/driver/sqlite`로 변경되었습니다.
 
-### Install
+### 설치하기
 
 ```go
 go get gorm.io/gorm
 // **NOTE** GORM `v2.0.0` released with git tag `v1.20.0`
 ```
 
-### Quick Start
+### 빠른 시작
 
 ```go
 import (
@@ -55,24 +55,24 @@ func init() {
 }
 ```
 
-## Major Features
+## 주요 기능
 
-The release note only cover major changes introduced in GORM V2 as a quick reference list
+릴리즈 노트는 GORM V2에 도입된 주요 변경 사항만을 빠른 참조 목록으로 다룹니다.
 
-#### Context Support
+#### Context 지원
 
-* Database operations support `context.Context` with the `WithContext` method
-* Logger also accepts context for tracing
+* 데이터베이스 작업은 `WithContext` 함수를 사용하여 `context.Context`를 지원합니다
+* Logger 또한 tracing을 위한 context를 허용합니다
 
 ```go
 DB.WithContext(ctx).Find(&users)
 ```
 
-#### Batch Insert
+#### 일괄 Insert
 
-* Use slice data with `Create` will generate a single SQL statement to insert all the data and backfill primary key values
-* If those data contain associations, all associations will be upserted with another SQL
-* Batch inserted data will call its `Hooks` methods (Before/After Create/Save)
+* `Create`에 슬라이스 데이터를 전달하면 GORM은 모든 데이터를 삽입하고 primary key 값을 다시 채우기 위한 단일 SQL문을 생성합니다
+* 만일 해당 데이터들이 association을 포함한다면, 모든 association은 다른 SQL에서 upsert처리됩니다
+* 일괄 insert된 데이터는 `Hooks` 메서드 (Before/After Create/Save)를 호출합니다
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}

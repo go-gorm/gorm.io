@@ -2,7 +2,7 @@
 layout: raw
 description: The fantastic ORM library for Golang, aims to be developer friendly.
 subtitle : L'ORM fantastique de Golang
-comment : faux
+comment : false
 ---
 
 <div class="container page-not-found">
