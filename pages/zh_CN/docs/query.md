@@ -59,9 +59,9 @@ DB.First(&Language{})
 // SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
 ```
 
-### Retrieving objects with primary key
+### 根据主键检索
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions). Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
+您可以使用 [内联条件](#inline_conditions) 来检索对象。 传入字符串参数时注意避免 SQL 注入问题，查看 [安全](security.html) 获取详情
 
 ```go
 db.First(&user, 10)
@@ -74,7 +74,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-## Retrieving all objects
+## 检索全部对象
 
 ```go
 // 获取全部记录
