@@ -83,7 +83,7 @@ for _, user := range users {
 }
 ```
 
-#### Prepared Statement Mode
+#### 预编译模式
 
 预编译模式会预编译 SQL 执行语句，以加速后续执行速度
 
