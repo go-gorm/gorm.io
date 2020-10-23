@@ -105,7 +105,7 @@ DB.Session(&gorm.Session{
 
 ## FullSaveAssociations
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record, if you want to update associations's data, you should use the `FullSaveAssociations` mode, e.g:
+当创建/更新记录时，GORM将使用 [Upsert](create.html#upsert) 自动保存关联和其引用。 如果您想要更新关联的数据，您应该使用 `FullSaveAssociations` 模式，例如：
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -118,14 +118,14 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## Context
 
-With the `Context` option, you can set the `Context` for following SQL operations, for example:
+通过 `Context` 选项，您可以传入 `Context` 来追踪 SQL 操作，例如：
 
 ```go
 timeoutCtx, _ := context.WithTimeout(context.Background(), time.Second)
 tx := db.Session(&Session{Context: timeoutCtx})
 
-tx.First(&user) // query with context timeoutCtx
-tx.Model(&user).Update("role", "admin") // update with context timeoutCtx
+tx.First(&user) // 带有 context timeoutCtx 的查询操作
+tx.Model(&user).Update("role", "admin") // 带有 context timeoutCtx 的更新操作
 ```
 
 GORM 也提供了简写形式的方法 `WithContext`，其实现如下：
