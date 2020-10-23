@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+如果您想要更新关联的数据，您应该使用 ` FullSaveAssociations ` 模式：
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -79,12 +79,12 @@ db.Omit(clause.Associations).Create(&user)
 Association Mode contains some commonly used helper methods to handle relationships
 
 ```go
-// Start Association Mode
+// 开始关联模式
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// `user` 是源模型，它的主键不能为空
+// 关系的字段名是 `Languages`
+// 如果匹配了上面两个要求，会开始关联模式，否则会返回错误
 db.Model(&user).Association("Languages").Error
 ```
 
@@ -158,7 +158,7 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 
 ### 批量处理数据
 
-Association Mode supports batch data, e.g:
+关联模式也支持批量处理，例如：
 
 ```go
 // Find all roles for all users
@@ -178,21 +178,21 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">通过 select 删除</span>
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+你可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
 
 ```go
-// delete user's account when deleting user
+// 删除 user 时，也删除 user 的 account
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// 删除 user 时，也删除 user 的 Orders、CreditCards 记录
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// 删除 user 时，也删除用户所有 has one/many、many2many 记录
 db.Select(clause.Associations).Delete(&user)
 
-// delete users's account when deleting users
+// 删除 users 时，也删除 user 们的 account
 db.Select("Account").Delete(&users)
 ```
 
