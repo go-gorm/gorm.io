@@ -7,7 +7,7 @@ GORM 允许通过 `index`、`uniqueIndex` 标签创建索引，这些索引将�
 
 ## 索引标签
 
-GORM accepts lots of index settings, like `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`, `option`
+GORM 可以接受很多索引设置，例如`class`、`type`、`where`、`comment`、`expression`、`sort`、`collate`
 
 下面的示例演示了如何使用它：
 
