@@ -9,7 +9,7 @@ GORM 2.0 完全从零开始，引入了一些不兼容的 API 变更和许多改
 
 * 性能改进
 * 代码模块化
-* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
+* Context，批量插入，预编译模式，DryRun 模式，Join 预加载，Find To Map，Create From Map，FindInBatches 支持
 * 支持嵌套事务，SavePoint，Rollback To SavePoint
 * SQL 生成器，命名参数，分组条件，Upsert，锁， 支持 Optimizer/Index/Comment Hint，子查询改进，使用SQL表达式、Context Valuer 进行 CRUD
 * 支持完整的自引用，改进 Join Table，批量数据的关联模式
@@ -448,20 +448,20 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 关联模式也支持批量处理，例如：
 
 ```go
-// Find all roles for all users
+// 查询所有用户的所有角色
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all user's team
+// 将 userA 从所有的 Team 中移除
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get unduplicated count of members in all user's team
+// 获取所有 Team 成员的不重复计数
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, argument's length need to equal to data's length or will returns error
+// 对于 `Append`、`Replace` 的批量处理，参数与数据的长度必须相等，否则会返回错误
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// 例如：我们有 3 个 user，将 userA 添加到 user1 的 Team，将 userB 添加到 user2 的 Team，将 userA、userB、userC 添加到 user3 的 Team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// 将 user1 的 Team 重置为 userA，将 user2的 team 重置为 userB，将 user3 的 team 重置为 userA、userB 和 userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
@@ -470,16 +470,16 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 你可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
 
 ```go
-// delete user's account when deleting user
+// 删除 user 时，也删除 user 的 account
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// 删除 user 时，也删除 user 的 Orders、CreditCards 记录
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// 删除 user 时，也删除用户所有 has one/many、many2many 记录
 db.Select(clause.Associations).Delete(&user)
 
-// delete user's account when deleting users
+// 删除 users 时，也删除 user 们的 account
 db.Select("Account").Delete(&users)
 ```
 
