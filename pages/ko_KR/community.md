@@ -16,7 +16,7 @@ layout: page
 
 ## 링크
 
-* An admin system based on GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
+* GORM V2를 기반으로 한 관리자 시스템[GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
 ## 영상
 
@@ -24,7 +24,7 @@ layout: page
 
 ## 오픈소스
 
-* [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
+* [gormt - GORM mysql을 golang 구조체로 변환](https://github.com/xxjwxc/gormt)
 
 ## <span id="contribute">이 페이지에 기여하세요</span>
 
