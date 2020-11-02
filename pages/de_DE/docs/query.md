@@ -34,28 +34,28 @@ The `First`, `Last` method will find the first/last record order by primary key,
 var user User
 
 // works
-DB.First(&user)
+db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
 // works
 result := map[string]interface{}{}
-DB.Model(&User{}).First(&result)
+db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
 // doesn't work
 result := map[string]interface{}{}
-DB.Table("users").First(&result)
+db.Table("users").First(&result)
 
 // works with Take
 result := map[string]interface{}{}
-DB.Table("users").Take(&result)
+db.Table("users").Take(&result)
 
 // order by first field
 type Language struct {
   Code string
   Name string
 }
-DB.First(&Language{})
+db.First(&Language{})
 // SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
 ```
 

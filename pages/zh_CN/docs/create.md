@@ -52,7 +52,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
-DB.Create(&users)
+db.Create(&users)
 
 for _, user := range users {
   user.ID // 1,2,3
@@ -66,12 +66,12 @@ for _, user := range users {
 GORM 支持根据 `map[string]interface{}` 和 `[]map[string]interface{}{}` 创建记录，例如：
 
 ```go
-DB.Model(&User{}).Create(map[string]interface{}{
+db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// 根据 `[]map[string]interface{}{}` 批量插入
-DB.Model(&User{}).Create([]map[string]interface{}{
+// batch insert from `[]map[string]interface{}{}`
+db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
 })
@@ -86,19 +86,19 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 GORM 允许使用 SQL 表达式插入数据，有两种方法实现这个目标。根据 `map[string]interface{}` 或 [自定义数据类型](data_types.html#gorm_valuer_interface) 创建，例如：
 
 ```go
-// 根据 map Create
-DB.Model(User{}).Create(map[string]interface{}{
+// Create from map
+db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// 根据自定义数据类型 Create
+// Create from customized data type
 type Location struct {
     X, Y int
 }
 
-// Scan 实现了 sql.Scanner 接口
+// Scan implements the sql.Scanner interface
 func (loc *Location) Scan(v interface{}) error {
   // Scan a value into struct from database driver
 }
@@ -119,7 +119,7 @@ type User struct {
   Location Location
 }
 
-DB.Create(&User{
+db.Create(&User{
   Name:     "jinzhu",
   Location: Location{X: 100, Y: 100},
 })
@@ -212,11 +212,11 @@ GORM 为不同数据库提供了兼容的 Upsert 支持
 ```go
 import "gorm.io/gorm/clause"
 
-// 不处理冲突
-DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
+// Do nothing on conflict
+db.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// `id` 冲突时，将字段值更新为默认值
-DB.Clauses(clause.OnConflict{
+// Update columns to default value on `id` conflict
+db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
 }).Create(&users)
@@ -224,7 +224,7 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
 // Update columns to new value on `id` conflict
-DB.Clauses(clause.OnConflict{
+db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
 }).Create(&users)

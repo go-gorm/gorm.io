@@ -31,10 +31,10 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 GORM поддерживает различные типы блокировок, например:
 
 ```go
-DB.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
+db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SELECT * FROM `users` FOR UPDATE
 
-DB.Clauses(clause.Locking{
+db.Clauses(clause.Locking{
   Strength: "SHARE",
   Table: clause.Table{Name: clause.CurrentTable},
 }).Find(&users)
@@ -61,11 +61,11 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 GORM позволяет вам использовать подзапрос в FROM при помощи метода `Table`, например:
 
 ```go
-db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
-subQuery1 := DB.Model(&User{}).Select("name")
-subQuery2 := DB.Model(&Pet{}).Select("name")
+subQuery1 := db.Model(&User{}).Select("name")
+subQuery2 := db.Model(&Pet{}).Select("name")
 db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
@@ -76,9 +76,9 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ```go
 db.Where(
-    DB.Where("pizza = ?", "pepperoni").Where(DB.Where("size = ?", "small").Or("size = ?", "medium")),
+    db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small").Or("size = ?", "medium")),
 ).Or(
-    DB.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
+    db.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
 ).Find(&Pizza{}).Statement
 
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
@@ -89,10 +89,10 @@ db.Where(
 GORM поддерживает именованные аргументы при помощи [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) или `map[string]interface{}{}`, например:
 
 ```go
-DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
+db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
+db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
@@ -104,10 +104,10 @@ GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}
 
 ```go
 var result map[string]interface{}
-DB.Model(&User{}).First(&result, "id = ?", 1)
+db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}
-DB.Table("users").Find(&results)
+db.Table("users").Find(&results)
 ```
 
 ## Первый или новый (FirstOrInit)
@@ -213,7 +213,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 ```go
 import "gorm.io/hints"
 
-DB.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
+db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
@@ -222,10 +222,10 @@ DB.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 ```go
 import "gorm.io/hints"
 
-DB.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
+db.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
 // SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
-DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
+db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
@@ -253,24 +253,24 @@ for rows.Next() {
 Запрашивать и обрабатывать записи в пакете
 
 ```go
-// размер пакета 100
-result := DB.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
+// batch size 100
+result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // пакетная обработка найденных записей
+    // batch processing found records
   }
 
   tx.Save(&results)
 
-  tx.RowsAffected // количество записей в текущем пакете
+  tx.RowsAffected // number of records in this batch
 
-  batch // пакет 1, 2, 3
+  batch // Batch 1, 2, 3
 
-  // возвращение ошибки остановит обработку следующих пакетов 
+  // returns error will stop future batches
   return nil
 })
 
-result.Error // возвращена ошибка
-result.RowsAffected // количество обработанных записей во всех пакетах
+result.Error // returned error
+result.RowsAffected // processed records count in all batches
 ```
 
 ## Хуки запросов
@@ -292,18 +292,18 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ```go
 var ages []int64
-db.Find(&users).Pluck("age", &ages)
+db.Model(&users).Pluck("age", &ages)
 
 var names []string
 db.Model(&User{}).Pluck("name", &names)
 
 db.Table("deleted_users").Pluck("name", &names)
 
-// Pluck с Distinct
-DB.Model(&User{}).Distinct().Pluck("Name", &names)
+// Distinct Pluck
+db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Запрашивая более одной колонки, используйте `Scan` или `Find`, например:
+// Requesting more than one column, use `Scan` or `Find` like this:
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
@@ -359,7 +359,7 @@ db.Table("deleted_users").Count(&count)
 // SELECT count(1) FROM deleted_users;
 
 // Count with Distinct
-DB.Model(&User{}).Distinct("name").Count(&count)
+db.Model(&User{}).Distinct("name").Count(&count)
 // SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
@@ -373,6 +373,6 @@ users := []User{
   {Name: "name3"},
 }
 
-DB.Model(&User{}).Group("name").Count(&count)
+db.Model(&User{}).Group("name").Count(&count)
 count // => 3
 ```

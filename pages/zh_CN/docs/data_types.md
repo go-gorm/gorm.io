@@ -146,9 +146,9 @@ func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
   }
 }
 
-// Scan 实现了 sql.Scanner 接口
+// Scan implements the sql.Scanner interface
 func (loc *Location) Scan(v interface{}) error {
-  // 通过驱动将 v Scan 至 struct
+  // Scan a value into struct from database driver
 }
 
 type User struct {
@@ -157,13 +157,13 @@ type User struct {
   Location Location
 }
 
-DB.Create(&User{
+db.Create(&User{
   Name:     "jinzhu",
   Location: Location{X: 100, Y: 100},
 })
 // INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
 
-DB.Model(&User{ID: 1}).Updates(User{
+db.Model(&User{ID: 1}).Updates(User{
   Name:  "jinzhu",
   Point: Point{X: 100, Y: 100},
 })

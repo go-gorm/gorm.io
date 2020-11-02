@@ -31,15 +31,14 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 GORM supports different types of locks, for example:
 
 ```go
-Table("deleted_users"). Pluck("name", &names)
+db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
+// SELECT * FROM `users` FOR UPDATE
 
-// Distinct Pluck
-DB. Distinct(). Pluck("Name", &names)
-// SELECT DISTINCT `name` FROM `users`
-
-// Requesting more than one column, use `Scan` or `Find` like this:
-db. Scan(&users)
-db. Find(&users)
+db.Clauses(clause.Locking{
+  Strength: "SHARE",
+  Table: clause.Table{Name: clause.CurrentTable},
+}).Find(&users)
+// SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
 Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
@@ -62,11 +61,11 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 GORM allows you using subquery in FROM clause with method `Table`, for example:
 
 ```go
-db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
-subQuery1 := DB.Model(&User{}).Select("name")
-subQuery2 := DB.Model(&Pet{}).Select("name")
+subQuery1 := db.Model(&User{}).Select("name")
+subQuery2 := db.Model(&Pet{}).Select("name")
 db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
@@ -77,9 +76,9 @@ Easier to write complicated SQL query with Group Conditions
 
 ```go
 db.Where(
-    DB.Where("pizza = ?", "pepperoni").Where(DB.Where("size = ?", "small").Or("size = ?", "medium")),
+    db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small").Or("size = ?", "medium")),
 ).Or(
-    DB.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
+    db.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
 ).Find(&Pizza{}).Statement
 
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
@@ -90,10 +89,10 @@ db.Where(
 GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
 ```go
-DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
+db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
+db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
@@ -105,10 +104,10 @@ GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}
 
 ```go
 var result map[string]interface{}
-DB.Model(&User{}).First(&result, "id = ?", 1)
+db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}
-DB.Table("users").Find(&results)
+db.Table("users").Find(&results)
 ```
 
 ## FirstOrInit
@@ -214,7 +213,7 @@ Optimizer hints allow to control the query optimizer to choose a certain query e
 ```go
 import "gorm.io/hints"
 
-DB.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
+db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
@@ -223,10 +222,10 @@ Index hints allow passing index hints to the database in case the query planner 
 ```go
 import "gorm.io/hints"
 
-DB.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
+db.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
 // SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
-DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
+db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
@@ -255,7 +254,7 @@ Query and process records in batch
 
 ```go
 // batch size 100
-result := DB.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
+result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
     // batch processing found records
   }
@@ -293,7 +292,7 @@ Query single column from database and scan into a slice, if you want to query mu
 
 ```go
 var ages []int64
-db.Find(&users).Pluck("age", &ages)
+db.Model(&users).Pluck("age", &ages)
 
 var names []string
 db.Model(&User{}).Pluck("name", &names)
@@ -301,7 +300,7 @@ db.Model(&User{}).Pluck("name", &names)
 db.Table("deleted_users").Pluck("name", &names)
 
 // Distinct Pluck
-DB.Model(&User{}).Distinct().Pluck("Name", &names)
+db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
 // Requesting more than one column, use `Scan` or `Find` like this:
@@ -360,7 +359,7 @@ db.Table("deleted_users").Count(&count)
 // SELECT count(1) FROM deleted_users;
 
 // Count with Distinct
-DB.Model(&User{}).Distinct("name").Count(&count)
+db.Model(&User{}).Distinct("name").Count(&count)
 // SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
@@ -374,6 +373,6 @@ users := []User{
   {Name: "name3"},
 }
 
-DB.Model(&User{}).Group("name").Count(&count)
+db.Model(&User{}).Group("name").Count(&count)
 count // => 3
 ```

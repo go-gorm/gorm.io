@@ -62,7 +62,7 @@ db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "ag
 // UPDATE users SET age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
 // Select with Struct (select zero value fields)
-DB.Model(&result).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
+db.Model(&result).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 ```
 
@@ -108,7 +108,7 @@ db.Model(&User{}).Where("1 = 1").Update("name", "jinzhu")
 db.Exec("UPDATE users SET name = ?", "jinzhu")
 // UPDATE users SET name = "jinzhu"
 
-DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name", "jinzhu")
+db.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name", "jinzhu")
 // UPDATE users SET `name` = "jinzhu"
 ```
 
@@ -133,16 +133,16 @@ GORM allows updates column with SQL expression, e.g:
 
 ```go
 // product's ID is `3`
-DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
+db.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
 // UPDATE "products" SET "price" = price * 2 + 100, "updated_at" = '2013-11-17 21:34:10' WHERE "id" = 3;
 
-DB.Model(&product).Updates(map[string]interface{}{"price": gorm.Expr("price * ? + ?", 2, 100)})
+db.Model(&product).Updates(map[string]interface{}{"price": gorm.Expr("price * ? + ?", 2, 100)})
 // UPDATE "products" SET "price" = price * 2 + 100, "updated_at" = '2013-11-17 21:34:10' WHERE "id" = 3;
 
-DB.Model(&product).UpdateColumn("quantity", gorm.Expr("quantity - ?", 1))
+db.Model(&product).UpdateColumn("quantity", gorm.Expr("quantity - ?", 1))
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3;
 
-DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("quantity - ?", 1))
+db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("quantity - ?", 1))
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity > 1;
 ```
 
@@ -161,7 +161,7 @@ func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
   }
 }
 
-DB.Model(&User{ID: 1}).Updates(User{
+db.Model(&User{ID: 1}).Updates(User{
   Name:  "jinzhu",
   Point: Point{X: 100, Y: 100},
 })
@@ -173,12 +173,12 @@ DB.Model(&User{ID: 1}).Updates(User{
 Update a table by using SubQuery
 
 ```go
-DB.Model(&user).Update("company_name", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
+db.Model(&user).Update("company_name", db.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
 // UPDATE "users" SET "company_name" = (SELECT name FROM companies WHERE companies.id = users.company_id);
 
-DB.Table("users as u").Where("name = ?", "jinzhu").Update("company_name", DB.Table("companies as c").Select("name").Where("c.id = u.company_id"))
+db.Table("users as u").Where("name = ?", "jinzhu").Update("company_name", db.Table("companies as c").Select("name").Where("c.id = u.company_id"))
 
-DB.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{}{}{"company_name": DB.Table("companies as c").Select("name").Where("c.id = u.company_id")})
+db.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{}{}{"company_name": db.Table("companies as c").Select("name").Where("c.id = u.company_id")})
 ```
 
 ### Without Hooks/Time Tracking

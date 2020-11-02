@@ -52,7 +52,7 @@ To efficiently insert large number of records, pass a slice to the `Create` meth
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
-DB.Create(&users)
+db.Create(&users)
 
 for _, user := range users {
   user.ID // 1,2,3
@@ -66,12 +66,12 @@ for _, user := range users {
 GORM поддерживает создание из `map[string]interface{}` и `[]map[string]interface{}{}`, например:
 
 ```go
-DB.Model(&User{}).Create(map[string]interface{}{
+db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// пакетная вставка из `[]map[string]interface{}{}`
-DB.Model(&User{}).Create([]map[string]interface{}{
+// batch insert from `[]map[string]interface{}{}`
+db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
 })
@@ -86,21 +86,21 @@ DB.Model(&User{}).Create([]map[string]interface{}{
 GORM позволяет вставить данные при помощи выражения SQL, существует два способа достижения этой цели, создать из `map[string]interface{}` или [Пользовательские типы данных](data_types.html#gorm_valuer_interface), например:
 
 ```go
-// Создание из map
-DB.Model(User{}).Create(map[string]interface{}{
+// Create from map
+db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// Создание из пользовательского типа данных
+// Create from customized data type
 type Location struct {
     X, Y int
 }
 
-// Scan имплементирует интерфейс sql.Scanner
+// Scan implements the sql.Scanner interface
 func (loc *Location) Scan(v interface{}) error {
-  // Сканировать значение в struct из драйвера БД
+  // Scan a value into struct from database driver
 }
 
 func (loc Location) GormDataType() string {
@@ -119,7 +119,7 @@ type User struct {
   Location Location
 }
 
-DB.Create(&User{
+db.Create(&User{
   Name:     "jinzhu",
   Location: Location{X: 100, Y: 100},
 })
@@ -212,19 +212,19 @@ GORM provides compatible Upsert support for different databases
 ```go
 import "gorm.io/gorm/clause"
 
-// Ничего не делать при конфликте
-DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
+// Do nothing on conflict
+db.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Обновить колонки в значение по умолчанию при конфликте по полю `id`
-DB.Clauses(clause.OnConflict{
+// Update columns to default value on `id` conflict
+db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
 }).Create(&users)
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// Обновить колонки в новые значения при конфликте по полю `id`
-DB.Clauses(clause.OnConflict{
+// Update columns to new value on `id` conflict
+db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
 }).Create(&users)

@@ -46,12 +46,12 @@ db.Transaction(func(tx *gorm.DB) error {
 GORM 支持嵌套事务，您可以回滚较大事务内执行的一部分操作，例如：
 
 ```go
-DB.Transaction(func(tx *gorm.DB) error {
+db.Transaction(func(tx *gorm.DB) error {
   tx.Create(&user1)
 
   tx.Transaction(func(tx2 *gorm.DB) error {
     tx2.Create(&user2)
-    return errors.New("rollback user2") // 回滚 user2
+    return errors.New("rollback user2") // Rollback user2
   })
 
   tx.Transaction(func(tx2 *gorm.DB) error {
@@ -62,7 +62,7 @@ DB.Transaction(func(tx *gorm.DB) error {
   return nil
 })
 
-// 仅提交 user1, user3
+// Commit user1, user3
 ```
 
 ## 手动事务
@@ -118,12 +118,12 @@ func CreateAnimals(db *gorm.DB) error {
 GORM 提供了 `SavePoint`、`Rollbackto` 来提供保存点以及回滚至保存点，例如：
 
 ```go
-tx := DB.Begin()
+tx := db.Begin()
 tx.Create(&user1)
 
 tx.SavePoint("sp1")
 tx.Create(&user2)
-tx.RollbackTo("sp1") // 回滚 user2
+tx.RollbackTo("sp1") // Rollback user2
 
-tx.Commit() // 最终仅提交 user1
+tx.Commit() // Commit user1
 ```

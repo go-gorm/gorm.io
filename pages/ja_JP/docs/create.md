@@ -52,7 +52,7 @@ To efficiently insert large number of records, pass a slice to the `Create` meth
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
-DB.Create(&users)
+db.Create(&users)
 
 for _, user := range users {
   user.ID // 1,2,3
@@ -66,12 +66,12 @@ for _, user := range users {
 GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
 
 ```go
-DB.Model(&User{}).Create(map[string]interface{}{
+db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
 // batch insert from `[]map[string]interface{}{}`
-DB.Model(&User{}).Create([]map[string]interface{}{
+db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
 })
@@ -87,7 +87,7 @@ GORM allows insert data with SQL expression, there are two ways to achieve this 
 
 ```go
 // Create from map
-DB.Model(User{}).Create(map[string]interface{}{
+db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
@@ -119,7 +119,7 @@ type User struct {
   Location Location
 }
 
-DB.Create(&User{
+db.Create(&User{
   Name:     "jinzhu",
   Location: Location{X: 100, Y: 100},
 })
@@ -213,10 +213,10 @@ GORM provides compatible Upsert support for different databases
 import "gorm.io/gorm/clause"
 
 // Do nothing on conflict
-DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
+db.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
 // Update columns to default value on `id` conflict
-DB.Clauses(clause.OnConflict{
+db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
 }).Create(&users)
@@ -224,7 +224,7 @@ DB.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
 // Update columns to new value on `id` conflict
-DB.Clauses(clause.OnConflict{
+db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
 }).Create(&users)

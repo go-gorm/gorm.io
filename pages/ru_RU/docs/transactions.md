@@ -46,7 +46,7 @@ db.Transaction(func(tx *gorm.DB) error {
 GORM поддерживает вложенные транзакции, вы можете откатить подмножество операций, выполняемых в рамках более крупной транзакции, например:
 
 ```go
-DB.Transaction(func(tx *gorm.DB) error {
+db.Transaction(func(tx *gorm.DB) error {
   tx.Create(&user1)
 
   tx.Transaction(func(tx2 *gorm.DB) error {
@@ -118,12 +118,12 @@ func CreateAnimals(db *gorm.DB) error {
 GORM предоставляет `SavePoint`, `RollbackTo` для сохранения точек и возврата к точке сохранения, например:
 
 ```go
-tx := DB.Begin()
+tx := db.Begin()
 tx.Create(&user1)
 
 tx.SavePoint("sp1")
 tx.Create(&user2)
-tx.RollbackTo("sp1") // Откат user2
+tx.RollbackTo("sp1") // Rollback user2
 
-tx.Commit() // Фиксация user1
+tx.Commit() // Commit user1
 ```
