@@ -54,7 +54,7 @@ func CreateAnimals(db *gorm.DB) error {
 GORM supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
 
 ```go
-DB.Transaction(func(tx *gorm.DB) error {
+db.Transaction(func(tx *gorm.DB) error {
   tx.Create(&user1)
 
   tx.Transaction(func(tx2 *gorm.DB) error {
@@ -121,12 +121,12 @@ func CreateAnimals(db *gorm.DB) error {
 GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
 
 ```go
-tx := DB. Begin()
-tx. Create(&user1)
+tx := db.Begin()
+tx.Create(&user1)
 
-tx. SavePoint("sp1")
-tx. Create(&user2)
-tx. RollbackTo("sp1") // Rollback user2
+tx.SavePoint("sp1")
+tx.Create(&user2)
+tx.RollbackTo("sp1") // Rollback user2
 
-tx. Commit() // Commit user1
+tx.Commit() // Commit user1
 ```
