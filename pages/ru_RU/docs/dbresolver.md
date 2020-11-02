@@ -23,19 +23,19 @@ import (
   "gorm.io/driver/mysql"
 )
 
-DB, err := gorm.Open(mysql.Open("db1_dsn"), &gorm.Config{})
+db, err := gorm.Open(mysql.Open("db1_dsn"), &gorm.Config{})
 
-DB.Use(dbresolver.Register(dbresolver.Config{
-  // используется `db2` как основная, `db3`, `db4` как реплика
+db.Use(dbresolver.Register(dbresolver.Config{
+  // use `db2` as sources, `db3`, `db4` as replicas
   Sources:  []gorm.Dialector{mysql.Open("db2_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db3_dsn"), mysql.Open("db4_dsn")},
-  // основные/реплика политика балансировки нагрузки
+  // sources/replicas load balancing policy
   Policy: dbresolver.RandomPolicy{},
 }).Register(dbresolver.Config{
-  // используется `db1` как основная (подключение по умолчанию для DB), `db5` как реплика  для `User`, `Address`
+  // use `db1` as sources (DB's default connection), `db5` as replicas for `User`, `Address`
   Replicas: []gorm.Dialector{mysql.Open("db5_dsn")},
 }, &User{}, &Address{}).Register(dbresolver.Config{
-  // используется `db6`, `db7` как основная , `db8` как реплика для `orders`, `Product`
+  // use `db6`, `db7` as sources, `db8` as replicas for `orders`, `Product`
   Sources:  []gorm.Dialector{mysql.Open("db6_dsn"), mysql.Open("db7_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db8_dsn")},
 }, "orders", &Product{}, "secondary"))
@@ -52,22 +52,22 @@ DBResolver автоматически переключит соединение 
 Для RAW SQL, DBResolver извлечет имя таблицы из SQL в соответствии с резолвером, и будет использовать `sources`, если SQL не начинается с `SELECT` (исключая SELECT... FOR UPDATE</code>), например:
 
 ```go
-// Пример `User` Resolver
-DB.Table("users").Rows() // replicas `db5`
-DB.Model(&User{}).Find(&AdvancedUser{}) // replicas `db5`
-DB.Exec("update users set name = ?", "jinzhu") // sources `db1`
-DB.Raw("select name from users").Row().Scan(&name) // replicas `db5`
-DB.Create(&user) // sources `db1`
-DB.Delete(&User{}, "name = ?", "jinzhu") // sources `db1`
-DB.Table("users").Update("name", "jinzhu") // sources `db1`
+// `User` Resolver Examples
+db.Table("users").Rows() // replicas `db5`
+db.Model(&User{}).Find(&AdvancedUser{}) // replicas `db5`
+db.Exec("update users set name = ?", "jinzhu") // sources `db1`
+db.Raw("select name from users").Row().Scan(&name) // replicas `db5`
+db.Create(&user) // sources `db1`
+db.Delete(&User{}, "name = ?", "jinzhu") // sources `db1`
+db.Table("users").Update("name", "jinzhu") // sources `db1`
 
-// Пример глобального Resolver
-DB.Find(&Pet{}) // replicas `db3`/`db4`
-DB.Save(&Pet{}) // sources `db2`
+// Global Resolver Examples
+db.Find(&Pet{}) // replicas `db3`/`db4`
+db.Save(&Pet{}) // sources `db2`
 
-// Пример Resolver для Orders
-DB.Find(&Order{}) // replicas `db8`
-DB.Table("orders").Find(&Report{}) // replicas `db8`
+// Orders Resolver Examples
+db.Find(&Order{}) // replicas `db8`
+db.Table("orders").Find(&Report{}) // replicas `db8`
 ```
 
 ## Разделение чтения/записи
@@ -79,14 +79,14 @@ DB.Table("orders").Find(&Report{}) // replicas `db8`
 ## Ручное переключение подключения
 
 ```go
-// Использовать режим Write: чтение данных пользователя из источника `db1`
-DB.Clauses(dbresolver.Write).First(&user)
+// Use Write Mode: read user from sources `db1`
+db.Clauses(dbresolver.Write).First(&user)
 
-// Установить Resolver: чтение данных пользователя из реплики: db8
-DB.Clauses(dbresolver.Use("secondary")).First(&user)
+// Specify Resolver: read user from `secondary`'s replicas: db8
+db.Clauses(dbresolver.Use("secondary")).First(&user)
 
-// Установить Resolver и режим Write: чтение данных пользователя из реплики: db6 или db7
-DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
+// Specify Resolver and Write Mode: read user from `secondary`'s sources: db6 or db7
+db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 
 ## Балансировка Нагрузки
@@ -104,7 +104,7 @@ type Policy interface {
 ## Пул подключений
 
 ```go
-DB.Use(
+db.Use(
   dbresolver.Register(dbresolver.Config{ /* xxx */ }).
   SetConnMaxIdleTime(time.Hour).
   SetConnMaxLifetime(24 * time.Hour).
