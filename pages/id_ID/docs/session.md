@@ -97,7 +97,7 @@ tx2.First(&user)
 GORM doesn't allow global update/delete by default, will return `ErrMissingWhereClause` error, you can set this option to true to enable it, for example:
 
 ```go
-DB.Session(&gorm.Session{
+db.Session(&gorm.Session{
   AllowGlobalUpdate: true,
 }).Model(&User{}).Update("name", "jinzhu")
 // UPDATE users SET `name` = "jinzhu"
