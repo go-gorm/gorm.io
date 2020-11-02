@@ -97,7 +97,7 @@ tx2.First(&user)
 默认情况下，GORM 不允许全局 update/delete，它会返回 `ErrMissingWhereClause` 错误，你可以将该选项置为 true 以允许全局操作，例如：
 
 ```go
-DB.Session(&gorm.Session{
+db.Session(&gorm.Session{
   AllowGlobalUpdate: true,
 }).Model(&User{}).Update("name", "jinzhu")
 // UPDATE users SET `name` = "jinzhu"
