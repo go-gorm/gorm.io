@@ -15,12 +15,12 @@ type Result struct {
 }
 
 var result Result
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", "jinzhu").Scan(&result)
+db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
 
-db.Raw("SELECT id, name, age FROM users WHERE name = ?",  "jinzhu").Scan(&result)
+db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
 
 var age int
-DB.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
+db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
 `Exec` 原生 SQL
@@ -29,8 +29,8 @@ DB.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 db.Exec("DROP TABLE users")
 db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,3})
 
-// Exec 和 SQL 表达式
-DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
+// Exec with SQL Expression
+db.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
 {% note warn %}
@@ -42,22 +42,22 @@ DB.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10
 GORM 支持 [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg)、`map[string]interface{}{}` 或 struct 形式的命名参数，例如：
 
 ```go
-DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
+db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
+db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
 // SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
 
-// 原生 SQL 的命名参数
-DB.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
+// Named Argument with Raw SQL
+db.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
    sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
 // SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
 
-DB.Exec("UPDATE users SET name1 = @name, name2 = @name2, name3 = @name",
+db.Exec("UPDATE users SET name1 = @name, name2 = @name2, name3 = @name",
    sql.Named("name", "jinzhunew"), sql.Named("name2", "jinzhunew2"))
 // UPDATE users SET name1 = "jinzhunew", name2 = "jinzhunew2", name3 = "jinzhunew"
 
-DB.Raw("SELECT * FROM users WHERE (name1 = @name AND name3 = @name) AND name2 = @name2",
+db.Raw("SELECT * FROM users WHERE (name1 = @name AND name3 = @name) AND name2 = @name2",
    map[string]interface{}{"name": "jinzhu", "name2": "jinzhu2"}).Find(&user)
 // SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
 
@@ -66,7 +66,7 @@ type NamedArgument struct {
     Name2 string
 }
 
-DB.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = @Name2",
+db.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = @Name2",
      NamedArgument{Name: "jinzhu", Name2: "jinzhu2"}).Find(&user)
 // SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
 ```
@@ -76,7 +76,7 @@ DB.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = 
 在不执行的情况下生成 `SQL` ，可以用于准备或测试生成的 SQL，详情请参考 [Session](session.html)
 
 ```go
-stmt := DB.Session(&Session{DryRun: true}).First(&user, 1).Statement
+stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 ```
@@ -190,7 +190,7 @@ GORM 定义了很多 [Clause](https://github.com/go-gorm/gorm/tree/master/clause
 尽管很少会用到它们，但如果你发现 GORM API 与你的预期不符合。这可能可以很好地检查它们，例如：
 
 ```go
-DB.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
+db.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
 // INSERT IGNORE INTO users (name,age...) VALUES ("jinzhu",18...);
 ```
 
@@ -201,6 +201,6 @@ GORM 提供了 [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#State
 ```go
 import "gorm.io/hints"
 
-DB.Clauses(hints.New("hint")).Find(&User{})
+db.Clauses(hints.New("hint")).Find(&User{})
 // SELECT * /*+ hint */ FROM `users`
 ```
