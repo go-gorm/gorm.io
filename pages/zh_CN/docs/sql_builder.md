@@ -15,9 +15,9 @@ type Result struct {
 }
 
 var result Result
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
+db.Raw("SELECT id, name, age FROM users WHERE name = ?", "jinzhu").Scan(&result)
 
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
+db.Raw("SELECT id, name, age FROM users WHERE name = ?",  "jinzhu").Scan(&result)
 
 var age int
 DB.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
