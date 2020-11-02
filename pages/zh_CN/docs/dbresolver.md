@@ -23,19 +23,19 @@ import (
   "gorm.io/driver/mysql"
 )
 
-DB, err := gorm.Open(mysql.Open("db1_dsn"), &gorm.Config{})
+db, err := gorm.Open(mysql.Open("db1_dsn"), &gorm.Config{})
 
-DB.Use(dbresolver.Register(dbresolver.Config{
-  // `db2` 作为 sources，`db3`、`db4` 作为 replicas
+db.Use(dbresolver.Register(dbresolver.Config{
+  // use `db2` as sources, `db3`, `db4` as replicas
   Sources:  []gorm.Dialector{mysql.Open("db2_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db3_dsn"), mysql.Open("db4_dsn")},
-  // sources/replicas 负载均衡策略
+  // sources/replicas load balancing policy
   Policy: dbresolver.RandomPolicy{},
 }).Register(dbresolver.Config{
-  // `db1` 作为 sources（DB 的默认连接），对于 `User`、`Address` 使用 `db5` 作为 replicas
+  // use `db1` as sources (DB's default connection), `db5` as replicas for `User`, `Address`
   Replicas: []gorm.Dialector{mysql.Open("db5_dsn")},
 }, &User{}, &Address{}).Register(dbresolver.Config{
-  // `db6`、`db7` 作为 sources，对于 `orders`、`Product` 使用 `db8` 作为 replicas
+  // use `db6`, `db7` as sources, `db8` as replicas for `orders`, `Product`
   Sources:  []gorm.Dialector{mysql.Open("db6_dsn"), mysql.Open("db7_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db8_dsn")},
 }, "orders", &Product{}, "secondary"))
@@ -52,22 +52,22 @@ DBResolver 会根据工作表、struct 自动切换连接
 对于原生 SQL，DBResolver 会从 SQL 中提取表名以匹配 Resolver，除非 SQL 开头为 `SELECT`（select for update 除外），否则 DBResolver 总是会使用 `sources` ，例如：
 
 ```go
-// `User` Resolver 示例
-DB.Table("users").Rows() // replicas `db5`
-DB.Model(&User{}).Find(&AdvancedUser{}) // replicas `db5`
-DB.Exec("update users set name = ?", "jinzhu") // sources `db1`
-DB.Raw("select name from users").Row().Scan(&name) // replicas `db5`
-DB.Create(&user) // sources `db1`
-DB.Delete(&User{}, "name = ?", "jinzhu") // sources `db1`
-DB.Table("users").Update("name", "jinzhu") // sources `db1`
+// `User` Resolver Examples
+db.Table("users").Rows() // replicas `db5`
+db.Model(&User{}).Find(&AdvancedUser{}) // replicas `db5`
+db.Exec("update users set name = ?", "jinzhu") // sources `db1`
+db.Raw("select name from users").Row().Scan(&name) // replicas `db5`
+db.Create(&user) // sources `db1`
+db.Delete(&User{}, "name = ?", "jinzhu") // sources `db1`
+db.Table("users").Update("name", "jinzhu") // sources `db1`
 
-// 全局 Resolver 示例
-DB.Find(&Pet{}) // replicas `db3`/`db4`
-DB.Save(&Pet{}) // sources `db2`
+// Global Resolver Examples
+db.Find(&Pet{}) // replicas `db3`/`db4`
+db.Save(&Pet{}) // sources `db2`
 
-// Orders Resolver 示例
-DB.Find(&Order{}) // replicas `db8`
-DB.Table("orders").Find(&Report{}) // replicas `db8`
+// Orders Resolver Examples
+db.Find(&Order{}) // replicas `db8`
+db.Table("orders").Find(&Report{}) // replicas `db8`
 ```
 
 ## 读写分离
@@ -79,14 +79,14 @@ DBResolver 的读写分离目前是基于 [GORM callback](https://gorm.io/docs/w
 ## 手动切换连接
 
 ```go
-// 使用 Write 模式：从 sources db `db1` 读取 user
-DB.Clauses(dbresolver.Write).First(&user)
+// Use Write Mode: read user from sources `db1`
+db.Clauses(dbresolver.Write).First(&user)
 
-// 指定 Resolver：从 `secondary` 的 replicas db `db8` 读取 user
-DB.Clauses(dbresolver.Use("secondary")).First(&user)
+// Specify Resolver: read user from `secondary`'s replicas: db8
+db.Clauses(dbresolver.Use("secondary")).First(&user)
 
-// 指定 Resolver 和 Write 模式：从 `secondary` 的 sources db `db6` 或 `db7` 读取 user
-DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
+// Specify Resolver and Write Mode: read user from `secondary`'s sources: db6 or db7
+db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 
 ## 负载均衡
@@ -104,7 +104,7 @@ type Policy interface {
 ## 连接池
 
 ```go
-DB.Use(
+db.Use(
   dbresolver.Register(dbresolver.Config{ /* xxx */ }).
   SetConnMaxIdleTime(time.Hour).
   SetConnMaxLifetime(24 * time.Hour).
