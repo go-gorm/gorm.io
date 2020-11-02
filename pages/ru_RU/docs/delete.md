@@ -72,7 +72,7 @@ db.Where("1 = 1").Delete(&User{})
 db.Exec("DELETE FROM users")
 // DELETE FROM users
 
-DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
+db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
