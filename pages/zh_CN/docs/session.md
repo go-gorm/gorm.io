@@ -20,7 +20,7 @@ type Session struct {
 
 ## DryRun
 
-DarRun 模式会生成但不执行 `SQL`，可以用于准备或测试生成的 SQL，详情请参考 Session：
+DryRun 模式会生成但不执行 `SQL`，可以用于准备或测试生成的 SQL，详情请参考 Session：
 
 ```go
 // 新建会话模式
