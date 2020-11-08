@@ -34,7 +34,7 @@ GORMは、`First`, `Last`, `Take`でデータの検索に失敗した場合に`E
 ```go
 // Check if returns RecordNotFound error
 err := db.First(&user, 100).Error
-errors.Is(err, gorm.ErrRecordNotFound)
+errors.Is(err, ErrRecordNotFound)
 ```
 
 ## Errors
