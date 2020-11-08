@@ -34,7 +34,7 @@ GORM возвращает `ErrRecordNotFound`, когда не удалось н
 ```go
 // Check if returns RecordNotFound error
 err := db.First(&user, 100).Error
-errors.Is(err, gorm.ErrRecordNotFound)
+errors.Is(err, ErrRecordNotFound)
 ```
 
 ## Ошибки
