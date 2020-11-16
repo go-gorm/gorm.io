@@ -212,10 +212,10 @@ GORM 为不同数据库提供了兼容的 Upsert 支持
 ```go
 import "gorm.io/gorm/clause"
 
-// 有冲突时什么都不做
+// Do nothing on conflict
 db.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// 当 `id` 有冲突时，更新指定列为默认值
+// Update columns to default value on `id` conflict
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -223,7 +223,7 @@ db.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// 当 `id` 有冲突时，更新指定列为新值
+// Update columns to new value on `id` conflict
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
@@ -231,6 +231,12 @@ db.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET "name"="excluded"."name"; SQL Server
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
+
+// Update all columns expects primary keys to new value on conflict
+db.Clauses(clause.OnConflict{
+  UpdateAll: true
+}).Create(&users)
+// INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age", ...;
 ```
 
 也可以查看 [高级查询](advanced_query.html) 中的 `FirstOrInit`, `FirstOrCreate`
