@@ -27,7 +27,7 @@ db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 db.Exec("DROP TABLE users")
 db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,3})
 
-// Exec with SQL Expression
+// Exec SQL 表达式
 db.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
@@ -46,7 +46,7 @@ db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&us
 db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
 // SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
 
-// Named Argument with Raw SQL
+// 原生 SQL 及命名参数
 db.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
    sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
 // SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
