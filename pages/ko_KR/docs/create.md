@@ -231,6 +231,12 @@ db.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET "name"="excluded"."name"; SQL Server
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
+
+// Update all columns expects primary keys to new value on conflict
+db.Clauses(clause.OnConflict{
+  UpdateAll: true
+}).Create(&users)
+// INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age", ...;
 ```
 
 Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
