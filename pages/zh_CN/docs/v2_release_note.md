@@ -88,10 +88,10 @@ for _, user := range users {
 预编译模式会预编译 SQL 执行语句，以加速后续执行速度
 
 ```go
-// globally mode, all operations will create prepared stmt and cache to speed up
+// 全局模式，所有的操作都会创建并缓存预编译语句，以加速后续执行速度
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{PrepareStmt: true})
 
-// session mode, create prepares stmt and speed up current session operations
+// 会话模式，当前会话中的操作会创建并缓存预编译语句
 tx := db.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
@@ -147,7 +147,7 @@ db.Model(&User{}).Create(datas)
 
 ```go
 result := db.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
-  // batch processing
+  // 批量处理
   return nil
 })
 ```
@@ -224,14 +224,14 @@ db.Where(
 #### 子查询
 
 ```go
-// Where SubQuery
+// Where 子查询
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 
-// From SubQuery
+// From 子查询
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE age = 18
 
-// Update SubQuery
+// Update 子查询
 db.Model(&user).Update(
   "price", db.Model(&Company{}).Select("name").Where("companies.id = users.company_id"),
 )
@@ -414,9 +414,9 @@ db.Create(&User{
   Attributes: datatypes.JSON([]byte(`{"name": "jinzhu", "age": 18, "tags": ["tag1", "tag2"], "orgs": {"orga": "orga"}}`)),
 }
 
-// Query user having a role field in attributes
+// 查询 attributes 中有 role 字段的 user
 db.First(&user, datatypes.JSONQuery("attributes").HasKey("role"))
-// Query user having orgs->orga field in attributes
+// 查询 attributes 中有 orgs->orga 字段的 user
 db.First(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 ```
 
@@ -627,7 +627,7 @@ func (user *User) BeforeUpdate(tx *gorm.DB) error {
     tx.Statement.SetColumn("Age", 18)
   }
 
-  if tx.Statement.Changed() { // if any fields changed
+  if tx.Statement.Changed() { // 如果任何字段有变动
     tx.Statement.SetColumn("Age", 18)
   }
   return nil
@@ -736,7 +736,7 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// PersonAddress must defined all required foreign keys, or it will raise error
+// PersonAddress 必须定义好所需的外键，否则会报错
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 

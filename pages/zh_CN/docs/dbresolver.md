@@ -26,16 +26,16 @@ import (
 db, err := gorm.Open(mysql.Open("db1_dsn"), &gorm.Config{})
 
 db.Use(dbresolver.Register(dbresolver.Config{
-  // use `db2` as sources, `db3`, `db4` as replicas
+  // `db2` 作为 sources，`db3`、`db4` 作为 replicas
   Sources:  []gorm.Dialector{mysql.Open("db2_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db3_dsn"), mysql.Open("db4_dsn")},
-  // sources/replicas load balancing policy
+  // sources/replicas 负载均衡策略
   Policy: dbresolver.RandomPolicy{},
 }).Register(dbresolver.Config{
-  // use `db1` as sources (DB's default connection), `db5` as replicas for `User`, `Address`
+  // `db1` 作为 sources（DB 的默认连接），对于 `User`、`Address` 使用 `db5` 作为 replicas
   Replicas: []gorm.Dialector{mysql.Open("db5_dsn")},
 }, &User{}, &Address{}).Register(dbresolver.Config{
-  // use `db6`, `db7` as sources, `db8` as replicas for `orders`, `Product`
+  // `db6`、`db7` 作为 sources，对于 `orders`、`Product` 使用 `db8` 作为 replicas
   Sources:  []gorm.Dialector{mysql.Open("db6_dsn"), mysql.Open("db7_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db8_dsn")},
 }, "orders", &Product{}, "secondary"))
@@ -52,7 +52,7 @@ DBResolver 会根据工作表、struct 自动切换连接
 对于原生 SQL，DBResolver 会从 SQL 中提取表名以匹配 Resolver，除非 SQL 开头为 `SELECT`（select for update 除外），否则 DBResolver 总是会使用 `sources` ，例如：
 
 ```go
-// `User` Resolver Examples
+// `User` Resolver 示例
 db.Table("users").Rows() // replicas `db5`
 db.Model(&User{}).Find(&AdvancedUser{}) // replicas `db5`
 db.Exec("update users set name = ?", "jinzhu") // sources `db1`
@@ -61,11 +61,11 @@ db.Create(&user) // sources `db1`
 db.Delete(&User{}, "name = ?", "jinzhu") // sources `db1`
 db.Table("users").Update("name", "jinzhu") // sources `db1`
 
-// Global Resolver Examples
+// Global Resolver 示例
 db.Find(&Pet{}) // replicas `db3`/`db4`
 db.Save(&Pet{}) // sources `db2`
 
-// Orders Resolver Examples
+// Orders Resolver 示例
 db.Find(&Order{}) // replicas `db8`
 db.Table("orders").Find(&Report{}) // replicas `db8`
 ```
@@ -79,13 +79,13 @@ DBResolver 的读写分离目前是基于 [GORM callback](https://gorm.io/docs/w
 ## 手动切换连接
 
 ```go
-// Use Write Mode: read user from sources `db1`
+// 使用 Write 模式：从 sources db `db1` 读取 user
 db.Clauses(dbresolver.Write).First(&user)
 
-// Specify Resolver: read user from `secondary`'s replicas: db8
+// 指定 Resolver：从 `secondary` 的 replicas db `db8` 读取 user
 db.Clauses(dbresolver.Use("secondary")).First(&user)
 
-// Specify Resolver and Write Mode: read user from `secondary`'s sources: db6 or db7
+// 指定 Resolver 和 Write 模式：从 `secondary` 的 sources db `db6` 或 `db7` 读取 user
 db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 

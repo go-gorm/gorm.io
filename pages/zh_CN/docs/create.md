@@ -86,19 +86,19 @@ db.Model(&User{}).Create([]map[string]interface{}{
 GORM 允许使用 SQL 表达式插入数据，有两种方法实现这个目标。根据 `map[string]interface{}` 或 [自定义数据类型](data_types.html#gorm_valuer_interface) 创建，例如：
 
 ```go
-// Create from map
+// 通过 map 创建记录
 db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// Create from customized data type
+// 通过自定义类型创建记录
 type Location struct {
     X, Y int
 }
 
-// Scan implements the sql.Scanner interface
+// Scan 方法实现了 sql.Scanner 接口
 func (loc *Location) Scan(v interface{}) error {
   // Scan a value into struct from database driver
 }
@@ -212,10 +212,10 @@ GORM 为不同数据库提供了兼容的 Upsert 支持
 ```go
 import "gorm.io/gorm/clause"
 
-// Do nothing on conflict
+// 有冲突时什么都不做
 db.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Update columns to default value on `id` conflict
+// 当 `id` 有冲突时，更新指定列为默认值
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -223,7 +223,7 @@ db.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// Update columns to new value on `id` conflict
+// 当 `id` 有冲突时，更新指定列为新值
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),

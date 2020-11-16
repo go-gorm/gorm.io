@@ -33,24 +33,24 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```go
 var user User
 
-// works
+// 可以
 db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// works
+// 可以
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// doesn't work
+// 不行
 result := map[string]interface{}{}
 db.Table("users").First(&result)
 
-// works with Take
+// 但可以配合 Take 使用
 result := map[string]interface{}{}
 db.Table("users").Take(&result)
 
-// order by first field
+// 根据第一个字段排序
 type Language struct {
   Code string
   Name string
@@ -240,7 +240,7 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 db.Order("age desc, name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
-// Multiple orders
+// 多个 order
 db.Order("age desc").Order("name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
