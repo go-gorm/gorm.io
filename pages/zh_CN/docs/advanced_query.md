@@ -253,24 +253,24 @@ for rows.Next() {
 用于批量查询并处理记录
 
 ```go
-// batch size 100
+// 每次批量处理 100 条
 result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // batch processing found records
+    // 批量处理找到的记录
   }
 
   tx.Save(&results)
 
-  tx.RowsAffected // number of records in this batch
+  tx.RowsAffected // 本次批量操作影响的记录数
 
   batch // Batch 1, 2, 3
 
-  // returns error will stop future batches
+  // 如果返回错误会终止后续批量操作
   return nil
 })
 
 result.Error // returned error
-result.RowsAffected // processed records count in all batches
+result.RowsAffected // 整个批量操作影响的记录数
 ```
 
 ## 查询钩子
@@ -303,7 +303,7 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Requesting more than one column, use `Scan` or `Find` like this:
+// 超过一列的查询，应该使用 `Scan` 或者 `Find`，例如：
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
