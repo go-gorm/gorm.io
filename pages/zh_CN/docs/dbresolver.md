@@ -79,13 +79,13 @@ DBResolver 的读写分离目前是基于 [GORM callback](https://gorm.io/docs/w
 ## 手动切换连接
 
 ```go
-// Use Write Mode: read user from sources `db1`
+// 使用 Write 模式：从 sources db `db1` 读取 user
 db.Clauses(dbresolver.Write).First(&user)
 
-// Specify Resolver: read user from `secondary`'s replicas: db8
+// 指定 Resolver：从 `secondary` 的 replicas db `db8` 读取 user
 db.Clauses(dbresolver.Use("secondary")).First(&user)
 
-// Specify Resolver and Write Mode: read user from `secondary`'s sources: db6 or db7
+// 指定 Resolver 和 Write 模式：从 `secondary` 的 sources db `db6` 或 `db7` 读取 user
 db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 
