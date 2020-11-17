@@ -70,9 +70,7 @@ db.WithContext(ctx).Find(&users)
 
 #### 일괄 Insert
 
-* `Create`에 슬라이스 데이터를 전달하면 GORM은 모든 데이터를 삽입하고 primary key 값을 다시 채우기 위한 단일 SQL문을 생성합니다
-* 만일 해당 데이터들이 association을 포함한다면, 모든 association은 다른 SQL에서 upsert처리됩니다
-* 일괄 insert된 데이터는 `Hooks` 메서드 (Before/After Create/Save)를 호출합니다
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -81,6 +79,15 @@ db.Create(&users)
 for _, user := range users {
   user.ID // 1,2,3
 }
+```
+
+You can specify batch size when creating with `CreateInBatches`, e.g:
+
+```go
+var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
+
+// batch size 100
+db.CreateInBatches(users, 100)
 ```
 
 #### Prepared Statement Mode
@@ -544,7 +551,7 @@ for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 
-tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
+tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
