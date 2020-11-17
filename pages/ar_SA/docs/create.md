@@ -32,21 +32,6 @@ AssignmentColumns([]string{"name", "age"}),
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-## Create Hooks
-
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
-
-```go
-func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
-  u.UUID = uuid. New()
-
-    if u. Role == "admin" {
-        return errors. New("invalid role")
-    }
-    return
-}
-```
-
 ## <span id="batch_insert">Batch Insert</span>
 
 To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
@@ -60,7 +45,41 @@ for _, user := range users {
 }
 ```
 
+You can specify batch size when creating with `CreateInBatches`, e.g:
+
+```go
+var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
+
+// batch size 100
+db.CreateInBatches(users, 100)
+```
+
 Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+
+## Create Hooks
+
+GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+
+```go
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+  u.UUID = uuid.New()
+
+    if u.Role == "admin" {
+        return errors.New("invalid role")
+    }
+    return
+}
+```
+
+If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+
+```go
+DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Create(&users)
+
+DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
+```
 
 ## Create From Map
 
