@@ -70,9 +70,7 @@ db.WithContext(ctx).Find(&users)
 
 #### Пакетная вставка
 
-* Use slice data with `Create` will generate a single SQL statement to insert all the data and backfill primary key values
-* If those data contain associations, all associations will be upserted with another SQL
-* Batch inserted data will call its `Hooks` methods (Before/After Create/Save)
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -81,6 +79,15 @@ db.Create(&users)
 for _, user := range users {
   user.ID // 1,2,3
 }
+```
+
+You can specify batch size when creating with `CreateInBatches`, e.g:
+
+```go
+var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
+
+// batch size 100
+db.CreateInBatches(users, 100)
 ```
 
 #### Prepared Statement Mode
@@ -119,7 +126,7 @@ db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN 
 
 #### Поиск в Map
 
-Сканировать результат в `map[string]interface{}` или `[]map[string]interface{}`
+Scan result to `map[string]interface{}` or `[]map[string]interface{}`
 
 ```go
 var result map[string]interface{}
@@ -326,20 +333,20 @@ db.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-Смотрите [Настраиваемые типы данных](data_types.html#gorm_valuer_interface) для подробностей
+Check out [Customize Data Types](data_types.html#gorm_valuer_interface) for details
 
 #### Права доступа к полю
 
-Поддержка прав доступа полей, уровни доступа: только для чтения, только для записи, только для создания, только для обновления, игнорируется
+Field permissions support, permission levels: read-only, write-only, create-only, update-only, ignored
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // разрешить читать и создавать
-  Name string `gorm:"<-:update"` // разрешить читать и обновлять
-  Name string `gorm:"<-"`        // разрешить читать и записывать (создавать и обновлять)
-  Name string `gorm:"->:false;<-:create"` // только создание
-  Name string `gorm:"->"` // только чтение
-  Name string `gorm:"-"`  // игнорируется
+  Name string `gorm:"<-:create"` // allow read and create
+  Name string `gorm:"<-:update"` // allow read and update
+  Name string `gorm:"<-"`        // allow read and write (create and update)
+  Name string `gorm:"->:false;<-:create"` // createonly
+  Name string `gorm:"->"` // readonly
+  Name string `gorm:"-"`  // ignored
 }
 ```
 
@@ -544,7 +551,7 @@ for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 
-tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
+tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
