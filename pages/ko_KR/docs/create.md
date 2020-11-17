@@ -31,7 +31,31 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## Hooks 생성하기
+## <span id="batch_insert">Batch Insert</span>
+
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+
+```go
+var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
+db.Create(&users)
+
+for _, user := range users {
+  user.ID // 1,2,3
+}
+```
+
+You can specify batch size when creating with `CreateInBatches`, e.g:
+
+```go
+var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
+
+// batch size 100
+db.CreateInBatches(users, 100)
+```
+
+일괄 삽입은 [Upsert](#upsert) 및 [Create With Associations](#create_with_associations)에도 지원됩니다.
+
+## Create Hooks
 
 GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 
@@ -46,24 +70,19 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_insert">일괄 삽입</span>
-
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
 
 ```go
-var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
-db.Create(&users)
+DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
 
-for _, user := range users {
-  user.ID // 1,2,3
-}
+DB.Session(&gorm.Session{SkipHooks: true}).Create(&users)
+
+DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 ```
-
-일괄 삽입은 [Upsert](#upsert) 및 [Create With Associations](#create_with_associations)에도 지원됩니다.
 
 ## Map으로 생성하기
 
-GORM은 `map[string]interface{}` 및 `[]map[string]interface{}{}` 을 이용하여 레코드를 생성하는것을 지원합니다. 예시:
+GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
@@ -78,12 +97,12 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** map으로 생성하면, hooks가 호출되지 않으며, 연결이 저장되지 않고, 기본키가 채워지지 않습니다.
+**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
 {% endnote %}
 
 ## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
 
-GORM을 사용하면 SQL 표현식을 사용하여 데이터를 삽입 할 수 있습니다.이 목표를 달성하는 데는 두 가지 방법이 있습니다. `map [string] interface {`} 또는 [사용자 정의 데이터 유형](data_types.html#gorm_valuer_interface)에서 생성합니다.
+GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
 
 ```go
 // Create from map
@@ -130,7 +149,7 @@ db.Create(&User{
 
 ### <span id="create_with_associations">Create With Associations</span>
 
-연관이있는 일부 데이터를 작성할 때 연관 값이 0 값이 아닌 경우 해당 연관이 상향 조정되고 해당 `Hooks` 메소드가 호출됩니다.
+When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
 
 ```go
 type CreditCard struct {
@@ -153,7 +172,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-`Select`, `Omit`를 사용하여 associations를 스킵할 수 있습니다. 예시:
+You can skip saving associations with `Select`, `Omit`, for example:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -164,7 +183,7 @@ db.Omit(clause.Associations).Create(&user)
 
 ### <span id="default_values">기본 값</span>
 
-태그 `default`를 사용하여 필드의 기본값을 정의 할 수 있습니다. 예를 들면 다음과 같습니다.
+You can define default values for fields with tag `default`, for example:
 
 ```go
 type User struct {
@@ -174,7 +193,7 @@ type User struct {
 }
 ```
 
-기본값은 [zero-value](https://tour.golang.org/basics/12) 필드에 사용됩니다
+Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
 {% note warn %}
 **NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
