@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Smart Select Fields</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM mengijinkan memilih field tertentu dengan [` Select `](query.html), jika Anda sering menggunakan ini dalam aplikasi Anda, mungkin Anda ingin mendefinisikan struct yang lebih simpel untuk penggunaan API yang dapat memilih field tertentu secara otomatis, misalnya:
 
 ```go
 type User struct {
