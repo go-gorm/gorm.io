@@ -70,9 +70,7 @@ db.WithContext(ctx).Find(&users)
 
 #### Batch Insert
 
-* Use slice data with `Create` will generate a single SQL statement to insert all the data and backfill primary key values
-* If those data contain associations, all associations will be upserted with another SQL
-* Batch inserted data will call its `Hooks` methods (Before/After Create/Save)
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -81,6 +79,15 @@ db.Create(&users)
 for _, user := range users {
   user.ID // 1,2,3
 }
+```
+
+You can specify batch size when creating with `CreateInBatches`, e.g:
+
+```go
+var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
+
+// batch size 100
+db.CreateInBatches(users, 100)
 ```
 
 #### Prepared Statement Mode
@@ -544,7 +551,7 @@ for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 
-tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
+tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
