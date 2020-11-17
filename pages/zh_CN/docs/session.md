@@ -6,15 +6,18 @@ layout: page
 GORM 提供了 `Session` 方法，这是一个 [`New Session Method`](method_chaining.html)，它允许创建带配置的新建会话模式：
 
 ```go
-// Session 配置
+// Session Configuration
 type Session struct {
-  DryRun            bool
-  PrepareStmt       bool
-  WithConditions    bool
-  AllowGlobalUpdate bool
-  Context           context.Context
-  Logger            logger.Interface
-  NowFunc           func() time.Time
+  DryRun                 bool
+  PrepareStmt            bool
+  NewDB                  bool
+  SkipHooks              bool
+  SkipDefaultTransaction bool
+  AllowGlobalUpdate      bool
+  FullSaveAssociations   bool
+  Context                context.Context
+  Logger                 logger.Interface
+  NowFunc                func() time.Time
 }
 ```
 
@@ -73,28 +76,46 @@ for sql, stmt := range stmtManger.Stmts {
 }
 ```
 
-## WithConditions
+## NewDB
 
-`WithCondition` 会共享 `*gorm.DB` 的条件，例如：
+Create a new DB without conditions with option `NewDB`, for example:
 
 ```go
-tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
+tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{NewDB: true})
 
 tx.First(&user)
-// SELECT * FROM users WHERE name = "jinzhu" ORDER BY id
+// SELECT * FROM users ORDER BY id LIMIT 1
 
 tx.First(&user, "id = ?", 10)
-// SELECT * FROM users WHERE name = "jinzhu" AND id = 10 ORDER BY id
+// SELECT * FROM users WHERE id = 10 ORDER BY id
 
-// 不共享 `WithConditions`
-tx2 := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: false})
+// Without option `NewDB`
+tx2 := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
 tx2.First(&user)
-// SELECT * FROM users ORDER BY id
+// SELECT * FROM users WHERE name = "jinzhu" ORDER BY id
+```
+
+## Skip Hooks
+
+If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+
+```go
+DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Create(&users)
+
+DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Find(&user)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Delete(&user)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Model(User{}).Where("age > ?", 18).Updates(&user)
 ```
 
 ## AllowGlobalUpdate
 
-默认情况下，GORM 不允许全局 update/delete，它会返回 `ErrMissingWhereClause` 错误，你可以将该选项置为 true 以允许全局操作，例如：
+GORM doesn't allow global update/delete by default, will return `ErrMissingWhereClause` error, you can set this option to true to enable it, for example:
 
 ```go
 db.Session(&gorm.Session{
@@ -105,7 +126,7 @@ db.Session(&gorm.Session{
 
 ## FullSaveAssociations
 
-当创建/更新记录时，GORM将使用 [Upsert](create.html#upsert) 自动保存关联和其引用。 如果您想要更新关联的数据，您应该使用 `FullSaveAssociations` 模式，例如：
+GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record, if you want to update associations's data, you should use the `FullSaveAssociations` mode, e.g:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -118,27 +139,27 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## Context
 
-通过 `Context` 选项，您可以传入 `Context` 来追踪 SQL 操作，例如：
+With the `Context` option, you can set the `Context` for following SQL operations, for example:
 
 ```go
 timeoutCtx, _ := context.WithTimeout(context.Background(), time.Second)
 tx := db.Session(&Session{Context: timeoutCtx})
 
-tx.First(&user) // 带有 context timeoutCtx 的查询操作
-tx.Model(&user).Update("role", "admin") // 带有 context timeoutCtx 的更新操作
+tx.First(&user) // query with context timeoutCtx
+tx.Model(&user).Update("role", "admin") // update with context timeoutCtx
 ```
 
-GORM 也提供了简写形式的方法 `WithContext`，其实现如下：
+GORM also provides shortcut method `WithContext`,  here is the definition:
 
 ```go
 func (db *DB) WithContext(ctx context.Context) *DB {
-  return db.Session(&Session{WithConditions: true, Context: ctx})
+  return db.Session(&Session{Context: ctx})
 }
 ```
 
 ## Logger
 
-Gorm 允许使用 `Logger` 选项自定义内置 Logger，例如：
+Gorm allows customize built-in logger with the `Logger` option, for example:
 
 ```go
 newLogger := logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags),
@@ -152,11 +173,11 @@ db.Session(&Session{Logger: newLogger})
 db.Session(&Session{Logger: logger.Default.LogMode(logger.Silent)})
 ```
 
-查看 [Logger](logger.html) 获取更多信息
+Checkout [Logger](logger.html) for more details
 
 ## NowFunc
 
-`NowFunc` 允许改变 GORM 获取当前时间的实现，例如：
+`NowFunc` allows change the function to get current time of GORM, for example:
 
 ```go
 db.Session(&Session{
@@ -168,12 +189,11 @@ db.Session(&Session{
 
 ## Debug
 
-`Debug` 只是将会话的 `Logger` 修改为调试模式的简写形式，其实现如下：
+`Debug` is a shortcut method to change session's `Logger` to debug mode,  here is the definition:
 
 ```go
 func (db *DB) Debug() (tx *DB) {
   return db.Session(&Session{
-    WithConditions: true,
     Logger:         db.Logger.LogMode(logger.Info),
   })
 }
