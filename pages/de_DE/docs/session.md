@@ -8,13 +8,16 @@ GORM provides `Session` method, which is a [`New Session Method`](method_chainin
 ```go
 // Session Configuration
 type Session struct {
-  DryRun            bool
-  PrepareStmt       bool
-  WithConditions    bool
-  AllowGlobalUpdate bool
-  Context           context.Context
-  Logger            logger.Interface
-  NowFunc           func() time.Time
+  DryRun                 bool
+  PrepareStmt            bool
+  NewDB                  bool
+  SkipHooks              bool
+  SkipDefaultTransaction bool
+  AllowGlobalUpdate      bool
+  FullSaveAssociations   bool
+  Context                context.Context
+  Logger                 logger.Interface
+  NowFunc                func() time.Time
 }
 ```
 
@@ -73,23 +76,41 @@ for sql, stmt := range stmtManger.Stmts {
 }
 ```
 
-## WithConditions
+## NewDB
 
-Share `*gorm.DB` conditions with option `WithConditions`, for example:
+Create a new DB without conditions with option `NewDB`, for example:
 
 ```go
-tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
+tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{NewDB: true})
 
 tx.First(&user)
-// SELECT * FROM users WHERE name = "jinzhu" ORDER BY id
+// SELECT * FROM users ORDER BY id LIMIT 1
 
 tx.First(&user, "id = ?", 10)
-// SELECT * FROM users WHERE name = "jinzhu" AND id = 10 ORDER BY id
+// SELECT * FROM users WHERE id = 10 ORDER BY id
 
-// Without option `WithConditions`
-tx2 := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: false})
+// Without option `NewDB`
+tx2 := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
 tx2.First(&user)
-// SELECT * FROM users ORDER BY id
+// SELECT * FROM users WHERE name = "jinzhu" ORDER BY id
+```
+
+## Skip Hooks
+
+If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+
+```go
+DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Create(&users)
+
+DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Find(&user)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Delete(&user)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Model(User{}).Where("age > ?", 18).Updates(&user)
 ```
 
 ## AllowGlobalUpdate
@@ -132,7 +153,7 @@ GORM also provides shortcut method `WithContext`,  here is the definition:
 
 ```go
 func (db *DB) WithContext(ctx context.Context) *DB {
-  return db.Session(&Session{WithConditions: true, Context: ctx})
+  return db.Session(&Session{Context: ctx})
 }
 ```
 
@@ -173,7 +194,6 @@ db.Session(&Session{
 ```go
 func (db *DB) Debug() (tx *DB) {
   return db.Session(&Session{
-    WithConditions: true,
     Logger:         db.Logger.LogMode(logger.Info),
   })
 }

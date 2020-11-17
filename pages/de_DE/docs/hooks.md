@@ -150,14 +150,12 @@ func (u *User) BeforeCreate(tx *gorm.DB) error {
   tx.Statement.Select("Name", "Age")
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
-  // tx is new session mode without the `WithConditions` option
+  // tx is new session mode with the `NewDB` option
   // operations based on it will run inside same transaction but without any current conditions
   var role Role
   err := tx.First(&role, "name = ?", user.Role).Error
   // SELECT * FROM roles WHERE name = "admin"
   // ...
-  return err
-}
   return err
 }
 ```

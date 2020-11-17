@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Smart Select Fields</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM mengijinkan memilih field tertentu dengan [` Select `](query.html), jika Anda sering menggunakan ini dalam aplikasi Anda, mungkin Anda ingin mendefinisikan struct yang lebih simpel untuk penggunaan API yang dapat memilih field tertentu secara otomatis, misalnya:
 
 ```go
 type User struct {
@@ -28,7 +28,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 
 ## Locking (FOR UPDATE)
 
-GORM supports different types of locks, for example:
+GORM mendukung berbagai jenis locks, misalnya:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -45,7 +45,7 @@ Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
 
 ## SubQuery
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+subquery bisa bertingkat dalam kueri, GORM bisa menghasilkan subquery saat menggunakan objek ` * gorm.DB ` sebagai parameter
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -58,7 +58,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From SubQuery</span>
 
-GORM allows you using subquery in FROM clause with method `Table`, for example:
+GORM memungkinkan Anda menggunakan subquery dalam klausa FROM dengan metode ` Table `, misalnya:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -72,7 +72,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">Group Conditions</span>
 
-Easier to write complicated SQL query with Group Conditions
+Memudahkan untuk menulis query SQL yang rumit dengan menggunakan Kondisi Grup
 
 ```go
 db.Where(

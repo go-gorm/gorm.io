@@ -3,9 +3,9 @@ title: Transactions
 layout: page
 ---
 
-## Disable Default Transaction
+## Menonaktifkan transaction default
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required, you will gain about 30%+ performance improvement after that
+GORM melakukan operasi (create / update / delete) yang dijalankan di dalam transaction untuk memastikan konsistensi data, kita dapat menonaktifkannya selama inisialisasi jika tidak diperlukan, kita akan memperoleh peningkatan kinerja sekitar 30% + setelah itu
 
 ```go
 // Globally disable
@@ -22,7 +22,7 @@ tx.Model(&user).Update("Age", 18)
 
 ## Transaction
 
-To perform a set of operations within a transaction, the general flow is as below.
+Untuk melakukan serangkaian operasi dalam suatu transaction, pada umumnya seperti metode di bawah ini.
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
