@@ -74,29 +74,44 @@ db.Omit(clause.Associations).Create(&user)
 // Skip all associations when creating a user
 ```
 
-## 关联模式
-
-关联模式包含一些在处理关系时有用的方法
+{% note warn %}
+**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
 
 ```go
-// 开始关联模式
+db.Omit("Languages.*").Create(&user)
+```
+
+The following code will skip the creation of the association and its references
+
+```go
+db.Omit("Languages").Create(&user)
+```
+{% endnote %}
+
+
+## 关联模式
+
+Association Mode contains some commonly used helper methods to handle relationships
+
+```go
+// Start Association Mode
 var user User
 db.Model(&user).Association("Languages")
-// `user` 是源模型，它的主键不能为空
-// 关系的字段名是 `Languages`
-// 如果匹配了上面两个要求，会开始关联模式，否则会返回错误
+// `user` is the source model, it must contains primary key
+// `Languages` is a relationship's field name
+// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
 db.Model(&user).Association("Languages").Error
 ```
 
 ### 查找关联
 
-查找所有匹配的关联记录
+Find matched associations
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-查找带条件的关联
+Find associations with conditions
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
@@ -107,7 +122,7 @@ db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Langua
 
 ### 添加关联
 
-为 `many to many`、`has many` 添加新的关联；为 `has one`, `belongs to` 替换当前的关联
+Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -119,7 +134,7 @@ db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "4111111111
 
 ### 替换关联
 
-用一个新的关联替换当前的关联
+Replace current associations with new ones
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -129,7 +144,7 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 
 ### 删除关联
 
-如果存在，则删除源模型与参数之间的关系，只会删除引用，不会从数据库中删除这些对象。
+Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
@@ -138,7 +153,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### 清空关联
 
-删除源模型与关联之间的所有引用，但不会删除这些关联
+Remove all reference between source & association, won't delete those associations
 
 ```go
 db.Model(&user).Association("Languages").Clear()
@@ -146,53 +161,53 @@ db.Model(&user).Association("Languages").Clear()
 
 ### 关联计数
 
-返回当前关联的计数
+Return the count of current associations
 
 ```go
 db.Model(&user).Association("Languages").Count()
 
-// 条件计数
+// Count with conditions
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
 ### 批量处理数据
 
-关联模式也支持批量处理，例如：
+Association Mode supports batch data, e.g:
 
 ```go
-// 查询所有用户的所有角色
+// Find all roles for all users
 db.Model(&users).Association("Role").Find(&roles)
 
-// 将 userA 移出所有的 Team
+// Delete User A from all users's team
 db.Model(&users).Association("Team").Delete(&userA)
 
-// 获取所有 Team 成员的不重复计数
+// Get unduplicated count of members in all user's team
 db.Model(&users).Association("Team").Count()
 
-// 对于 `Append`、`Replace` 的批量处理，参数与数据的长度必须相等，否则会返回错误
+// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will return error
 var users = []User{user1, user2, user3}
-// 例如：我们有 3 个 user，将 userA 添加到 user1 的 Team，将 userB 添加到 user2 的 Team，将 userA、userB、userC 添加到 user3 的 Team
+// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// 将 user1 的 Team 重置为 userA，将 user2的 team 重置为 userB，将 user3 的 team 重置为 userA、userB 和 userC
+// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## <span id="delete_with_select">通过 select 删除</span>
 
-你可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
 
 ```go
-// 删除 user 时，也删除 user 的 account
+// delete user's account when deleting user
 db.Select("Account").Delete(&user)
 
-// 删除 user 时，也删除 user 的 Orders、CreditCards 记录
+// delete user's Orders, CreditCards relations when deleting user
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// 删除 user 时，也删除用户所有 has one/many、many2many 记录
+// delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
 
-// 删除 users 时，也删除 user 们的 account
+// delete users's account when deleting users
 db.Select("Account").Delete(&users)
 ```
 
