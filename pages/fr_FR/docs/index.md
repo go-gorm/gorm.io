@@ -8,7 +8,7 @@ La fantastique bibliothèque ORM pour Golang, conviviale pour les développeurs.
 ## Vue d'ensemble
 
 * ORM complet
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
+* Associations (A un, A plusieurs, Appartient à, Beaucoup à plusieurs, Polymorphisme, Héritage à table unique)
 * Hooks (Before/After Create/Save/Update/Delete/Find)
 * Eager loading with `Preload`, `Joins`
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point

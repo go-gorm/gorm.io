@@ -74,6 +74,21 @@ db.Omit(clause.Associations).Create(&user)
 // Skip all associations when creating a user
 ```
 
+{% note warn %}
+**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+
+```go
+db.Omit("Languages.*").Create(&user)
+```
+
+The following code will skip the creation of the association and its references
+
+```go
+db.Omit("Languages").Create(&user)
+```
+{% endnote %}
+
+
 ## Association Mode
 
 Association Mode contains some commonly used helper methods to handle relationships
