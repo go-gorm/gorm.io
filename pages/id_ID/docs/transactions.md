@@ -43,7 +43,7 @@ db.Transaction(func(tx *gorm.DB) error {
 
 ### Nested Transactions
 
-GORM supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
+GORM mendukung transaksi nested, Anda dapat melakukan rollback subset operasi yang dapat dilakukan dalam cakupan transaksi yang lebih besar, misalnya:
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
@@ -65,7 +65,7 @@ db.Transaction(func(tx *gorm.DB) error {
 // Commit user1, user3
 ```
 
-## Transactions by manual
+## Transactions Secara Manual
 
 ```go
 // begin a transaction
@@ -83,7 +83,7 @@ tx.Rollback()
 tx.Commit()
 ```
 
-### A Specific Example
+### Contoh Lebih Spesifik
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
@@ -115,7 +115,7 @@ func CreateAnimals(db *gorm.DB) error {
 
 ## SavePoint, RollbackTo
 
-GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
+GORM menyediakan ` SavePoint `, ` RollbackTo ` untuk menyimpan nilai dan memutar kembali ke satu nilai simpan, misalnya:
 
 ```go
 tx := db.Begin()
