@@ -41,9 +41,17 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
+To generate the finally SQL, you could use following code:
+
+```go
+// NOTE the SQL is not always safe to execute, GORM only use it for logs, it might cause SQL injection
+db.Dialector.Explain(stmt.SQL.String(), stmt.Vars...)
+// SELECT * FROM `users` WHERE `id` = 1
+```
+
 ## Подготовить
 
-`PreparedStmt` создает подготовленное объекты при выполнении любого SQL и кэширует их для ускорения будущих звонков, например:
+`PreparedStmt` creates prepared statement when executing any SQL and caches them to speed up future calls, for example:
 
 ```go
 // globally mode, all DB operations will create prepared stmt and cache them
