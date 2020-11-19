@@ -41,17 +41,25 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
-## 预编译
-
-`PreparedStmt` 在执行任何 SQL 时都会创建一个 prepared statement 并将其缓存，以提高后续的效率，例如：
+To generate the finally SQL, you could use following code:
 
 ```go
-// 全局模式，所有 DB 操作都会 创建并缓存预编译语句
+// NOTE the SQL is not always safe to execute, GORM only use it for logs, it might cause SQL injection
+db.Dialector.Explain(stmt.SQL.String(), stmt.Vars...)
+// SELECT * FROM `users` WHERE `id` = 1
+```
+
+## 预编译
+
+`PreparedStmt` creates prepared statement when executing any SQL and caches them to speed up future calls, for example:
+
+```go
+// globally mode, all DB operations will create prepared stmt and cache them
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
 
-// 会话模式
+// session mode
 tx := db.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
@@ -60,19 +68,19 @@ tx.Model(&user).Update("Age", 18)
 // returns prepared statements manager
 stmtManger, ok := tx.ConnPool.(*PreparedStmtDB)
 
-// 关闭 *当前会话* 的预编译模式
+// close prepared statements for *current session*
 stmtManger.Close()
 
-// 为 *当前会话* 预编译 SQL
+// prepared SQL for *current session*
 stmtManger.PreparedSQL // => []string{}
 
-// 为当前数据库连接池的（所有会话）开启预编译模式
+// prepared statements for current database connection pool (all sessions)
 stmtManger.Stmts // map[string]*sql.Stmt
 
 for sql, stmt := range stmtManger.Stmts {
-  sql  // 预编译 SQL
-  stmt // 预编译模式
-  stmt.Close() // 关闭预编译模式
+  sql  // prepared SQL
+  stmt // prepared statement
+  stmt.Close() // close the prepared statement
 }
 ```
 
