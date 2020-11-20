@@ -31,7 +31,7 @@ db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 
 После новой инициализации `*gorm. B` или `Метода новой сессии`, следующий вызов методов создаст новый `экземпляр` вместо использования текущего
 
-GROM определил методы `Session`, `WithContext`, `Debug`, как `Методы новой сессии`, см. [Сессия](session.html)
+GROM defined `Session`, `WithContext`, `Debug`, `Begin` methods as `New Session Method`, refer [Session](session.html) for more details
 
 Давайте объясним это с примерами:
 
