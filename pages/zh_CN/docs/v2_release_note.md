@@ -70,7 +70,7 @@ db.WithContext(ctx).Find(&users)
 
 #### 批量插入
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+要有效地插入大量记录，可以将一个 slice 传递给 `Create` 方法。 将切片数据传递给 Create 方法，GORM 将生成一个单一的 SQL 语句来插入所有数据，并回填主键的值，钩子方法也会被调用。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -81,18 +81,18 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+使用 `CreateInBatches` 创建时，你还可以指定创建的数量，例如：
 
 ```go
-var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
+var 用户 = []User{name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 
-// batch size 100
-db.CreateInBatches(users, 100)
+// 数量为 100
+db.CreateInBatches(用户, 100)
 ```
 
 #### 预编译模式
 
-Prepared Statement Mode creates prepared stmt and caches them to speed up future calls
+预编译模式会预编译 Sql 执行语句，以加速后续执行速度
 
 ```go
 // globally mode, all operations will create prepared stmt and cache to speed up
