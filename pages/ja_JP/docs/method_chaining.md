@@ -31,7 +31,7 @@ Finishersは登録されたコールバックを実行する即時メソッド�
 
 `*gorm.DB`が新しく初期化されたか、`New Session Method`が実行された後、 次のメソッド呼び出しは、現在のインスタンスを使用する代わりに新しい`Statement`インスタンスを作成します。
 
-GROM defined `Session`, `WithContext`, `Debug`, `Begin` methods as `New Session Method`, refer [Session](session.html) for more details
+GROM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details
 
 以下の例で説明しましょう。
 
