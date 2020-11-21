@@ -37,7 +37,7 @@ Check out [the full lists](https://github.com/go-gorm/gorm/blob/master/finisher_
 
 After new initialized `*gorm.DB` or a `New Session Method`, following methods call will create a new `Statement` instance instead of using the current one
 
-GROM defined `Session`, `WithContext`, `Debug`, `Begin` methods as `New Session Method`, refer [Session](session.html) for more details
+GROM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details
 
 Let explain it with examples:
 
