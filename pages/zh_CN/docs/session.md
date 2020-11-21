@@ -6,7 +6,7 @@ layout: page
 GORM 提供了 `Session` 方法，这是一个 [`New Session Method`](method_chaining.html)，它允许创建带配置的新建会话模式：
 
 ```go
-// Session Configuration
+// Session 配置
 type Session struct {
   DryRun                 bool
   PrepareStmt            bool
@@ -41,25 +41,25 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
-To generate the finally SQL, you could use following code:
+你可以使用下面的代码生成最终的 SQL：
 
 ```go
-// NOTE the SQL is not always safe to execute, GORM only use it for logs, it might cause SQL injection
+// 注意：SQL 并不总是能安全地执行，GORM 仅将其用于日志，它可能导致会 SQL 注入
 db.Dialector.Explain(stmt.SQL.String(), stmt.Vars...)
 // SELECT * FROM `users` WHERE `id` = 1
 ```
 
 ## 预编译
 
-`PreparedStmt` creates prepared statement when executing any SQL and caches them to speed up future calls, for example:
+`PreparedStmt` 在执行任何 SQL 时都会创建一个 prepared statement 并将其缓存，以提高后续的效率，例如：
 
 ```go
-// globally mode, all DB operations will create prepared stmt and cache them
+// 全局模式，所有 DB 操作都会 创建并缓存预编译语句
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
 
-// session mode
+// 会话模式
 tx := db.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
@@ -68,19 +68,19 @@ tx.Model(&user).Update("Age", 18)
 // returns prepared statements manager
 stmtManger, ok := tx.ConnPool.(*PreparedStmtDB)
 
-// close prepared statements for *current session*
+// 关闭 *当前会话* 的预编译模式
 stmtManger.Close()
 
-// prepared SQL for *current session*
+// 为 *当前会话* 预编译 SQL
 stmtManger.PreparedSQL // => []string{}
 
-// prepared statements for current database connection pool (all sessions)
+// 为当前数据库连接池的（所有会话）开启预编译模式
 stmtManger.Stmts // map[string]*sql.Stmt
 
 for sql, stmt := range stmtManger.Stmts {
-  sql  // prepared SQL
-  stmt // prepared statement
-  stmt.Close() // close the prepared statement
+  sql  // 预编译 SQL
+  stmt // 预编译模式
+  stmt.Close() // 关闭预编译模式
 }
 ```
 
