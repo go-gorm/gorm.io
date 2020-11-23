@@ -21,7 +21,7 @@ There are three kinds of methods in GORM: `Chain Method`, `Finisher Method`, `Ne
 
 Chain methods are methods to modify or add `Clauses` to current `Statement`, like:
 
-`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
+`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` can't be used with other chainable methods to build SQL)...
 
 Here is [the full lists](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), also check out the [SQL Builder](sql_builder.html) for more details about `Clauses`
 
