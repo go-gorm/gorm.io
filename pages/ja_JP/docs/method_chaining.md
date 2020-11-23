@@ -15,7 +15,7 @@ GORMには `Chain Method`, `Finisher Method`, `New Session Method`という3種�
 
 Chain Methodsは現在の`Statement`に`Clauses`を変更または追加するメソッドです。
 
-`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
+`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` can't be used with other chainable methods to build SQL)...
 
 こちらが[Chain Methodの一覧](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)です。`Clauses`についての詳細は [SQL Builder](sql_builder.html)を参照してください。
 
