@@ -15,7 +15,7 @@ db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 
 Методы цепочки - это методы изменения или добавления `Условий` к текущему `экземпляру`, например:
 
-`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
+`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` can't be used with other chainable methods to build SQL)...
 
 Вот [полный список](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), также ознакомьтесь с [Конструктор SQL](sql_builder.html) для получения более подробной информации о `Условиях`
 
