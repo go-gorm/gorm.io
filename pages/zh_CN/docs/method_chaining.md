@@ -15,7 +15,7 @@ GORM 中有三种类型的方法： `链式方法`、`Finisher 方法`、`新建
 
 链式方法是将 `Clauses` 修改或添加到当前 `Statement` 的方法，例如：
 
-`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
+`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` can't be used with other chainable methods to build SQL)...
 
 这是 [完整方法列表](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)，也可以查看 [SQL 构建器](sql_builder.html) 获取更多关于 `Clauses` 的信息
 
