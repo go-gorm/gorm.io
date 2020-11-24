@@ -14,18 +14,18 @@ layout: strona
 
 ## Dokumentacja i artykuły
 
-* Ulepszaj dokumentację GORM dodawaj nową treść, poprawiaj istniejący materiał
+* Ulepszaj dokumentację GORM, dodawaj nową treść, poprawiaj istniejący materiał
 
-### Translate this site
+### Tłumacz tą stronę
 
-You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
+Możesz przetłumaczyć bieżącą stronę na [https://translate.gorm.io](https://translate.gorm.io)
 
-To translate GORM in your language you need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
+Aby przetłumaczyć GORM na swój język, musisz wysłać prośbę w [Github issues](https://github.com/go-gorm/gorm.io/issues) aby została dodana do [https://translate. orm.io](https://translate.gorm.io).
 
-## Program
+## Programuj
 
-* Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
-* Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
+* Twórz pull requesty na [Github'ie](https://github.com/go-gorm/gorm) z poprawkami, i nowymi funkcjonalnościami
+* Twórz open source wtyczki dla GORM (nie zapomnij dodać ich do [tej listy](/community.html#Open-Sources))
 
 ## Dotacje
 
@@ -47,4 +47,4 @@ Twoja życzliwość i hojność są bardzo doceniane, a twoje imię zostanie umi
 
 ## Sponsorzy
 
-## Backers
+## Wspierający
