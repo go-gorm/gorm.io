@@ -1,20 +1,20 @@
 ---
-title: Contribute to GORM
-layout: page
+title: Wspieracie GORM
+layout: strona
 ---
 
-**You can help to deliver a better GORM! there are many things that you can do:**
+**Możesz pomóc w tworzeniu lepszego GORM! Jest wiele rzeczy, które możesz zrobić:**
 
-## Help others to know GORM
+## Pomóż innym poznać GORM
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forget to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
+* Podziel się GORM ze światem w mediach społecznościowych lub po prostu powiedz o nim ludziom, którzy mogą być zainteresowani
+* Pomóż nowym użytkownikom rozwiązać problemy na [Stack Overflow ](https://stackoverflow.com/questions/tagged/go-gorm), [Github'ie](https://github.com/go-gorm/gorm/issues) i [Chat'cie](/community.html#Chat)
+* Pisz tutoriale, nagrywaj filmy itp... (nie zapomnij dodać ich do [tej listy](/community.html))
+* Pomóż w promowaniu GORM na GitHub'ie przez [gwiazdkę](https://github.com/go-gorm/gorm/stargazers) i [obserwowanie](https://github.com/go-gorm/gorm/watchers) repozytorium GORM [](https://github.com/go-gorm/gorm)
 
-## Documentation and Writing
+## Dokumentacja i artykuły
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* Ulepszaj dokumentację GORM dodawaj nową treść, poprawiaj istniejący materiał
 
 ### Translate this site
 
@@ -27,24 +27,24 @@ To translate GORM in your language you need to post a request in the [Github iss
 * Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
 * Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
 
-## Donations
+## Dotacje
 
-Many thanks to all our sponsors!
+Bardzo dziękuję wszystkim naszym sponsorom!
 
-### One-time Donations
+### Jednorazowa wsparcie
 
-Your kindness and generosity is greatly appreciated
+Twoja życzliwość i hojność są bardzo doceniane
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[Jednorazowa darowizna przez Paypal](https://www.paypal.me/zhangjinzhu) [Jednorozowa darowizna przez OpenCollective](https://opencollective.com/gorm)
 
-### Recurring Donations
+### Cykliczna wsparcie
 
-Your kindness and generosity are greatly appreciated, and your name will be listed on this page or the home page of this website.
+Twoja życzliwość i hojność są bardzo doceniane, a twoje imię zostanie umieszczone na tej podstronie lub na stronie głównej tej strony.
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[Cykliczne dotacje przez OpenCollective](https://opencollective.com/gorm) [Cykliczne dotacje przez Patreon](https://www.patreon.com/jinzhu)
 
 <br>
 
-## Sponsors
+## Sponsorzy
 
 ## Backers
