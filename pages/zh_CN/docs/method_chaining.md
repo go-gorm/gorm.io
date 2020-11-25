@@ -15,7 +15,7 @@ GORM 中有三种类型的方法： `链式方法`、`Finisher 方法`、`新建
 
 链式方法是将 `Clauses` 修改或添加到当前 `Statement` 的方法，例如：
 
-`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
+`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` can't be used with other chainable methods to build SQL)...
 
 这是 [完整方法列表](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)，也可以查看 [SQL 构建器](sql_builder.html) 获取更多关于 `Clauses` 的信息
 
@@ -31,7 +31,7 @@ Finishers 是会立即执行注册回调的方法，然后生成并执行 SQL，
 
 在初始化了 `*gorm.DB` 或 `新建会话方法` 后， 调用下面的方法会创建一个新的 `Statement` 实例而不是使用当前的
 
-GROM defined `Session`, `WithContext`, `Debug`, `Begin` methods as `New Session Method`, refer [Session](session.html) for more details
+GROM 定义了 `Session`、`WithContext`、`Debug` 方法做为 `新建会话方法`，查看[会话](session.html) 获取详情
 
 让我们用一些例子来解释它：
 
@@ -88,34 +88,34 @@ tx.Where("age = ?", 28).Find(&users)
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// Safe for new initialized *gorm.DB
+// 安全的使用新初始化的 *gorm.DB
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// NOT Safe as reusing Statement
+// 不安全的复用 Statement
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.WithContext(ctx)
-// Safe after a `New Session Method`
+// 在 `新建会话方法` 之后是安全的
 for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// Safe after a `New Session Method`
+// 在 `新建会话方法` 之后是安全的
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` 会应用到查询中
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
-// Safe after a `New Session Method`
+// 在 `新建会话方法` 之后是安全的
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` 会应用到查询中
 }
 ```

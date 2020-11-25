@@ -25,6 +25,7 @@ layout: страница
 ## Открытый исходный код
 
 * [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
+* [go-paginate - cursor-based pagination](https://github.com/raphaelvigee/go-paginate)
 
 ## <span id="contribute">Внести изменения в эту страницу</span>
 

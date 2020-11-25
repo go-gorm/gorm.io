@@ -15,7 +15,7 @@ GORMには `Chain Method`, `Finisher Method`, `New Session Method`という3種�
 
 Chain Methodsは現在の`Statement`に`Clauses`を変更または追加するメソッドです。
 
-`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
+`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` can't be used with other chainable methods to build SQL)...
 
 こちらが[Chain Methodの一覧](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)です。`Clauses`についての詳細は [SQL Builder](sql_builder.html)を参照してください。
 
@@ -31,7 +31,7 @@ Finishersは登録されたコールバックを実行する即時メソッド�
 
 `*gorm.DB`が新しく初期化されたか、`New Session Method`が実行された後、 次のメソッド呼び出しは、現在のインスタンスを使用する代わりに新しい`Statement`インスタンスを作成します。
 
-GROM defined `Session`, `WithContext`, `Debug`, `Begin` methods as `New Session Method`, refer [Session](session.html) for more details
+GROM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details
 
 以下の例で説明しましょう。
 

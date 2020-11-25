@@ -25,6 +25,7 @@ layout: page
 ## 开源软件
 
 * [gormt - 将 mysql 转换为 golang struct](https://github.com/xxjwxc/gormt)
+* [go-paginate - 基于游标的分页器](https://github.com/raphaelvigee/go-paginate)
 
 ## <span id="contribute">完善本页面</span>
 

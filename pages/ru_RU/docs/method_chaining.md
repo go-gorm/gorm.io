@@ -15,7 +15,7 @@ db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 
 Методы цепочки - это методы изменения или добавления `Условий` к текущему `экземпляру`, например:
 
-`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw`...
+`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` can't be used with other chainable methods to build SQL)...
 
 Вот [полный список](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), также ознакомьтесь с [Конструктор SQL](sql_builder.html) для получения более подробной информации о `Условиях`
 
@@ -31,7 +31,7 @@ db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 
 После новой инициализации `*gorm. B` или `Метода новой сессии`, следующий вызов методов создаст новый `экземпляр` вместо использования текущего
 
-GROM defined `Session`, `WithContext`, `Debug`, `Begin` methods as `New Session Method`, refer [Session](session.html) for more details
+GROM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details
 
 Давайте объясним это с примерами:
 
