@@ -3,13 +3,13 @@ title: Hooks
 layout: page
 ---
 
-## Object Life Cycle
+## Siklus perkebnagan objek
 
 Hooks are functions that are called before or after creation/querying/updating/deletion.
 
-If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+Jika Anda telah mendefinisikan metode tertentu untuk sebuah model, itu akan dipanggil secara otomatis saat create, updating, querying deletion, dan jika ada callback yang mengembalikan error, GORM akan menghentikan operasi dan mengembalikan jalur transaction.
 
-The type of hook methods should be `func(*gorm.DB) error`
+Type dari hook disini seharusnya `func(*gorm.DB) error`
 
 ## Hooks
 
