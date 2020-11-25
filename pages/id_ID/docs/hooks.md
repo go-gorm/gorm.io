@@ -15,7 +15,7 @@ Type dari hook disini seharusnya `func(*gorm.DB) error`
 
 ### Creating an object
 
-Available hooks for creating
+Hook yang tersedia untuk membuat
 
 ```go
 // begin transaction
@@ -29,7 +29,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-Code Example:
+Contoh code:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
