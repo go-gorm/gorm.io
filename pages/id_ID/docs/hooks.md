@@ -13,7 +13,7 @@ Type dari hook disini seharusnya `func(*gorm.DB) error`
 
 ## Hooks
 
-### Creating an object
+### Membuat sebuah objek
 
 Hook yang tersedia untuk membuat
 
@@ -50,7 +50,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 ```
 
 {% note warn %}
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is committed, if you return any error in your hooks, the change will be rollbacked
+NOTE "" Operasi Save/Delete di dalam GORM menjalankan pertukaran secara default, jadi peruba di dalam pertukaran itu tidak terlihat, jika kita mengembalikan nilai error apapun dalam hooks kita, maka perubahan itu akan di kembalikan
 {% endnote %}
 
 ```go
@@ -62,9 +62,9 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### Melakukan Update pada sebuah Objek
 
-Available hooks for updating
+Hook yang tersedia untuk membuat
 
 ```go
 // begin transaction
@@ -97,9 +97,9 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### Menghapus Sebuah Objek
 
-Available hooks for deleting
+Hook yang tersedia untuk melakukan Delete
 
 ```go
 // begin transaction
@@ -109,7 +109,7 @@ AfterDelete
 // commit or rollback transaction
 ```
 
-Code Example:
+Contoh kode:
 
 ```go
 // Updating data in same transaction
@@ -121,9 +121,9 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Querying an object
+### Querying on object (get data)
 
-Available hooks for querying
+Hook yang tersedia untuk querying (mengambil data)
 
 ```go
 // load data from database
@@ -142,7 +142,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 }
 ```
 
-## Modify current operation
+## Memodifikasi alur operasi
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
