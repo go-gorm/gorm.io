@@ -105,19 +105,19 @@ db.Model(&User{}).Create([]map[string]interface{}{
 GORM 允许使用 SQL 表达式插入数据，有两种方法实现这个目标。根据 `map[string]interface{}` 或 [自定义数据类型](data_types.html#gorm_valuer_interface) 创建，例如：
 
 ```go
-// Create from map
+// 通过 map 创建记录
 db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`location`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// Create from customized data type
+// 通过自定义类型创建记录
 type Location struct {
     X, Y int
 }
 
-// Scan implements the sql.Scanner interface
+// Scan 方法实现了 sql.Scanner 接口
 func (loc *Location) Scan(v interface{}) error {
   // Scan a value into struct from database driver
 }
