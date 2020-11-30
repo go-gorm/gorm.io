@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## 根据主键删除
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out check out [Query Inline Conditions](query.html#inline_conditions) for details
+GORM 允许通过内联条件指定主键来检索对象，但只支持整型数值，因为 string 可能导致 SQL 注入。查看 [内联条件查询](query.html#inline_conditions) 获取详情
 
 ```go
 db.Delete(&User{}, 10)
