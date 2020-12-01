@@ -61,7 +61,7 @@ func init() {
 
 #### Context 支持
 
-* 通过 `WithContext` 方法提供 `context.Context` 支持
+* 数据库操作通过 `WiContext` 方法支持 `Context`
 * Logger 也支持用于追踪的 context
 
 ```go
