@@ -12,12 +12,12 @@ GORM 2.0 完全从零开始，引入了一些不兼容的 API 变更和许多改
 * Context，批量插入，预编译模式，DryRun 模式，Join 预加载，Find To Map，Create From Map，FindInBatches 支持
 * 支持嵌套事务，SavePoint，Rollback To SavePoint
 * SQL 生成器，命名参数，分组条件，Upsert，锁， 支持 Optimizer/Index/Comment Hint，子查询改进，使用SQL表达式、Context Valuer 进行 CRUD
-* 支持完整的自引用，改进 Join Table，批量数据的关联模式
-* 允许多个字段用于追踪 create、update 时间 ，支持 UNIX （毫/纳）秒
+* 完整的自引用支持，连接表改进，批量数据的关联模式
+* 允许跟踪创建/更新时间的多个字段，UNIX (毫秒/纳秒) 支持
 * 支持字段权限：只读、只写、只创建、只更新、忽略
 * 新的插件系统，为多个数据库提供了官方插件，读写分离，prometheus 集成...
 * 全新的 Hook API：带插件的统一接口
-* 全新的 Migrator：允许为关系创建数据库外键，更智能的 AutoMigrate，支持约束、检查器，增强索引支持
+* 新迁移器：允许为关系创建数据库外键，更智能的自动迁移，支持约束以及检查器，支持增强索引
 * 全新的 Logger：支持 context、改进可扩展性
 * 统一命名策略：表名、字段名、连接表名、外键、检查器、索引名称规则
 * 更好的自定义类型支持（例如： JSON）
@@ -61,7 +61,7 @@ func init() {
 
 #### Context 支持
 
-* 通过 `WithContext` 方法提供 `context.Context` 支持
+* 数据库操作通过 `WiContext` 方法支持 `Context`
 * Logger 也支持用于追踪的 context
 
 ```go
