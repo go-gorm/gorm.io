@@ -47,10 +47,10 @@ for _, user := range users {
 使用 `CreateInBatches` 创建时，你还可以指定创建的数量，例如：
 
 ```go
-var 用户 = []User{name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
+var users = []User{name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 
 // 数量为 100
-db.CreateInBatches(用户, 100)
+db.CreateInBatches(users, 100)
 ```
 
 [Upsert](#upsert) 和 [Create With Associations](#create_with_associations) 也支持批量插入
