@@ -78,7 +78,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 ## 软删除
 
-如果您的模型包含了一个 `gorm.deletedat` 字段（`gorm.Model` 已经包含了该字段)，它将自动获得软删除的能力！
+如果您的模型包含了一个 `gorm.DeletedAt` 字段（`gorm.Model` 已经包含了该字段)，它将自动获得软删除的能力！
 
 拥有软删除能力的模型调用 `Delete` 时，记录不会被从数据库中真正删除。但 GORM 会将 `DeletedAt` 置为当前时间， 并且你不能再通过正常的查询方法找到该记录。
 
