@@ -152,6 +152,38 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
+## Clickhouse
+
+https://github.com/go-gorm/clickhouse
+
+```go
+import (
+  "gorm.io/driver/clickhouse"
+  "gorm.io/gorm"
+)
+
+func main() {
+  dsn := "tcp://localhost:9000?database=gorm&username=gorm&password=gorm&read_timeout=10&write_timeout=20"
+  db, err := gorm.Open(clickhouse.Open(dsn), &gorm.Config{})
+
+  // Auto Migrate
+  db.AutoMigrate(&User{})
+  // Set table options
+  db.Set("gorm:table_options", "ENGINE=Distributed(cluster, default, hits)").AutoMigrate(&User{})
+
+  // Insert
+  db.Create(&user)
+
+  // Select
+  db.Find(&user, "id = ?", 10)
+
+  // Batch Insert
+  var users = []User{user1, user2, user3}
+  db.Create(&users)
+  // ...
+}
+```
+
 ## Connection Pool
 
 GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
@@ -171,7 +203,7 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Refer [Generic Interface](generic_interface.html) for details
 
-## サポートされていないデータベース
+## Unsupported Databases
 
 Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
