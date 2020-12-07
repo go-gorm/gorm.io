@@ -1,4 +1,4 @@
-m--
+---
 title: GORM Config
 layout: page
 ---
@@ -16,8 +16,6 @@ type Config struct {
   AllowGlobalUpdate      bool
   DisableAutomaticPing   bool
   DisableForeignKeyConstraintWhenMigrating bool
-  QueryFields     bool
-  CreateBatchSize int
 }
 ```
 
@@ -96,38 +94,6 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 ## AllowGlobalUpdate
 
 Enable global update/delete, refer [Session](session.html) for details
-
-## QueryFields
-
-Select by fields
-
-```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
-  QueryFields: true,
-})
-
-db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
-// SELECT * FROM `users` // without this option
-```
-
-## CreateBatchSize
-
-Default batch size
-
-```go
-db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
-  CreateBatchSize: 1000,
-})
-
-db := db.Session(&gorm.Session{CreateBatchSize: 1000})
-
-users = [5000]User{{Name: "jinzhu", Pets: []Pet{pet1, pet2, pet3}}...}
-
-db.Create(&users)
-// INSERT INTO users xxx (5 batches)
-// INSERT INTO pets xxx (15 batches)
-```
 
 ## DisableAutomaticPing
 
