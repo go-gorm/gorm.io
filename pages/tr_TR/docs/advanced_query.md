@@ -26,6 +26,23 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
+{% note warn %}
+**NOTE** `QueryFields` mode will select by all fields' name for current model
+{% endnote %}
+
+```go
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  QueryFields: true,
+})
+
+db.Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+
+// Session Mode
+db.Session(&gorm.Session{QueryFields: true}).Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users`
+```
+
 ## Locking (FOR UPDATE)
 
 GORM supports different types of locks, for example:
