@@ -86,21 +86,21 @@ db.Migrator().CurrentDatabase()
 ### 表
 
 ```go
-// 为 `User` 创建表
+// Create table for `User`
 db.Migrator().CreateTable(&User{})
 
-// 将 "ENGINE=InnoDB" 添加到创建 `User` 的 SQL 里去
-db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
+// Append "ENGINE=InnoDB" to the creating table SQL for `User`
+db.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&User{})
 
-// 检查 `User` 对应的表是否存在
+// Check table for `User` exists or not
 db.Migrator().HasTable(&User{})
 db.Migrator().HasTable("users")
 
-// 如果存在表则删除（删除时会忽略、删除外键约束)
+// Drop table if exists (will ignore or delete foreign key constraints when dropping)
 db.Migrator().DropTable(&User{})
 db.Migrator().DropTable("users")
 
-// 重命名表
+// Rename old table to new table
 db.Migrator().RenameTable(&User{}, &UserInfo{})
 db.Migrator().RenameTable("users", "user_infos")
 ```
