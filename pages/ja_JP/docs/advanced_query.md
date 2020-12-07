@@ -26,9 +26,26 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
+{% note warn %}
+**NOTE** `QueryFields` mode will select by all fields' name for current model
+{% endnote %}
+
+```go
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  QueryFields: true,
+})
+
+db.Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+
+// Session Mode
+db.Session(&gorm.Session{QueryFields: true}).Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users`
+```
+
 ## Locking (FOR UPDATE)
 
-GORMは異なるタイプのロックをサポートしています。例:
+GORM supports different types of locks, for example:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -41,11 +58,11 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-詳細については、[Raw SQL and SQL Builder](sql_builder.html)を参照してください。
+Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
 
 ## SubQuery
 
-クエリ内にサブクエリをネストすることができます。GORMは、パラメータとして `*gorm.DB` オブジェクトを使用するとサブクエリを生成できます。
+A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -72,7 +89,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">Group Conditions</span>
 
-グループ条件で複雑な SQL クエリを簡単に記述できます
+Easier to write complicated SQL query with Group Conditions
 
 ```go
 db.Where(
@@ -86,7 +103,7 @@ db.Where(
 
 ## Named Argument
 
-GORMは[`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg)や`map[string]interface{}{}`を使用した名前付き引数をサポートしています 。例：
+GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -96,7 +113,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-詳細については、 [Raw SQL and SQL Builder](sql_builder.html#named_argument)を参照してください。
+Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
 
 ## Find To Map
 
@@ -128,7 +145,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-レコードが見つからない場合のみ、struct をより多くの属性で初期化できます。これらの `Attrs` は 作成されるSQLクエリには使用されません。
+initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
 
 ```go
 // User not found, initialize it with give conditions and Attrs
@@ -175,7 +192,7 @@ db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
-レコードが見つからない場合、より多くの属性を持つ構造体を作成します。それらの `Attrs` はSQLクエリのビルドには使用されません。
+Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
 
 ```go
 // User not found, create it with give conditions and Attrs
@@ -217,7 +234,7 @@ db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-インデックスヒントでは、データベースのクエリプランナーが混乱した場合に備えて、インデックスヒントをデータベースに渡すことができます。
+Index hints allow passing index hints to the database in case the query planner gets confused.
 
 ```go
 import "gorm.io/hints"
@@ -229,7 +246,7 @@ db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-詳細については、 [Optimizer Hints/Index/Comment](hints.html) を参照してください。
+Refer [Optimizer Hints/Index/Comment](hints.html) for more details
 
 ## Iteration
 
@@ -250,7 +267,7 @@ for rows.Next() {
 
 ## FindInBatches
 
-バッチ処理内でレコードをクエリしたり処理できます
+Query and process records in batch
 
 ```go
 // batch size 100
@@ -275,7 +292,7 @@ result.RowsAffected // processed records count in all batches
 
 ## Query Hooks
 
-GORMは`AfterFind`をフックできます。これはレコードを取得したときに呼び出されます。詳細は[Hooks](hooks.html)を参照してください。
+GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {

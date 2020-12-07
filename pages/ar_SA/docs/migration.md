@@ -85,25 +85,23 @@ db. Migrator(). CurrentDatabase()
 ### Tables
 
 ```go
-CreateIndex(&User{}, "Name")
-db. CreateIndex(&User{}, "idx_name")
+// Create table for `User`
+db.Migrator().CreateTable(&User{})
 
-// Drop index for Name field
-db. DropIndex(&User{}, "Name")
-db. DropIndex(&User{}, "idx_name")
+// Append "ENGINE=InnoDB" to the creating table SQL for `User`
+db.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&User{})
 
-// Check Index exists
-db. HasIndex(&User{}, "Name")
-db. HasIndex(&User{}, "idx_name")
+// Check table for `User` exists or not
+db.Migrator().HasTable(&User{})
+db.Migrator().HasTable("users")
 
-type User struct {
-  gorm. Model
-  Name  string `gorm:"size:255;index:idx_name,unique"`
-  Name2 string `gorm:"size:255;index:idx_name_2,unique"`
-}
-// Rename index name
-db. RenameIndex(&User{}, "Name", "Name2")
-db. RenameIndex(&User{}, "idx_name", "idx_name_2")
+// Drop table if exists (will ignore or delete foreign key constraints when dropping)
+db.Migrator().DropTable(&User{})
+db.Migrator().DropTable("users")
+
+// Rename old table to new table
+db.Migrator().RenameTable(&User{}, &UserInfo{})
+db.Migrator().RenameTable("users", "user_infos")
 ```
 
 ### Columns

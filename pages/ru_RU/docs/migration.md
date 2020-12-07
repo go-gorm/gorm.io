@@ -86,21 +86,21 @@ db.Migrator().CurrentDatabase()
 ### Таблицы
 
 ```go
-// Создать таблицу для `User`
+// Create table for `User`
 db.Migrator().CreateTable(&User{})
 
-// Добавить "ENGINE=InnoDB" в создание таблицы SQL для `User`
-db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
+// Append "ENGINE=InnoDB" to the creating table SQL for `User`
+db.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&User{})
 
-// Проверить существует ли таблица для `User` или нет
+// Check table for `User` exists or not
 db.Migrator().HasTable(&User{})
 db.Migrator().HasTable("users")
 
-// Drop таблицу если существует (будет игнорировать или удалять внешние ключи при drop)
+// Drop table if exists (will ignore or delete foreign key constraints when dropping)
 db.Migrator().DropTable(&User{})
 db.Migrator().DropTable("users")
 
-// Переименовать таблицу
+// Rename old table to new table
 db.Migrator().RenameTable(&User{}, &UserInfo{})
 db.Migrator().RenameTable("users", "user_infos")
 ```

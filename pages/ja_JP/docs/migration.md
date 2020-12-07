@@ -90,7 +90,7 @@ db.Migrator().CurrentDatabase()
 db.Migrator().CreateTable(&User{})
 
 // Append "ENGINE=InnoDB" to the creating table SQL for `User`
-db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
+db.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&User{})
 
 // Check table for `User` exists or not
 db.Migrator().HasTable(&User{})

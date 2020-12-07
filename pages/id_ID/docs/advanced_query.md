@@ -26,9 +26,26 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
+{% note warn %}
+**NOTE** `QueryFields` mode will select by all fields' name for current model
+{% endnote %}
+
+```go
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  QueryFields: true,
+})
+
+db.Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+
+// Session Mode
+db.Session(&gorm.Session{QueryFields: true}).Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users`
+```
+
 ## Locking (FOR UPDATE)
 
-GORM mendukung berbagai jenis locks, misalnya:
+GORM supports different types of locks, for example:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -45,7 +62,7 @@ Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
 
 ## SubQuery
 
-subquery bisa bertingkat dalam kueri, GORM bisa menghasilkan subquery saat menggunakan objek ` * gorm.DB ` sebagai parameter
+A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -58,7 +75,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From SubQuery</span>
 
-GORM memungkinkan Anda menggunakan subquery dalam klausa FROM dengan metode ` Table `, misalnya:
+GORM allows you using subquery in FROM clause with method `Table`, for example:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -72,7 +89,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">Group Conditions</span>
 
-Memudahkan untuk menulis query SQL yang rumit dengan menggunakan Kondisi Grup
+Easier to write complicated SQL query with Group Conditions
 
 ```go
 db.Where(
