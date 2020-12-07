@@ -26,9 +26,26 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
+{% note warn %}
+**NOTE** `QueryFields` mode will select by all fields' name for current model
+{% endnote %}
+
+```go
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  QueryFields: true,
+})
+
+db.Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+
+// Session Mode
+db.Session(&gorm.Session{QueryFields: true}).Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users`
+```
+
 ## Блокировка (ДЛЯ ОБНОВЛЕНИЯ)
 
-GORM поддерживает различные типы блокировок, например:
+GORM supports different types of locks, for example:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -41,11 +58,11 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Посмотрите [Чистый SQL и Конструктор SQL](sql_builder.html) для подробностей
+Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
 
 ## Под Запрос
 
-Подзапрос может быть вложен в запрос, GORM сгенерирует подзапрос при использовании `*gorm.DB` объекта в качестве параметра
+A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -58,7 +75,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">Из SubQuery (под запроса)</span>
 
-GORM позволяет вам использовать подзапрос в FROM при помощи метода `Table`, например:
+GORM allows you using subquery in FROM clause with method `Table`, for example:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -72,7 +89,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">Группировка условий</span>
 
-Проще писать сложные SQL запросы с помощью группировки условий
+Easier to write complicated SQL query with Group Conditions
 
 ```go
 db.Where(
@@ -86,7 +103,7 @@ db.Where(
 
 ## Именованные аргументы
 
-GORM поддерживает именованные аргументы при помощи [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) или `map[string]interface{}{}`, например:
+GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -96,7 +113,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Смотрите [Чистый SQL и Конструктор SQL](sql_builder.html#named_argument) для подробностей
+Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
 
 ## Поиск в Map
 
@@ -112,103 +129,103 @@ db.Table("users").Find(&results)
 
 ## Первый или новый (FirstOrInit)
 
-Получить первую найденную запись, или инициализировать новую с заданными параметрами (работает только с struct и map)
+Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
 
 ```go
-// Пользователь не найден, инициализировать его с параметрами 
+// User not found, initialize it with give conditions
 db.FirstOrInit(&user, User{Name: "non_existing"})
-// пользователь -> User{Name: "non_existing"}
+// user -> User{Name: "non_existing"}
 
-// Найти пользователя с параметром `name` = `jinzhu`
+// Found user with `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
-// пользователь -> User{ID: 111, Name: "Jinzhu", Age: 18}
+// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-// Найденный пользователь с параметрами `name` = `jinzhu`
+// Found user with `name` = `jinzhu`
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
-// пользователь -> User{ID: 111, Name: "Jinzhu", Age: 18}
+// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-инициализировать struct с дополнительными параметрами, если запись не найдена, эти `Attrs` не будут использованы в построении запроса SQL
+initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
 
 ```go
-// Пользователь не найден, инициализировать struct с указанными параметрами и атрибутами
+// User not found, initialize it with give conditions and Attrs
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
-// пользователь -> User{Name: "non_existing", Age: 20}
+// user -> User{Name: "non_existing", Age: 20}
 
-// Пользователь не найден, инициализировать struct с указанными параметрами и атрибутами
+// User not found, initialize it with give conditions and Attrs
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
-// пользователь -> User{Name: "non_existing", Age: 20}
+// user -> User{Name: "non_existing", Age: 20}
 
-// Найден пользователь с параметрами `name` = `jinzhu`, атрибуты будут проигнорированы
+// Found user with `name` = `jinzhu`, attributes will be ignored
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
-// пользователь -> User{ID: 111, Name: "Jinzhu", Age: 18}
+// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` назначение атрибутов в struct, независимо от того, найдена запись или нет, эти атрибуты не будут участвовать в генерации запроса SQL и не будут сохранены в БД
+`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
 
 ```go
-// Пользователь не найден, с указанными параметрами, инициализировать запись с указанными параметрами и назначенными assign атрибутами
+// User not found, initialize it with give conditions and Assign attributes
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
-// пользователь -> User{Name: "non_existing", Age: 20}
+// user -> User{Name: "non_existing", Age: 20}
 
-// Пользователь найден с параметрами `name` = `jinzhu`, дополнить запись назначенными assign атрибутами
+// Found user with `name` = `jinzhu`, update it with Assign attributes
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
-// пользователь -> User{ID: 111, Name: "Jinzhu", Age: 20}
+// user -> User{ID: 111, Name: "Jinzhu", Age: 20}
 ```
 
 ## Первый или создать (FirstOrCreate)
 
-Получить первую найденную запись или создать новую с указанными параметрами (работает только с struct, map)
+Get first matched record or create a new one with given conditions (only works with struct, map conditions)
 
 ```go
-// Пользователь не найден, создать новую запись с заданными параметрами
+// User not found, create a new record with give conditions
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Найлен пользователь `name` = `jinzhu`
+// Found user with `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
-Создать struct с дополнительными атрибутами если запись не найдена, эти `Attrs` атрибуты не будут использованы в генерации SQL
+Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
 
 ```go
-// Пользователь не найден, создать его с параметрами и атрибутами
+// User not found, create it with give conditions and Attrs
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
-// пользователь -> User{ID: 112, Name: "non_existing", Age: 20}
+// user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Найден пользователь с параметрами `name` = `jinzhu`, атрибуты будут проигнорированы 
+// Found user with `name` = `jinzhu`, attributes will be ignored
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
-// пользователь -> User{ID: 111, Name: "jinzhu", Age: 18}
+// user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` назначение атрибутов к записи, будет работать независимо от того, найдена запись или нет.
+`Assign` attributes to the record regardless it is found or not and save them back to the database.
 
 ```go
-// Пользователь не найден, инициализировать новую запись с параметрами и назначить Assign атрибуты
+// User not found, initialize it with give conditions and Assign attributes
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
-// пользователь -> User{ID: 112, Name: "non_existing", Age: 20}
+// user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Найден пользователь с параметрами `name` = `jinzhu`, обновим запись Assign атрибутами
+// Found user with `name` = `jinzhu`, update it with Assign attributes
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // UPDATE users SET age=20 WHERE id = 111;
-// пользователь -> User{ID: 111, Name: "jinzhu", Age: 20}
+// user -> User{ID: 111, Name: "jinzhu", Age: 20}
 ```
 
 ## Оптимизатор/Индексирование подсказки
 
-Подсказки оптимизатора позволяют контролировать оптимизатор запросов для выбора определенного плана выполнения запроса, GORM поддерживает его с помощью `gorm.io/hints`, например:
+Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
 
 ```go
 import "gorm.io/hints"
@@ -217,7 +234,7 @@ db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Индексные подсказки позволяют передавать индексированные подсказки к базе данных, если планировщик запросов запутается.
+Index hints allow passing index hints to the database in case the query planner gets confused.
 
 ```go
 import "gorm.io/hints"
@@ -229,11 +246,11 @@ db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-Смотрите [Подсказки оптимизатор/Индекс/Комментарий](hints.html) для получения более подробной информации
+Refer [Optimizer Hints/Index/Comment](hints.html) for more details
 
 ## Итерация
 
-GORM поддерживает итерацию по строкам
+GORM supports iterating through Rows
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -241,16 +258,16 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows это метод `gorm.DB`, может быть использован для сканирования записи в struct
+  // ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
   db.ScanRows(rows, &user)
 
-  // что-то делаем
+  // do something
 }
 ```
 
 ## Найти в пакете(FindInBatches)
 
-Запрашивать и обрабатывать записи в пакете
+Query and process records in batch
 
 ```go
 // batch size 100
@@ -275,7 +292,7 @@ result.RowsAffected // processed records count in all batches
 
 ## Хуки запросов
 
-GORM позволяет использовать хуки `AfterFind` для запроса, который будет вызыватся при выполнении запроса, посмотрите [Хуки](hooks.html) для подробностей
+GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -288,7 +305,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Запросить один столбец из БД и записать в slice, если вы хотите получить несколько столбцов - используйте `Select` вместе с [`Scan`](query.html#scan) для этого
+Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
 
 ```go
 var ages []int64
@@ -310,7 +327,7 @@ db.Select("name", "age").Find(&users)
 
 ## Области
 
-`Рамки` позволяют установить часто используемые запросы, которые можно использовать позже как методы
+`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -332,20 +349,20 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Найти все заказы оплаченные кредитной картой и суммой более 1000
+// Find all credit card orders and amount greater than 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Найти все заказы с оплатой наложенным платежом и суммой более 1000
+// Find all COD orders and amount greater than 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Найти все оплаченные и отгруженные заказы с суммой более 1000
+// Find all paid, shipped orders that amount greater than 1000
 ```
 
 Checkout [Scopes](scopes.html) for details
 
 ## <span id="count">Количество</span>
 
-Получить количество найденных записей
+Get matched records count
 
 ```go
 var count int64
