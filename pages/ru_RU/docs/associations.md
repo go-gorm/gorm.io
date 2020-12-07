@@ -3,7 +3,7 @@ title: Связи
 layout: страница
 ---
 
-## Авто Создание/Обновление
+## Авто Create/Update
 
 GORM будет автоматически сохранять ассоциации и их ссылки с помощью [Upsert](create.html#upsert) при создании/обновлении записи.
 
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+Если понадобится обновить данные ассоциаций, то следует использовать режим `FullSaveAssociations`:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -47,7 +47,7 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## Пропустить автоматическое создание/обновление
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+Чтобы пропустить автоматическое сохранение при create/update, можно воспользоваться `Select` либо `Omit`, пример:
 
 ```go
 user := User{
@@ -75,13 +75,13 @@ db.Omit(clause.Associations).Create(&user)
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**Примечание:** Для ассоциаций many2many GORM будет вставлять ассоциации перед созданием ссылок на join таблицу, если понадобится пропустить вставку ассоциаций, можно пропустить ее следующим образом:
 
 ```go
 db.Omit("Languages.*").Create(&user)
 ```
 
-The following code will skip the creation of the association and its references
+Следующий код пропустит создание связи и ее ссылок
 
 ```go
 db.Omit("Languages").Create(&user)
@@ -91,7 +91,7 @@ db.Omit("Languages").Create(&user)
 
 ## Режим связи
 
-Association Mode contains some commonly used helper methods to handle relationships
+Режим ассоциации содержит некоторые часто используемые вспомогательные методы для обработки отношений
 
 ```go
 // Start Association Mode
