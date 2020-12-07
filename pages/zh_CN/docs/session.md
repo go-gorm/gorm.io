@@ -6,7 +6,7 @@ layout: page
 GORM 提供了 `Session` 方法，这是一个 [`New Session Method`](method_chaining.html)，它允许创建带配置的新建会话模式：
 
 ```go
-// Session 配置
+// Session Configuration
 type Session struct {
   DryRun                 bool
   PrepareStmt            bool
@@ -15,6 +15,8 @@ type Session struct {
   SkipDefaultTransaction bool
   AllowGlobalUpdate      bool
   FullSaveAssociations   bool
+  QueryFields            bool
+  CreateBatchSize        int
   Context                context.Context
   Logger                 logger.Interface
   NowFunc                func() time.Time
@@ -205,4 +207,26 @@ func (db *DB) Debug() (tx *DB) {
     Logger:         db.Logger.LogMode(logger.Info),
   })
 }
+```
+
+## QueryFields
+
+Select by fields
+
+```go
+db.Session(&gorm.Session{QueryFields: true}).Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+// SELECT * FROM `users` // without this option
+```
+
+## CreateBatchSize
+
+Default batch size
+
+```go
+users = [5000]User{{Name: "jinzhu", Pets: []Pet{pet1, pet2, pet3}}...}
+
+db.Session(&gorm.Session{CreateBatchSize: 1000}).Create(&users)
+// INSERT INTO users xxx (5 batches)
+// INSERT INTO pets xxx (15 batches)
 ```

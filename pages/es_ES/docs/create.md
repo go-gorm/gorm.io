@@ -55,6 +55,24 @@ db.CreateInBatches(users, 100)
 
 Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
 
+{% note warn %}
+**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+{% endnote %}
+
+```go
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  CreateBatchSize: 1000,
+})
+
+db := db.Session(&gorm.Session{CreateBatchSize: 1000})
+
+users = [5000]User{{Name: "jinzhu", Pets: []Pet{pet1, pet2, pet3}}...}
+
+db.Create(&users)
+// INSERT INTO users xxx (5 batches)
+// INSERT INTO pets xxx (15 batches)
+```
+
 ## Create Hooks
 
 GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle

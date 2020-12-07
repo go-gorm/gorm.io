@@ -77,7 +77,7 @@ import (
   "gorm.io/gorm"
 )
 
-dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
+dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
@@ -152,27 +152,59 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
-## Пул подключений
+## Clickhouse
+
+https://github.com/go-gorm/clickhouse
+
+```go
+import (
+  "gorm.io/driver/clickhouse"
+  "gorm.io/gorm"
+)
+
+func main() {
+  dsn := "tcp://localhost:9000?database=gorm&username=gorm&password=gorm&read_timeout=10&write_timeout=20"
+  db, err := gorm.Open(clickhouse.Open(dsn), &gorm.Config{})
+
+  // Auto Migrate
+  db.AutoMigrate(&User{})
+  // Set table options
+  db.Set("gorm:table_options", "ENGINE=Distributed(cluster, default, hits)").AutoMigrate(&User{})
+
+  // Insert
+  db.Create(&user)
+
+  // Select
+  db.Find(&user, "id = ?", 10)
+
+  // Batch Insert
+  var users = []User{user1, user2, user3}
+  db.Create(&users)
+  // ...
+}
+```
+
+## Connection Pool
 
 GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns устанавливает максимальное количество подключений в режиме простоя.
+// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns устанавливает макстмальное количество открытых подключений к БД.
+// SetMaxOpenConns sets the maximum number of open connections to the database.
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime устанавливает максимальное количество повторного использования подключений.
+// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Смотрите [Общий интерфейс](generic_interface.html) для подробностей
+Refer [Generic Interface](generic_interface.html) for details
 
-## Неподдерживаемые базы данных
+## Unsupported Databases
 
-Некоторые базы данных могут быть совместимы с `mysql` или `postgres` диалектами, в этом случае можно просто использовать диалект для этих баз данных.
+Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
-Для других, [вам предлагается сделать драйвер, pull request приветствуется!](write_driver.html)
+For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
