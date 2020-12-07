@@ -144,74 +144,74 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 
 ### Удаление связей
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+Удаление связи между источником и связанными аргументами приводит к удалению ссылки, но сами объекты из БД не удаляются.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Очистить связи
+### Очистка связей
 
-Remove all reference between source & association, won't delete those associations
+Удаляет все ссылки между источником и связью, не удаляя связь
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Количество связей
+### Подсчет связей
 
-Return the count of current associations
+Возвращает количество существующих связей
 
 ```go
 db.Model(&user).Association("Languages").Count()
 
-// Count with conditions
+// Подсчет с условиями
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Пакетные данные
+### Пакетная обработка
 
-Association Mode supports batch data, e.g:
+Режим связывания поддерживает пакетную обработку, пример:
 
 ```go
-// Find all roles for all users
+// Поиск всех <i>Role</i> по всем <i>users</i>
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// Удаление <i>userA</i> из всех <i>users.Team</i>
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get unduplicated count of members in all user's team
+// Получение количества неповторяющихся <i>users</i> членов во всех <i>users.Team</i>
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will return error
+// Для добавления и замены пакетными данными, необходимо чтобы аргумент размерности соответствовал размеру данных, в противном случае вернётся ошибка
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// т.е.: есть у нас 3 <i>users</i>, добавляем <i>userA</i> к <i>user1.Team</i>, добавляем <i>userB</i> к <i>user2.Team</i>, добавляем <i>userA</i>, <i>userB</i> и <i>userC</i> к <i>user3.Team</i>
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// Сброс <i>user1.Team</i> до userA, сброс <i>user2.Team</i> к <i>userB</i>, сброс <i>user3.Team</i> к <i>userA</i>, <i>userB</i> и <i>userC</i>
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## <span id="delete_with_select">Delete по Select</span>
 
-Вы можете удалять выбранные связи `has one` / `has many` / `many2many` по выборке `Select` при удалении записей, пример:
+Вы можете удалять указанные связи `has one` / `has many` / `many2many` по выборке `Select` при удалении записей, например:
 
 ```go
-// delete user's account when deleting user
+// удаление <i>user.Account</i> при удалении <i>user</i>
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// удаление <i>user.Orders</i>, <i>user.CreditCards</i> отношения при удалении <i>user</i>
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// удаления связей <i>user</i> <i>has one</i>/<i>many</i>/<i>many2many</i> при удалении <i>user</i>
 db.Select(clause.Associations).Delete(&user)
 
-// delete users's account when deleting users
+// удаление <i>user.Account</i> при удалении <i>users</i>
 db.Select("Account").Delete(&users)
 ```
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">Теги для связей</span>
 
 Определяет внешний join<code> таблицы</td>
 </tr>
