@@ -3,9 +3,9 @@ title: Связи
 layout: страница
 ---
 
-## Авто Создание/Обновление
+## Автоматические Create/Update
 
-GORM будет автоматически сохранять ассоциации и их ссылки с помощью [Upsert](create.html#upsert) при создании/обновлении записи.
+GORM будет автоматически сохранять связи и их ссылки с помощью [Upsert](create.html#upsert) при создании/обновлении записи.
 
 ```go
 user := User{
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+Если понадобится обновить данные связей, то следует использовать режим `FullSaveAssociations`:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -45,9 +45,9 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // ...
 ```
 
-## Пропустить автоматическое создание/обновление
+## Пропуск автоматических Create/Update
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+Чтобы пропустить автоматическое сохранение при `create` / `update`, можно воспользоваться `Select` либо `Omit`, пример:
 
 ```go
 user := User{
@@ -68,20 +68,20 @@ db.Select("Name").Create(&user)
 // INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
 db.Omit("BillingAddress").Create(&user)
-// Skip create BillingAddress when creating a user
+// Пропустить создание <i>BillingAddress</i> при создании <i>user</i>
 
 db.Omit(clause.Associations).Create(&user)
-// Skip all associations when creating a user
+// Пропуск всех связей при создании <i>user</i>
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**Примечание:** Для связей `many2many` GORM будет вставлять связи перед созданием ссылок на `join` таблицу, если понадобится пропустить вставку связей, то сделать это можно следующим образом:
 
 ```go
 db.Omit("Languages.*").Create(&user)
 ```
 
-The following code will skip the creation of the association and its references
+Следующий код пропустит создание связи и ее ссылок
 
 ```go
 db.Omit("Languages").Create(&user)
@@ -89,29 +89,29 @@ db.Omit("Languages").Create(&user)
 {% endnote %}
 
 
-## Режим связи
+## Режим связывания
 
-Association Mode contains some commonly used helper methods to handle relationships
+Режим связывания включает некоторые часто используемые вспомогательные методы для обработки отношений
 
 ```go
-// Start Association Mode
+// Начало режима связывания
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// где <i>user</i> главная модель, она должна содержать первичный ключ
+// а <i>Languages</i> является полем отношения
+// Если два вышеуказанных требования совпадают, то режим связывания должен успешно запуститься либо вернуть ошибку
 db.Model(&user).Association("Languages").Error
 ```
 
-### Найти связи
+### Поиск связей
 
-Find matched associations
+Поиск подходящей ассоциации
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-Find associations with conditions
+Поиск ассоциаций с условиями
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
@@ -120,9 +120,9 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### Добавить связи
+### Добавление связей
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+Добавление новых связей для `многие-ко-многим` `много`, заменяет текущие связи `один`, `принадлежит`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -132,9 +132,9 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Заменить связи
+### Замена связей
 
-Replace current associations with new ones
+Замена текущих связей новыми
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -142,78 +142,82 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Удалить связи
+### Удаление связей
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+Удаление связи между источником и связанными аргументами приводит к удалению ссылки, но сами объекты из БД не удаляются.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Очистить связи
+### Очистка связей
 
-Remove all reference between source & association, won't delete those associations
+Удаляет все ссылки между источником и связью, не удаляя связь
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Количество связей
+### Подсчет связей
 
-Return the count of current associations
+Возвращает количество существующих связей
 
 ```go
 db.Model(&user).Association("Languages").Count()
 
-// Count with conditions
+// Подсчет с условиями
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Пакетные данные
+### Пакетная обработка
 
-Association Mode supports batch data, e.g:
+Режим связывания поддерживает пакетную обработку, пример:
 
 ```go
-// Find all roles for all users
+// Поиск всех <i>Role</i> по всем <i>users</i>
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// Удаление <i>userA</i> из всех <i>users.Team</i>
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get unduplicated count of members in all user's team
+// Получение количества неповторяющихся <i>users</i> членов во всех <i>users.Team</i>
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will return error
+// Для добавления и замены пакетными данными, необходимо чтобы аргумент размерности соответствовал размеру данных, в противном случае вернётся ошибка
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// т.е.: есть у нас 3 <i>users</i>, добавляем <i>userA</i> к <i>user1.Team</i>, добавляем <i>userB</i> к <i>user2.Team</i>, добавляем <i>userA</i>, <i>userB</i> и <i>userC</i> к <i>user3.Team</i>
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// Сброс <i>user1.Team</i> до userA, сброс <i>user2.Team</i> к <i>userB</i>, сброс <i>user3.Team</i> к <i>userA</i>, <i>userB</i> и <i>userC</i>
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">Delete по Select</span>
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+Вы можете удалять указанные связи `has one` / `has many` / `many2many` по выборке `Select` при удалении записей, например:
 
 ```go
-// delete user's account when deleting user
+// удаление <i>user.Account</i> при удалении <i>user</i>
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// удаление <i>user.Orders</i>, <i>user.CreditCards</i> отношения при удалении <i>user</i>
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// удаления связей <i>user</i> <i>has one</i>/<i>many</i>/<i>many2many</i> при удалении <i>user</i>
 db.Select(clause.Associations).Delete(&user)
 
-// delete users's account when deleting users
+// удаление <i>user.Account</i> при удалении <i>users</i>
 db.Select("Account").Delete(&users)
 ```
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">Теги для связей</span>
 
-Правила связей, например: OnUpdate<code>,<0>OnDelete<0></td>
+Определяет внешний join<code> таблицы</td>
+</tr>
+<tr>
+  <td>constraint</td>
+  <td>Правила связей, например: <code>OnUpdate<code>,<0>OnDelete<0></td>
 </tr>
 </tbody>
 </table>
