@@ -225,7 +225,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## 优化器、索引提示
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
+优化器提示用于控制查询优化器选择某个查询执行计划，GORM 通过 `gorm.io/hints` 提供支持，例如：
 
 ```go
 import "gorm.io/hints"
