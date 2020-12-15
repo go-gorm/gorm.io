@@ -165,9 +165,9 @@ db.Create(&User{
 
 db.Model(&User{ID: 1}).Updates(User{
   Name:  "jinzhu",
-  Point: Point{X: 100, Y: 100},
+  Location: Location{X: 100, Y: 100},
 })
-// UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
+// UPDATE `user_with_points` SET `name`="jinzhu",`location`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
 You can also create/update with SQL Expr from map, checkout [Create From SQL Expr](create.html#create_from_sql_expr) and [Update with SQL Expression](update.html#update_from_sql_expr) for details

@@ -213,11 +213,13 @@ db.Select("Account").Delete(&users)
 
 ## <span id="tags">Теги для связей</span>
 
-Определяет внешний join<code> таблицы</td>
-</tr>
-<tr>
-  <td>constraint</td>
-  <td>Правила связей, например: <code>OnUpdate<code>,<0>OnDelete<0></td>
-</tr>
-</tbody>
-</table>
+| Тег              | Описание                                                      |
+| ---------------- | ------------------------------------------------------------- |
+| foreignKey       | Определяет внешний ключ                                       |
+| references       | Указывает ссылки                                              |
+| polymorphic      | Определяет полиморфный тип                                    |
+| polymorphicValue | Указывает полиморфное значение, название таблицы по умолчанию |
+| many2many        | Указывает имя таблицы связи                                   |
+| joinForeignKey   | Определяет внешний ключ `join` таблицы                        |
+| joinReferences   | Определяет внешний `join` таблицы                             |
+| constraint       | Правила связей, например: `OnUpdate`,`OnDelete`               |

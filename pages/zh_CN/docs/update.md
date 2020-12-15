@@ -153,7 +153,7 @@ db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 并且 GORM 也允许使用 SQL 表达式、[自定义数据类型](data_types.html#gorm_valuer_interface)的 Context Valuer 来更新，例如：
 
 ```go
-// 根据自定义数据类型创建
+// Create from customized data type
 type Location struct {
     X, Y int
 }
@@ -167,9 +167,9 @@ func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
 
 db.Model(&User{ID: 1}).Updates(User{
   Name:  "jinzhu",
-  Point: Point{X: 100, Y: 100},
+  Location: Location{X: 100, Y: 100},
 })
-// UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
+// UPDATE `user_with_points` SET `name`="jinzhu",`location`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
 ### 根据子查询进行更新

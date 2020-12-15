@@ -3,11 +3,11 @@ title: Declaring Models
 layout: page
 ---
 
-## Declaring Models
+## Declarando modelos
 
 Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
 
-For Example:
+Por ejemplo:
 
 ```go
 type User struct {
@@ -23,15 +23,15 @@ type User struct {
 }
 ```
 
-## Conventions
+## Convenciones
 
-GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+GORM prefiere convenciones sobre configuración, por defecto, GORM usa `ID` como clave primaria, pluralizar el nombre de la estructura a `snake_cases` como nombre de la tabla, `snake_case` como nombre de columna y usa `CreatedAt`, `ActualizadoAt` para rastrear el tiempo de creación/actualización
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code, If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+Si sigues las convenciones adoptadas por GORM, necesitarás escribir muy poca configuración/código, Si la convención no cumple con sus requerimientos, [GORM le permite configurarlos](conventions.html)
 
 ## gorm.Model
 
-GORM defined a `gorm.Model` struct, which includes fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
+GORM ha definido una estructura `gorm.Model`, que incluye campos `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
 
 ```go
 // gorm.Model definition
@@ -43,7 +43,7 @@ type Model struct {
 }
 ```
 
-You can embed it into your struct to include those fields, refer [Embedded Struct](#embedded_struct)
+Puedes insertarlo en tu estructura para incluir esos campos, consulta [Estructura incrustada](#embedded_struct)
 
 ## Advanced
 

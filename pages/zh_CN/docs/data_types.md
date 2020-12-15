@@ -146,7 +146,7 @@ func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
   }
 }
 
-// Scan 方法实现了 sql.Scanner 接口
+// Scan implements the sql.Scanner interface
 func (loc *Location) Scan(v interface{}) error {
   // Scan a value into struct from database driver
 }
@@ -165,9 +165,9 @@ db.Create(&User{
 
 db.Model(&User{ID: 1}).Updates(User{
   Name:  "jinzhu",
-  Point: Point{X: 100, Y: 100},
+  Location: Location{X: 100, Y: 100},
 })
-// UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
+// UPDATE `user_with_points` SET `name`="jinzhu",`location`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
 你也可以根据 SQL 表达式进行 create/update，查看 [Create From SQL Expr](create.html#create_from_sql_expr) 和 [Update with SQL Expression](update.html#update_from_sql_expr) 获取详情
