@@ -107,7 +107,7 @@ tx.Model(&user).Update("Age", 18)
 
 #### DryRun 模式
 
-DarRun 模式会生成但不执行 SQL，可以用于检查、测试生成的 SQL
+DryRun 模式会生成但不执行 SQL，可以用于检查、测试生成的 SQL
 
 ```go
 stmt := db.Session(&Session{DryRun: true}).Find(&user, 1).Statement
