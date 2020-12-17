@@ -1,6 +1,6 @@
 ---
 title: GORM 2.0 リリースノート
-layout: ページ
+layout: page
 ---
 
 GORM2.0はスクラッチから書き直しているため、互換性のないAPIの変更と多くの改善が導入されています。
@@ -61,8 +61,8 @@ func init() {
 
 #### Context のサポート
 
-* Database operations support `context.Context` with the `WithContext` method
-* Logger also accepts context for tracing
+* `WithContext` メソッドを使うことでデータベース操作における `context.Context` の利用をサポート
+* Logger もトレースのために context を受け付けます
 
 ```go
 db.WithContext(ctx).Find(&users)
@@ -70,7 +70,7 @@ db.WithContext(ctx).Find(&users)
 
 #### Batch Insert
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+大量のレコードを効率的に挿入するには、スライスを `Create` メソッドに渡します。 スライスをメソッド Createメソッドに渡すと、GORMはすべてのデータを挿入する1つのSQL文を生成します（主キーの値は埋め戻しされます）。フックメソッドも呼び出されます。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -81,7 +81,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+`CreateInBatch` を利用する際にはバッチサイズを指定できます。
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
