@@ -1,13 +1,13 @@
 ---
-title: GORM 2.0 Release Note
-layout: page
+title: GORM 2.0 リリースノート
+layout: ページ
 ---
 
-GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+GORM2.0はスクラッチから書き直しているため、互換性のないAPIの変更と多くの改善が導入されています。
 
 **Highlights**
 
-* Performance Improvements
+* パフォーマンスの改善
 * Modularity
 * Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
 * Nested Transaction/SavePoint/RollbackTo SavePoint supports
@@ -24,14 +24,14 @@ GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change a
 
 ## How To Upgrade
 
-* GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and its import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/)
-* Database drivers have been split into separate projects, e.g: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite), and its import path also changed to `gorm.io/driver/sqlite`
+* GORMの開発は [github.com/go-gorm](https://github.com/go-gorm) に移行し、インポートパスが `gorm.io/gorm` に変わりました。以前のプロジェクトは `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/) を利用できます。
+* データベースドライバーは、以下のような別々のプロジェクトに分割されています。 [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite) インポートパスも `gorm.io/driver/sqlite` に変更されました。
 
 ### Install
 
 ```go
 go get gorm.io/gorm
-// **NOTE** GORM `v2.0.0` released with git tag `v1.20.0`
+// **Note** git `v2.0.0` with git tag `v1.20.0`
 ```
 
 ### Quick Start
@@ -45,7 +45,7 @@ import (
 func init() {
   db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 
-  // Most CRUD API kept compatibility
+  // 多くの CRUD API は互換性を保っています
   db.AutoMigrate(&Product{})
   db.Create(&user)
   db.First(&user, 1)
@@ -57,9 +57,9 @@ func init() {
 
 ## Major Features
 
-The release note only cover major changes introduced in GORM V2 as a quick reference list
+リリースノートはクイックリファレンスリストとしてGORMV2で導入された主要な変更のみをカバーしています
 
-#### Context Support
+#### Context のサポート
 
 * Database operations support `context.Context` with the `WithContext` method
 * Logger also accepts context for tracing
