@@ -7,14 +7,15 @@ GORM provides Config can be used during initialization
 
 ```go
 type Config struct {
-  SkipDefaultTransaction bool
-  NamingStrategy         schema.Namer
-  Logger                 logger.Interface
-  NowFunc                func() time.Time
-  DryRun                 bool
-  PrepareStmt            bool
-  AllowGlobalUpdate      bool
-  DisableAutomaticPing   bool
+  SkipDefaultTransaction   bool
+  NamingStrategy           schema.Namer
+  Logger                   logger.Interface
+  NowFunc                  func() time.Time
+  DryRun                   bool
+  PrepareStmt              bool
+  DisableNestedTransaction bool
+  AllowGlobalUpdate        bool
+  DisableAutomaticPing     bool
   DisableForeignKeyConstraintWhenMigrating bool
 }
 ```
@@ -85,6 +86,11 @@ db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
   DisableAutomaticPing: true,
 })
 ```
+
+## DisableNestedTransaction
+
+When using `Transaction` method inside a db transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support, you could disable it by using the `DisableNestedTransaction` option, refer [Session](session.html) for details
+
 
 ## AllowGlobalUpdate
 

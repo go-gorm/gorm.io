@@ -8,18 +8,19 @@ GORM provides `Session` method, which is a [`New Session Method`](method_chainin
 ```go
 // Session Configuration
 type Session struct {
-  DryRun                 bool
-  PrepareStmt            bool
-  NewDB                  bool
-  SkipHooks              bool
-  SkipDefaultTransaction bool
-  AllowGlobalUpdate      bool
-  FullSaveAssociations   bool
-  QueryFields            bool
-  CreateBatchSize        int
-  Context                context.Context
-  Logger                 logger.Interface
-  NowFunc                func() time.Time
+  DryRun                   bool
+  PrepareStmt              bool
+  NewDB                    bool
+  SkipHooks                bool
+  SkipDefaultTransaction   bool
+  DisableNestedTransaction bool
+  AllowGlobalUpdate        bool
+  FullSaveAssociations     bool
+  QueryFields              bool
+  CreateBatchSize          int
+  Context                  context.Context
+  Logger                   logger.Interface
+  NowFunc                  func() time.Time
 }
 ```
 
@@ -121,6 +122,16 @@ DB.Session(&gorm.Session{SkipHooks: true}).Find(&user)
 DB.Session(&gorm.Session{SkipHooks: true}).Delete(&user)
 
 DB.Session(&gorm.Session{SkipHooks: true}).Model(User{}).Where("age > ?", 18).Updates(&user)
+```
+
+## DisableNestedTransaction
+
+When using `Transaction` method inside a db transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support, you could disable it by using the `DisableNestedTransaction` option, for example:
+
+```go
+db.Session(&gorm.Session{
+  DisableNestedTransaction: true,
+}).CreateInBatches(&users, 100)
 ```
 
 ## AllowGlobalUpdate

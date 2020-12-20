@@ -272,7 +272,7 @@ db.Clauses(clause.OnConflict{
 
 // Update all columns expects primary keys to new value on conflict
 db.Clauses(clause.OnConflict{
-  UpdateAll: true
+  UpdateAll: true,
 }).Create(&users)
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age", ...;
 ```
