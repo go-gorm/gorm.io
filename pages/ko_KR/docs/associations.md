@@ -1,11 +1,11 @@
 ---
-title: Associations
+title: 어소시에이션
 layout: page
 ---
 
-## Auto Create/Update
+## 자동 생성/갱신
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORM은 레코드를 생성/갱신할 때 [Upsert](create.html#upsert)를 사용하여 어소시에이션(association)과 레퍼런스(reference)를 자동으로 저장합니다.
 
 ```go
 user := User{
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+어소시에이션 데이터를 갱신하려면 `FullSaveAssociations` 모드를 사용해야 합니다.
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -45,7 +45,7 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // ...
 ```
 
-## Skip Auto Create/Update
+## 자동 생성/갱신 건너뛰기
 
 To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
 
