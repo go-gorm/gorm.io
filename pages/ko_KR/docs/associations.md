@@ -1,11 +1,11 @@
 ---
-title: Associations
+title: 어소시에이션
 layout: page
 ---
 
-## Auto Create/Update
+## 자동 생성/갱신
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORM은 레코드를 생성/갱신할 때 [Upsert(업서트)](create.html#upsert)를 사용하여 어소시에이션(association)과 레퍼런스(reference)를 자동으로 저장합니다.
 
 ```go
 user := User{
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+어소시에이션 데이터를 갱신하려면 `FullSaveAssociations` 모드를 사용해야 합니다.
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -45,9 +45,9 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // ...
 ```
 
-## Skip Auto Create/Update
+## 자동 생성/갱신 건너뛰기
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+생성/갱신 시 자동 저장을 건너뛰려면 다음과 같이 `Select` 또는 `Omit`를 사용할 수 있습니다.
 
 ```go
 user := User{
@@ -75,13 +75,13 @@ db.Omit(clause.Associations).Create(&user)
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**NOTE:** many2many 어소시에이션의 경우 GORM이 조인 테이블 레퍼런스를 생성하기 전에 어소시에이션을 업서트합니다. 어소시에이션 업서트를 건너뛰려면 다음과 같이 할 수 있습니다.
 
 ```go
 db.Omit("Languages.*").Create(&user)
 ```
 
-The following code will skip the creation of the association and its references
+다음 코드는 어소시에이션과 레퍼런스 생성을 건너뜁니다.
 
 ```go
 db.Omit("Languages").Create(&user)
@@ -89,9 +89,9 @@ db.Omit("Languages").Create(&user)
 {% endnote %}
 
 
-## Association Mode
+## 어소시에이션 모드
 
-Association Mode contains some commonly used helper methods to handle relationships
+어소시에이션 모드는 릴레이션십(relationship)을 처리하기 위해 일반적으로 사용되는 몇 가지 헬퍼 메소드가 있습니다.
 
 ```go
 // Start Association Mode
