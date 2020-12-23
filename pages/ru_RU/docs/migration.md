@@ -5,10 +5,10 @@ layout: страница
 
 ## Авто миграция
 
-Автоматически переносит вашу схему, чтобы поддерживать обновление вашей схемы.
+Automatically migrate your schema, to keep your schema up to date.
 
 {% note warn %}
-**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes, and will change existing column's type if it's size, precision, nullable changed, it **WON'T** delete unused columns to protect your data.
+**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes. It will change existing column's type if its size, precision, nullable changed. It **WON'T** delete unused columns to protect your data.
 {% endnote %}
 
 ```go
@@ -32,7 +32,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Интерфейс Мигратора
 
-GORM provides migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
+GORM provides a migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
 
 SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table
 
@@ -183,7 +183,7 @@ db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 
 ## Ограничения
 
-GORM creates constraints when auto migrating or creating table, checkout [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORM creates constraints when auto migrating or creating table, see [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
 
 ## Другие инструменты миграции
 
@@ -194,4 +194,4 @@ GORM's AutoMigrate works well for most cases, but if you are looking for more se
 db.DB()
 ```
 
-Refer [Generic Interface](generic_interface.html) for more details.
+Refer to [Generic Interface](generic_interface.html) for more details.
