@@ -172,6 +172,7 @@ Tags are case insensitive, however `camelCase` is preferred.
 | <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no write permission, `<-` create and update permission |
 | ->             | set field's read permission, `->:false` no read permission             |
 | -              | ignore this field, `-` no read/write permission                       |
+| comment        | add comment for field when migration                                  |
 
 ### Associations Tags
 
