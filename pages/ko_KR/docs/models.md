@@ -171,6 +171,7 @@ Tags are optional to use when declaring models, GORM supports the following tags
 | <-             | 필드의 쓰기 권한을 설정합니다. `<-:create` 생성만 가능, `<-:update` 수정만 가능, `<-:false` 쓰기권한 없에기, `<-` 생성/수정 권한                                                                                                                                                                                                         |
 | ->             | 필드의 읽기 권한을 설정합니다, `->:false` 읽기권한 없에기                                                                                                                                                                                                                                                                         |
 | -              | ignore this field, `-` no read/write permission                                                                                                                                                                                                                                                                  |
+| comment        | add comment for field when migration                                                                                                                                                                                                                                                                             |
 
 ### Associations Tags
 
