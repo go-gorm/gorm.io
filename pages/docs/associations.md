@@ -89,6 +89,21 @@ db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
+## Select/Omit Association fields
+
+```go
+user := User{
+  Name:            "jinzhu",
+  BillingAddress:  Address{Address1: "Billing Address - Address 1", Address2: "addr2"},
+  ShippingAddress: Address{Address1: "Shipping Address - Address 1", Address2: "addr2"},
+}
+
+// Create user and his BillingAddress, ShippingAddress
+// When creating the BillingAddress only use its address1, address2 fields and omit others
+db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
+
+db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
+```
 
 ## Association Mode
 
