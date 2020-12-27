@@ -33,7 +33,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Batch Insert</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+많은 수의 레코드를 효율적으로 삽입 하려면 `Create ` 메서드에 ` Slice `를 전달합니다. GORM은 모든 데이터를 넣고 primary key 값을 다시 채우는 단일 SQL 문을 만들며, hook 메서드도 호출됩니다.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -44,7 +44,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+`CreateInBatches`를 사용하여 batch size 를 특정 값으로 조절 할 수 있습니다. 예시:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -56,7 +56,7 @@ db.CreateInBatches(users, 100)
 일괄 삽입은 [Upsert](#upsert) 및 [Create With Associations](#create_with_associations)에도 지원됩니다.
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**NOTE** CreateBatchSize 옵션을 사용하여 GORM을 초기화 할 수 있으며, 모든 `INSERT`는 create record & associations 할 때 이 옵션을 따르게 됩니다.
 {% endnote %}
 
 ```go
@@ -75,7 +75,7 @@ db.Create(&users)
 
 ## Create Hooks
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORM은 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` hook을 사용자가 정의 하여 구현 할 수 있습니다.  이러한 hook 메서드는 레코드를 만들때 호출 되며, lifecycle 의 자세한 내용은 [Hooks](hooks.html) 을 참고 하십시오.
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
