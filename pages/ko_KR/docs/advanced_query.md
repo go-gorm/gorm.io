@@ -256,7 +256,7 @@ db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 
 ## Iteration
 
-GORM supports iterating through Rows
+GORM은 행 간 반복을 지원합니다.
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -273,7 +273,7 @@ for rows.Next() {
 
 ## FindInBatches
 
-Query and process records in batch
+일괄적으로 레코드를 쿼리하고 처리합니다.
 
 ```go
 // batch size 100
@@ -298,7 +298,7 @@ result.RowsAffected // processed records count in all batches
 
 ## Query Hooks
 
-GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
+GORM은 쿼리에 대해 `AfterFind` hooks 를 허용하며, 레코드를 쿼리할 때 호출됩니다. 자세한 내용은 [Hooks](hooks.html) 를 참조하십시오.
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -311,7 +311,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
+데이터베이스에서 단일 열을 쿼리하고 slice로 스캔합니다. 여러 column을 쿼리하려면, `Select` 를 [`Scan`](query.html#scan)과 함께 사용하십시오.
 
 ```go
 var ages []int64
@@ -327,13 +327,14 @@ db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
 // Requesting more than one column, use `Scan` or `Find` like this:
+// 여러 컬럼의 결과를 원할때, `Scan` 또는 `Find` 를 아래와같이 사용하세요.
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
 ## Scopes
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+`Scopes` 는 자주 일반적으로 사용 되는 쿼리를 메서드 호출로 참조하여 지정할 수 있습니다.
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -364,11 +365,11 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Find all paid, shipped orders that amount greater than 1000
 ```
 
-Checkout [Scopes](scopes.html) for details
+자세한 내용은 [Scopes](scopes.html)를 확인하세요.
 
 ## <span id="count">Count</span>
 
-Get matched records count
+일치하는 레코드 수를 가져옵니다.
 
 ```go
 var count int64
