@@ -190,7 +190,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-`Select`, `Omit`를 사용하여 associations를 스킵할 수 있습니다. 예시:
+`Select`, `Omit` 를 사용하여 associations를 스킵 할 수 있습니다. 예시:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -211,10 +211,10 @@ type User struct {
 }
 ```
 
-기본값은 [zero-value](https://tour.golang.org/basics/12) 필드에 사용됩니다
+기본 값은 [zero-value](https://tour.golang.org/basics/12) 필드에 사용됩니다
 
 {% note warn %}
-**NOTE** `0`, `''`, `false`와 같은 null값은 기본 값으로 정의 된 해당 필드에 대해 데이터베이스에 저장되지 않습니다. 이를 방지하기 위해 포인터 또는 Scanner/Valuer를 사용할 수 있습니다. 예를 들면 다음과 같습니다.
+**NOTE** `0`, `''`, `false`와 같은 null 값은 기본 값으로 정의 된 해당 필드에 대해 데이터베이스에 저장되지 않습니다. 이를 방지하기 위해 포인터 또는 Scanner/Valuer를 사용할 수 있습니다. 예를 들면 다음과 같습니다.
 {% endnote %}
 
 ```go
@@ -227,7 +227,7 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** 데이터베이스에 기본 값 또는 가상/생성 값이 있는 필드에 대해` default ` 태그를 설정해야 합니다. 마이그레이션할 때 기본 값 정의를 건너뛰려면 다음과 같이 ` default:(-) `를 사용할 수 있습니다. 예시는 다음과 같습니다:
+**NOTE** 데이터베이스에 기본 값 또는 가상/생성 값이 있는 필드에 대해` default ` 태그를 설정해야 합니다. 마이그레이션 할 때 기본 값 정의를 건너뛰려면 다음과 같이 ` default:(-) ` 를 사용할 수 있습니다. 예시는 다음과 같습니다:
 {% endnote %}
 
 ```go
@@ -276,6 +276,6 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age", ...;
 ```
 
-또한 [고급 쿼리 문서](advanced_query.html)에서 `FirstOrInit`, `FirstOrCreate`에 대하여 확인하십시오.
+또한 [고급 쿼리 문서](advanced_query.html)에서 ` FirstOrInit `, ` FirstOrCreate `에 대하여 확인하십시오.
 
-자세한 내용은 [Raw SQL 및 SQL Builder](sql_builder.html)를 확인하십시오.
+자세한 내용은 [Raw SQL 및 SQL Builder](sql_builder.html) 를 확인하십시오.
