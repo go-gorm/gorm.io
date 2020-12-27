@@ -101,9 +101,9 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## Named Argument
+## 명명된 인수 (Named Argument)
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM은 [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}` 를 사용하여 명명된 인수(named arguments) 를 지원합니다. 예시:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -113,11 +113,11 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+자세한 내용은 [Raw SQL and SQL Builder](sql_builder.html#named_argument)를 확인하세요.
 
 ## Find To Map
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORM은 `map[string]interface{}` 또는 `[]map[string]interface{}` 을 통해 결과값을 조회 할 수 있으며, 특정 `Model` 또는 `Table` 을 빠트리지 마십시오.
 
 ```go
 var result map[string]interface{}
@@ -129,7 +129,7 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+처음 일치하는 레코드를 가져오거나 지정된 조건으로 새 인스턴스를 초기화합니다. (struct 또는 map 조건에서만 작동).
 
 ```go
 // User not found, initialize it with give conditions
@@ -145,7 +145,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+레코드를 찾을 수 없는 경우 더 많은 속성을 가진 구조를 초기화 합니다. 이러한 `Attrs` 는 SQL 쿼리를 작성하는 데 사용되지 않습니다.
 
 ```go
 // User not found, initialize it with give conditions and Attrs
@@ -164,7 +164,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+struct에 대한 `Assign` 속성은 찾든 말든 SQL 쿼리를 작성하는 데 사용되지 않으며 최종 데이터는 데이터베이스에 저장되지 않습니다.
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -179,44 +179,50 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions)
+처음 일치하는 레코드를 가져오거나 지정된 조건으로 새 인스턴스를 초기화합니다. (struct 또는 map 조건에서만 작동).
 
 ```go
 // User not found, create a new record with give conditions
+// 유저를 못찾아서 주어진 조건으로 새로운 레코드 생성
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
 // Found user with `name` = `jinzhu`
+// `name` = `jinzhu` 인 유저를 찾음
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+레코드를 찾을 수 없는 경우 더 많은 속성을 가진 struct를 생성합니다. 이러한 `Attrs` 는 SQL 쿼리를 작성하는 데 사용되지 않습니다.
 
 ```go
 // User not found, create it with give conditions and Attrs
+// 유저를 찾지 못함, 주어진 조건과 추가 속성을 통해 생성
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
 // Found user with `name` = `jinzhu`, attributes will be ignored
+// `name` = `jinzhu 인 유저를 찾음, 속성은 무시 됨
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+`Assign` 속성은 레코드가 있는지 여부에 관계없이 레코드에 속하며 데이터베이스에 다시 저장합니다.
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
+// 유저 못찾음, 주어진 조건과 Assign 속성을 통해 초기화
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
 // Found user with `name` = `jinzhu`, update it with Assign attributes
+// `name` = `jinzhu` 유저를 찾음, Assign 속성으로 업데이트
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // UPDATE users SET age=20 WHERE id = 111;
@@ -225,7 +231,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## Optimizer/Index Hints
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
+Optimizer hints를 통해 쿼리 최적화 도구를 제어하여 특정 쿼리 실행 계획을 선택할 수 있습니다. GORM은 다음과 같이 `gorm.io/hints` 를 지원합니다.
 
 ```go
 import "gorm.io/hints"
@@ -234,7 +240,7 @@ db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allow passing index hints to the database in case the query planner gets confused.
+Index hints 에서는 query planner가 혼동될 경우 Index hints를 데이터베이스에 전달할 수 있습니다.
 
 ```go
 import "gorm.io/hints"
@@ -246,7 +252,7 @@ db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-Refer [Optimizer Hints/Index/Comment](hints.html) for more details
+더 자세한 내용은 [Optimizer Hints/Index/Comment](hints.html)를 참고하세요.
 
 ## Iteration
 
