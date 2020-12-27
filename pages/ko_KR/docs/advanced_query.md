@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Smart Select Fields</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM은 [`Select`](query.html) 를 사용하여 특정 필드를 선택할 수 있습니다. 응용 프로그램에서 이 필드를 자주 사용하는 경우 다음과 같이 특정 필드를 자동으로 선택할 수 있는 API 사용을 위한 작은 구조를 정의할 수 있습니다.
 
 ```go
 type User struct {
@@ -27,7 +27,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**NOTE** `QueryFields` 모드는 현재 모델에 대한 모든 필드 이름으로 선택됩니다.
 {% endnote %}
 
 ```go
@@ -45,7 +45,7 @@ db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 
 ## Locking (FOR UPDATE)
 
-GORM supports different types of locks, for example:
+GORM 은 다른 종류의 lock을 지원합니다.
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -58,11 +58,11 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+자세한 내용은 [Raw SQL and SQL Builder](sql_builder.html) 을 참고하세요.
 
 ## SubQuery
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+서브쿼리는 쿼리 내에 중첩될 수 있으며, GORM은 `*gorm.DB` 개체를 매개 변수로 사용할 때 하위 쿼리를 생성할 수 있습니다.
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -75,7 +75,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From SubQuery</span>
 
-GORM allows you using subquery in FROM clause with method `Table`, for example:
+GORM은 FROM 절의 서브쿼리를 `Table` 메서드와 함께 사용할 수 있습니다. 예시:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -87,9 +87,9 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
 
-## <span id="group_conditions">Group Conditions</span>
+## <span id="group_conditions">Group Conditions (그룹화 조건)</span>
 
-Easier to write complicated SQL query with Group Conditions
+그룹 조건을 사용하여 복잡한 SQL 쿼리를 더 쉽게 작성할 수 있습니다.
 
 ```go
 db.Where(
