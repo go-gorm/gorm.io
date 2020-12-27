@@ -113,14 +113,17 @@ db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 var user User
 db.Model(&user).Association("Languages")
 // `user` is the source model, it must contains primary key
+// `user` 는 기초가 되는 모델이며, primary key 를 반드시 포함해야 한다.
 // `Languages` is a relationship's field name
+// `Languages` 는 name 필드로 릴레이션 되었다.
 // If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// 위의 두 요구 사항이 일치하는 경우 AssociationMode를 성공적으로 시작하거나 오류를 반환해야 합니다.
 db.Model(&user).Association("Languages").Error
 ```
 
 ### Find Associations
 
-Find matched associations
+일치하는 associations 찾기
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
