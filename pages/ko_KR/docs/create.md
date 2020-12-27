@@ -15,16 +15,16 @@ result.Error        // 에러를 반환합니다
 result.RowsAffected // 입력된 레코드의 개수를 반환합니다.
 ```
 
-## Create Record With Selected Fields
+## 선택한 필드로 레코드 만들기
 
-Create a record and assign a value to the fields specified.
+레코드를 만들고 지정된 필드에 값을 할당합니다.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and assign a value to the fields omitted.
+레코드를 만들고 생략 된 필드에 값을 할당합니다.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
