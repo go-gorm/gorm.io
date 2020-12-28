@@ -171,6 +171,7 @@ type Blog struct {
 | <-             | 设置字段写入的权限， `<-:create` 只创建、`<-:update` 只更新、`<-:false` 无写入权限、`<-` 创建和更新权限                                                                                                                                                        |
 | ->             | 设置字段读的权限，`->:false` 无读权限                                                                                                                                                                                                                 |
 | -              | 忽略该字段，`-` 无读写权限                                                                                                                                                                                                                             |
+| comment        | add comment for field when migration                                                                                                                                                                                                        |
 
 ### 关联标签
 

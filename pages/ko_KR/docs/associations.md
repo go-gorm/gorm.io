@@ -88,8 +88,23 @@ db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
+## Select/Omit Association fields
 
-## 어소시에이션 모드
+```go
+user := User{
+  Name:            "jinzhu",
+  BillingAddress:  Address{Address1: "Billing Address - Address 1", Address2: "addr2"},
+  ShippingAddress: Address{Address1: "Shipping Address - Address 1", Address2: "addr2"},
+}
+
+// Create user and his BillingAddress, ShippingAddress
+// When creating the BillingAddress only use its address1, address2 fields and omit others
+db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
+
+db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
+```
+
+## Association Mode
 
 어소시에이션 모드는 릴레이션십(relationship)을 처리하기 위해 일반적으로 사용되는 몇 가지 헬퍼 메소드가 있습니다.
 
@@ -98,20 +113,23 @@ db.Omit("Languages").Create(&user)
 var user User
 db.Model(&user).Association("Languages")
 // `user` is the source model, it must contains primary key
+// `user` 는 기초가 되는 모델이며, primary key 를 반드시 포함해야 한다.
 // `Languages` is a relationship's field name
+// `Languages` 는 name 필드로 릴레이션 되었다.
 // If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// 위의 두 요구 사항이 일치하는 경우 AssociationMode를 성공적으로 시작하거나 오류를 반환해야 합니다.
 db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### 연관된 결과(Find Association)
 
-Find matched associations
+일치하는 연관된 결과 찾기
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-Find associations with conditions
+조건을 통한 연관된 결과 찾기
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
@@ -122,7 +140,7 @@ db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Langua
 
 ### Append Associations
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+`many to many`, `has many` 로 새로운 associations 를 추가 하고, `has one`, `belongs to` 로 현재 association을 교체 합니다.
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -134,7 +152,7 @@ db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "4111111111
 
 ### Replace Associations
 
-Replace current associations with new ones
+현재 associations 을 새로운 것으로 변경합니다.
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -144,7 +162,7 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 
 ### Delete Associations
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+원본과 인수 간의 관계가 존재 한다면 제거하고, 참조만 삭제하며, DB에서 해당 개체를 삭제하지 않습니다.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
@@ -153,7 +171,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### Clear Associations
 
-Remove all reference between source & association, won't delete those associations
+원본과 association 간의 모든 참조를 제거하고, association 은 제거 하지 않습니다.
 
 ```go
 db.Model(&user).Association("Languages").Clear()
@@ -161,7 +179,7 @@ db.Model(&user).Association("Languages").Clear()
 
 ### Count Associations
 
-Return the count of current associations
+현재 연관된 수 를 반환 합니다.
 
 ```go
 db.Model(&user).Association("Languages").Count()
@@ -173,7 +191,7 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 
 ### Batch Data
 
-Association Mode supports batch data, e.g:
+Association Mode 는 일괄 데이터를 제공 합니다.
 
 ```go
 // Find all roles for all users
@@ -183,13 +201,17 @@ db.Model(&users).Association("Role").Find(&roles)
 db.Model(&users).Association("Team").Delete(&userA)
 
 // Get unduplicated count of members in all user's team
+// 중복되지 않은 user 의 member 수를 가져온다.
 db.Model(&users).Association("Team").Count()
 
 // For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will return error
+// 일괄 데이터에서 `Append`, `Replace` 사용가능하다. 속성의 개수와 데이터의 개수는 일치 해야하며 그렇지 않으면 오류를 반환한다. 
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// 예: userA를 user1 의 팀에 추가하며, userB 는 user2 에, userA, userB 그리고 userC 는 user3 의 팀에 추가 하는 3개의 유저가 있다.
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
 // Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// user1의 팀을 userA로 재설정하고 user2의 팀을 userB로 재설정하고 user3의 팀을 userA, userB 및 userC로 재설정합니다.
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
