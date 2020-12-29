@@ -5,10 +5,10 @@ layout: page
 
 ## v2.0 - 2020.08
 
-GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+GORM 2.0 a été réécrit de zéro, introduisant des changements majeurs de l'API et de nombreuses améliorations
 
-* Performance Improvements
-* Modularity
+* Amélioration des performances
+* Modularité
 * Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
 * Nested Transaction/SavePoint/RollbackTo SavePoint supports
 * Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
@@ -20,7 +20,7 @@ GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change a
 * New Migrator: allows to create database foreign keys for relationships, constraints/checker support, enhanced index support
 * New Logger: context support, improved extensibility
 * Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
-* Better customized data type support (e.g: JSON)
+* Meilleure prise en charge de type de données personnalisé (par ex. JSON)
 
 [GORM 2.0 Release Note](v2_release_note.html)
 
