@@ -162,6 +162,7 @@ Tags are case insensitive, however `camelCase` is preferred.
 | scale          | specifies column scale                                                 |
 | not null       | specifies column as NOT NULL                                           |
 | autoIncrement  | specifies column auto incrementable                                    |
+| autoIncrementIncrement  | auto increment step, controls the interval between successive column values |
 | embedded       | embed the field                                                        |
 | embeddedPrefix | column name prefix for embedded fields                                 |
 | autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano` |
