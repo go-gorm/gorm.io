@@ -146,11 +146,25 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build query conditions, e.g:
+You can use map to build the query condition, it will use all values, e.g:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
+```
+
+Or refer [Specify Struct search fields](#specify_search_fields)
+
+### <span id="specify_search_fields">Specify Struct search fields</span>
+
+When searching with struct, you could use its field name or dbname as arguments to specify the searching fields, for example:
+
+```go
+db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
+// SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
+
+db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
+// SELECT * FROM users WHERE age = 0;
 ```
 
 ### <span id="inline_conditions">Inline Condition</span>

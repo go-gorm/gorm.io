@@ -146,20 +146,34 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build query conditions, e.g:
+You can use map to build the query condition, it will use all values, e.g:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-### <span id="inline_conditions">内联条件</span>
+Or refer [Specify Struct search fields](#specify_search_fields)
+
+### <span id="specify_search_fields">Specify Struct search fields</span>
+
+When searching with struct, you could use its field name or dbname as arguments to specify the searching fields, for example:
+
+```go
+db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
+// SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
+
+db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
+// SELECT * FROM users WHERE age = 0;
+```
+
+### <span id="inline_conditions">Inline Condition</span>
 
 Works similar to `Where`.
 
 ```go
 // SELECT * FROM users WHERE id = 23;
-// 根据主键获取记录，如果是非整型主键
+// Get by primary key if it were a non-integer type
 db.First(&user, "id = ?", "string_primary_key")
 // SELECT * FROM users WHERE id = 'string_primary_key';
 
@@ -179,7 +193,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Not 条件
+### Not Conditions
 
 Build NOT conditions, works similar to `Where`
 
@@ -195,12 +209,12 @@ db.Not(map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}).Find(&use
 db.Not(User{Name: "jinzhu", Age: 18}).First(&user)
 // SELECT * FROM users WHERE name <> "jinzhu" AND age <> 18 ORDER BY id LIMIT 1;
 
-// 不在主键切片中的记录
+// Not In slice of primary keys
 db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-### Or 条件
+### Or Conditions
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -242,7 +256,7 @@ Specify order when retrieving records from the database
 db.Order("age desc, name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
-// 多个 order
+// Multiple orders
 db.Order("age desc").Order("name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
@@ -260,7 +274,7 @@ db.Clauses(clause.OrderBy{
 db.Limit(3).Find(&users)
 // SELECT * FROM users LIMIT 3;
 
-// 通过 -1 消除 Limit 条件
+// Cancel limit condition with -1
 db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 // SELECT * FROM users LIMIT 10; (users1)
 // SELECT * FROM users; (users2)
@@ -271,7 +285,7 @@ db.Offset(3).Find(&users)
 db.Limit(10).Offset(5).Find(&users)
 // SELECT * FROM users OFFSET 5 LIMIT 10;
 
-// 通过 -1 消除 Offset 条件
+// Cancel offset condition with -1
 db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
@@ -340,11 +354,11 @@ for rows.Next() {
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// 带参数的多表连接
+// multiple joins with parameter
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
-### Joins 预加载
+### Joins Preloading
 
 You can use `Joins` eager loading associations with a single SQL, for example:
 
@@ -368,6 +382,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
 
-// 原生 SQL
+// Raw SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
