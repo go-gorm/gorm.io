@@ -111,11 +111,33 @@ Please checkout [Association Mode](associations.html#Association-Mode) for worki
 
 ## Customize JoinTable
 
-`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports, and define more fields, you can setup it with `SetupJoinTable`, for example:
+`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can setup it with `SetupJoinTable`, for example:
+
+{% note warn %}
+**NOTE:** Customized join table's foreign keys required to be composited primary keys or composited unique index
+{% endnote %}
 
 ```go
-type User struct {
-  gorm.
+type Person struct {
+  ID        int
+  Name      string
+  Addresses []Address `gorm:"many2many:person_addresses;"`
+}
+
+type Address struct {
+  ID   uint
+  Name string
+}
+
+type PersonAddress struct {
+  PersonID  int `gorm:"primaryKey"`
+  AddressID int `gorm:"primaryKey"`
+  CreatedAt time.Time
+  DeletedAt gorm.DeletedAt
+}
+
+func (PersonAddress) BeforeCreate(db *gorm.DB) error {
+  // ...
 }
 
 // Change model Person's field Addresses's join table to PersonAddress
