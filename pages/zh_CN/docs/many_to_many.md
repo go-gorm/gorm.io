@@ -109,7 +109,11 @@ GORM 可以通过 `Preload` 预加载 has many 关联的记录，查看 [预加�
 
 ## 自定义连接表
 
-`连接表` 可以是一个全功能的模型，支持 `Soft Delete`、`钩子`、定义更多的字段，就跟其它模型一样。您可以通过 `SetupJoinTable` 指定它，例如：
+`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can setup it with `SetupJoinTable`, for example:
+
+{% note warn %}
+**NOTE:** Customized join table's foreign keys required to be composited primary keys or composited unique index
+{% endnote %}
 
 ```go
 type Person struct {
@@ -124,8 +128,8 @@ type Address struct {
 }
 
 type PersonAddress struct {
-  PersonID  int
-  AddressID int
+  PersonID  int `gorm:"primaryKey"`
+  AddressID int `gorm:"primaryKey"`
   CreatedAt time.Time
   DeletedAt gorm.DeletedAt
 }
@@ -141,7 +145,7 @@ err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 
 ## 外键约束
 
-你可以通过为标签 `constraint` 配置 `OnUpdate`、`OnDelete` 实现外键约束，在使用 GORM 进行迁移时它会被创建，例如：
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {
@@ -157,13 +161,13 @@ type Language struct {
 // CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
-你也可以在删除记录时通过 `Select` 来删除 many2many 关系的记录，查看 [Delete with Select](associations.html#delete_with_select) 获取详情
+You are also allowed to delete selected many2many relations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
 
 ## 复合外键
 
-如果您的模型使用了 [复合主键](composite_primary_key.html)，GORM 会默认启用复合外键。
+If you are using [Composite Primary Keys](composite_primary_key.html) for your models, GORM will enable composite foreign keys by default
 
-您也可以覆盖默认的外键、指定多个外键，只需用逗号分隔那些键名，例如：
+You are allowed to override the default foreign keys, to specify multiple foreign keys, just separate those keys' name by commas, for example:
 
 ```go
 type Tag struct {
@@ -198,4 +202,4 @@ type Blog struct {
 //   foreign key: tag_id, reference: tags.id
 ```
 
-查看 [复合主键](composite_primary_key.html) 获取详情
+Also check out [Composite Primary Keys](composite_primary_key.html)
