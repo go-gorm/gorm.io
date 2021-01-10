@@ -208,7 +208,7 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">带 Select 的删除</span>
 
 你可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
 
