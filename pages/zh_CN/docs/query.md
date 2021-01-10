@@ -28,9 +28,9 @@ result.Error        // returns error
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
-If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`
+如果你想避开 `ErrRecordNotFound` 错误，你可以使用 `Find`，例如：`db.Limit(1).Find(&user)`
 
-The `First`, `Last` method will find the first/last record order by primary key, it only works when querying with struct or provides model value, if no primary key defined for current model, will order by the first field, for example:
+`First`、`Last` 方法会根据主键查找到第一个、最后一个记录， 它仅在通过 struct 或提供 model 值进行查询时才起作用。 如果 model 类型没有定义主键，则按第一个字段排序，例如：
 
 ```go
 var user User
@@ -63,7 +63,7 @@ db.First(&Language{})
 
 ### 根据主键检索
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions). Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
+您可以使用 [内联条件](#inline_conditions) 来检索对象。 传入字符串参数时注意避免 SQL 注入问题，查看 [安全](security.html) 获取详情
 
 ```go
 db.First(&user, 10)
@@ -138,7 +138,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**注意** 当使用结构作为条件查询时，GORM 只会查询非零值字段。这意味着如果您的字段值为 `0`、`''`、`false` 或其他 [零值](https://tour.golang.org/basics/12)，该字段不会被用于构建查询条件，例如：
 {% endnote %}
 
 ```go
@@ -146,16 +146,16 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build the query condition, it will use all values, e.g:
+你可以使用 map 来构建查询条件，它会使用所有的值，例如：
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-Or refer [Specify Struct search fields](#specify_search_fields)
+或查看 [指定结构体查询字段](#specify_search_fields) 获取详情
 
-### <span id="specify_search_fields">Specify Struct search fields</span>
+### <span id="specify_search_fields">指定结构体查询字段</span>
 
 When searching with struct, you could use its field name or dbname as arguments to specify the searching fields, for example:
 
