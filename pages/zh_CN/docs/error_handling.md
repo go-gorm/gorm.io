@@ -32,7 +32,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 当 `First`、`Last`、`Take` 方法找不到记录时，GORM 会返回 `ErrRecordNotFound` 错误。如果发生了多个错误，你可以通过 `errors.Is` 判断错误是否为 `ErrRecordNotFound`，例如：
 
 ```go
-// Check if returns RecordNotFound error
+// 检查错误是否为 RecordNotFound
 err := db.First(&user, 100).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
