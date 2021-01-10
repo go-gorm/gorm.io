@@ -305,7 +305,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
+Pluck 用于从数据库查询单个列，并将结果扫描到切片。如果您想要查询多列，您应该使用 `Select` 和 [`Scan`](query.html#scan)
 
 ```go
 var ages []int64
@@ -320,14 +320,14 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Requesting more than one column, use `Scan` or `Find` like this:
+// 超过一列的查询，应该使用 `Scan` 或者 `Find`，例如：
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
 ## Scopes
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+`Scopes` 允许你指定常用的查询，可以在调用方法时引用这些查询
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -349,20 +349,20 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// 查找所有金额大于 1000 的信用卡订单
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// 查找所有金额大于 1000 的 COD 订单
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// 查找所有金额大于1000 的已付款或已发货订单
 ```
 
-Checkout [Scopes](scopes.html) for details
+查看 [Scopes](scopes.html) 获取详情
 
 ## <span id="count">Count</span>
 
-Get matched records count
+Count 用于获取匹配的记录数
 
 ```go
 var count int64
