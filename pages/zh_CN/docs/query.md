@@ -157,7 +157,7 @@ db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 
 ### <span id="specify_search_fields">指定结构体查询字段</span>
 
-When searching with struct, you could use its field name or dbname as arguments to specify the searching fields, for example:
+当使用结构体进行查询时，你可以使用它的字段名或其 dbname 列名作为参数来指定查询的字段，例如：
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -167,13 +167,13 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 // SELECT * FROM users WHERE age = 0;
 ```
 
-### <span id="inline_conditions">Inline Condition</span>
+### <span id="inline_conditions">内联条件</span>
 
-Works similar to `Where`.
+用法与 `Where` 类似
 
 ```go
 // SELECT * FROM users WHERE id = 23;
-// Get by primary key if it were a non-integer type
+// 根据主键获取记录，如果是非整型主键
 db.First(&user, "id = ?", "string_primary_key")
 // SELECT * FROM users WHERE id = 'string_primary_key';
 
@@ -182,20 +182,20 @@ db.Find(&user, "name = ?", "jinzhu")
 // SELECT * FROM users WHERE name = "jinzhu";
 
 db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
-// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
+//// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
 
 // Struct
 db.Find(&users, User{Age: 20})
-// SELECT * FROM users WHERE age = 20;
+//// SELECT * FROM users WHERE age = 20;
 
 // Map
 db.Find(&users, map[string]interface{}{"age": 20})
-// SELECT * FROM users WHERE age = 20;
+//// SELECT * FROM users WHERE age = 20;
 ```
 
-### Not Conditions
+### Not 条件
 
-Build NOT conditions, works similar to `Where`
+构建 NOT 条件，用法与 `Where` 类似
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -209,12 +209,12 @@ db.Not(map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}).Find(&use
 db.Not(User{Name: "jinzhu", Age: 18}).First(&user)
 // SELECT * FROM users WHERE name <> "jinzhu" AND age <> 18 ORDER BY id LIMIT 1;
 
-// Not In slice of primary keys
+// 不在主键切片中的记录
 db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-### Or Conditions
+### Or 条件
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -229,11 +229,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-Also check out [Group Conditions in Advanced Query](advanced_query.html#group_conditions), it can be used to write complicated SQL
+您还可以查看高级查询中的 [分组条件](advanced_query.html#group_conditions)，它被用于编写复杂 SQL
 
 ## 选择特定字段
 
-Specify fields that you want to retrieve from database, by default, select all fields
+选择您想从数据库中检索的字段，默认情况下会选择全部字段
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -246,17 +246,17 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-Also check out [Smart Select Fields](advanced_query.html#smart_select)
+还可以看一看 [智能选择字段](advanced_query.html#smart_select)
 
 ## Order
 
-Specify order when retrieving records from the database
+指定从数据库检索记录时的排序方式
 
 ```go
 db.Order("age desc, name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
-// Multiple orders
+// 多个 order
 db.Order("age desc").Order("name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
@@ -268,13 +268,13 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit` 指定获取记录的最大数量 `Offset` 指定在开始返回记录之前要跳过的记录数量
 
 ```go
 db.Limit(3).Find(&users)
 // SELECT * FROM users LIMIT 3;
 
-// Cancel limit condition with -1
+// 通过 -1 消除 Limit 条件
 db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 // SELECT * FROM users LIMIT 10; (users1)
 // SELECT * FROM users; (users2)
@@ -285,13 +285,13 @@ db.Offset(3).Find(&users)
 db.Limit(10).Offset(5).Find(&users)
 // SELECT * FROM users OFFSET 5 LIMIT 10;
 
-// Cancel offset condition with -1
+// 通过 -1 消除 Offset 条件
 db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
 ```
 
-Checkout [Pagination](scopes.html#pagination) for how to make a paginator
+查看 [Pagination](scopes.html#pagination) 学习如何写一个分页器
 
 ## Group & Having
 
@@ -327,17 +327,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+从模型中选择不相同的值
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
+`Distinct` 也可以配合 [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) 使用
 
 ## Joins
 
-Specify Joins conditions
+指定 Joins 条件
 
 ```go
 type result struct {
@@ -354,24 +354,24 @@ for rows.Next() {
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// multiple joins with parameter
+// 多连接及参数
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
-### Joins Preloading
+### Joins 预加载
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+您可以使用 `Joins` 实现单条 SQL 预加载关联记录，例如：
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Refer [Preloading (Eager Loading)](preload.html) for details
+参考 [预加载](preload.html) 了解详情
 
 ## <span id="scan">Scan</span>
 
-Scan results into a struct work similar to `Find`
+Scan 结果至 struct，用法与 `Find` 类似
 
 ```go
 type Result struct {
@@ -382,6 +382,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
 
-// Raw SQL
+// 原生 SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
