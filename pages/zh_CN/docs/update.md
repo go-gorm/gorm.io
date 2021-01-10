@@ -57,7 +57,7 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 如果您想要在更新时选定、忽略某些字段，您可以使用 `Select`、`Omit`
 
 ```go
-// Select with Map
+// 使用 Map 进行 Select
 // User's ID is `111`:
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
 // UPDATE users SET name='hello' WHERE id=111;
@@ -65,14 +65,14 @@ db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "
 db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
 // UPDATE users SET age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Select with Struct (select zero value fields)
+// 使用 Struct 进行 Select（会 select 零值的字段）
 db.Model(&user).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 
-// Select all fields (select all fields include zero value fields)
+// Select 所有字段（查询包括零值字段的所有字段）
 db.Model(&user).Select("*").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
 
-// Select all fields but omit Role (select all fields include zero value fields)
+// Select 除 Role 外的所有字段（包括零值字段的所有字段）
 db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
 ```
 
@@ -159,7 +159,7 @@ db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 并且 GORM 也允许使用 SQL 表达式、[自定义数据类型](data_types.html#gorm_valuer_interface)的 Context Valuer 来更新，例如：
 
 ```go
-// Create from customized data type
+// 根据自定义数据类型创建
 type Location struct {
     X, Y int
 }
