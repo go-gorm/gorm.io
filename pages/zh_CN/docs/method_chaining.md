@@ -31,7 +31,7 @@ Finishers 是会立即执行注册回调的方法，然后生成并执行 SQL，
 
 在初始化了 `*gorm.DB` 或 `新建会话方法` 后， 调用下面的方法会创建一个新的 `Statement` 实例而不是使用当前的
 
-GORM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details
+GORM 定义了 `Session`、`WithContext`、`Debug` 方法做为 `新建会话方法`，查看[会话](session.html) 获取详情
 
 让我们用一些例子来解释它：
 
