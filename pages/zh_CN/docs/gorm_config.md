@@ -92,18 +92,18 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## DisableNestedTransaction
+## 禁用嵌套事务
 
-When using `Transaction` method inside a db transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support, you could disable it by using the `DisableNestedTransaction` option, refer [Session](session.html) for details
+在一个事务中使用 `Transaction` 方法，GORM 会使用 `SavePoint(savedPointName)`，`RollbackTo(savedPointName)` 为你提供嵌套事务支持，你可以通过 `DisableNestedTransaction` 选项关闭它，查看 [Session](session.html) 获取详情
 
 
 ## AllowGlobalUpdate
 
-Enable global update/delete, refer [Session](session.html) for details
+启用全局 update/delete，查看 [Session](session.html) 获取详情
 
 ## DisableAutomaticPing
 
-GORM automatically ping database after initialized to check database availability, disable it by setting it to `true`
+在完成初始化后，GORM 会自动 ping 数据库以检查数据库的可用性，若要禁用该特性，可将其设置为 `true`
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -113,7 +113,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DisableForeignKeyConstraintWhenMigrating
 
-GORM creates database foreign key constraints automatically when `AutoMigrate` or `CreateTable`, disable this by setting it to `true`, refer [Migration](migration.html) for details
+在 `AutoMigrate` 或 `CreateTable` 时，GORM 会自动创建外键约束，若要禁用该特性，可将其设置为 `true`，参考 [迁移](migration.html) 获取详情。
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
