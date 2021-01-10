@@ -146,7 +146,7 @@ func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
   }
 }
 
-// Scan implements the sql.Scanner interface
+// Scan 方法实现了 sql.Scanner 接口
 func (loc *Location) Scan(v interface{}) error {
   // Scan a value into struct from database driver
 }
