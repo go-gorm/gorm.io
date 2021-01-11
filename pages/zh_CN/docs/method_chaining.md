@@ -78,44 +78,44 @@ tx.Where("age = ?", 28).Find(&users)
 ```
 
 {% note warn %}
-**注意：** 在示例 2 中，第一个查询会影响第二个查询生成的 SQL，因为 GORM 复用了 `Statement` This might cause unexpected issues, refer to [Goroutine Safety](#goroutine_safe) for how to avoid it.
+**注意：** 在示例 2 中，第一个查询会影响第二个查询生成的 SQL，因为 GORM 复用了 `Statement` 这可能会导致预期之外的问题，查看 [携程安全](#goroutine_safe) 以避免该问题
 {% endnote %}
 
 ## <span id="goroutine_safe">方法链和协程安全</span>
 
-Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB` you need to make sure they are under `New Session Mode`, for example:
+新初始化的 `*gorm.DB` 或调用 `新建会话方法` 后，GORM 会创建新的 `Statement` 实例。因此想要复用 `*gorm.DB`，您需要确保它们处于 `新建会话模式`，例如：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// Safe for a new initialized *gorm.DB
+// 安全的使用新初始化的 *gorm.DB
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// NOT Safe as reusing Statement
+// 不安全的复用 Statement
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.WithContext(ctx)
-// Safe after a `New Session Method`
+// 在 `新建会话方法` 之后是安全的
 for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// Safe after a `New Session Method`
+// 在 `新建会话方法` 之后是安全的
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` 会应用到查询中
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
-// Safe after a `New Session Method`
+// 在 `新建会话方法` 之后是安全的
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` 会应用到查询中
 }
 ```
