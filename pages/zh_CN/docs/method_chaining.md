@@ -9,7 +9,7 @@ GORM 允许进行链式操作，所以您可以像这样写代码：
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 ```
 
-GORM 中有三种类型的方法： `链式方法`、`Finisher 方法`、`新建会话方法`
+There are three kinds of methods in GORM: `Chain Method`, `Finisher Method`, `New Session Method`.
 
 ## 链式方法
 
@@ -17,7 +17,7 @@ GORM 中有三种类型的方法： `链式方法`、`Finisher 方法`、`新建
 
 `Where`、`Select`、`Omit`、`Joins`、`Scopes`、`Preload`、`Raw`（但在构建 SQL 语句时，`Raw` 不能与其它链式方法一起使用）...
 
-这是 [完整方法列表](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)，也可以查看 [SQL 构建器](sql_builder.html) 获取更多关于 `Clauses` 的信息
+Here is [the full lists](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), also check out the [SQL Builder](sql_builder.html) for more details about `Clauses`.
 
 ## <span id="finisher_method">Finisher 方法</span>
 
@@ -25,13 +25,13 @@ Finishers 是会立即执行注册回调的方法，然后生成并执行 SQL，
 
 `Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`...
 
-查看[完整方法列表](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
+Check out [the full lists](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) here.
 
 ## 新建会话模式
 
-在初始化了 `*gorm.DB` 或 `新建会话方法` 后， 调用下面的方法会创建一个新的 `Statement` 实例而不是使用当前的
+After a new initialized `*gorm.DB` or a `New Session Method`, following methods call will create a new `Statement` instance instead of using the current one.
 
-GORM 定义了 `Session`、`WithContext`、`Debug` 方法做为 `新建会话方法`，查看[会话](session.html) 获取详情
+GORM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details.
 
 让我们用一些例子来解释它：
 
@@ -39,22 +39,22 @@ GORM 定义了 `Session`、`WithContext`、`Debug` 方法做为 `新建会话方
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db 是一个刚完成初始化的 *gorm.DB 实例，这是一个 `新建会话`
+// db is a new initialized *gorm.DB, which falls under `New Session Mode`
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).Find(&users)
-// `Where("name = ?", "jinzhu")` 是调用的第一个方法，它会创建一个新 `Statement`
-// `Where("age = ?", 18)` 会复用 `Statement`，并将条件添加至这个 `Statement`
-// `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
+// `Where("name = ?", "jinzhu")` is the first method call, it will create a new `Statement`
+// `Where("age = ?", 18)` reuses the `Statement`, and adds conditions to the `Statement`
+// `Find(&users)` is a finisher, it executes registered Query Callbacks, generates and runs the following SQL:
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18;
 
 db.Where("name = ?", "jinzhu2").Where("age = ?", 20).Find(&users)
-// `Where("name = ?", "jinzhu2")` 也是调用的第一个方法，也会创建一个新 `Statement`
-// `Where("age = ?", 20)` 会复用 `Statement`，并将条件添加至这个 `Statement`
-// `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
+// `Where("name = ?", "jinzhu2")` is also the first method call, it creates new `Statement` too
+// `Where("age = ?", 20)` reuses the `Statement`, and add conditions to the `Statement`
+// `Find(&users)` is a finisher, it executes registered Query Callbacks, generates and runs the following SQL:
 // SELECT * FROM users WHERE name = 'jinzhu2' AND age = 20;
 
 db.Find(&users)
-// 对于这个 `新建会话模式` 的 `*gorm.DB` 实例来说，`Find(&users)` 是一个 finisher 方法也是第一个调用的方法。 
-// 它创建了一个新的 `Statement` 运行注册的查询回调，生成并运行下面这条 SQL：
+// `Find(&users)` is a finisher method and also the first method call for a `New Session Mode` `*gorm.DB`
+// It creates a new `Statement` and executes registered Query Callbacks, generates and runs following SQL:
 // SELECT * FROM users;
 ```
 
@@ -62,60 +62,60 @@ db.Find(&users)
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db 是一个刚完成初始化的 *gorm.DB 实例，这是一个 `新建会话`
+// db is a new initialized *gorm.DB, which falls under `New Session Mode`
 tx := db.Where("name = ?", "jinzhu")
-// `Where("name = ?", "jinzhu")` 是第一个被调用的方法，它创建了一个新的 `Statement` 并添加条件
+// `Where("name = ?", "jinzhu")` is the first method call, it creates a new `Statement` and adds conditions
 
 tx.Where("age = ?", 18).Find(&users)
-// `tx.Where("age = ?", 18)` 会复用上面的那个 `Statement`，并向其添加条件
-// `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
+// `tx.Where("age = ?", 18)` REUSES above `Statement`, and adds conditions to the `Statement`
+// `Find(&users)` is a finisher, it executes registered Query Callbacks, generates and runs the following SQL:
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18
 
 tx.Where("age = ?", 28).Find(&users)
-// `tx.Where("age = ?", 18)` 同样会复用上面的那个 `Statement`，并向其添加条件
-// `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
+// `tx.Where("age = ?", 18)` REUSES above `Statement` also, and add conditions to the `Statement`
+// `Find(&users)` is a finisher, it executes registered Query Callbacks, generates and runs the following SQL:
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
 ```
 
 {% note warn %}
-**注意** 在示例 2 中，第一个查询会影响第二个查询生成的 SQL ，因为 GORM 复用 `Statement` 这可能会引发预期之外的问题，请参考 [线程安全](#goroutine_safe) 了解如何避免该问题。
+**NOTE** In example 2, the first query affected the second generated SQL, as GORM reused the `Statement`. This might cause unexpected issues, refer to [Goroutine Safety](#goroutine_safe) for how to avoid it.
 {% endnote %}
 
 ## <span id="goroutine_safe">方法链和协程安全</span>
 
-新初始化的 `*gorm.DB` 或调用 `新建会话方法` 后，GORM 会创建新的 `Statement` 实例。因此想要复用 `*gorm.DB`，您需要确保它们处于 `新建会话模式`，例如：
+Methods will create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, so to reuse a `*gorm.DB` you need to make sure they are under `New Session Mode`, for example:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// 安全的使用新初始化的 *gorm.DB
+// Safe for a new initialized *gorm.DB
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// 不安全的复用 Statement
+// NOT Safe as reusing Statement
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.WithContext(ctx)
-// 在 `新建会话方法` 之后是安全的
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user)
 }
 
 ctx, _ := context.WithTimeout(context.Background(), time.Second)
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// 在 `新建会话方法` 之后是安全的
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` 会应用到查询中
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
-// 在 `新建会话方法` 之后是安全的
+// Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` 会应用到查询中
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 ```
