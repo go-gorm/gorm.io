@@ -57,14 +57,14 @@ type Model struct {
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // 允许读和创建
-  Name string `gorm:"<-:update"` // 允许读和更新
-  Name string `gorm:"<-"`        // 允许读和写（创建和更新）
-  Name string `gorm:"<-:false"`  // 允许读，禁止写
-  Name string `gorm:"->"`        // 只读（除非有自定义配置，否则禁止写）
-  Name string `gorm:"->;<-:create"` // 允许读和写
-  Name string `gorm:"->:false;<-:create"` // 仅创建（禁止从 db 读）
-  Name string `gorm:"-"`  // 读写操作均会忽略该字段
+  Name string `gorm:"<-:create"` // allow read and create
+  Name string `gorm:"<-:update"` // allow read and update
+  Name string `gorm:"<-"`        // allow read and write (create and update)
+  Name string `gorm:"<-:false"`  // allow read, disable write permission
+  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
+  Name string `gorm:"->;<-:create"` // allow read and create
+  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
+  Name string `gorm:"-"`  // ignore this field when write and read with struct
 }
 ```
 
@@ -161,18 +161,18 @@ type Blog struct {
 | scale                  | 指定列大小                                                                                                                                                                                                                                       |
 | not null               | 指定列为 NOT NULL                                                                                                                                                                                                                               |
 | autoIncrement          | 指定列为自动增长                                                                                                                                                                                                                                    |
-| autoIncrementIncrement | auto increment step, controls the interval between successive column values                                                                                                                                                                 |
-| embedded               | embed the field                                                                                                                                                                                                                             |
-| embeddedPrefix         | column name prefix for embedded fields                                                                                                                                                                                                      |
-| autoCreateTime         | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                                       |
-| autoUpdateTime         | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                             |
-| index                  | create index with options, use same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                                                                                           |
-| uniqueIndex            | same as `index`, but create uniqued index                                                                                                                                                                                                   |
-| check                  | creates check constraint, eg: `check:age > 13`, refer [Constraints](constraints.html)                                                                                                                                                    |
-| <-                     | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no write permission, `<-` create and update permission                                                                   |
-| ->                     | set field's read permission, `->:false` no read permission                                                                                                                                                                               |
-| -                      | ignore this field, `-` no read/write permission                                                                                                                                                                                             |
-| comment                | add comment for field when migration                                                                                                                                                                                                        |
+| autoIncrementIncrement | 自动步长，控制连续记录之间的间隔                                                                                                                                                                                                                            |
+| embedded               | 嵌套字段                                                                                                                                                                                                                                        |
+| embeddedPrefix         | 嵌入字段的列名前缀                                                                                                                                                                                                                                   |
+| autoCreateTime         | 创建时追踪当前时间，对于 `int` 字段，它会追踪秒级时间戳，您可以使用 `nano`/`milli` 来追踪纳秒、毫秒时间戳，例如：`autoCreateTime:nano`                                                                                                                                                   |
+| autoUpdateTime         | 创建/更新时追踪当前时间，对于 `int` 字段，它会追踪秒级时间戳，您可以使用 `nano`/`milli` 来追踪纳秒、毫秒时间戳，例如：`autoUpdateTime:milli`                                                                                                                                               |
+| index                  | 根据参数创建索引，多个字段使用相同的名称则创建复合索引，查看 [索引](indexes.html) 获取详情                                                                                                                                                                                      |
+| uniqueIndex            | 与 `index` 相同，但创建的是唯一索引                                                                                                                                                                                                                      |
+| check                  | 创建检查约束，例如 `check:age > 13`，查看 [约束](constraints.html) 获取详情                                                                                                                                                                                |
+| <-                     | 设置字段写入的权限， `<-:create` 只创建、`<-:update` 只更新、`<-:false` 无写入权限、`<-` 创建和更新权限                                                                                                                                                        |
+| ->                     | 设置字段读的权限，`->:false` 无读权限                                                                                                                                                                                                                 |
+| -                      | 忽略该字段，`-` 无读写权限                                                                                                                                                                                                                             |
+| comment                | 迁移时为字段添加注释                                                                                                                                                                                                                                  |
 
 ### 关联标签
 

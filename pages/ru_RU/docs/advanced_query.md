@@ -45,7 +45,7 @@ db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 
 ## Блокировка (ДЛЯ ОБНОВЛЕНИЯ)
 
-GORM supports different types of locks, for example:
+GORM поддерживает различные типы блокировок, например:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -58,11 +58,11 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+Обратитесь к [Raw SQL и SQL Builder](sql_builder.html) для получения более подробной информации
 
 ## Под Запрос
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+Подзапрос может быть вложен в запрос, GORM сгенерирует подзапрос при использовании `*gorm.DB` объекта в качестве параметра
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -305,7 +305,9 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
+Запрашивает один столбец из базы данных помещает результат в срез. Если вы хотите получить несколько столбцов, используйте `Select` вместе со[`Scan`](query.html#scan)</p> 
+
+
 
 ```go
 var ages []int64
@@ -325,9 +327,14 @@ db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
+
+
+
 ## Области
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+`Области` позволяют задать часто используемые запросы, которые можно использовать позже как методы
+
+
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -358,11 +365,16 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Find all paid, shipped orders that amount greater than 1000
 ```
 
+
 Checkout [Scopes](scopes.html) for details
+
+
 
 ## <span id="count">Количество</span>
 
-Get matched records count
+Получить количество найденных записей
+
+
 
 ```go
 var count int64

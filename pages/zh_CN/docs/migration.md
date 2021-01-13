@@ -5,10 +5,10 @@ layout: page
 
 ## AutoMigrate
 
-Automatically migrate your schema, to keep your schema up to date.
+AutoMigrate 用于自动迁移您的 schema，保持您的 schema 是最新的。
 
 {% note warn %}
-**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes. It will change existing column's type if its size, precision, nullable changed. It **WON'T** delete unused columns to protect your data.
+**注意：** AutoMigrate 会创建表、缺失的外键、约束、列和索引。 如果大小、精度、是否为空可以更改，则 AutoMigrate 会改变列的类型。 出于保护您数据的目的，它 **不会** 删除未使用的列
 {% endnote %}
 
 ```go
@@ -32,7 +32,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Migrator 接口
 
-GORM provides a migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
+GORM 提供了 Migrator 接口，该接口为每个数据库提供了统一的 API 接口，可用来为您的数据库构建独立迁移，例如：
 
 SQLite 不支持 `ALTER COLUMN`、`DROP COLUMN`，当你试图修改表结构，GORM 将创建一个新表、复制所有数据、删除旧表、重命名新表。
 
@@ -86,21 +86,21 @@ db.Migrator().CurrentDatabase()
 ### 表
 
 ```go
-// Create table for `User`
+// 为 `User` 创建表
 db.Migrator().CreateTable(&User{})
 
-// Append "ENGINE=InnoDB" to the creating table SQL for `User`
+// 将 "ENGINE=InnoDB" 添加到创建 `User` 的 SQL 里去
 db.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&User{})
 
-// Check table for `User` exists or not
+// 检查 `User` 对应的表是否存在
 db.Migrator().HasTable(&User{})
 db.Migrator().HasTable("users")
 
-// Drop table if exists (will ignore or delete foreign key constraints when dropping)
+// 如果存在表则删除（删除时会忽略、删除外键约束)
 db.Migrator().DropTable(&User{})
 db.Migrator().DropTable("users")
 
-// Rename old table to new table
+// 重命名表
 db.Migrator().RenameTable(&User{}, &UserInfo{})
 db.Migrator().RenameTable("users", "user_infos")
 ```
@@ -183,7 +183,7 @@ db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 
 ## 约束
 
-GORM creates constraints when auto migrating or creating table, see [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORM 会在自动迁移和创建表时创建约束，查看 [约束](constraints.html) 或 [数据库索引](indexes.html) 获取详情
 
 ## 其他迁移工具
 
@@ -194,4 +194,4 @@ GORM 的 AutoMigrate 在大多数情况下都工作得很好，但如果您正�
 db.DB()
 ```
 
-Refer to [Generic Interface](generic_interface.html) for more details.
+查看 [通用接口](generic_interface.html) 获取详情。

@@ -57,14 +57,14 @@ type Model struct {
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // 읽기/생성 허용
-  Name string `gorm:"<-:update"` // 읽기/수정 허용
-  Name string `gorm:"<-"`        // 읽기/쓰기 허용 생성 및 수정)
-  Name string `gorm:"<-:false"`  // 읽기전용, 쓰기 불가능
-  Name string `gorm:"->"`        // 읽기허용 (설정되지 않은경우 쓰기 불가능)
-  Name string `gorm:"->;<-:create"` //읽기/생성 허용
-  Name string `gorm:"->:false;<-:create"` // 생성만 가능 (읽기 불가능)
-  Name string `gorm:"-"`  // gorm 에서 이 필드 무시
+  Name string `gorm:"<-:create"` // allow read and create
+  Name string `gorm:"<-:update"` // allow read and update
+  Name string `gorm:"<-"`        // allow read and write (create and update)
+  Name string `gorm:"<-:false"`  // allow read, disable write permission
+  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
+  Name string `gorm:"->;<-:create"` // allow read and create
+  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
+  Name string `gorm:"-"`  // ignore this field when write and read with struct
 }
 ```
 

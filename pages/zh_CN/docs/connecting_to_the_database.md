@@ -171,40 +171,40 @@ func main() {
   // Set table options
   db.Set("gorm:table_options", "ENGINE=Distributed(cluster, default, hits)").AutoMigrate(&User{})
 
-  // Insert
+  // 插入
   db.Create(&user)
 
-  // Select
+  // 查询
   db.Find(&user, "id = ?", 10)
 
-  // Batch Insert
+  // 批量插入
   var users = []User{user1, user2, user3}
   db.Create(&users)
   // ...
 }
 ```
 
-## Connection Pool
+## 连接池
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM 使用 [database/sql](https://pkg.go.dev/database/sql) 维护连接池
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleConns 设置空闲连接池中连接的最大数量
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns 设置打开数据库连接的最大数量。
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime 设置了连接可复用的最大时间。
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+查看 [通用接口](generic_interface.html) 获取详情。
 
-## Unsupported Databases
+## 不支持的数据库
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+有些数据库可能兼容 `mysql`、`postgres` 的方言，在这种情况下，你可以直接使用这些数据库的方言。
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+对于其它不支持的数据，[我们鼓励且欢迎大家伙开发更多数据库类型的驱动！](write_driver.html)

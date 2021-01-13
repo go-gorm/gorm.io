@@ -3,7 +3,7 @@ title: Сессия
 layout: страница
 ---
 
-GORM предоставляет методы `Session`, которые являются [`Методами новой сессии`](method_chaining.html), и позволяют создавать новый режим сеанса с настройками:
+GORM provides `Session` method, which is a [`New Session Method`](method_chaining.html), it allows to create a new session mode with configuration:
 
 ```go
 // Session Configuration
@@ -26,7 +26,7 @@ type Session struct {
 
 ## DryRun
 
-Генерировать `SQL` без выполнения, может быть использован для подготовки или тестирования сгенерированных SQL, например:
+Generates `SQL` without executing. It can be used to prepare or test generated SQL, for example:
 
 ```go
 // session mode
@@ -44,20 +44,20 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
-To generate the finally SQL, you could use following code:
+To generate the final SQL, you could use following code:
 
 ```go
-// NOTE the SQL is not always safe to execute, GORM only use it for logs, it might cause SQL injection
+// NOTE: the SQL is not always safe to execute, GORM only uses it for logs, it might cause SQL injection
 db.Dialector.Explain(stmt.SQL.String(), stmt.Vars...)
 // SELECT * FROM `users` WHERE `id` = 1
 ```
 
 ## Подготовить
 
-`PreparedStmt` creates prepared statement when executing any SQL and caches them to speed up future calls, for example:
+`PreparedStmt` creates prepared statements when executing any SQL and caches them to speed up future calls, for example:
 
 ```go
-// globally mode, all DB operations will create prepared stmt and cache them
+// globally mode, all DB operations will create prepared statements and cache them
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
@@ -126,7 +126,7 @@ DB.Session(&gorm.Session{SkipHooks: true}).Model(User{}).Where("age > ?", 18).Up
 
 ## DisableNestedTransaction
 
-When using `Transaction` method inside a db transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support, you could disable it by using the `DisableNestedTransaction` option, for example:
+When using `Transaction` method inside a DB transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support. You can disable it by using the `DisableNestedTransaction` option, for example:
 
 ```go
 db.Session(&gorm.Session{
@@ -136,7 +136,7 @@ db.Session(&gorm.Session{
 
 ## AllowGlobalUpdate
 
-GORM doesn't allow global update/delete by default, will return `ErrMissingWhereClause` error, you can set this option to true to enable it, for example:
+GORM doesn't allow global update/delete by default, will return `ErrMissingWhereClause` error. You can set this option to true to enable it, for example:
 
 ```go
 db.Session(&gorm.Session{
@@ -147,7 +147,7 @@ db.Session(&gorm.Session{
 
 ## FullSaveAssociations
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record, if you want to update associations's data, you should use the `FullSaveAssociations` mode, e.g:
+GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record. If you want to update associations' data, you should use the `FullSaveAssociations` mode, for example:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -180,7 +180,7 @@ func (db *DB) WithContext(ctx context.Context) *DB {
 
 ## Logger
 
-Gorm allows customize built-in logger with the `Logger` option, for example:
+Gorm allows customizing built-in logger with the `Logger` option, for example:
 
 ```go
 newLogger := logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags),
@@ -194,11 +194,11 @@ db.Session(&Session{Logger: newLogger})
 db.Session(&Session{Logger: logger.Default.LogMode(logger.Silent)})
 ```
 
-Checkout [Logger](logger.html) for more details
+Checkout [Logger](logger.html) for more details.
 
 ## NowFunc
 
-`NowFunc` allows change the function to get current time of GORM, for example:
+`NowFunc` allows changing the function to get current time of GORM, for example:
 
 ```go
 db.Session(&Session{

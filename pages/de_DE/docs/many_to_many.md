@@ -109,7 +109,11 @@ Please checkout [Association Mode](associations.html#Association-Mode) for worki
 
 ## Customize JoinTable
 
-`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports, and define more fields, you can setup it with `SetupJoinTable`, for example:
+`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can setup it with `SetupJoinTable`, for example:
+
+{% note warn %}
+**NOTE:** Customized join table's foreign keys required to be composited primary keys or composited unique index
+{% endnote %}
 
 ```go
 type Person struct {
@@ -124,18 +128,14 @@ type Address struct {
 }
 
 type PersonAddress struct {
-  PersonID  int
-  AddressID int
+  PersonID  int `gorm:"primaryKey"`
+  AddressID int `gorm:"primaryKey"`
   CreatedAt time.Time
   DeletedAt gorm.DeletedAt
 }
 
 func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
-}
-
-// PersonAddress must defined all required foreign keys, or it will raise error
-db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 }
 
 // Change model Person's field Addresses's join table to PersonAddress
