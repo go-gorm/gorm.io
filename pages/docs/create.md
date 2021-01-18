@@ -260,6 +260,13 @@ db.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
+// Use SQL expression
+db.Clauses(clause.OnConflict{
+  Columns:   []clause.Column{{Name: "id"}},
+  DoUpdates: clause.Assignments(map[string]interface{}{"count": gorm.Expr("GREATEST(count, VALUES(count))")}),
+}).Create(&users)
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `count`=GREATEST(count, VALUES(count));
+
 // Update columns to new value on `id` conflict
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
