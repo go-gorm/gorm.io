@@ -3,9 +3,9 @@ title: Gelişmiş Sorgu
 layout: page
 ---
 
-## <span id="smart_select">Smart Select Fields</span>
+## <span id="smart_select">Akıllı Alan Seçimi</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM [`Select`](query.html) ile belirli alanları seçmenize izin verir. Eğer bunu sıklıkla kullanıyorsanız isterseniz daha küçük bir struct tanımı ile apiniz için kullanabilirsiniz.Örnek olarak:
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // bir sürü alan olabilir
 }
 
 type APIUser struct {
@@ -21,7 +21,7 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// `id` ve `name` alanları otomatik olarak sorgunuza eklenir
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
