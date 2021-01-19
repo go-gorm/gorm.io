@@ -27,7 +27,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**NOT** `Sorgu alanları` otomatik olarak belirttiğiniz modele eklenir
 {% endnote %}
 
 ```go
@@ -38,14 +38,14 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
 
-// Session Mode
+// Session Modu
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## Kilitleme (Kaydın güncellenmesi için)
 
-GORM supports different types of locks, for example:
+GORM bir kaç farklı türde kilitlemeyi destekler. örneğin:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -58,7 +58,7 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+[Raw SQL and SQL Builder](sql_builder.html) daha fazla detay için referans
 
 ## SubQuery
 
