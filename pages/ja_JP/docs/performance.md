@@ -32,6 +32,10 @@ tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 ```
 
+{% note warn %}
+**NOTE** Also refer how to enable interpolateparams for MySQL to reduce roundtrip https://github.com/go-sql-driver/mysql#interpolateparams
+{% endnote %}
+
 ### [SQL Builder with PreparedStmt](sql_builder.html)
 
 Prepared Statement works with RAW SQL also, for example:
