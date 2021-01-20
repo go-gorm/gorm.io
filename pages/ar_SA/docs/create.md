@@ -277,7 +277,7 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 
-// Update all columns expects primary keys to new value on conflict
+// Update all columns, except primary keys, to new value on conflict
 db.Clauses(clause.OnConflict{
   UpdateAll: true,
 }).Create(&users)
