@@ -151,6 +151,24 @@ db.Migrator().DropConstraint(&User{}, "name_checker")
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
+Create foreign keys for relations
+
+```go
+type User struct {
+  gorm.Model
+  CreditCards []CreditCard
+}
+
+type CreditCard struct {
+  gorm.Model
+  Number string
+  UserID uint
+}
+
+// create database foreign key for user & credit_cards
+db.Migrator().CreateConstraint(&User{}, "CreditCards")
+```
+
 ### Indexes
 
 ```go
