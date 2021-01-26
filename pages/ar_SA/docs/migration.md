@@ -148,34 +148,62 @@ type User struct {
   gorm.
 ```
 
+Create foreign keys for relations
+
+```go
+type User struct {
+  gorm.Model
+  CreditCards []CreditCard
+}
+
+type CreditCard struct {
+  gorm.Model
+  Number string
+  UserID uint
+}
+
+// create database foreign key for user & credit_cards
+db.Migrator().CreateConstraint(&User{}, "CreditCards")
+db.Migrator().CreateConstraint(&User{}, "fk_users_credit_cards")
+// ALTER TABLE `credit_cards` ADD CONSTRAINT `fk_users_credit_cards` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+
+// check database foreign key for user & credit_cards exists or not
+db.Migrator().HasConstraint(&User{}, "CreditCards")
+db.Migrator().HasConstraint(&User{}, "fk_users_credit_cards")
+
+// drop database foreign key for user & credit_cards
+db.Migrator().DropConstraint(&User{}, "CreditCards")
+db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
+```
+
 ### Indexes
 
 ```go
 type User struct {
-  gorm. Model
+  gorm.Model
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
 // Create index for Name field
-db. CreateIndex(&User{}, "Name")
-db. CreateIndex(&User{}, "idx_name")
+db.Migrator().CreateIndex(&User{}, "Name")
+db.Migrator().CreateIndex(&User{}, "idx_name")
 
 // Drop index for Name field
-db. DropIndex(&User{}, "Name")
-db. DropIndex(&User{}, "idx_name")
+db.Migrator().DropIndex(&User{}, "Name")
+db.Migrator().DropIndex(&User{}, "idx_name")
 
 // Check Index exists
-db. HasIndex(&User{}, "Name")
-db. HasIndex(&User{}, "idx_name")
+db.Migrator().HasIndex(&User{}, "Name")
+db.Migrator().HasIndex(&User{}, "idx_name")
 
 type User struct {
-  gorm. Model
+  gorm.Model
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
 // Rename index name
-db. RenameIndex(&User{}, "Name", "Name2")
-db. RenameIndex(&User{}, "idx_name", "idx_name_2")
+db.Migrator().RenameIndex(&User{}, "Name", "Name2")
+db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
 ## Constraints
