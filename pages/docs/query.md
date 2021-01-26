@@ -28,7 +28,9 @@ result.Error        // returns error
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
-If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`
+{% note warn %}
+If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`, the `Find` method accepts both struct and slice data
+{% endnote %}
 
 The `First`, `Last` method will find the first/last record order by primary key, it only works when querying with struct or provides model value, if no primary key defined for current model, will order by the first field, for example:
 
