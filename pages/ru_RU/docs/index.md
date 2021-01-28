@@ -12,7 +12,7 @@ layout: страница
 * Хуки (До/После Создать/Сохранить/Обновить/Удалить/Найти)
 * Нетерпеливая загрузка с помощью `Preload`, `Joins`
 * Транзакции, вложенные транзакции, точки сохранения, откат к сохраненной точке
-* Контекст, Режим подготовки, Режим DryRun
+* Context, Prepared Statement Mode, DryRun Mode
 * Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * Композитный первичный ключ, Индексы, Зависимости
