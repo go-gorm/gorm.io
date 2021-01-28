@@ -48,8 +48,12 @@ type Namer interface {
 The default `NamingStrategy` also provides few options, like:
 
 ```go
-db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
-  DisableAutomaticPing: true,
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  NamingStrategy: schema.NamingStrategy{
+    TablePrefix: "t_",   // table name prefix, table for `User` would be `t_users`
+    SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
+    NameReplacer: strings.NewReplacer("CID", "Cid"), // use name replacer to change struct/field name before convert it to db name
+  },
 })
 ```
 

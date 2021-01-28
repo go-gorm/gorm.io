@@ -50,8 +50,9 @@ type Namer interface {
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   NamingStrategy: schema.NamingStrategy{
-    TablePrefix: "t_",   // 表名前缀，`User` 的表名应该是 `t_users`
-    SingularTable: true, // 使用单数表名，启用该选项，此时，`User` 的表名应该是 `t_user`
+    TablePrefix: "t_",   // table name prefix, table for `User` would be `t_users`
+    SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
+    NameReplacer: strings.NewReplacer("CID", "Cid"), // use name replacer to change struct/field name before convert it to db name
   },
 })
 ```

@@ -3,9 +3,9 @@ title: Gelişmiş Sorgu
 layout: page
 ---
 
-## <span id="smart_select">Smart Select Fields</span>
+## <span id="smart_select">Akıllı Alan Seçimi</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM [`Select`](query.html) ile belirli alanları seçmenize izin verir. Eğer bunu sıklıkla kullanıyorsanız isterseniz daha küçük bir struct tanımı ile apiniz için kullanabilirsiniz.Örnek olarak:
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // bir sürü alan olabilir
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// `id` ve `name` alanları otomatik olarak sorgunuza eklenir
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**NOT** `Sorgu alanları` otomatik olarak belirttiğiniz modele eklenir
 {% endnote %}
 
 ```go
@@ -38,14 +38,14 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
 
-// Session Mode
+// Session Modu
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## Kilitleme (Kaydın güncellenmesi için)
 
-GORM supports different types of locks, for example:
+GORM bir kaç farklı türde kilitlemeyi destekler. örneğin:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -58,7 +58,7 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+[Raw SQL and SQL Builder](sql_builder.html) daha fazla detay için referans
 
 ## SubQuery
 

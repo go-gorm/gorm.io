@@ -9,7 +9,7 @@ GORM 2.0 a été réécrit de zéro, introduisant des changements majeurs de l'A
 
 * Amélioration des performances
 * Modularité
-* Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
+* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
 * Nested Transaction/SavePoint/RollbackTo SavePoint supports
 * Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
 * Full self-reference relationships supports, Join Table improvements, Association Mode for batch data

@@ -12,7 +12,7 @@ layout: page
 * フック (Before/After Create/Save/Update/Delete/Find)
 * `Preload`, `Joins`を使ったイーガーロード
 * トランザクション、ネスティング、セーブポイント、セーブポイントへのロールバック
-* Context、プリペアドステートメント、ドライラン
+* Context, Prepared Statement Mode, DryRun Mode
 * Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * Composite Primary Key, Indexes, Constraints

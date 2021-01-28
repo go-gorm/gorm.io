@@ -10,7 +10,7 @@ comments: false
 * <i class="fa fa-rocket" aria-hidden="true"></i> Create，Save，Update，Delete，Find 中钩子方法
 * <i class="fa fa-rocket" aria-hidden="true"></i> 支持 Preload、Joins 的预加载
 * <i class="fa fa-rocket" aria-hidden="true"></i> 事务，嵌套事务，Save Point，Rollback To to Saved Point
-* <i class="fa fa-rocket" aria-hidden="true"></i> Context、预编译模式、DryRun 模式
+* <i class="fa fa-rocket" aria-hidden="true"></i> Context, Prepared Statement Mode, DryRun Mode
 * <i class="fa fa-rocket" aria-hidden="true"></i> 批量插入，FindInBatches，Find/Create with Map，使用 SQL 表达式、Context Valuer 进行 CRUD
 * <i class="fa fa-rocket" aria-hidden="true"></i> SQL 构建器，Upsert，锁，Optimizer/Index/Comment Hint，命名参数，子查询
 * <i class="fa fa-rocket" aria-hidden="true"></i> 复合主键，索引，约束

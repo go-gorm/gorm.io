@@ -261,6 +261,13 @@ db.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
+// Use SQL expression
+db.Clauses(clause.OnConflict{
+  Columns:   []clause.Column{{Name: "id"}},
+  DoUpdates: clause.Assignments(map[string]interface{}{"count": gorm.Expr("GREATEST(count, VALUES(count))")}),
+}).Create(&users)
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `count`=GREATEST(count, VALUES(count));
+
 // Update columns to new value on `id` conflict
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
@@ -270,7 +277,7 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 
-// Update all columns expects primary keys to new value on conflict
+// Update all columns, except primary keys, to new value on conflict
 db.Clauses(clause.OnConflict{
   UpdateAll: true,
 }).Create(&users)

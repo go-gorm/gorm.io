@@ -9,7 +9,7 @@ GORM 2.0은 처음부터 다시 작성되었으며 일부 호환되지 않는 AP
 
 * 성능 향상
 * 모듈성
-* Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches 지원
+* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
 * Nested Transaction/SavePoint/RollbackTo SavePoint 지원
 * 명명 된 인수, 그룹 조건, Upsert, 잠금, 최적화/색인/주석 힌트 지원, 하위 쿼리 개선
 * 완전한 자기 참조관계 지원, Join 테이블 개선, Association Mode for batch data
