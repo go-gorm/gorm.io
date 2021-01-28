@@ -10,7 +10,7 @@ comments: false
 * <i class="fa fa-rocket" aria-hidden="true"></i> Hooks (before/after create/save/update/delete/find)
 * <i class="fa fa-rocket" aria-hidden="true"></i> Preload, Joinsを使ったイーガーロード
 * <i class="fa fa-rocket" aria-hidden="true"></i> トランザクション、ネスティング、セーブポイント、セーブポイントへのロールバック
-* <i class="fa fa-rocket" aria-hidden="true"></i> Context、プリペアドステートメント、ドライラン
+* <i class="fa fa-rocket" aria-hidden="true"></i> Context, Prepared Statement Mode, DryRun Mode
 * <i class="fa fa-rocket" aria-hidden="true"></i> Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * <i class="fa fa-rocket" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * <i class="fa fa-rocket" aria-hidden="true"></i> 複合主キー、インデックス、Constraints
