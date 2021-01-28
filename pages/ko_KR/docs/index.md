@@ -12,7 +12,7 @@ layout: page
 * Hooks (Before/After Create/Save/Update/Delete/Find)
 * `Preload`, `Joins`를 통한 데이터 가져오기
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
-* Context, Prepared Statment Mode, DryRun Mode
+* Context, Prepared Statement Mode, DryRun Mode
 * Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * Composite Primary Key, Indexes, Constraints
