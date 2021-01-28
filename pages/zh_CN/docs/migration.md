@@ -211,15 +211,15 @@ db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 
 ## 约束
 
-GORM creates constraints when auto migrating or creating table, see [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORM 会在自动迁移或建表时创建约束，请参阅 [约束](constraints.html) 或 [数据库索引](indexes.html) 以了解详情
 
 ## 其他迁移工具
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
+GORM 的 AutoMigrate 适用于大多数的迁移，如果您需要更加个性化的迁移工具 ，GORM 提供的一个通用数据库接口可能对您有帮助。
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-Refer to [Generic Interface](generic_interface.html) for more details.
+查看 [通用接口](generic_interface.html) 获取更多详情。
