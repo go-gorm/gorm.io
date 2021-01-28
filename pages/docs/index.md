@@ -12,7 +12,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * Hooks (Before/After Create/Save/Update/Delete/Find)
 * Eager loading with `Preload`, `Joins`
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
-* Context, Prepared Statment Mode, DryRun Mode
+* Context, Prepared Statement Mode, DryRun Mode
 * Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * Composite Primary Key, Indexes, Constraints
