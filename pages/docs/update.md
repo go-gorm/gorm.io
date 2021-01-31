@@ -27,7 +27,7 @@ db.Model(&User{}).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE active=true;
 
 // User's ID is `111`:
-db.Model(&user).Update("name", "hello")
+db.Model(&user).Updates("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
 // Update with conditions and model value
