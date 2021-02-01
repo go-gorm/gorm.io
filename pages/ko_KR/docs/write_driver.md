@@ -7,7 +7,7 @@ layout: page
 
 GORM은 `sqlite`, `mysql`, `postgres`, `sqlserver`를 공식 지원합니다.
 
-어떤 database들은 `mysql` 또는 `postgres` 문법을 그냥 사용하면 될정도의 호환성을 가지고 있기도 합니다.
+어떤 database들은 `mysql` 또는 `postgres` 문법<sup>dialect</sup>을 그냥 사용하면 될정도의 호환성을 가지고 있기도 합니다.
 
 그 이외에는, [the dialect interface](https://pkg.go.dev/gorm.io/gorm?tab=doc#Dialector)의 구현체를 만들어, 새로운 드라이버를 만들 수 있습니다.
 
