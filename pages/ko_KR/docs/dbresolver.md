@@ -5,12 +5,12 @@ layout: page
 
 DBResolver adds multiple databases support to GORM, the following features are supported:
 
-* Multiple sources, replicas
-* Read/Write Splitting
-* Automatic connection switching based on the working table/struct
-* Manual connection switching
-* Sources/Replicas load balancing
-* Works for RAW SQL
+* 다수의 Source, Replica
+* Read/Write 분리
+* Table/struct에 기반한 자동 연결 전환
+* 수동 연결 전환
+* Sources/Replica 로드밸런싱
+* RAW SQL에서도 동작
 
 https://github.com/go-gorm/dbresolver
 
@@ -43,11 +43,11 @@ db.Use(dbresolver.Register(dbresolver.Config{
 
 ## Transaction
 
-When using transaction, DBResolver will use the transaction and won't switch to sources/replicas
+Transaction을 사용할 때, DBResolver은 Source/Replica를 전환을 하지 않습니다.
 
 ## Automatic connection switching
 
-DBResolver will automatically switch connection based on the working table/struct
+DBResolver는 사용 중인 table/struct에 기반하여 연결을 자동 전환 합니다.
 
 For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
 
