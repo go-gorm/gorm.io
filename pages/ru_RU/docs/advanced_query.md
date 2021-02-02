@@ -27,7 +27,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**Примечание** Режим `QueryFields` будет выбираться по имени всех полей для текущей модели
 {% endnote %}
 
 ```go
