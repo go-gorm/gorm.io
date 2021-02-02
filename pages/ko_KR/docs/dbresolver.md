@@ -71,7 +71,7 @@ db.Table("orders").Find(&Report{}) // replicas `db8`
 
 ## Read/Write Splitting
 
-Read/Write splitting with DBResolver based on the current used [GORM callbacks](https://gorm.io/docs/write_plugins.html).
+[GORM callbacks](https://gorm.io/docs/write_plugins.html).에 기반한 DBResolver의 Read/Write 분리
 
 For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
 
