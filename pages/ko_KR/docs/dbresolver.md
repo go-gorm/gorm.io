@@ -5,12 +5,12 @@ layout: page
 
 DBResolver는 GROM에 다수의 database를 지원할 수 있도록 추가합니다. 아래 기능이 지원 가능 합니다.
 
-* 다수의 Source, Replica
-* Read/Write 분리
-* Table/struct에 기반한 자동 연결 전환
-* 수동 연결 전환
-* Sources/Replica 로드밸런싱
-* RAW SQL에서도 동작
+* Multiple sources, replicas
+* Read/Write Splitting
+* Automatic connection switching based on the working table/struct
+* Manual connection switching
+* Sources/Replicas load balancing
+* Works for RAW SQL
 
 https://github.com/go-gorm/dbresolver
 
@@ -73,7 +73,7 @@ db.Table("orders").Find(&Report{}) // replicas `db8`
 
 [GORM callbacks](https://gorm.io/docs/write_plugins.html).에 기반한 DBResolver의 Read/Write 분리
 
-For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
+`Query`, `Row` callback은, `Write` 모드가 지정되어 있지 않으면, `replicas`를 사용합니다. `Raw` callback의 statements는 조회로 간주되고, `SELECT`시작 하는 SQL문 일때 `replicas`를 사용합니다.
 
 ## Manual connection switching
 
