@@ -49,10 +49,9 @@ Transaction을 사용할 때, DBResolver은 Source/Replica를 전환을 하지 �
 
 DBResolver는 사용 중인 table/struct에 기반하여 연결을 자동 전환 합니다.
 
-For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
+RAW SQL에서, DBResolver는 resolver를 매치시키기 위해 SQL에서 테이블 이름을 추출하고, 해당 `source`를 `SELECT`로 시작하지 않는(``SELECT... FOR UPDATE</0>를 제외하고) SQL이 올 때까지 사용합니다. 예를 들어:  </p>
 
-```go
-// `User` Resolver Examples
+<pre><code class="go">// `User` Resolver Examples
 db.Table("users").Rows() // replicas `db5`
 db.Model(&User{}).Find(&AdvancedUser{}) // replicas `db5`
 db.Exec("update users set name = ?", "jinzhu") // sources `db1`
@@ -68,7 +67,7 @@ db.Save(&Pet{}) // sources `db2`
 // Orders Resolver Examples
 db.Find(&Order{}) // replicas `db8`
 db.Table("orders").Find(&Report{}) // replicas `db8`
-```
+``</pre>
 
 ## Read/Write Splitting
 
