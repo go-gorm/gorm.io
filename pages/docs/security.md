@@ -50,6 +50,8 @@ db.Group("name").Having("1 = 1;drop table users;").First(&user)
 db.Raw("select name from users; drop table users;").First(&user)
 
 db.Exec("select name from users; drop table users;")
+
+db.Order("name; drop table users;").First(&user)
 ```
 
 The general rule to avoid SQL injection is don't trust user-submitted data, you can perform whitelist validation to test user input against an existing set of known, approved, and defined input, and when using user's input, only use them as an argument.
