@@ -75,7 +75,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">Из SubQuery (под запроса)</span>
 
-GORM allows you using subquery in FROM clause with method `Table`, for example:
+GORM позволяет использовать подзапрос в FROM с методом `Table`, например:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -89,7 +89,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">Группировка условий</span>
 
-Easier to write complicated SQL query with Group Conditions
+Легче написать сложный SQL-запрос с группировкой условий
 
 ```go
 db.Where(
@@ -103,7 +103,7 @@ db.Where(
 
 ## Именованные аргументы
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM поддерживает именованные аргументы с помощью [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, вот пример:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -117,7 +117,7 @@ Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more de
 
 ## Поиск в Map
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORM позволяет отображать результаты сканирования в `map[string]interface{}` или `[]map[string]interface{}`, не забудьте указать `Model` или `Table`, как в примере ниже:
 
 ```go
 var result map[string]interface{}
