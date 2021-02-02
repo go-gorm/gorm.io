@@ -3,7 +3,7 @@ title: DBResolver
 layout: page
 ---
 
-DBResolver adds multiple databases support to GORM, the following features are supported:
+DBResolver는 GROM에 다수의 database를 지원할 수 있도록 추가합니다. 아래 기능이 지원 가능 합니다.
 
 * Multiple sources, replicas
 * Read/Write Splitting
@@ -43,16 +43,15 @@ db.Use(dbresolver.Register(dbresolver.Config{
 
 ## Transaction
 
-When using transaction, DBResolver will use the transaction and won't switch to sources/replicas
+Transaction을 사용할 때, DBResolver은 Source/Replica를 전환을 하지 않습니다.
 
 ## Automatic connection switching
 
-DBResolver will automatically switch connection based on the working table/struct
+DBResolver는 사용 중인 table/struct에 기반하여 연결을 자동 전환 합니다.
 
-For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
+RAW SQL에서, DBResolver는 resolver를 매치시키기 위해 SQL에서 테이블 이름을 추출하고, 해당 `source`를 `SELECT`로 시작하지 않는(``SELECT... FOR UPDATE</0>를 제외하고) SQL이 올 때까지 사용합니다. 예를 들어:  </p>
 
-```go
-// `User` Resolver Examples
+<pre><code class="go">// `User` Resolver Examples
 db.Table("users").Rows() // replicas `db5`
 db.Model(&User{}).Find(&AdvancedUser{}) // replicas `db5`
 db.Exec("update users set name = ?", "jinzhu") // sources `db1`
@@ -68,13 +67,13 @@ db.Save(&Pet{}) // sources `db2`
 // Orders Resolver Examples
 db.Find(&Order{}) // replicas `db8`
 db.Table("orders").Find(&Report{}) // replicas `db8`
-```
+``</pre>
 
 ## Read/Write Splitting
 
-Read/Write splitting with DBResolver based on the current used [GORM callbacks](https://gorm.io/docs/write_plugins.html).
+[GORM callbacks](https://gorm.io/docs/write_plugins.html).에 기반한 DBResolver의 Read/Write 분리
 
-For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
+`Query`, `Row` callback은, `Write` 모드가 지정되어 있지 않으면, `replicas`를 사용합니다. `Raw` callback의 statements는 조회로 간주되고, `SELECT`시작 하는 SQL문 일때 `replicas`를 사용합니다.
 
 ## Manual connection switching
 
