@@ -3,7 +3,7 @@ title: DBResolver
 layout: page
 ---
 
-DBResolver adds multiple databases support to GORM, the following features are supported:
+DBResolver는 GROM에 다수의 database를 지원할 수 있도록 추가합니다. 아래 기능이 지원 가능 합니다.
 
 * 다수의 Source, Replica
 * Read/Write 분리
