@@ -7,14 +7,15 @@ GORM 提供的配置可以在初始化时使用
 
 ```go
 type Config struct {
-  SkipDefaultTransaction bool
-  NamingStrategy         schema.Namer
-  Logger                 logger.Interface
-  NowFunc                func() time.Time
-  DryRun                 bool
-  PrepareStmt            bool
-  AllowGlobalUpdate      bool
-  DisableAutomaticPing   bool
+  SkipDefaultTransaction   bool
+  NamingStrategy           schema.Namer
+  Logger                   logger.Interface
+  NowFunc                  func() time.Time
+  DryRun                   bool
+  PrepareStmt              bool
+  DisableNestedTransaction bool
+  AllowGlobalUpdate        bool
+  DisableAutomaticPing     bool
   DisableForeignKeyConstraintWhenMigrating bool
 }
 ```
@@ -49,8 +50,9 @@ type Namer interface {
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   NamingStrategy: schema.NamingStrategy{
-    TablePrefix: "t_",   // 表名前缀，`User` 的表名应该是 `t_users`
-    SingularTable: true, // 使用单数表名，启用该选项，此时，`User` 的表名应该是 `t_user`
+    TablePrefix: "t_",   // table name prefix, table for `User` would be `t_users`
+    SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
+    NameReplacer: strings.NewReplacer("CID", "Cid"), // use name replacer to change struct/field name before convert it to db name
   },
 })
 ```
@@ -90,6 +92,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: false,
 })
 ```
+
+## 禁用嵌套事务
+
+在一个事务中使用 `Transaction` 方法，GORM 会使用 `SavePoint(savedPointName)`，`RollbackTo(savedPointName)` 为你提供嵌套事务支持，你可以通过 `DisableNestedTransaction` 选项关闭它，查看 [Session](session.html) 获取详情
+
 
 ## AllowGlobalUpdate
 

@@ -8,7 +8,7 @@ layout: page
 AutoMigrate 用于自动迁移您的 schema，保持您的 schema 是最新的。
 
 {% note warn %}
-**注意：** AutoMigrate 会创建表，缺少的外键，约束，列和索引，并且会更改现有列的类型（如果其大小、精度、是否为空可更改）。但 **不会** 删除未使用的列，以保护您的数据。
+**注意：** AutoMigrate 会创建表、缺失的外键、约束、列和索引。 如果大小、精度、是否为空可以更改，则 AutoMigrate 会改变列的类型。 出于保护您数据的目的，它 **不会** 删除未使用的列
 {% endnote %}
 
 ```go
@@ -90,7 +90,7 @@ db.Migrator().CurrentDatabase()
 db.Migrator().CreateTable(&User{})
 
 // 将 "ENGINE=InnoDB" 添加到创建 `User` 的 SQL 里去
-db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
+db.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&User{})
 
 // 检查 `User` 对应的表是否存在
 db.Migrator().HasTable(&User{})
@@ -151,6 +151,34 @@ db.Migrator().DropConstraint(&User{}, "name_checker")
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
+Create foreign keys for relations
+
+```go
+type User struct {
+  gorm.Model
+  CreditCards []CreditCard
+}
+
+type CreditCard struct {
+  gorm.Model
+  Number string
+  UserID uint
+}
+
+// create database foreign key for user & credit_cards
+db.Migrator().CreateConstraint(&User{}, "CreditCards")
+db.Migrator().CreateConstraint(&User{}, "fk_users_credit_cards")
+// ALTER TABLE `credit_cards` ADD CONSTRAINT `fk_users_credit_cards` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+
+// check database foreign key for user & credit_cards exists or not
+db.Migrator().HasConstraint(&User{}, "CreditCards")
+db.Migrator().HasConstraint(&User{}, "fk_users_credit_cards")
+
+// drop database foreign key for user & credit_cards
+db.Migrator().DropConstraint(&User{}, "CreditCards")
+db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
+```
+
 ### 索引
 
 ```go
@@ -159,15 +187,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// 为 Name 字段创建索引
+// Create index for Name field
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// 为 Name 字段删除索引
+// Drop index for Name field
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// 检查索引是否存在
+// Check Index exists
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -176,22 +204,22 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// 修改索引名
+// Rename index name
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
 ## 约束
 
-GORM 会在自动迁移和创建表时创建约束，查看 [约束](constraints.html) 或 [数据库索引](indexes.html) 获取详情
+GORM 会在自动迁移或建表时创建约束，请参阅 [约束](constraints.html) 或 [数据库索引](indexes.html) 以了解详情
 
 ## 其他迁移工具
 
-GORM 的 AutoMigrate 在大多数情况下都工作得很好，但如果您正在寻找更严格的迁移工具，GORM 提供一个通用数据库接口，可能对您有帮助。
+GORM 的 AutoMigrate 适用于大多数的迁移，如果您需要更加个性化的迁移工具 ，GORM 提供的一个通用数据库接口可能对您有帮助。
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-查看 [通用接口](generic_interface.html) 获取详情。
+查看 [通用接口](generic_interface.html) 获取更多详情。

@@ -77,7 +77,7 @@ import (
   "gorm.io/gorm"
 )
 
-dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
+dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
@@ -152,9 +152,41 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
+## Clickhouse
+
+https://github.com/go-gorm/clickhouse
+
+```go
+import (
+  "gorm.io/driver/clickhouse"
+  "gorm.io/gorm"
+)
+
+func main() {
+  dsn := "tcp://localhost:9000?database=gorm&username=gorm&password=gorm&read_timeout=10&write_timeout=20"
+  db, err := gorm.Open(clickhouse.Open(dsn), &gorm.Config{})
+
+  // Auto Migrate
+  db.AutoMigrate(&User{})
+  // Set table options
+  db.Set("gorm:table_options", "ENGINE=Distributed(cluster, default, hits)").AutoMigrate(&User{})
+
+  // 插入
+  db.Create(&user)
+
+  // 查询
+  db.Find(&user, "id = ?", 10)
+
+  // 批量插入
+  var users = []User{user1, user2, user3}
+  db.Create(&users)
+  // ...
+}
+```
+
 ## 连接池
 
-GORM 使用 \[database/sql\](https://pkg.go.dev/database/sql) 来维护连接池
+GORM 使用 [database/sql](https://pkg.go.dev/database/sql) 维护连接池
 
 ```go
 sqlDB, err := db.DB()

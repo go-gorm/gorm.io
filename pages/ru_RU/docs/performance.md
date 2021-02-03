@@ -32,9 +32,13 @@ tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 ```
 
+{% note warn %}
+**NOTE** Also refer how to enable interpolateparams for MySQL to reduce roundtrip https://github.com/go-sql-driver/mysql#interpolateparams
+{% endnote %}
+
 ### [Конструктор SQL с подготовкой](sql_builder.html)
 
-Подготовленное заявление работает также с RAW SQL, например:
+Prepared Statement works with RAW SQL also, for example:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -44,17 +48,17 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-Вы также можете использовать GORM API для подготовки SQL с [DryRun Mode](session.html), и выполните его с подготовленным выражением позже, смотрите [режим сессии](session.html) для получения подробной информации
+You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
 
 ## Выбрать поля
 
-По умолчанию GORM выбирает все поля при запросе, вы можете использовать `Select` для указания полей
+By default GORM select all fields when querying, you can use `Select` to specify fields you want
 
 ```go
 db.Select("Name", "Age").Find(&Users{})
 ```
 
-Или определите меньший struct API для использования функции [умных полей](advanced_query.html)
+Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)
 
 ```go
 type User struct {
@@ -77,22 +81,22 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 
 ## [Итерация / Поиск в пакете](advanced_query.html)
 
-Запрашивать и обрабатывать записи с итерациями или партиями
+Query and process records with iteration or in batches
 
 ## [Подсказки индексирования](hints.html)
 
-[Индекс](indexes.html) используется для ускорения поиска данных и производительности SQL-запроса. `Подсказки индексирования` дают оптимизатору информацию о том, как выбрать индексы во время обработки запроса, что дает гибкость выбора более эффективного плана выполнения, чем оптимизатор
+[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
 
 ```go
 import "gorm.io/hints"
 
-DB.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
+db.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
 // SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
-DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
+db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 
-DB.Clauses(
+db.Clauses(
     hints.ForceIndex("idx_user_name", "idx_user_id").ForOrderBy(),
     hints.IgnoreIndex("idx_user_name").ForGroupBy(),
 ).Find(&User{})

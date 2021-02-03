@@ -36,7 +36,7 @@ GORM returns `ErrRecordNotFound` when failed to find data with `First`, `Last`, 
 ```go
 // Check if returns RecordNotFound error
 err := db.First(&user, 100).Error
-errors.Is(err, ErrRecordNotFound)
+errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
 ## Errors

@@ -52,20 +52,20 @@ func (User) TableName() string {
 {% endnote %}
 
 ```go
-func UserTable(user User) func (db *gorm.DB) *gorm.DB {
-  return func (db *gorm.DB) *gorm.DB {
+func UserTable(user User) func (tx *gorm.DB) *gorm.DB {
+  return func (tx *gorm.DB) *gorm.DB {
     if user.Admin {
-      return db.Table("admin_users")
+      return tx.Table("admin_users")
     }
 
-    return db.Table("users")
+    return tx.Table("users")
   }
 }
 
-DB.Scopes(UserTable(user)).Create(&user)
+db.Scopes(UserTable(user)).Create(&user)
 ```
 
-### 临时指定表明
+### 临时指定表名
 
 您可以使用 `Table` 方法临时指定表名，例如：
 

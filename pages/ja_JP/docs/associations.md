@@ -34,9 +34,20 @@ db.Create(&user)
 db.Save(&user)
 ```
 
+If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+
+```go
+db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
+// ...
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY SET address1=VALUES(address1);
+// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY SET email=VALUES(email);
+// ...
+```
+
 ## Skip Auto Create/Update
 
-作成/更新時の自動保存をスキップするには、`Select` または`Omit`を使用します。例：
+To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
 
 ```go
 user := User{
@@ -53,25 +64,49 @@ user := User{
   },
 }
 
-db.Create(&user)
-// BEGIN TRANSACTION;
-// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "addresses" (address1) VALUES ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('ZH') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1) ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('EN') ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO user_languages ("user_id","language_id") VALUES (111, 2) ON DUPLICATE KEY DO NOTHING;
-// COMMIT;
+db.Select("Name").Create(&user)
+// INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
-db.Save(&user)
+db.Omit("BillingAddress").Create(&user)
+// Skip create BillingAddress when creating a user
+
+db.Omit(clause.Associations).Create(&user)
+// Skip all associations when creating a user
+```
+
+{% note warn %}
+**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+
+```go
+db.Omit("Languages.*").Create(&user)
+```
+
+The following code will skip the creation of the association and its references
+
+```go
+db.Omit("Languages").Create(&user)
+```
+{% endnote %}
+
+## Select/Omit Association fields
+
+```go
+user := User{
+  Name:            "jinzhu",
+  BillingAddress:  Address{Address1: "Billing Address - Address 1", Address2: "addr2"},
+  ShippingAddress: Address{Address1: "Shipping Address - Address 1", Address2: "addr2"},
+}
+
+// Create user and his BillingAddress, ShippingAddress
+// When creating the BillingAddress only use its address1, address2 fields and omit others
+db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
+
+db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 ```
 
 ## Association Mode
 
-アソシエーションモードには、リレーションシップを処理するために一般的に使用されるヘルパーメソッドがいくつか含まれています。
+Association Mode contains some commonly used helper methods to handle relationships
 
 ```go
 // Start Association Mode
@@ -107,9 +142,9 @@ Append new associations for `many to many`, `has many`, replace current associat
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 
-db.Model(&user).Association("Languages").Append(Language{Name: "DE"})
+db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 
-db.Model(&user).Association("CreditCard").Append(CreditCard{Number: "411111111111"})
+db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
 ### Replace Associations
@@ -173,6 +208,24 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
+## <span id="delete_with_select">Delete with Select</span>
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+
+```go
+// delete user's account when deleting user
+db.Select("Account").Delete(&user)
+
+// delete user's Orders, CreditCards relations when deleting user
+db.Select("Orders", "CreditCards").Delete(&user)
+
+// delete user's has one/many/many2many relations when deleting user
+db.Select(clause.Associations).Delete(&user)
+
+// delete users's account when deleting users
+db.Select("Account").Delete(&users)
+```
+
 ## <span id="tags">Association Tags</span>
 
 | タグ               | 説明                                               |
@@ -182,6 +235,6 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 | polymorphic      | Specifies polymorphic type                       |
 | polymorphicValue | Specifies polymorphic value, default table name  |
 | many2many        | Specifies join table name                        |
-| jointForeignKey  | Specifies foreign key of jointable               |
+| joinForeignKey   | Specifies foreign key of jointable               |
 | joinReferences   | Specifies references' foreign key of jointable   |
 | constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete` |

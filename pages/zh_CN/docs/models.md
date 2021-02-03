@@ -5,7 +5,7 @@ layout: page
 
 ## 模型定义
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+模型是标准的 struct，由 Go 的基本数据类型、实现了 [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) 和 [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) 接口的自定义类型及其指针或别名组成
 
 例如：
 
@@ -47,7 +47,7 @@ type Model struct {
 
 ## 高级选项
 
-### 字段级权限控制
+### <span id="field_permission">字段级权限控制</span>
 
 可导出的字段在使用 GORM 进行 CRUD 时拥有全部的权限，此外，GORM 允许您用标签控制字段级别的权限。这样您就可以让一个字段的权限是只读、只写、只创建、只更新或者被忽略
 
@@ -57,22 +57,22 @@ type Model struct {
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // 允许读和创建
-  Name string `gorm:"<-:update"` // 允许读和更新
-  Name string `gorm:"<-"`        // 允许读和写（创建和更新）
-  Name string `gorm:"<-:false"`  // 允许读，禁止写
-  Name string `gorm:"->"`        // 只读（除非有自定义配置，否则禁止写）
-  Name string `gorm:"->;<-:create"` // 允许读和写
-  Name string `gorm:"->:false;<-:create"` // 仅创建（禁止从 db 读）
-  Name string `gorm:"-"`  // 读写操作均会忽略该字段
+  Name string `gorm:"<-:create"` // allow read and create
+  Name string `gorm:"<-:update"` // allow read and update
+  Name string `gorm:"<-"`        // allow read and write (create and update)
+  Name string `gorm:"<-:false"`  // allow read, disable write permission
+  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
+  Name string `gorm:"->;<-:create"` // allow read and create
+  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
+  Name string `gorm:"-"`  // ignore this field when write and read with struct
 }
 ```
 
 ### <name id="time_tracking">创建/更新时间追踪（纳秒、毫秒、秒、Time）</span>
 
-GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果您定义了他们，GORM 在创建/更新时会自动填充 [当前时间](gorm_config.html#now_func) 至这些字段
+GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果您定义了这种字段，GORM 在创建、更新时会自动填充 [当前时间](gorm_config.html#now_func)
 
-要使用不同名称的字段，您可以配置 `autoCreateTim`、`autoUpdateTim` 标签
+要使用不同名称的字段，您可以配置 `autoCreateTime`、`autoUpdateTime` 标签
 
 如果您想要保存 UNIX（毫/纳）秒时间戳，而不是 time，您只需简单地将 `time.Time` 修改为 `int` 即可
 
@@ -147,30 +147,32 @@ type Blog struct {
 
 ### <span id="tags">字段标签</span>
 
-声明 model 时，tag 是可选的，GORM 支持以下 tag：tag 名大小写不敏感，但建议使用 `camelCase` 风格
+声明 model 时，tag 是可选的，GORM 支持以下 tag： tag 名大小写不敏感，但建议使用 `camelCase` 风格
 
-| 标签名            | 说明                                                                                                                                                                                                                                         |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| column         | 指定 db 列名                                                                                                                                                                                                                                   |
-| type           | 列数据类型，推荐使用兼容性好的通用类型，例如：所有数据库都支持 bool、int、uint、float、string、time、bytes 并且可以和其他标签一起使用，例如：`not null`、`size`, `autoIncrement`... 像 `varbinary(8)` 这样指定数据库数据类型也是支持的。在使用指定数据库数据类型时，它需要是完整的数据库数据类型，如：`MEDIUMINT UNSINED not NULL AUTO_INSTREMENT` |
-| size           | 指定列大小，例如：`size:256`                                                                                                                                                                                                                        |
-| primaryKey     | 指定列为主键                                                                                                                                                                                                                                     |
-| unique         | 指定列为唯一                                                                                                                                                                                                                                     |
-| default        | 指定列的默认值                                                                                                                                                                                                                                    |
-| precision      | 指定列的精度                                                                                                                                                                                                                                     |
-| scale          | 指定列大小                                                                                                                                                                                                                                      |
-| not null       | 指定列为 NOT NULL                                                                                                                                                                                                                              |
-| autoIncrement  | 指定列为自动增长                                                                                                                                                                                                                                   |
-| embedded       | 嵌套字段                                                                                                                                                                                                                                       |
-| embeddedPrefix | 嵌入字段的列名前缀                                                                                                                                                                                                                                  |
-| autoCreateTime | 创建时追踪当前时间，对于 `int` 字段，它会追踪时间戳秒数，您可以使用 `nano`/`milli` 来追踪纳秒、毫秒时间戳，例如：`autoCreateTime:nano`                                                                                                                                                  |
-| autoUpdateTime | 创建/更新时追踪当前时间，对于 `int` 字段，它会追踪时间戳秒数，您可以使用 `nano`/`milli` 来追踪纳秒、毫秒时间戳，例如：`autoUpdateTime:milli`                                                                                                                                              |
-| index          | 根据参数创建索引，多个字段使用相同的名称则创建复合索引，查看 [索引](indexes.html) 获取详情                                                                                                                                                                                     |
-| uniqueIndex    | 与 `index` 相同，但创建的是唯一索引                                                                                                                                                                                                                     |
-| check          | 创建检查约束，例如 `check:age > 13`，查看 [约束](constraints.html) 获取详情                                                                                                                                                                               |
-| <-             | 设置字段写入的权限， `<-:create` 只创建、`<-:update` 只更新、`<-:false` 无写入权限、`<-` 创建和更新权限                                                                                                                                                       |
-| ->             | 设置字段读的权限，`->:false` 无读权限                                                                                                                                                                                                                |
-| -              | 忽略该字段，`-` 无读写权限                                                                                                                                                                                                                            |
+| 标签名                    | 说明                                                                                                                                                                                                                                          |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| column                 | 指定 db 列名                                                                                                                                                                                                                                    |
+| type                   | 列数据类型，推荐使用兼容性好的通用类型，例如：所有数据库都支持 bool、int、uint、float、string、time、bytes 并且可以和其他标签一起使用，例如：`not null`、`size`, `autoIncrement`... 像 `varbinary(8)` 这样指定数据库数据类型也是支持的。在使用指定数据库数据类型时，它需要是完整的数据库数据类型，如：`MEDIUMINT UNSIGNED not NULL AUTO_INSTREMENT` |
+| size                   | 指定列大小，例如：`size:256`                                                                                                                                                                                                                         |
+| primaryKey             | 指定列为主键                                                                                                                                                                                                                                      |
+| unique                 | 指定列为唯一                                                                                                                                                                                                                                      |
+| default                | 指定列的默认值                                                                                                                                                                                                                                     |
+| precision              | 指定列的精度                                                                                                                                                                                                                                      |
+| scale                  | 指定列大小                                                                                                                                                                                                                                       |
+| not null               | 指定列为 NOT NULL                                                                                                                                                                                                                               |
+| autoIncrement          | 指定列为自动增长                                                                                                                                                                                                                                    |
+| autoIncrementIncrement | 自动步长，控制连续记录之间的间隔                                                                                                                                                                                                                            |
+| embedded               | 嵌套字段                                                                                                                                                                                                                                        |
+| embeddedPrefix         | 嵌入字段的列名前缀                                                                                                                                                                                                                                   |
+| autoCreateTime         | 创建时追踪当前时间，对于 `int` 字段，它会追踪秒级时间戳，您可以使用 `nano`/`milli` 来追踪纳秒、毫秒时间戳，例如：`autoCreateTime:nano`                                                                                                                                                   |
+| autoUpdateTime         | 创建/更新时追踪当前时间，对于 `int` 字段，它会追踪秒级时间戳，您可以使用 `nano`/`milli` 来追踪纳秒、毫秒时间戳，例如：`autoUpdateTime:milli`                                                                                                                                               |
+| index                  | 根据参数创建索引，多个字段使用相同的名称则创建复合索引，查看 [索引](indexes.html) 获取详情                                                                                                                                                                                      |
+| uniqueIndex            | 与 `index` 相同，但创建的是唯一索引                                                                                                                                                                                                                      |
+| check                  | 创建检查约束，例如 `check:age > 13`，查看 [约束](constraints.html) 获取详情                                                                                                                                                                                |
+| <-                     | 设置字段写入的权限， `<-:create` 只创建、`<-:update` 只更新、`<-:false` 无写入权限、`<-` 创建和更新权限                                                                                                                                                        |
+| ->                     | 设置字段读的权限，`->:false` 无读权限                                                                                                                                                                                                                 |
+| -                      | 忽略该字段，`-` 无读写权限                                                                                                                                                                                                                             |
+| comment                | 迁移时为字段添加注释                                                                                                                                                                                                                                  |
 
 ### 关联标签
 

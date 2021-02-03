@@ -1,15 +1,15 @@
 ---
-title: Change Log
+title: Journal des changements de version
 layout: page
 ---
 
 ## v2.0 - 2020.08
 
-GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+GORM 2.0 a été réécrit de zéro, introduisant des changements majeurs de l'API et de nombreuses améliorations
 
-* Performance Improvements
-* Modularity
-* Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
+* Amélioration des performances
+* Modularité
+* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
 * Nested Transaction/SavePoint/RollbackTo SavePoint supports
 * Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
 * Full self-reference relationships supports, Join Table improvements, Association Mode for batch data
@@ -20,20 +20,20 @@ GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change a
 * New Migrator: allows to create database foreign keys for relationships, constraints/checker support, enhanced index support
 * New Logger: context support, improved extensibility
 * Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
-* Better customized data type support (e.g: JSON)
+* Meilleure prise en charge de type de données personnalisé (par ex. JSON)
 
-[GORM 2.0 Release Note](v2_release_note.html)
+[Notes de version de GORM 2.0](v2_release_note.html)
 
 ## v1.0 - 2016.04
 
 [GORM V1 Docs](https://v1.gorm.io)
 
-Breaking Changes:
+Modifications importantes :
 
-* `gorm.Open` returns `*gorm.DB` instead of `gorm.DB`
-* Updating will only update changed fields
-* Soft Delete's will only check `deleted_at IS NULL`
+* `gorm.Open` retourne `*gorm.DB` au lieu de `gorm.DB`
+* La mise à jour ne met à jour que les champs modifiés
+* Le *Soft Delete* vérifie seulement `deleted_at IS NULL`
 * New ToDBName logic Common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` was converted to lowercase, so `HTTP`'s db name is `http`, but not `h_t_t_p`, but for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it to `sku`
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
-* `mssql` dialect has been renamed to `github.com/jinzhu/gorm/dialects/mssql`
-* `Hstore` has been moved to package `github.com/jinzhu/gorm/dialects/postgres`
+* L'erreur `RecordNotFound` a été renommé en `ErrRecordNotFound`
+* Le dialecte `mssql` a été renommé en `github.com/jinzhu/gorm/dialects/mssql`
+* `Hstore` a été déplacé vers le paquet `github.com/jinzhu/gorm/dialects/postgres`

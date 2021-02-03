@@ -150,9 +150,8 @@ func (u *User) BeforeCreate(tx *gorm.DB) error {
   tx.Statement.Select("Name", "Age")
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
-  // 在没有 `WithConditions` 参数的清空下，tx 是一个新建会话模式
+  // tx 是带有 `NewDB` 选项的新会话模式 
   // 基于 tx 的操作会在同一个事务中，但不会带上任何当前的条件
-  var role Role
   err := tx.First(&role, "name = ?", user.Role).Error
   // SELECT * FROM roles WHERE name = "admin"
   // ...

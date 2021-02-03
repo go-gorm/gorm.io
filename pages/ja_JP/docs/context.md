@@ -23,11 +23,23 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
+## Context in Hooks/Callbacks
+
+You could access the `Context` object from current `Statement`, for example:
+
+```go
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+  ctx := tx.Statement.Context
+  // ...
+  return
+}
+```
+
 ## Chi Middleware Example
 
-継続セッションモードはAPIリクエストの処理に役立ちます。たとえば、ミドルウェア内のタイムアウトContextを使って、`*gorm.DB`を設定できます。 それからは、すべてのリクエストを処理するときにその`* gorm.DB`を使用します
+Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
 
-Chi ミドルウェアの例を以下に示します。
+Following is a Chi middleware example:
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {
@@ -47,7 +59,7 @@ r.Get("/", func(w http.ResponseWriter, r *http.Request) {
   var users []User
   db.Find(&users)
 
-  // データベースの処理を複数書く
+  // lots of db operations
 })
 
 r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +68,7 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
   var user User
   db.First(&user)
 
-  // データベースの処理を複数書く
+  // lots of db operations
 })
 ```
 

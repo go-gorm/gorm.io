@@ -57,9 +57,16 @@ type User struct {
   CompanyID  uint
   Company    Company
   Role       Role
+  Orders     []Order
 }
 
 db.Preload(clause.Associations).Find(&users)
+```
+
+`clause.Associations` 不会预加载嵌套的关联，但你可以使用[嵌套预加载](#nested_preloading) 例如：
+
+```go
+db.Preload("Orders.OrderItems.Product").Preload(clause.Associations).Find(&users)
 ```
 
 ## 带条件的预加载
@@ -89,7 +96,7 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.amount DESC;
 ```
 
-## 嵌套预加载
+## <span id="nested_preloading">嵌套预加载</span>
 
 GORM 支持嵌套预加载，例如：
 

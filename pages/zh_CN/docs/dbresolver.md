@@ -23,9 +23,9 @@ import (
   "gorm.io/driver/mysql"
 )
 
-DB, err := gorm.Open(mysql.Open("db1_dsn"), &gorm.Config{})
+db, err := gorm.Open(mysql.Open("db1_dsn"), &gorm.Config{})
 
-DB.Use(dbresolver.Register(dbresolver.Config{
+db.Use(dbresolver.Register(dbresolver.Config{
   // `db2` 作为 sources，`db3`、`db4` 作为 replicas
   Sources:  []gorm.Dialector{mysql.Open("db2_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db3_dsn"), mysql.Open("db4_dsn")},
@@ -53,21 +53,21 @@ DBResolver 会根据工作表、struct 自动切换连接
 
 ```go
 // `User` Resolver 示例
-DB.Table("users").Rows() // replicas `db5`
-DB.Model(&User{}).Find(&AdvancedUser{}) // replicas `db5`
-DB.Exec("update users set name = ?", "jinzhu") // sources `db1`
-DB.Raw("select name from users").Row().Scan(&name) // replicas `db5`
-DB.Create(&user) // sources `db1`
-DB.Delete(&User{}, "name = ?", "jinzhu") // sources `db1`
-DB.Table("users").Update("name", "jinzhu") // sources `db1`
+db.Table("users").Rows() // replicas `db5`
+db.Model(&User{}).Find(&AdvancedUser{}) // replicas `db5`
+db.Exec("update users set name = ?", "jinzhu") // sources `db1`
+db.Raw("select name from users").Row().Scan(&name) // replicas `db5`
+db.Create(&user) // sources `db1`
+db.Delete(&User{}, "name = ?", "jinzhu") // sources `db1`
+db.Table("users").Update("name", "jinzhu") // sources `db1`
 
-// 全局 Resolver 示例
-DB.Find(&Pet{}) // replicas `db3`/`db4`
-DB.Save(&Pet{}) // sources `db2`
+// Global Resolver 示例
+db.Find(&Pet{}) // replicas `db3`/`db4`
+db.Save(&Pet{}) // sources `db2`
 
 // Orders Resolver 示例
-DB.Find(&Order{}) // replicas `db8`
-DB.Table("orders").Find(&Report{}) // replicas `db8`
+db.Find(&Order{}) // replicas `db8`
+db.Table("orders").Find(&Report{}) // replicas `db8`
 ```
 
 ## 读写分离
@@ -80,13 +80,13 @@ DBResolver 的读写分离目前是基于 [GORM callback](https://gorm.io/docs/w
 
 ```go
 // 使用 Write 模式：从 sources db `db1` 读取 user
-DB.Clauses(dbresolver.Write).First(&user)
+db.Clauses(dbresolver.Write).First(&user)
 
 // 指定 Resolver：从 `secondary` 的 replicas db `db8` 读取 user
-DB.Clauses(dbresolver.Use("secondary")).First(&user)
+db.Clauses(dbresolver.Use("secondary")).First(&user)
 
 // 指定 Resolver 和 Write 模式：从 `secondary` 的 sources db `db6` 或 `db7` 读取 user
-DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
+db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 
 ## 负载均衡
@@ -104,7 +104,7 @@ type Policy interface {
 ## 连接池
 
 ```go
-DB.Use(
+db.Use(
   dbresolver.Register(dbresolver.Config{ /* xxx */ }).
   SetConnMaxIdleTime(time.Hour).
   SetConnMaxLifetime(24 * time.Hour).

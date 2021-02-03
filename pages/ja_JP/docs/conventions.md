@@ -34,7 +34,7 @@ GORMは構造体名をテーブル名として`snake_cases`のように複数形
 
 ### TableName
 
-`Tableer` インターフェイスを実装することで、デフォルトのテーブル名を変更することができます。例：
+`Tabler` インターフェイスを実装することで、デフォルトのテーブル名を変更することができます。例：
 
 ```go
 type Tabler interface {
@@ -52,17 +52,17 @@ func (User) TableName() string {
 {% endnote %}
 
 ```go
-func UserTable(user User) func (db *gorm.DB) *gorm.DB {
-  return func (db *gorm.DB) *gorm.DB {
+func UserTable(user User) func (tx *gorm.DB) *gorm.DB {
+  return func (tx *gorm.DB) *gorm.DB {
     if user.Admin {
-      return db.Table("admin_users")
+      return tx.Table("admin_users")
     }
 
-    return db.Table("users")
+    return tx.Table("users")
   }
 }
 
-DB.Scopes(UserTable(user)).Create(&user)
+db.Scopes(UserTable(user)).Create(&user)
 ```
 
 ### Temporarily specify a name

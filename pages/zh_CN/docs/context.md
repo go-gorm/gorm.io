@@ -23,6 +23,18 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
+## 在 Hooks/Callbacks 中使用 Context
+
+您可以从当前 `Statement`中访问 `Context` 对象，例如︰
+
+```go
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+  ctx := tx.Statement.Context
+  // ...
+  return
+}
+```
+
 ## Chi 中间件示例
 
 在处理 API 请求时持续会话模式会比较有用。例如，您可以在中间件中为 `*gorm.DB` 设置超时 Context，然后使用 `*gorm.DB` 处理所有请求
@@ -47,7 +59,7 @@ r.Get("/", func(w http.ResponseWriter, r *http.Request) {
   var users []User
   db.Find(&users)
 
-  // 以下省略 32 个 DB 操作...
+  // 你的其他 DB 操作...
 })
 
 r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -56,7 +68,7 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
   var user User
   db.First(&user)
 
-  // 以下省略 32 个 DB 操作...
+  // 你的其他 DB 操作...
 })
 ```
 

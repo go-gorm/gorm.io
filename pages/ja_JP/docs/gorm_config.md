@@ -7,14 +7,15 @@ GORMは初期化時にConfigを使用できます
 
 ```go
 type Config struct {
-  SkipDefaultTransaction bool
-  NamingStrategy         schema.Namer
-  Logger                 logger.Interface
-  NowFunc                func() time.Time
-  DryRun                 bool
-  PrepareStmt            bool
-  AllowGlobalUpdate      bool
-  DisableAutomaticPing   bool
+  SkipDefaultTransaction   bool
+  NamingStrategy           schema.Namer
+  Logger                   logger.Interface
+  NowFunc                  func() time.Time
+  DryRun                   bool
+  PrepareStmt              bool
+  DisableNestedTransaction bool
+  AllowGlobalUpdate        bool
+  DisableAutomaticPing     bool
   DisableForeignKeyConstraintWhenMigrating bool
 }
 ```
@@ -49,8 +50,9 @@ type Namer interface {
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   NamingStrategy: schema.NamingStrategy{
-    TablePrefix: "t_",   //  テーブル名のプレフィックスを指定すると、`User` のテーブルは `t_users` となります。
-    SingularTable: true, // このオプションを有効にすると、`User` のテーブルは `user` になります。
+    TablePrefix: "t_",   // table name prefix, table for `User` would be `t_users`
+    SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
+    NameReplacer: strings.NewReplacer("CID", "Cid"), // use name replacer to change struct/field name before convert it to db name
   },
 })
 ```
@@ -90,6 +92,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: false,
 })
 ```
+
+## DisableNestedTransaction
+
+When using `Transaction` method inside a db transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support, you could disable it by using the `DisableNestedTransaction` option, refer [Session](session.html) for details
+
 
 ## AllowGlobalUpdate
 

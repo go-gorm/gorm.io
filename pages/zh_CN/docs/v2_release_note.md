@@ -9,15 +9,15 @@ GORM 2.0 完全从零开始，引入了一些不兼容的 API 变更和许多改
 
 * 性能改进
 * 代码模块化
-* Context，批量插入，预编译模式，DryRun 模式，Join 预加载，Find To Map，Create From Map，FindInBatches
+* Context，批量插入，预编译模式，DryRun 模式，Join 预加载，Find To Map，Create From Map，FindInBatches 支持
 * 支持嵌套事务，SavePoint，Rollback To SavePoint
 * SQL 生成器，命名参数，分组条件，Upsert，锁， 支持 Optimizer/Index/Comment Hint，子查询改进，使用SQL表达式、Context Valuer 进行 CRUD
-* 支持完整的自引用，改进 Join Table，批量数据的关联模式
-* 允许多个字段用于追踪 create、update 时间 ，支持 UNIX （毫/纳）秒
+* 完整的自引用支持，连接表改进，批量数据的关联模式
+* 允许跟踪创建/更新时间的多个字段，UNIX (毫秒/纳秒) 支持
 * 支持字段权限：只读、只写、只创建、只更新、忽略
 * 新的插件系统，为多个数据库提供了官方插件，读写分离，prometheus 集成...
 * 全新的 Hook API：带插件的统一接口
-* 全新的 Migrator：允许为关系创建数据库外键，更智能的 AutoMigrate，支持约束、检查器，增强索引支持
+* 新迁移器：允许为关系创建数据库外键，更智能的自动迁移，支持约束以及检查器，支持增强索引
 * 全新的 Logger：支持 context、改进可扩展性
 * 统一命名策略：表名、字段名、连接表名、外键、检查器、索引名称规则
 * 更好的自定义类型支持（例如： JSON）
@@ -61,38 +61,45 @@ func init() {
 
 #### Context 支持
 
-* 通过 `WithContext` 方法提供 `context.Context` 支持
+* 数据库操作通过 `WiContext` 方法支持 `Context`
 * Logger 也支持用于追踪的 context
 
 ```go
-DB.WithContext(ctx).Find(&users)
+db.WithContext(ctx).Find(&users)
 ```
 
 #### 批量插入
 
-* 将切片数据传递给 `Create` 方法，GORM 将生成单个 SQL 语句来插入所有数据，并回填主键的值。
-* 如果这些数据包含关联，将使用另一个 SQL 语句 upsert 所有关联
-* 批量插入的数据依然会调用它的 `钩子` 方法（Before/After Create/Save）
+要有效地插入大量记录，可以将一个 slice 传递给 `Create` 方法。 将切片数据传递给 Create 方法，GORM 将生成一个单一的 SQL 语句来插入所有数据，并回填主键的值，钩子方法也会被调用。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
-DB.Create(&users)
+db.Create(&users)
 
 for _, user := range users {
   user.ID // 1,2,3
 }
 ```
 
+使用 `CreateInBatches` 创建时，你还可以指定创建的数量，例如：
+
+```go
+var 用户 = []User{name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
+
+// 数量为 100
+db.CreateInBatches(用户, 100)
+```
+
 #### 预编译模式
 
-预编译模式会预编译 SQL 执行语句，以加速后续执行速度
+预编译模式会预编译 Sql 执行语句，以加速后续执行速度
 
 ```go
 // 全局模式，所有的操作都会创建并缓存预编译语句，以加速后续执行速度
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{PrepareStmt: true})
 
 // 会话模式，当前会话中的操作会创建并缓存预编译语句
-tx := DB.Session(&Session{PrepareStmt: true})
+tx := db.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
@@ -100,10 +107,10 @@ tx.Model(&user).Update("Age", 18)
 
 #### DryRun 模式
 
-DarRun 模式会生成但不执行 SQL，可以用于检查、测试生成的 SQL
+DryRun 模式会生成但不执行 SQL，可以用于检查、测试生成的 SQL
 
 ```go
-stmt := DB.Session(&Session{DryRun: true}).Find(&user, 1).Statement
+stmt := db.Session(&Session{DryRun: true}).Find(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 // PostgreSQL
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
@@ -114,7 +121,7 @@ stmt.Vars         //=> []interface{}{1}
 使用 INNER JOIN 预加载关联，并处理 null 数据避免 scan 失败
 
 ```go
-DB.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2})
+db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2})
 ```
 
 #### Find To Map
@@ -123,7 +130,7 @@ Scan 结果到 `map[string]interface{}` 或 `[]map[string]interface{}`
 
 ```go
 var result map[string]interface{}
-DB.Model(&User{}).First(&result, "id = ?", 1)
+db.Model(&User{}).First(&result, "id = ?", 1)
 ```
 
 #### Create From Map
@@ -131,22 +138,22 @@ DB.Model(&User{}).First(&result, "id = ?", 1)
 根据 `map[string]interface{}` 或 `[]map[string]interface{}` Create
 
 ```go
-DB.Model(&User{}).Create(map[string]interface{}{"Name": "jinzhu", "Age": 18})
+db.Model(&User{}).Create(map[string]interface{}{"Name": "jinzhu", "Age": 18})
 
 datas := []map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 19},
   {"name": "jinzhu_2", "Age": 20},
 }
 
-DB.Model(&User{}).Create(datas)
+db.Model(&User{}).Create(datas)
 ```
 
 #### FindInBatches
 
-批量查询并处理记录
+用于批量查询并处理记录
 
 ```go
-result := DB.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
+result := db.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   // 批量处理
   return nil
 })
@@ -155,7 +162,7 @@ result := DB.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, b
 #### 嵌套事务
 
 ```go
-DB.Transaction(func(tx *gorm.DB) error {
+db.Transaction(func(tx *gorm.DB) error {
   tx.Create(&user1)
 
   tx.Transaction(func(tx2 *gorm.DB) error {
@@ -175,7 +182,7 @@ DB.Transaction(func(tx *gorm.DB) error {
 #### SavePoint，RollbackTo
 
 ```go
-tx := DB.Begin()
+tx := db.Begin()
 tx.Create(&user1)
 
 tx.SavePoint("sp1")
@@ -190,19 +197,19 @@ tx.Commit() // commit user1
 GORM 支持使用 `sql.NamedArg`，`map[string]interface{}` 作为命名参数
 
 ```go
-DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
+db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
+db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
 // SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
 
-DB.Raw(
+db.Raw(
   "SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
   sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2"),
 ).Find(&user)
 // SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
 
-DB.Exec(
+db.Exec(
   "UPDATE users SET name1 = @name, name2 = @name2, name3 = @name",
   map[string]interface{}{"name": "jinzhu", "name2": "jinzhu2"},
 )
@@ -225,15 +232,15 @@ db.Where(
 
 ```go
 // Where 子查询
-db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 
 // From 子查询
-db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE age = 18
 
 // Update 子查询
-DB.Model(&user).Update(
-  "price", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"),
+db.Model(&user).Update(
+  "price", db.Model(&Company{}).Select("name").Where("companies.id = users.company_id"),
 )
 ```
 
@@ -244,16 +251,16 @@ DB.Model(&user).Update(
 ```go
 import "gorm.io/gorm/clause"
 
-DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&users)
+db.Clauses(clause.OnConflict{DoNothing: true}).Create(&users)
 
-DB.Clauses(clause.OnConflict{
+db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"name": "jinzhu", "age": 18}),
 }).Create(&users)
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE name="jinzhu", age=18; MySQL
 
-DB.Clauses(clause.OnConflict{
+db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
 }).Create(&users)
@@ -265,10 +272,10 @@ DB.Clauses(clause.OnConflict{
 #### Locking
 
 ```go
-DB.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
+db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SELECT * FROM `users` FOR UPDATE
 
-DB.Clauses(clause.Locking{
+db.Clauses(clause.Locking{
   Strength: "SHARE",
   Table: clause.Table{Name: clause.CurrentTable},
 }).Find(&users)
@@ -280,16 +287,16 @@ DB.Clauses(clause.Locking{
 ```go
 import "gorm.io/hints"
 
-// Optimizer Hint
-DB.Clauses(hints.New("hint")).Find(&User{})
+// Optimizer Hints
+db.Clauses(hints.New("hint")).Find(&User{})
 // SELECT * /*+ hint */ FROM `users`
 
-// Index Hint
-DB.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
+// Index Hints
+db.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
 // SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
-// Comment Hint
-DB.Clauses(hints.Comment("select", "master")).Find(&User{})
+// Comment Hints
+db.Clauses(hints.Comment("select", "master")).Find(&User{})
 // SELECT /*master*/ * FROM `users`;
 ```
 
@@ -313,13 +320,13 @@ func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
   }
 }
 
-DB.Create(&User{
+db.Create(&User{
   Name:     "jinzhu",
   Location: Location{X: 100, Y: 100},
 })
 // INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
 
-DB.Model(&User{ID: 1}).Updates(User{
+db.Model(&User{ID: 1}).Updates(User{
   Name:  "jinzhu",
   Point: Point{X: 100, Y: 100},
 })
@@ -369,7 +376,7 @@ GORM 提供了 `Prometheus` 插件来收集 `DBStats` 和用户自定义指标
 
 #### 命名策略
 
-GORM 允许用户通过覆盖默认的 `命名策略` 更改默认的命名约定，命名策略被用于构建： `TableName`、`ColumnName`、`JoinTableName`、`RelationshipFKName`、`CheckerName`、`IndexName`。查看 [GORM 配置](gorm_config.html) 获取详情
+GORM 允许用户通过覆盖默认的`命名策略`更改默认的命名约定，命名策略被用于构建： `TableName`、`ColumnName`、`JoinTableName`、`RelationshipFKName`、`CheckerName`、`IndexName`。查看 [GORM 配置](gorm_config.html) 获取详情
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -409,15 +416,15 @@ type User struct {
   Attributes datatypes.JSON
 }
 
-DB.Create(&User{
+db.Create(&User{
   Name:       "jinzhu",
   Attributes: datatypes.JSON([]byte(`{"name": "jinzhu", "age": 18, "tags": ["tag1", "tag2"], "orgs": {"orga": "orga"}}`)),
 }
 
 // 查询 attributes 中有 role 字段的 user
-DB.First(&user, datatypes.JSONQuery("attributes").HasKey("role"))
+db.First(&user, datatypes.JSONQuery("attributes").HasKey("role"))
 // 查询 attributes 中有 orgs->orga 字段的 user
-DB.First(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
+db.First(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 ```
 
 #### Smart Select
@@ -430,7 +437,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // 假设后面还有几百个字段
+  // 假设后面还有几百个字段...
 }
 
 type APIUser struct {
@@ -438,7 +445,7 @@ type APIUser struct {
   Name string
 }
 
-// 查询时会自动 select `id`, `name`
+// 查询时会自动选择 `id`, `name` 字段
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
@@ -451,7 +458,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // 查询所有用户的所有角色
 db.Model(&users).Association("Role").Find(&roles)
 
-// 将 userA 移出所有的 Team
+// 将 userA 从所有的 Team 中移除
 db.Model(&users).Association("Team").Delete(&userA)
 
 // 获取所有 Team 成员的不重复计数
@@ -463,6 +470,24 @@ var users = []User{user1, user2, user3}
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
 // 将 user1 的 Team 重置为 userA，将 user2的 team 重置为 userB，将 user3 的 team 重置为 userA、userB 和 userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
+```
+
+#### 删除关联记录
+
+你可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
+
+```go
+// 删除 user 时，也删除 user 的 account
+db.Select("Account").Delete(&user)
+
+// 删除 user 时，也删除 user 的 Orders、CreditCards 记录
+db.Select("Orders", "CreditCards").Delete(&user)
+
+// 删除 user 时，也删除用户所有 has one/many、many2many 记录
+db.Select(clause.Associations).Delete(&user)
+
+// 删除 users 时，也删除 user 们的 account
+db.Select("Account").Delete(&users)
 ```
 
 ## 破坏性变更
@@ -493,7 +518,7 @@ func UserTable(u *User) func(*gorm.DB) *gorm.DB {
   }
 }
 
-DB.Scopes(UserTable(&user)).Create(&user)
+db.Scopes(UserTable(&user)).Create(&user)
 ```
 
 #### 方法链和协程安全
@@ -526,7 +551,7 @@ for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` 会应用至该查询
 }
 
-tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
+tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
 // 调用 `New Session Method` 后是安全的
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user) // `name = 'jinzhu'` 会应用至该查询
@@ -557,7 +582,7 @@ type User struct {
 ```
 
 {% note warn %}
-**注意：** `gorm.Model` 使用了 `gorm.DeletedAt`，如果你已经嵌入了它，则不需要做什么修改
+**注意：** `gorm.Model ` 使用了 `gorm.DeletedAt`，如果你已经嵌入了它，则不需要做什么修改
 {% endnote %}
 
 #### BlockGlobalUpdate
@@ -565,11 +590,11 @@ type User struct {
 GORM V2 默认启用了 `BlockGlobalUpdate` 模式。想要触发全局 update/delete，你必须使用一些条件、原生 SQL 或者启用 `AllowGlobalUpdate` 模式，例如：
 
 ```go
-DB.Where("1 = 1").Delete(&User{})
+db.Where("1 = 1").Delete(&User{})
 
-DB.Raw("delete from users")
+db.Raw("delete from users")
 
-DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
+db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 ```
 
 #### ErrRecordNotFound
@@ -577,7 +602,7 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 GORM V2 只有在你使用 `First`、`Last`、`Take` 这些预期会返回结果的方法查询记录时，才会返回 `ErrRecordNotFound`，我们还移除了 `RecordNotFound` 方法，请使用 `errors.Is` 来检查错误，例如：
 
 ```go
-err := DB.First(&user).Error
+err := db.First(&user).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
@@ -605,31 +630,31 @@ func (user *User) BeforeCreate(tx *gorm.DB) error {
 
 ```go
 func (user *User) BeforeUpdate(tx *gorm.DB) error {
-  if tx.Statement.Changed("Name", "Admin") { // 如果 Name 或 Admin 有更改
+  if tx.Statement.Changed("Name", "Admin") { // if Name or Admin changed
     tx.Statement.SetColumn("Age", 18)
   }
 
-  if tx.Statement.Changed() { // 如果任意字段有更改
+  if tx.Statement.Changed() { // 如果任何字段有变动
     tx.Statement.SetColumn("Age", 18)
   }
   return nil
 }
 
-DB.Model(&user).Update("Name", "Jinzhu") // 更新 `Name` 字段值为 `Jinzhu`
-DB.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // 更新 `Name` 字段值为 `Jinzhu`，`Admin` 字段值为 false
-DB.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // 使用 struct 作为参数时，仅更新非零值字段，所以这里仅更新 `Name` 字段值为 `Jinzhu`
+db.Model(&user).Update("Name", "Jinzhu") // update field `Name` to `Jinzhu`
+db.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // update field `Name` to `Jinzhu`, `Admin` to false
+db.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // Update none zero fields when using struct as argument, will only update `Name` to `Jinzhu`
 
-DB.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // 更新选中的字段 `Name`, `Admin`，其中 `Admin` 字段会被更新为零值（false）
-DB.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // 更新选择的且在 map 中的字段，仅更新 `Name` 字段值为 `Jinzhu`
+db.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // update selected fields `Name`, `Admin`，`Admin` will be updated to zero value (false)
+db.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // update selected fields exists in the map, will only update field `Name` to `Jinzhu`
 
-// 注意: `Changed` 只检查 `Update` / `Updates` 的值是否等于 `Model` 字段的值，不相等则返回 true，并保存该字段的值
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"}) // Changed("Name") => true
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"}) // Changed("Name") => false, `Name` 没有更改
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{"name": "jinzhu2", "admin": false}) // Changed("Name") => false, `Name` 字段没有被选择
+// Attention: `Changed` will only check the field value of `Update` / `Updates` equals `Model`'s field value, it returns true if not equal and the field will be saved
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"}) // Changed("Name") => true
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"}) // Changed("Name") => false, `Name` not changed
+db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{"name": "jinzhu2", "admin": false}) // Changed("Name") => false, `Name` not selected to update
 
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"}) // Changed("Name") => true
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed("Name") => false, `Name` 没有更改
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` 字段没有被选择
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"}) // Changed("Name") => true
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed("Name") => false, `Name` not changed
+db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` not selected to update
 ```
 
 #### 插件
@@ -641,7 +666,7 @@ DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 使用 struct 更新时，GORM V2 允许使用 `Select` 来选择要更新的零值字段，例如：
 
 ```go
-DB.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
+db.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
 ```
 
 #### 关联
@@ -649,10 +674,10 @@ DB.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age:
 GORM V1允许使用一些设置来跳过 create/update 关联。在 V2 中，您可以使用 `Select` 来完成这项工作，例如：
 
 ```go
-DB.Omit(clause.Associations).Create(&user)
-DB.Omit(clause.Associations).Save(&user)
+db.Omit(clause.Associations).Create(&user)
+db.Omit(clause.Associations).Save(&user)
 
-DB.Select("Company").Save(&user)
+db.Select("Company").Save(&user)
 ```
 
 此外，GORM V2 不再允许通过 `Set("gorm:auto_preload", true)` 进行预加载，你可以将 `Preload` 和 `clause.Associations` 配合使用，例如：
@@ -663,6 +688,33 @@ db.Preload(clause.Associations).Find(&users)
 ```
 
 此外，还可以查看字段权限，它可以用来全局跳过 creating/updating 关联
+
+在创建、更新记录时，GORM V2 将使用 upsert 来保存关联记录。不会再保存完整的关联数据，避免受未完成数据的影响，以保护您的数据，例如：
+
+```go
+user := User{
+  Name:            "jinzhu",
+  BillingAddress:  Address{Address1: "Billing Address - Address 1"},
+  ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
+  Emails:          []Email{
+    {Email: "jinzhu@example.com"},
+    {Email: "jinzhu-2@example.com"},
+  },
+  Languages:       []Language{
+    {Name: "ZH"},
+    {Name: "EN"},
+  },
+}
+
+db.Create(&user)
+// BEGIN TRANSACTION;
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "languages" ("name") VALUES ('ZH'), ('EN') ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1), (111, 2) ON DUPLICATE KEY DO NOTHING;
+// COMMIT;
+  ```
 
 #### Join Table
 
@@ -692,22 +744,33 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
 }
 
 // PersonAddress 必须定义好所需的外键，否则会报错
-err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
+err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
+```
+
+然后，您可以使用标准的 GORM 方法来操作连接表的数据，例如：
+
+```go
+var results []PersonAddress
+db.Where("person_id = ?", person.ID).Find(&results)
+
+db.Where("address_id = ?", address.ID).Delete(&PersonAddress{})
+
+db.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
 ```
 
 #### Count
 
 Count 仅支持 `*int64` 作为参数
 
-#### Transactions
+#### 事务
 
-some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
+移除了 `RollbackUnlessCommitted` 之类的事务方法，建议使用 `Transaction` 方法包裹事务
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
-  // do some database operations in the transaction (use 'tx' from this point, not 'db')
+  // 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // return any error will rollback
+    // 返回任何错误都会回滚事务
     return err
   }
 
@@ -715,12 +778,12 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  // return nil will commit the whole transaction
+  // 返回 nil 提交事务
   return nil
 })
 ```
 
-Checkout [Transactions](transactions.html) for details
+查看 [事务](transactions.html) 获取详情
 
 #### Migrator
 
@@ -730,7 +793,7 @@ Checkout [Transactions](transactions.html) for details
 * 通过 `check` 标签支持检查器
 * 增强 `index` 标签的设置
 
-Checkout [Migration](migration.html) for details
+查看 [Migration](migration.html) 获取详情
 
 ```go
 type UserIndex struct {

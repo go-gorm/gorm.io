@@ -8,19 +8,22 @@ GORM 提供了 `Session` 方法，这是一个 [`New Session Method`](method_cha
 ```go
 // Session 配置
 type Session struct {
-  DryRun            bool
-  PrepareStmt       bool
-  WithConditions    bool
-  AllowGlobalUpdate bool
-  Context           context.Context
-  Logger            logger.Interface
-  NowFunc           func() time.Time
+  DryRun                 bool
+  PrepareStmt            bool
+  NewDB                  bool
+  SkipHooks              bool
+  SkipDefaultTransaction bool
+  AllowGlobalUpdate      bool
+  FullSaveAssociations   bool
+  Context                context.Context
+  Logger                 logger.Interface
+  NowFunc                func() time.Time
 }
 ```
 
 ## DryRun
 
-DarRun 模式会生成但不执行 `SQL`，可以用于准备或测试生成的 SQL，详情请参考 Session：
+生成 `SQL` 但不执行。 它可以用于准备或测试生成的 SQL，例如：
 
 ```go
 // 新建会话模式
@@ -38,12 +41,20 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
+你可以使用下面的代码生成最终的 SQL：
+
+```go
+// 注意：SQL 并不总是能安全地执行，GORM 仅将其用于日志，它可能导致会 SQL 注入
+db.Dialector.Explain(stmt.SQL.String(), stmt.Vars...)
+// SELECT * FROM `users` WHERE `id` = 1
+```
+
 ## 预编译
 
 `PreparedStmt` 在执行任何 SQL 时都会创建一个 prepared statement 并将其缓存，以提高后续的效率，例如：
 
 ```go
-// 全局模式，所有 DB 操作都会 创建并缓存预编译语句
+// 全局模式，所有 DB 操作都会创建并缓存预编译语句
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   PrepareStmt: true,
 })
@@ -73,34 +84,75 @@ for sql, stmt := range stmtManger.Stmts {
 }
 ```
 
-## WithConditions
+## NewDB
 
-`WithCondition` 会共享 `*gorm.DB` 的条件，例如：
+通过 `NewDB` 选项创建一个不带之前条件的新 DB，例如：
 
 ```go
-tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
+tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{NewDB: true})
 
 tx.First(&user)
-// SELECT * FROM users WHERE name = "jinzhu" ORDER BY id
+// SELECT * FROM users ORDER BY id LIMIT 1
 
 tx.First(&user, "id = ?", 10)
-// SELECT * FROM users WHERE name = "jinzhu" AND id = 10 ORDER BY id
+// SELECT * FROM users WHERE id = 10 ORDER BY id
 
-// 不共享 `WithConditions`
-tx2 := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: false})
+// 不带 `NewDB` 选项
+tx2 := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
 tx2.First(&user)
-// SELECT * FROM users ORDER BY id
+// SELECT * FROM users WHERE name = "jinzhu" ORDER BY id
+```
+
+## 跳过钩子
+
+如果您想跳过 `钩子` 方法，您可以使用 `SkipHooks` 会话模式，例如：
+
+```go
+DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Create(&users)
+
+DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Find(&user)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Delete(&user)
+
+DB.Session(&gorm.Session{SkipHooks: true}).Model(User{}).Where("age > ?", 18).Updates(&user)
+```
+
+## 禁用嵌套事务
+
+在一个 DB 事务中使用 `Transaction` 方法，GORM 会使用 `SavePoint(savedPointName)`，`RollbackTo(savedPointName)` 为你提供嵌套事务支持。 你可以通过 `DisableNestedTransaction` 选项关闭它，例如：
+
+```go
+db.Session(&gorm.Session{
+  DisableNestedTransaction: true,
+}).CreateInBatches(&users, 100)
 ```
 
 ## AllowGlobalUpdate
 
-默认情况下，GORM 不允许全局 update/delete，它会返回 `ErrMissingWhereClause` 错误，你可以将该选项置为 true 以允许全局操作，例如：
+GORM 默认不允许进行全局 update/delete，该操作会返回 `ErrMissingWhereClause` 错误。 您可以通过将一个选项设置为 true 来启用它，例如：
 
 ```go
-DB.Session(&gorm.Session{
+db.Session(&gorm.Session{
   AllowGlobalUpdate: true,
 }).Model(&User{}).Update("name", "jinzhu")
 // UPDATE users SET `name` = "jinzhu"
+```
+
+## FullSaveAssociations
+
+在创建、更新记录时，GORM 会通过 [Upsert](create.html#upsert) 自动保存关联及其引用记录。 如果您想要更新关联的数据，您应该使用 ` FullSaveAssociations ` 模式，例如：
+
+```go
+db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
+// ...
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY SET address1=VALUES(address1);
+// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY SET email=VALUES(email);
+// ...
 ```
 
 ## Context
@@ -119,7 +171,7 @@ GORM 也提供了快捷调用方法 `WithContext`，其实现如下：
 
 ```go
 func (db *DB) WithContext(ctx context.Context) *DB {
-  return db.Session(&Session{WithConditions: true, Context: ctx})
+  return db.Session(&Session{Context: ctx})
 }
 ```
 
@@ -139,7 +191,7 @@ db.Session(&Session{Logger: newLogger})
 db.Session(&Session{Logger: logger.Default.LogMode(logger.Silent)})
 ```
 
-查看 [Logger](logger.html) 获取详情
+查看 [Logger](logger.html) 获取详情.
 
 ## NowFunc
 
@@ -160,8 +212,29 @@ db.Session(&Session{
 ```go
 func (db *DB) Debug() (tx *DB) {
   return db.Session(&Session{
-    WithConditions: true,
     Logger:         db.Logger.LogMode(logger.Info),
   })
 }
+```
+
+## QueryFields
+
+Select by fields
+
+```go
+db.Session(&gorm.Session{QueryFields: true}).Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // 带该选项
+// SELECT * FROM `users` // 不带该选项
+```
+
+## CreateBatchSize
+
+Default batch size
+
+```go
+users = [5000]User{{Name: "jinzhu", Pets: []Pet{pet1, pet2, pet3}}...}
+
+db.Session(&gorm.Session{CreateBatchSize: 1000}).Create(&users)
+// INSERT INTO users xxx (需 5 次)
+// INSERT INTO pets xxx (需 15 次)
 ```

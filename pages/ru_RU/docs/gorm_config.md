@@ -7,14 +7,15 @@ GORM предоставляет конфигурацию, которую мож�
 
 ```go
 type Config struct {
-  SkipDefaultTransaction bool
-  NamingStrategy         schema.Namer
-  Logger                 logger.Interface
-  NowFunc                func() time.Time
-  DryRun                 bool
-  PrepareStmt            bool
-  AllowGlobalUpdate      bool
-  DisableAutomaticPing   bool
+  SkipDefaultTransaction   bool
+  NamingStrategy           schema.Namer
+  Logger                   logger.Interface
+  NowFunc                  func() time.Time
+  DryRun                   bool
+  PrepareStmt              bool
+  DisableNestedTransaction bool
+  AllowGlobalUpdate        bool
+  DisableAutomaticPing     bool
   DisableForeignKeyConstraintWhenMigrating bool
 }
 ```
@@ -49,8 +50,9 @@ type Namer interface {
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   NamingStrategy: schema.NamingStrategy{
-    TablePrefix: "t_",   // префикс имен таблиц, таблица для `User` будет `t_users`
-    SingularTable: true, // использовать именование в единственном числе, таблица для `User` будет `user` при включении этой опции, или `t_user` при TablePrefix = "t_"
+    TablePrefix: "t_",   // table name prefix, table for `User` would be `t_users`
+    SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
+    NameReplacer: strings.NewReplacer("CID", "Cid"), // use name replacer to change struct/field name before convert it to db name
   },
 })
 ```
@@ -91,13 +93,18 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
+## DisableNestedTransaction
+
+When using `Transaction` method inside a db transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support, you could disable it by using the `DisableNestedTransaction` option, refer [Session](session.html) for details
+
+
 ## AllowGlobalUpdate
 
-Включение глобального обновления/удаления, смотрите [сессии](session.html) для подробностей
+Enable global update/delete, refer [Session](session.html) for details
 
 ## DisableAutomaticPing
 
-GORM автоматически опрашивает базу данных после инициализации для проверки доступности базы данных, отключается установкой в `true`
+GORM automatically ping database after initialized to check database availability, disable it by setting it to `true`
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -107,7 +114,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DisableForeignKeyConstraintWhenMigrating
 
-GORM создает ограничения внешних ключей автоматически, когда `AutoMigrate (авто миграция)` или `CreateTable (создание таблицы)`, отключите это, установив `true`, смотрите [Миграции](migration.html) для подробностей
+GORM creates database foreign key constraints automatically when `AutoMigrate` or `CreateTable`, disable this by setting it to `true`, refer [Migration](migration.html) for details
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{

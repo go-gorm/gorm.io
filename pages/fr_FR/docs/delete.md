@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## Delete with primary key
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out check out [Query Inline Conditions](query.thml#inline_conditions) for details
+GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out check out [Query Inline Conditions](query.html#inline_conditions) for details
 
 ```go
 db.Delete(&User{}, 10)
@@ -72,7 +72,7 @@ db.Where("1 = 1").Delete(&User{})
 db.Exec("DELETE FROM users")
 // DELETE FROM users
 
-DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
+db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 

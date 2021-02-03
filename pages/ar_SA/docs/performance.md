@@ -34,6 +34,10 @@ tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 ```
 
+{% note warn %}
+**NOTE** Also refer how to enable interpolateparams for MySQL to reduce roundtrip https://github.com/go-sql-driver/mysql#interpolateparams
+{% endnote %}
+
 ### [SQL Builder with PreparedStmt](sql_builder.html)
 
 Prepared Statement works with RAW SQL also, for example:
@@ -91,16 +95,16 @@ Query and process records with iteration or in batches
 ```go
 import "gorm.io/hints"
 
-DB. UseIndex("idx_user_name")). Find(&User{})
+db.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
 // SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
-DB. ForJoin()). Find(&User{})
+db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 
-DB. Clauses(
-    hints. ForOrderBy(),
-    hints. IgnoreIndex("idx_user_name"). ForGroupBy(),
-). Find(&User{})
+db.Clauses(
+    hints.ForceIndex("idx_user_name", "idx_user_id").ForOrderBy(),
+    hints.IgnoreIndex("idx_user_name").ForGroupBy(),
+).Find(&User{})
 // SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
 ```
 

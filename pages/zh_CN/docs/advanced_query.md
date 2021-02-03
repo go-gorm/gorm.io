@@ -26,29 +26,46 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
+{% note warn %}
+**注意** `QueryFields` 模式会根据当前 model 的所有字段名称进行 select。
+{% endnote %}
+
+```go
+db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
+  QueryFields: true,
+})
+
+db.Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // 带上这个选项
+
+// Session Mode
+db.Session(&gorm.Session{QueryFields: true}).Find(&user)
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users`
+```
+
 ## Locking (FOR UPDATE)
 
 GORM 支持多种类型的锁，例如：
 
 ```go
-DB.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
+db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SELECT * FROM `users` FOR UPDATE
 
-DB.Clauses(clause.Locking{
+db.Clauses(clause.Locking{
   Strength: "SHARE",
   Table: clause.Table{Name: clause.CurrentTable},
 }).Find(&users)
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-参考 [原生 SQL 及构造器](sql_builder.html) 获取详情
+查看 [原生 SQL 及构造器](sql_builder.html) 获取详情
 
 ## 子查询
 
 子查询可以嵌套在查询中，GORM 允许在使用 `*gorm.DB` 对象作为参数时生成子查询
 
 ```go
-db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 // SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
 subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
@@ -61,11 +78,11 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 GORM 允许您在 `Table` 方法中通过 FROM 子句使用子查询，例如：
 
 ```go
-db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
-subQuery1 := DB.Model(&User{}).Select("name")
-subQuery2 := DB.Model(&Pet{}).Select("name")
+subQuery1 := db.Model(&User{}).Select("name")
+subQuery2 := db.Model(&Pet{}).Select("name")
 db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
@@ -76,9 +93,9 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ```go
 db.Where(
-    DB.Where("pizza = ?", "pepperoni").Where(DB.Where("size = ?", "small").Or("size = ?", "medium")),
+    db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small").Or("size = ?", "medium")),
 ).Or(
-    DB.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
+    db.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
 ).Find(&Pizza{}).Statement
 
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
@@ -89,10 +106,10 @@ db.Where(
 GORM 支持 [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) 和 `map[string]interface{}{}` 形式的命名参数，例如：
 
 ```go
-DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
+db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
+db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
@@ -104,10 +121,10 @@ GORM 允许扫描结果至 `map[string]interface{}` 或 `[]map[string]interface{
 
 ```go
 var result map[string]interface{}
-DB.Model(&User{}).First(&result, "id = ?", 1)
+db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}
-DB.Table("users").Find(&results)
+db.Table("users").Find(&results)
 ```
 
 ## FirstOrInit
@@ -213,7 +230,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 ```go
 import "gorm.io/hints"
 
-DB.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
+db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
@@ -222,10 +239,10 @@ DB.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 ```go
 import "gorm.io/hints"
 
-DB.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
+db.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
 // SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
-DB.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
+db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
@@ -254,7 +271,7 @@ for rows.Next() {
 
 ```go
 // 每次批量处理 100 条
-result := DB.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
+result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
     // 批量处理找到的记录
   }
@@ -292,7 +309,7 @@ Pluck 用于从数据库查询单个列，并将结果扫描到切片。如果�
 
 ```go
 var ages []int64
-db.Find(&users).Pluck("age", &ages)
+db.Model(&users).Pluck("age", &ages)
 
 var names []string
 db.Model(&User{}).Pluck("name", &names)
@@ -300,7 +317,7 @@ db.Model(&User{}).Pluck("name", &names)
 db.Table("deleted_users").Pluck("name", &names)
 
 // Distinct Pluck
-DB.Model(&User{}).Distinct().Pluck("Name", &names)
+db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
 // 超过一列的查询，应该使用 `Scan` 或者 `Find`，例如：
@@ -335,10 +352,10 @@ db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
 // 查找所有金额大于 1000 的信用卡订单
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// 查找所有金额大于 1000 的货到付款订单
+// 查找所有金额大于 1000 的 COD 订单
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// 查找所有金额大于 1000 且已付款或已发货的订单
+// 查找所有金额大于1000 的已付款或已发货订单
 ```
 
 查看 [Scopes](scopes.html) 获取详情
@@ -350,22 +367,22 @@ Count 用于获取匹配的记录数
 ```go
 var count int64
 db.Model(&User{}).Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+// SELECT count(1) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
 
 db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
-// SELECT count(*) FROM users WHERE name = 'jinzhu'; (count)
+// SELECT count(1) FROM users WHERE name = 'jinzhu'; (count)
 
 db.Table("deleted_users").Count(&count)
-// SELECT count(*) FROM deleted_users;
+// SELECT count(1) FROM deleted_users;
 
-// 去重计数
-DB.Model(&User{}).Distinct("name").Count(&count)
+// Count with Distinct
+db.Model(&User{}).Distinct("name").Count(&count)
 // SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
 // SELECT count(distinct(name)) FROM deleted_users
 
-// 分组计数
+// Count with Group
 users := []User{
   {Name: "name1"},
   {Name: "name2"},
@@ -373,6 +390,6 @@ users := []User{
   {Name: "name3"},
 }
 
-DB.Model(&User{}).Group("name").Count(&count)
+db.Model(&User{}).Group("name").Count(&count)
 count // => 3
 ```

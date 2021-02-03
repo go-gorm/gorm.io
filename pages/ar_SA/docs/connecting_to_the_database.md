@@ -3,7 +3,7 @@ title: Connecting to a Database
 layout: page
 ---
 
-GORM officially supports databases MySQL, PostgreSQL, SQlite, SQL Server
+GORM officially supports databases MySQL, PostgreSQL, SQLite, SQL Server
 
 ## MySQL
 
@@ -22,7 +22,7 @@ db, err := gorm. Open(sqlserver. Open(dsn), &gorm. Config{})
 **NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
 {% endnote %}
 
-MySQl Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
+MySQL Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -75,7 +75,7 @@ import (
   "gorm.io/gorm"
 )
 
-dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
+dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
@@ -150,9 +150,41 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
+## Clickhouse
+
+https://github.com/go-gorm/clickhouse
+
+```go
+import (
+  "gorm.io/driver/clickhouse"
+  "gorm.io/gorm"
+)
+
+func main() {
+  dsn := "tcp://localhost:9000?database=gorm&username=gorm&password=gorm&read_timeout=10&write_timeout=20"
+  db, err := gorm.Open(clickhouse.Open(dsn), &gorm.Config{})
+
+  // Auto Migrate
+  db.AutoMigrate(&User{})
+  // Set table options
+  db.Set("gorm:table_options", "ENGINE=Distributed(cluster, default, hits)").AutoMigrate(&User{})
+
+  // Insert
+  db.Create(&user)
+
+  // Select
+  db.Find(&user, "id = ?", 10)
+
+  // Batch Insert
+  var users = []User{user1, user2, user3}
+  db.Create(&users)
+  // ...
+}
+```
+
 ## Connection Pool
 
-GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
+GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
 
 ```go
 sqlDB, err := db.DB()

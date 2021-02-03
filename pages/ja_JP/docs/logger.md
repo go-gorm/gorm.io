@@ -42,7 +42,7 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 
 ### Debug
 
-Debug a single operation, change current operation's log level to logger.Info
+単一の操作をデバッグし、現在の操作のログレベルをlogger.Info に変更します
 
 ```go
 db.Debug().Where("name = ?", "jinzhu").First(&User{})

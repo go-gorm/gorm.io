@@ -1,40 +1,40 @@
 ---
-title: GORM 2.0 Release Note
+title: GORM 2.0 릴리즈 노트
 layout: page
 ---
 
-GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+GORM 2.0은 처음부터 다시 만들어졌으며, 일부 호환되지 않는 API 변경 및 많은 개선 사항을 도입했습니다.
 
-**Highlights**
+**하이라이트**
 
-* Performance Improvements
-* Modularity
-* Context, Batch Insert, Prepared Statment Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
-* Nested Transaction/SavePoint/RollbackTo SavePoint supports
-* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements, CRUD with SQL Expr and Context Valuer
-* Full self-reference relationships support, Join Table improvements, Association Mode for batch data
-* Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
-* New plugin system, provides official plugins for multiple databases, read/write splitting, prometheus integrations...
-* New Hooks API: unified interface with plugins
-* New Migrator: allows to create database foreign keys for relationships, smarter AutoMigrate, constraints/checker support, enhanced index support
-* New Logger: context support, improved extensibility
-* Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
-* Better customized data type support (e.g: JSON)
+* 성능 향상
+* 모듈성
+* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Map에서 검색하기, Map으로 생성하기, FindInBatches가 지원됩니다
+* Nested Transaction/SavePoint/SavePoint로 Rollback하기가 지원됩니다
+* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints 지원, SubQuery 개선, SQL Expr로 CRUD하기, Context Valuer
+* 자기참조 관계(self-reference relationship) 를 완전하게 제공, Join Table 개선, Batch 데이터를 위한 Association Mode
+* 생성/수정 시간을 추적할 수 있는 다중 필드 지원, UNIX(milli/nano) 초 지원
+* 필드 권한 지원: read-only, write-only, create-only, update-only, ignored
+* 새로운 플러그인 시스템, 여러 데이터베이스에 대한 공식 플러그인 제공, 읽기/쓰기 분할, 프로메테우스 통합...
+* 새로운 Hooks API: 플러그인과 통합 된 인터페이스
+* 새로운 Migrator: 관계, 제약 / 체커 지원, 향상된 인덱스 지원을위한 데이터베이스 외래 키 생성 가능
+* 새로운 Logger: context 지원, 향상된 확장성
+* 이름규칙 통합: 테이블 이름, 필드 이름, join table이름, 외래키, 체커, index 이름 규칙
+* 더 나은 데이터타입 커스터마이징(예: JSON)
 
-## How To Upgrade
+## 업그레이드 방법
 
-* GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and its import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/)
-* Database drivers have been split into separate projects, e.g: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite), and its import path also changed to `gorm.io/driver/sqlite`
+* GORM의 개발은 [github.com/go-gorm](https://github.com/go-gorm)로 이동되었으며, import path는 `gorm.io/gorm`로 변경되었습니다. 이전의 프로젝트는 `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/)에서 계속 사용할 수 있습니다.
+* 데이터베이스 드라이버가 각각의 프로젝트로 분리되었습니다 (예: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite)) 그리고 import path 또한 `gorm.io/driver/sqlite`로 변경되었습니다.
 
-### Install
+### 설치하기
 
 ```go
 go get gorm.io/gorm
 // **NOTE** GORM `v2.0.0` released with git tag `v1.20.0`
 ```
 
-### Quick Start
+### 빠른 시작
 
 ```go
 import (
@@ -55,35 +55,42 @@ func init() {
 }
 ```
 
-## Major Features
+## 주요 기능
 
-The release note only cover major changes introduced in GORM V2 as a quick reference list
+릴리즈 노트는 GORM V2에 도입된 주요 변경 사항만을 빠른 참조 목록으로 다룹니다.
 
-#### Context Support
+#### Context 지원
 
-* Database operations support `context.Context` with the `WithContext` method
-* Logger also accepts context for tracing
+* 데이터베이스 작업은 `WithContext` 함수를 사용하여 `context.Context`를 지원합니다
+* Logger 또한 tracing을 위한 context를 허용합니다
 
 ```go
-DB.WithContext(ctx).Find(&users)
+db.WithContext(ctx).Find(&users)
 ```
 
-#### Batch Insert
+#### 일괄 Insert
 
-* Use slice data with `Create` will generate a single SQL statement to insert all the data and backfill primary key values
-* If those data contain associations, all associations will be upserted with another SQL
-* Batch inserted data will call its `Hooks` methods (Before/After Create/Save)
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
-DB.Create(&users)
+db.Create(&users)
 
 for _, user := range users {
   user.ID // 1,2,3
 }
 ```
 
-#### Prepared Statment Mode
+You can specify batch size when creating with `CreateInBatches`, e.g:
+
+```go
+var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
+
+// batch size 100
+db.CreateInBatches(users, 100)
+```
+
+#### Prepared Statement Mode
 
 Prepared Statement Mode creates prepared stmt and caches them to speed up future calls
 
@@ -92,7 +99,7 @@ Prepared Statement Mode creates prepared stmt and caches them to speed up future
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{PrepareStmt: true})
 
 // session mode, create prepares stmt and speed up current session operations
-tx := DB.Session(&Session{PrepareStmt: true})
+tx := db.Session(&Session{PrepareStmt: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
@@ -103,7 +110,7 @@ tx.Model(&user).Update("Age", 18)
 Generates SQL without executing, can be used to check or test generated SQL
 
 ```go
-stmt := DB.Session(&Session{DryRun: true}).Find(&user, 1).Statement
+stmt := db.Session(&Session{DryRun: true}).Find(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 // PostgreSQL
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
@@ -114,7 +121,7 @@ stmt.Vars         //=> []interface{}{1}
 Preload associations using INNER JOIN, and will handle null data to avoid failing to scan
 
 ```go
-DB.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2})
+db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2})
 ```
 
 #### Find To Map
@@ -123,7 +130,7 @@ Scan result to `map[string]interface{}` or `[]map[string]interface{}`
 
 ```go
 var result map[string]interface{}
-DB.Model(&User{}).First(&result, "id = ?", 1)
+db.Model(&User{}).First(&result, "id = ?", 1)
 ```
 
 #### Create From Map
@@ -131,14 +138,14 @@ DB.Model(&User{}).First(&result, "id = ?", 1)
 Create from map `map[string]interface{}` or `[]map[string]interface{}`
 
 ```go
-DB.Model(&User{}).Create(map[string]interface{}{"Name": "jinzhu", "Age": 18})
+db.Model(&User{}).Create(map[string]interface{}{"Name": "jinzhu", "Age": 18})
 
 datas := []map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 19},
   {"name": "jinzhu_2", "Age": 20},
 }
 
-DB.Model(&User{}).Create(datas)
+db.Model(&User{}).Create(datas)
 ```
 
 #### FindInBatches
@@ -146,7 +153,7 @@ DB.Model(&User{}).Create(datas)
 Query and process records in batch
 
 ```go
-result := DB.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
+result := db.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   // batch processing
   return nil
 })
@@ -155,7 +162,7 @@ result := DB.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, b
 #### Nested Transaction
 
 ```go
-DB.Transaction(func(tx *gorm.DB) error {
+db.Transaction(func(tx *gorm.DB) error {
   tx.Create(&user1)
 
   tx.Transaction(func(tx2 *gorm.DB) error {
@@ -175,7 +182,7 @@ DB.Transaction(func(tx *gorm.DB) error {
 #### SavePoint, RollbackTo
 
 ```go
-tx := DB.Begin()
+tx := db.Begin()
 tx.Create(&user1)
 
 tx.SavePoint("sp1")
@@ -190,19 +197,19 @@ tx.Commit() // commit user1
 GORM supports use `sql.NamedArg`, `map[string]interface{}` as named arguments
 
 ```go
-DB.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
+db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-DB.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
+db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
 // SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
 
-DB.Raw(
+db.Raw(
   "SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
   sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2"),
 ).Find(&user)
 // SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
 
-DB.Exec(
+db.Exec(
   "UPDATE users SET name1 = @name, name2 = @name2, name3 = @name",
   map[string]interface{}{"name": "jinzhu", "name2": "jinzhu2"},
 )
@@ -225,15 +232,15 @@ db.Where(
 
 ```go
 // Where SubQuery
-db.Where("amount > ?", db.Table("orders").Select("AVG(amount)")).Find(&orders)
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 
 // From SubQuery
-db.Table("(?) as u", DB.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE age = 18
 
 // Update SubQuery
-DB.Model(&user).Update(
-  "price", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"),
+db.Model(&user).Update(
+  "price", db.Model(&Company{}).Select("name").Where("companies.id = users.company_id"),
 )
 ```
 
@@ -244,16 +251,16 @@ DB.Model(&user).Update(
 ```go
 import "gorm.io/gorm/clause"
 
-DB.Clauses(clause.OnConflict{DoNothing: true}).Create(&users)
+db.Clauses(clause.OnConflict{DoNothing: true}).Create(&users)
 
-DB.Clauses(clause.OnConflict{
+db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"name": "jinzhu", "age": 18}),
 }).Create(&users)
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE name="jinzhu", age=18; MySQL
 
-DB.Clauses(clause.OnConflict{
+db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
 }).Create(&users)
@@ -265,10 +272,10 @@ DB.Clauses(clause.OnConflict{
 #### Locking
 
 ```go
-DB.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
+db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SELECT * FROM `users` FOR UPDATE
 
-DB.Clauses(clause.Locking{
+db.Clauses(clause.Locking{
   Strength: "SHARE",
   Table: clause.Table{Name: clause.CurrentTable},
 }).Find(&users)
@@ -281,15 +288,15 @@ DB.Clauses(clause.Locking{
 import "gorm.io/hints"
 
 // Optimizer Hints
-DB.Clauses(hints.New("hint")).Find(&User{})
+db.Clauses(hints.New("hint")).Find(&User{})
 // SELECT * /*+ hint */ FROM `users`
 
 // Index Hints
-DB.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
+db.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
 // SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
 // Comment Hints
-DB.Clauses(hints.Comment("select", "master")).Find(&User{})
+db.Clauses(hints.Comment("select", "master")).Find(&User{})
 // SELECT /*master*/ * FROM `users`;
 ```
 
@@ -313,13 +320,13 @@ func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
   }
 }
 
-DB.Create(&User{
+db.Create(&User{
   Name:     "jinzhu",
   Location: Location{X: 100, Y: 100},
 })
 // INSERT INTO `users` (`name`,`point`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
 
-DB.Model(&User{ID: 1}).Updates(User{
+db.Model(&User{ID: 1}).Updates(User{
   Name:  "jinzhu",
   Point: Point{X: 100, Y: 100},
 })
@@ -409,15 +416,15 @@ type User struct {
   Attributes datatypes.JSON
 }
 
-DB.Create(&User{
+db.Create(&User{
   Name:       "jinzhu",
   Attributes: datatypes.JSON([]byte(`{"name": "jinzhu", "age": 18, "tags": ["tag1", "tag2"], "orgs": {"orga": "orga"}}`)),
 }
 
 // Query user having a role field in attributes
-DB.First(&user, datatypes.JSONQuery("attributes").HasKey("role"))
+db.First(&user, datatypes.JSONQuery("attributes").HasKey("role"))
 // Query user having orgs->orga field in attributes
-DB.First(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
+db.First(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 ```
 
 #### Smart Select
@@ -451,18 +458,36 @@ Association Mode supports batch data, e.g:
 // Find all roles for all users
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// Delete User A from all user's team
 db.Model(&users).Association("Team").Delete(&userA)
 
 // Get unduplicated count of members in all user's team
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will returns error
+// For `Append`, `Replace` with batch data, argument's length need to equal to data's length or will returns error
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
 // Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
+```
+
+#### Delete Associations when deleting
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+
+```go
+// delete user's account when deleting user
+db.Select("Account").Delete(&user)
+
+// delete user's Orders, CreditCards relations when deleting user
+db.Select("Orders", "CreditCards").Delete(&user)
+
+// delete user's has one/many/many2many relations when deleting user
+db.Select(clause.Associations).Delete(&user)
+
+// delete user's account when deleting users
+db.Select("Account").Delete(&users)
 ```
 
 ## Breaking Changes
@@ -493,7 +518,7 @@ func UserTable(u *User) func(*gorm.DB) *gorm.DB {
   }
 }
 
-DB.Scopes(UserTable(&user)).Create(&user)
+db.Scopes(UserTable(&user)).Create(&user)
 ```
 
 #### Method Chain Safety/Goroutine Safety
@@ -526,7 +551,7 @@ for i := 0; i < 100; i++ {
   go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
 }
 
-tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{WithConditions: true})
+tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
 // Safe after a `New Session Method`
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
@@ -565,11 +590,11 @@ type User struct {
 GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
-DB.Where("1 = 1").Delete(&User{})
+db.Where("1 = 1").Delete(&User{})
 
-DB.Raw("delete from users")
+db.Raw("delete from users")
 
-DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
+db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 ```
 
 #### ErrRecordNotFound
@@ -577,7 +602,7 @@ DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 GORM V2 only returns `ErrRecordNotFound` when you are querying with methods `First`, `Last`, `Take` which is expected to return some result, and we have also removed method `RecordNotFound` in V2, please use `errors.Is` to check the error, e.g:
 
 ```go
-err := DB.First(&user).Error
+err := db.First(&user).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
@@ -615,21 +640,21 @@ func (user *User) BeforeUpdate(tx *gorm.DB) error {
   return nil
 }
 
-DB.Model(&user).Update("Name", "Jinzhu") // update field `Name` to `Jinzhu`
-DB.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // update field `Name` to `Jinzhu`, `Admin` to false
-DB.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // Update none zero fields when using struct as argument, will only update `Name` to `Jinzhu`
+db.Model(&user).Update("Name", "Jinzhu") // update field `Name` to `Jinzhu`
+db.Model(&user).Updates(map[string]interface{}{"name": "Jinzhu", "admin": false}) // update field `Name` to `Jinzhu`, `Admin` to false
+db.Model(&user).Updates(User{Name: "Jinzhu", Admin: false}) // Update none zero fields when using struct as argument, will only update `Name` to `Jinzhu`
 
-DB.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // update selected fields `Name`, `Admin`，`Admin` will be updated to zero value (false)
-DB.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // update selected fields exists in the map, will only update field `Name` to `Jinzhu`
+db.Model(&user).Select("Name", "Admin").Updates(User{Name: "Jinzhu"}) // update selected fields `Name`, `Admin`，`Admin` will be updated to zero value (false)
+db.Model(&user).Select("Name", "Admin").Updates(map[string]interface{}{"Name": "Jinzhu"}) // update selected fields exists in the map, will only update field `Name` to `Jinzhu`
 
 // Attention: `Changed` will only check the field value of `Update` / `Updates` equals `Model`'s field value, it returns true if not equal and the field will be saved
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"}) // Changed("Name") => true
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"}) // Changed("Name") => false, `Name` not changed
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{"name": "jinzhu2", "admin": false}) // Changed("Name") => false, `Name` not selected to update
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"}) // Changed("Name") => true
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"}) // Changed("Name") => false, `Name` not changed
+db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{"name": "jinzhu2", "admin": false}) // Changed("Name") => false, `Name` not selected to update
 
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"}) // Changed("Name") => true
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed("Name") => false, `Name` not changed
-DB.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` not selected to update
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"}) // Changed("Name") => true
+db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed("Name") => false, `Name` not changed
+db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` not selected to update
 ```
 
 #### Plugins
@@ -641,7 +666,7 @@ Plugin callbacks also need be defined as a method of type `func(tx *gorm.DB) err
 When updating with struct, GORM V2 allows to use `Select` to select zero-value fields to update them, for example:
 
 ```go
-DB.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
+db.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
 ```
 
 #### Associations
@@ -649,10 +674,10 @@ DB.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age:
 GORM V1 allows to use some settings to skip create/update associations, in V2, you can use `Select` to do the job, for example:
 
 ```go
-DB.Omit(clause.Associations).Create(&user)
-DB.Omit(clause.Associations).Save(&user)
+db.Omit(clause.Associations).Create(&user)
+db.Omit(clause.Associations).Save(&user)
 
-DB.Select("Company").Save(&user)
+db.Select("Company").Save(&user)
 ```
 
 and GORM V2 doesn't allow preload with `Set("gorm:auto_preload", true)` anymore, you can use `Preload` with `clause.Associations`, e.g:
@@ -663,6 +688,33 @@ db.Preload(clause.Associations).Find(&users)
 ```
 
 Also, checkout field permissions, which can be used to skip creating/updating associations globally
+
+GORM V2 will use upsert to save associations when creating/updating a record, won't save full associations data anymore to protect your data from saving uncompleted data, for example:
+
+```go
+user := User{
+  Name:            "jinzhu",
+  BillingAddress:  Address{Address1: "Billing Address - Address 1"},
+  ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
+  Emails:          []Email{
+    {Email: "jinzhu@example.com"},
+    {Email: "jinzhu-2@example.com"},
+  },
+  Languages:       []Language{
+    {Name: "ZH"},
+    {Name: "EN"},
+  },
+}
+
+db.Create(&user)
+// BEGIN TRANSACTION;
+// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "languages" ("name") VALUES ('ZH'), ('EN') ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1), (111, 2) ON DUPLICATE KEY DO NOTHING;
+// COMMIT;
+  ```
 
 #### Join Table
 
@@ -692,7 +744,18 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
 }
 
 // PersonAddress must defined all required foreign keys, or it will raise error
-err := DB.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
+err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
+```
+
+After that, you could use normal GORM methods to operate the join table data, for example:
+
+```go
+var results []PersonAddress
+db.Where("person_id = ?", person.ID).Find(&results)
+
+db.Where("address_id = ?", address.ID).Delete(&PersonAddress{})
+
+db.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
 ```
 
 #### Count

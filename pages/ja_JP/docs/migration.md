@@ -5,10 +5,10 @@ layout: page
 
 ## Auto Migration
 
-スキーマを自動的にマイグレーションし、スキーマを最新の状態に保ちます。
+Automatically migrate your schema, to keep your schema up to date.
 
 {% note warn %}
-**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes, and will change existing column's type if it's size, precision, nullable changed, it **WON'T** delete unused columns to protect your data.
+**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes. It will change existing column's type if its size, precision, nullable changed. It **WON'T** delete unused columns to protect your data.
 {% endnote %}
 
 ```go
@@ -32,7 +32,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Migrator Interface
 
-GORM provides migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
+GORM provides a migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
 
 SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table
 
@@ -90,7 +90,7 @@ db.Migrator().CurrentDatabase()
 db.Migrator().CreateTable(&User{})
 
 // Append "ENGINE=InnoDB" to the creating table SQL for `User`
-db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
+db.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&User{})
 
 // Check table for `User` exists or not
 db.Migrator().HasTable(&User{})
@@ -151,6 +151,34 @@ db.Migrator().DropConstraint(&User{}, "name_checker")
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
+Create foreign keys for relations
+
+```go
+type User struct {
+  gorm.Model
+  CreditCards []CreditCard
+}
+
+type CreditCard struct {
+  gorm.Model
+  Number string
+  UserID uint
+}
+
+// create database foreign key for user & credit_cards
+db.Migrator().CreateConstraint(&User{}, "CreditCards")
+db.Migrator().CreateConstraint(&User{}, "fk_users_credit_cards")
+// ALTER TABLE `credit_cards` ADD CONSTRAINT `fk_users_credit_cards` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+
+// check database foreign key for user & credit_cards exists or not
+db.Migrator().HasConstraint(&User{}, "CreditCards")
+db.Migrator().HasConstraint(&User{}, "fk_users_credit_cards")
+
+// drop database foreign key for user & credit_cards
+db.Migrator().DropConstraint(&User{}, "CreditCards")
+db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
+```
+
 ### Indexes
 
 ```go
@@ -183,15 +211,15 @@ db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 
 ## Constraints
 
-GORM creates constraints when auto migrating or creating table, checkout [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORM creates constraints when auto migrating or creating table, see [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
 
 ## Other Migration Tools
 
 GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
 
 ```go
-// `*sql.DB` を返す
+// returns `*sql.DB`
 db.DB()
 ```
 
-Refer [Generic Interface](generic_interface.html) for more details.
+Refer to [Generic Interface](generic_interface.html) for more details.

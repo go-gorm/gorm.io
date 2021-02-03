@@ -60,25 +60,29 @@ type Language struct {
 //   foreign key: language_id, reference: languages.id
 ```
 
-To override them, you can use tag `foreignKey`, `reference`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
+To override them, you can use tag `foreignKey`, `references`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
 
 ```go
 type User struct {
     gorm.Model
     Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:UserRefer"`
-    Refer    uint
+    Refer    uint      `gorm:"index:,unique"`
 }
 
 type Profile struct {
     gorm.Model
     Name      string
-    UserRefer uint
+    UserRefer uint `gorm:"index:,unique"`
 }
 
 // Which creates join table: user_profiles
 //   foreign key: user_refer_id, reference: users.refer
 //   foreign key: profile_refer, reference: profiles.user_refer
 ```
+
+{% note warn %}
+**NOTE:** Some databases only allow create database foreign keys that reference on a field having unique index, so you need to specify the `unique index` tag if you are creating database foreign keys when migrating
+{% endnote %}
 
 ## Self-Referential Many2Many
 
@@ -105,7 +109,11 @@ Please checkout [Association Mode](associations.html#Association-Mode) for worki
 
 ## Customize JoinTable
 
-`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports, and define more fields, you can setup it with `SetupJoinTable`, for example:
+`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can setup it with `SetupJoinTable`, for example:
+
+{% note warn %}
+**NOTE:** Customized join table's foreign keys required to be composited primary keys or composited unique index
+{% endnote %}
 
 ```go
 type Person struct {
@@ -120,18 +128,14 @@ type Address struct {
 }
 
 type PersonAddress struct {
-  PersonID  int
-  AddressID int
+  PersonID  int `gorm:"primaryKey"`
+  AddressID int `gorm:"primaryKey"`
   CreatedAt time.Time
   DeletedAt gorm.DeletedAt
 }
 
 func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
-}
-
-// PersonAddress must defined all required foreign keys, or it will raise error
-db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 }
 
 // Change model Person's field Addresses's join table to PersonAddress
@@ -156,6 +160,8 @@ type Language struct {
 
 // CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
+
+You are also allowed to delete selected many2many relations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
 
 ## Composite Foreign Keys
 

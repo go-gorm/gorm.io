@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## 根据主键删除
 
-GORM 允许使用内联条件指定删除对象的主键，但只支持整形主键，查看 [查询内联条件](query.thml#inline_conditions) 获取详情。
+GORM 允许通过内联条件指定主键来检索对象，但只支持整型数值，因为 string 可能导致 SQL 注入。查看 [内联条件查询](query.html#inline_conditions) 获取详情
 
 ```go
 db.Delete(&User{}, 10)
@@ -72,13 +72,13 @@ db.Where("1 = 1").Delete(&User{})
 db.Exec("DELETE FROM users")
 // DELETE FROM users
 
-DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
+db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
 ## 软删除
 
-如果您的模型包含了一个 `gorm.deletedat` 字段（`gorm.Model` 已经包含了该字段)，它将自动获得软删除的能力！
+如果您的模型包含了一个 `gorm.DeletedAt` 字段（`gorm.Model` 已经包含了该字段)，它将自动获得软删除的能力！
 
 拥有软删除能力的模型调用 `Delete` 时，记录不会被从数据库中真正删除。但 GORM 会将 `DeletedAt` 置为当前时间， 并且你不能再通过正常的查询方法找到该记录。
 

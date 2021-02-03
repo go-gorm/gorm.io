@@ -36,7 +36,7 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 
 ## Updates multiple columns
 
-`Updates` supports update with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
+`Updates`は`構造体`もしくは`map[string]interface{}`での更新に対応しています。`構造体`での更新時のみ、非ゼロ値のフィールドはデフォルト値が設定されます
 
 ```go
 // Update attributes with `struct`, will only update non-zero fields
@@ -44,8 +44,8 @@ db.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
 // UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 
 // Update attributes with `map`
-db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
-// UPDATE users SET name='hello', age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
+db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
+// UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
 
 {% note warn %}
@@ -59,15 +59,21 @@ If you want to update selected fields or ignore some fields when updating, you c
 ```go
 // Select with Map
 // User's ID is `111`:
-db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
+db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello' WHERE id=111;
 
-db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "actived": false})
-// UPDATE users SET age=18, actived=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
+db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
+// UPDATE users SET age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
 // Select with Struct (select zero value fields)
-DB.Model(&result).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
+db.Model(&user).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
+
+// Select all fields (select all fields include zero value fields)
+db.Model(&user).Select("*").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
+
+// Select all fields but omit Role (select all fields include zero value fields)
+db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
 ```
 
 ## Update Hooks
@@ -112,7 +118,7 @@ db.Model(&User{}).Where("1 = 1").Update("name", "jinzhu")
 db.Exec("UPDATE users SET name = ?", "jinzhu")
 // UPDATE users SET name = "jinzhu"
 
-DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name", "jinzhu")
+db.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name", "jinzhu")
 // UPDATE users SET `name` = "jinzhu"
 ```
 
@@ -137,16 +143,16 @@ GORM allows updates column with SQL expression, e.g:
 
 ```go
 // product's ID is `3`
-DB.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
+db.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
 // UPDATE "products" SET "price" = price * 2 + 100, "updated_at" = '2013-11-17 21:34:10' WHERE "id" = 3;
 
-DB.Model(&product).Updates(map[string]interface{}{"price": gorm.Expr("price * ? + ?", 2, 100)})
+db.Model(&product).Updates(map[string]interface{}{"price": gorm.Expr("price * ? + ?", 2, 100)})
 // UPDATE "products" SET "price" = price * 2 + 100, "updated_at" = '2013-11-17 21:34:10' WHERE "id" = 3;
 
-DB.Model(&product).UpdateColumn("quantity", gorm.Expr("quantity - ?", 1))
+db.Model(&product).UpdateColumn("quantity", gorm.Expr("quantity - ?", 1))
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3;
 
-DB.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("quantity - ?", 1))
+db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("quantity - ?", 1))
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity > 1;
 ```
 
@@ -165,11 +171,11 @@ func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
   }
 }
 
-DB.Model(&User{ID: 1}).Updates(User{
+db.Model(&User{ID: 1}).Updates(User{
   Name:  "jinzhu",
-  Point: Point{X: 100, Y: 100},
+  Location: Location{X: 100, Y: 100},
 })
-// UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
+// UPDATE `user_with_points` SET `name`="jinzhu",`location`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
 ### Update from SubQuery
@@ -177,12 +183,12 @@ DB.Model(&User{ID: 1}).Updates(User{
 Update a table by using SubQuery
 
 ```go
-DB.Model(&user).Update("company_name", DB.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
+db.Model(&user).Update("company_name", db.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
 // UPDATE "users" SET "company_name" = (SELECT name FROM companies WHERE companies.id = users.company_id);
 
-DB.Table("users as u").Where("name = ?", "jinzhu").Update("company_name", DB.Table("companies as c").Select("name").Where("c.id = u.company_id"))
+db.Table("users as u").Where("name = ?", "jinzhu").Update("company_name", db.Table("companies as c").Select("name").Where("c.id = u.company_id"))
 
-DB.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{}{}{"company_name": DB.Table("companies as c").Select("name").Where("c.id = u.company_id")})
+db.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{}{}{"company_name": db.Table("companies as c").Select("name").Where("c.id = u.company_id")})
 ```
 
 ### Without Hooks/Time Tracking
@@ -246,12 +252,17 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 
 ### Change Updating Values
 
-To change updating values in Before Hooks, you should use `scope.SetColumn` unless it is a full updates with `Save`, for example:
+To change updating values in Before Hooks, you should use `SetColumn` unless it is a full updates with `Save`, for example:
 
 ```go
-func (user *User) BeforeSave(scope *gorm.Scope) (err error) {
+func (user *User) BeforeSave(tx *gorm.DB) (err error) {
   if pw, err := bcrypt.GenerateFromPassword(user.Password, 0); err == nil {
-    scope.SetColumn("EncryptedPassword", pw)
+    tx.Statement.SetColumn("EncryptedPassword", pw)
+  }
+
+  if tx.Statement.Changed("Code") {
+    s.Age += 20
+    tx.Statement.SetColumn("Age", s.Age+20)
   }
 }
 

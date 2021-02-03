@@ -16,7 +16,7 @@ layout: page
 
 ## 링크
 
-* [GORM V2 강좌 예시 링크](#contribute)
+* GORM V2를 기반으로 한 관리자 시스템[GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
 ## 영상
 
@@ -24,8 +24,10 @@ layout: page
 
 ## 오픈소스
 
-* [GORM V2 플러그인 예시 링크](#contribute)
-* [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
+* [gormt - GORM mysql을 golang 구조체로 변환](https://github.com/xxjwxc/gormt)
+* [go-paginate - cursor-based pagination](https://github.com/raphaelvigee/go-paginate)
+* [zapgorm - Uber's Zap logging driver for gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
+* [zapgorm2 - Uber's Zap logging driver for gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 
 ## <span id="contribute">이 페이지에 기여하세요</span>
 

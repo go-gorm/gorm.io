@@ -16,7 +16,7 @@ layout: страница
 
 ## Ссылки
 
-* [GORM V2 пример ссылки на статью](#contribute)
+* Админка, основанная на GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
 ## Видео
 
@@ -24,8 +24,10 @@ layout: страница
 
 ## Открытый исходный код
 
-* [GORM V2 пример ссылки на плагин](#contribute)
-* [gormt - GORM mysql в golang struct](https://github.com/xxjwxc/gormt)
+* [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
+* [go-paginate - cursor-based pagination](https://github.com/raphaelvigee/go-paginate)
+* [zapgorm - Uber's Zap logging driver for gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
+* [zapgorm2 - Uber's Zap logging driver for gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 
 ## <span id="contribute">Внести изменения в эту страницу</span>
 

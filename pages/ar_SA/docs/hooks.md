@@ -143,14 +143,14 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx. Statement, e.g:
-  tx. Select("Name", "Age")
-  tx. AddClause(clause. OnConflict{DoNothing: true})
+  // Modify current operation through tx.Statement, e.g:
+  tx.Statement.Select("Name", "Age")
+  tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
-  // tx is new session mode without the `WithConditions` option
+  // tx is new session mode with the `NewDB` option
   // operations based on it will run inside same transaction but without any current conditions
   var role Role
-  err := tx. First(&role, "name = ?", user. Role). Error
+  err := tx.First(&role, "name = ?", user.Role).Error
   // SELECT * FROM roles WHERE name = "admin"
   // ...
   return err

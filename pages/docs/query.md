@@ -28,40 +28,45 @@ result.Error        // returns error
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
+{% note warn %}
+If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`, the `Find` method accepts both struct and slice data
+{% endnote %}
+
 The `First`, `Last` method will find the first/last record order by primary key, it only works when querying with struct or provides model value, if no primary key defined for current model, will order by the first field, for example:
 
 ```go
 var user User
 
 // works
-DB.First(&user)
+db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
 // works
 result := map[string]interface{}{}
-DB.Model(&User{}).First(&result)
+db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
 // doesn't work
 result := map[string]interface{}{}
-DB.Table("users").First(&result)
+db.Table("users").First(&result)
 
 // works with Take
 result := map[string]interface{}{}
-DB.Table("users").Take(&result)
+db.Table("users").Take(&result)
 
 // order by first field
 type Language struct {
   Code string
   Name string
 }
-DB.First(&Language{})
+db.First(&Language{})
 // SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
 ```
 
-### Retrieving with primary key
+### Retrieving objects with primary key
 
-GORM allows to retrieve objects using primary key(s) with inline condition, it works with numbers, using string might cause SQL Injection, check out [Inline Conditions](#inline_conditions), [Security](security.html) for details
+Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions).
+Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
 
 ```go
 db.First(&user, 10)
@@ -74,7 +79,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-## Retrieving objects
+## Retrieving all objects
 
 ```go
 // Get all records
@@ -144,11 +149,25 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build query conditions, e.g:
+You can use map to build the query condition, it will use all values, e.g:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
+```
+
+Or refer [Specify Struct search fields](#specify_search_fields)
+
+### <span id="specify_search_fields">Specify Struct search fields</span>
+
+When searching with struct, you could use its field name or dbname as arguments to specify the searching fields, for example:
+
+```go
+db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
+// SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
+
+db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
+// SELECT * FROM users WHERE age = 0;
 ```
 
 ### <span id="inline_conditions">Inline Condition</span>
@@ -243,6 +262,11 @@ db.Order("age desc, name").Find(&users)
 // Multiple orders
 db.Order("age desc").Order("name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
+
+db.Clauses(clause.OrderBy{
+  Expression: clause.Expr{SQL: "FIELD(id,?)", Vars: []interface{}{[]int{1, 2, 3}}, WithoutParentheses: true},
+}).Find(&User{})
+// SELECT * FROM users ORDER BY FIELD(id,1,2,3)
 ```
 
 ## Limit & Offset

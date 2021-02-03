@@ -5,10 +5,10 @@ layout: страница
 
 ## Авто миграция
 
-Автоматически переносит вашу схему, чтобы поддерживать обновление вашей схемы.
+Automatically migrate your schema, to keep your schema up to date.
 
 {% note warn %}
-**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes, and will change existing column's type if it's size, precision, nullable changed, it **WON'T** delete unused columns to protect your data.
+**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes. It will change existing column's type if its size, precision, nullable changed. It **WON'T** delete unused columns to protect your data.
 {% endnote %}
 
 ```go
@@ -32,7 +32,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Интерфейс Мигратора
 
-GORM provides migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
+GORM provides a migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
 
 SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table
 
@@ -86,21 +86,21 @@ db.Migrator().CurrentDatabase()
 ### Таблицы
 
 ```go
-// Создать таблицу для `User`
+// Create table for `User`
 db.Migrator().CreateTable(&User{})
 
-// Добавить "ENGINE=InnoDB" в создание таблицы SQL для `User`
-db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{})
+// Append "ENGINE=InnoDB" to the creating table SQL for `User`
+db.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&User{})
 
-// Проверить существует ли таблица для `User` или нет
+// Check table for `User` exists or not
 db.Migrator().HasTable(&User{})
 db.Migrator().HasTable("users")
 
-// Drop таблицу если существует (будет игнорировать или удалять внешние ключи при drop)
+// Drop table if exists (will ignore or delete foreign key constraints when dropping)
 db.Migrator().DropTable(&User{})
 db.Migrator().DropTable("users")
 
-// Переименовать таблицу
+// Rename old table to new table
 db.Migrator().RenameTable(&User{}, &UserInfo{})
 db.Migrator().RenameTable("users", "user_infos")
 ```
@@ -151,6 +151,34 @@ db.Migrator().DropConstraint(&User{}, "name_checker")
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
+Create foreign keys for relations
+
+```go
+type User struct {
+  gorm.Model
+  CreditCards []CreditCard
+}
+
+type CreditCard struct {
+  gorm.Model
+  Number string
+  UserID uint
+}
+
+// create database foreign key for user & credit_cards
+db.Migrator().CreateConstraint(&User{}, "CreditCards")
+db.Migrator().CreateConstraint(&User{}, "fk_users_credit_cards")
+// ALTER TABLE `credit_cards` ADD CONSTRAINT `fk_users_credit_cards` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
+
+// check database foreign key for user & credit_cards exists or not
+db.Migrator().HasConstraint(&User{}, "CreditCards")
+db.Migrator().HasConstraint(&User{}, "fk_users_credit_cards")
+
+// drop database foreign key for user & credit_cards
+db.Migrator().DropConstraint(&User{}, "CreditCards")
+db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
+```
+
 ### Индексы
 
 ```go
@@ -159,15 +187,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// Создать индекс на колонке Name
+// Create index for Name field
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// Удалить индекс на колонке Name
+// Drop index for Name field
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// Проверка существования индекса
+// Check Index exists
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -176,14 +204,14 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// Изменить имя индекса
+// Rename index name
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
 ## Ограничения
 
-GORM creates constraints when auto migrating or creating table, checkout [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORM creates constraints when auto migrating or creating table, see [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
 
 ## Другие инструменты миграции
 
@@ -194,4 +222,4 @@ GORM's AutoMigrate works well for most cases, but if you are looking for more se
 db.DB()
 ```
 
-Refer [Generic Interface](generic_interface.html) for more details.
+Refer to [Generic Interface](generic_interface.html) for more details.

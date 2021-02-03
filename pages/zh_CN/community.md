@@ -16,7 +16,7 @@ layout: page
 
 ## 链接
 
-* [GORM V2 文章链接示例](#contribute)
+* 一个基于 GORM V2 的管理系统 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
 ## 视频
 
@@ -24,8 +24,10 @@ layout: page
 
 ## 开源软件
 
-* [GORM V2 插件链接示例](#contribute)
-* [gormt - 数据库 到 golang 结构体映射工具](https://github.com/xxjwxc/gormt)
+* [gormt - 将 mysql 转换为 golang struct](https://github.com/xxjwxc/gormt)
+* [go-paginate - 基于游标的分页器](https://github.com/raphaelvigee/go-paginate)
+* [zapgorm - Uber's Zap logging driver for gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
+* [zapgorm2 - Uber's Zap logging driver for gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 
 ## <span id="contribute">完善本页面</span>
 

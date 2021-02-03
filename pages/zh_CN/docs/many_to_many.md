@@ -60,25 +60,29 @@ type Language struct {
 //   foreign key: language_id, reference: languages.id
 ```
 
-若要重写它们，可以使用标签 `foreignKey`、`reference`、`joinforeignKey`、`joinReferences`。当然，您不需要使用全部的标签，你可以仅使用其中的一个重写部分的外键、引用。
+若要重写它们，可以使用标签 `foreignKey`、`references`、`joinforeignKey`、`joinReferences`。当然，您不需要使用全部的标签，你可以仅使用其中的一个重写部分的外键、引用。
 
 ```go
 type User struct {
     gorm.Model
     Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:UserRefer"`
-    Refer    uint
+    Refer    uint      `gorm:"index:,unique"`
 }
 
 type Profile struct {
     gorm.Model
     Name      string
-    UserRefer uint
+    UserRefer uint `gorm:"index:,unique"`
 }
 
-// 会创建连接表：user_profiles
-//   foreign key: user_refer_id, reference: users.refer
-//   foreign key: profile_refer, reference: profiles.user_refer
+// 这会创建连接表：user_profiles
+//   外键：user_refer_id,，引用：users.refer
+//   外键：profile_refer，引用：profiles.user_refer
 ```
+
+{% note warn %}
+**注意：** 某些数据库只允许在唯一索引字段上创建外键，如果您在迁移时会创建外键，则需要指定 `unique index` 标签。
+{% endnote %}
 
 ## 自引用 Many2Many
 
@@ -97,7 +101,7 @@ type User struct {
 
 ## 预加载
 
-GORM 允许通过 `Preload` 预加载 has many 关联的记录，查看 [预加载](preload.html) 获取详情
+GORM 可以通过 `Preload` 预加载 has many 关联的记录，查看 [预加载](preload.html) 获取详情
 
 ## Many2Many 的 CURD
 
@@ -105,7 +109,11 @@ GORM 允许通过 `Preload` 预加载 has many 关联的记录，查看 [预加�
 
 ## 自定义连接表
 
-`连接表` 可以是一个全功能的模型，支持 `Soft Delete`、`钩子`、定义更多的字段，就跟其它模型一样。您可以通过 `SetupJoinTable` 指定它，例如：
+`连接表` 可以是一个全功能的模型，支持 `Soft Delete`、`钩子`、更多的字段，就跟其它模型一样。您可以通过 `SetupJoinTable` 指定它，例如：
+
+{% note warn %}
+**注意：** 自定义连接表要求外键是复合主键或复合唯一索引
+{% endnote %}
 
 ```go
 type Person struct {
@@ -120,8 +128,8 @@ type Address struct {
 }
 
 type PersonAddress struct {
-  PersonID  int
-  AddressID int
+  PersonID  int `gorm:"primaryKey"`
+  AddressID int `gorm:"primaryKey"`
   CreatedAt time.Time
   DeletedAt gorm.DeletedAt
 }
@@ -152,6 +160,8 @@ type Language struct {
 
 // CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
+
+你也可以在删除记录时通过 `Select` 来删除 many2many 关系的记录，查看 [Delete with Select](associations.html#delete_with_select) 获取详情
 
 ## 复合外键
 
@@ -192,4 +202,4 @@ type Blog struct {
 //   foreign key: tag_id, reference: tags.id
 ```
 
-还可以查看 [复合主键](composite_primary_key.html)
+查看 [复合主键](composite_primary_key.html) 获取详情

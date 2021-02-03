@@ -24,7 +24,7 @@ func main() {
 **NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
 {% endnote %}
 
-MySQLドライバは、初期化中に利用できる [高度な設定](https://github.com/go-gorm/mysql) をいくつか用意しています。例えば、：
+MySQL Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -77,11 +77,11 @@ import (
   "gorm.io/gorm"
 )
 
-dsn := "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
+dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+Postgresのdatabase/sqlドライバとして [pgx](https://github.com/jackc/pgx) を使用しています。これはデフォルトでprepared statement cacheを有効にしています。無効にするには:
 
 ```go
 // https://github.com/go-gorm/postgres
@@ -91,9 +91,9 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### ドライバーのカスタマイズ
 
-GORM allows customize the PostgreSQL driver with the `DriverName` option, for example:
+GORMでは、 `DriverName` オプションを使用してPostgreSQLドライバをカスタマイズできます。例:
 
 ```go
 import (
@@ -107,9 +107,9 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 })
 ```
 
-### Existing database connection
+### 既存のデータベース接続
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORMでは、既存のデータベース接続で `*gorm.DB` を初期化することができます
 
 ```go
 import (
@@ -152,9 +152,41 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
+## Clickhouse
+
+https://github.com/go-gorm/clickhouse
+
+```go
+import (
+  "gorm.io/driver/clickhouse"
+  "gorm.io/gorm"
+)
+
+func main() {
+  dsn := "tcp://localhost:9000?database=gorm&username=gorm&password=gorm&read_timeout=10&write_timeout=20"
+  db, err := gorm.Open(clickhouse.Open(dsn), &gorm.Config{})
+
+  // Auto Migrate
+  db.AutoMigrate(&User{})
+  // Set table options
+  db.Set("gorm:table_options", "ENGINE=Distributed(cluster, default, hits)").AutoMigrate(&User{})
+
+  // Insert
+  db.Create(&user)
+
+  // Select
+  db.Find(&user, "id = ?", 10)
+
+  // Batch Insert
+  var users = []User{user1, user2, user3}
+  db.Create(&users)
+  // ...
+}
+```
+
 ## Connection Pool
 
-GORM using \[database/sql\]((https://pkg.go.dev/database/sql) to maintain connection pool
+GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
 
 ```go
 sqlDB, err := db.DB()
@@ -171,7 +203,7 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Refer [Generic Interface](generic_interface.html) for details
 
-## サポートされていないデータベース
+## Unsupported Databases
 
 Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 

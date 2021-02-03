@@ -3,9 +3,9 @@ title: Transactions
 layout: page
 ---
 
-## Disable Default Transaction
+## Menonaktifkan transaction default
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required, you will gain about 30%+ performance improvement after that
+GORM melakukan operasi (create / update / delete) yang dijalankan di dalam transaction untuk memastikan konsistensi data, kita dapat menonaktifkannya selama inisialisasi jika tidak diperlukan, kita akan memperoleh peningkatan kinerja sekitar 30% + setelah itu
 
 ```go
 // Globally disable
@@ -22,7 +22,7 @@ tx.Model(&user).Update("Age", 18)
 
 ## Transaction
 
-To perform a set of operations within a transaction, the general flow is as below.
+Untuk melakukan serangkaian operasi dalam suatu transaction, pada umumnya seperti metode di bawah ini.
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
@@ -43,10 +43,10 @@ db.Transaction(func(tx *gorm.DB) error {
 
 ### Nested Transactions
 
-GORM supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
+GORM mendukung transaksi nested, Anda dapat melakukan rollback subset operasi yang dapat dilakukan dalam cakupan transaksi yang lebih besar, misalnya:
 
 ```go
-DB.Transaction(func(tx *gorm.DB) error {
+db.Transaction(func(tx *gorm.DB) error {
   tx.Create(&user1)
 
   tx.Transaction(func(tx2 *gorm.DB) error {
@@ -65,7 +65,7 @@ DB.Transaction(func(tx *gorm.DB) error {
 // Commit user1, user3
 ```
 
-## Transactions by manual
+## Transactions Secara Manual
 
 ```go
 // begin a transaction
@@ -83,7 +83,7 @@ tx.Rollback()
 tx.Commit()
 ```
 
-### A Specific Example
+### Contoh Lebih Spesifik
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
@@ -115,10 +115,10 @@ func CreateAnimals(db *gorm.DB) error {
 
 ## SavePoint, RollbackTo
 
-GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
+GORM menyediakan ` SavePoint `, ` RollbackTo ` untuk menyimpan nilai dan memutar kembali ke satu nilai simpan, misalnya:
 
 ```go
-tx := DB.Begin()
+tx := db.Begin()
 tx.Create(&user1)
 
 tx.SavePoint("sp1")

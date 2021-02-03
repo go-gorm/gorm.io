@@ -34,7 +34,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 ```go
 // 检查错误是否为 RecordNotFound
 err := db.First(&user, 100).Error
-errors.Is(err, ErrRecordNotFound)
+errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
 ## Errors
