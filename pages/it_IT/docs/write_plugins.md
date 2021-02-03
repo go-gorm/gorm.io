@@ -30,7 +30,7 @@ func cropImage(db *gorm.DB) {
         }
       case reflect.Struct:
         // Get value from field
-        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); !isZero {
+        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
