@@ -16,12 +16,12 @@ GORM 自身也是基于 `Callbacks` 的，包括 `Create`、`Query`、`Update`�
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // crop image fields and upload them to CDN, dummy code
+    // 裁剪图片字段并上传到CDN，dummy code
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
-          // Get value from field
+          // 从字段中获取数值
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -29,31 +29,31 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        // Get value from field
+        // 从字段中获取数值
         if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); !isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
 
-        // Set value to field
+        // 将值设置给字段
         err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
-    // All fields for current model
+    // 当前实体的所有字段
     db.Statement.Schema.Fields
 
-    // All primary key fields for current model
+    // 当前实体的所有主键字段
     db.Statement.Schema.PrimaryFields
 
-    // Prioritized primary key field: field with DB name `id` or the first defined primary key
+    // 优先主键字段：带有数据库名称`id`或第一个定义的主键的字段。
     db.Statement.Schema.PrioritizedPrimaryField
 
-    // All relationships for current model
+    // 当前模型的所有关系
     db.Statement.Schema.Relationships
 
-    // Find field with field name or db name
+    // 使用字段名或数据库名查找字段
     field := db.Statement.Schema.LookUpField("Name")
 
     // processing
@@ -61,7 +61,7 @@ func cropImage(db *gorm.DB) {
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// register a callback for Create process
+// 为Create注册一个回调
 ```
 
 ### 删除 Callback
