@@ -16,12 +16,12 @@ layout: страница
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // обрезать поля картинок и загрузить на CDN, пример кода
+    // crop image fields and upload them to CDN, dummy code
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
-          // Получить значение из поля
+          // Get value from field
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -29,39 +29,39 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        // Получить значение из поля
-        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
+        // Get value from field
+        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); !isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
 
-        // Установить значение в поле
+        // Set value to field
         err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
-    // Все поля для текущей модели
+    // All fields for current model
     db.Statement.Schema.Fields
 
-    // Все первичные ключи для текущей модели
+    // All primary key fields for current model
     db.Statement.Schema.PrimaryFields
 
-    // Приоритетный первичный ключ: поле в названием id или первый определенный первичный ключ
+    // Prioritized primary key field: field with DB name `id` or the first defined primary key
     db.Statement.Schema.PrioritizedPrimaryField
 
-    // Все связи для текущей модели
+    // All relationships for current model
     db.Statement.Schema.Relationships
 
-    // Найти поле при помощи названия поля или названия в БД
+    // Find field with field name or db name
     field := db.Statement.Schema.LookUpField("Name")
 
-    // работа
+    // processing
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// Регистрация callback для процесса Create
+// register a callback for Create process
 ```
 
 ### Удаление функций callback
