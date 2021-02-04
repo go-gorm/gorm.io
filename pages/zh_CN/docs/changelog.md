@@ -9,7 +9,7 @@ GORM 2.0 是基于用户过去几年中的反馈进行思考后的重写，在�
 
 * 性能优化
 * 代码模块化
-* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
+* Context，批量插入，预编译模式，DryRun 模式，Join 预加载，Find To Map，Create From Map，FindInBatches 支持
 * SavePoint/RollbackTo/Nested Transaction 支持
 * 命名参数、Group 条件、Upsert、锁定、优化/索引/评论提示支持、SubQuery 改进
 * 完整的自引用支持，连接表改进，批量数据的关联模式
