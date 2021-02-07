@@ -29,10 +29,10 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
 {% note warn %}
-If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`, the `Find` method accepts both struct and slice data
+如果你想避免`ErrRecordNotFound`错误，你可以使用`Find`，比如`db.Limit(1).Find(&user)`，`Find`方法可以接受struct和slice的数据。
 {% endnote %}
 
-The `First`, `Last` method will find the first/last record order by primary key, it only works when querying with struct or provides model value, if no primary key defined for current model, will order by the first field, for example:
+`First`, `Last`方法将按主键排序查找第一/最后一条记录，只有在用struct查询或提供model value时才有效，如果当前model没有定义主键，将按第一个字段排序，例如：
 
 ```go
 var user User
@@ -63,9 +63,9 @@ db.First(&Language{})
 // SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
 ```
 
-### 根据主键检索
+### 用主键检索
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions). Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
+可以使用[内联条件](#inline_conditions)用主键检索对象。 对字符串要格外小心，避免SQL注入攻击，查看[安全](security.html)部分了解详情。
 
 ```go
 db.First(&user, 10)
@@ -140,7 +140,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**NOTE** 当使用struct查询时，GORM只对非零字段进行查询，也就是说如果你的字段的值是`0`，`''`，`false`或其他[零值](https://tour.golang.org/basics/12)，它将不会被用来建立查询条件，例如：
 {% endnote %}
 
 ```go
@@ -148,18 +148,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build the query condition, it will use all values, e.g:
+你可以使用map来建立查询条件，它会使用所有的值，例如：
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-Or refer [Specify Struct search fields](#specify_search_fields)
+或者参考[指定结构体查询字段](#specify_search_fields)。
 
 ### <span id="specify_search_fields">指定结构体查询字段</span>
 
-When searching with struct, you could use its field name or dbname as arguments to specify the searching fields, for example:
+在使用 struct 搜索时，可以使用它的字段名或数据库名作为参数来指定搜索字段，例如：
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -171,7 +171,7 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 
 ### <span id="inline_conditions">内联条件</span>
 
-Works similar to `Where`.
+类似于`Where`。
 
 ```go
 // SELECT * FROM users WHERE id = 23;
@@ -197,7 +197,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 
 ### Not 条件
 
-Build NOT conditions, works similar to `Where`
+建立NOT条件，类似于`Where`。
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -231,11 +231,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-Also check out [Group Conditions in Advanced Query](advanced_query.html#group_conditions), it can be used to write complicated SQL
+也可以查看[高级查询中的Group条件](advanced_query.html#group_conditions)，它可以用来编写复杂的SQL。
 
 ## 选择特定字段
 
-Specify fields that you want to retrieve from database, by default, select all fields
+指定要从数据库中检索的字段，默认选择所有字段。
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -248,11 +248,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-Also check out [Smart Select Fields](advanced_query.html#smart_select)
+也可以查看[智能选择字段](advanced_query.html#smart_select)。
 
 ## Order
 
-Specify order when retrieving records from the database
+从数据库中检索记录时指定顺序。
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -270,7 +270,7 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit`指定要检索的最大记录数。 `Offset`指定在开始返回记录前要跳过的记录数。
 
 ```go
 db.Limit(3).Find(&users)
@@ -293,7 +293,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-Checkout [Pagination](scopes.html#pagination) for how to make a paginator
+查看[分页](scopes.html#pagination)，了解如何制作分页器。
 
 ## Group & Having
 
@@ -329,17 +329,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+从model中选择特定的值
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
+`Distinct`也可以与[`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count)一起工作。
 
 ## Joins
 
-Specify Joins conditions
+指定join条件
 
 ```go
 type result struct {
@@ -362,18 +362,18 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ### Joins 预加载
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+您可以使用 `Joins` 实现单条 SQL 急加载关联记录，例如：
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Refer [Preloading (Eager Loading)](preload.html) for details
+请参阅[预加载(急加载)](preload.html)了解详情。
 
 ## <span id="scan">Scan</span>
 
-Scan results into a struct work similar to `Find`
+Scan 结果至 struct，用法与 `Find` 类似
 
 ```go
 type Result struct {

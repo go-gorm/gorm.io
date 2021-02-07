@@ -16,12 +16,12 @@ GORM 自身也是基于 `Callbacks` 的，包括 `Create`、`Query`、`Update`�
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // 伪代码：裁剪图片并上传至 CDN
+    // 裁剪图片字段并上传到CDN，dummy code
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
-          // 从字段获取值
+          // 从字段中获取数值
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -29,39 +29,39 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        // 从字段获取值
-        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); isZero {
+        // 从字段中获取数值
+        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); !isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
 
-        // 设置字段值
+        // 将值设置给字段
         err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
-    // 当前 Model 的所有字段
+    // 当前实体的所有字段
     db.Statement.Schema.Fields
 
-    // 当前 Model 的所有主键字段
+    // 当前实体的所有主键字段
     db.Statement.Schema.PrimaryFields
 
-    // 优先主键字段：带有 db 名为 `id` 或定义的第一个主键字段。
+    // 优先主键字段：带有数据库名称`id`或第一个定义的主键的字段。
     db.Statement.Schema.PrioritizedPrimaryField
 
-    // 当前 Model 的所有关系
+    // 当前模型的所有关系
     db.Statement.Schema.Relationships
 
-    // 根据 db 名或字段名查找字段
+    // 使用字段名或数据库名查找字段
     field := db.Statement.Schema.LookUpField("Name")
 
-    // 处理...
+    // processing
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// 为 Create 流程注册一个 callback
+// 为Create注册一个回调
 ```
 
 ### 删除 Callback

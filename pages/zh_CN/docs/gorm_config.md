@@ -32,7 +32,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## <span id="naming_strategy">命名策略</span>
 
-GORM 允许用户通过覆盖默认的`命名策略`更改默认的命名约定，这需要实现接口 `Namer`
+GORM 允许用户通过覆盖默认的`NamingStrategy`来更改命名约定，这需要实现接口 `Namer`
 
 ```go
 type Namer interface {
@@ -50,9 +50,9 @@ type Namer interface {
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   NamingStrategy: schema.NamingStrategy{
-    TablePrefix: "t_",   // table name prefix, table for `User` would be `t_users`
-    SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
-    NameReplacer: strings.NewReplacer("CID", "Cid"), // use name replacer to change struct/field name before convert it to db name
+    TablePrefix: "t_",   // 表名前缀，`User`表为`t_users`
+    SingularTable: true, // 使用单数表名，启用该选项后，`User` 表将是`user`
+    NameReplacer: strings.NewReplacer("CID", "Cid"), // 在转为数据库名称之前，使用NameReplacer更改结构/字段名称。
   },
 })
 ```

@@ -3,9 +3,9 @@ title: Associations
 layout: page
 ---
 
-## Auto Create/Update
+## Otomatik Oluşturma/Güncelleme
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORM, referans objeyi ve bu referansın ilişkilerini [Upsert](create.html#upsert) metodu ile otomatik olarak kaydedebilir/güncelleyebilir.
 
 ```go
 user := User{
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+Eğer ilişkili veriyi güncellemek istiyorsanız `FullSaveAssociations` modunu kullanmalısınız:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -45,9 +45,9 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // ...
 ```
 
-## Skip Auto Create/Update
+## Otomatik Oluşturma/Güncellemeyi Atlama
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+`Select` veya `Omit` kullanarak oluşturma/güncelleme işleminin etkilediği ilişkileri/entityleri değiştirebilirsiniz:
 
 ```go
 user := User{
@@ -68,14 +68,14 @@ db.Select("Name").Create(&user)
 // INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
 db.Omit("BillingAddress").Create(&user)
-// Skip create BillingAddress when creating a user
+// BillingAddress oluşturmadan user oluştur
 
 db.Omit(clause.Associations).Create(&user)
-// Skip all associations when creating a user
+// user oluştururken hiçbir ilişki oluşturma
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**NOT:** Çoka çok ilişkiler için, GORM join tablosu referanslarından önce ilişkileri upsert(varsa güncelle, yoksa oluştur) edecektir, upsert adımını şu şekilde atlayabilirsiniz:
 
 ```go
 db.Omit("Languages.*").Create(&user)
@@ -88,7 +88,7 @@ db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
-## Select/Omit Association fields
+## İlişkisel Alanlar(Fields) ve Select/Omit
 
 ```go
 user := User{
@@ -97,36 +97,36 @@ user := User{
   ShippingAddress: Address{Address1: "Shipping Address - Address 1", Address2: "addr2"},
 }
 
-// Create user and his BillingAddress, ShippingAddress
-// When creating the BillingAddress only use its address1, address2 fields and omit others
+// user ile user'a ait BillingAddress ve ShippingAddress'i oluştur
+// BillingAddress'i oluştururken sadece address1, address2 alanlarını kullan ve diğerlerini yoksay
 db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
 
 db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 ```
 
-## Association Mode
+## İlişki Modu
 
-Association Mode contains some commonly used helper methods to handle relationships
+İlişki modu, ilişkileri idare etmek için sıklıkla kullanılan yardımcı metodları içerir
 
 ```go
-// Start Association Mode
+// İlişki modunu başlat
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// `user` kaynak model olarak primary key'e sahip olmalıdır
+// `Languages` ilişkinin field adıdır
+// Eğer yukarıdaki şartlar sağlanırsa, ilişki modu(AssociationMode) başlar, veya hata döndürür
 db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### İlişkileri Bul
 
-Find matched associations
+Eşleşen ilişkileri bul
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-Find associations with conditions
+Belirli şartlara bağlı olarak ilişkileri bul
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
@@ -135,9 +135,9 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### İlişki Ekle
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+`Çoka çok`, `bire çok`, ilişkilere yenisini eklemek; `bire bir`, `sahiplik` ilişkilerini değiştirmek için
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -147,9 +147,9 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### İlişkileri Değiştir
 
-Replace current associations with new ones
+Şu anki ilişkileri yenisiyle değiştirmek için
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -157,44 +157,44 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### İlişkileri Sil
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+Kaynak ve parametre arasında ilişki varsa siler, sadece referansı siler ve veritabanındaki objeleri silmez.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### İlişkileri Temizle
 
-Remove all reference between source & association, won't delete those associations
+Kaynak & ilişki arasındaki tüm referansları siler, ilintili ilişkiyi silmez
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### İlişki Sayısı
 
-Return the count of current associations
+Var olan ilişkilerin sayısını döndürür
 
 ```go
 db.Model(&user).Association("Languages").Count()
 
-// Count with conditions
+// Şartlara uyan ilişki sayısı 
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Batch Data
+### Toplu Veri
 
-Association Mode supports batch data, e.g:
+İlişki modu toplu veri işlemlerini destekler:
 
 ```go
-// Find all roles for all users
+// Tüm user'lar için tüm role'leri bul
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// User A'yı tüm kullanıcıların Team'lerinden sil
 db.Model(&users).Association("Team").Delete(&userA)
 
 // Get unduplicated count of members in all user's team
