@@ -195,10 +195,10 @@ Association Mode supports batch data, e.g:
 // Find all roles for all users
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// Delete User A from all user's team
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get unduplicated count of members in all user's team
+// Get distinct count of all users' teams
 db.Model(&users).Association("Team").Count()
 
 // For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will return error
@@ -223,7 +223,7 @@ db.Select("Orders", "CreditCards").Delete(&user)
 // delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
 
-// delete users's account when deleting users
+// delete each user's account when deleting users
 db.Select("Account").Delete(&users)
 ```
 
