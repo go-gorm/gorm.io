@@ -201,7 +201,7 @@ db.Model(&users).Association("Team").Delete(&userA)
 // Get distinct count of all users' teams
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will return error
+// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
