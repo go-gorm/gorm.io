@@ -140,7 +140,7 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// Change model Person's field Addresses's join table to PersonAddress
+// Change model Person's field Addresses' join table to PersonAddress
 // PersonAddress must defined all required foreign keys or it will raise error
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
