@@ -65,7 +65,7 @@ db.First(&Language{})
 
 ### 用主键检索
 
-可以使用[内联条件](#inline_conditions)用主键检索对象。 对字符串要格外小心，避免SQL注入攻击，查看[安全](security.html)部分了解详情。
+Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number, Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
 
 ```go
 db.First(&user, 10)
@@ -78,14 +78,21 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
+If primary key is a string like uuid, need to write it like:
+
+```go
+db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
+// SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
+```
+
 ## 检索全部对象
 
 ```go
-// 获取全部记录
+// Get all records
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // 返回找到的记录数，相当于 `len(users)`
+result.RowsAffected // returns found records count, equals `len(users)`
 result.Error        // returns error
 ```
 
@@ -94,11 +101,11 @@ result.Error        // returns error
 ### String 条件
 
 ```go
-// 获取第一条匹配的记录
+// Get first matched record
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
-// 获取全部匹配的记录
+// Get all matched records
 db.Where("name <> ?", "jinzhu").Find(&users)
 // SELECT * FROM users WHERE name <> 'jinzhu';
 
@@ -134,13 +141,13 @@ db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// 主键切片条件
+// Slice of primary keys
 db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
 {% note warn %}
-**NOTE** 当使用struct查询时，GORM只对非零字段进行查询，也就是说如果你的字段的值是`0`，`''`，`false`或其他[零值](https://tour.golang.org/basics/12)，它将不会被用来建立查询条件，例如：
+**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
 {% endnote %}
 
 ```go
@@ -148,18 +155,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-你可以使用map来建立查询条件，它会使用所有的值，例如：
+You can use map to build the query condition, it will use all values, e.g:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-或者参考[指定结构体查询字段](#specify_search_fields)。
+Or refer [Specify Struct search fields](#specify_search_fields)
 
 ### <span id="specify_search_fields">指定结构体查询字段</span>
 
-在使用 struct 搜索时，可以使用它的字段名或数据库名作为参数来指定搜索字段，例如：
+When searching with struct, you could use its field name or dbname as arguments to specify the searching fields, for example:
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -171,11 +178,11 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 
 ### <span id="inline_conditions">内联条件</span>
 
-类似于`Where`。
+Works similar to `Where`.
 
 ```go
 // SELECT * FROM users WHERE id = 23;
-// 根据主键获取记录，如果是非整型主键
+// Get by primary key if it were a non-integer type
 db.First(&user, "id = ?", "string_primary_key")
 // SELECT * FROM users WHERE id = 'string_primary_key';
 
@@ -184,20 +191,20 @@ db.Find(&user, "name = ?", "jinzhu")
 // SELECT * FROM users WHERE name = "jinzhu";
 
 db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
-//// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
+// SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
 
 // Struct
 db.Find(&users, User{Age: 20})
-//// SELECT * FROM users WHERE age = 20;
+// SELECT * FROM users WHERE age = 20;
 
 // Map
 db.Find(&users, map[string]interface{}{"age": 20})
-//// SELECT * FROM users WHERE age = 20;
+// SELECT * FROM users WHERE age = 20;
 ```
 
 ### Not 条件
 
-建立NOT条件，类似于`Where`。
+Build NOT conditions, works similar to `Where`
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -211,7 +218,7 @@ db.Not(map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}).Find(&use
 db.Not(User{Name: "jinzhu", Age: 18}).First(&user)
 // SELECT * FROM users WHERE name <> "jinzhu" AND age <> 18 ORDER BY id LIMIT 1;
 
-// 不在主键切片中的记录
+// Not In slice of primary keys
 db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
@@ -231,11 +238,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-也可以查看[高级查询中的Group条件](advanced_query.html#group_conditions)，它可以用来编写复杂的SQL。
+Also check out [Group Conditions in Advanced Query](advanced_query.html#group_conditions), it can be used to write complicated SQL
 
 ## 选择特定字段
 
-指定要从数据库中检索的字段，默认选择所有字段。
+Specify fields that you want to retrieve from database, by default, select all fields
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -248,17 +255,17 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-也可以查看[智能选择字段](advanced_query.html#smart_select)。
+Also check out [Smart Select Fields](advanced_query.html#smart_select)
 
 ## Order
 
-从数据库中检索记录时指定顺序。
+Specify order when retrieving records from the database
 
 ```go
 db.Order("age desc, name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
-// 多个 order
+// Multiple orders
 db.Order("age desc").Order("name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
@@ -270,13 +277,13 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit`指定要检索的最大记录数。 `Offset`指定在开始返回记录前要跳过的记录数。
+`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
 
 ```go
 db.Limit(3).Find(&users)
 // SELECT * FROM users LIMIT 3;
 
-// 通过 -1 消除 Limit 条件
+// Cancel limit condition with -1
 db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 // SELECT * FROM users LIMIT 10; (users1)
 // SELECT * FROM users; (users2)
@@ -287,13 +294,13 @@ db.Offset(3).Find(&users)
 db.Limit(10).Offset(5).Find(&users)
 // SELECT * FROM users OFFSET 5 LIMIT 10;
 
-// 通过 -1 消除 Offset 条件
+// Cancel offset condition with -1
 db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
 ```
 
-查看[分页](scopes.html#pagination)，了解如何制作分页器。
+Checkout [Pagination](scopes.html#pagination) for how to make a paginator
 
 ## Group & Having
 
@@ -329,17 +336,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-从model中选择特定的值
+Selecting distinct values from the model
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct`也可以与[`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count)一起工作。
+`Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
 
 ## Joins
 
-指定join条件
+Specify Joins conditions
 
 ```go
 type result struct {
@@ -356,24 +363,24 @@ for rows.Next() {
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// 多连接及参数
+// multiple joins with parameter
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
 ### Joins 预加载
 
-您可以使用 `Joins` 实现单条 SQL 急加载关联记录，例如：
+You can use `Joins` eager loading associations with a single SQL, for example:
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-请参阅[预加载(急加载)](preload.html)了解详情。
+Refer [Preloading (Eager Loading)](preload.html) for details
 
 ## <span id="scan">Scan</span>
 
-Scan 结果至 struct，用法与 `Find` 类似
+Scan results into a struct work similar to `Find`
 
 ```go
 type Result struct {
@@ -384,6 +391,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
 
-// 原生 SQL
+// Raw SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
