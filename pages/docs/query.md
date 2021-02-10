@@ -65,8 +65,7 @@ db.First(&Language{})
 
 ### Retrieving objects with primary key
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions).
-Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
+Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number, Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
 
 ```go
 db.First(&user, 10)
@@ -77,6 +76,13 @@ db.First(&user, "10")
 
 db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
+```
+
+If primary key is a string like uuid, need to write it like:
+
+```go
+db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
+// SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
 ## Retrieving all objects
