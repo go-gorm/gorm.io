@@ -194,13 +194,13 @@ Association Mode supports batch data, e.g:
 // Find all roles for all users
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all users's team
+// Delete User A from all user's team
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get unduplicated count of members in all user's team
+// Get distinct count of all users' teams
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, arguments's length need to equal to data's length or will return error
+// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
@@ -222,19 +222,19 @@ db.Select("Orders", "CreditCards").Delete(&user)
 // delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
 
-// delete users's account when deleting users
+// delete each user's account when deleting users
 db.Select("Account").Delete(&users)
 ```
 
 ## <span id="tags">Association Tags</span>
 
-| タグ               | 説明                                               |
-| ---------------- | ------------------------------------------------ |
-| foreignKey       | 外部キーを指定                                          |
-| references       | Specifies references                             |
-| polymorphic      | Specifies polymorphic type                       |
-| polymorphicValue | Specifies polymorphic value, default table name  |
-| many2many        | Specifies join table name                        |
-| joinForeignKey   | Specifies foreign key of jointable               |
-| joinReferences   | Specifies references' foreign key of jointable   |
-| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete` |
+| タグ               | 説明                                                                                                 |
+| ---------------- | -------------------------------------------------------------------------------------------------- |
+| foreignKey       | Specifies column name of the current model that is used as a foreign key to the join table         |
+| references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
+| polymorphic      | Specifies polymorphic type such as model name                                                      |
+| polymorphicValue | Specifies polymorphic value, default table name                                                    |
+| many2many        | Specifies join table name                                                                          |
+| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
+| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table                 |
+| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`                                                   |
