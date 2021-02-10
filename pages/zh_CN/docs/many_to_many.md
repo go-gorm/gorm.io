@@ -138,8 +138,8 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// 修改 Person 的 Addresses 字段的连接表为 PersonAddress
-// PersonAddress 必须定义好所需的外键，否则会报错
+// Change model Person's field Addresses' join table to PersonAddress
+// PersonAddress must defined all required foreign keys or it will raise error
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
