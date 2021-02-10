@@ -17,7 +17,7 @@ type User struct {
   Age          uint8
   Birthday     *time.Time
   MemberNumber sql.NullString
-  ActivedAt    sql.NullTime
+  ActivatedAt  sql.NullTime
   CreatedAt    time.Time
   UpdatedAt    time.Time
 }

@@ -521,6 +521,43 @@ func UserTable(u *User) func(*gorm.DB) *gorm.DB {
 db.Scopes(UserTable(&user)).Create(&user)
 ```
 
+#### Creating and Deleting Tables requires the use of the Migrator
+
+Previously tables could be created and dropped as follows:
+
+```go
+db.CreateTable(&MyTable{})
+db.DropTable(&MyTable{})
+```
+
+Now you do the following:
+
+```go
+db.Migrator().CreateTable(&MyTable{})
+db.Migrator().DropTable(&MyTable{})
+```
+
+#### Foreign Keys
+
+A way of adding foreign key constraints was;
+
+```go
+db.Model(&MyTable{}).AddForeignKey("profile_id", "profiles(id)", "NO ACTION", "NO ACTION")
+```
+
+Now you add constraints as follows:
+
+```go
+db.Migrator().CreateConstraint(&Users{}), "Profiles")
+db.Migrator().CreateConstraint(&Users{}), "fk_users_profiles")
+```
+
+which translates to the following sql code for postgres:
+
+```sql
+ALTER TABLE `Profiles` ADD CONSTRAINT `fk_users_profiles` FORIEGN KEY (`useres_id`) REFRENCES `users`(`id`))
+```
+
 #### Method Chain Safety/Goroutine Safety
 
 To reduce GC allocs, GORM V2 will share `Statement` when using method chains, and will only create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, to reuse a `*gorm.DB`, you need to make sure it just after a `New Session Method`, for example:

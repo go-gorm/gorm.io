@@ -191,20 +191,20 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 关联模式也支持批量处理，例如：
 
 ```go
-// 查询所有用户的所有角色
+// Find all roles for all users
 db.Model(&users).Association("Role").Find(&roles)
 
-// 将 userA 移出所有的 Team
+// Delete User A from all user's team
 db.Model(&users).Association("Team").Delete(&userA)
 
-// 获取所有 Team 成员的不重复计数
+// Get distinct count of all users' teams
 db.Model(&users).Association("Team").Count()
 
-// 对于 `Append`、`Replace` 的批量处理，参数与数据的长度必须相等，否则会返回错误
+// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
 var users = []User{user1, user2, user3}
-// 例如：我们有 3 个 user，将 userA 添加到 user1 的 Team，将 userB 添加到 user2 的 Team，将 userA、userB、userC 添加到 user3 的 Team
+// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// 将 user1 的 Team 重置为 userA，将 user2的 team 重置为 userB，将 user3 的 team 重置为 userA、userB 和 userC
+// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
@@ -213,28 +213,28 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 你可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
 
 ```go
-// 删除 user 时，也删除 user 的 account
+// delete user's account when deleting user
 db.Select("Account").Delete(&user)
 
-// 删除 user 时，也删除 user 的 Orders、CreditCards 记录
+// delete user's Orders, CreditCards relations when deleting user
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// 删除 user 时，也删除用户所有 has one/many、many2many 记录
+// delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
 
-// 删除 user 时，也删除 user 的 account
+// delete each user's account when deleting users
 db.Select("Account").Delete(&users)
 ```
 
 ## <span id="tags">关联标签</span>
 
-| 标签               | 描述                            |
-| ---------------- | ----------------------------- |
-| foreignKey       | 指定外键                          |
-| references       | 指定引用                          |
-| polymorphic      | 指定多态类型                        |
-| polymorphicValue | 指定多态值、默认表名                    |
-| many2many        | 指定连接表表名                       |
-| joinForeignKey   | 指定连接表的外键                      |
-| joinReferences   | 指定连接表的引用外键                    |
-| constraint       | 关系约束，例如：`OnUpdate`、`OnDelete` |
+| 标签               | 描述                                                                                                 |
+| ---------------- | -------------------------------------------------------------------------------------------------- |
+| foreignKey       | Specifies column name of the current model that is used as a foreign key to the join table         |
+| references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
+| polymorphic      | Specifies polymorphic type such as model name                                                      |
+| polymorphicValue | 指定多态值、默认表名                                                                                         |
+| many2many        | 指定连接表表名                                                                                            |
+| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
+| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table                 |
+| constraint       | 关系约束，例如：`OnUpdate`、`OnDelete`                                                                      |

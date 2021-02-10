@@ -11,7 +11,16 @@ Models are normal structs with basic Go types, pointers/alias of them or custom 
 
 ```go
 type User struct {
-  CreatedAt time.
+  ID           uint
+  Name         string
+  Email        *string
+  Age          uint8
+  Birthday     *time.Time
+  MemberNumber sql.NullString
+  ActivatedAt  sql.NullTime
+  CreatedAt    time.Time
+  UpdatedAt    time.Time
+}
 ```
 
 ## Conventions
