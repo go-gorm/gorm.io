@@ -81,7 +81,7 @@ dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=dis
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+kita menggunakan [pgx](https://github.com/jackc/pgx)  sebagai database Postgres's/sql driver , memungkinkan menyiapkan cache secara default,  unutk menonaktikannya :
 
 ```go
 // https://github.com/go-gorm/postgres
@@ -93,7 +93,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Customize Driver
 
-GORM allows customize the PostgreSQL driver with the `DriverName` option, for example:
+GORM memungkinkan mengubah driver PostgresSql dengan`DirName`  pilihan, sebagai contoh
 
 ```go
 import (
@@ -109,7 +109,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Existing database connection
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM mengijinkan untuk inialisasi `*gorm.DB` dengan koneksi database yang sudah ada
 
 ```go
 import (
@@ -136,7 +136,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
 {% note warn %}
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**Catatan:** kamu bisa menggunakan `file::memory:?cache=shared` alih alih jalur dari folder ke file hal ini akan memberitahu SQL Lite untuk menggunakan database sementara dalam sistem memory (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
 {% endnote %}
 
 ## SQL Server
@@ -186,7 +186,7 @@ func main() {
 
 ## Connection Pool
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM menggunakan [database/sql](https://pkg.go.dev/database/sql) untuk melakukan pemeliharaan secara keseluruhan
 
 ```go
 sqlDB, err := db.DB()
@@ -205,6 +205,6 @@ Refer [Generic Interface](generic_interface.html) for details
 
 ## Unsupported Databases
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Beberapa database memang kompetibel dengan file ,`mysql` atau ` postgres`  dialect, dalam hal ini anda dapat menggunakan dialect  untuk database tersebut
 
 For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
