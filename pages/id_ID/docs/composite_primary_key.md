@@ -3,7 +3,7 @@ title: Composite Primary Key
 layout: page
 ---
 
-Set multiple fields as primary key creates composite primary key, for example:
+tetapkan beberapa data sebagi kunci utama , untuk membuat composisi kunci utama, sebagai contoh:
 
 ```go
 type Product struct {
