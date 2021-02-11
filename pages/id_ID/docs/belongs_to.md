@@ -5,7 +5,7 @@ layout: page
 
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Untuk Belong To sendiri menyiapkan koneksi one to one dengan model lain, sehingga setiap instance dari model yang mendeklarasikan "belong" satu instance dari model lain.
 
 For example, if your application includes users and companies, and each user can be assigned to exactly one company
 
@@ -26,7 +26,7 @@ type Company struct {
 
 ## Override Foreign Key
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Nah, agar semua itu memiliki hubungan, tentunya harus di buat kunci (foreign key) sebagai identitas. untuk kunci defaultnya menggunakan nama dari type pemilik di tambah nama bidang kunci utama.
 
 For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
 
