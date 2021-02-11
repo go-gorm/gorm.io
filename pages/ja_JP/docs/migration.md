@@ -5,10 +5,10 @@ layout: page
 
 ## Auto Migration
 
-Automatically migrate your schema, to keep your schema up to date.
+スキーマを自動的にマイグレーションし、スキーマを最新の状態に保ちます。
 
 {% note warn %}
-**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes. It will change existing column's type if its size, precision, nullable changed. It **WON'T** delete unused columns to protect your data.
+**注意:** AutoMigrate はテーブル、外部キー、制約、カラム、インデックスを作成します。 カラムのサイズ、精度、null可否などが変更された場合、既存のカラムの型を変更します。 しかし、あなたのデータを守るために、カラムの削除などの処理は**実行されません**
 {% endnote %}
 
 ```go
@@ -16,12 +16,12 @@ db.AutoMigrate(&User{})
 
 db.AutoMigrate(&User{}, &Product{}, &Order{})
 
-// テーブル作成時にテーブルの接尾辞を追加
+// Add table suffix when creating tables
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
 {% note warn %}
-**NOTE** AutoMigrate creates database foreign key constraints automatically, you can disable this feature during initialization, for example:
+**注意** AutoMigrate はデータベースの外部キー制約を自動的に作成します。初期化時にこの機能を無効にすることができます。例：
 {% endnote %}
 
 ```go
@@ -32,11 +32,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Migrator Interface
 
-GORM provides a migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
+GORMは、データベースに依存しないスキーママイグレーションを構築するために使用できる、各データベースのための統一されたAPIインタフェースを含むmigratorインタフェースを提供します。例：
 
-SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table
+SQLiteは`ALTER COLUMN`, `DROP COLUMN`をサポートしていませんが、GORMは変更しようとしているテーブルを新しいテーブルとして作成し、すべてのデータをコピーし、古いテーブルを削除し、新しいテーブルの名前を変更します。
 
-MySQL doesn't support rename column, index for some versions, GORM will perform different SQL based on the MySQL version you are using
+MySQLは、いくつかのバージョンではカラム名変更、インデックス変更をサポートしていませんが、GORMは使用しているMySQLのバージョンに応じて異なるSQLを実行します。
 
 ```go
 type Migrator interface {
@@ -77,7 +77,7 @@ type Migrator interface {
 
 ### CurrentDatabase
 
-Returns current using database name
+使用中のデータベース名を取得できます
 
 ```go
 db.Migrator().CurrentDatabase()
@@ -211,15 +211,15 @@ db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 
 ## Constraints
 
-GORM creates constraints when auto migrating or creating table, see [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORMは、テーブルの自動マイグレーション時や作成時に制約を作成します。詳細は [Constraints](constraints.html) または [Database Indexes](indexes.html) を参照してください。
 
 ## Other Migration Tools
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
+GORMのAutoMigrateはほとんどのケースでうまく機能しますが、より本格的なスキーママイグレーションツールを利用する際は、、GORMが提供している一般的なDBインターフェースが役に立ちます
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-Refer to [Generic Interface](generic_interface.html) for more details.
+詳細については、 [Generic Interface](generic_interface. html) を参照してください。
