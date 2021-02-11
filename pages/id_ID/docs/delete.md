@@ -5,7 +5,7 @@ layout: page
 
 ## Delete a Record
 
-When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
+Saat menghapus  data, nilai yang di hapus perlu memiliki kunci utama atau itu akan memicu  [Batch Delete](#batch_delete), sebagai contoh
 
 ```go
 // Email's ID is `10`
@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## Delete with primary key
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out check out [Query Inline Conditions](query.html#inline_conditions) for details
+GORM mengijinkan untuk menghapus objek menggunakan primary key dengan kondisi di inline, ini akan bekerja dengan angka, check keluaran  [  Ketentuan query inline](query.html#inline_conditions) untuk detail .
 
 ```go
 db.Delete(&User{}, 10)
@@ -34,7 +34,7 @@ db.Delete(&users, []int{1,2,3})
 
 ## Delete Hooks
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+GORM mengijinkan pengambilan ` beforedelete`, `Afterdelete`,  metode itu akan di panggil saat menghapus record, lihat [Hooks](hooks.html) untuk detail.
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -47,7 +47,7 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 ## <span id="batch_delete">Batch Delete</span>
 
-The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
+NIlai yang di tentukan tidak memiliki nilai primary, GORM akan penghapusan batch,  itu akan menghapus semua catatan yang sesuai.
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
