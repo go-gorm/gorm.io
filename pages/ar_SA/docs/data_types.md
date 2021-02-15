@@ -9,7 +9,7 @@ GORM provides few interfaces that allow users to define well-supported customize
 
 ### Scanner / Valuer
 
-The customized data type has to implement the [Scanner](https://pkg.go.dev/database/sql/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces, so GORM knowns to how to receive/save it into the database
+The customized data type has to implement the [Scanner](https://pkg.go.dev/database/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces, so GORM knowns to how to receive/save it into the database
 
 For example:
 
