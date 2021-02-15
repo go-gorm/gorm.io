@@ -5,7 +5,7 @@ layout: page
 
 Goでは、エラー処理が重要です。
 
-You are encouraged to do error check after any [Finisher Methods](method_chaining.html#finisher_method)
+[Finisher Methods](method_chaining.html#finisher_method) の後にエラーチェックを行うことをおすすめします。
 
 ## Error Handling
 

@@ -5,7 +5,7 @@ layout: page
 
 ## Belongs To
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Untuk Belong To sendiri menyiapkan koneksi one to one dengan model lain, sehingga setiap instance dari model yang mendeklarasikan "belong" satu instance dari model lain.
 
 For example, if your application includes users and companies, and each user can be assigned to exactly one company
 
@@ -26,11 +26,11 @@ type Company struct {
 
 ## Override Foreign Key
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Nah, agar semua itu memiliki hubungan, tentunya harus di buat kunci (foreign key) sebagai identitas. untuk kunci defaultnya menggunakan nama dari type pemilik di tambah nama bidang kunci utama.
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+untuk contoh kasus di atas, untuk mendefenisikan  `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
 
-GORM provides a way to customize the foreign key, for example:
+GORM sendiri menyediakan cara costumize(mengubah) foreign key, sebagai contoh:
 
 ```go
 type User struct {
@@ -49,11 +49,11 @@ type Company struct {
 
 ## Override References
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+untuk belong ke relationship , gorm biadanya menggunakan pemilik identitas primary sebagai identitas asing sebagi contoh di atas, ini adalah `Company`'s field `ID`.
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+saat anda menetapkan pengguna ke conpany, GORM akan menyimpan data  `ID` kedalam pengguna`CompanyID` field.
 
-You are able to change it with tag `references`, e.g:
+kamu dapat mengubahnya dengan dengan menggunakan tag `references`, e.g:
 
 ```go
 type User struct {
@@ -72,15 +72,15 @@ type Company struct {
 
 ## CRUD with Belongs To
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Silahkan periksa [Association Mode](associations.html#Association-Mode) untuk working with belogs to relations
 
 ## Eager Loading
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+Gorm memungkinkan akan memuat untuk asosiasi dengan  `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
 
 ## FOREIGN KEY Constraints
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+kamu bisa seting `OnUpdate`, `OnDelete` constraints with tag `constraint`. itu akan di buat pada saat migrasi dengan GORM, sebagi contoh
 
 ```go
 type User struct {

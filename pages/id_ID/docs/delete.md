@@ -5,7 +5,7 @@ layout: page
 
 ## Delete a Record
 
-When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
+Saat menghapus  data, nilai yang di hapus perlu memiliki kunci utama atau itu akan memicu  [Batch Delete](#batch_delete), sebagai contoh
 
 ```go
 // Email's ID is `10`
@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## Delete with primary key
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out check out [Query Inline Conditions](query.html#inline_conditions) for details
+GORM mengijinkan untuk menghapus objek menggunakan primary key dengan kondisi di inline, ini akan bekerja dengan angka, check keluaran  [  Ketentuan query inline](query.html#inline_conditions) untuk detail .
 
 ```go
 db.Delete(&User{}, 10)
@@ -34,7 +34,7 @@ db.Delete(&users, []int{1,2,3})
 
 ## Delete Hooks
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+GORM mengijinkan pengambilan ` beforedelete`, `Afterdelete`,  metode itu akan di panggil saat menghapus record, lihat [Hooks](hooks.html) untuk detail.
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -47,7 +47,7 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 ## <span id="batch_delete">Batch Delete</span>
 
-The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
+NIlai yang di tentukan tidak memiliki nilai primary, GORM akan penghapusan batch,  itu akan menghapus semua catatan yang sesuai.
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -59,9 +59,9 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 
 ### Block Global Delete
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
+Jika kamu melakukan penghapusan batch tanpa tanpa kondisi(syarat apapun ), GORM tidak akan menjalankannya, dan akan mengembalikan  kesalahan ` ErrMissingWhereClause<0>error</p>
 
-You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+<p spaces-before="0">You have to use some conditions or use raw SQL or enable <code>AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -78,9 +78,9 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 ## Soft Delete
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+Jika di dalam model anda menyertakan file`gorm.DeleteAt`  bidang termasuk dalam `gorm.Model`, itu dapat menghapus ability secara otomatis
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+Saat memanggil`Code` ,  data tidak akan di hapus dari database , tapi, GORM akan mengatur `DeletedAt`  nilai dari saat ini  dan data tidak akan di temukan lagi jika ita menggunakan metode query biasa.
 
 ```go
 // user's ID is `111`
@@ -96,7 +96,7 @@ db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+Jika kamu tidak akan memasukkan `gorm.Model`, kamu bisa  mengaktifkan fitur hapus soft
 
 ```go
 type User struct {
@@ -108,7 +108,7 @@ type User struct {
 
 ### Find soft deleted records
 
-You can find soft deleted records with `Unscoped`
+Anda dapat menemukandata record yang di hapusdengan`Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
@@ -117,7 +117,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ### Delete permanently
 
-You can delete matched records permanently with `Unscoped`
+Anda dapat menghapus record yang cocok secara permanen dengan menggunakan Unscoped
 
 ```go
 db.Unscoped().Delete(&order)
