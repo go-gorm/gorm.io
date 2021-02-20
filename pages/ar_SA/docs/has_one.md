@@ -53,14 +53,15 @@ You are able to change it with tag `references`, e.g:
 
 ```go
 type User struct {
-  gorm. Model
-  CreditCard CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+  gorm.Model
+  Name       string     `gorm:"index"`
+  CreditCard CreditCard `gorm:"foreignkey:UserName;references:name"`
 }
 
 type CreditCard struct {
-  gorm. Model
-  Number string
-  UserID uint
+  gorm.Model
+  Number   string
+  UserName string
 }
 ```
 
