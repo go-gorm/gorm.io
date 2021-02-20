@@ -236,7 +236,7 @@ type User struct {
   FirstName string
   LastName  string
   Age       uint8
-  FullName  string `gorm:"->;type:GENERATED ALWAYS AS (concat(firstname,' ',lastname));default:(-);"`
+  FullName  string `gorm:"->;type:GENERATED ALWAYS AS (concat(firstname,' ',lastname));default:(-);`
 }
 ```
 
