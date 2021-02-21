@@ -77,16 +77,29 @@ import (
   "gorm.io/gorm"
 )
 
-dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai"
-db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+dsn := url.URL{
+		User:     url.UserPassword("gorm", "gorm"), //username, password
+		Scheme:   "postgres", 
+		Host:     fmt.Sprintf("%s:%s", "localhost", "9920"),//host, port
+		Path:     "gorm", //database name
+		RawQuery: (&url.Values{"sslmode": []string{"disable", "TimeZone": []string{"Asia/Shanghai"}}).Encode(),
+}
+db, err := gorm.Open(postgres.Open(dsn.String()), &gorm.Config{})
 ```
 
 我们使用 [pgx](https://github.com/jackc/pgx) 作为 postgres 的 database/sql 驱动，默认情况下，它会启用 prepared statement 缓存，你可以这样禁用它：
 
 ```go
 // https://github.com/go-gorm/postgres
+dsn := url.URL{
+		User:     url.UserPassword("gorm", "gorm"), //username, password
+		Scheme:   "postgres", 
+		Host:     fmt.Sprintf("%s:%s", "localhost", "9920"),//host, port
+		Path:     "gorm", //database name
+		RawQuery: (&url.Values{"sslmode": []string{"disable", "TimeZone": []string{"Asia/Shanghai"}}).Encode(),
+}
 db, err := gorm.Open(postgres.New(postgres.Config{
-  DSN: "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
+  DSN: dsn.String(),
   PreferSimpleProtocol: true, // disables implicit prepared statement usage
 }), &gorm.Config{})
 ```
