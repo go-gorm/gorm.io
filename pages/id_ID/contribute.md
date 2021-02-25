@@ -27,11 +27,11 @@ To translate GORM in your language you need to post a request in the [Github iss
 * Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
 * Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
 
-## Donations
+## Donasi
 
 Many thanks to all our sponsors!
 
-### One-time Donations
+### good
 
 Your kindness and generosity is greatly appreciated
 
