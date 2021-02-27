@@ -17,6 +17,7 @@ layout: page
 ## 链接
 
 * 一个基于 GORM V2 的管理系统 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
+* 基于GORM V2 的中后台系统脚手架 - [go-admin](https://github.com/go-admin-team/go-admin)
 
 ## 视频
 
