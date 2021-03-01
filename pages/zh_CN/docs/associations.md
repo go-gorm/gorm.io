@@ -230,9 +230,9 @@ db.Select("Account").Delete(&users)
 
 | 标签               | 描述                                                                                                 |
 | ---------------- | -------------------------------------------------------------------------------------------------- |
-| foreignKey       | Specifies column name of the current model that is used as a foreign key to the join table         |
+| foreignKey       | 指定当前模型的列作为连接表的外键                                                                                   |
 | references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
-| polymorphic      | Specifies polymorphic type such as model name                                                      |
+| polymorphic      | 指定多态类型，比如模型名                                                                                       |
 | polymorphicValue | 指定多态值、默认表名                                                                                         |
 | many2many        | 指定连接表表名                                                                                            |
 | joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
