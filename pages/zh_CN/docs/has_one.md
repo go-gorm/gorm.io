@@ -10,7 +10,7 @@ layout: page
 例如，您的应用包含 user 和 credit card 模型，且每个 user 只能有一张 credit card。
 
 ```go
-// User 有一张 CreditCard，CreditCardID 是外键
+// User 有一张 CreditCard，UserID 是外键
 type User struct {
   gorm.Model
   CreditCard CreditCard
@@ -56,7 +56,7 @@ type CreditCard struct {
 ```go
 type User struct {
   gorm.Model
-  Name       string     `sql:"index"`
+  Name       string     `gorm:"index"`
   CreditCard CreditCard `gorm:"foreignkey:UserName;references:name"`
 }
 

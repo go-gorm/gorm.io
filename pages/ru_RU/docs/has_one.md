@@ -56,7 +56,7 @@ type CreditCard struct {
 ```go
 type User struct {
   gorm.Model
-  Name       string     `sql:"index"`
+  Name       string     `gorm:"index"`
   CreditCard CreditCard `gorm:"foreignkey:UserName;references:name"`
 }
 

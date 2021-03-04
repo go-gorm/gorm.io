@@ -3,7 +3,7 @@ title: Scopes
 layout: page
 ---
 
-Scopes 使你可以复用通用的逻辑，共享的逻辑需要定义为 `func(*gorm.DB) *gorm.DB` 类型
+作用域允许你复用通用的逻辑，这种共享逻辑需要定义为类型`func(*gorm.DB) *gorm.DB`。
 
 ## 查询
 

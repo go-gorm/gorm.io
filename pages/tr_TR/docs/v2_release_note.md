@@ -388,7 +388,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 * Context support
 * Customize/turn off the colors in the log
-* Slow SQL log, default slow SQL time is 100ms
+* Slow SQL log, default slow SQL time is 200ms
 * Optimized the SQL log format so that it can be copied and executed in a database console
 
 #### Transaction Mode

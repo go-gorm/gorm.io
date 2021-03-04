@@ -232,11 +232,11 @@ type User struct {
 
 ```go
 type User struct {
-  ID        string `gorm:"default:uuid_generate_v3()"` // 数据库函数
+  ID        string `gorm:"default:uuid_generate_v3()"` // db func
   FirstName string
   LastName  string
   Age       uint8
-  FullName  string `gorm:"->;type:GENERATED ALWAYS AS (concat(firstname,' ',lastname));default:(-);`
+  FullName  string `gorm:"->;type:GENERATED ALWAYS AS (concat(firstname,' ',lastname));default:(-);"`
 }
 ```
 

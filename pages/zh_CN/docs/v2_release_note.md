@@ -388,7 +388,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 * Context 支持
 * 自定义或关闭日志的颜色
-* 慢 SQL 日志，慢 SQL 默认阈值是 100ms
+* Slow SQL log, default slow SQL time is 200ms
 * 优化了 SQL 日志格式，可以更方便的复制到数据库控制台中执行
 
 #### 事务模式
