@@ -228,13 +228,13 @@ db.Select("Account").Delete(&users)
 
 ## <span id="tags">关联标签</span>
 
-| 标签               | 描述                                                                                                 |
-| ---------------- | -------------------------------------------------------------------------------------------------- |
-| foreignKey       | 指定当前模型的列作为连接表的外键                                                                                   |
-| references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
-| polymorphic      | 指定多态类型，比如模型名                                                                                       |
-| polymorphicValue | 指定多态值、默认表名                                                                                         |
-| many2many        | 指定连接表表名                                                                                            |
-| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
-| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table                 |
-| constraint       | 关系约束，例如：`OnUpdate`、`OnDelete`                                                                      |
+| 标签               | 描述                            |
+| ---------------- | ----------------------------- |
+| foreignKey       | 指定当前模型的列作为连接表的外键              |
+| references       | 指定引用表的列名，其将被映射为连接表外键          |
+| polymorphic      | 指定多态类型，比如模型名                  |
+| polymorphicValue | 指定多态值、默认表名                    |
+| many2many        | 指定连接表表名                       |
+| joinForeignKey   | 指定连接表的外键列名，其将被映射到当前表          |
+| joinReferences   | 指定连接表的外键列名，其将被映射到引用表          |
+| constraint       | 关系约束，例如：`OnUpdate`、`OnDelete` |
