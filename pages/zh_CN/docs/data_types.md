@@ -9,7 +9,7 @@ GORM 提供了少量接口，使用户能够为 GORM 定义支持的数据类型
 
 ### Scanner / Valuer
 
-The customized data type has to implement the [Scanner](https://pkg.go.dev/database/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces, so GORM knowns to how to receive/save it into the database
+自定义的数据类型必须实现 [Scanner](https://pkg.go.dev/database/sql#Scanner) 和 [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) 接口，以便让 GORM 知道如何将该类型接收、保存到数据库
 
 例如:
 
