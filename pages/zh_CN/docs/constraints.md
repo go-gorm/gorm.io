@@ -31,7 +31,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-GORM allows you setup FOREIGN KEY constraints's `OnDelete`, `OnUpdate` option with tag `constraint`, for example:
+GORM 允许您通过 `constraint` 标签的 `OnDelete`、`OnUpdate` 选项设置外键约束，例如：
 
 ```go
 type User struct {
