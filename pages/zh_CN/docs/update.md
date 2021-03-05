@@ -39,11 +39,11 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 `Updates` 方法支持 `struct` 和 `map[string]interface{}` 参数。当使用 `struct` 更新时，默认情况下，GORM 只会更新非零值的字段
 
 ```go
-// Update attributes with `struct`, will only update non-zero fields
+// 根据 `struct` 更新属性，只会更新非零值的字段
 db.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
 // UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 
-// Update attributes with `map`
+// 根据 `map` 更新属性
 db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
@@ -57,7 +57,7 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 如果您想要在更新时选定、忽略某些字段，您可以使用 `Select`、`Omit`
 
 ```go
-// Select with Map
+// 使用 Map 进行 Select
 // User's ID is `111`:
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello' WHERE id=111;
@@ -65,14 +65,14 @@ db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "
 db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Select with Struct (select zero value fields)
+// 使用 Struct 进行 Select（会 select 零值的字段）
 db.Model(&user).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 
-// Select all fields (select all fields include zero value fields)
+// Select 所有字段（查询包括零值字段的所有字段）
 db.Model(&user).Select("*").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
 
-// Select all fields but omit Role (select all fields include zero value fields)
+// Select 除 Role 外的所有字段（包括零值字段的所有字段）
 db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
 ```
 
