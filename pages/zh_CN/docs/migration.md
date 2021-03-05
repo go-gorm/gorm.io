@@ -151,7 +151,7 @@ db.Migrator().DropConstraint(&User{}, "name_checker")
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
-Create foreign keys for relations
+为 relation 创建外键
 
 ```go
 type User struct {
@@ -165,16 +165,16 @@ type CreditCard struct {
   UserID uint
 }
 
-// create database foreign key for user & credit_cards
+// 为 user & credit_cards 创建 db 外键
 db.Migrator().CreateConstraint(&User{}, "CreditCards")
 db.Migrator().CreateConstraint(&User{}, "fk_users_credit_cards")
 // ALTER TABLE `credit_cards` ADD CONSTRAINT `fk_users_credit_cards` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 
-// check database foreign key for user & credit_cards exists or not
+// 检查 user & credit_cards 的外键是否存在
 db.Migrator().HasConstraint(&User{}, "CreditCards")
 db.Migrator().HasConstraint(&User{}, "fk_users_credit_cards")
 
-// drop database foreign key for user & credit_cards
+// 删除 user & credit_cards 的 db 外键
 db.Migrator().DropConstraint(&User{}, "CreditCards")
 db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
 ```
@@ -187,15 +187,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// Create index for Name field
+// 为 Name 字段创建索引
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// Drop index for Name field
+// 为 Name 字段删除索引
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// Check Index exists
+// 检查索引是否存在
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -204,7 +204,7 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// Rename index name
+// 修改索引名
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
