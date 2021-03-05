@@ -65,7 +65,7 @@ db.First(&Language{})
 
 ### 用主键检索
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number, Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
+如果主键是数值类型，也可以通过 [内联条件](#inline_conditions) 传入主键来检索对象。如果主键是 string 类型，要小心避免 SQL 注入，查看 [安全](security.html) 获取详情
 
 ```go
 db.First(&user, 10)
@@ -78,7 +78,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If primary key is a string like uuid, need to write it like:
+如果主键是像 uuid 这样的字符串，您需要这要写：
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
