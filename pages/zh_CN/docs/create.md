@@ -47,7 +47,7 @@ for _, user := range users {
 使用 `CreateInBatches` 创建时，你还可以指定创建的数量，例如：
 
 ```go
-var users = []User{name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
+var users = []User{{name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 
 // 数量为 100
 db.CreateInBatches(users, 100)
