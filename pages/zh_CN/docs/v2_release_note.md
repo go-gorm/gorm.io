@@ -388,7 +388,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 * Context 支持
 * 自定义或关闭日志的颜色
-* Slow SQL log, default slow SQL time is 200ms
+* 慢 SQL 日志，慢 SQL 默认阈值是 200ms
 * 优化了 SQL 日志格式，可以更方便的复制到数据库控制台中执行
 
 #### 事务模式
@@ -521,57 +521,57 @@ func UserTable(u *User) func(*gorm.DB) *gorm.DB {
 db.Scopes(UserTable(&user)).Create(&user)
 ```
 
-#### Creating and Deleting Tables requires the use of the Migrator
+#### 创建和删除表格需要使用 Migrator
 
-Previously tables could be created and dropped as follows:
+以前创建和删除表格是这样的：
 
 ```go
 db.CreateTable(&MyTable{})
 db.DropTable(&MyTable{})
 ```
 
-Now you do the following:
+现在您需要这样做：
 
 ```go
 db.Migrator().CreateTable(&MyTable{})
 db.Migrator().DropTable(&MyTable{})
 ```
 
-#### Foreign Keys
+#### 外键
 
-A way of adding foreign key constraints was;
+以前您可以这样添加外键约束：
 
 ```go
 db.Model(&MyTable{}).AddForeignKey("profile_id", "profiles(id)", "NO ACTION", "NO ACTION")
 ```
 
-Now you add constraints as follows:
+现在您需要这样添加约束：
 
 ```go
 db.Migrator().CreateConstraint(&Users{}), "Profiles")
 db.Migrator().CreateConstraint(&Users{}), "fk_users_profiles")
 ```
 
-which translates to the following sql code for postgres:
+对于postgres，GORM 会将其翻译为：
 
 ```sql
 ALTER TABLE `Profiles` ADD CONSTRAINT `fk_users_profiles` FORIEGN KEY (`useres_id`) REFRENCES `users`(`id`))
 ```
 
-#### Method Chain Safety/Goroutine Safety
+#### 方法链和协程安全
 
-To reduce GC allocs, GORM V2 will share `Statement` when using method chains, and will only create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, to reuse a `*gorm.DB`, you need to make sure it just after a `New Session Method`, for example:
+为了减少 GC 分配，在使用链式调用时，GORM V2 会共享 `Statement`，且只在初始化 `*gorm.DB` 或调用 `New Session Method` 后创建新的 `Statement`。想要复用 `*gorm.DB`，您需要确保该它刚调用过 `New Session Method`，例如：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-// Safe for new initialized *gorm.DB
+// 对于刚初始化的 *gorm.DB 是安全的
 for i := 0; i < 100; i++ {
   go db.Where(...).First(&user)
 }
 
 tx := db.Where("name = ?", "jinzhu")
-// NOT Safe as reusing Statement
+// 不安全，因为复用了 Statement
 for i := 0; i < 100; i++ {
   go tx.Where(...).First(&user)
 }
@@ -583,27 +583,27 @@ for i := 0; i < 100; i++ {
 }
 
 ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-// Safe after a `New Session Method`
+// 调用 `New Session Method` 后是安全的
 for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` 会应用至该查询
 }
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
-// Safe after a `New Session Method`
+// 调用 `New Session Method` 后是安全的
 for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` will apply to the query
+  go tx.Where(...).First(&user) // `name = 'jinzhu'` 会应用至该查询
 }
 ```
 
-Check out [Method Chain](method_chaining.html) for details
+查看 [方法链](method_chaining.html) 获取详情
 
-#### Default Value
+#### 默认值
 
-GORM V2 won't auto-reload default values created with database function after creating, checkout [Default Values](create.html#default_values) for details
+创建记录后，GORM V2 不会自动加载由数据库生成的默认值，查看 [默认值](create.html#default_values) 获取详情
 
-#### Soft Delete
+#### 软删除
 
-GORM V1 will enable soft delete if the model has a field named `DeletedAt`, in V2, you need to use `gorm.DeletedAt` for the model wants to enable the feature, e.g:
+在 GORM V1 中，如果 model 中有一个名为 `DeletedAt` 的字段则自动开启软删除。在V2，您需要在想启用软删除的 model 中使用 `gorm.DeletedAt`，例如：
 
 ```go
 type User struct {
@@ -613,18 +613,18 @@ type User struct {
 
 type User struct {
   ID      uint
-  // field with different name
+  // 字段名无要求
   Deleted gorm.DeletedAt
 }
 ```
 
 {% note warn %}
-**NOTE:** `gorm.Model` is using `gorm.DeletedAt`, if you are embedding it, nothing needs to change
+**注意：** `gorm.Model` 使用了 `gorm.DeletedAt`，如果你已经嵌入了它，则不需要做什么修改
 {% endnote %}
 
 #### BlockGlobalUpdate
 
-GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+GORM V2 默认启用了 `BlockGlobalUpdate` 模式。想要触发全局 update/delete，你必须使用一些条件、原生 SQL 或者启用 `AllowGlobalUpdate` 模式，例如：
 
 ```go
 db.Where("1 = 1").Delete(&User{})
@@ -636,24 +636,24 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 #### ErrRecordNotFound
 
-GORM V2 only returns `ErrRecordNotFound` when you are querying with methods `First`, `Last`, `Take` which is expected to return some result, and we have also removed method `RecordNotFound` in V2, please use `errors.Is` to check the error, e.g:
+GORM V2 只有在你使用 `First`、`Last`、`Take` 这些预期会返回结果的方法查询记录时，才会返回 `ErrRecordNotFound`，我们还移除了 `RecordNotFound` 方法，请使用 `errors.Is` 来检查错误，例如：
 
 ```go
 err := db.First(&user).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
-#### Hooks Method
+#### Hook 方法
 
-Before/After Create/Update/Save/Find/Delete must be defined as a method of type `func(tx *gorm.DB) error` in V2, which has unified interfaces like plugin callbacks, if defined as other types, a warning log will be printed and it won't take effect, check out [Hooks](hooks.html) for details
+在 V2 中，Before/After Create/Update/Save/Find/Delete 必须定义为 `func(tx *gorm.DB) error` 类型的方法，这是类似于插件 callback 的统一接口。如果定义为其它类型，它不会生效，并且会打印一个警告日志，查看 [Hook](hooks.html) 获取详情
 
 ```go
 func (user *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx.Statement, e.g:
+  // 通过 tx.Statement 修改当前操作，例如：
   tx.Statement.Select("Name", "Age")
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
-  // Operations based on tx will runs inside same transaction without clauses of current one
+  // 除了当前子句，基于 tx 的操作会运行在同一个事务中
   var role Role
   err := tx.First(&role, "name = ?", user.Role).Error
   // SELECT * FROM roles WHERE name = "admin"
@@ -661,9 +661,9 @@ func (user *User) BeforeCreate(tx *gorm.DB) error {
 }
 ```
 
-#### Update Hooks support `Changed` to check fields changed or not
+#### Update Hook 支持 `Changed`
 
-When updating with `Update`, `Updates`, You can use `Changed` method in Hooks `BeforeUpdate`, `BeforeSave` to check a field changed or not
+当使用 `Update`，`Updates` 更新时，您可以在 `BeforeUpdate`, `BeforeSave` Hook 中使用 `Changed` 方法来检查字段是否有更改
 
 ```go
 func (user *User) BeforeUpdate(tx *gorm.DB) error {
@@ -671,7 +671,7 @@ func (user *User) BeforeUpdate(tx *gorm.DB) error {
     tx.Statement.SetColumn("Age", 18)
   }
 
-  if tx.Statement.Changed() { // if any fields changed
+  if tx.Statement.Changed() { // 如果任何字段有变动
     tx.Statement.SetColumn("Age", 18)
   }
   return nil
@@ -694,21 +694,21 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` not selected to update
 ```
 
-#### Plugins
+#### 插件
 
-Plugin callbacks also need be defined as a method of type `func(tx *gorm.DB) error`, check out [Write Plugins](write_plugins.html) for details
+插件 callback 也需要被定义为 `func(tx *gorm.DB) error` 类型的方法，查看 [Write Plugins](write_plugins.html) 获取详情
 
-#### Updating with struct
+#### 使用 struct 更新
 
-When updating with struct, GORM V2 allows to use `Select` to select zero-value fields to update them, for example:
+使用 struct 更新时，GORM V2 允许使用 `Select` 来选择要更新的零值字段，例如：
 
 ```go
 db.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
 ```
 
-#### Associations
+#### 关联
 
-GORM V1 allows to use some settings to skip create/update associations, in V2, you can use `Select` to do the job, for example:
+GORM V1允许使用一些设置来跳过 create/update 关联。在 V2 中，您可以使用 `Select` 来完成这项工作，例如：
 
 ```go
 db.Omit(clause.Associations).Create(&user)
@@ -717,16 +717,16 @@ db.Omit(clause.Associations).Save(&user)
 db.Select("Company").Save(&user)
 ```
 
-and GORM V2 doesn't allow preload with `Set("gorm:auto_preload", true)` anymore, you can use `Preload` with `clause.Associations`, e.g:
+此外，GORM V2 不再允许通过 `Set("gorm:auto_preload", true)` 进行预加载，你可以将 `Preload` 和 `clause.Associations` 配合使用，例如：
 
 ```go
-// preload all associations
+// 预加载所有关联
 db.Preload(clause.Associations).Find(&users)
 ```
 
-Also, checkout field permissions, which can be used to skip creating/updating associations globally
+此外，还可以查看字段权限，它可以用来全局跳过 creating/updating 关联
 
-GORM V2 will use upsert to save associations when creating/updating a record, won't save full associations data anymore to protect your data from saving uncompleted data, for example:
+在创建、更新记录时，GORM V2 将使用 upsert 来保存关联记录。不会再保存完整的关联数据，避免受未完成数据的影响，以保护您的数据，例如：
 
 ```go
 user := User{
@@ -755,7 +755,7 @@ db.Create(&user)
 
 #### Join Table
 
-In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and define other fields, e.g:
+在 GORM V2 中，`JoinTable` 可以是一个带有 `软删除`、`Hook` 且定义了其它字段的全功能 model，例如：
 
 ```go
 type Person struct {
@@ -780,11 +780,11 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// PersonAddress must defined all required foreign keys, or it will raise error
+// PersonAddress 必须定义好所需的外键，否则会报错
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
-After that, you could use normal GORM methods to operate the join table data, for example:
+然后，您可以使用标准的 GORM 方法来操作连接表的数据，例如：
 
 ```go
 var results []PersonAddress
@@ -797,17 +797,17 @@ db.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
 
 #### Count
 
-Count only accepts `*int64` as the argument
+Count 仅支持 `*int64` 作为参数
 
-#### Transactions
+#### 事务
 
-some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
+移除了 `RollbackUnlessCommitted` 之类的事务方法，建议使用 `Transaction` 方法包裹事务
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
-  // do some database operations in the transaction (use 'tx' from this point, not 'db')
+  // 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // return any error will rollback
+    // 返回任何错误都会回滚事务
     return err
   }
 
@@ -815,12 +815,12 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  // return nil will commit the whole transaction
+  // 返回 nil 提交事务
   return nil
 })
 ```
 
-Checkout [Transactions](transactions.html) for details
+查看 [事务](transactions.html) 获取详情
 
 #### Migrator
 
@@ -830,7 +830,7 @@ Checkout [Transactions](transactions.html) for details
 * 通过 `check` 标签支持检查器
 * 增强 `index` 标签的设置
 
-Checkout [Migration](migration.html) for details
+查看 [Migration](migration.html) 获取详情
 
 ```go
 type UserIndex struct {

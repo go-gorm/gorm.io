@@ -33,12 +33,12 @@ tx.Model(&user).Update("Age", 18)
 ```
 
 {% note warn %}
-**NOTE** Also refer how to enable interpolateparams for MySQL to reduce roundtrip https://github.com/go-sql-driver/mysql#interpolateparams
+**注意** 也可以参考如何为 MySQL 开启 interpolateparams 以减少 roundtrip https://github.com/go-sql-driver/mysql#interpolateparams
 {% endnote %}
 
 ### [带 PreparedStmt 的 SQL 生成器](sql_builder.html)
 
-Prepared Statement works with RAW SQL also, for example:
+Prepared Statement 也可以和原生 SQL 一起使用，例如：
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -48,17 +48,17 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
+您也可以使用 GORM 的 API [DryRun 模式](session.html) 编写 SQL 并执行 prepared statement ，查看 [会话模式](session.html) 获取详情
 
 ## 选择字段
 
-By default GORM select all fields when querying, you can use `Select` to specify fields you want
+默认情况下，GORM 在查询时会选择所有的字段，您可以使用 `Select` 来指定您想要的字段
 
 ```go
 db.Select("Name", "Age").Find(&Users{})
 ```
 
-Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)
+或者定义一个较小的 API 结构体，使用 [智能选择字段功能](advanced_query.html)
 
 ```go
 type User struct {
@@ -81,11 +81,11 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 
 ## [迭代、FindInBatches](advanced_query.html)
 
-Query and process records with iteration or in batches
+用迭代或 in batches 查询并处理记录
 
 ## [Index Hints](hints.html)
 
-[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
+[Index](indexes.html) 用于提高数据检索和 SQL 查询性能。 `Index Hints` 向优化器提供了在查询处理过程中如何选择索引的信息。与 optimizer 相比，它可以更灵活地选择更有效的执行计划
 
 ```go
 import "gorm.io/hints"
@@ -105,4 +105,4 @@ db.Clauses(
 
 ## 读写分离
 
-Increase data throughput through read/write splitting, check out [Database Resolver](dbresolver.html)
+通过读写分离提高数据吞吐量，查看 [Database Resolver](dbresolver.html) 获取详情
