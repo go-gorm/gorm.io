@@ -2,23 +2,65 @@
 title: Associations
 layout: page
 ---
+# Associations
 
-## Auto Create/Update
+An association contains a definition of the relationship between two [models](https://gorm.io/docs/models.html).
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+## Auto Upsert
 
+GORM can create or update an association based on the data passed to `Create()` and `Save()` using the [Upsert](create.html#upsert) feature.
+
+When creating an association (inserting a new record into the User and Email tables), all required data must be provided.
 ```go
+type Address struct {
+  gorm.Model
+  Line1 string `gorm:"required"`
+  Line2 string
+  Providence string
+  Country string
+  PostalCode string
+}
+
+type Email struct {
+  gorm.Model
+  Email string
+}
+
+type Language struct {
+  gorm.Model
+  Name string
+}
+
+type User struct {
+  gorm.Model
+  Name string
+  BillingAddress Address
+  ShippingAddress Address
+  Emails []Email `gorm:"many2many:UserEmails"`
+  Languages []Language `gorm:"many2many:UserLanguages"`
+}
+
 user := User{
-  Name:            "jinzhu",
-  BillingAddress:  Address{Address1: "Billing Address - Address 1"},
-  ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
+  Name: "jinzhu",
+  // when assigning new data to an association, you must pass all of the association's required data
+  // our association is the Address model and the Address model requires at least Line1
+  // gorm will create this record as long as there are not primary key conflicts with another record
+  BillingAdddress:  Address{
+    Line1: "Billing Address - Address 1"
+  },
+  ShippingAddress: Address{
+    Line1: "Shipping Address - Address 1"
+  },
   Emails:          []Email{
     {Email: "jinzhu@example.com"},
     {Email: "jinzhu-2@example.com"},
   },
-  Languages:       []Language{
-    {Name: "ZH"},
-    {Name: "EN"},
+  // when assigning existing data to an association, you must pass that association's primary key
+  // our association is the Language model and the Language model's primary key is ID
+  // gorm will find the records with these primary keys and associate them with this User record
+  Languages: []Language{
+    { "ID": 1 },
+    { "ID": 2 },
   },
 }
 
