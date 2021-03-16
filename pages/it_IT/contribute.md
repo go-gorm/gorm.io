@@ -20,31 +20,31 @@ layout: pagina
 
 Puoi tradurre il sito attuale con [https://translate.gorm.io](https://translate.gorm.io)
 
-To translate GORM in your language you need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
+Per trafurre GORM nella tua lingua devi fare richiesta nelle [Issues su Github](https://github.com/go-gorm/gorm.io/issues) perché sia aggiunta a [https://translate.gorm.io](https://translate.gorm.io).
 
-## Program
+## Programma
 
-* Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
-* Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
+* Crea una pull request su [Github](https://github.com/go-gorm/gorm) per correggere un problema, una nuova funzionalità
+* Crea open-source plugin per GORM (Non dimenticare di aggiungerli alla [lista](/community.html#Open-Sources))
 
-## Donations
+## Donazioni
 
-Many thanks to all our sponsors!
+Grazie molte a tutti i nostri sponsor!
 
-### One-time Donations
+### Dona una volta sola
 
-Your kindness and generosity is greatly appreciated
+La vostra gentilezza e generosità è molto apprezzata
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu) [One time Donations with OpenCollective](https://opencollective.com/gorm)
+[Dona una volta con Paypal](https://www.paypal.me/zhangjinzhu) [Dona una volta con OpenCollective](https://opencollective.com/gorm)
 
-### Recurring Donations
+### Donazioni ricorrenti
 
-Your kindness and generosity are greatly appreciated, and your name will be listed on this page or the home page of this website.
+La vostra gentilezza e generosità sono molto apprezzati, e il vostro nome sarà elencato in questa pagina o la home page di questo sito web.
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm) [Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[Donazioni ricorrenti con OpenCollective](https://opencollective.com/gorm) [Donazioni ricorrenti con Patreon](https://www.patreon.com/jinzhu)
 
 <br>
 
 ## Sponsors
 
-## Backers
+## Sostenitori
