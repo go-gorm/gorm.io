@@ -36,25 +36,26 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 
 ```go
 var user User
-var users []User
-// 可以
+var users []User  
+
+// works
 db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// 可以
+// works
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// 不行
+// doesn't work
 result := map[string]interface{}{}
 db.Table("users").First(&result)
 
-// 但可以配合 Take 使用
+// works with Take
 result := map[string]interface{}{}
 db.Table("users").Take(&result)
 
-// 根据第一个字段排序
+// order by first field
 type Language struct {
   Code string
   Name string
