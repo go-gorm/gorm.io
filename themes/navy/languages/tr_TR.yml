@@ -4,7 +4,7 @@ menu:
   docs: <i class="fa fa-book"></i>Dökümanlar
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fa fa-slack"></i>Topluluk
+  community: <i class="fab fa-slack"></i>Community
   contribute: <i class="fa fa-rocket"></i>Katıl
   search: Belgelerde ara...
 index:

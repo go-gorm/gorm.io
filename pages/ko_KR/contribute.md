@@ -29,22 +29,22 @@ layout: page
 
 ## 후원
 
-많은 후원자 분들께 감사드립니다!
+Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
 
-### 한 번만 후원하기
+* Github Sponsors
 
-귀하의 친절과 관대함에 감사드립니다
+[https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
-[페이팔로 후원하기](https://www.paypal.me/zhangjinzhu) [OpenCollective로 후원하기](https://opencollective.com/gorm)
+* Open Collective
 
-### 지속적인 후원하기
+[https://opencollective.com/gorm](https://opencollective.com/gorm)
 
-귀하의 친절과 관대함에 감사 드리며 귀하의 이름은이 페이지 또는이 웹 사이트의 홈페이지에 기재 될 것입니다.
+* Patreon
 
-[OpenCollective로 후원하기](https://opencollective.com/gorm) [Patreon으로 후원하기](https://www.patreon.com/jinzhu)
+[https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
+
+* AliPay
+
+![使用支付宝捐款](/sponsors-imgs/alipay.png "使用支付宝捐款")
 
 <br>
-
-## 스폰서
-
-## 후원자 목록

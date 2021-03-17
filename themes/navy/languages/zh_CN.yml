@@ -4,7 +4,7 @@ menu:
   docs: <i class="fa fa-book"></i>文档
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fa fa-slack"></i>社区
+  community: <i class="fab fa-slack"></i>Community
   contribute: <i class="fa fa-rocket"></i>贡献
   search: 搜索文档...
 index:
