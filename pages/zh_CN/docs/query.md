@@ -36,7 +36,7 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 
 ```go
 var user User
-
+var users []User
 // 可以
 db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
