@@ -29,22 +29,22 @@ layout: страница
 
 ## Пожертвования
 
-Большое спасибо всем нашим спонсорам!
+Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
 
-### Разовые пожертвования
+* Github Sponsors
 
-Ваша доброта и щедрость высоко ценится
+[https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
-[Разовые пожертвования с помощью Paypal](https://www.paypal.me/zhangjinzhu) [Разовые пожертвования с помощью OpenCollective](https://opencollective.com/gorm)
+* Open Collective
 
-### Периодические пожертвования
+[https://opencollective.com/gorm](https://opencollective.com/gorm)
 
-Ваша доброта и щедрость высоко ценится, и ваше имя будет указано на этой странице или на домашней странице этого сайта.
+* Patreon
 
-[Периодические пожертвования с помощью OpenCollective](https://opencollective.com/gorm) [Периодические пожертвования с помощью Patreon](https://www.patreon.com/jinzhu)
+[https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
+
+* AliPay
+
+![使用支付宝捐款](/sponsors-imgs/alipay.png "使用支付宝捐款")
 
 <br>
-
-## Спонсоры
-
-## Покровители
