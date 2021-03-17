@@ -29,22 +29,22 @@ layout: page
 
 ## 寄付
 
-スポンサーの皆様、ありがとうございます!
+Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
 
-### 寄付
+* Github Sponsors
 
-あなたの優しさと寛大さに非常に感謝します
+[https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
-[Paypalによる個別の寄付](https://www.paypal.me/zhangjinzhu) [OpenCollectiveによる個別の寄付](https://opencollective.com/gorm)
+* Open Collective
 
-### 定期的な寄付
+[https://opencollective.com/gorm](https://opencollective.com/gorm)
 
-あなたの親切および寛大さに非常に感謝します。あなたの名前はこのウェブサイトのこのページまたはホームページに掲載されます。
+* Patreon
 
-[OpenCollective による定期的な寄付](https://opencollective.com/gorm) [Patreon による定期的な寄付](https://www.patreon.com/jinzhu)
+[https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
+
+* AliPay
+
+![使用支付宝捐款](/sponsors-imgs/alipay.png "使用支付宝捐款")
 
 <br>
-
-## Sponsors
-
-## Backers
