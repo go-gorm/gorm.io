@@ -29,22 +29,22 @@ Aby przetłumaczyć GORM na swój język, musisz wysłać prośbę w [Github iss
 
 ## Dotacje
 
-Bardzo dziękuję wszystkim naszym sponsorom!
+Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
 
-### Jednorazowa wsparcie
+* Github Sponsors
 
-Twoja życzliwość i hojność są bardzo doceniane
+[https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
-[Jednorazowa darowizna przez Paypal](https://www.paypal.me/zhangjinzhu) [Jednorozowa darowizna przez OpenCollective](https://opencollective.com/gorm)
+* Open Collective
 
-### Cykliczna wsparcie
+[https://opencollective.com/gorm](https://opencollective.com/gorm)
 
-Twoja życzliwość i hojność są bardzo doceniane, a twoje imię zostanie umieszczone na tej podstronie lub na stronie głównej tej strony.
+* Patreon
 
-[Cykliczne dotacje przez OpenCollective](https://opencollective.com/gorm) [Cykliczne dotacje przez Patreon](https://www.patreon.com/jinzhu)
+[https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
+
+* AliPay
+
+![使用支付宝捐款](/sponsors-imgs/alipay.png "使用支付宝捐款")
 
 <br>
-
-## Sponsorzy
-
-## Wspierający
