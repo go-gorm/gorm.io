@@ -15,21 +15,5 @@
     </div>
   </div>
 
-  <div class="sponsors-wrapper-pc open-collective-sponsors">
-    <div class="inner">
-      <div class="sponsors">
-        <h1>Our Sponsors</h1>
-        <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=78&width=1080"></object>
-      </div>
-    </div>
-  </div>
-
-  <div class="sponsors-wrapper-mobile open-collective-sponsors">
-    <div class="inner">
-      <div class="sponsors">
-        <h1>Our Sponsors</h1>
-        <object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=62&width=350"></object>
-      </div>
-    </div>
-  </div>
+  {{ partial('partial/sponsors', {homepage: true}) }}
 </div>

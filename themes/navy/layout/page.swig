@@ -29,6 +29,11 @@
                 <time class="article-footer-updated" datetime="{{ date_xml(page.updated) }}" itemprop="dateModified">{{ __('page.last_updated', date(page.updated)) }}</time>
 {{ page_nav() }}
               </footer>
+
+              <div class="post_sponsors">
+                {{ partial('partial/sponsors') }}
+              </div>
+
               {{ partial('partial/comment') }}
             </div>
           </div>

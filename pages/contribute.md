@@ -29,28 +29,22 @@ To translate GORM in your language you need to post a request in the [Github iss
 
 ## Donations
 
-Many thanks to all our sponsors!
+Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
 
-### One-time Donations
+* Github Sponsors
 
-Your kindness and generosity is greatly appreciated
+[https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
-[One time Donations with Paypal](https://www.paypal.me/zhangjinzhu)
-[One time Donations with OpenCollective](https://opencollective.com/gorm)
+* Open Collective
 
-### Recurring Donations
+[https://opencollective.com/gorm](https://opencollective.com/gorm)
 
-Your kindness and generosity are greatly appreciated, and your name will be listed on this page or the home page of this website.
+* Patreon
 
-[Recurring Donations with OpenCollective](https://opencollective.com/gorm)
-[Recurring Donations with Patreon](https://www.patreon.com/jinzhu)
+[https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
+
+* AliPay
+
+![使用支付宝捐款](/sponsors-imgs/alipay.png "使用支付宝捐款")
 
 <br>
-
-## Sponsors
-
-<object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/sponsor.svg?avatarHeight=72&width=760"></object>
-
-## Backers
-
-<object type="image/svg+xml" data="https://opencollective.com/gorm/tiers/backer.svg?avatarHeight=38&width=760"></object>
