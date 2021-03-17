@@ -62,19 +62,19 @@ db.Find(&users)
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db 是一个刚完成初始化的 *gorm.DB 实例，其属于 `新建会话模式`
+// db is a new initialized *gorm.DB, which falls under `New Session Mode`
 tx := db.Where("name = ?", "jinzhu")
-// `Where("name = ?", "jinzhu")` 是第一个被调用的方法，它创建了一个新的 `Statement` 并添加条件
+// `Where("name = ?", "jinzhu")` is the first method call, it creates a new `Statement` and adds conditions
 
 tx.Where("age = ?", 18).Find(&users)
-// `tx.Where("age = ?", 18)` 会复用上面的那个 `Statement`，并向其添加条件
-// `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
+// `tx.Where("age = ?", 18)` REUSES above `Statement`, and adds conditions to the `Statement`
+// `Find(&users)` is a finisher, it executes registered Query Callbacks, generates and runs the following SQL:
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18
 
 tx.Where("age = ?", 28).Find(&users)
-// `tx.Where("age = ?", 18)` 同样会复用上面的那个 `Statement`，并向其添加条件
-// `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
-// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
+// `tx.Where("age = ?", 18)` REUSES above `Statement` also, and add conditions to the `Statement`
+// `Find(&users)` is a finisher, it executes registered Query Callbacks, generates and runs the following SQL:
+// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 28;
 ```
 
 {% note warn %}
