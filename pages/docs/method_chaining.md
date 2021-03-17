@@ -74,7 +74,7 @@ tx.Where("age = ?", 18).Find(&users)
 tx.Where("age = ?", 28).Find(&users)
 // `tx.Where("age = ?", 18)` REUSES above `Statement` also, and add conditions to the `Statement`
 // `Find(&users)` is a finisher, it executes registered Query Callbacks, generates and runs the following SQL:
-// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
+// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 28;
 ```
 
 {% note warn %}
