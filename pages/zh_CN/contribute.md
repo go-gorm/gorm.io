@@ -29,22 +29,22 @@ layout: page
 
 ## 捐赠
 
-非常感谢我们所有的赞助者！
+Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
 
-### 一次性捐赠
+* Github Sponsors
 
-非常感谢您的好意和慷慨
+[https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
-[通过 Paypal 进行一次性捐赠](https://www.paypal.me/zhangjinzhu) [通过 OpenCollective 进行一次性捐赠](https://opencollective.com/gorm)
+* Open Collective
 
-### 定期捐赠
+[https://opencollective.com/gorm](https://opencollective.com/gorm)
 
-非常感谢您的好意和慷慨，您的姓名将被列入网站的首页和此页面。
+* Patreon
 
-[通过 OpenCollective 进行定期捐赠](https://opencollective.com/gorm) [通过 Patreon 进行定期捐款](https://www.patreon.com/jinzhu)
+[https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
+
+* AliPay
+
+![使用支付宝捐款](/sponsors-imgs/alipay.png "使用支付宝捐款")
 
 <br>
-
-## 赞助商
-
-## 支持者
