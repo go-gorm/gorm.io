@@ -126,7 +126,7 @@ db.Unscoped().Delete(&order)
 
 ### Delete Flag
 
-Use unix second as delete flag
+将 unix 时间戳作为 delete flag
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -137,15 +137,15 @@ type User struct {
   DeletedAt soft_delete.DeletedAt
 }
 
-// Query
+// 查询
 SELECT * FROM users WHERE deleted_at = 0;
 
-// Delete
+// 删除
 UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
 {% note warn %}
-**INFO** when using unique field with soft delete, you should create a composite index with the unix second based `DeletedAt` field, e.g:
+**INFO** 在配合 unique 字段使用软删除时，您需要使用这个基于 unix 时间戳的 `DeletedAt` 字段创建一个复合索引，例如：
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -158,7 +158,7 @@ type User struct {
 ```
 {% endnote %}
 
-Use `1` / `0` as delete flag
+使用 `1` / `0` 作为 delete flag
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -169,9 +169,9 @@ type User struct {
   IsDel soft_delete.DeletedAt `gorm:"softDelete:flag"`
 }
 
-// Query
+// 查询
 SELECT * FROM users WHERE is_del = 0;
 
-// Delete
+// 删除
 UPDATE users SET is_del = 1 WHERE ID = 1;
 ```
