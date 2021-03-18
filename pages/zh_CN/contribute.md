@@ -29,7 +29,7 @@ layout: page
 
 ## 捐赠
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+非常感谢您的善意和慷慨！非常感谢所有的赞助商！
 
 * Github Sponsors (Platinum, Gold Sponsors etc)
 
