@@ -29,9 +29,9 @@ layout: page
 
 ## 捐赠
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+非常感谢您的善意和慷慨！非常感谢所有的赞助商！
 
-* Github Sponsors
+* Github 赞助者（白金、黄金等赞助者）
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
@@ -43,7 +43,7 @@ Your kindness and generosity is greatly appreciated, many thanks to all our spon
 
 [https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
 
-* AliPay
+* 支付宝
 
 ![使用支付宝捐款](/sponsors-imgs/alipay.png "使用支付宝捐款")
 

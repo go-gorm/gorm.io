@@ -74,7 +74,7 @@ tx.Where("age = ?", 18).Find(&users)
 tx.Where("age = ?", 28).Find(&users)
 // `tx.Where("age = ?", 18)` 同样会复用上面的那个 `Statement`，并向其添加条件
 // `Find(&users)` 是一个 finisher 方法，它运行注册的查询回调，生成并运行下面这条 SQL：
-// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 20;
+// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 28;
 ```
 
 {% note warn %}

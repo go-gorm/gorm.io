@@ -123,3 +123,55 @@ db.Unscoped().Where("age = 20").Find(&users)
 db.Unscoped().Delete(&order)
 // DELETE FROM orders WHERE id=10;
 ```
+
+### Delete Flag
+
+将 unix 时间戳作为 delete flag
+
+```go
+import "gorm.io/plugin/soft_delete"
+
+type User struct {
+  ID        uint
+  Name      string
+  DeletedAt soft_delete.DeletedAt
+}
+
+// 查询
+SELECT * FROM users WHERE deleted_at = 0;
+
+// 删除
+UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
+```
+
+{% note warn %}
+**INFO** 在配合 unique 字段使用软删除时，您需要使用这个基于 unix 时间戳的 `DeletedAt` 字段创建一个复合索引，例如：
+
+```go
+import "gorm.io/plugin/soft_delete"
+
+type User struct {
+  ID        uint
+  Name      string                `gorm:"uniqueIndex:udx_name"`
+  DeletedAt soft_delete.DeletedAt `gorm:"uniqueIndex:udx_name"`
+}
+```
+{% endnote %}
+
+使用 `1` / `0` 作为 delete flag
+
+```go
+import "gorm.io/plugin/soft_delete"
+
+type User struct {
+  ID    uint
+  Name  string
+  IsDel soft_delete.DeletedAt `gorm:"softDelete:flag"`
+}
+
+// 查询
+SELECT * FROM users WHERE is_del = 0;
+
+// 删除
+UPDATE users SET is_del = 1 WHERE ID = 1;
+```

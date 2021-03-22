@@ -31,7 +31,7 @@ Per trafurre GORM nella tua lingua devi fare richiesta nelle [Issues su Github](
 
 Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
 
-* Github Sponsors
+* Github Sponsors (Platinum, Gold Sponsors etc)
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 

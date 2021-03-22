@@ -36,6 +36,7 @@ The `First`, `Last` method will find the first/last record order by primary key,
 
 ```go
 var user User
+var users []User  
 
 // works
 db.First(&user)
