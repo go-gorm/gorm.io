@@ -78,7 +78,7 @@ tx.Where("age = ?", 28).Find(&users)
 ```
 
 {% note warn %}
-**注意：** 在示例 2 中，第一个查询会影响第二个查询生成的 SQL，因为 GORM 复用了 `Statement` 这可能会导致预期之外的问题，查看 [携程安全](#goroutine_safe) 以避免该问题
+**注意：** 在示例 2 中，第一个查询会影响第二个查询生成的 SQL，因为 GORM 复用了 `Statement` 这可能会导致预期之外的问题，查看 [协程安全](#goroutine_safe) 以避免该问题
 {% endnote %}
 
 ## <span id="goroutine_safe">方法链和协程安全</span>
