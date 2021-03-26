@@ -29,7 +29,7 @@ layout: page
 
 ## 후원
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+당신의 친절과 관용에 대해 매우 감사하게 생각합니다, 모든 스폰서분들 감사해요!
 
 * Github Sponsors (Platinum, Gold Sponsors etc)
 
