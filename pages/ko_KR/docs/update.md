@@ -78,7 +78,7 @@ db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admi
 
 ## Update Hooks
 
-GORM allows hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`, those methods will be called when updating a record, refer [Hooks](hooks.html) for details
+GORM은 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` Hooks를 허용합니다. 해당 메서드는 레코드를 만들 때 호출됩니다. 자세한 내용은 [Hooks](hooks.html)를 참조하십시오.
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
