@@ -1,7 +1,7 @@
 ---
 layout: index
-description: The fantastic ORM library for Golang aims to be developer friendly.
-subtitle: The fantastic ORM library for Golang
+description: The great ORM library for Golang aims to be developer friendly.
+subtitle: The great ORM library for Golang
 comments: false
 ---
 
