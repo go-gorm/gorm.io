@@ -13,18 +13,19 @@ Gorm реализует [логгер по умолчанию](https://github.co
 newLogger := logger.New(
   log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
   logger.Config{
-    SlowThreshold: time.Second,   // Временной зазор определения медленных запросов SQL
-    LogLevel:      logger.Silent, // Уровень логирования
-    Colorful:      false,         // Отключить цвета
+    SlowThreshold:              time.Second,   // Slow SQL threshold
+    LogLevel:                   logger.Silent, // Log level
+    IgnoreRecordNotFoundError: true,           // Ignore ErrRecordNotFound error for logger
+    Colorful:                  false,          // Disable color
   },
 )
 
-// Глобальный режим
+// Globally mode
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
   Logger: newLogger,
 })
 
-// Сессионный режим
+// Continuous session mode
 tx := db.Session(&Session{Logger: newLogger})
 tx.First(&user)
 tx.Model(&user).Update("Age", 18)

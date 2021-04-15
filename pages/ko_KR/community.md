@@ -16,7 +16,9 @@ layout: page
 
 ## 링크
 
-* GORM V2를 기반으로 한 관리자 시스템[GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
+* An admin system based on GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
+
+* Go-admin is a middle background framework based on Gorm  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
 ## 영상
 
