@@ -1,11 +1,11 @@
 ---
-title: Update
-layout: page
+title: Güncelleme
+layout: sayfa
 ---
 
-## Save All Fields
+## Bütün Alanları Kaydet
 
-`Save` will save all fields when performing the Updating SQL
+`Save` bir güncelleme yaparken bütün alanları kaydedecektir
 
 ```go
 db.First(&user)
@@ -16,20 +16,20 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update single column
+## Tek bir kolonu güncelle
 
-When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
+`Update` ile tek bir kolonu güncellerken koşulları belirtmelisiniz yoksa `ErrMissingWhereClause` hatası alırsınız. Ayrıntılı bilgi için bakınız [Block Global Updates](#block_global_updates) `Model` metodunu kullanırken -verdiğiniz değer birincil anahtara sahipse- koşulu oluşturmak için birincil anahtar kullanılacaktır. Örneğin:
 
 ```go
-// Update with conditions
+// Koşullar ile güncelleme
 db.Model(&User{}).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE active=true;
 
-// User's ID is `111`:
+// Kullanıcı ID'si `111`:
 db.Model(&user).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update with conditions and model value
+// Koşullar ve model değeri ile güncelleme
 db.Model(&user).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
 ```
