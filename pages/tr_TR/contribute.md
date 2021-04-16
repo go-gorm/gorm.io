@@ -1,37 +1,37 @@
 ---
-title: Contribute to GORM
-layout: page
+title: GORM'a Katkıda Bulunmak
+layout: sayfa
 ---
 
-**You can help to deliver a better GORM! there are many things that you can do:**
+**Daha bir bir GORM sunmamıza yardımcı olabilirsiniz! yapabileceğiniz pek çok şey mevcut:**
 
-## Help others to know GORM
+## Başkalarının GORM'u öğrenmesine yardımcı olun
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forget to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
+* Sosyal kanallar vasıtasıyla GORM'u dünya ile paylaşın ya da ilgilenebilecek kişilere söyleyin
+* [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) ve [Chat Rooms](/community.html#Chat)'da sorunlarını çözmeleri için yeni gelenlere yardımcı olun
+* Dersler yazın, videolar kaydedin vs... (Onları [bu listeye](/community.html) eklemeyi unutmayın)
+* GitHub'da [GORM deposunu](https://github.com/go-gorm/gorm) [yıldızlayarak](https://github.com/go-gorm/gorm/stargazers) ve [takip ederek](https://github.com/go-gorm/gorm/watchers) GORM'u yükseltmemize yardımcı olun
 
-## Documentation and Writing
+## Dokümantasyon ve Yazım
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* Yeni içerikler yazarak, var olan materyalleri düzelterek GORM dokümanlarını iyileştirin
 
-### Translate this site
+### Bu siteyi çevir
 
-You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
+Bu siteyi [https://translate.gorm.io](https://translate.gorm.io) ile çevirebilirsiniz
 
-To translate GORM in your language you need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
+Dilinizin [https://translate.gorm.io](https://translate.gorm.io) adresine eklenmesi için [Github issues](https://github.com/go-gorm/gorm.io/issues)'a bir talep göndermeniz gerekir.
 
 ## Program
 
-* Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
-* Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
+* Yeni özellikler ve sorunların düzeltilmesi için [Github](https://github.com/go-gorm/gorm)'da bir talep oluşturun
+* GORM için açık-kaynak pluginler oluşturun (Onları [bu listeye](/community.html#Open-Sources) eklemeyi unutmayın)
 
-## Donations
+## Bağışlar
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+Nezaketiniz ve cömertliğiniz büyük takdirle karşılanır, bütün sponsorlarımıza çok teşekkür ederiz!
 
-* Github Sponsors (Platinum, Gold Sponsors etc)
+* Github Sponsorları (Platinum, Gold Sponsors etc)
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
