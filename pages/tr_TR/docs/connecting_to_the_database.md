@@ -1,9 +1,9 @@
 ---
-title: Connecting to a Database
-layout: page
+title: Bir Veritabanına Bağlanma
+layout: sayfa
 ---
 
-GORM officially supports databases MySQL, PostgreSQL, SQLite, SQL Server
+GORM resmi olan MySQL, PostgreSQL, SQLite, SQL Server veritabanlarını destekler
 
 ## MySQL
 
@@ -21,10 +21,10 @@ func main() {
 ```
 
 {% note warn %}
-**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+**NOT:** `time.Time`'ı düzgün biçimde kullanabilmek için `parseTime` parametresini eklemelisiniz. ([daha fazla parametre](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 kodunu tam olarak desteklemek için `charset=utf8`'i `charset=utf8mb4` olarak değiştirmelisiniz. Detaylı açıklamalar için [bu makaleye](https://mathiasbynens.be/notes/mysql-utf8mb4) bakın
 {% endnote %}
 
-MySQL Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
+MySQL Sürücüsü başlatma sırasında kullanılabilecek [bazı ileri konfigürasyonlar](https://github.com/go-gorm/mysql) sağlar. Örneğin:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -37,9 +37,9 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### Sürücüyü Özelleştirme
 
-GORM allows customize the MySQL driver with the `DriverName` option, for example:
+GORM `DriverName` seçeneği ile MySQL sürücüsünü özelleştirmeye imkan tanır. Örneğin:
 
 ```go
 import (
@@ -53,9 +53,9 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Existing database connection
+### Varolan veritabanı bağlantısı
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM `*gorm.DB`'yi varolan bir veritabanı bağlantısı ile başlatmaya imkân tanır
 
 ```go
 import (
@@ -81,7 +81,7 @@ dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=dis
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+Postgres veritabanı/sql sürücüsü olarak [pgx](https://github.com/jackc/pgx) kullanıyoruz. Bu varsayılan olarak hazırlanmış ifade önbelleğini aktif hale getiriyor. Kapatmak için:
 
 ```go
 // https://github.com/go-gorm/postgres
@@ -91,9 +91,9 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### Sürücüyü Özelleştirme
 
-GORM allows customize the PostgreSQL driver with the `DriverName` option, for example:
+GORM `DriverName` seçeneği ile PostgreSQL sürücüsünü özelleştirmeye imkan tanır. Örneğin:
 
 ```go
 import (
@@ -107,9 +107,9 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 })
 ```
 
-### Existing database connection
+### Varolan veritabanı bağlantısı
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM `*gorm.DB`'yi varolan bir veritabanı bağlantısı ile başlatmaya imkân tanır
 
 ```go
 import (
@@ -136,7 +136,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
 {% note warn %}
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**NOTE:** Dosya yolu yerine ayrıca `file::memory:?cache=shared` kullanabilirsiniz. Bu, SQLite'a sistem hafızası içinde geçiçi bir veritabanı kullanmasını söyleyecektir. (Bunun için [SQLite dökümanlarına](https://www.sqlite.org/inmemorydb.html) bakın)
 {% endnote %}
 
 ## SQL Server
@@ -166,32 +166,32 @@ func main() {
   dsn := "tcp://localhost:9000?database=gorm&username=gorm&password=gorm&read_timeout=10&write_timeout=20"
   db, err := gorm.Open(clickhouse.Open(dsn), &gorm.Config{})
 
-  // Auto Migrate
+  // Otomatik Geçiş
   db.AutoMigrate(&User{})
-  // Set table options
+  // Tablo seçeneklerini belirle
   db.Set("gorm:table_options", "ENGINE=Distributed(cluster, default, hits)").AutoMigrate(&User{})
 
-  // Insert
+  // Ekle
   db.Create(&user)
 
-  // Select
+  // Seç
   db.Find(&user, "id = ?", 10)
 
-  // Batch Insert
+  // Toplu Ekleme
   var users = []User{user1, user2, user3}
   db.Create(&users)
   // ...
 }
 ```
 
-## Connection Pool
+## Bağlantı Havuzu
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM bağlantı havuzunu sağlamak için [database/sql](https://pkg.go.dev/database/sql) kullanır
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleConns kullanılmayan bağlantı havuzundaki maksimum bağlantı sayısını belirler.
 sqlDB.SetMaxIdleConns(10)
 
 // SetMaxOpenConns sets the maximum number of open connections to the database.
@@ -203,8 +203,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Refer [Generic Interface](generic_interface.html) for details
 
-## Unsupported Databases
+## Desteklenmeyen Veritabanları
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Bazı veritabanları `mysql` ya da `postgres` diyalekti ile uyumlu olabilir. Bu durumda söz konusu veritabanlarının diyalektini kullanabilirsiniz.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+Diğerleri için, [bir sürücü üretip talep göndermenizi memnuniyetle karşılarız!](write_driver.html)
