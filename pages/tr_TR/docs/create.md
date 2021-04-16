@@ -3,7 +3,7 @@ title: Create
 layout: page
 ---
 
-## Create Record
+## Kayıt Oluştur
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
@@ -15,16 +15,16 @@ result.Error        // returns error
 result.RowsAffected // returns inserted records count
 ```
 
-## Create Record With Selected Fields
+## Seçilen Alanlarla Kayıt Oluştur
 
-Create a record and assign a value to the fields specified.
+Bir kayıt oluştur ve belirtilen alanlara değer ata.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and assign a value to the fields omitted.
+Bir kayıt oluştur ve dışlanan alanlara değer ata.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +33,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Batch Insert</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+Etkili biçimde çok sayıda kayıt oluşturmak için, `Create` metoduna bir slice gir. GORM, bütün verileri kaydetmek için tek bir SQL ifadesi oluşturacak; bütün verileri kaydedecek ve birincil anahtar değerleri dolduracak. Ayrıca hook metodları da çağırılacak.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
