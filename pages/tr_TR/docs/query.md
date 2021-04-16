@@ -1,11 +1,11 @@
 ---
-title: Query
-layout: page
+title: Sorgu
+layout: sayfa
 ---
 
 ## Tek bir objeyi çekmek
 
-GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return error `ErrRecordNotFound` if no record found.
+GORM, veritabanından tek bir objeyi çekmek için `First`, `Take`, `Last` metodlarını sağlar; veritabanını sorgularken `LIMIT 1` koşulunu ekler ve eğer hiçbir kayıt bulunamazsa `ErrRecordNotFound` hatasını verir.
 
 ```go
 // Get the first record ordered by primary key
@@ -29,10 +29,10 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
 {% note warn %}
-If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`, the `Find` method accepts both struct and slice data
+Eğer `ErrRecordNotFound` hatasından sakınmak istiyorsan, `Find`'ı `db.Limit(1).Find(&user)` şeklinde kullanabilirsin. `Find` metodu hem struct hem de slice verilerini kabul eder
 {% endnote %}
 
-The `First`, `Last` method will find the first/last record order by primary key, it only works when querying with struct or provides model value, if no primary key defined for current model, will order by the first field, for example:
+`First` ve `Last` metodları birincil anahtara göre sıralanmış ilk ve son kayıtları bulacaktır. Sadece struct ya da provides model değeri ile yapılan sorgularda çalışır. Eğer model için birincil anahtar tanımlanmamışsa, ilk alana göre sıralar. Örneğin:
 
 ```go
 var user User
@@ -97,9 +97,9 @@ result.RowsAffected // returns found records count, equals `len(users)`
 result.Error        // returns error
 ```
 
-## Conditions
+## Koşullar
 
-### String Conditions
+### String Koşulları
 
 ```go
 // Get first matched record
