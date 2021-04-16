@@ -4,7 +4,7 @@ menu:
   docs: <i class="fa fa-book"></i>Dökümanlar
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fab fa-slack"></i>Community
+  community: <i class="fab fa-slack"></i>Topluluk
   contribute: <i class="fa fa-rocket"></i>Katıl
   search: Belgelerde ara...
 index:
@@ -32,7 +32,7 @@ sidebar:
     raw_sql_and_builder: Ham SQL Çalıştırma & SQL Oluşturucu
     batch: Toplu İşlem Çalıştırma
     associations: Model İlişkileri
-    belongs_to: Belongs To
+    belongs_to: Ait
     has_one: Has One
     has_many: Has Many
     many_to_many: Many To Many
