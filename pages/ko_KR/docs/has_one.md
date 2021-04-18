@@ -5,12 +5,12 @@ layout: page
 
 ## Has One
 
-A `has one` association sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+`has one` 연관성은 다른 모델과 1대 1 연결을 맺지만 결과적, 의미론적으로 조금 다르다고 말할 수 있습니다. 이 연관성은 각 모델의 인스턴스가 다른 모델의 인스턴스를 포함하거나 소유하고 있음을 의미합니다.
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+예를들어, 만약 어떤 어플리케이션이 users 와 credit cards를 가지고 있고, 각 유저는 오직 하나의 credit card만을 가질 수 있을 때, 연관성은 다음과 같이 설명됩니다.
 
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+// 유저는 한개의 신용카드를 가지고 있고, CreditCardID는 foreign key 입니다.
 type User struct {
   gorm.Model
   CreditCard CreditCard
@@ -23,7 +23,7 @@ type CreditCard struct {
 }
 ```
 
-## Override Foreign Key
+## Foreign Key 오버라이드
 
 For a `has one` relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
 
