@@ -96,7 +96,7 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs")
 ```
 
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
+`polymorphicValue` 태그를 활용하여 다형성 타입 벨류를 변경할 수 있습니다. 아래 예시를 살펴보세요.
 
 ```go
 type Dog struct {
@@ -119,13 +119,13 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 
 ## CRUD with Has One
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with `has one` relations
+`has one` 관계를 활용하는 방법에 대한 내용은 [연관 모드](associations.html#Association-Mode)를 참고해주세요.
 
-## Eager Loading
+## 즉시 로딩
 
-GORM allows eager loading `has one` associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM은 `Preload` 또는 `Joins`과 함께 `has one` 연관성을 즉시 로딩할 수 있습니다. 자세한 내용은  [미리 로딩 (즉시 로딩)](preload.html)을 참고해주세요.
 
-## Self-Referential Has One
+## 자기 참조 Has One
 
 ```go
 type User struct {
@@ -136,9 +136,9 @@ type User struct {
 }
 ```
 
-## FOREIGN KEY Constraints
+## 외부 키 제약
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+`constraint`태그를 활용하여 `OnUpdate`, `OnDelete` 제약을 설정할 수 있습니다. 이 설정은 GORM으로 마이그레이션을 진행할 때 생성됩니다.
 
 ```go
 type User struct {
@@ -153,4 +153,4 @@ type CreditCard struct {
 }
 ```
 
-You are also allowed to delete selected has one associations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+`Select()`메서드를 사용해 선택적으로 has one 연관성을 제거할 수 있습니다. 자세한 내용은 [Select 메서드로 삭제하기](associations.html#delete_with_select)를 참고해주세요.
