@@ -1,5 +1,5 @@
 ---
-title: 어소시에이션
+title: 관계
 layout: page
 ---
 
