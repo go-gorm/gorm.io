@@ -25,19 +25,19 @@ type CreditCard struct {
 
 ## Foreign Key 오버라이드
 
-For a `has one` relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
+`has one` 관계에서, foreign key 필드는 필수입니다. 또한, 소유자는 피소유 필드의 primary key를 해당 필드에 저장합니다.
 
-The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
+필드의 이름은 보통 `has one`  모델의 타입과  해당 모델의  `primary key`를 붙여서 생성됩니다. 위 예의 경우 필드의 이름은`UserID`입니다.
 
-When you give a credit card to the user, it will save the User's `ID` into its `UserID` field.
+만약 Credit card를 어떤 유저에게 넘겨준다면 Credit card 모델은 수령자의 `ID`를  `UserID` 필드에 저장합니다.
 
-If you want to use another field to save the relationship, you can change it with tag `foreignKey`, e.g:
+만약 해당 관계를 저장하기위해 다른 필드를 사용하고자 한다면,  `foreignKey` 태그를 사용해 바꿀 수 있습니다. 아래 코드는 foreignKey 태그를 사용한 예시입니다.
 
 ```go
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // use UserName as foreign key
+  // UserName을 foreign key로 사용하세요.
 }
 
 type CreditCard struct {
@@ -47,11 +47,11 @@ type CreditCard struct {
 }
 ```
 
-## Override References
+## 참조 오버라이드
 
-By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field's value, like using `Name` for the below example.
+기본적으로, 소유된 엔터티는 `has one` 모델의 primary key를 foreign key에 저장하며, 아래 예시에서 `Name`을 사용하는 것 처럼다른 필드의 값을 저장하기위해 변경할 수 있습니다.
 
-You are able to change it with tag `references`, e.g:
+`references` 태그를 활용해 변경할 수 있는 예시입니다.
 
 ```go
 type User struct {
@@ -67,9 +67,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## 다형성 관계
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field
+GORM은  `has one` 과 `has many`관계에서 다형성 을 지원합니다. 다형성 관계는, 소유된 엔티티의 테이블 이름을 다형성 타입 필드에 저장하며, primary key는 다형성 필드에 저장합니다.
 
 ```go
 type Cat struct {
