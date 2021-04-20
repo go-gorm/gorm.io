@@ -5,7 +5,7 @@ layout: page
 
 ## Auto Create/Update
 
-GORMはレコードの作成・更新時に[Upsert](create.html#upsert)を使用して自動的にアソシエーションとその参照を保存します。
+GORMはレコードの作成・更新時に[Upsert](create.html#upsert)を使用して自動的に関連データとその参照を保存します。
 
 ```go
 user := User{
