@@ -7,7 +7,7 @@ layout: страница
 
 Связь `belongs to` устанавливает связь один к одному с другой моделью, таким образом, чтобы каждый экземпляр объявленной модели "belongs to" связывался с другой.
 
-Например, если приложение включает пользователей и компании, и каждому пользователю можно указать только одну компанию
+For example, if your application includes users and companies, and each user can be assigned to exactly one company, the following types represent that relationship. Notice here that, on the `User` object, there is both a `CompanyID` as well as a `Company`. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
 
 ```go
 // `User` belongs to `Company`, `CompanyID` это внешний ключ
@@ -24,13 +24,15 @@ type Company struct {
 }
 ```
 
+Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
+
 ## Переопределить внешний ключ
 
-Чтобы определить belongs to связь, внешний ключ должен существовать, по умолчанию внешний ключ использует имя типа владельца плюс его основное имя поля.
+To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
 
-Для приведенного выше примера, чтобы определить связь belongs to между моделями `User` и `Company`, внешним ключом должно быть `CompanyID` в соответствии с правилами
+For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
 
-GORM предоставляет способ настройки внешнего ключа, например:
+GORM provides a way to customize the foreign key, for example:
 
 ```go
 type User struct {
@@ -49,11 +51,11 @@ type Company struct {
 
 ## Переопределить ссылки
 
-Для связи belongs to, GORM обычно использует первичное поле владельца в качестве значения внешнего ключа, для приведенного выше примера в таблице `Company` поле `ID`.
+For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
 
-Когда вы назначаете пользователя компании, GORM сохранит `ID` компании в поле пользователя `CompanyID`.
+When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
 
-Вы можете изменить его с помощью тега `references`, например:
+You are able to change it with tag `references`, e.g:
 
 ```go
 type User struct {
@@ -72,15 +74,15 @@ type Company struct {
 
 ## CRUD с Belongs To
 
-Пожалуйста, посмотрите [Association Mode](associations.html#Association-Mode) для работы со связями
+Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
 
 ## Нетерпеливая загрузка
 
-GORM разрешает загрузку связей belongs to с помощью `Preload` или `Joins`, смотрите [Предварительная загрузка (Нетерпеливая загрузка)](preload.html) для получения подробной информации
+GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
 
 ## Ограничения внешних ключей
 
-Вы можете настроить `OnUpdate`, `OnDelete` ограничения с помощью тега `constraint`, они будут созданы при миграции, например:
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {
