@@ -7,7 +7,7 @@ layout: page
 
 `belongs to`アソシエーションは、モデルの各インスタンスが他のモデルの1つのインスタンスに "属する "ように、他のモデルとの1対1の接続を設定します。
 
-たとえば、アプリケーションにユーザーと会社が含まれ、各ユーザーが1つの会社に割り当てられる場合などです。
+For example, if your application includes users and companies, and each user can be assigned to exactly one company, the following types represent that relationship. Notice here that, on the `User` object, there is both a `CompanyID` as well as a `Company`. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
 
 ```go
 // `User`は`Company`に属します。 `CompanyID`は外部キーです。
@@ -24,13 +24,15 @@ type Company struct {
 }
 ```
 
+Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
+
 ## Override Foreign Key
 
-Belongs toを定義する場合、外部キーが存在する必要があります。デフォルトの外部キーは、所有型の型名にその主キーフィールド名を足したものです。
+To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
 
-上記の例では、`Company`に属する`User`モデルを定義する際、規約に従い、外部キーを`CompanyID`とします。
+For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
 
-GORMは外部キーをカスタマイズする方法を提供しています。例：
+GORM provides a way to customize the foreign key, for example:
 
 ```go
 type User struct {
@@ -49,11 +51,11 @@ type Company struct {
 
 ## Override References
 
-Belongs toを定義する場合、GORMは通常、所有側の主キーフィールドを外部キーの値として使用します、。上記の例では`Company`のフィールド`ID`を使用します。
+For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
 
-UserをCompanyに割り当てると、GORMはCompanyの `ID` をUserの `CompanyID`フィールドに保存します。
+When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
 
-`references`タグを用いて変更することもできます。
+You are able to change it with tag `references`, e.g:
 
 ```go
 type User struct {
@@ -72,7 +74,7 @@ type Company struct {
 
 ## CRUD with Belongs To
 
-[Association Mode](associations.html#Association-Mode)を参照してください。
+Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
 
 ## Eager Loading
 
