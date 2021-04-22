@@ -65,6 +65,7 @@ type User struct {
   Name string `gorm:"->;<-:create"` // allow read and create
   Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
   Name string `gorm:"-"`  // ignore this field when write and read with struct
+  Name string `gorm:"<->"`  // read this field only and ignore migration
 }
 ```
 
@@ -172,6 +173,7 @@ Tags are case insensitive, however `camelCase` is preferred.
 | check          | creates check constraint, eg: `check:age > 13`, refer [Constraints](constraints.html) |
 | <-             | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no write permission, `<-` create and update permission |
 | ->             | set field's read permission, `->:false` no read permission             |
+| <->            | set field's read permission only and ignore migration             |
 | -              | ignore this field, `-` no read/write permission                       |
 | comment        | add comment for field when migration                                  |
 
