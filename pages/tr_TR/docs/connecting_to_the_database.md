@@ -3,7 +3,7 @@ title: Bir Veritabanına Bağlanma
 layout: sayfa
 ---
 
-GORM resmi olan MySQL, PostgreSQL, SQLite, SQL Server veritabanlarını destekler
+GORM resmi olarak MySQL, PostgreSQL, SQLite, SQL Server veritabanlarını destekler
 
 ## MySQL
 
