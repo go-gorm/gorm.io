@@ -7,7 +7,7 @@ layout: sayfa
 
 A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company
+For example, if your application includes users and companies, and each user can be assigned to exactly one company, the following types represent that relationship. Notice here that, on the `User` object, there is both a `CompanyID` as well as a `Company`. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
 
 ```go
 // `User` belongs to `Company`, `CompanyID` is the foreign key
@@ -23,6 +23,8 @@ type Company struct {
   Name string
 }
 ```
+
+Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
 
 ## Override Foreign Key
 
