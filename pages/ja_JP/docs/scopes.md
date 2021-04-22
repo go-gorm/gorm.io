@@ -77,7 +77,7 @@ func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {
     if org != "" {
       var organization Organization
       if db.Session(&Session{}).First(&organization, "name = ?", org).Error == nil {
-        return db.Where("org_id = ?", org.ID)
+        return db.Where("org_id = ?", organization.ID)
       }
     }
 
