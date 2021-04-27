@@ -1,13 +1,13 @@
 ---
-title: Belongs To
-layout: page
+title: '-e Ait'
+layout: sayfa
 ---
 
-## Belongs To
+## -e Ait
 
 A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company
+Örneğin, uygulamanız kullanıcılar ve şirketler içeriyorsa ve her bir kullanıcı tam olarak bir şirkete aitse, bu ilişkiyi aşağıdaki tip ile ifade edebilirsiniz. Dikkat ederseniz `User` objesinde hem bir `CompanyID` hem de bir `Company` alanı bulunuyor. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
 
 ```go
 // `User` belongs to `Company`, `CompanyID` is the foreign key
@@ -23,6 +23,8 @@ type Company struct {
   Name string
 }
 ```
+
+Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
 
 ## Override Foreign Key
 

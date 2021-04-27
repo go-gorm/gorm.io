@@ -1,14 +1,14 @@
 ---
-title: GORM Guides
-layout: page
+title: GORM Rehberleri
+layout: sayfa
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+Geliştirici dostu olmayı hedefleyen, Golang için fantastik bir ORM kütüphanesi.
 
-## Overview
+## Genel Bakış
 
-* Full-Featured ORM
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
+* Tam teşekkül ORM
+* İlişkiler (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
 * Hooks (Before/After Create/Save/Update/Delete/Find)
 * Eager loading with `Preload`, `Joins`
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
@@ -16,20 +16,20 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * Composite Primary Key, Indexes, Constraints
-* Auto Migrations
-* Logger
+* Otomatik Geçiş
+* Günlük Oluşturucu
 * Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
-* Every feature comes with tests
-* Developer Friendly
+* Bütün özellikler test ile birlikte gelir
+* Geliştirici dostu
 
-## Install
+## Yükleme
 
 ```sh
 go get -u gorm.io/gorm
 go get -u gorm.io/driver/sqlite
 ```
 
-## Quick Start
+## Hızlı Başlangıç
 
 ```go
 package main

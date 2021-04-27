@@ -1,36 +1,36 @@
 ---
-title: GORM Community
-layout: page
+title: GORM Topluluğu
+layout: sayfa
 ---
 
-## Ask
+## Sor
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[Nasıl iyi bir soru sorarsınız?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
 * Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
 
-## Chat
+## Sohbet
 
 * Gitter - [https://gitter.im/jinzhu/gorm](https://gitter.im/jinzhu/gorm)
 
-## Links
+## Linkler
 
-* An admin system based on GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
+* GORM V2 üzerine kurulmuş bir admin sistemi - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
 * Go-admin is a middle background framework based on Gorm  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
-## Videos
+## Videolar
 
-* [GORM V2 videos example link](#contribute)
+* [GORM V2 videoları örnek adresi](#contribute)
 
-## Open Sources
+## Açık Kaynaklar
 
 * [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
 * [go-paginate - cursor-based pagination](https://github.com/raphaelvigee/go-paginate)
 * [zapgorm - Uber's Zap logging driver for gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber's Zap logging driver for gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 
-## <span id="contribute">Contribute to this page</span>
+## <span id="contribute">Bu sayfaya katkıda bulunmak</span>
 
-Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) to add your awesome links
+Mükemmel linklerinizi eklemek için lütfen [bu sayfayı](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) düzenleyin

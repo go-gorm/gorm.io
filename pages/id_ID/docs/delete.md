@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## Delete with primary key
 
-GORM mengijinkan untuk menghapus objek menggunakan primary key dengan kondisi di inline, ini akan bekerja dengan angka, check keluaran  [  Ketentuan query inline](query.html#inline_conditions) untuk detail .
+GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out [Query Inline Conditions](query.html#inline_conditions) for details
 
 ```go
 db.Delete(&User{}, 10)

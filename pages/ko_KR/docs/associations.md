@@ -1,11 +1,11 @@
 ---
-title: 어소시에이션
+title: 관계
 layout: page
 ---
 
 ## 자동 생성/갱신
 
-GORM은 레코드를 생성/갱신할 때 [Upsert(업서트)](create.html#upsert)를 사용하여 어소시에이션(association)과 레퍼런스(reference)를 자동으로 저장합니다.
+GORM은 레코드를 생성/갱신할 때 [Upsert(업서트)](create.html#upsert)를 사용하여 관계와 참조를 자동으로 저장합니다.
 
 ```go
 user := User{

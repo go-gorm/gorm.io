@@ -3,11 +3,11 @@ title: Hints
 layout: page
 ---
 
-GORM provides optimizer/index/comment hints support
+GORM은 옵티마이저/인덱스/주석 힌트를 지원합니다.
 
 https://github.com/go-gorm/hints
 
-## Optimizer Hints
+## 옵티마이저 힌트
 
 ```go
 import "gorm.io/hints"
@@ -16,7 +16,7 @@ db.Clauses(hints.New("hint")).Find(&User{})
 // SELECT * /*+ hint */ FROM `users`
 ```
 
-## Index Hints
+## 인덱스 힌트
 
 ```go
 import "gorm.io/hints"
@@ -34,7 +34,7 @@ db.Clauses(
 // SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
 ```
 
-## Comment Hints
+## 주석 힌트
 
 ```go
 import "gorm.io/hints"
