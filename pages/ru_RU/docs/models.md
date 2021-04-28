@@ -47,12 +47,12 @@ type Model struct {
 
 ## Дополнительно
 
-### <span id="field_permission">Field-Level Permission</span>
+### <span id="field_permission">Разрешение для каждого поля</span>
 
 Exported fields have all permission when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
 
 {% note warn %}
-**NOTE** ignored fields won't be created when using GORM Migrator to create table
+Игнорируемые поля не будут созданы при использовании GORM Migrator для создания таблицы
 {% endnote %}
 
 ```go
@@ -88,7 +88,7 @@ type User struct {
 
 ### <span id="embedded_struct">Встроенный struct</span>
 
-For anonymous fields, GORM will include its fields into its parent struct, for example:
+Для анонимных полей GORM будет включать свои поля в свою же родительскую структуру, например:
 
 ```go
 type User struct {
@@ -105,7 +105,7 @@ type User struct {
 }
 ```
 
-For a normal struct field, you can embed it with the tag `embedded`, for example:
+Вы можете вставить обычные поля структуры с тегом `embedded`, например:
 
 ```go
 type Author struct {
