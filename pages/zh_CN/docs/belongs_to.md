@@ -53,7 +53,7 @@ type Company struct {
 
 对于 belongs to 关系，GORM 通常使用数据库表，主表（拥有者）的主键值作为外键参考。 正如上面的例子，我们使用主表Company中的主键字段ID作为外键的参考值。
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+如果在Company实体中设置了User实体，那么GORM会自动把Company中的ID属性保存到User的CompanyID属性中。
 
 You are able to change it with tag `references`, e.g:
 
@@ -74,15 +74,15 @@ type Company struct {
 
 ## Belongs to 的 CRUD
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+点击 [关联模式](associations.html#Association-Mode) 链接获取 belongs to 相关的用法
 
 ## 预加载
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM允许通过使用`Preload`或者`Joins`来主动加载实体的关联关系，具体内容请参考，[预加载（主动加载）](preload.html)
 
 ## 外键约束
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+你可以通过`OnUpdate`, `OnDelete`配置标签来增加关联关系的级联操作，如下面的例子，通过GORM可以完成用户和公司的级联更新和级联删除操作：
 
 ```go
 type User struct {
