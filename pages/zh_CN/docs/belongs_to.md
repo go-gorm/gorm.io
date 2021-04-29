@@ -28,11 +28,11 @@ Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populatin
 
 ## 重写外键
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+要定义一个 belongs to 关系，数据库的表中必须存在外键，默认情况下外键的名字，使用拥有者的名字加上表的主键的字段名字
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+例如，定义一个User实体属于Company实体，那么外键的名字一般使用CompanyID。
 
-GORM provides a way to customize the foreign key, for example:
+GORM同时提供自定义外键名字的方式，如下例所示。
 
 ```go
 type User struct {
@@ -51,7 +51,7 @@ type Company struct {
 
 ## 重写引用
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+对于 belongs to 关系，GORM 通常使用数据库表，主表（拥有者）的主键值作为外键参考。 正如上面的例子，我们使用主表Company中的主键字段ID作为外键的参考值。
 
 When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
 
