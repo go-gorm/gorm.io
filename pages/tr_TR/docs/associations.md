@@ -226,6 +226,22 @@ db.Select(clause.Associations).Delete(&user)
 db.Select("Account").Delete(&users)
 ```
 
+{% note warn %}
+**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those priamry keys as conditions to delete selected associations
+
+```go
+// DOESN'T WORK
+db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
+// will delete all user with name `jinzhu`, but those user's account won't be deleted
+
+db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
+// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
+
+db.Select("Account").Delete(&User{ID: 1})
+// will delete the user with id = `1`, and user `1`'s account will be deleted
+```
+{% endnote %}
+
 ## <span id="tags">Association Tags</span>
 
 | Tag              | Description                                                                                        |
