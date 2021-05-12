@@ -33,36 +33,36 @@ sidebar:
     batch: Toplu İşlem Çalıştırma
     associations: Model İlişkileri
     belongs_to: Ait
-    has_one: Has One
-    has_many: Has Many
+    has_one: Tekli Sahiplik
+    has_many: Çoklu Sahiplik
     many_to_many: Çoktan Çoka
-    association_mode: Association Mode
-    preload: Preloading (Eager Loading)
+    association_mode: İlişki Modu
+    preload: Ön Yükleme
     tutorials: Rehberler
-    context: Context
-    error_handling: Error Handling
-    method_chaining: Method Chaining
+    context: Bağlam
+    error_handling: Hata İdaresi
+    method_chaining: Metod Zinciri
     session: Oturum
     hooks: Hooklar
     transactions: İşlemler
     migration: Aktarım
-    logger: Logger
-    generic_interface: Generic Database Interface
+    logger: Kaydedici
+    generic_interface: Genel Veritabanı Arayüzü
     performance: Performans
-    data_types: Customize Data Types
+    data_types: Veri Tiplerini Özelleştirme
     scopes: Kapsam
     settings: Ayarlar
     advanced_topics: İleri düzey Konular
-    dbresolver: Database Resolver
+    dbresolver: Veritabanı Çözücü
     prometheus: Prometheus
     hints: İpuçları
     indexes: İndeksler
     constraints: Kısıtlamalar
-    composite_primary_key: Composite Primary Key
+    composite_primary_key: Bileşik Birincil Anahtar
     security: Güvenlik
-    gorm_config: GORM Config
-    write_plugins: Write Plugins
-    write_driver: Write Driver
+    gorm_config: GORM Ayarları
+    write_plugins: Eklenti Yaz
+    write_driver: Sürücü Yaz
     change_log: Sürüm Bilgileri
     community: Topluluk
     contribute: Katkıda bulunun
