@@ -24,7 +24,7 @@ db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and assign a value to the fields omitted.
+Create a record and ignore the values for fields passed to omit.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
