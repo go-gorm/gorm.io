@@ -3,7 +3,7 @@ title: Query
 layout: page
 ---
 
-## Retrieving a single object
+## Recuperando un unico objeto
 
 GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return error `ErrRecordNotFound` if no record found.
 
