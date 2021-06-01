@@ -227,4 +227,4 @@ db.Find(&user, datatypes.JSONQuery("attributes").Equals("jinzhu", "name"))
 
 ## 自定义数据类型集合
 
-我们创建了一个 Github 仓库，用于收集各种自定义数据类型[https://github.com/go-gorm/datatype](https://github.com/go-gorm/datatypes)，非常欢迎同学们的 pull request ;)
+我们创建了一个 Github 仓库，用于收集各种自定义数据类型[https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes)，非常欢迎同学们的 pull request ;)
