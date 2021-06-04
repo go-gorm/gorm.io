@@ -89,7 +89,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">Gruplama Koşulları</span>
 
-Easier to write complicated SQL query with Group Conditions
+Gruplama şartlarını kullanarak daha komplike SQL sorguları yazabilirsiniz
 
 ```go
 db.Where(
