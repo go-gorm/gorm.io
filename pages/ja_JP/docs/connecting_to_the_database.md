@@ -186,7 +186,7 @@ func main() {
 
 ## Connection Pool
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORMによる[database/sql](https://pkg. go. dev/database/sql) を使用したコネクションプールの維持
 
 ```go
 sqlDB, err := db.DB()
@@ -201,10 +201,10 @@ sqlDB.SetMaxOpenConns(100)
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+詳細については、 [Generic Interface](generic_interface. html) を参照してください。
 
 ## Unsupported Databases
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+いくつかのデータベースは `mysql` または `postgres` の方言と互換性があります。 その場合はデータベースの方言を使うことができます
 
 For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
