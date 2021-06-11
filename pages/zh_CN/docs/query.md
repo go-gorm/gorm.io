@@ -79,7 +79,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-如果主键是像 uuid 这样的字符串，您需要这要写：
+如果主键是像 uuid 这样的字符串，您需要这样写：
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
