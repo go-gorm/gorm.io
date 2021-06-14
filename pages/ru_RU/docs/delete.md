@@ -47,7 +47,7 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 ## <span id="batch_delete">Пакетное удаление</span>
 
-The specified value has no priamry value, GORM will perform a batch delete, it will delete all matched records
+The specified value has no primary value, GORM will perform a batch delete, it will delete all matched records
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
