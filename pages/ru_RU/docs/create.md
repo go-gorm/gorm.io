@@ -44,7 +44,7 @@ for _, user := range users {
 }
 ```
 
-Вы можете указать размер создаваемого пакета с помощью `CreateInBatches`, например:
+Вы можете указать размер создаваемой вставки с помощью `CreateInBatches`, например:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -56,7 +56,7 @@ db.CreateInBatches(users, 100)
 Пакетная вставка также поддерживается при использовании [Upsert](#upsert) и [Создать с ассоциациями](#create_with_associations)
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**Внимание** при инициализации GORM с опцией `CreateBatchSize`, все `INSERT` будут учитывать эту опцию при создании записи& объединения
 {% endnote %}
 
 ```go
@@ -73,9 +73,9 @@ db.Create(&users)
 // INSERT INTO pets xxx (15 batches)
 ```
 
-## Create Hooks
+## Создание хуков
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORM позволяет реализовывать заданные пользователем хуки для `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  Эти хуки будут вызываться при создании записи, подробности смотрите в [Хуки](hooks.html)
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -88,7 +88,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+Если необходимо пропустить методы `Hooks`, вы можете использовать значение в Session `SkipHooks`:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
