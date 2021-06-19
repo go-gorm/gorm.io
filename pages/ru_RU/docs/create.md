@@ -98,9 +98,9 @@ DB.Session(&gorm.Session{SkipHooks: true}).Create(&users)
 DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 ```
 
-## Создать из Map
+## Create с помощью Map(карты)
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORM поддерживает создание с помощью `map[string]interface{}` и `[]map[string]interface{}{}`, например:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
@@ -115,7 +115,7 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**ПРИМЕЧАНИЕ** При создании из карты, хуки не будут вызваны, связи не будут сохранены и значения первичных ключей не будут заполнены
 {% endnote %}
 
 ## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
