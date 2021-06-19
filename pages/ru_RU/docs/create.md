@@ -1,21 +1,21 @@
 ---
-title: Создать
+title: Создание
 layout: страница
 ---
 
-## Создать запись
+## Создание записи
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // передаем данные для создания в Create
+result := db.Create(&user) // передаем указатель на данные в Create
 
 user.ID             // возвращает первичный ключ добавленной записи
 result.Error        // возвращает ошибку
 result.RowsAffected // возвращает количество вставленных записей
 ```
 
-## Create Record With Selected Fields
+## Создание записи с указанными полями
 
 Create a record and assign a value to the fields specified.
 
