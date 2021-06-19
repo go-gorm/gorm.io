@@ -17,23 +17,23 @@ result.RowsAffected // возвращает количество вставле�
 
 ## Создание записи с указанными полями
 
-Create a record and assign a value to the fields specified.
+Создаем запись и присваиваем значение указанным полям.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and ignore the values for fields passed to omit.
+Создание записи и игнорирование значений CreatedAt для полей, переданных для omit.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## <span id="batch_insert">Batch Insert</span>
+## <span id="batch_insert">Пакетная вставка</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+Чтобы эффективно вставить большое количество записей, передайте слайс в метод `Create`. GORM создаст один SQL запрос для вставки всех данных и заполнения значений первичных ключей, а также будут вызваны хук методы.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -44,7 +44,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+Вы можете указать размер создаваемого пакета с помощью `CreateInBatches`, например:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
