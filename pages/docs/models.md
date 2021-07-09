@@ -127,12 +127,12 @@ type Blog struct {
 }
 ```
 
-And you can use tag `embeddedPrefix` to add prefix to embedded fields' db name, for example:
+And you can use tag `embedded_prefix` to add prefix to embedded fields' db name, for example:
 
 ```go
 type Blog struct {
   ID      int
-  Author  Author `gorm:"embedded;embeddedPrefix:author_"`
+  Author  Author `gorm:"embedded;embedded_prefix:author_"`
   Upvotes int32
 }
 // equals
@@ -164,7 +164,7 @@ Tags are case insensitive, however `camelCase` is preferred.
 | autoIncrement  | specifies column auto incrementable                                    |
 | autoIncrementIncrement  | auto increment step, controls the interval between successive column values |
 | embedded       | embed the field                                                        |
-| embeddedPrefix | column name prefix for embedded fields                                 |
+| embedded_prefix | column name prefix for embedded fields                                 |
 | autoCreateTime | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano` |
 | autoUpdateTime | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli` |
 | index          | create index with options, use same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details |
