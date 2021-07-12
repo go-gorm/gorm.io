@@ -1,11 +1,11 @@
 ---
 title: Logger
-layout: page
+layout: halaman
 ---
 
 ## Logger
 
-Gorm has a [default logger implementation](https://github.com/go-gorm/gorm/blob/master/logger/logger.go), it will print Slow SQL and happening errors by default
+Gorm mempunyai sebuah [implementasi awal logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go), dimana akan mencetak Slow SQL dan mencetak kesalahan saat terjadi kesalahan
 
 The logger accepts few options, you can customize it during initialization, for example:
 
