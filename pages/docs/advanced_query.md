@@ -321,8 +321,8 @@ db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
 // Requesting more than one column, use `Scan` or `Find` like this:
-db.Select("name", "age").Scan(&users)
-db.Select("name", "age").Find(&users)
+db.Model(&User{}).Select([]string{"name", "age"}).Scan(&users)
+db.Select([]string{"name", "age"}).Find(&users)
 ```
 
 ## Scopes
