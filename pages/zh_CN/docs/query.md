@@ -376,7 +376,7 @@ db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-For more details, please refer to [Preloading (Eager Loading)](preload.html).
+更多细节请参阅 [预加载 (Eager Loading)](preload.html)。
 
 ## <span id="scan">Scan</span>
 
