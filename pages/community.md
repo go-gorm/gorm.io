@@ -22,7 +22,7 @@ layout: page
 
 ## Videos
 
-* [GORM V2 videos example link](#contribute)
+* Gorm quick start tutorial by [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
 
 ## Open Sources
 
