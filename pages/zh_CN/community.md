@@ -22,7 +22,7 @@ layout: page
 
 ## 视频
 
-* [GORM V2 视频链接示例](#contribute)
+* [手把手带你入门GORM](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079) - [作者：奇淼](https://github.com/piexlmax)
 
 ## 开源软件
 
