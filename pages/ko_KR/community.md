@@ -22,7 +22,7 @@ layout: page
 
 ## 영상
 
-* [GORM V2 영상 예시 링크](#contribute)
+* Gorm quick start tutorial by [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
 
 ## 오픈소스
 
