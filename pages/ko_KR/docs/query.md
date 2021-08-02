@@ -1,6 +1,6 @@
 ---
 title: Query
-layout: page
+layout: 페이지
 ---
 
 ## Retrieving a single object
