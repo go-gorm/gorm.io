@@ -1,11 +1,11 @@
 ---
-title: Advanced Query
+title: Requête avancée
 layout: page
 ---
 
 ## <span id="smart_select">Smart Select Fields</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM permet de sélectionner des champs spécifiques avec [`Select`](query.html), si vous l'utilisez souvent dans votre application, peut-être que vous préférerez définir une structure plus petite pour l'utilisation de l'API qui peut sélectionner des champs spécifiques automatiquement, par exemple :
 
 ```go
 type User struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// Select `id`, `name` automatique lors de la requête
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**NOTE** Le mode `QueryFields` sélectionnera par le nom de tous les champs pour le modèle actuel
 {% endnote %}
 
 ```go
@@ -36,9 +36,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // avec cette option
 
-// Session Mode
+// Mode Session
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
@@ -58,7 +58,7 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+Reportez-vous à [Raw SQL et SQL Builder](sql_builder.html) pour plus de détails
 
 ## SubQuery
 
