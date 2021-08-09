@@ -96,7 +96,7 @@ If we haven't specified a record having primary key value with `Model`, GORM wil
 ```go
 // Update with struct
 db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
-// UPDATE users SET name='hello', age=18 WHERE role = 'admin;
+// UPDATE users SET name='hello', age=18 WHERE role = 'admin';
 
 // Update with map
 db.Table("users").Where("id IN ?", []int{10, 11}).Updates(map[string]interface{}{"name": "hello", "age": 18})
@@ -127,12 +127,12 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name",
 Get the number of rows affected by a update
 
 ```go
-// Получить количество обновленных строк при помощи `RowsAffected`
+// Get updated records count with `RowsAffected`
 result := db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
-// UPDATE users SET name='hello', age=18 WHERE role = 'admin;
+// UPDATE users SET name='hello', age=18 WHERE role = 'admin';
 
-result.RowsAffected // возвращает количество обновленных записей
-result.Error        // возвращает ошибку обновления
+result.RowsAffected // returns updated records count
+result.Error        // returns updating error
 ```
 
 ## Advanced

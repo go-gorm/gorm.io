@@ -94,11 +94,11 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 如果您尚未通过 `Model` 指定记录的主键，则 GORM 会执行批量更新
 
 ```go
-// 根据 struct 更新
+// Update with struct
 db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
-// UPDATE users SET name='hello', age=18 WHERE role = 'admin;
+// UPDATE users SET name='hello', age=18 WHERE role = 'admin';
 
-// 根据 map 更新
+// Update with map
 db.Table("users").Where("id IN ?", []int{10, 11}).Updates(map[string]interface{}{"name": "hello", "age": 18})
 // UPDATE users SET name='hello', age=18 WHERE id IN (10, 11);
 ```
@@ -127,12 +127,12 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name",
 获取受更新影响的行数
 
 ```go
-// 通过 `RowsAffected` 得到更新的记录数
+// Get updated records count with `RowsAffected`
 result := db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
-// UPDATE users SET name='hello', age=18 WHERE role = 'admin;
+// UPDATE users SET name='hello', age=18 WHERE role = 'admin';
 
-result.RowsAffected // 更新的记录数
-result.Error        // 更新的错误
+result.RowsAffected // returns updated records count
+result.Error        // returns updating error
 ```
 
 ## 高级选项
