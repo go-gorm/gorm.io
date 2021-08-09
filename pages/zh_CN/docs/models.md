@@ -121,8 +121,8 @@ type Blog struct {
 // 等效于
 type Blog struct {
   ID    int64
-    Name  string
-    Email string
+  Name  string
+  Email string
   Upvotes  int32
 }
 ```

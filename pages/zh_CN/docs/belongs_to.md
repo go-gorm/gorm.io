@@ -7,7 +7,7 @@ layout: page
 
 `belongs to` 会与另一个模型建立了一对一的连接。 这种模型的每一个实例都“属于”另一个模型的一个实例。
 
-例如，您的应用包含 user 和 company，并且每个 user 能且只能被分配给一个 company。下面的类型就表示这种关系。 注意，在 `User` 对象中，有一个和 `Company` 一样的 `CompanyID`。 By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
+例如，您的应用包含 user 和 company，并且每个 user 能且只能被分配给一个 company。下面的类型就表示这种关系。 注意，在 `User` 对象中，有一个和 `Company` 一样的 `CompanyID`。 默认情况下， `CompanyID` 被隐含地用来在 `User` 和 `Company` 之间创建一个外键关系， 因此必须包含在 `User` 结构体中才能填充 `Company` 内部结构体。
 
 ```go
 // `User` 属于 `Company`，`CompanyID` 是外键
@@ -24,11 +24,11 @@ type Company struct {
 }
 ```
 
-Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
+请参阅 [[预加载](belongs_to.html#预加载)](belongs_to.html#Eager-Loading) 以了解内部结构的详细信息。
 
 ## 重写外键
 
-要定义一个 belongs to 关系，数据库的表中必须存在外键，默认情况下外键的名字，使用拥有者的名字加上表的主键的字段名字
+要定义一个 belongs to 关系，数据库的表中必须存在外键。默认情况下，外键的名字，使用拥有者的类型名称加上表的主键的字段名字
 
 例如，定义一个User实体属于Company实体，那么外键的名字一般使用CompanyID。
 
@@ -55,7 +55,7 @@ type Company struct {
 
 如果在Company实体中设置了User实体，那么GORM会自动把Company中的ID属性保存到User的CompanyID属性中。
 
-You are able to change it with tag `references`, e.g:
+同样的，您也可以使用标签 `references` 来更改它，例如：
 
 ```go
 type User struct {

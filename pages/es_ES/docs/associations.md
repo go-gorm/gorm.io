@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+Si desea actualizar los datos de las asociaciones, debe usar el modo `FullSaveAssociations` mode:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -45,9 +45,9 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // ...
 ```
 
-## Skip Auto Create/Update
+## Crear/ actualizar Automáticamente
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+Para omitir el guardado automático al crear/actualizar, puede utilizar `Select` o `Omit`, por ejemplo:
 
 ```go
 user := User{

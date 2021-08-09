@@ -8,11 +8,11 @@ layout: page
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // pass pointer of data to Create
+result := db.Create(&user) // Oluştur metoduna, verinin pointerını ver
 
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+user.ID             // oluşturulan kayıdın birincil anahtar değerini döndür
+result.Error        // hata döndür
+result.RowsAffected // oluşturulan kayıt sayısını döndür
 ```
 
 ## Seçilen Alanlarla Kayıt Oluştur
@@ -24,7 +24,7 @@ db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Bir kayıt oluştur ve dışlanan alanlara değer ata.
+Create a record and ignore the values for fields passed to omit.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -44,12 +44,12 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+`CreateInBatches` ile kayıt oluştururken grup boyutunu belirleyebilirsin, örnek:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 
-// batch size 100
+// grup boyutu 100
 db.CreateInBatches(users, 100)
 ```
 
@@ -163,9 +163,9 @@ db.Create(&User{
 // INSERT INTO `users` (`name`,`location`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
 ```
 
-## Advanced
+## Gelişmiş
 
-### <span id="create_with_associations">Create With Associations</span>
+### <span id="create_with_associations">Bağlantı ile oluştur</span>
 
 When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
 
@@ -199,9 +199,9 @@ db.Omit("CreditCard").Create(&user)
 db.Omit(clause.Associations).Create(&user)
 ```
 
-### <span id="default_values">Default Values</span>
+### <span id="default_values">Varsayılan Değerler</span>
 
-You can define default values for fields with tag `default`, for example:
+Alanlar için varsayılan değerleri `default` etiketiyle tanımlayabilirsin, örnek:
 
 ```go
 type User struct {

@@ -87,9 +87,9 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
 
-## <span id="group_conditions">Group Conditions</span>
+## <span id="group_conditions">Gruplama Koşulları</span>
 
-Easier to write complicated SQL query with Group Conditions
+Gruplama şartlarını kullanarak daha komplike SQL sorguları yazabilirsiniz
 
 ```go
 db.Where(
@@ -101,9 +101,9 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## Named Argument
+## İsimli Argümanlar
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+Gorm isimli argümanları [ `sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) veya `map[string]interface{}{}` ile destekler, örneğin:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)

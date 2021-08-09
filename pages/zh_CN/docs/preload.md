@@ -48,7 +48,7 @@ db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN 
 
 ## 预加载全部
 
-`clause.Associations` can work with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
+与创建、更新时使用 `Select` 类似，`clause.Associations` 也可以和 `Preload` 一起使用，它可以用来 `预加载` 全部关联，例如：
 
 ```go
 type User struct {

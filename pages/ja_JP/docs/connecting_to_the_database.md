@@ -24,7 +24,7 @@ func main() {
 **NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
 {% endnote %}
 
-MySQL Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
+MySQLドライバは、 [初期化中に使用できる高度な設定](https://github. com/go-gorm/mysql)を いくつか提供しています。
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -39,7 +39,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### Customize Driver
 
-GORM allows customize the MySQL driver with the `DriverName` option, for example:
+GORMでは、 `DriverName` オプションを使用してMySQLドライバをカスタマイズできます。
 
 ```go
 import (
@@ -55,7 +55,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### Existing database connection
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORMでは、既存のデータベース接続で `*gorm.DB` を初期化することができます。
 
 ```go
 import (
@@ -186,7 +186,7 @@ func main() {
 
 ## Connection Pool
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORMによる[database/sql](https://pkg. go. dev/database/sql) を使用したコネクションプールの維持
 
 ```go
 sqlDB, err := db.DB()
@@ -201,10 +201,10 @@ sqlDB.SetMaxOpenConns(100)
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+詳細については、 [Generic Interface](generic_interface. html) を参照してください。
 
 ## Unsupported Databases
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+いくつかのデータベースは `mysql` または `postgres` の方言と互換性があります。 その場合はデータベースの方言を使うことができます
 
 For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)

@@ -5,7 +5,7 @@ layout: page
 
 ## Retrieving a single object
 
-GORM provides `First`, `Take`, `Last` method to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return error `ErrRecordNotFound` if no record found.
+GORM provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
 
 ```go
 // Get the first record ordered by primary key
@@ -16,13 +16,13 @@ db.First(&user)
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// Get last record, order by primary key desc
+// Get last record, ordered by primary key desc
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // returns found records count
-result.Error        // returns error
+result.RowsAffected // returns count of records found
+result.Error        // returns error or nil
 
 // check error ErrRecordNotFound
 errors.Is(result.Error, gorm.ErrRecordNotFound)
@@ -32,17 +32,17 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`, the `Find` method accepts both struct and slice data
 {% endnote %}
 
-The `First`, `Last` method will find the first/last record order by primary key, it only works when querying with struct or provides model value, if no primary key defined for current model, will order by the first field, for example:
+The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
 
 ```go
 var user User
 var users []User  
 
-// works
+// works because destination struct is passed in
 db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// works
+// works because model is specified using `db.Model()`
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
@@ -55,7 +55,7 @@ db.Table("users").First(&result)
 result := map[string]interface{}{}
 db.Table("users").Take(&result)
 
-// order by first field
+// no primary key defined, results will be ordered by first field (i.e., `Code`)
 type Language struct {
   Code string
   Name string
@@ -66,7 +66,7 @@ db.First(&Language{})
 
 ### Retrieving objects with primary key
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number, Be extra careful with strings to avoid SQL Injection, check out [Security](security.html) section for details
+Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
 
 ```go
 db.First(&user, 10)
@@ -79,7 +79,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If primary key is a string like uuid, need to write it like:
+If the primary key is a string (for example, like a uuid), the query will be written as follows:
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
@@ -156,18 +156,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-You can use map to build the query condition, it will use all values, e.g:
+To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-Or refer [Specify Struct search fields](#specify_search_fields)
+For more details, see [Specify Struct search fields](#specify_search_fields).
 
 ### <span id="specify_search_fields">Specify Struct search fields</span>
 
-When searching with struct, you could use its field name or dbname as arguments to specify the searching fields, for example:
+When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -179,10 +179,9 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 
 ### <span id="inline_conditions">Inline Condition</span>
 
-Works similar to `Where`.
+Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
 
 ```go
-// SELECT * FROM users WHERE id = 23;
 // Get by primary key if it were a non-integer type
 db.First(&user, "id = ?", "string_primary_key")
 // SELECT * FROM users WHERE id = 'string_primary_key';
@@ -239,11 +238,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-Also check out [Group Conditions in Advanced Query](advanced_query.html#group_conditions), it can be used to write complicated SQL
+For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
 
 ## Selecting Specific Fields
 
-Specify fields that you want to retrieve from database, by default, select all fields
+`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -301,9 +300,9 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-Checkout [Pagination](scopes.html#pagination) for how to make a paginator
+Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
 
-## Group & Having
+## Group By & Having
 
 ```go
 type result struct {
@@ -343,7 +342,7 @@ Selecting distinct values from the model
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) also
+`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
 
 ## Joins
 
@@ -377,11 +376,11 @@ db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Refer [Preloading (Eager Loading)](preload.html) for details
+For more details, please refer to [Preloading (Eager Loading)](preload.html).
 
 ## <span id="scan">Scan</span>
 
-Scan results into a struct work similar to `Find`
+Scanning results into a struct works similarly to the way we use `Find`
 
 ```go
 type Result struct {

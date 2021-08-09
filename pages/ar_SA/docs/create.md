@@ -22,7 +22,7 @@ AssignmentColumns([]string{"name", "age"}),
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 ```
 
-Create a record and assign a value to the fields omitted.
+Create a record and ignore the values for fields passed to omit.
 
 ```go
 AssignmentColumns([]string{"name", "age"}),

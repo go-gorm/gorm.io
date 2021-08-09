@@ -405,7 +405,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 GORM 优化了对自定义类型的支持，现在您可以定义一个 struct 来支持所有类型的数据库
 
-下面以 JSON 为例（支持 SQLite、MySQL、Postgres。参考自：https://github.com/go-gorm/datamypes/blob/master/json.go）
+下面以 JSON 为例（支持 SQLite、MySQL、Postgres。参考自：https://github.com/go-gorm/datatypes/blob/master/json.go）
 
 ```go
 import "gorm.io/datatypes"

@@ -30,7 +30,7 @@ db.Where(fmt.Sprintf("name = %v", userInput)).First(&user)
 db.First(&user, "name = ?", userInput)
 
 // SQL 注入
-db..First(&user, fmt.Sprintf("name = %v", userInput))
+db.First(&user, fmt.Sprintf("name = %v", userInput))
 ```
 
 ## SQL 注入方法

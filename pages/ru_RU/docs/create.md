@@ -1,39 +1,39 @@
 ---
-title: Создать
+title: Создание
 layout: страница
 ---
 
-## Создать запись
+## Создание записи
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // передаем данные для создания в Create
+result := db.Create(&user) // передаем указатель на данные в Create
 
 user.ID             // возвращает первичный ключ добавленной записи
 result.Error        // возвращает ошибку
 result.RowsAffected // возвращает количество вставленных записей
 ```
 
-## Create Record With Selected Fields
+## Создание записи с указанными полями
 
-Create a record and assign a value to the fields specified.
+Создаем запись и присваиваем значение указанным полям.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and assign a value to the fields omitted.
+Создание записи и игнорирование значений CreatedAt для полей, переданных для omit.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## <span id="batch_insert">Batch Insert</span>
+## <span id="batch_insert">Пакетная вставка</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+Чтобы эффективно вставить большое количество записей, передайте слайс в метод `Create`. GORM создаст один SQL запрос для вставки всех данных и заполнения значений первичных ключей, а также будут вызваны хук методы.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -44,7 +44,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+Вы можете указать размер создаваемой вставки с помощью `CreateInBatches`, например:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -56,7 +56,7 @@ db.CreateInBatches(users, 100)
 Пакетная вставка также поддерживается при использовании [Upsert](#upsert) и [Создать с ассоциациями](#create_with_associations)
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**Внимание** при инициализации GORM с опцией `CreateBatchSize`, все `INSERT` будут учитывать эту опцию при создании записи& объединения
 {% endnote %}
 
 ```go
@@ -73,9 +73,9 @@ db.Create(&users)
 // INSERT INTO pets xxx (15 batches)
 ```
 
-## Create Hooks
+## Создание хуков
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORM позволяет реализовывать заданные пользователем хуки для `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  Эти хуки будут вызываться при создании записи, подробности смотрите в [Хуки](hooks.html)
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -88,7 +88,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+Если необходимо пропустить методы `Hooks`, вы можете использовать значение в Session `SkipHooks`:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -98,9 +98,9 @@ DB.Session(&gorm.Session{SkipHooks: true}).Create(&users)
 DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 ```
 
-## Создать из Map
+## Create с помощью Map(карты)
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORM поддерживает создание с помощью `map[string]interface{}` и `[]map[string]interface{}{}`, например:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
@@ -115,7 +115,7 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**ПРИМЕЧАНИЕ** При создании из карты, хуки не будут вызваны, связи не будут сохранены и значения первичных ключей не будут заполнены
 {% endnote %}
 
 ## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>

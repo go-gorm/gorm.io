@@ -1,42 +1,42 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  home: <i class="fa fa-home"></i>Beranda
+  docs: <i class="fa fa-book"></i>Dokumentasi
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fab fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  community: <i class="fab fa-slack"></i>Komunitas
+  contribute: <i class="fa fa-rocket"></i>Kontribusi
+  search: Cari dokumen...
 index:
-  get_started: Get started
+  get_started: Memulai
 page:
-  contents: Contents
-  back_to_top: Back to Top
-  improve: Improve this page
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  contents: Isi
+  back_to_top: Kembali ke Atas
+  improve: Sempurnakan halaman ini
+  prev: Sebelumnya
+  next: Selanjutnya
+  last_updated: "Terakhir diubah: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
-    declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
-    crud_interface: CRUD Interface
+    getting_started: Memulai
+    overview: Pratinjau
+    declaring_models: Mendeklarasikan Model
+    conventions: Ketentuan
+    connecting_to_the_database: Menghubungkan ke Database
+    crud_interface: Antarmuka CRUD
     create: Create
     query: Query
-    advanced_query: Advanced Query
+    advanced_query: Query lanjut
     update: Update
     delete: Delete
     raw_sql_and_builder: Raw SQL & SQL Builder
-    batch: Batch Processing
-    associations: Associations
-    belongs_to: Belongs To
-    has_one: Has One
-    has_many: Has Many
-    many_to_many: Many To Many
-    association_mode: Association Mode
+    batch: Kumpulan proses
+    associations: Asosiasi
+    belongs_to: Kepunyaan
+    has_one: Punya-satu
+    has_many: Punya-banyak
+    many_to_many: Bakak-ke-banyak
+    association_mode: Tipe Asosiasi
     preload: Preloading (Eager Loading)
     tutorials: Tutorials
     context: Context

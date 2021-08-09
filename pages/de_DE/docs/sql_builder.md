@@ -20,17 +20,20 @@ db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
 db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
 
 var age int
-db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
+db.Raw("SELECT SUM(age) FROM users WHERE role = ?", "admin").Scan(&age)
+
+var users []User
+db.Raw("UPDATE users SET name = ? WHERE age = ? RETURNING id, name", "jinzhu", 20).Scan(&users)
 ```
 
 `Exec` with Raw SQL
 
 ```go
 db.Exec("DROP TABLE users")
-db.Exec("UPDATE orders SET shipped_at=? WHERE id IN ?", time.Now(), []int64{1,2,3})
+db.Exec("UPDATE orders SET shipped_at = ? WHERE id IN ?", time.Now(), []int64{1, 2, 3})
 
 // Exec with SQL Expression
-db.Exec("update users set money=? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu") where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
+db.Exec("UPDATE users SET money = ? WHERE name = ?", gorm.Expr("money * ? where name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
 {% note warn %}

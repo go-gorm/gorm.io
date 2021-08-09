@@ -18,11 +18,11 @@ layout: page
 
 * 一个基于 GORM V2 的管理系统 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
-* Go-admin is a middle background framework based on Gorm  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
+* Go-admin 是一个基于 GORM 的中后台框架  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
 ## 视频
 
-* [GORM V2 视频链接示例](#contribute)
+* Gorm quick start tutorial by [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
 
 ## 开源软件
 

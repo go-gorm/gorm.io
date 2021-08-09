@@ -1,6 +1,6 @@
 ---
-title: Settings
-layout: page
+title: Ayarlar
+layout: sayfa
 ---
 
 GORM provides `Set`, `Get`, `InstanceSet`, `InstanceGet` methods allow users pass values to [hooks](hooks.html) or other methods

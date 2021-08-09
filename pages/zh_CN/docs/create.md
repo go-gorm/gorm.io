@@ -24,7 +24,7 @@ db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-创建记录并更新未给出的字段。
+创建一个记录且一同忽略传递给略去的字段值。
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +33,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">批量插入</span>
 
-要有效地插入大量记录，请将一个 `slice` 传递给 `Create` 方法。 将切片数据传递给 Create 方法，GORM 将生成一个单一的 SQL 语句来插入所有数据，并回填主键的值，钩子方法也会被调用。
+要有效地插入大量记录，请将一个 `slice` 传递给 `Create` 方法。 GORM 将生成单独一条SQL语句来插入所有数据，并回填主键的值，钩子方法也会被调用。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -44,7 +44,7 @@ for _, user := range users {
 }
 ```
 
-使用 `CreateInBatches` 创建时，你还可以指定创建的数量，例如：
+使用 `CreateInBatches` 分批创建时，你可以指定每批的数量，例如：
 
 ```go
 var users = []User{{name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}

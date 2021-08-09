@@ -11,21 +11,21 @@ Logger 接受的选项不多，您可以在初始化时自定义它，例如：
 
 ```go
 newLogger := logger.New(
-  log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+  log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容——译者注）
   logger.Config{
-    SlowThreshold:              time.Second,   // Slow SQL threshold
-    LogLevel:                   logger.Silent, // Log level
-    IgnoreRecordNotFoundError: true,           // Ignore ErrRecordNotFound error for logger
-    Colorful:                  false,          // Disable color
+    SlowThreshold: time.Second,   // 慢 SQL 阈值
+    LogLevel:      logger.Silent, // 日志级别
+    IgnoreRecordNotFoundError: true,   // 忽略ErrRecordNotFound（记录未找到）错误
+    Colorful:      false,         // 禁用彩色打印
   },
 )
 
-// Globally mode
+// 全局模式
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
   Logger: newLogger,
 })
 
-// Continuous session mode
+// 新建会话模式
 tx := db.Session(&Session{Logger: newLogger})
 tx.First(&user)
 tx.Model(&user).Update("Age", 18)
@@ -61,6 +61,6 @@ type Interface interface {
     Info(context.Context, string, ...interface{})
     Warn(context.Context, string, ...interface{})
     Error(context.Context, string, ...interface{})
-    Trace(ctx context.Context, begin time.Time, fc func() (string, int64), err error)
+    Trace(ctx context.Context, begin time.Time, fc func() (sql string, rowsAffected int64), err error)
 }
 ```
