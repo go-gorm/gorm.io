@@ -72,7 +72,7 @@ GORM supports polymorphism association for `has one` and `has many`, it will sav
 type Dog struct {
   ID   int
   Name string
-  Toys []Toy `gorm:"polymorphic:Owner;polymorphicValue:master"`
+  Toys []Toy `gorm:"polymorphic:Owner;"`
 }
 
 type Toy struct {
@@ -82,9 +82,9 @@ type Toy struct {
   OwnerType string
 }
 
-db. Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
+db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
+// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs"), ("toy2","1","dogs")
 ```
 
 You can change the polymorphic type value with tag `polymorphicValue`, for example:
