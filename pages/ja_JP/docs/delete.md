@@ -1,9 +1,9 @@
 ---
-title: Delete
+title: レコードの削除
 layout: page
 ---
 
-## Delete a Record
+## レコードを削除
 
 When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
 
@@ -17,7 +17,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
-## Delete with primary key
+## 主キーを使用した削除
 
 GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out [Query Inline Conditions](query.html#inline_conditions) for details
 
