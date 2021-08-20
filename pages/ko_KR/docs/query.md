@@ -311,7 +311,7 @@ type result struct {
 }
 
 db.Model(&User{}).Select("name, sum(age) as total").Where("name LIKE ?", "group%").Group("name").First(&result)
-// SELECT name, sum(age) as total FROM `users` WHERE name LIKE "group%" GROUP BY `name`
+// SELECT name, sum(age) as total FROM `users` WHERE name LIKE "group%" GROUP BY `name` LIMIT 1
 
 
 db.Model(&User{}).Select("name, sum(age) as total").Group("name").Having("name = ?", "group").Find(&result)
