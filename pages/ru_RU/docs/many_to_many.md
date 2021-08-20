@@ -65,7 +65,7 @@ type Language struct {
 ```go
 type User struct {
     gorm.Model
-    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:UserRefer"`
+    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:ProfileRefer"`
     Refer    uint      `gorm:"index:,unique"`
 }
 
