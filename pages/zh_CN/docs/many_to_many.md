@@ -65,7 +65,7 @@ type Language struct {
 ```go
 type User struct {
     gorm.Model
-    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:UserRefer"`
+    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:ProfileRefer"`
     Refer    uint      `gorm:"index:,unique"`
 }
 
@@ -75,9 +75,9 @@ type Profile struct {
     UserRefer uint `gorm:"index:,unique"`
 }
 
-// 这会创建连接表：user_profiles
-//   外键：user_refer_id,，引用：users.refer
-//   外键：profile_refer，引用：profiles.user_refer
+// Which creates join table: user_profiles
+//   foreign key: user_refer_id, reference: users.refer
+//   foreign key: profile_refer, reference: profiles.user_refer
 ```
 
 {% note warn %}
