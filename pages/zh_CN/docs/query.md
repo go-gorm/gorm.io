@@ -5,26 +5,26 @@ layout: page
 
 ## 检索单个对象
 
-GORM provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
+GORM 提供了 `First`、`Take`、`Last` 方法，以便从数据库中检索单个对象。当查询数据库时它添加了 `LIMIT 1` 条件，且没有找到记录时，它会返回 `ErrRecordNotFound` 错误
 
 ```go
-// Get the first record ordered by primary key
+// 获取第一条记录（主键升序）
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// 获取一条记录，没有指定排序字段
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// Get last record, ordered by primary key desc
+// 获取最后一条记录（主键降序）
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // returns count of records found
+result.RowsAffected // 返回找到的记录数
 result.Error        // returns error or nil
 
-// check error ErrRecordNotFound
+// 检查 ErrRecordNotFound 错误
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
@@ -32,7 +32,7 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 如果你想避免`ErrRecordNotFound`错误，你可以使用`Find`，比如`db.Limit(1).Find(&user)`，`Find`方法可以接受struct和slice的数据。
 {% endnote %}
 
-The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
+`First` 和 `Last` 会根据主键排序，分别查询第一条和最后一条记录。 只有在目标 struct 是指针或者通过 `db.Model()` 指定 model 时，该方法才有效。 此外，如果相关 model 没有定义主键，那么将按 model 的第一个字段进行排序。 例如:
 
 ```go
 var user User
