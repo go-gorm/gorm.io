@@ -66,7 +66,7 @@ db.First(&Language{})
 
 ### 用主键检索
 
-如果主键是数字类型，您可以使用 [内联条件](#inline_conditions) 来检索对象。 When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
+如果主键是数字类型，您可以使用 [内联条件](#inline_conditions) 来检索对象。 传入字符串参数时，需要特别注意 SQL 注入问题，查看 [安全](security.html) 获取详情.
 
 ```go
 db.First(&user, 10)
