@@ -38,24 +38,24 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 var user User
 var users []User  
 
-// works because destination struct is passed in
+// 有效，因为目标 struct 是指针
 db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// works because model is specified using `db.Model()`
+// 有效，因为通过 `db.Model()` 指定了 model
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// doesn't work
+// 无效
 result := map[string]interface{}{}
 db.Table("users").First(&result)
 
-// works with Take
+// 配合 Take 有效
 result := map[string]interface{}{}
 db.Table("users").Take(&result)
 
-// no primary key defined, results will be ordered by first field (i.e., `Code`)
+// 未指定主键，会根据第一个字段排序(即：`Code`)
 type Language struct {
   Code string
   Name string
@@ -66,7 +66,7 @@ db.First(&Language{})
 
 ### 用主键检索
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
+如果主键是数字类型，您可以使用 [内联条件](#inline_conditions) 来检索对象。 When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
 
 ```go
 db.First(&user, 10)
