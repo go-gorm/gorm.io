@@ -79,7 +79,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If the primary key is a string (for example, like a uuid), the query will be written as follows:
+如果主键是字符串（例如像 uuid），查询将被写成这样：
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
@@ -156,18 +156,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
+如果想要包含零值查询条件，你可以使用 map，其会包含所有 key-value 的查询条件，例如：
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-For more details, see [Specify Struct search fields](#specify_search_fields).
+查看 [指定结构体查询字段](#specify_search_fields) 获取详情.
 
 ### <span id="specify_search_fields">指定结构体查询字段</span>
 
-When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
+当使用 struct 进行查询时，你可以通过向 `Where()` 传入 struct 来指定查询条件的字段、值、表名，例如：
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -179,10 +179,10 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 
 ### <span id="inline_conditions">内联条件</span>
 
-Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
+查询条件也可以被内联到 `First` 和 `Find` 之类的方法中，其用法类似于 `Where`。
 
 ```go
-// Get by primary key if it were a non-integer type
+// 根据主键获取记录，如果是非整型主键
 db.First(&user, "id = ?", "string_primary_key")
 // SELECT * FROM users WHERE id = 'string_primary_key';
 
@@ -238,11 +238,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
+更复杂的 SQL 查询， 请查看 [高级查询中的组条件](advanced_query.html#group_conditions)。
 
 ## 选择特定字段
 
-`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
+`Select` 允许您指定从数据库中检索哪些字段， 默认情况下，GORM 会检索所有字段。
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -300,7 +300,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
+查看 [Pagination](scopes.html#pagination) 学习如何写一个分页器
 
 ## Group By & Having
 
@@ -342,7 +342,7 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
+`Distinct` 也可以配合 [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) 使用
 
 ## Joins
 
@@ -380,7 +380,7 @@ db.Joins("Company").Find(&users)
 
 ## <span id="scan">Scan</span>
 
-Scanning results into a struct works similarly to the way we use `Find`
+Scan 结果至 struct，用法与 `Find` 类似
 
 ```go
 type Result struct {
