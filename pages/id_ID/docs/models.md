@@ -48,10 +48,10 @@ Anda dapat menyematkannya ke dalam struct Anda untuk menyertakan *field* tersebu
 
 ### <span id="field_permission">Field-Level Permission</span>
 
-Exported fields have all permission when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
+*Field* yang diekspor memiliki semua izin saat melakukan CRUD dengan GORM, dan GORM memungkinkan Anda mengubah izin tingkat *field* dengan tag, sehingga Anda dapat membuat *field* menjadi *read-only*, *write-only*, *create-only*, *update-only* atau *ignored*
 
 {% note warn %}
-**NOTE** ignored fields won't be created when using GORM Migrator to create table
+**CATATAN** *field* yang diabaikan tidak akan dibuat saat menggunakan GORM Migrator untuk membuat tabel
 {% endnote %}
 
 ```go
@@ -69,11 +69,11 @@ type User struct {
 
 ### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
 
-GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will set the  [current time](gorm_config.html#now_func) when creating/updating if the fields are defined
+GORM menggunakan `CreatedAt`, `UpdatedAt` untuk melacak waktu pembuatan/pembaruan berdasarkan konvensi, dan GORM akan menyetel [waktu saat ini](gorm_config.html#now_func) saat membuat/memperbarui jika *field*-nya ditentukan
 
-To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
+Untuk menggunakan *field* dengan nama yang berbeda, Anda dapat mengonfigurasi *field* tersebut dengan tag `autoCreateTime`, `autoUpdateTime`
 
-If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
+Jika Anda lebih suka menyimpan UNIX (mili/nano) detik daripada waktu, Anda cukup mengubah tipe data *field* dari `time.Time` menjadi `int`
 
 ```go
 type User struct {
@@ -87,7 +87,7 @@ type User struct {
 
 ### <span id="embedded_struct">Embedded Struct</span>
 
-For anonymous fields, GORM will include its fields into its parent struct, for example:
+Untuk *field* anonim, GORM akan memasukkan *field*-nya ke dalam struct induknya, misalnya:
 
 ```go
 type User struct {
@@ -148,7 +148,7 @@ type Blog struct {
 
 Tag bersifat opsional untuk digunakan saat mendeklarasikan model, GORM mendukung tag berikut: Tag bersifat *case insensitive*, namun `camelCase` lebih disukai.
 
-| Tag Name               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Nama Tag               | Deskripsi                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | column                 | column db name                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | type                   | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, which works for all databases, and can be used with other tags together, like `not null`, `size`, `autoIncrement`... specified database data type like `varbinary(8)` also supported, when using specified database data type, it needs to be a full database data type, for example: `MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT` |
