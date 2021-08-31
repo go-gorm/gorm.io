@@ -3,11 +3,11 @@ title: Declaring Models
 layout: page
 ---
 
-## Declaring Models
+## Deklarasi Model
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+Model adalah struct biasa dengan type basic Go, pointer/aliasnya type custom yang mengimplementasikan interface [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) dan [Valuer](https://pkg.go.dev/database/sql/driver#Valuer)
 
-For Example:
+Contoh:
 
 ```go
 type User struct {
@@ -23,27 +23,26 @@ type User struct {
 }
 ```
 
-## Conventions
+## Konvensi
 
-GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+GORM lebih memilih konvensi daripada konfigurasi, secara default, GORM menggunakan `ID` sebagai *primary key*, menjamak nama struct menjadi `snake_cases` sebagai nama tabel, `snake_case` sebagai nama kolom, dan menggunakan `CreatedAt`, `UpdatedAt` untuk melacak waktu pembuatan/pembaruan
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code, If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+Jika Anda mengikuti konvensi yang diadopsi oleh GORM, Anda hanya perlu menulis sedikit konfigurasi/kode, Jika konvensi tidak sesuai dengan kebutuhan Anda, [GORM memungkinkan Anda untuk mengonfigurasinya](conventions.html)
 
 ## gorm.Model
 
-GORM defined a `gorm.Model` struct, which includes fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
+GORM mendefinisikan struct `gorm.Model`, yang mencakup *field* `ID`, `CreatedAt`, `UpdatedAt`, ``DeletedAt< /kode></p>
 
-```go
-// gorm.Model definition
+<pre><code class="go">// definisi gorm.Model
 type Model struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
   UpdatedAt time.Time
   DeletedAt gorm.DeletedAt `gorm:"index"`
 }
-```
+``</pre>
 
-You can embed it into your struct to include those fields, refer [Embedded Struct](#embedded_struct)
+Anda dapat menyematkannya ke dalam struct Anda untuk menyertakan *field* tersebut, lihat [Embedded Struct](#embedded_struct)
 
 ## Advanced
 
@@ -147,7 +146,7 @@ type Blog struct {
 
 ### <span id="tags">Fields Tags</span>
 
-Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however `camelCase` is preferred.
+Tag bersifat opsional untuk digunakan saat mendeklarasikan model, GORM mendukung tag berikut: Tag bersifat *case insensitive*, namun `camelCase` lebih disukai.
 
 | Tag Name               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
