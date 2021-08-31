@@ -51,7 +51,7 @@ db.Debug().Where("name = ?", "jinzhu").First(&User{})
 
 ## Customize Logger
 
-Refer to GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
+Lihat ke GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) untuk cara mendefinisikan milik Anda sendiri
 
 The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
 
