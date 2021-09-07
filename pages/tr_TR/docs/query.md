@@ -353,6 +353,7 @@ type result struct {
   Name  string
   Email string
 }
+
 db.Model(&User{}).Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&result{})
 // SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id
 
@@ -374,6 +375,13 @@ You can use `Joins` eager loading associations with a single SQL, for example:
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
+```
+
+Join with conditions
+
+```go
+db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
+// SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
 For more details, please refer to [Preloading (Eager Loading)](preload.html).
