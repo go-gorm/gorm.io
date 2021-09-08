@@ -225,7 +225,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## Оптимизатор/Индексирование подсказки
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
+Подсказки оптимизатора позволяют контролировать оптимизатор запросов для выбора определенного плана выполнения запроса, GORM поддерживает его с помощью `gorm.io/hints`, например:
 
 ```go
 import "gorm.io/hints"
@@ -234,7 +234,7 @@ db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allow passing index hints to the database in case the query planner gets confused.
+Индексные подсказки позволяют передавать индексированные подсказки к базе данных, если планировщик запросов запутается.
 
 ```go
 import "gorm.io/hints"
@@ -246,11 +246,11 @@ db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-Refer [Optimizer Hints/Index/Comment](hints.html) for more details
+Смотрите [Подсказки оптимизатор/Индекс/Комментарий](hints.html) для получения более подробной информации
 
 ## Итерация
 
-GORM supports iterating through Rows
+GORM поддерживает итерацию по строкам
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -258,41 +258,41 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
+  // ScanRows метод `gorm.DB`, он может быть использован для сканирования строки в struct
   db.ScanRows(rows, &user)
 
-  // do something
+  // делаем что-то 
 }
 ```
 
 ## Найти в пакете(FindInBatches)
 
-Query and process records in batch
+Запрашивать и обрабатывать записи в пакете
 
 ```go
-// batch size 100
+// размер пакета 100
 result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // batch processing found records
+    // пакетная обработка найденных записей
   }
 
   tx.Save(&results)
 
-  tx.RowsAffected // number of records in this batch
+  tx.RowsAffected // кол-во звписей в пакете
 
   batch // Batch 1, 2, 3
 
-  // returns error will stop future batches
+  // возврат ошибки, остановит обработку
   return nil
 })
 
-result.Error // returned error
-result.RowsAffected // processed records count in all batches
+result.Error // возвращенная ошибка
+result.RowsAffected // кол-во обработанных записей во всех пакетах
 ```
 
 ## Хуки запросов
 
-GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
+GORM позволяет использовать хуки `AfterFind` для запроса, который будет вызыватся при выполнении запроса, смотрите [Хуки](hooks.html) для подробностей
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -318,11 +318,11 @@ db.Model(&User{}).Pluck("name", &names)
 
 db.Table("deleted_users").Pluck("name", &names)
 
-// Distinct Pluck
+// Distinct
 db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Requesting more than one column, use `Scan` or `Find` like this:
+// Запрос более одной колонки:
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
@@ -356,17 +356,17 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// Найти все заказы по кредитной карте с суммой более 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// Найти все заказы по наличной оплате с суммой более 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// Найти все оплаченные, отправленные заказы с суммой более 1000
 ```
 
 
-Checkout [Scopes](scopes.html) for details
+Смотрите [Scopes](scopes.html) для получения дополнительной информации
 
 
 
@@ -387,14 +387,14 @@ db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 db.Table("deleted_users").Count(&count)
 // SELECT count(1) FROM deleted_users;
 
-// Count with Distinct
+// Count с Distinct
 db.Model(&User{}).Distinct("name").Count(&count)
 // SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
 // SELECT count(distinct(name)) FROM deleted_users
 
-// Count with Group
+// Count с Group
 users := []User{
   {Name: "name1"},
   {Name: "name2"},
