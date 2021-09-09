@@ -37,6 +37,7 @@ GORMでは、`Namer` インターフェイスを実装する必要があるデ�
 ```go
 type Namer interface {
     TableName(table string) string
+    SchemaName(table string) string
     ColumnName(table, column string) string
     JoinTableName(table string) string
     RelationshipFKName(Relationship) string
