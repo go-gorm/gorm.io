@@ -42,6 +42,13 @@ db.Joins("Company").Joins("Manager").Joins("Account").First(&user, "users.name =
 db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2,3,4,5})
 ```
 
+Join with conditions
+
+```go
+db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
+// SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
+```
+
 {% note warn %}
 **NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
 {% endnote %}

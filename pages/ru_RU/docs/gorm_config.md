@@ -37,6 +37,7 @@ GORM позволяет пользователям изменять преобр
 ```go
 type Namer interface {
     TableName(table string) string
+    SchemaName(table string) string
     ColumnName(table, column string) string
     JoinTableName(table string) string
     RelationshipFKName(Relationship) string

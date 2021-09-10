@@ -75,7 +75,7 @@ type Profile struct {
     UserRefer uint `gorm:"index:,unique"`
 }
 
-// Which creates join table: user_profiles
+// 这会创建连接表：user_profiles
 //   foreign key: user_refer_id, reference: users.refer
 //   foreign key: profile_refer, reference: profiles.user_refer
 ```

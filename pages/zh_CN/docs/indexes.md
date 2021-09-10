@@ -21,12 +21,12 @@ type User struct {
     Age2  int64  `gorm:"index:,expression:ABS(age)"`
 }
 
-// MySQL option
+// MySQL 选项
 type User struct {
     Name string `gorm:"index:,class:FULLTEXT,option:WITH PARSER ngram INVISIBLE"`
 }
 
-// PostgreSQL option
+// PostgreSQL 选项
 type User struct {
     Name string `gorm:"index:,option:CONCURRENTLY"`
 }

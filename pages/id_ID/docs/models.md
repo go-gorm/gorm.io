@@ -3,11 +3,11 @@ title: Declaring Models
 layout: page
 ---
 
-## Declaring Models
+## Deklarasi Model
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+Model adalah struct biasa dengan type basic Go, pointer/aliasnya type custom yang mengimplementasikan interface [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) dan [Valuer](https://pkg.go.dev/database/sql/driver#Valuer)
 
-For Example:
+Contoh:
 
 ```go
 type User struct {
@@ -23,36 +23,35 @@ type User struct {
 }
 ```
 
-## Conventions
+## Konvensi
 
-GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+GORM lebih memilih konvensi daripada konfigurasi, secara default, GORM menggunakan `ID` sebagai *primary key*, menjamak nama struct menjadi `snake_cases` sebagai nama tabel, `snake_case` sebagai nama kolom, dan menggunakan `CreatedAt`, `UpdatedAt` untuk melacak waktu pembuatan/pembaruan
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code, If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+Jika Anda mengikuti konvensi yang diadopsi oleh GORM, Anda hanya perlu menulis sedikit konfigurasi/kode, Jika konvensi tidak sesuai dengan kebutuhan Anda, [GORM memungkinkan Anda untuk mengonfigurasinya](conventions.html)
 
 ## gorm.Model
 
-GORM defined a `gorm.Model` struct, which includes fields `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`
+GORM mendefinisikan struct `gorm.Model`, yang mencakup *field* `ID`, `CreatedAt`, `UpdatedAt`, ``DeletedAt< /kode></p>
 
-```go
-// gorm.Model definition
+<pre><code class="go">// definisi gorm.Model
 type Model struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
   UpdatedAt time.Time
   DeletedAt gorm.DeletedAt `gorm:"index"`
 }
-```
+``</pre>
 
-You can embed it into your struct to include those fields, refer [Embedded Struct](#embedded_struct)
+Anda dapat menyematkannya ke dalam struct Anda untuk menyertakan *field* tersebut, lihat [Embedded Struct](#embedded_struct)
 
 ## Advanced
 
 ### <span id="field_permission">Field-Level Permission</span>
 
-Exported fields have all permission when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
+*Field* yang diekspor memiliki semua izin saat melakukan CRUD dengan GORM, dan GORM memungkinkan Anda mengubah izin tingkat *field* dengan tag, sehingga Anda dapat membuat *field* menjadi *read-only*, *write-only*, *create-only*, *update-only* atau *ignored*
 
 {% note warn %}
-**NOTE** ignored fields won't be created when using GORM Migrator to create table
+**CATATAN** *field* yang diabaikan tidak akan dibuat saat menggunakan GORM Migrator untuk membuat tabel
 {% endnote %}
 
 ```go
@@ -70,11 +69,11 @@ type User struct {
 
 ### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
 
-GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will set the  [current time](gorm_config.html#now_func) when creating/updating if the fields are defined
+GORM menggunakan `CreatedAt`, `UpdatedAt` untuk melacak waktu pembuatan/pembaruan berdasarkan konvensi, dan GORM akan menyetel [waktu saat ini](gorm_config.html#now_func) saat membuat/memperbarui jika *field*-nya ditentukan
 
-To use fields with a different name, you can configure those fields with tag `autoCreateTime`, `autoUpdateTime`
+Untuk menggunakan *field* dengan nama yang berbeda, Anda dapat mengonfigurasi *field* tersebut dengan tag `autoCreateTime`, `autoUpdateTime`
 
-If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field's data type from `time.Time` to `int`
+Jika Anda lebih suka menyimpan UNIX (mili/nano) detik daripada waktu, Anda cukup mengubah tipe data *field* dari `time.Time` menjadi `int`
 
 ```go
 type User struct {
@@ -88,7 +87,7 @@ type User struct {
 
 ### <span id="embedded_struct">Embedded Struct</span>
 
-For anonymous fields, GORM will include its fields into its parent struct, for example:
+Untuk *field* anonim, GORM akan memasukkan *field*-nya ke dalam struct induknya, misalnya:
 
 ```go
 type User struct {
@@ -147,9 +146,9 @@ type Blog struct {
 
 ### <span id="tags">Fields Tags</span>
 
-Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however `camelCase` is preferred.
+Tag bersifat opsional untuk digunakan saat mendeklarasikan model, GORM mendukung tag berikut: Tag bersifat *case insensitive*, namun `camelCase` lebih disukai.
 
-| Tag Name               | Description                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| Nama Tag               | Deskripsi                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | column                 | column db name                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | type                   | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, which works for all databases, and can be used with other tags together, like `not null`, `size`, `autoIncrement`... specified database data type like `varbinary(8)` also supported, when using specified database data type, it needs to be a full database data type, for example: `MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT` |

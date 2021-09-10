@@ -33,7 +33,7 @@ tx.Model(&user).Update("Age", 18)
 
 ### Tingkat log
 
-GORM defined log levels: `Silent`, `Error`, `Warn`, `Info`
+Level log yang ditentukan GORM: `Silent`, `Error`, `Warn`, `Info`
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
@@ -43,7 +43,7 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 
 ### Debug
 
-Debug a single operation, change current operation's log level to logger.Info
+Debug satu operasi, ubah level log operasi saat ini menjadi logger.Info
 
 ```go
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
@@ -51,9 +51,9 @@ db.Debug().Where("name = ?", "jinzhu").First(&User{})
 
 ## Customize Logger
 
-Refer to GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
+Lihat ke GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) untuk cara mendefinisikan milik Anda sendiri
 
-The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
+Logger perlu mengimplementasikan interface berikut, ia menerima `context`, sehingga Anda bisa menggunakannya untuk log tracing
 
 ```go
 type Interface interface {

@@ -37,6 +37,7 @@ GORM 允许用户通过覆盖默认的`NamingStrategy`来更改命名约定，�
 ```go
 type Namer interface {
     TableName(table string) string
+    SchemaName(table string) string
     ColumnName(table, column string) string
     JoinTableName(table string) string
     RelationshipFKName(Relationship) string

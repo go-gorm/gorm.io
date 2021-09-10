@@ -10,7 +10,7 @@ comments: false
 * <i class="fa fa-rocket" aria-hidden="true"></i> Хуки (before/after create/save/update/delete/find)
 * <i class="fa fa-rocket" aria-hidden="true"></i> Нетерпеливая загрузка при помощи Preload, Joins
 * <i class="fa fa-rocket" aria-hidden="true"></i> Транзакции, вложенные транзакции, точки сохранения, откат к сохраненной точке
-* <i class="fa fa-rocket" aria-hidden="true"></i> Context, Prepared Statement Mode, DryRun Mode
+* <i class="fa fa-rocket" aria-hidden="true"></i> Контекст, Режим Prepared Statement, Режим DryRun
 * <i class="fa fa-rocket" aria-hidden="true"></i> Пакетная вставка, Найти в пакете, Найти/Создать из Map, CRUD с SQL Expr и Context Valuer
 * <i class="fa fa-rocket" aria-hidden="true"></i> Конструктор SQL, Upsert(Создать или обновить), Блокировка, Подсказки Оптимизатор/Индексирование/Комментарий, Именованный аргумент, Подзапрос
 * <i class="fa fa-rocket" aria-hidden="true"></i> Композитный первичный ключ, индексы, ограничения

@@ -37,6 +37,7 @@ GORM allows users to change the naming conventions by overriding the default `Na
 ```go
 type Namer interface {
     TableName(table string) string
+    SchemaName(table string) string
     ColumnName(table, column string) string
     JoinTableName(table string) string
     RelationshipFKName(Relationship) string

@@ -1,50 +1,50 @@
 ---
-title: Contribute to GORM
-layout: page
+title: Berkontribusi pada GORM
+layout: halaman
 ---
 
-**You can help to deliver a better GORM! there are many things that you can do:**
+**Anda dapat membantu memberikan GORM yang lebih baik! ada banyak hal yang dapat Anda lakukan:**
 
-## Help others to know GORM
+## Bantu orang lain untuk mengenal GORM
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forget to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
+* Bagikan GORM dengan dunia melalui channel sosial, atau cukup beri tahu orang-orang yang mungkin tertarik
+* Bantu pendatang baru untuk menyelesaikan pertanyaan di [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) dan [Chat Rooms](/community.html#Chat)
+* Menulis tutorial, merekam video, dll... (Jangan lupa untuk menambahkannya ke [daftar](/community.html))
+* Bantuan untuk mempromosikan GORM di GitHub dengan [Memberi bintang](https://github.com/go-gorm/gorm/stargazers) dan [Melihat](https://github.com/go- gorm/gorm/watchers) [repositori GORM](https://github.com/go-gorm/gorm)
 
-## Documentation and Writing
+## Dokumentasi dan Penulisan
 
-* Make GORM's documentation better by writing new content, correcting existing material
+* Jadikan dokumentasi GORM lebih baik dengan menulis konten baru, mengoreksi materi yang ada
 
-### Translate this site
+### Terjemahkan situs ini
 
-You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
+Anda dapat menerjemahkan situs saat ini dengan [https://translate.gorm.io](https://translate.gorm.io)
 
-To translate GORM in your language you need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
+Untuk menerjemahkan GORM dalam bahasa Anda, Anda perlu memposting permintaan di [Github Issues](https://github.com/go-gorm/gorm.io/issues) untuk ditambahkan ke [https://translate.gorm.io](https://translate.gorm.io).
 
 ## Program
 
-* Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
-* Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
+* Buat *pull request* di [Github](https://github.com/go-gorm/gorm) untuk memperbaiki masalah, fitur baru
+* Buat plugin open-source untuk GORM (Jangan lupa untuk menambahkannya ke [daftar](/community.html#Open-Sources))
 
 ## Donasi
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+Kebaikan dan kemurahan hati Anda sangat kami hargai, terima kasih banyak untuk semua sponsor kami!
 
-* Github Sponsors (Platinum, Gold Sponsors etc)
+* Sponsor Github (Platinum, Gold Sponsors, dll)
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
-* Open Collective
+* Buka Kolektif
 
 [https://opencollective.com/gorm](https://opencollective.com/gorm)
 
-* Patreon
+* Pelindung
 
 [https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
 
 * AliPay
 
-![使用支付宝捐款](/sponsors-imgs/alipay.png "使用支付宝捐款")
+![Gunakan Alipay untuk berdonasi](/sponsors-imgs/alipay.png "Gunakan Alipay untuk berdonasi")
 
 <br>
