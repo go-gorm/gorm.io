@@ -23,6 +23,10 @@ type User struct {
 }
 ```
 
+{% note warn %}
+**NOTE** in the above case, `User` will be deleted physically when using `Delete` method so if you want to delete logically, you should add `DeletedAt`
+{% endnote %}
+
 ## Conventions
 
 GORM prefer convention over configuration, by default, GORM uses `ID` as primary key, pluralize struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
