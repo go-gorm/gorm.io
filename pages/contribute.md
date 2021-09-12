@@ -16,6 +16,8 @@ layout: page
 
 * Make GORM's documentation better by writing new content, correcting existing material
 
+[https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
+
 ### Translate this site
 
 You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
