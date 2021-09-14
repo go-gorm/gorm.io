@@ -3,7 +3,7 @@ title: Generic database interface sql.DB
 layout: page
 ---
 
-GORM provides the method `DB` which returns a generic database interface [\*sql.DB](https://pkg.go.dev/database/sql#DB) from the current `*gorm.DB`
+O GORM fornece o método `DB` que retorna uma interface genérica do [\*sql.DB](https://pkg.go.dev/database/sql#DB) do banco de dados `*gorm.DB`
 
 ```go
 // Get generic database object sql.DB to use its functions
