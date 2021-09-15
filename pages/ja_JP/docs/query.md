@@ -29,10 +29,10 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
 {% note warn %}
-If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`, the `Find` method accepts both struct and slice data
+`ErrRecordNotFound` エラーを避けたい場合は、`db.Limit(1).Find(&user)`のように、`Find` を 使用することができます。`Find` メソッドは struct と slice のどちらも受け取ることができます。
 {% endnote %}
 
-The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
+`First` と `Last` メソッドは、プライマリキーによって順序づけられているそれぞれ最初と最後のレコードを見つけます。 これら2つのメソッドは、対象のstructのポインタをメソッドの引数に渡す、もしくは`db.Model()`を使用してモデルを指定した場合のみ動作します。 また、関連するモデルにプライマリキーが定義されていない場合、モデルの最初のフィールドで順序付けされることになります。 例：
 
 ```go
 var user User
