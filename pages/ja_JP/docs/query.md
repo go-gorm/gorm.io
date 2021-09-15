@@ -3,9 +3,9 @@ title: Query
 layout: page
 ---
 
-## Retrieving a single object
+## 単一のオブジェクトを取得する
 
-GORM provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
+GORMは、データベースから１つのオブジェクトを取得するために`First`, `Take`, `Last`メソッドを提供しています。それらのメソッドは、データベースにクエリを実行する際に`LIMIT 1`の条件を追加し、レコードが見つからなかった場合、`ErrRecordNotFound`エラーを返します。
 
 ```go
 // Get the first record ordered by primary key
