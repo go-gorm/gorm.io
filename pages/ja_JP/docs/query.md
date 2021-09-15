@@ -370,7 +370,7 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ### Joins Preloading
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+単一クエリで関連データをeager loadingするのに`Joins`を使用することができます。例：
 
 ```go
 db.Joins("Company").Find(&users)
