@@ -131,7 +131,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Struct & Map Conditions
+### 構造体 & マップでの条件指定
 
 ```go
 // Struct
@@ -165,9 +165,9 @@ db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 
 詳細については、 [Struct search fields](#specify_search_fields) を参照してください。
 
-### <span id="specify_search_fields">Specify Struct search fields</span>
+### <span id="specify_search_fields">構造体の検索フィールドを指定する</span>
 
-When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
+構造体を使用して検索する場合、フィールド名かテーブルのカラム名を `Where()` に記載することで、構造体の特定の値のみをクエリ条件で使用することができます。 例えば:
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -240,9 +240,9 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 
 より複雑なクエリについては [Group Conditions in Advanced Query](advanced_query.html#group_conditions) も参照してください。
 
-## Selecting Specific Fields
+## 特定のフィールドのみ選択
 
-`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
+`Select` を使用すると、データベースから取得するフィールドを指定できます。 取得フィールドの指定がない場合、GORMはデフォルトですべてのフィールドを選択します。
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -255,11 +255,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-Also check out [Smart Select Fields](advanced_query.html#smart_select)
+[Smart Select Fields](advanced_query.html#smart_select) も参照してみてください。
 
 ## Order
 
-Specify order when retrieving records from the database
+データベースからレコードを取得する際の順序を指定できます。
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -277,7 +277,7 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit`は取得するレコードの最大数を指定します。 `Offset`はスキップするレコードの数を指定します。
 
 ```go
 db.Limit(3).Find(&users)
@@ -300,7 +300,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
+ページネーターの作成方法については、 [Pagination](scopes.html#pagination) を参照してください。
 
 ## Group By & Having
 
@@ -336,17 +336,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+重複した行を削除した値を取得することができます。
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
+`Distinct`は[`Pluck`](advanced_query.html#pluck)や[`Count`](advanced_query.html#count)とともに利用することができます。
 
 ## Joins
 
-Specify Joins conditions
+結合条件を指定することができます。
 
 ```go
 type result struct {
@@ -377,18 +377,18 @@ db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Join with conditions
+条件を指定して結合
 
 ```go
 db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
-For more details, please refer to [Preloading (Eager Loading)](preload.html).
+詳細については、 [Preloading (Eager Loading)](preload.html) を参照してください。
 
 ## <span id="scan">Scan</span>
 
-Scanning results into a struct works similarly to the way we use `Find`
+レコード取得結果の構造体へのScanは、`Find`の使う方法と同様になります。
 
 ```go
 type Result struct {
