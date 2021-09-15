@@ -79,14 +79,14 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If the primary key is a string (for example, like a uuid), the query will be written as follows:
+プライマリキーが (例えば、uuid のような) 文字列の場合、クエリは以下のようになります。
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-## Retrieving all objects
+## すべてのオブジェクトを取得する
 
 ```go
 // Get all records
@@ -97,9 +97,9 @@ result.RowsAffected // returns found records count, equals `len(users)`
 result.Error        // returns error
 ```
 
-## Conditions
+## 取得条件
 
-### String Conditions
+### 文字列条件
 
 ```go
 // Get first matched record
@@ -148,7 +148,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**注** 構造体を使ってクエリを実行するとき、GORMは非ゼロ値なフィールドのみを利用します。つまり、フィールドの値が `0`, `''`, `false` または他の [ゼロ値](https://tour.golang.org/basics/12)の場合、 クエリ条件の作成に使用されません。以下例：
 {% endnote %}
 
 ```go
@@ -156,14 +156,14 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
+クエリ条件にゼロ値を含めるには、次のように、クエリ条件としてすべてのkey-valuesを含むマップを使用できます。
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-For more details, see [Specify Struct search fields](#specify_search_fields).
+詳細については、 [Struct search fields](#specify_search_fields) を参照してください。
 
 ### <span id="specify_search_fields">Specify Struct search fields</span>
 
@@ -177,9 +177,9 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 // SELECT * FROM users WHERE age = 0;
 ```
 
-### <span id="inline_conditions">Inline Condition</span>
+### <span id="inline_conditions">インライン条件</span>
 
-Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
+クエリ条件は、 `where` と同様の方法で `First` や `Find` のようなメソッドにインライン展開することができます。
 
 ```go
 // Get by primary key if it were a non-integer type
@@ -202,9 +202,9 @@ db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Not Conditions
+### Not条件
 
-Build NOT conditions, works similar to `Where`
+NOT条件も、`Where` と同様の指定方法になります。
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -223,7 +223,7 @@ db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-### Or Conditions
+### OR条件
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -238,7 +238,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
+より複雑なクエリについては [Group Conditions in Advanced Query](advanced_query.html#group_conditions) も参照してください。
 
 ## Selecting Specific Fields
 
