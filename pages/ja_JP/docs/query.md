@@ -64,9 +64,9 @@ db.First(&Language{})
 // SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
 ```
 
-### Retrieving objects with primary key
+### プライマリキーでオブジェクトを取得する
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
+主キーが数値の場合は、 [Inline Conditions](#inline_conditions) を使用することで、主キーでオブジェクトを取得できます。 文字列を扱う場合、SQLインジェクションを避けるために十分な注意が必要です。詳細については、 [Security](security.html) セクションを参照してください。
 
 ```go
 db.First(&user, 10)
