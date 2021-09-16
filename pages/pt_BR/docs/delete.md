@@ -1,5 +1,5 @@
 ---
-title: Delete
+title: Excluir
 layout: page
 ---
 
