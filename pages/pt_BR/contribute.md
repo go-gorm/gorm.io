@@ -1,5 +1,5 @@
 ---
-title: Contribute to GORM
+title: Contribua para o GORM
 layout: page
 ---
 
