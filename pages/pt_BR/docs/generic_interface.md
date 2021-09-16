@@ -1,5 +1,5 @@
 ---
-title: Generic database interface sql.DB
+title: Interface genérica de banco de dados sql.DB
 layout: page
 ---
 
@@ -14,21 +14,21 @@ db.DB().Ping()
 ```
 
 {% note warn %}
-**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns error
+**NOTA** Se a conexão do banco de dados em questão não for um `*sql.DB`, como em uma transação, será retornado um erro
 {% endnote %}
 
-## Connection Pool
+## Pool de conexões
 
 ```go
-// Get generic database object sql.DB to use its functions
+// Obter objeto genérico banco de dados objeto sql.DB para usar nas suas funções
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleConns define o número máximo de conexões ociosas no pool de conexão.
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns define o número máximo de conexões abertas para o banco de dados.
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime define o tempo máximo que uma conexão pode estar ativa para pode ser reutilizada.
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
