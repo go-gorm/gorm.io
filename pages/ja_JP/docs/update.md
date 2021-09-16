@@ -52,9 +52,9 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 **注** 構造体を使用して更新を行う場合、GORMは非ゼロ値のフィールドのみ更新します。ゼロ値のフィールドも更新対象に含める場合は、更新に`map`を使用するか、 `Select` で更新するフィールドを指定してください。
 {% endnote %}
 
-## Update Selected Fields
+## 選択したフィールドを更新する
 
-If you want to update selected fields or ignore some fields when updating, you can use `Select`, `Omit`
+選択したフィールドのみ更新する場合、または更新するフィールドを除外する場合は、 `Select`, `Omit` を使用できます
 
 ```go
 // Select with Map
@@ -76,9 +76,9 @@ db.Model(&user).Select("*").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
 db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
 ```
 
-## Update Hooks
+## 更新時のHook
 
-GORM allows hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`, those methods will be called when updating a record, refer [Hooks](hooks.html) for details
+GORMは `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`などのhook処理を定義できます。これらのメソッドはレコードを更新する際に呼び出されます。 詳細は[Hooks](hooks.html)を参照してください。
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -89,7 +89,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Batch Updates
+## 一括更新
 
 If we haven't specified a record having primary key value with `Model`, GORM will perform a batch updates
 
