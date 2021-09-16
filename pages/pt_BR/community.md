@@ -1,5 +1,5 @@
 ---
-title: GORM Community
+title: Comunidade GORM
 layout: page
 ---
 
