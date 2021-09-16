@@ -91,7 +91,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 
 ## 一括更新
 
-If we haven't specified a record having primary key value with `Model`, GORM will perform a batch updates
+`Model`で主キーを指定していない場合、GORMは一括更新を行います。
 
 ```go
 // Update with struct
@@ -103,11 +103,11 @@ db.Table("users").Where("id IN ?", []int{10, 11}).Updates(map[string]interface{}
 // UPDATE users SET name='hello', age=18 WHERE id IN (10, 11);
 ```
 
-### <span id="block_global_updates">Block Global Updates</span>
+### <span id="block_global_updates">Global Updatesを防ぐ</span>
 
-If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error by default
+条件なしで一括更新を実行しようとした場合、デフォルトの設定ではGORMは更新処理を実行せず、 `ErrMissingWhereClause` エラーを返します。
 
-You have to use some conditions or use raw SQL or enable the `AllowGlobalUpdate` mode, for example:
+条件を指定する、SQLをそのまま実行する、あるいは `AllowGlobalUpdate` モードを有効にする必要があります。例:
 
 ```go
 db.Model(&User{}).Update("name", "jinzhu").Error // gorm.ErrMissingWhereClause
@@ -124,7 +124,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name",
 
 ### Updated Records Count
 
-Get the number of rows affected by a update
+更新されたレコードの行数を取得することができます。
 
 ```go
 // Get updated records count with `RowsAffected`
@@ -135,11 +135,11 @@ result.RowsAffected // returns updated records count
 result.Error        // returns updating error
 ```
 
-## Advanced
+## 高度な機能
 
-### <span id="update_from_sql_expr">Update with SQL Expression</span>
+### <span id="update_from_sql_expr">SQL式で更新する</span>
 
-GORM allows updates column with SQL expression, e.g:
+GORMはSQL式でカラムを更新することができます。例:
 
 ```go
 // product's ID is `3`
@@ -156,7 +156,7 @@ db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity > 1;
 ```
 
-And GORM also allows update with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
+また、[Customized Data Types](data_types.html#gorm_valuer_interface)に記載されているSQL Expression/Context Valuerを使用しての更新も行うことができます。例：
 
 ```go
 // Create from customized data type
