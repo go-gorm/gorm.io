@@ -178,9 +178,9 @@ db.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`location`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-### Update from SubQuery
+### サブクエリでの更新
 
-Update a table by using SubQuery
+サブクエリを使用してテーブルを更新することができます。
 
 ```go
 db.Model(&user).Update("company_name", db.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
@@ -191,9 +191,9 @@ db.Table("users as u").Where("name = ?", "jinzhu").Update("company_name", db.Tab
 db.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{}{}{"company_name": db.Table("companies as c").Select("name").Where("c.id = u.company_id")})
 ```
 
-### Without Hooks/Time Tracking
+### Hooksやタイムトラッキングなしでの更新
 
-If you want to skip `Hooks` methods and don't track the update time when updating, you can use `UpdateColumn`, `UpdateColumns`, it works like `Update`, `Updates`
+`Hooks` メソッドの実行を回避したい場合や、更新時間をトラッキングしたくない場合、 `Update`、 `Updates`と似た、`UpdateColumn`、 `UpdateColumns` を使用することができます。
 
 ```go
 // Update single column
