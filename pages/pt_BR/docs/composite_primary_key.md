@@ -1,5 +1,5 @@
 ---
-title: Composite Primary Key
+title: Chave Primária Composta
 layout: page
 ---
 
