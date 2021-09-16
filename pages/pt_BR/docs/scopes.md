@@ -1,5 +1,5 @@
 ---
-title: Scopes
+title: Escopos
 layout: page
 ---
 
