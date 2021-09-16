@@ -1,5 +1,5 @@
 ---
-title: Security
+title: Segurança
 layout: page
 ---
 
