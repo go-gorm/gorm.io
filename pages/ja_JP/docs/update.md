@@ -122,7 +122,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name",
 // UPDATE users SET `name` = "jinzhu"
 ```
 
-### Updated Records Count
+### 更新されたレコード数をカウントする
 
 更新されたレコードの行数を取得することができます。
 
@@ -209,11 +209,11 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
-### Check Field has changed?
+### フィールドが変更されたかチェックする
 
-GORM provides `Changed` method could be used in **Before Update Hooks**, it will return the field changed or not
+GORMには **Before Update Hooks** で使用できる `Changed` メソッドをがあります。これはフィールドが変更されたかどうかを返却します。
 
-The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the updating value from `Update` / `Updates` equals the model value, will return true if it is changed and not omitted
+`Changed` は `Update`, `Updates` メソッド実行時のみ機能します。また、 `Update` / `Updates` に渡す値とモデルの値が比較可能である場合のみ更新をチェックし、値が変更されていて かつ 更新対象から除外されていなければ true を返却します。
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -250,9 +250,9 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 // Changed("Name") => false, `Name` not selected to update
 ```
 
-### Change Updating Values
+### 更新値の変更
 
-To change updating values in Before Hooks, you should use `SetColumn` unless it is a full updates with `Save`, for example:
+Before Hooksで更新値を変更するには、 `Save` による全フィールドの更新でない限り、 `SetColumn`を使用する必要があります。例:
 
 ```go
 func (user *User) BeforeSave(tx *gorm.DB) (err error) {
