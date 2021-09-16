@@ -1,5 +1,5 @@
 ---
-title: Transactions
+title: Transações
 layout: page
 ---
 
