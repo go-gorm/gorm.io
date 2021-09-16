@@ -6,17 +6,11 @@ layout: page
 O GORM fornece o método `DB` que retorna uma interface genérica do [\*sql.DB](https://pkg.go.dev/database/sql#DB) do banco de dados `*gorm.DB`
 
 ```go
-// Get generic database object sql.DB to use its functions
-sqlDB, err := db.DB()
+// Obter objeto genérico de banco de dados sql.DB para ser usado nas funções
+db.DB()
 
 // Ping
-sqlDB.Ping()
-
-// Close
-sqlDB.Close()
-
-// Returns database statistics
-sqlDB.Stats()
+db.DB().Ping()
 ```
 
 {% note warn %}
