@@ -1,9 +1,9 @@
 ---
-title: Declaring Models
+title: Declaração de Modelos
 layout: page
 ---
 
-## Declaring Models
+## Declaração de Modelos
 
 Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
 
