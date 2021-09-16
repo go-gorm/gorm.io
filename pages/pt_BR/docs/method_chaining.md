@@ -1,5 +1,5 @@
 ---
-title: Method Chaining
+title: Encadeamento de Métodos
 layout: page
 ---
 
