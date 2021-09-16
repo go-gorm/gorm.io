@@ -3,7 +3,7 @@ title: Update
 layout: page
 ---
 
-## Save All Fields
+## すべてのフィールドを保存する
 
 `Save`は 、SQLを実行するときにすべてのフィールドを更新します。
 
@@ -16,7 +16,7 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-## Update single column
+## 単一のカラムを更新する
 
 `Update`メソッドで単一のカラムを更新する際には、何らかの条件を持っていないと、`ErrMissingWhereClause`エラーが発生します。詳細については、[Block Global Updates](#block_global_updates) をチェックしてください。`Model`メソッドを使用し、その実体が主キーに値するフィールドを持つ場合、条件として実体が持つ主キーが指定されます。
 
@@ -34,7 +34,7 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
 ```
 
-## Updates multiple columns
+## 複数のカラムを更新する
 
 `Updates`は`構造体`もしくは`map[string]interface{}`での更新に対応しています。`構造体`での更新時のみ、ゼロ値のフィールド以外を更新します。
 
