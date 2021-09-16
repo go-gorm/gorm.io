@@ -1,9 +1,9 @@
 ---
-title: Advanced Query
+title: Consulta Avançada
 layout: page
 ---
 
-## <span id="smart_select">Smart Select Fields</span>
+## <span id="smart_select">Seleção Inteligente de Campos</span>
 
 GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
 
