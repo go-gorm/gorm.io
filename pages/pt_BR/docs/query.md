@@ -1,5 +1,5 @@
 ---
-title: Query
+title: Consulta
 layout: page
 ---
 
