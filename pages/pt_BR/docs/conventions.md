@@ -1,5 +1,5 @@
 ---
-title: Conventions
+title: Convenções
 layout: page
 ---
 
