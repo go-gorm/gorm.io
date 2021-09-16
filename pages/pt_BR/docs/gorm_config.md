@@ -1,5 +1,5 @@
 ---
-title: GORM Config
+title: Configurações do GORM
 layout: page
 ---
 
