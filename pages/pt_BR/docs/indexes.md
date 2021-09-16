@@ -1,5 +1,5 @@
 ---
-title: Database Indexes
+title: Índices
 layout: page
 ---
 
