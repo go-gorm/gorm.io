@@ -1,5 +1,5 @@
 ---
-title: Associations
+title: Associações
 layout: page
 ---
 
