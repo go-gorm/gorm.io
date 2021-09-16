@@ -1,5 +1,5 @@
 ---
-title: GORM 2.0 Release Note
+title: Nota sobre a versão GORM 2.0
 layout: page
 ---
 
