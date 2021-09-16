@@ -1,5 +1,5 @@
 ---
-title: Write Plugins
+title: Criar plugins
 layout: page
 ---
 
