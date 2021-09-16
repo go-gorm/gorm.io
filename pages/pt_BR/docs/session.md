@@ -1,5 +1,5 @@
 ---
-title: Session
+title: Sessão
 layout: page
 ---
 
