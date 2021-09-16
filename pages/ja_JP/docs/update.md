@@ -49,7 +49,7 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 ```
 
 {% note warn %}
-**NOTE** When update with struct, GORM will only update non-zero fields, you might want to use `map` to update attributes or use `Select` to specify fields to update
+**注** 構造体を使用して更新を行う場合、GORMは非ゼロ値のフィールドのみ更新します。ゼロ値のフィールドも更新対象に含める場合は、更新に`map`を使用するか、 `Select` で更新するフィールドを指定してください。
 {% endnote %}
 
 ## Update Selected Fields
