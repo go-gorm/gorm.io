@@ -1,5 +1,5 @@
 ---
-title: Connecting to a Database
+title: Conectando ao banco de dados
 layout: page
 ---
 
