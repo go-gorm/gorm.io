@@ -23,20 +23,25 @@ if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-  // error handling...
+  // erro ao lidar...
 }
 ```
 
 ## ErrRecordNotFound
 
-GORM returns `ErrRecordNotFound` when failed to find data with `First`, `Last`, `Take`, if there are several errors happened, you can check the `ErrRecordNotFound` error with `errors.Is`, for example:
+O GORM retorna `ErrRecordNotFound` quando falha ao encontrar dados com os métodos `First`, `Last`, `Take`, se ocorrer vários erros, você pode verificar o erro `ErrRecordNotFound` com `erros. Is`, por exemplo:
 
 ```go
-// Check if returns RecordNotFound error
-err := db.First(&user, 100).Error
-errors.Is(err, gorm.ErrRecordNotFound)
+// Se ocorrer vários erros, `GetErrors` irá retornar `[]error`
+errors := db.First(&user).Limit(10).Find(&users).GetErrors()
+
+fmt.Println(len(errors))
+
+for _, err := range errors {
+ fmt.Println(err)
+}
 ```
 
 ## Errors
 
-[Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go)
+[Lista os erros](https://github.com/go-gorm/gorm/blob/master/errors.go)
