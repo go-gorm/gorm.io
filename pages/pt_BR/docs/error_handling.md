@@ -3,23 +3,23 @@ title: Tratamento de Erro
 layout: page
 ---
 
-In Go, error handling is important.
+O tratamento de erros em Go é importante.
 
-You are encouraged to do error check after any [Finisher Methods](method_chaining.html#finisher_method)
+Você é encorajado a fazer uma verificação de erro após qualquer [Método Finalizador](method_chaining.html#finisher_method)
 
-## Error Handling
+## Tratamento de Erro
 
-Error handling in GORM is different than idiomatic Go code because of its chainable API.
+O tratamento de erro no GORM é diferente do código Go mais idiomático, porque usa a API de encadeamento (chainable) de métodos.
 
-If any error occurs, GORM will set `*gorm.DB`'s `Error` field, you need to check it like this:
+Se ocorrer algum erro, o GORM definirá o campo `Error` do `*gorm.DB`, que deve ser verificado da seguinte forma:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-  // error handling...
+  // tratamento de erros...
 }
 ```
 
-Or
+}
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
