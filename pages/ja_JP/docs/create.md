@@ -227,7 +227,7 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+**注意** データベース内でのデフォルト値、あるいは仮想の生成された値を持つフィールドには ` default ` タグを設定する必要があります。マイグレーション時にデフォルト値の定義をスキップする場合は、 `default:(-)`, 例:
 {% endnote %}
 
 ```go
@@ -240,11 +240,11 @@ type User struct {
 }
 ```
 
-When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+仮想の生成された値を使用する場合は、作成/更新権限を無効にする必要がある場合があります。 [Field-Level Permission](models.html#field_permission) を確認してください。
 
-### <span id="upsert">Upsert / On Conflict</span>
+### <span id="upsert">コンフリクト発生時のUpsert</span>
 
-GORM provides compatible Upsert support for different databases
+GORMは異なるデータベースに対して互換性のあるUpsertをサポートしています。
 
 ```go
 import "gorm.io/gorm/clause"
@@ -283,6 +283,6 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age", ...;
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+[Advanced Query](advanced_query.html) の `FirstOrInit`, `FirstOrCreate` も確認してみてください。
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+より詳細については、 [Raw SQL and SQL Builder](sql_builder.html) も参照してみてください。
