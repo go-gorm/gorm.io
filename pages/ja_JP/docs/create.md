@@ -118,9 +118,9 @@ db.Model(&User{}).Create([]map[string]interface{}{
 **注意** Mapを使用してレコードを作成する場合、Hookは呼び出されません。また、関連テーブルのレコードも保存されず、主キーの値も返されません。
 {% endnote %}
 
-## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
+## <span id="create_from_sql_expr">SQL式/Context Valuer で作成する</span>
 
-GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+GORMはSQL式でデータを挿入することができます。これを行うには `map[string]interface{}` と [Customized Data Types](data_types.html#gorm_valuer_interface) の2つの方法があります。例:
 
 ```go
 // Create from map
@@ -163,11 +163,11 @@ db.Create(&User{
 // INSERT INTO `users` (`name`,`location`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"))
 ```
 
-## Advanced
+## 高度な機能
 
-### <span id="create_with_associations">Create With Associations</span>
+### <span id="create_with_associations">関連データと関連付けて作成する</span>
 
-When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
+関連データと共にレコードを作成する場合、その値がゼロ値でなければ関連データもupsertされます。またその際には、関連データの `Hooks` メソッドも実行されます。
 
 ```go
 type CreditCard struct {
@@ -190,7 +190,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`, for example:
+`Select`, `Omit` を使うことで関連付けをスキップできます。例:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -199,9 +199,9 @@ db.Omit("CreditCard").Create(&user)
 db.Omit(clause.Associations).Create(&user)
 ```
 
-### <span id="default_values">Default Values</span>
+### <span id="default_values">デフォルト値</span>
 
-You can define default values for fields with tag `default`, for example:
+`default`タグによって、フィールドのデフォルト値を定義できます。例:
 
 ```go
 type User struct {
@@ -211,10 +211,10 @@ type User struct {
 }
 ```
 
-Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+データベースへの挿入時にフィールドが [ ゼロ値 ](https://tour.golang.org/basics/12) の場合、デフォルト値が使用されます。
 
 {% note warn %}
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**注意** デフォルト値を定義したには、 `0`, `''`, `false`のようなゼロ値はデータベースに保存されないため、これを避けるにはポインタ型やScanner/Valuerを使用するとよいでしょう。例:
 {% endnote %}
 
 ```go
