@@ -1,9 +1,9 @@
 ---
-title: Create
+title: レコードの作成
 layout: page
 ---
 
-## Create Record
+## レコードを作成する
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
@@ -15,7 +15,7 @@ result.Error        // returns error
 result.RowsAffected // returns inserted records count
 ```
 
-## Create Record With Selected Fields
+## フィールドを選択してレコードを作成する
 
 レコードを作成し、指定したフィールドに値を割り当てます。
 
@@ -24,14 +24,14 @@ db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and ignore the values for fields passed to omit.
+省略する項目を指定し、レコードを作成します。
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## <span id="batch_insert">Batch Insert</span>
+## <span id="batch_insert">一括作成</span>
 
 大量のレコードを効率的に挿入するには、スライスを `Create` メソッドに渡します。 GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
 
