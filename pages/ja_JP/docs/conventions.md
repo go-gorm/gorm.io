@@ -65,9 +65,9 @@ func UserTable(user User) func (tx *gorm.DB) *gorm.DB {
 db.Scopes(UserTable(user)).Create(&user)
 ```
 
-### Temporarily specify a name
+### 一時的に名前を指定する
 
-Temporarily specify table name with `Table` method, for example:
+`Table`メソッドで一時的にテーブル名を指定できます。例:
 
 ```go
 // Create table `deleted_users` with struct User's fields
@@ -82,15 +82,15 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-Check out [From SubQuery](advanced_query.html#from_subquery) for how to use SubQuery in FROM clause
+FROM句でサブクエリを使用する方法については、 [From SubQuery](advanced_query.html#from_subquery) を参照してください。
 
 ### <span id="naming_strategy">NamingStrategy</span>
 
-GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html#naming_strategy) for details
+`TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`の生成に使用されている`NamingStrategy`をオーバーライドすることで、デフォルトの命名規則を変更できます。詳細は[GORM Config](gorm_config.html#naming_strategy)を参照してください。
 
-## Column Name
+## カラム名
 
-Column db name uses the field's name's `snake_case` by convention.
+規約に従い、データベースのカラム名はフィールド名の`snake_case`を使用します。
 
 ```go
 type User struct {
@@ -101,7 +101,7 @@ type User struct {
 }
 ```
 
-You can override the column name with tag `column` or use [`NamingStrategy`](#naming_strategy)
+`column` タグか [`NamingStrategy`](#naming_strategy) を利用することでカラム名を上書きできます。
 
 ```go
 type Animal struct {
@@ -111,11 +111,11 @@ type Animal struct {
 }
 ```
 
-## Timestamp Tracking
+## タイムスタンプのトラッキング
 
 ### CreatedAt
 
-For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
+`CreatedAt`フィールドを持つモデルの場合、フィールドの値がゼロ値であれば、レコード作成時に現在時刻が設定されます。
 
 ```go
 db.Create(&user) // set `CreatedAt` to current time
@@ -129,7 +129,7 @@ db.Model(&user).Update("CreatedAt", time.Now())
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
+`UpdateAt`フィールドを持つモデルの場合、フィールドの値がゼロ値であれば、レコードの更新時または作成時に現在時刻が設定されます。
 
 ```go
 db.Save(&user) // set `UpdatedAt` to current time
@@ -146,5 +146,5 @@ db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
 ```
 
 {% note %}
-**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
+**注意** GORMでは、複数のタイムトラッキング用のフィールドを定義することや、UNIX(ナノ/ミリ)秒でタイムトラッキングすることが可能です。詳細については [Models](models.html#time_tracking) をチェックしてください。
 {% endnote %}
