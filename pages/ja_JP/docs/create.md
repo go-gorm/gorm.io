@@ -33,7 +33,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">一括作成</span>
 
-大量のレコードを効率的に挿入するには、スライスを `Create` メソッドに渡します。 GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+大量のレコードを効率的に挿入するには、スライスを `Create` メソッドに渡します。 モデルのスライスをCreateメソッドに渡すと、GORMはすべてのデータを挿入する1つのSQL文を生成します。SQLが実行されると登録された主キーの値がモデルに代入され、フックメソッドも呼び出されます。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -44,7 +44,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+`CreateInBatches` を利用して、バッチサイズを指定してレコードを作成できます。
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -56,7 +56,7 @@ db.CreateInBatches(users, 100)
 [Upsert](#upsert) や [Create With Associations](#create_with_associations) を使用する場合もバッチインサートはサポートされています。
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**NOTE** `CreateBatchSize` オプションでGORMを初期化した場合、 `INSERT` メソッドはその設定を参照して、レコードを作成します。
 {% endnote %}
 
 ```go
