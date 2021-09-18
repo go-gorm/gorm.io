@@ -115,7 +115,7 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**注意** Mapを使用してレコードを作成する場合、Hookは呼び出されません。また、関連テーブルのレコードも保存されず、主キーの値も返されません。
 {% endnote %}
 
 ## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
