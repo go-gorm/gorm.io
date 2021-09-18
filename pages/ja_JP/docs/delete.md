@@ -5,7 +5,7 @@ layout: page
 
 ## レコードを削除
 
-When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
+レコードを1件削除する場合は、主キーを指定する必要があります。主キーを指定しない場合、 [一括削除](#batch_delete)が実行されます。例:
 
 ```go
 // Email's ID is `10`
@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## 主キーを使用した削除
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out [Query Inline Conditions](query.html#inline_conditions) for details
+GORMでは主キーが数値の場合、インライン条件で主キーを指定してオブジェクトを削除することができます。詳細は [Query Inline Conditions](query.html#inline_conditions) をチェックしてください。
 
 ```go
 db.Delete(&User{}, 10)
@@ -32,9 +32,9 @@ db.Delete(&users, []int{1,2,3})
 // DELETE FROM users WHERE id IN (1,2,3);
 ```
 
-## Delete Hooks
+## 削除のフック処理
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+GORMでは削除時のフック処理に `BeforeDelete`, `AfterDelete`を利用することができます。これらのメソッドはレコードを削除する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -45,9 +45,9 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_delete">Batch Delete</span>
+## <span id="batch_delete">一括削除</span>
 
-The specified value has no primary value, GORM will perform a batch delete, it will delete all matched records
+主キーが指定されていない場合、GORMは指定された条件にマッチしたレコードの一括削除を実行します。
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
