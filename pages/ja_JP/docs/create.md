@@ -73,9 +73,9 @@ db.Create(&users)
 // INSERT INTO pets xxx (15 batches)
 ```
 
-## Create Hooks
+## 作成時のHook
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORMでは、 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`といったメソッドを実装することで、独自のHook処理を定義できます。  これらのメソッドはレコードを作成するときに呼び出されます。ライフサイクルの詳細については [Hooks](hooks.html) を参照してください。
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -88,7 +88,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+`Hooks` メソッドをスキップしたい場合は、 `SkipHooks` セッションモードを使用できます。例:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -98,9 +98,9 @@ DB.Session(&gorm.Session{SkipHooks: true}).Create(&users)
 DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 ```
 
-## Create From Map
+## Mapを使って作成する
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORMでは `map[string]interface{}` と `[]map[string]interface{}{}`を使ってレコード作成できます。例:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
