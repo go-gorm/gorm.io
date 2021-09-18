@@ -1,9 +1,9 @@
 ---
-title: Conventions
+title: 規約
 layout: page
 ---
 
-## `ID` as Primary Key
+## 主キーとしての `ID`
 
 GORMはデフォルトで、テーブルの主キーとして `ID` という名前のフィールドを使用します。
 
@@ -28,11 +28,11 @@ type Animal struct {
 
 [Composite Primary Key](composite_primary_key.html) も参照してください。
 
-## Pluralized Table Name
+## 複数形のテーブル名
 
 GORMは構造体名をテーブル名として`snake_cases`のように複数形にします。構造体 `User` の場合、対応するテーブル名は規約により `users` となります。
 
-### TableName
+### テーブル名
 
 `Tabler` インターフェイスを実装することで、デフォルトのテーブル名を変更することができます。例：
 
@@ -48,7 +48,7 @@ func (User) TableName() string {
 ```
 
 {% note warn %}
-**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use `Scopes`, for example:
+**注意** メソッドの戻り値はキャッシュされるため、 `TableName`は動的な名前を許可していません。動的にテーブル名を変更するには、 `Scopes` で解決することができます。例:
 {% endnote %}
 
 ```go
