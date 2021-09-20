@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Smart Select Fields</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORMでは [``Select](query.html) で選択するフィールド指定することができます。アプリケーションでこれを頻繁に使用する場合は、特定のフィールドを自動的に選択できる、用途に適した構造体を定義するとよいでしょう。例:
 
 ```go
 type User struct {
@@ -27,7 +27,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**注意** `QueryFields` モードを有効にすると、モデルのすべてのフィールド名を選択するようになります。
 {% endnote %}
 
 ```go
@@ -43,9 +43,9 @@ db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## ロック (FOR UPDATE)
 
-GORM supports different types of locks, for example:
+GORMは数種類のロック処理をサポートしています。例:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -58,9 +58,9 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+詳細については、[Raw SQL and SQL Builder](sql_builder.html)を参照してください。
 
-## SubQuery
+## サブクエリ
 
 A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
 
