@@ -129,7 +129,7 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-条件に最初に一致するレコードを取得するか、指定された条件での新しいレコードを作成します (構造体、map条件でのみ動作します)。
+条件に最初に一致するレコードを取得するか、指定された条件で構造体のインスタンスを初期化します (構造体、map条件でのみ動作します)。
 
 ```go
 // User not found, initialize it with give conditions
@@ -145,33 +145,33 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+`Attrs` メソッドを使用すると、レコードが見つからない場合に初期化される構造体の属性をより多く指定することができます。このメソッドで指定した属性はレコード取得時のSQLクエリには使用されません。
 
 ```go
-// User not found, initialize it with give conditions and Attrs
+// Userが見つからないため、取得条件とAttrsで指定された属性で構造体を初期化
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// User not found, initialize it with give conditions and Attrs
+// Userが見つからないため、取得条件とAttrsで指定された属性で構造体を初期化
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// `name` = `jinzhu` のUserが見つかったため、Attrsで指定された属性は無視される
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+`Assign` メソッドを使用すると、レコードが見つかったかどうかにかかわらず、指定した値を構造体に割り当てます。このメソッドで指定した属性はレコード取得時のSQLクエリには使用されません。また、生成されたデータのデータベースへの登録も行われません。
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// Userが見つからないため、取得条件とAssignで指定された属性で構造体を初期化
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// `name` = `jinzhu` のUserが見つかったため、取得レコードの値とAssignで指定された値で構造体を生成
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 20}
@@ -179,35 +179,35 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions)
+条件に最初に一致するレコードを取得するか、指定された条件で新しいレコードを作成します (構造体、map条件でのみ動作します)。
 
 ```go
-// User not found, create a new record with give conditions
+// Userが見つからないため、指定された条件でレコードを作成する
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// `name` = `jinzhu` のUserが見つかった
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+`Attrs` メソッドを使用すると、レコードが見つからない場合に作成されるデータの属性をより多く指定することができます。このメソッドで指定した属性はレコード取得時のSQLクエリには使用されません。
 
 ```go
-// User not found, create it with give conditions and Attrs
+// Userが見つからないため、取得条件とAttrsで指定された属性でレコードを作成
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// `name` = `jinzhu`のユーザが見つかったため、Attrsで指定された属性は無視される
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+`Assign` メソッドを使用すると、レコードが見つかったどうかにかかわらず、指定した値をデータベースに登録します。
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
