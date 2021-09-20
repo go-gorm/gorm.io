@@ -136,7 +136,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
 {% note warn %}
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**注意:** ファイルへのパスを指定する代わりに、 `file::memory:?cache=shared` を使用することもできます。 これを指定することで、システムメモリで一時的なデータベースを使用するようSQLiteに指示します。 (詳細については [SQLite docs](https://www.sqlite.org/inmemorydb.html) を参照してください。)
 {% endnote %}
 
 ## SQL Server
@@ -184,9 +184,9 @@ func main() {
 }
 ```
 
-## Connection Pool
+## コネクションプール
 
-GORMによる[database/sql](https://pkg. go. dev/database/sql) を使用したコネクションプールの維持
+GORMは [database/sql](https://pkg.go.dev/database/sql) を使用してコネクションプールを維持しています。
 
 ```go
 sqlDB, err := db.DB()
@@ -203,8 +203,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 詳細については、 [Generic Interface](generic_interface. html) を参照してください。
 
-## Unsupported Databases
+## サポートされていないデータベース
 
-いくつかのデータベースは `mysql` または `postgres` の方言と互換性があります。 その場合はデータベースの方言を使うことができます
+いくつかのデータベースは `mysql` または `postgres` と互換性があります。 もし互換性があれば、それらのデータベース固有の文法を使用することができます。
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+それ以外の場合、 [ドライバーを作ることをお勧めします。プルリクエストを歓迎しています！](write_driver.html)
