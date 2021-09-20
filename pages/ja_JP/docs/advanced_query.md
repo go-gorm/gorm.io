@@ -62,7 +62,7 @@ db.Clauses(clause.Locking{
 
 ## サブクエリ
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+クエリ内にサブクエリをネストすることができます。GORMは、パラメータとして `*gorm.DB` オブジェクトを使用するとサブクエリを生成できます。
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -73,9 +73,9 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
-### <span id="from_subquery">From SubQuery</span>
+### <span id="from_subquery">From句でのサブクエリ</span>
 
-GORM allows you using subquery in FROM clause with method `Table`, for example:
+GORMでは、`Table`を用いることで、FROM句でサブクエリを使用することができます。例:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -87,7 +87,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
 
-## <span id="group_conditions">Group Conditions</span>
+## <span id="group_conditions">条件をグループ化する</span>
 
 Easier to write complicated SQL query with Group Conditions
 
