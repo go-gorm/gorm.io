@@ -115,9 +115,9 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 より詳細については、 [Raw SQL and SQL Builder](sql_builder.html#named_argument) も参照してみてください。
 
-## Find To Map
+## 取得結果をマップに代入
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORMでは取得結果を`map[string]interface{}`や`[]map[string]interface{}`に代入することができます。その際 `Model`や`Table` の指定を忘れないでください。例：
 
 ```go
 var result map[string]interface{}
@@ -129,7 +129,7 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+条件に最初に一致するレコードを取得するか、指定された条件での新しいレコードを作成します (構造体、map条件でのみ動作します)。
 
 ```go
 // User not found, initialize it with give conditions
