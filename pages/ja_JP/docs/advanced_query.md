@@ -89,7 +89,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">条件をグループ化する</span>
 
-Easier to write complicated SQL query with Group Conditions
+グループ条件で複雑な SQL クエリを簡単に記述できます。
 
 ```go
 db.Where(
@@ -101,9 +101,9 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## Named Argument
+## 名前付き引数
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORMは[`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg)や`map[string]interface{}{}`を使用した名前付き引数をサポートしています 。例：
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -113,7 +113,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+より詳細については、 [Raw SQL and SQL Builder](sql_builder.html#named_argument) も参照してみてください。
 
 ## Find To Map
 
