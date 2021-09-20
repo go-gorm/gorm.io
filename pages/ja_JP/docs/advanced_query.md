@@ -210,13 +210,13 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 `Assign` メソッドを使用すると、レコードが見つかったどうかにかかわらず、指定した値をデータベースに登録します。
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// Userが見つからないため、取得条件とAssignで指定された属性でレコードを作成
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// `name` = `jinzhu`のUserが見つかったため、Assignの値で取得したレコードを更新する
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // UPDATE users SET age=20 WHERE id = 111;
