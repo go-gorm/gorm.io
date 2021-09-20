@@ -1,5 +1,5 @@
 ---
-title: Connecting to a Database
+title: データベースに接続する
 layout: page
 ---
 
@@ -21,7 +21,7 @@ func main() {
 ```
 
 {% note warn %}
-**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+**注** `time.Time` を正しく処理するには、パラメータとして `parseTime` を含める必要があります。 ([その他のパラメータ](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 エンコーディングを完全にサポートするには、 `charset=utf8` を `charset=utf8mb4` に変更する必要があります。 詳細な説明は [この記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
 {% endnote %}
 
 MySQLドライバは、 [初期化中に使用できる高度な設定](https://github. com/go-gorm/mysql)を いくつか提供しています。
@@ -37,7 +37,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### ドライバをカスタマイズする
 
 GORMでは、 `DriverName` オプションを使用してMySQLドライバをカスタマイズできます。
 
@@ -53,7 +53,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Existing database connection
+### 既存のデータベース接続
 
 GORMでは、既存のデータベース接続で `*gorm.DB` を初期化することができます。
 
