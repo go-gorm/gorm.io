@@ -20,7 +20,7 @@ type Config struct {
 }
 ```
 
-## SkipDefaultTransaction
+## デフォルトトランザクションを無効にする
 
 GORMは、データの一貫性を確保するために書き込み操作(作成/更新/削除) をトランザクション内で実行します。必要でなければ、初期化時に無効にできます
 
@@ -58,9 +58,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## ロガー
+## Logger
 
-Allow to change GORM's default logger by overriding this option, refer [Logger](logger.html) for more details
+オプションをオーバーライドすることで、GORMのデフォルトのLoggerを変更できます。詳細は [Logger](logger.html) を参照してください。
 
 ## <span id="now_func">NowFunc</span>
 
@@ -103,9 +103,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 Global update/deleteを有効にすることが可能です。詳細は [Session](session.html) を参照してください。
 
-## DisableAutomaticPing
+## 自動の Ping を無効にする
 
-GORM automatically ping database after initialized to check database availability, disable it by setting it to `true`
+GORMはデータベースの可用性をチェックするため、初期化後に自動でデータベースに ping を行います。以下の設定を `true` に設定してすることでこれを無効にできます。
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -113,9 +113,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## DisableForeignKeyConstraintWhenMigrating
+## マイグレーション時の外部キー制約を無効にする
 
-GORM creates database foreign key constraints automatically when `AutoMigrate` or `CreateTable`, disable this by setting it to `true`, refer [Migration](migration.html) for details
+GORMは、`AutoMigrate` または `CreateTable` 実行時にデータベースの外部キー制約を自動的に作成します。以下の設定を `true` に設定することでこれを無効できます。詳細については、[マイグレーション](migration.html)を参照してください。
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
