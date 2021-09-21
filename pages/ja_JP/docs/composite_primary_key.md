@@ -1,5 +1,5 @@
 ---
-title: Composite Primary Key
+title: 複合主キー
 layout: page
 ---
 
