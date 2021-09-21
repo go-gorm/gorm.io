@@ -290,7 +290,7 @@ result.Error // returned error
 result.RowsAffected // processed records count in all batches
 ```
 
-## クエリのフック処理
+## Query Hooks
 
 GORMではレコード取得のフック処理に `AfterFind` を利用することができます。このメソッドはレコードを取得時に呼び出されます。 詳細は [Hooks](hooks.html) を参照してください。
 
@@ -305,7 +305,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
+1つのカラムからのみ値を取得してsliceに代入することができます。複数のカラムから値を取得する場合は、 `Select` と [`Scan`](query.html#scan) を代わりに利用する必要があります。
 
 ```go
 var ages []int64
@@ -320,7 +320,7 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Requesting more than one column, use `Scan` or `Find` like this:
+// 2つ以上のカラムを指定する場合は、以下のように `Scan` もしくは `Find` を利用します
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
