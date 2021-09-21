@@ -225,7 +225,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## Optimizer/Index Hints
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
+オプティマイザヒントを利用することで、特定のクエリ実行計画を選択するようオプティマイザを制御することができます。GORMでは、 `gorm.io/hints` でそれをサポートしています。例：
 
 ```go
 import "gorm.io/hints"
@@ -234,7 +234,7 @@ db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allow passing index hints to the database in case the query planner gets confused.
+クエリプランナーが最適なクエリを計画できていない場合、データベースにインデックスヒントを渡すことができます。
 
 ```go
 import "gorm.io/hints"
@@ -246,11 +246,11 @@ db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-Refer [Optimizer Hints/Index/Comment](hints.html) for more details
+詳細については、 [Optimizer Hints/Index/Comment](hints.html) を参照してください。
 
 ## Iteration
 
-GORM supports iterating through Rows
+GORMは行ごとのイテレーション処理をサポートしています。
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
