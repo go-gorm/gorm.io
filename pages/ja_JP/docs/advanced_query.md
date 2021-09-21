@@ -3,7 +3,7 @@ title: Advanced Query
 layout: page
 ---
 
-## <span id="smart_select">Smart Select Fields</span>
+## <span id="smart_select">スマートなフィールドの選択</span>
 
 GORMでは [``Select](query.html) で選択するフィールド指定することができます。アプリケーションでこれを頻繁に使用する場合は、特定のフィールドを自動的に選択できる、用途に適した構造体を定義するとよいでしょう。例:
 
@@ -327,7 +327,7 @@ db.Select("name", "age").Find(&users)
 
 ## Scopes
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+共通で使用されるクエリ処理は関数化することができます。`Scopes` を使用すると、関数化されたクエリ処理を指定することができます。
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -358,11 +358,11 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Find all paid, shipped orders that amount greater than 1000
 ```
 
-Checkout [Scopes](scopes.html) for details
+詳細については [Scopes](scopes.html) を確認してください。
 
 ## <span id="count">Count</span>
 
-Get matched records count
+条件に一致したレコード数を取得することができます。
 
 ```go
 var count int64
