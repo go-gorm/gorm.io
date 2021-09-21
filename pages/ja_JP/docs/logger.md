@@ -1,13 +1,13 @@
 ---
-title: ロガー
+title: Logger
 layout: page
 ---
 
-## ロガー
+## Logger
 
-Gormは [デフォルトのロガー実装](https://github.com/go-gorm/gorm/blob/master/logger/logger.go)を持っています。デフォルトでは、遅いSQLとエラーをロギングします。
+Gormには [デフォルトのLogger実装](https://github.com/go-gorm/gorm/blob/master/logger/logger.go)が入っています。デフォルトでは、スロークエリとエラーをロギングします。
 
-ロガーはいくつかのオプションを受け付けます。初期化中にカスタマイズできます。例:
+デフォルトのLoggerにはいくつかの設定オプションがあり、初期化中にカスタマイズすることができます。例:
 
 ```go
 newLogger := logger.New(
@@ -41,7 +41,7 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 })
 ```
 
-### Debug
+### デバッグ
 
 単一の操作をデバッグし、現在の操作のログレベルをlogger.Info に変更します
 
@@ -49,11 +49,11 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
-## ロガーのカスタマイズ
+## Loggerのカスタマイズ
 
-Refer to GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
+独自のLoggerを定義する方法については、GORMの [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) を参照してください。
 
-The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
+Loggerは以下ののインターフェイスを実装する必要があります。 `context`を利用できるため、ログトレースで使用することができます。
 
 ```go
 type Interface interface {
