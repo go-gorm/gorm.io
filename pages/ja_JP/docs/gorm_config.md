@@ -94,14 +94,14 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## DisableNestedTransaction
+## トランザクションのネストを無効にする
 
-When using `Transaction` method inside a db transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support, you could disable it by using the `DisableNestedTransaction` option, refer [Session](session.html) for details
+トランザクション内で `Transaction` メソッドを使用した場合、GORMは `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` を利用してトランザクションのネストをサポートしています。これを無効にするには、`DisableNestedTransaction` オプションを利用します。詳細については、[Session](session.html) を参照してください。
 
 
-## AllowGlobalUpdate
+## Global Updateを有効にする
 
-Enable global update/delete, refer [Session](session.html) for details
+Global update/deleteを有効にすることが可能です。詳細は [Session](session.html) を参照してください。
 
 ## DisableAutomaticPing
 
