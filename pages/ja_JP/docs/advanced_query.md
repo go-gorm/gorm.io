@@ -267,7 +267,7 @@ for rows.Next() {
 
 ## FindInBatches
 
-Query and process records in batch
+バッチ処理におけるクエリやレコード処理を行うことができます。
 
 ```go
 // batch size 100
@@ -290,9 +290,9 @@ result.Error // returned error
 result.RowsAffected // processed records count in all batches
 ```
 
-## Query Hooks
+## クエリのフック処理
 
-GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
+GORMではレコード取得のフック処理に `AfterFind` を利用することができます。このメソッドはレコードを取得時に呼び出されます。 詳細は [Hooks](hooks.html) を参照してください。
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
