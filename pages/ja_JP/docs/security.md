@@ -1,17 +1,17 @@
 ---
-title: Security
+title: セキュリティ
 layout: page
 ---
 
-GORM uses the `database/sql`'s argument placeholders to construct the SQL statement, which will automatically escape arguments to avoid SQL injection
+GORMは `database/sql` のプレースホルダ引数を使用してSQL文を構築しています。従って、SQLインジェクションを防げるよう引数は自動的にエスケープされます。
 
 {% note warn %}
-**NOTE** The SQL from Logger is not fully escaped like the one executed, be careful when copying and executing it in SQL console
+**注** Loggerから出力されたSQL は、実際に実行されたSQLのようにはエスケープされていません。SQLをコピーしてコンソールで実行するときは注意してください。
 {% endnote %}
 
-## Query Condition
+## クエリ条件
 
-User's input should be only used as an argument, for example:
+ユーザーの入力は引数としてのみ使用する必要があります。例:
 
 ```go
 userInput := "jinzhu;drop table users;"
@@ -23,7 +23,7 @@ db.Where("name = ?", userInput).First(&user)
 db.Where(fmt.Sprintf("name = %v", userInput)).First(&user)
 ```
 
-## Inline Condition
+## インライン条件
 
 ```go
 // will be escaped
@@ -35,7 +35,7 @@ db..First(&user, fmt.Sprintf("name = %v", userInput))
 
 ## SQL injection Methods
 
-To support some features, some inputs are not escaped, be careful when using user's input with those methods
+いくつかの機能をサポートするために、一部の入力はエスケープされません。それらのメソッドでユーザーの入力を使用する場合は注意が必要です。
 
 ```go
 db.Select("name; drop table users;").First(&user)
