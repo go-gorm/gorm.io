@@ -33,7 +33,7 @@ db.First(&user, "name = ?", userInput)
 db..First(&user, fmt.Sprintf("name = %v", userInput))
 ```
 
-## SQL injection Methods
+## SQLインジェクションが発生し得るメソッド
 
 いくつかの機能をサポートするために、一部の入力はエスケープされません。それらのメソッドでユーザーの入力を使用する場合は注意が必要です。
 
@@ -54,4 +54,4 @@ db.Exec("select name from users; drop table users;")
 db.Order("name; drop table users;").First(&user)
 ```
 
-The general rule to avoid SQL injection is don't trust user-submitted data, you can perform whitelist validation to test user input against an existing set of known, approved, and defined input, and when using user's input, only use them as an argument.
+SQLインジェクションを避けるための一般的なルールは、ユーザーが送信したデータを信頼しないことです。 あらかじめ用意された入力データセットと比較することで、許可されたデータであるかを検証することができます。またユーザーの入力を使用する場合は、引数としてのみ使用するようにしてください。
