@@ -1,5 +1,5 @@
 ---
-title: Transactions
+title: トランザクション
 layout: page
 ---
 
@@ -43,7 +43,7 @@ db.Transaction(func(tx *gorm.DB) error {
 
 ### トランザクションのネスト
 
-GORM supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
+GORMはネストしたトランザクションをサポートしており、トランザクションのスコープ内で実行されるサブセットをロールバックすることができます。例:
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
@@ -65,7 +65,7 @@ db.Transaction(func(tx *gorm.DB) error {
 // Commit user1, user3
 ```
 
-## Transactions by manual
+## マニュアル指定でのトランザクション
 
 ```go
 // begin a transaction
@@ -83,7 +83,7 @@ tx.Rollback()
 tx.Commit()
 ```
 
-### A Specific Example
+### 具体例
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
@@ -115,7 +115,7 @@ func CreateAnimals(db *gorm.DB) error {
 
 ## SavePoint, RollbackTo
 
-GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
+GORMは `SavePoint`, `RollbackTo` メソッドを提供しています。これらのメソッドはそれぞれ、トランザクションの特定の地点を保存、保存された地点までロールバックが可能です。例:
 
 ```go
 tx := db.Begin()
