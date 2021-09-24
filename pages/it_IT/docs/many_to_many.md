@@ -65,7 +65,7 @@ To override them, you can use tag `foreignKey`, `references`, `joinForeignKey`, 
 ```go
 type User struct {
     gorm.Model
-    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;JoinReferences:ProfileRefer"`
+    Profiles []Profile `gorm:"many2many:user_profiles;foreignKey:Refer;joinForeignKey:UserReferID;References:UserRefer;joinReferences:ProfileRefer"`
     Refer    uint      `gorm:"index:,unique"`
 }
 
