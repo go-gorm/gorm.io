@@ -1,11 +1,11 @@
 ---
-title: Constraints
+title: 制約
 layout: page
 ---
 
-GORMはタグを使用したデータベース制約の作成を可能にします。 [GORMによるオートマイグレーション時、たテーブル作成時](migration.html)に制約が作成されます
+GORMはタグを使用したデータベース制約の作成を可能にします。指定した制約は、 [ GORMによるオートマイグレーション時、テーブル作成時](migration.html) に作成されます
 
-## CHECK Constraint
+## CHECK制約
 
 CHECK制約の作成は`check`タグで行います。
 
@@ -17,11 +17,11 @@ type UserIndex struct {
 }
 ```
 
-## Index Constraint
+## インデックス制約
 
 [Database Indexes](indexes.html)を参照してください。
 
-## Foreign Key Constraint
+## 外部キー制約
 
 GORMはアソシエーションのための外部キー制約を作成します。初期化時にこの機能を無効にすることができます：
 
@@ -31,7 +31,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-GORM allows you setup FOREIGN KEY constraints's `OnDelete`, `OnUpdate` option with tag `constraint`, for example:
+GORMでは、外部キー制約の`OnDelete`と`OnUpdate`オプションを`constraint`タグを用いて設定することができます。例：
 
 ```go
 type User struct {

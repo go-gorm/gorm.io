@@ -1,5 +1,5 @@
 ---
-title: Connecting to a Database
+title: データベースに接続する
 layout: page
 ---
 
@@ -21,7 +21,7 @@ func main() {
 ```
 
 {% note warn %}
-**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+**注** `time.Time` を正しく処理するには、パラメータとして `parseTime` を含める必要があります。 ([その他のパラメータ](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 エンコーディングを完全にサポートするには、 `charset=utf8` を `charset=utf8mb4` に変更する必要があります。 詳細な説明は [この記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
 {% endnote %}
 
 MySQLドライバは、 [初期化中に使用できる高度な設定](https://github. com/go-gorm/mysql)を いくつか提供しています。
@@ -37,7 +37,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### ドライバをカスタマイズする
 
 GORMでは、 `DriverName` オプションを使用してMySQLドライバをカスタマイズできます。
 
@@ -53,7 +53,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Existing database connection
+### 既存のデータベース接続
 
 GORMでは、既存のデータベース接続で `*gorm.DB` を初期化することができます。
 
@@ -136,7 +136,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
 {% note warn %}
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**注意:** ファイルへのパスを指定する代わりに、 `file::memory:?cache=shared` を使用することもできます。 これを指定することで、システムメモリで一時的なデータベースを使用するようSQLiteに指示します。 (詳細については [SQLite docs](https://www.sqlite.org/inmemorydb.html) を参照してください。)
 {% endnote %}
 
 ## SQL Server
@@ -184,9 +184,9 @@ func main() {
 }
 ```
 
-## Connection Pool
+## コネクションプール
 
-GORMによる[database/sql](https://pkg. go. dev/database/sql) を使用したコネクションプールの維持
+GORMは [database/sql](https://pkg.go.dev/database/sql) を使用してコネクションプールを維持しています。
 
 ```go
 sqlDB, err := db.DB()
@@ -203,8 +203,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 詳細については、 [Generic Interface](generic_interface. html) を参照してください。
 
-## Unsupported Databases
+## サポートされていないデータベース
 
-いくつかのデータベースは `mysql` または `postgres` の方言と互換性があります。 その場合はデータベースの方言を使うことができます
+いくつかのデータベースは `mysql` または `postgres` と互換性があります。 もし互換性があれば、それらのデータベース固有の文法を使用することができます。
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+それ以外の場合、 [ドライバーを作ることをお勧めします。プルリクエストを歓迎しています！](write_driver.html)

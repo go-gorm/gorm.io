@@ -1,5 +1,5 @@
 ---
-title: Error Handling
+title: エラーハンドリング
 layout: page
 ---
 
@@ -32,7 +32,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 GORMは、`First`, `Last`, `Take`でデータの検索に失敗した場合に`ErrRecordNotFound`を返します。もし複数のエラーが発生した場合は、`errors.Is`で`ErrRecordNotFound`エラーを確認することができます。たとえば以下のように使います
 
 ```go
-// Check if returns RecordNotFound error
+// RecordNotFound エラーが返却されたかチェックする
 err := db.First(&user, 100).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```

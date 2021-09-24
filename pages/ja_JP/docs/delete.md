@@ -5,7 +5,7 @@ layout: page
 
 ## レコードを削除
 
-When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
+レコードを1件削除する場合は、主キーを指定する必要があります。主キーを指定しない場合、 [一括削除](#batch_delete)が実行されます。例:
 
 ```go
 // Email's ID is `10`
@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## 主キーを使用した削除
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out [Query Inline Conditions](query.html#inline_conditions) for details
+GORMでは主キーが数値の場合、インライン条件で主キーを指定してオブジェクトを削除することができます。詳細は [Query Inline Conditions](query.html#inline_conditions) をチェックしてください。
 
 ```go
 db.Delete(&User{}, 10)
@@ -32,9 +32,9 @@ db.Delete(&users, []int{1,2,3})
 // DELETE FROM users WHERE id IN (1,2,3);
 ```
 
-## Delete Hooks
+## 削除のフック処理
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+GORMでは削除時のフック処理に `BeforeDelete`, `AfterDelete`を利用することができます。これらのメソッドはレコードを削除する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -45,9 +45,9 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_delete">Batch Delete</span>
+## <span id="batch_delete">一括削除</span>
 
-The specified value has no primary value, GORM will perform a batch delete, it will delete all matched records
+主キーが指定されていない場合、GORMは指定された条件にマッチしたレコードの一括削除を実行します。
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -57,11 +57,11 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-### Block Global Delete
+### Global Deleteを防ぐ
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
+何も条件を指定せずに一括削除を行った場合、GORMは削除処理を実行せず、`ErrMissingWhereClause`エラーを返します。
 
-You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+条件を指定する、SQLをそのまま実行する、あるいは `AllowGlobalUpdate` モードを有効にする必要があります。例:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -76,11 +76,11 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-## Soft Delete
+## 論理削除
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+モデルに `gorm.DeletedAt` フィールド ( `gorm.Model`に含まれている) が存在している場合、削除時は自動的にSoft Deleteが実行されるようになります!
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+`Delete`メソッドを呼び出しても、 レコードはデータベースから削除されません。代わりに、GORMは`DeletedAt`フィールドの値に現在の時刻を設定し、そのレコードは通常のクエリメソッドでは検索できなくなります。
 
 ```go
 // user's ID is `111`
@@ -96,7 +96,7 @@ db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+モデルに`gorm.Model`を含めたくない場合、以下のようにして論理削除機能を有効にできます。
 
 ```go
 type User struct {
@@ -106,27 +106,27 @@ type User struct {
 }
 ```
 
-### Find soft deleted records
+### 論理削除されたレコードを取得する
 
-You can find soft deleted records with `Unscoped`
+`Unscoped`を用いることで、論理削除されたレコードを取得することができます。
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Delete permanently
+### 完全な削除（物理削除）
 
-You can delete matched records permanently with `Unscoped`
+`Unscoped`を用いることで、条件に一致したレコードを物理削除できます。
 
 ```go
 db.Unscoped().Delete(&order)
 // DELETE FROM orders WHERE id=10;
 ```
 
-### Delete Flag
+### 削除フラグ
 
-Use unix second as delete flag
+UNIXタイムスタンプを削除フラグとして使用する
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -145,7 +145,7 @@ UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
 {% note warn %}
-**INFO** when using unique field with soft delete, you should create a composite index with the unix second based `DeletedAt` field, e.g:
+**INFO** ユニークなフィールドがあるテーブルで論理削除を使用する場合、UNIXタイムを利用した `DeletedAt` フィールドとの複合インデックスを作成するとよいでしょう。例:
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -158,7 +158,7 @@ type User struct {
 ```
 {% endnote %}
 
-Use `1` / `0` as delete flag
+`1` / `0` を削除フラグとして使用する
 
 ```go
 import "gorm.io/plugin/soft_delete"

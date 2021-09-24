@@ -3,9 +3,9 @@ title: Query
 layout: page
 ---
 
-## Retrieving a single object
+## 単一のオブジェクトを取得する
 
-GORM provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
+GORMは、データベースから１つのオブジェクトを取得するために`First`, `Take`, `Last`メソッドを提供しています。それらのメソッドは、データベースにクエリを実行する際に`LIMIT 1`の条件を追加し、レコードが見つからなかった場合、`ErrRecordNotFound`エラーを返します。
 
 ```go
 // Get the first record ordered by primary key
@@ -29,10 +29,10 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
 {% note warn %}
-If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`, the `Find` method accepts both struct and slice data
+`ErrRecordNotFound` エラーを避けたい場合は、`db.Limit(1).Find(&user)`のように、`Find` を 使用することができます。`Find` メソッドは struct と slice のどちらも受け取ることができます。
 {% endnote %}
 
-The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
+`First` と `Last` メソッドは、プライマリキーによって順序づけられているそれぞれ最初と最後のレコードを見つけます。 これら2つのメソッドは、対象のstructのポインタをメソッドの引数に渡す、もしくは`db.Model()`を使用してモデルを指定した場合のみ動作します。 また、関連するモデルにプライマリキーが定義されていない場合、モデルの最初のフィールドで順序付けされることになります。 例：
 
 ```go
 var user User
@@ -64,9 +64,9 @@ db.First(&Language{})
 // SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
 ```
 
-### Retrieving objects with primary key
+### プライマリキーでオブジェクトを取得する
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
+主キーが数値の場合は、 [Inline Conditions](#inline_conditions) を使用することで、主キーでオブジェクトを取得できます。 文字列を扱う場合、SQLインジェクションを避けるために十分な注意が必要です。詳細については、 [Security](security.html) セクションを参照してください。
 
 ```go
 db.First(&user, 10)
@@ -79,14 +79,14 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If the primary key is a string (for example, like a uuid), the query will be written as follows:
+プライマリキーが (例えば、uuid のような) 文字列の場合、クエリは以下のようになります。
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-## Retrieving all objects
+## すべてのオブジェクトを取得する
 
 ```go
 // Get all records
@@ -97,9 +97,9 @@ result.RowsAffected // returns found records count, equals `len(users)`
 result.Error        // returns error
 ```
 
-## Conditions
+## 取得条件
 
-### String Conditions
+### 文字列条件
 
 ```go
 // Get first matched record
@@ -131,7 +131,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Struct & Map Conditions
+### 構造体 & マップでの条件指定
 
 ```go
 // Struct
@@ -148,7 +148,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**注** 構造体を使ってクエリを実行するとき、GORMは非ゼロ値なフィールドのみを利用します。つまり、フィールドの値が `0`, `''`, `false` または他の [ゼロ値](https://tour.golang.org/basics/12)の場合、 クエリ条件の作成に使用されません。以下例：
 {% endnote %}
 
 ```go
@@ -156,18 +156,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
+クエリ条件にゼロ値を含めるには、次のように、クエリ条件としてすべてのkey-valuesを含むマップを使用できます。
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-For more details, see [Specify Struct search fields](#specify_search_fields).
+詳細については、 [Struct search fields](#specify_search_fields) を参照してください。
 
-### <span id="specify_search_fields">Specify Struct search fields</span>
+### <span id="specify_search_fields">構造体の検索フィールドを指定する</span>
 
-When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
+構造体を使用して検索する場合、フィールド名かテーブルのカラム名を `Where()` に記載することで、構造体の特定の値のみをクエリ条件で使用することができます。 例えば:
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -177,9 +177,9 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 // SELECT * FROM users WHERE age = 0;
 ```
 
-### <span id="inline_conditions">Inline Condition</span>
+### <span id="inline_conditions">インライン条件</span>
 
-Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
+クエリ条件は、 `where` と同様の方法で `First` や `Find` のようなメソッドにインライン展開することができます。
 
 ```go
 // Get by primary key if it were a non-integer type
@@ -202,9 +202,9 @@ db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Not Conditions
+### Not条件
 
-Build NOT conditions, works similar to `Where`
+NOT条件も、`Where` と同様の指定方法になります。
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -223,7 +223,7 @@ db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-### Or Conditions
+### OR条件
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
@@ -238,11 +238,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
+より複雑なクエリについては [Group Conditions in Advanced Query](advanced_query.html#group_conditions) も参照してください。
 
-## Selecting Specific Fields
+## 特定のフィールドのみ選択
 
-`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
+`Select` を使用すると、データベースから取得するフィールドを指定できます。 取得フィールドの指定がない場合、GORMはデフォルトですべてのフィールドを選択します。
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -255,11 +255,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-Also check out [Smart Select Fields](advanced_query.html#smart_select)
+[Smart Select Fields](advanced_query.html#smart_select) も参照してみてください。
 
 ## Order
 
-Specify order when retrieving records from the database
+データベースからレコードを取得する際の順序を指定できます。
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -277,7 +277,7 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit`は取得するレコードの最大数を指定します。 `Offset`はスキップするレコードの数を指定します。
 
 ```go
 db.Limit(3).Find(&users)
@@ -300,7 +300,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
+ページネーターの作成方法については、 [Pagination](scopes.html#pagination) を参照してください。
 
 ## Group By & Having
 
@@ -336,17 +336,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+重複した行を削除した値を取得することができます。
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
+`Distinct`は[`Pluck`](advanced_query.html#pluck)や[`Count`](advanced_query.html#count)とともに利用することができます。
 
 ## Joins
 
-Specify Joins conditions
+結合条件を指定することができます。
 
 ```go
 type result struct {
@@ -370,25 +370,25 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ### Joins Preloading
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+単一クエリで関連データをeager loadingするのに`Joins`を使用することができます。例：
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Join with conditions
+条件を指定して結合
 
 ```go
 db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
-For more details, please refer to [Preloading (Eager Loading)](preload.html).
+詳細については、 [Preloading (Eager Loading)](preload.html) を参照してください。
 
 ## <span id="scan">Scan</span>
 
-Scanning results into a struct works similarly to the way we use `Find`
+レコード取得結果の構造体へのScanは、`Find`の使う方法と同様になります。
 
 ```go
 type Result struct {

@@ -5,17 +5,17 @@ layout: page
 
 GORMはContextをサポートしています。メソッド `WithContext`で使用できます。
 
-## Single Session Mode
+## シングルセッション
 
-単一セッションモードは通常、単一の操作を実行するときに使用されます。
+シングルセッションは通常、単一の操作を実行するときに使用されます。
 
 ```go
 db.WithContext(ctx).Find(&users)
 ```
 
-## Continuous session mode
+## 継続セッション
 
-連続セッションモードは、通常、一連の操作を実行するときに使用されます。例:
+継続セッションは、通常、一連の操作を実行するときに使用されます。例:
 
 ```go
 tx := db.WithContext(ctx)
@@ -23,9 +23,9 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-## Context in Hooks/Callbacks
+## Hooks/CallbacksでのContext
 
-You could access the `Context` object from current `Statement`, for example:
+現在の `Statement` から `Context` にアクセスすることが可能です。例：
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -35,11 +35,11 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Chi Middleware Example
+## Chi Middlewareの例
 
-Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
+継続セッションはAPIリクエストの処理に役立ちます。たとえば、ミドルウェア内でのタイムアウト設定をしたContextを使って、`*gorm.DB`を設定できます。 そして、その `*gorm.DB` を使ってリクエストの処理を行います。
 
-Following is a Chi middleware example:
+Chi ミドルウェアの例を以下に示します。
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {
@@ -73,9 +73,9 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 ```
 
 {% note %}
-**NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**注** `Context`を`WithContext`で設定するのはゴルーチンセーフです。 詳細は[Session](session.html)を参照してください。
 {% endnote %}
 
 ## Logger
 
-Logger accepts `Context` too, you can use it for log tracking, refer [Logger](logger.html) for details
+Loggerも `Context` もに対応しており、ログのトラッキングに使用することができます。詳細については [Logger](logger.html) を参照してください。

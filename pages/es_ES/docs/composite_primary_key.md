@@ -1,9 +1,9 @@
 ---
-title: Composite Primary Key
+title: Llave primaria compuesta
 layout: page
 ---
 
-Set multiple fields as primary key creates composite primary key, for example:
+Establecer múltiples campos como llave primaria crea una llave primaria compuesta, por ejemplo:
 
 ```go
 type Product struct {

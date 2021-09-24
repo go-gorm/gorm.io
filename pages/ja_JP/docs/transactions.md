@@ -1,11 +1,11 @@
 ---
-title: Transactions
+title: トランザクション
 layout: page
 ---
 
-## Disable Default Transaction
+## デフォルトトランザクションを無効にする
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required, you will gain about 30%+ performance improvement after that
+GORMは、データの一貫性を確保するために書き込み操作(作成/更新/削除) をトランザクション内で実行します。必要でなければ、初期化時に無効にできます。無効にすると、30%以上のパフォーマンス向上を得られる可能性があります。
 
 ```go
 // Globally disable
@@ -20,15 +20,15 @@ tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 ```
 
-## Transaction
+## トランザクション
 
-To perform a set of operations within a transaction, the general flow is as below.
+トランザクション内で一連の操作を実行する場合、一般的なフローは以下のようになります。
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
-  // do some database operations in the transaction (use 'tx' from this point, not 'db')
+  // トランザクション内でのデータベース処理を行う(ここでは `db` ではなく `tx` を利用する)
   if err := tx.Create(&Animal{Name: "Giraffe"}).Error; err != nil {
-    // return any error will rollback
+    // 何らかのエラーを返却するとロールバックされる
     return err
   }
 
@@ -36,14 +36,14 @@ db.Transaction(func(tx *gorm.DB) error {
     return err
   }
 
-  // return nil will commit the whole transaction
+  // nilが返却されるとトランザクション内の全処理がコミットされる
   return nil
 })
 ```
 
-### Nested Transactions
+### トランザクションのネスト
 
-GORM supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
+GORMはネストしたトランザクションをサポートしており、トランザクションのスコープ内で実行されるサブセットをロールバックすることができます。例:
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
@@ -65,7 +65,7 @@ db.Transaction(func(tx *gorm.DB) error {
 // Commit user1, user3
 ```
 
-## Transactions by manual
+## マニュアル指定でのトランザクション
 
 ```go
 // begin a transaction
@@ -83,7 +83,7 @@ tx.Rollback()
 tx.Commit()
 ```
 
-### A Specific Example
+### 具体例
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
@@ -115,7 +115,7 @@ func CreateAnimals(db *gorm.DB) error {
 
 ## SavePoint, RollbackTo
 
-GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
+GORMは `SavePoint`, `RollbackTo` メソッドを提供しています。これらのメソッドはそれぞれ、トランザクションの特定の地点を保存、保存された地点までロールバックが可能です。例:
 
 ```go
 tx := db.Begin()
