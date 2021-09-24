@@ -14,7 +14,7 @@ layout: strona
 
 ## Dokumentacja i artykuły
 
-* Ulepszaj dokumentację GORM, dodawaj nową treść, poprawiaj istniejący materiał
+* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### Tłumacz tą stronę
 
