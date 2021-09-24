@@ -3,7 +3,7 @@ title: 一般的なデータベースインターフェース sql.DB
 layout: page
 ---
 
-GORM provides the method `DB` which returns a generic database interface [\*sql.DB](https://pkg.go.dev/database/sql#DB) from the current `*gorm.DB`
+GORMは、`DB` メソッドを定義しています。これは `*gorm.DB` から、汎用的なDB操作のインターフェイスである `*sql.DB` を返却します。
 
 ```go
 // Get generic database object sql.DB to use its functions
