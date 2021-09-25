@@ -6,7 +6,7 @@ layout: page
 GORMは、`DB` メソッドを定義しています。これは `*gorm.DB` から、汎用的なDB操作のインターフェイスである `*sql.DB` を返却します。
 
 ```go
-// Get generic database object sql.DB to use its functions
+// 汎用データベースオブジェクトの sql.DB を取得する
 sqlDB, err := db.DB()
 
 // Ping
@@ -15,12 +15,12 @@ sqlDB.Ping()
 // Close
 sqlDB.Close()
 
-// Returns database statistics
+// データベースの統計を返却する
 sqlDB.Stats()
 ```
 
 {% note warn %}
-**NOTE** If the underlying database connection is not a `*sql.DB`, like in a transaction, it will returns error
+**注意** トランザクション内のような、基盤となるデータベース接続が `*sql.DB`でない場合、DBメソッドはエラーを返します。
 {% endnote %}
 
 ## Connection Pool
