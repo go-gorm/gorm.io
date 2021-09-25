@@ -23,7 +23,7 @@ sqlDB.Stats()
 **注意** トランザクション内のような、基盤となるデータベース接続が `*sql.DB`でない場合、DBメソッドはエラーを返します。
 {% endnote %}
 
-## Connection Pool
+## コネクションプール
 
 ```go
 // Get generic database object sql.DB to use its functions
