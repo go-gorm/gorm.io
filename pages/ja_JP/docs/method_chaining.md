@@ -9,29 +9,29 @@ GORMはメソッドチェーンが可能なため、次のようなコードを�
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 ```
 
-There are three kinds of methods in GORM: `Chain Method`, `Finisher Method`, `New Session Method`.
+GORMには `Chain Method`, `Finisher Method`, `New Session Method` という3種類のメソッドがあります:
 
 ## Chain Method
 
-Chain Methodsは現在の`Statement`に`Clauses`を変更または追加するメソッドです。
+Chain Methodsは現在の`Statement`を変更したり、`Clauses`を追加するメソッドです。
 
-`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` can't be used with other chainable methods to build SQL)...
+`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` はSQLを生成する他のメソッドとは共用不可)... などがあります。
 
-Here is [the full lists](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), also check out the [SQL Builder](sql_builder.html) for more details about `Clauses`.
+[Chain Methodの一覧](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)はこちらです。`Clauses`についての詳細は [SQL Builder](sql_builder.html)を参照してください。
 
 ## <span id="finisher_method">Finisher Method</span>
 
-Finishersは登録されたコールバックを実行する即時メソッドで、SQLを生成して実行します。
+Finisher Methodは登録されたコールバックを即時に実行するメソッドであり、この種類のメソッドが呼び出されるとSQLを生成して実行します。
 
-`Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`...
+`Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`... などがあります。
 
-Check out [the full lists](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) here.
+こちらの [Finisher Methodの一覧](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) も参照してください。
 
 ## New Session Mode
 
-After a new initialized `*gorm.DB` or a `New Session Method`, following methods call will create a new `Statement` instance instead of using the current one.
+`*gorm.DB`が初期化された、あるいは、`New Session Method`が実行された場合、 その後のメソッド呼び出しは、現在の `Statement` インスタンスを使用せずに新しいインスタンスを作成します。
 
-GORM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details.
+GROMは `Session`, `WithContext`, `Debug` を `New Session Method` として定義しています。詳細については [Session](session.html)を参照してください。
 
 以下の例で説明しましょう。
 
