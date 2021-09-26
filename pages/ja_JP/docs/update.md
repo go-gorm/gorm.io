@@ -1,5 +1,5 @@
 ---
-title: Update
+title: レコードの更新
 layout: page
 ---
 
