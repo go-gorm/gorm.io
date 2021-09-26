@@ -1,5 +1,5 @@
 ---
-title: Query
+title: レコードの取得
 layout: page
 ---
 
