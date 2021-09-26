@@ -148,7 +148,7 @@ db.Session(&gorm.Session{
 
 ## FullSaveAssociations
 
-GORMはレコードの作成・更新時に[Upsert](create.html#upsert)を使用して自動的にアソシエーションとその参照を保存します。 If you want to update associations' data, you should use the `FullSaveAssociations` mode, for example:
+GORMはレコードの作成・更新時に[Upsert](create.html#upsert)を使用して自動的にアソシエーションとその参照を保存します。 アソシエーションデータを更新したい場合は、 `FullSaveAssociations` モードを使用する必要があります。例:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -161,7 +161,7 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## Context
 
-With the `Context` option, you can set the `Context` for following SQL operations, for example:
+`Context` オプションを使用することで、以降のSQL操作を実行するための `Context` を設定できます。例：
 
 ```go
 timeoutCtx, _ := context.WithTimeout(context.Background(), time.Second)
@@ -171,7 +171,7 @@ tx.First(&user) // query with context timeoutCtx
 tx.Model(&user).Update("role", "admin") // update with context timeoutCtx
 ```
 
-GORM also provides shortcut method `WithContext`,  here is the definition:
+GORMは `WithContext` という便利なメソッドも提供しています。定義は次のとおりです。
 
 ```go
 func (db *DB) WithContext(ctx context.Context) *DB {
@@ -181,25 +181,25 @@ func (db *DB) WithContext(ctx context.Context) *DB {
 
 ## Logger
 
-Gorm allows customizing built-in logger with the `Logger` option, for example:
+Gormでは、 `Logger` オプションを使用してビルトインのロガーをカスタマイズできます。例:
 
 ```go
 newLogger := logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags),
-              logger.Config{
-                SlowThreshold: time.Second,
-                LogLevel:      logger.Silent,
-                Colorful:      false,
-              })
+  logger.Config{
+    SlowThreshold: time.Second,
+    LogLevel:      logger.Silent,
+    Colorful:      false,
+  })
 db.Session(&Session{Logger: newLogger})
 
 db.Session(&Session{Logger: logger.Default.LogMode(logger.Silent)})
 ```
 
-Checkout [Logger](logger.html) for more details.
+詳細については、 [Logger](logger.html) を確認してください。
 
 ## NowFunc
 
-`NowFunc` allows changing the function to get current time of GORM, for example:
+`NowFunc`を指定すると、現在時刻を取得する関数を変更することができます。
 
 ```go
 db.Session(&Session{
@@ -211,19 +211,19 @@ db.Session(&Session{
 
 ## Debug
 
-`Debug` is a shortcut method to change session's `Logger` to debug mode,  here is the definition:
+`Debug` はセッションの `Logger` をデバッグモードに変更するためのショートカットメソッドです。定義は次の通りです。
 
 ```go
 func (db *DB) Debug() (tx *DB) {
   return db.Session(&Session{
-    Logger:         db.Logger.LogMode(logger.Info),
+    Logger:  db.Logger.LogMode(logger.Info),
   })
 }
 ```
 
 ## QueryFields
 
-Select by fields
+このオプションを使用すると、各フィールドを指定して選択します。
 
 ```go
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
@@ -233,7 +233,7 @@ db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 
 ## CreateBatchSize
 
-Default batch size
+デフォルトのバッチサイズを指定できます。
 
 ```go
 users = [5000]User{{Name: "jinzhu", Pets: []Pet{pet1, pet2, pet3}}...}
