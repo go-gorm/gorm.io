@@ -3,7 +3,7 @@ title: Session
 layout: page
 ---
 
-GORM provides `Session` method, which is a [`New Session Method`](method_chaining.html), it allows to create a new session mode with configuration:
+GORMは `Session` メソッドを提供しています。これは [`新しいセッションを作成するメソッド`](method_chaining.html)であり、設定可能な新しいセッションを作成することができます。
 
 ```go
 // Session Configuration
@@ -26,7 +26,7 @@ type Session struct {
 
 ## DryRun
 
-Generates `SQL` without executing. It can be used to prepare or test generated SQL, for example:
+実行はせずに `SQL` の生成のみ行います。 生成されたSQLを前もって準備またはテストする際に使用することができます。例：
 
 ```go
 // session mode
@@ -44,17 +44,18 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
-To generate the final SQL, you could use following code:
+最終的なSQLを生成するには、次のコードを使用します。
 
 ```go
-// NOTE: the SQL is not always safe to execute, GORM only uses it for logs, it might cause SQL injection
+// 注意: この方法で生成されるSQLは常に安全に実行できるとは限りません。
+// SQLインジェクションを引き起こす可能性があるため、GORMではこれをログにのみ使用します。
 db.Dialector.Explain(stmt.SQL.String(), stmt.Vars...)
 // SELECT * FROM `users` WHERE `id` = 1
 ```
 
 ## PrepareStmt
 
-`PreparedStmt` creates prepared statements when executing any SQL and caches them to speed up future calls, for example:
+`PreparedStmt` は任意の SQL を実行する際にプリペアードステートメントを作成し、後の呼び出しを高速化するためにそれをキャッシュします。例：
 
 ```go
 // globally mode, all DB operations will create prepared statements and cache them
@@ -89,7 +90,7 @@ for sql, stmt := range stmtManger.Stmts {
 
 ## NewDB
 
-Create a new DB without conditions with option `NewDB`, for example:
+`NewDB`オプションを指定せずに新しいDBオブジェクトを作成します。例:
 
 ```go
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{NewDB: true})
@@ -108,7 +109,7 @@ tx2.First(&user)
 
 ## Skip Hooks
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+`Hooks` メソッドをスキップしたい場合は、 `SkipHooks` セッションモードを使用できます。例:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -126,7 +127,7 @@ DB.Session(&gorm.Session{SkipHooks: true}).Model(User{}).Where("age > ?", 18).Up
 
 ## DisableNestedTransaction
 
-When using `Transaction` method inside a DB transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support. You can disable it by using the `DisableNestedTransaction` option, for example:
+トランザクション内で `Transaction` メソッドを使用した場合、GORMはネストしたトランザクションをサポートするため、 `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` を使用します。 `DisableNestedTransaction` オプションを使用してそれを無効にすることができます。例：
 
 ```go
 db.Session(&gorm.Session{
@@ -136,7 +137,7 @@ db.Session(&gorm.Session{
 
 ## AllowGlobalUpdate
 
-GORM doesn't allow global update/delete by default, will return `ErrMissingWhereClause` error. You can set this option to true to enable it, for example:
+GORMはデフォルトで全データのグローバルな更新/削除を許可しておらず、処理を行おうとした場合、`ErrMissingWhereClause` エラーを返します。 AllowGlobalUpdateオプションをtrueに設定することで、その処理を許可することができます。例:
 
 ```go
 db.Session(&gorm.Session{
@@ -147,7 +148,7 @@ db.Session(&gorm.Session{
 
 ## FullSaveAssociations
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record. If you want to update associations' data, you should use the `FullSaveAssociations` mode, for example:
+GORMはレコードの作成・更新時に[Upsert](create.html#upsert)を使用して自動的にアソシエーションとその参照を保存します。 アソシエーションデータを更新したい場合は、 `FullSaveAssociations` モードを使用する必要があります。例:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -160,7 +161,7 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## Context
 
-With the `Context` option, you can set the `Context` for following SQL operations, for example:
+`Context` オプションを使用することで、以降のSQL操作を実行するための `Context` を設定できます。例：
 
 ```go
 timeoutCtx, _ := context.WithTimeout(context.Background(), time.Second)
@@ -170,7 +171,7 @@ tx.First(&user) // query with context timeoutCtx
 tx.Model(&user).Update("role", "admin") // update with context timeoutCtx
 ```
 
-GORM also provides shortcut method `WithContext`,  here is the definition:
+GORMは `WithContext` という便利なメソッドも提供しています。定義は次のとおりです。
 
 ```go
 func (db *DB) WithContext(ctx context.Context) *DB {
@@ -180,25 +181,25 @@ func (db *DB) WithContext(ctx context.Context) *DB {
 
 ## Logger
 
-Gorm allows customizing built-in logger with the `Logger` option, for example:
+Gormでは、 `Logger` オプションを使用してビルトインのロガーをカスタマイズできます。例:
 
 ```go
 newLogger := logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags),
-              logger.Config{
-                SlowThreshold: time.Second,
-                LogLevel:      logger.Silent,
-                Colorful:      false,
-              })
+  logger.Config{
+    SlowThreshold: time.Second,
+    LogLevel:      logger.Silent,
+    Colorful:      false,
+  })
 db.Session(&Session{Logger: newLogger})
 
 db.Session(&Session{Logger: logger.Default.LogMode(logger.Silent)})
 ```
 
-Checkout [Logger](logger.html) for more details.
+詳細については、 [Logger](logger.html) を確認してください。
 
 ## NowFunc
 
-`NowFunc` allows changing the function to get current time of GORM, for example:
+`NowFunc`を指定すると、現在時刻を取得する関数を変更することができます。
 
 ```go
 db.Session(&Session{
@@ -210,19 +211,19 @@ db.Session(&Session{
 
 ## Debug
 
-`Debug` is a shortcut method to change session's `Logger` to debug mode,  here is the definition:
+`Debug` はセッションの `Logger` をデバッグモードに変更するためのショートカットメソッドです。定義は次の通りです。
 
 ```go
 func (db *DB) Debug() (tx *DB) {
   return db.Session(&Session{
-    Logger:         db.Logger.LogMode(logger.Info),
+    Logger:  db.Logger.LogMode(logger.Info),
   })
 }
 ```
 
 ## QueryFields
 
-Select by fields
+このオプションを使用すると、各フィールドを指定して選択します。
 
 ```go
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
@@ -232,7 +233,7 @@ db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 
 ## CreateBatchSize
 
-Default batch size
+デフォルトのバッチサイズを指定できます。
 
 ```go
 users = [5000]User{{Name: "jinzhu", Pets: []Pet{pet1, pet2, pet3}}...}

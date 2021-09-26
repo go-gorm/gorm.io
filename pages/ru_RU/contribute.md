@@ -14,7 +14,7 @@ layout: страница
 
 ## Документация и написание
 
-* Сделать документацию GORM лучше, написав новый контент или исправив существующий материал
+* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### Перевести этот сайт
 

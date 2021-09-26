@@ -14,7 +14,7 @@ layout: page
 
 ## 문서화 및 작성
 
-* 새로운 콘텐츠를 작성하고 기존 자료를 수정하여 GORM의 문서를 개선합니다.
+* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### 사이트 번역하기
 

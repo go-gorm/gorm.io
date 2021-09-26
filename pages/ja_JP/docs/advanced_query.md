@@ -1,11 +1,11 @@
 ---
-title: Advanced Query
+title: 高度なクエリ
 layout: page
 ---
 
-## <span id="smart_select">スマートなフィールドの選択</span>
+## <span id="smart_select">便利なフィールドの選択</span>
 
-GORMでは [``Select](query.html) で選択するフィールド指定することができます。アプリケーションでこれを頻繁に使用する場合は、特定のフィールドを自動的に選択できる、用途に適した構造体を定義するとよいでしょう。例:
+GORMでは [``Select</code>](query.html) で選択するフィールド指定することができます。アプリケーションでこれを頻繁に使用する場合は、特定のフィールドを自動的に選択できる、用途に適した構造体を定義するとよいでしょう。例:
 
 ```go
 type User struct {

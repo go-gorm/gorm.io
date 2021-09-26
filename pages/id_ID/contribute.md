@@ -14,7 +14,7 @@ layout: halaman
 
 ## Dokumentasi dan Penulisan
 
-* Jadikan dokumentasi GORM lebih baik dengan menulis konten baru, mengoreksi materi yang ada
+* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### Terjemahkan situs ini
 

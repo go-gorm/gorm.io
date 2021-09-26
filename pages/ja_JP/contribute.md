@@ -14,7 +14,7 @@ layout: page
 
 ## ドキュメント改善と執筆
 
-* 新しいコンテンツを作成し、既存の資料を修正することで、GORMのドキュメントを改善する
+* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### このドキュメントを翻訳する
 
