@@ -3,7 +3,7 @@ title: Session
 layout: page
 ---
 
-GORM provides `Session` method, which is a [`New Session Method`](method_chaining.html), it allows to create a new session mode with configuration:
+GORMは `Session` メソッドを提供しています。これは [`新しいセッションを作成するメソッド`](method_chaining.html)であり、設定可能な新しいセッションを作成することができます。
 
 ```go
 // Session Configuration
@@ -26,7 +26,7 @@ type Session struct {
 
 ## DryRun
 
-Generates `SQL` without executing. It can be used to prepare or test generated SQL, for example:
+実行はせずに `SQL` の生成のみ行います。 生成されたSQLを前もって準備またはテストする際に使用することができます。例：
 
 ```go
 // session mode
@@ -44,17 +44,18 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
-To generate the final SQL, you could use following code:
+最終的なSQLを生成するには、次のコードを使用します。
 
 ```go
-// NOTE: the SQL is not always safe to execute, GORM only uses it for logs, it might cause SQL injection
+// 注意: この方法で生成されるSQLは常に安全に実行できるとは限りません。
+// SQLインジェクションを引き起こす可能性があるため、GORMではこれをログにのみ使用します。
 db.Dialector.Explain(stmt.SQL.String(), stmt.Vars...)
 // SELECT * FROM `users` WHERE `id` = 1
 ```
 
 ## PrepareStmt
 
-`PreparedStmt` creates prepared statements when executing any SQL and caches them to speed up future calls, for example:
+`PreparedStmt` は任意の SQL を実行する際にプリペアードステートメントを作成し、後の呼び出しを高速化するためにそれをキャッシュします。例：
 
 ```go
 // globally mode, all DB operations will create prepared statements and cache them
@@ -89,7 +90,7 @@ for sql, stmt := range stmtManger.Stmts {
 
 ## NewDB
 
-Create a new DB without conditions with option `NewDB`, for example:
+`NewDB`オプションを指定せずに新しいDBオブジェクトを作成します。例:
 
 ```go
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{NewDB: true})
@@ -108,7 +109,7 @@ tx2.First(&user)
 
 ## Skip Hooks
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+`Hooks` メソッドをスキップしたい場合は、 `SkipHooks` セッションモードを使用できます。例:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -126,7 +127,7 @@ DB.Session(&gorm.Session{SkipHooks: true}).Model(User{}).Where("age > ?", 18).Up
 
 ## DisableNestedTransaction
 
-When using `Transaction` method inside a DB transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support. You can disable it by using the `DisableNestedTransaction` option, for example:
+トランザクション内で `Transaction` メソッドを使用した場合、GORMはネストしたトランザクションをサポートするため、 `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` を使用します。 `DisableNestedTransaction` オプションを使用してそれを無効にすることができます。例：
 
 ```go
 db.Session(&gorm.Session{
@@ -136,7 +137,7 @@ db.Session(&gorm.Session{
 
 ## AllowGlobalUpdate
 
-GORM doesn't allow global update/delete by default, will return `ErrMissingWhereClause` error. You can set this option to true to enable it, for example:
+GORMはデフォルトで全データのグローバルな更新/削除を許可しておらず、処理を行おうとした場合、`ErrMissingWhereClause` エラーを返します。 AllowGlobalUpdateオプションをtrueに設定することで、その処理を許可することができます。例:
 
 ```go
 db.Session(&gorm.Session{
@@ -147,7 +148,7 @@ db.Session(&gorm.Session{
 
 ## FullSaveAssociations
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record. If you want to update associations' data, you should use the `FullSaveAssociations` mode, for example:
+GORMはレコードの作成・更新時に[Upsert](create.html#upsert)を使用して自動的にアソシエーションとその参照を保存します。 If you want to update associations' data, you should use the `FullSaveAssociations` mode, for example:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
