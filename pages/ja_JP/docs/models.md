@@ -1,11 +1,11 @@
 ---
-title: Declaring Models
+title: モデルを定義する
 layout: page
 ---
 
-## Declaring Models
+## モデルを定義する
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+モデルは Goの基本型、（基本型の）ポインタ/エイリアス、 [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) および [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイスを実装するカスタム型からなる通常の構造体です。
 
 例：
 
@@ -23,7 +23,7 @@ type User struct {
 }
 ```
 
-## Conventions
+## 規約
 
 GORMの方針は「設定より規約」です。デフォルトでは、GORMは主キーとしての`ID`、テーブル名を表すための複数形かつ`スネークケース`な構造体名、 `スネークケース`なカラム名、作成と更新の時間をトラッキングするための`CreatedAt`、`UpdatedAt`フィールドを利用します。
 
