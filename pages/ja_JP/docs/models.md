@@ -27,11 +27,11 @@ type User struct {
 
 GORMの方針は「設定より規約」です。デフォルトでは、GORMは主キーとしての`ID`、テーブル名を表すための複数形かつ`スネークケース`な構造体名、 `スネークケース`なカラム名、作成と更新の時間をトラッキングするための`CreatedAt`、`UpdatedAt`フィールドを利用します。
 
-GORMで採用されている規則に従う場合は、設定やコードを記述する手間が激減します。 規則があなたの要件と一致しない場合、 [GORMはそれらを設定することができます](conventions.html)
+GORMで採用されている規約に従うと、設定やコードを記述する手間が大幅に減少します。 要件が規約と一致しない場合、 [GORMではそれらを設定を変更することができます](conventions.html)
 
 ## gorm.Model
 
-GORMは `gorm.Model` 構造体を定義しました。これにはフィールド `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt`が含まれます。
+GORMは `gorm.Model` 構造体を定義しています。これには `ID`, `CreatedAt`, `UpdatedAt`, `DeletedAt` のフィールドが含まれます。
 
 ```go
 // gorm.Modelの定義
@@ -43,16 +43,16 @@ type Model struct {
 }
 ```
 
-これらのフィールドを含めるには、構造体に埋め込むことができます。 [埋め込み構造体](#embedded_struct)
+この構造体を埋め込むことで、これらのフィールドを自身の構造体に含めることができます。 [Embedded Struct](#embedded_struct) も参照してください。
 
-## Advanced
+## 高度な機能
 
-### <span id="field_permission">Field-Level Permission</span>
+### <span id="field_permission">フィールドレベルの権限</span>
 
-Exported fields have all permission when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
+エクスポートされているフィールドは、GORMでのCRUD操作が全て可能となっていますが、タグでフィールドレベルの権限を変更することができます。 これにより、読み取り専用、書き込み専用、作成専用、更新専用、または除外するフィールドを作成できます。
 
 {% note warn %}
-**NOTE** ignored fields won't be created when using GORM Migrator to create table
+**注意** GORM Migrator を使用してテーブルを作成した場合、除外設定されたフィールドは作成されません
 {% endnote %}
 
 ```go
