@@ -68,7 +68,7 @@ type User struct {
 }
 ```
 
-### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
+### <name id="time_tracking">作成・更新日時のトラッキング／Unix (ミリ・ナノ) 秒でのトラッキング</span>
 
 GORMの規約では、作成/更新時間をトラッキングするのに `CreatedAt`, `UpdatedAt` を使用します。それらのフィールドがモデルに定義されている場合、作成/更新時間に[現在時刻](gorm_config.html#now_func)を値としてセットします。
 
@@ -78,17 +78,17 @@ time.Timeの代わりにUNIX (ミリ/ナノ) 秒を保存したい場合、フ�
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix nano seconds as updating time
-  Updated   int64 `gorm:"autoUpdateTime:milli"`// Use unix milli seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  CreatedAt time.Time // 作成時に値がゼロ値の場合、現在時間がセットされる
+  UpdatedAt int       // 更新時、または作成時の値がゼロ値の場合、現在のUNIX秒がセットされる
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // 更新時間としてUNIXナノ秒を使用する
+  Updated   int64 `gorm:"autoUpdateTime:milli"`// 更新時間としてUNIX msを使用する
+  Created   int64 `gorm:"autoCreateTime"`      // 作成時間としてUNIX秒を使用する
 }
 ```
 
-### <span id="embedded_struct">Embedded Struct</span>
+### <span id="embedded_struct">構造体の埋め込み</span>
 
-For anonymous fields, GORM will include its fields into its parent struct, for example:
+匿名（anonymous field）フィールドでモデルの定義がなされている場合、埋め込まれた構造体のフィールドは親の構造体のフィールドとして含まれることになります。例：
 
 ```go
 type User struct {
@@ -105,7 +105,7 @@ type User struct {
 }
 ```
 
-For a normal struct field, you can embed it with the tag `embedded`, for example:
+通常のフィールドで構造体の定義がなされている場合、 `embedded` タグを使用して構造体の埋め込みを行うことができます。例：
 
 ```go
 type Author struct {
@@ -127,7 +127,7 @@ type Blog struct {
 }
 ```
 
-And you can use tag `embeddedPrefix` to add prefix to embedded fields' db name, for example:
+また、 `embeddedPrefix` タグを使用することで、埋め込まれた構造体のフィールド名にプレフィックスを追加することができます。例：
 
 ```go
 type Blog struct {
