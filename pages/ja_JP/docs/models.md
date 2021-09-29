@@ -1,9 +1,9 @@
 ---
-title: モデルを定義する
+title: モデルを宣言する
 layout: page
 ---
 
-## モデルを定義する
+## モデルを宣言する
 
 モデルは Goの基本型、（基本型の）ポインタ/エイリアス、 [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) および [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイスを実装するカスタム型からなる通常の構造体です。
 
@@ -145,13 +145,13 @@ type Blog struct {
 ```
 
 
-### <span id="tags">Fields Tags</span>
+### <span id="tags">フィールドに指定可能なタグ</span>
 
-Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however `camelCase` is preferred.
+タグはモデル宣言時に任意で使用できます。GORMは以下のタグをサポートしています。（タグは大文字小文字を区別しませんが、 `camelCase` が推奨されます）
 
 | タグ名                    | 説明                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| column                 | カラム名                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| column                 | データベースのカラム名                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | type                   | column data type, prefer to use compatible general type, e.g: bool, int, uint, float, string, time, bytes, which works for all databases, and can be used with other tags together, like `not null`, `size`, `autoIncrement`... specified database data type like `varbinary(8)` also supported, when using specified database data type, it needs to be a full database data type, for example: `MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT` |
 | size                   | 列データのサイズ/長さを指定します。例: `size:256`                                                                                                                                                                                                                                                                                                                                                                                                               |
 | primaryKey             | 主キーを含む列として指定                                                                                                                                                                                                                                                                                                                                                                                                                                  |
