@@ -88,7 +88,7 @@ db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
-## Select/Omit Association fields
+## アソシエーションフィールドの選択/省略
 
 ```go
 user := User{
@@ -106,15 +106,15 @@ db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 
 ## Association Mode
 
-Association Mode contains some commonly used helper methods to handle relationships
+Association Mode には、データの関連を処理するためによく使用されるヘルパーメソッドが含まれています。
 
 ```go
 // Start Association Mode
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// `user` は大元のモデルであるため、主キーを含んでいる必要があります
+// `Languages` は関連フィールドの名前です
+// 上記2つの条件が揃うと、 AssociationMode は正常に開始されます。条件が揃っていない場合はエラーが返却されます。
 db.Model(&user).Association("Languages").Error
 ```
 
