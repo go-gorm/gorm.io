@@ -1,9 +1,9 @@
 ---
-title: Associations
+title: アソシエーション
 layout: page
 ---
 
-## Auto Create/Update
+## アソシエーションの自動作成/更新
 
 GORMはレコードの作成・更新時に[Upsert](create.html#upsert)を使用して自動的に関連データとその参照を保存します。
 
@@ -45,7 +45,7 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // ...
 ```
 
-## Skip Auto Create/Update
+## アソシエーションの自動作成/更新をスキップ
 
 作成/更新時のアソシエーションレコードの自動保存をスキップするには、 `Select` または `Omit` を使用します。例：
 
@@ -75,7 +75,7 @@ db.Omit(clause.Associations).Create(&user)
 ```
 
 {% note warn %}
-**注意:** many2many（多対多）のアソシエーションの場合、中間テーブルのレコードを作成するより前に、関連先テーブルのレコードをupsertします。関連先へのupsertを省略したい場合は、以下のように記載します。
+**注意:** many2many（多対多）のアソシエーションの場合、中間テーブルのレコードを作成するより前に、アソシエーション先テーブルのレコードをupsertします。アソシエーション先へのupsertを省略したい場合は、以下のように記載します。
 
 ```go
 db.Omit("Languages.*").Create(&user)
