@@ -75,13 +75,13 @@ db.Omit(clause.Associations).Create(&user)
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**注意:** many2many（多対多）のアソシエーションの場合、中間テーブルのレコードを作成するより前に、関連先テーブルのレコードをupsertします。関連先へのupsertを省略したい場合は、以下のように記載します。
 
 ```go
 db.Omit("Languages.*").Create(&user)
 ```
 
-The following code will skip the creation of the association and its references
+次のコードはアソシエーション先のレコードの作成と中間テーブルでの参照の作成の両方をスキップします。
 
 ```go
 db.Omit("Languages").Create(&user)
