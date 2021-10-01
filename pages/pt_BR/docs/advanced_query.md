@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // milhares de campos
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// Seleciona automaticamente o `id`, `name`
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**NOTA:** o modo `QueryFields` irá selecionar todos os campos do modelo
 {% endnote %}
 
 ```go
@@ -36,16 +36,16 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // com esta opção
 
 // Session Mode
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## Bloqueio (FOR UPDATE)
 
-GORM supports different types of locks, for example:
+O GORM suporta diferente tipos de bloqueio, por exemplo:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -58,11 +58,11 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+Consulte [SQL Puro e Construtor de SQL](sql_builder.html) para mais detalhes
 
-## SubQuery
+## Subconsultas
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+Uma subconsulta pode ser aninhada dentro de outra consulta, o GORM pode gerar uma subconsulta quando se usa o objeto `*gorm.DB` como parâmetro
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -73,9 +73,9 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
-### <span id="from_subquery">From SubQuery</span>
+### <span id="from_subquery">Consulta a partir de uma subconsulta</span>
 
-GORM allows you using subquery in FROM clause with method `Table`, for example:
+O GORM permite que você use uma subconsulta na cláusula FROM com o método `Table`, por exemplo:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -87,9 +87,9 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
 
-## <span id="group_conditions">Group Conditions</span>
+## <span id="group_conditions">Condições de agrupamento</span>
 
-Easier to write complicated SQL query with Group Conditions
+Mais fácil de escrever uma complicada consulta SQL com condições de agrupamento
 
 ```go
 db.Where(
@@ -101,7 +101,7 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## Named Argument
+## Argumentos Nomeados
 
 GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
