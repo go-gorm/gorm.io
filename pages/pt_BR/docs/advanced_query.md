@@ -103,7 +103,7 @@ db.Where(
 
 ## Argumentos Nomeados
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+O GORM suporta argumentos nomeados com [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) ou `map[string]interface{}{}`, por exemplo:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -113,11 +113,11 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+Consulte [SQL Puro e Construtor de SQL](sql_builder.html#named_argument) para mais detalhes
 
-## Find To Map
+## Mapear resultado de consulta
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+O GORM mapear o resultado de uma consulta para `map[string]interface{}` ou `[]map[string]interface{}`, não esqueça de definir o `Model` ou `Table`, por exemplo:
 
 ```go
 var result map[string]interface{}
@@ -129,49 +129,49 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+Obtenha o primeiro registro correspondente ou inicialize uma nova instância com determinadas condições (funciona apenas com struct ou com condições usando map)
 
 ```go
-// User not found, initialize it with give conditions
+// Usuário não localizado, inicialize um com as condições dadas
 db.FirstOrInit(&user, User{Name: "non_existing"})
 // user -> User{Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Usuário com `name` = `jinzhu` localizado
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-// Found user with `name` = `jinzhu`
+// Usuário `name` = `jinzhu` localizado
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+inicializar struct com mais atributos se o registro não for encontrado, os `Attrs` não serão usados para criar uma consulta SQL
 
 ```go
-// User not found, initialize it with give conditions and Attrs
+// Usuário não localizado, inicialize com as condições dadas e Attrs
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// User not found, initialize it with give conditions and Attrs
+// Usuário não localizado, inicialize com as condições dadas e Attrs
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// Usuário com `name` = `jinzhu` localizado, os atributos serão ignorados
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+`Assign` atribue a struct independente se o registro foi localizado ou não, esses atributos não serão usados para criar uma consulta SQL e os dados finais não serão gravados no banco de dados
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// Usuário não localizado, inicialize com as condições dadas e preencha os atributos
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// Usuário com `name` = `jinzhu` localizado, atualize com os atributos especificados
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 20}
@@ -179,35 +179,35 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions)
+Obtenha o primeiro registro correspondente ou inicialize uma nova instância com determinadas condições (funciona apenas com struct ou com condições usando map)
 
 ```go
-// User not found, create a new record with give conditions
+// Usuário não localizado, crie um novo registro com as condições dadas
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Usuário com `name` = `jinzhu` localizado
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+Cria struct com mais atributos se o registro não for localizado, esses `Attrs` não serão usados para construir uma consulta SQL
 
 ```go
-// User not found, create it with give conditions and Attrs
+// Usuário não localizado, crie um registro com as condições dadas
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// Usuário com `name` = `jinzhu` localizado, os atributos serão ignorados
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+`Assign` atribue ao registro independente se for encontrado ou não e grava de volta no banco de dados.
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
