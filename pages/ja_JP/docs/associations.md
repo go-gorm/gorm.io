@@ -47,7 +47,7 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## Skip Auto Create/Update
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+作成/更新時のアソシエーションレコードの自動保存をスキップするには、 `Select` または `Omit` を使用します。例：
 
 ```go
 user := User{
@@ -68,10 +68,10 @@ db.Select("Name").Create(&user)
 // INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
 db.Omit("BillingAddress").Create(&user)
-// Skip create BillingAddress when creating a user
+// ユーザ作成時に BillingAddress の作成をスキップする
 
 db.Omit(clause.Associations).Create(&user)
-// Skip all associations when creating a user
+// ユーザ作成時に全てのアソシエーションの保存をスキップする
 ```
 
 {% note warn %}
