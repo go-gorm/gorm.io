@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+すでに存在するアソシエーションレコードを更新したい場合は、 `FullSaveAssociations` を使用してください。
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
