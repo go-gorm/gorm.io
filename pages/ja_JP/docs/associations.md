@@ -118,7 +118,7 @@ db.Model(&user).Association("Languages")
 db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### 関連レコードの取得
 
 Find matched associations
 
@@ -126,7 +126,7 @@ Find matched associations
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-Find associations with conditions
+条件を指定して関連を取得することも可能です。
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
