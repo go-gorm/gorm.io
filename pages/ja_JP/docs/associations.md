@@ -120,7 +120,7 @@ db.Model(&user).Association("Languages").Error
 
 ### 関連レコードの取得
 
-Find matched associations
+関連レコードを取得することができます。
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
@@ -135,9 +135,9 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### 関連レコードの追加
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+`many to many` や `has many` の場合には関連レコードを追加し、 `has one` や `belongs to` の場合には現在の関連レコードを置き換えます。
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -147,9 +147,9 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### 関連レコードを置き換える
 
-Replace current associations with new ones
+現在の関連レコードを新しいもので置き換えることができます。
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -157,9 +157,9 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### 関連レコードを削除する
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+引数で指定された値との関連がある場合、その値との関連を削除します。削除されるのは参照のみであり、参照先オブジェクトのレコードはDBから削除されません。
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
