@@ -176,12 +176,12 @@ db.Model(&user).Association("Languages").Clear()
 
 ### 関連の数を取得する
 
-Return the count of current associations
+現在の関連の数を取得することができます。
 
 ```go
 db.Model(&user).Association("Languages").Count()
 
-// Count with conditions
+// 条件付きで件数を数える
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
