@@ -118,7 +118,7 @@ db.Model(&user).Association("Languages")
 db.Model(&user).Association("Languages").Error
 ```
 
-### 関連レコードの取得
+### 関連の取得
 
 関連レコードを取得することができます。
 
@@ -135,9 +135,9 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### 関連レコードの追加
+### 関連の追加
 
-`many to many` や `has many` の場合には関連レコードを追加し、 `has one` や `belongs to` の場合には現在の関連レコードを置き換えます。
+`many to many` や `has many` の場合には関連を追加し、 `has one` や `belongs to` の場合には現在の関連を置き換えます。
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -147,9 +147,9 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### 関連レコードを置き換える
+### 関連を置き換える
 
-現在の関連レコードを新しいもので置き換えることができます。
+現在の関連を新しいもので置き換えることができます。
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -157,7 +157,7 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### 関連レコードを削除する
+### 関連を削除する
 
 引数で指定された値との関連がある場合、その値との関連を削除します。削除されるのは参照のみであり、参照先オブジェクトのレコードはDBから削除されません。
 
@@ -166,15 +166,15 @@ db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### 関連を全て削除する
 
-Remove all reference between source & association, won't delete those associations
+関連データとの参照を全て削除することができます。削除されるのは参照のみであり、参照先のレコードうぁ削除されません。
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### 関連の数を取得する
 
 Return the count of current associations
 
