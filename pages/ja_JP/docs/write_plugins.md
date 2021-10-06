@@ -11,12 +11,12 @@ Callbacks はグローバルな `*gorm.DB` に登録されます（セッショ�
 
 ### Callbackを登録する
 
-Register a callback into callbacks
+独自のcallbackを登録できます
 
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // crop image fields and upload them to CDN, dummy code
+    // 画像を切り取ってCDNへアップロードする処理のダミーのコード
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
@@ -64,18 +64,18 @@ db.Callback().Create().Register("crop_image", cropImage)
 // register a callback for Create process
 ```
 
-### Delete Callback
+### Callbackを削除する
 
-Delete a callback from callbacks
+指定したcallbackを削除することができます
 
 ```go
 db.Callback().Create().Remove("gorm:create")
 // delete callback `gorm:create` from Create callbacks
 ```
 
-### Replace Callback
+### Callbackを置き換える
 
-Replace a callback having the same name with the new one
+同じ名称を指定することでcallbackを置き換えることができます
 
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
