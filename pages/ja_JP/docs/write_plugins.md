@@ -9,7 +9,7 @@ GORM内部では、 `Callbacks` の技術が活かされています。GORMに�
 
 Callbacks はグローバルな `*gorm.DB` に登録されます（セッションレベルではありません）。そのため、別のcallbackが登録された `*gorm.DB` が必要な場合は、新規の `*gorm.DB` を用意する必要があります。
 
-### Register Callback
+### Callbackを登録する
 
 Register a callback into callbacks
 
