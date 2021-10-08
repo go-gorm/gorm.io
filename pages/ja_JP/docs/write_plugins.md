@@ -5,18 +5,18 @@ layout: page
 
 ## Callbacks
 
-GORM itself is powered by `Callbacks`, it has callbacks for `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw`, you could fully customize GORM with them as you want
+GORM内部では、 `Callbacks` の技術が活かされています。GORMには `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw` 処理のcallbackが用意されています。これらのcallbackを使うことでGORMを自由にカスタマイズすることができます。
 
-Callbacks are registered into the global `*gorm.DB`, not the session-level, if you require `*gorm.DB` with different callbacks, you need to initialize another `*gorm.DB`
+Callbacks はグローバルな `*gorm.DB` に登録されます（セッションレベルではありません）。そのため、別のcallbackが登録された `*gorm.DB` が必要な場合は、新規の `*gorm.DB` を用意する必要があります。
 
-### Register Callback
+### Callbackを登録する
 
-Register a callback into callbacks
+独自のcallbackを登録できます
 
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // crop image fields and upload them to CDN, dummy code
+    // 画像を切り取ってCDNへアップロードする処理のダミーのコード
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
@@ -64,18 +64,18 @@ db.Callback().Create().Register("crop_image", cropImage)
 // register a callback for Create process
 ```
 
-### Delete Callback
+### Callbackを削除する
 
-Delete a callback from callbacks
+指定したcallbackを削除することができます
 
 ```go
 db.Callback().Create().Remove("gorm:create")
 // delete callback `gorm:create` from Create callbacks
 ```
 
-### Replace Callback
+### Callbackを置き換える
 
-Replace a callback having the same name with the new one
+同じ名称を指定することでcallbackを置き換えることができます
 
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)

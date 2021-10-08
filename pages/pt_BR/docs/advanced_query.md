@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // milhares de campos
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// Seleciona automaticamente o `id`, `name`
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**NOTA:** o modo `QueryFields` irá selecionar todos os campos do modelo
 {% endnote %}
 
 ```go
@@ -36,16 +36,16 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // com esta opção
 
 // Session Mode
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## Bloqueio (FOR UPDATE)
 
-GORM supports different types of locks, for example:
+O GORM suporta diferente tipos de bloqueio, por exemplo:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -58,11 +58,11 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+Consulte [SQL Puro e Construtor de SQL](sql_builder.html) para mais detalhes
 
-## SubQuery
+## Subconsultas
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+Uma subconsulta pode ser aninhada dentro de outra consulta, o GORM pode gerar uma subconsulta quando se usa o objeto `*gorm.DB` como parâmetro
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -73,9 +73,9 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
-### <span id="from_subquery">From SubQuery</span>
+### <span id="from_subquery">Consulta a partir de uma subconsulta</span>
 
-GORM allows you using subquery in FROM clause with method `Table`, for example:
+O GORM permite que você use uma subconsulta na cláusula FROM com o método `Table`, por exemplo:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -87,9 +87,9 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
 
-## <span id="group_conditions">Group Conditions</span>
+## <span id="group_conditions">Condições de agrupamento</span>
 
-Easier to write complicated SQL query with Group Conditions
+Mais fácil de escrever uma complicada consulta SQL com condições de agrupamento
 
 ```go
 db.Where(
@@ -101,9 +101,9 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## Named Argument
+## Argumentos Nomeados
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+O GORM suporta argumentos nomeados com [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) ou `map[string]interface{}{}`, por exemplo:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -113,11 +113,11 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+Consulte [SQL Puro e Construtor de SQL](sql_builder.html#named_argument) para mais detalhes
 
-## Find To Map
+## Mapear resultado de consulta
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+O GORM mapear o resultado de uma consulta para `map[string]interface{}` ou `[]map[string]interface{}`, não esqueça de definir o `Model` ou `Table`, por exemplo:
 
 ```go
 var result map[string]interface{}
@@ -129,49 +129,49 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+Obtenha o primeiro registro correspondente ou inicialize uma nova instância com determinadas condições (funciona apenas com struct ou com condições usando map)
 
 ```go
-// User not found, initialize it with give conditions
+// Usuário não localizado, inicialize um com as condições dadas
 db.FirstOrInit(&user, User{Name: "non_existing"})
 // user -> User{Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Usuário com `name` = `jinzhu` localizado
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-// Found user with `name` = `jinzhu`
+// Usuário `name` = `jinzhu` localizado
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+inicializar struct com mais atributos se o registro não for encontrado, os `Attrs` não serão usados para criar uma consulta SQL
 
 ```go
-// User not found, initialize it with give conditions and Attrs
+// Usuário não localizado, inicialize com as condições dadas e Attrs
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// User not found, initialize it with give conditions and Attrs
+// Usuário não localizado, inicialize com as condições dadas e Attrs
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// Usuário com `name` = `jinzhu` localizado, os atributos serão ignorados
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+`Assign` atribue a struct independente se o registro foi localizado ou não, esses atributos não serão usados para criar uma consulta SQL e os dados finais não serão gravados no banco de dados
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// Usuário não localizado, inicialize com as condições dadas e preencha os atributos
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// Usuário com `name` = `jinzhu` localizado, atualize com os atributos especificados
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 20}
@@ -179,35 +179,35 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions)
+Obtenha o primeiro registro correspondente ou inicialize uma nova instância com determinadas condições (funciona apenas com struct ou com condições usando map)
 
 ```go
-// User not found, create a new record with give conditions
+// Usuário não localizado, crie um novo registro com as condições dadas
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Usuário com `name` = `jinzhu` localizado
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+Cria struct com mais atributos se o registro não for localizado, esses `Attrs` não serão usados para construir uma consulta SQL
 
 ```go
-// User not found, create it with give conditions and Attrs
+// Usuário não localizado, crie um registro com as condições dadas
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// Usuário com `name` = `jinzhu` localizado, os atributos serão ignorados
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+`Assign` atribue ao registro independente se for encontrado ou não e grava de volta no banco de dados.
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes

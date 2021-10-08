@@ -1,9 +1,9 @@
 ---
-title: Associations
+title: アソシエーション
 layout: page
 ---
 
-## Auto Create/Update
+## アソシエーションの自動作成/更新
 
 GORMはレコードの作成・更新時に[Upsert](create.html#upsert)を使用して自動的に関連データとその参照を保存します。
 
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+すでに存在するアソシエーションレコードを更新したい場合は、 `FullSaveAssociations` を使用してください。
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -45,9 +45,9 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // ...
 ```
 
-## Skip Auto Create/Update
+## アソシエーションの自動作成/更新をスキップ
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+作成/更新時のアソシエーションレコードの自動保存をスキップするには、 `Select` または `Omit` を使用します。例：
 
 ```go
 user := User{
@@ -68,27 +68,27 @@ db.Select("Name").Create(&user)
 // INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
 db.Omit("BillingAddress").Create(&user)
-// Skip create BillingAddress when creating a user
+// ユーザ作成時に BillingAddress の作成をスキップする
 
 db.Omit(clause.Associations).Create(&user)
-// Skip all associations when creating a user
+// ユーザ作成時に全てのアソシエーションの保存をスキップする
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**注意:** many2many（多対多）のアソシエーションの場合、中間テーブルのレコードを作成するより前に、アソシエーション先テーブルのレコードをupsertします。アソシエーション先へのupsertを省略したい場合は、以下のように記載します。
 
 ```go
 db.Omit("Languages.*").Create(&user)
 ```
 
-The following code will skip the creation of the association and its references
+次のコードはアソシエーション先のレコードの作成と中間テーブルでの参照の作成の両方をスキップします。
 
 ```go
 db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
-## Select/Omit Association fields
+## アソシエーションフィールドの選択/省略
 
 ```go
 user := User{
@@ -106,27 +106,27 @@ db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 
 ## Association Mode
 
-Association Mode contains some commonly used helper methods to handle relationships
+Association Mode には、データの関連を処理するためによく使用されるヘルパーメソッドが含まれています。
 
 ```go
 // Start Association Mode
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// `user` は大元のモデルであるため、主キーを含んでいる必要があります
+// `Languages` は関連フィールドの名前です
+// 上記2つの条件が揃うと、 AssociationMode は正常に開始されます。条件が揃っていない場合はエラーが返却されます。
 db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### 関連の取得
 
-Find matched associations
+関連レコードを取得することができます。
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-Find associations with conditions
+条件を指定して関連を取得することも可能です。
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
@@ -135,9 +135,9 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### 関連の追加
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+`many to many` や `has many` の場合には関連を追加し、 `has one` や `belongs to` の場合には現在の関連を置き換えます。
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -147,9 +147,9 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### 関連を置き換える
 
-Replace current associations with new ones
+現在の関連を新しいもので置き換えることができます。
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -157,31 +157,31 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### 関連を削除する
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+引数で指定された値との関連がある場合、その値との関連を削除します。削除されるのは参照のみであり、参照先オブジェクトのレコードはDBから削除されません。
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### 関連を全て削除する
 
-Remove all reference between source & association, won't delete those associations
+関連データとの参照を全て削除することができます。削除されるのは参照のみであり、参照先のレコードうぁ削除されません。
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### 関連の数を取得する
 
-Return the count of current associations
+現在の関連の数を取得することができます。
 
 ```go
 db.Model(&user).Association("Languages").Count()
 
-// Count with conditions
+// 条件付きで件数を数える
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```

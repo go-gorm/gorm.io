@@ -88,7 +88,7 @@ db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
-## Select/Omit Association fields
+## Выбрать/пропускать поля ассоциации
 
 ```go
 user := User{
@@ -104,7 +104,7 @@ db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
 db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 ```
 
-## Association Mode
+## Типы ассоциаций
 
 Режим связывания включает некоторые часто используемые вспомогательные методы для обработки отношений
 
@@ -208,7 +208,7 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">Удаление связанных(ассоциируемых) записей</span>
 
 Вы можете удалять указанные связи `has one` / `has many` / `many2many` по выборке `Select` при удалении записей, например:
 
@@ -227,10 +227,10 @@ db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those priamry keys as conditions to delete selected associations
+**ПРИМЕЧАНИЕ:** Связи будут удалены только в том случае, если первичный ключ удаления записи не равен нулю, GORM будет использовать эти ключи как условия для удаления выбранных ассоциаций
 
 ```go
-// DOESN'T WORK
+/ DOESN'T WORK
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
 // will delete all user with name `jinzhu`, but those user's account won't be deleted
 
@@ -242,15 +242,15 @@ db.Select("Account").Delete(&User{ID: 1})
 ```
 {% endnote %}
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">Теги связей(ассоциаций)</span>
 
-| Тег              | Описание                                                                                           |
-| ---------------- | -------------------------------------------------------------------------------------------------- |
-| foreignKey       | Specifies column name of the current model that is used as a foreign key to the join table         |
-| references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
-| polymorphic      | Specifies polymorphic type such as model name                                                      |
-| polymorphicValue | Указывает полиморфное значение, название таблицы по умолчанию                                      |
-| many2many        | Указывает имя таблицы связи                                                                        |
-| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
-| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table                 |
-| constraint       | Правила связей, например: `OnUpdate`,`OnDelete`                                                    |
+| Тег              | Описание                                                                                                     |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ |
+| foreignKey       | Указывает имя столбца текущей модели, которая используется в качестве внешнего ключа для соединяемой таблицы |
+| references       | Задает имя столбца связанной таблицы, сопоставленной с внешним ключом объединенной таблицы                   |
+| polymorphic      | Задает полиморфный тип, например название модели                                                             |
+| polymorphicValue | Указывает полиморфное значение, название таблицы по умолчанию                                                |
+| many2many        | Указывает имя таблицы связи                                                                                  |
+| joinForeignKey   | Задает имя столбца внешнего ключа объединяемой таблицы, которое сопоставляется с текущей таблицей            |
+| joinReferences   | Задает имя столбца внешнего ключа объединяемой таблицы, которое сопоставляется с связанной таблицей          |
+| constraint       | Правила связей, например: `OnUpdate`,`OnDelete`                                                              |
