@@ -15,11 +15,11 @@ Die fantastische ORM Bibliothek für Golang, stets auf Entwickler-Freundlichkeit
 * Context, Prepared Statement Mode, DryRun Mode
 * Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
-* Composite Primary Key, Indexes, Constraints
-* Auto Migrations
+* Zusammen gesetzte Primär Schlüssel, Indexe, Einschränkungen
+* Automatische Datenbank Migrationen
 * Logger
 * Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
-* Every feature comes with tests
+* Jedes Feature wurde getestet
 * Entwickler-freundlich
 
 ## Installation
