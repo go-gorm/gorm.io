@@ -3,11 +3,11 @@ title: DBResolver
 layout: page
 ---
 
-DBResolver adds multiple databases support to GORM, the following features are supported:
+DBResolverはGORMの複数データベースへの対応を可能としています。以下の機能がサポートされています。
 
 * Multiple sources, replicas
-* Read/Write Splitting
-* Automatic connection switching based on the working table/struct
+* 読み取り/書き込みの分割
+* テーブルや構造体に基づく接続の自動切り替え
 * Manual connection switching
 * Sources/Replicas load balancing
 * Works for RAW SQL
