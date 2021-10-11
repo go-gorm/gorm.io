@@ -5,12 +5,12 @@ layout: page
 
 DBResolverはGORMの複数データベースへの対応を可能としています。以下の機能がサポートされています。
 
-* Multiple sources, replicas
+* 複数DB/レプリカへの接続対応
 * 読み取り/書き込みの分割
-* テーブルや構造体に基づく接続の自動切り替え
-* Manual connection switching
-* Sources/Replicas load balancing
-* Works for RAW SQL
+* テーブルや構造体に基づいた自動での接続切替
+* 手動での接続切替
+* プライマリやレプリカへのロードバランシング
+* 素のSQLでの動作
 
 https://github.com/go-gorm/dbresolver
 
