@@ -245,15 +245,15 @@ db.Select("Account").Delete(&User{ID: 1})
 ```
 {% endnote %}
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">アソシエーションで使用できるタグ</span>
 
-| タグ               | 説明                                                                                                 |
-| ---------------- | -------------------------------------------------------------------------------------------------- |
-| foreignKey       | Specifies column name of the current model that is used as a foreign key to the join table         |
-| references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
-| polymorphic      | Specifies polymorphic type such as model name                                                      |
-| polymorphicValue | Specifies polymorphic value, default table name                                                    |
-| many2many        | Specifies join table name                                                                          |
-| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
-| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table                 |
-| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`                                                   |
+| タグ               | 説明                                                                                 |
+| ---------------- | ---------------------------------------------------------------------------------- |
+| foreignKey       | テーブル結合時の外部キーとして使用されるモデルの列名を指定できます                                                  |
+| references       | テーブル結合時の外部キーに対応する参照先のテーブルの列名を指定できます                                                |
+| polymorphic      | Specifies polymorphic type such as model name                                      |
+| polymorphicValue | Specifies polymorphic value, default table name                                    |
+| many2many        | Specifies join table name                                                          |
+| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table     |
+| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table |
+| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`                                   |
