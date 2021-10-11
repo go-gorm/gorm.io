@@ -191,54 +191,57 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 Association Mode はデータの一括処理もサポートしています。例:
 
 ```go
-// Find all roles for all users
+// 全てのユーザの役割を全て取得する
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all user's team
+// 全ユーザのチームからユーザAを削除する
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get distinct count of all users' teams
+// 重複を取り除いた全ユーザのチームの件数を取得する
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
+// 一括処理で `Append` や `Replace` を使用する場合は、それらの関数の引数とデータの数（以下でいう users の数）が一致している必要があります。
+// 一致していない場合はエラーが返却されます。
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+
+// 例1: 3人のユーザABCを新たに追加するとした場合、以下のコードでは user1のチームにユーザA、user2のチームにユーザB、user3のチームにユーザABCを全員追加します
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+
+// 例2: user1のチームをユーザAのみに、user2のチームをユーザBのみに、user3のチームをユーザABCのみにそれぞれリセットします
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">関連を指定して削除する</span>
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+レコード削除時に `Select` を使用することで、has one / has many / many2many 関係にある関連も同時に削除することができます。例:
 
 ```go
-// delete user's account when deleting user
+// ユーザ削除時に ユーザのアカウントも削除します
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// ユーザ削除時に ユーザの注文とクレジットカードの関連レコードも削除します
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// ユーザ削除時に ユーザ全ての has one / has many / many2many の関連レコードも削除します
 db.Select(clause.Associations).Delete(&user)
 
-// delete each user's account when deleting users
+// 複数ユーザ削除時に それぞれのユーザのアカウントも削除します
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those priamry keys as conditions to delete selected associations
+**注意:** レコード削除時の主キーがゼロ値でない場合のみ、関連レコードの削除も可能となります。GORMは選択された関連を削除するための条件として主キーを使用します。
 
 ```go
 // DOESN'T WORK
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// will delete all user with name `jinzhu`, but those user's account won't be deleted
+// 名前が `jinzhu` である全てのユーザは削除されますが、ユーザのアカウントは削除されません
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
+// 名前が `jinzhu` で id が `1` のユーザが削除され、そのユーザのアカウントも削除されます
 
 db.Select("Account").Delete(&User{ID: 1})
-// will delete the user with id = `1`, and user `1`'s account will be deleted
+// id が `1` のユーザが削除され、そのユーザのアカウントも削除されます
 ```
 {% endnote %}
 
