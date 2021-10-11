@@ -247,13 +247,13 @@ db.Select("Account").Delete(&User{ID: 1})
 
 ## <span id="tags">アソシエーションで使用できるタグ</span>
 
-| タグ               | 説明                                                                                 |
-| ---------------- | ---------------------------------------------------------------------------------- |
-| foreignKey       | テーブル結合時の外部キーとして使用されるモデルの列名を指定できます                                                  |
-| references       | テーブル結合時の外部キーに対応する参照先のテーブルの列名を指定できます                                                |
-| polymorphic      | モデル名などのポリモーフィック関連の種別を指定できます                                                        |
-| polymorphicValue | ポリモーフィック関連ので使用される値を指定できます。デフォルトはテーブル名です。                                           |
-| many2many        | 結合テーブル名を指摘できます                                                                     |
-| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table     |
-| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table |
-| constraint       | 参照制約を指定できます。例：`OnUpdate`, `OnDelete`                                               |
+| タグ               | 説明                                                |
+| ---------------- | ------------------------------------------------- |
+| foreignKey       | テーブル結合時に、これを指定したモデルの外部キーとして使用するフィールド名を指定できます      |
+| references       | テーブル結合時に、参照先テーブルの外部キーとして使用するフィールド名を指定できます         |
+| polymorphic      | モデル名などのポリモーフィック関連の種別を指定できます                       |
+| polymorphicValue | ポリモーフィック関連ので使用される値を指定できます。デフォルトはテーブル名です。          |
+| many2many        | 結合テーブル名を指摘できます                                    |
+| joinForeignKey   | テーブル結合時に、これを指定したモデルの外部キーとして使用する結合テーブルのカラム名を指定できます |
+| joinReferences   | テーブル結合時に、参照先テーブルの外部キーとして使用する結合テーブルのカラム名を指定できます    |
+| constraint       | 参照制約を指定できます。例：`OnUpdate`, `OnDelete`              |
