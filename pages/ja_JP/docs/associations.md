@@ -251,9 +251,9 @@ db.Select("Account").Delete(&User{ID: 1})
 | ---------------- | ---------------------------------------------------------------------------------- |
 | foreignKey       | テーブル結合時の外部キーとして使用されるモデルの列名を指定できます                                                  |
 | references       | テーブル結合時の外部キーに対応する参照先のテーブルの列名を指定できます                                                |
-| polymorphic      | Specifies polymorphic type such as model name                                      |
-| polymorphicValue | Specifies polymorphic value, default table name                                    |
-| many2many        | Specifies join table name                                                          |
+| polymorphic      | モデル名などのポリモーフィック関連の種別を指定できます                                                        |
+| polymorphicValue | ポリモーフィック関連ので使用される値を指定できます。デフォルトはテーブル名です。                                           |
+| many2many        | 結合テーブル名を指摘できます                                                                     |
 | joinForeignKey   | Specifies foreign key column name of join table that maps to the current table     |
 | joinReferences   | Specifies foreign key column name of join table that maps to the reference's table |
-| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`                                   |
+| constraint       | 参照制約を指定できます。例：`OnUpdate`, `OnDelete`                                               |
