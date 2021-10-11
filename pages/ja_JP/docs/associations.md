@@ -168,7 +168,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### 関連を全て削除する
 
-関連データとの参照を全て削除することができます。削除されるのは参照のみであり、参照先のレコードうぁ削除されません。
+関連データとの参照を全て削除することができます。削除されるのは参照のみであり、参照先のレコードは削除されません。
 
 ```go
 db.Model(&user).Association("Languages").Clear()
@@ -186,9 +186,9 @@ codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Batch Data
+### 一括データ処理
 
-Association Mode supports batch data, e.g:
+Association Mode はデータの一括処理もサポートしています。例:
 
 ```go
 // Find all roles for all users
