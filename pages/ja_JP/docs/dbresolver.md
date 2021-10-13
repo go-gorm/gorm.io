@@ -74,7 +74,7 @@ db.Table("orders").Find(&Report{}) // replicas `db8`
 
 現在使用されている [GORM callbacks](https://gorm.io/docs/write_plugins.html) に基づいて、DBResolverで読み取り/書き込みを分離できます。
 
-For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
+`Query` や `Row` のコールバックでは、 `Write Model` が指定されていない限り `レプリカ` が使用されます。 `Raw` コールバックについては、SQLが `SELECT` で始まり読み込み処理のみと判断された場合は `レプリカ` が使用されます。
 
 ## 手動での接続切替
 
