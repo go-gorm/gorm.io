@@ -112,13 +112,13 @@ db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
 db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
-### Defined Callbacks
+### 定義済みのCallbacks
 
-GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to power current GORM features, check them out before starting your plugins
+GORMをより高機能にするために、 GORMにはすでに [定義されているCallbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) があります。プラグインを作成する前にそれらをチェックしてみるとよいでしょう。
 
-## Plugin
+## プラグイン
 
-GORM provides a `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
+GORMにはプラグインを登録するための `Use` メソッドがあります。プラグインは `Plugin` インターフェイスを実装している必要があります。
 
 ```go
 type Plugin interface {
