@@ -14,7 +14,7 @@ layout: page
 
 ## ドキュメント改善と執筆
 
-* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
+* 新しいコンテンツを作成したり、既存のものを修正することでGORMのドキュメントを改善していってください。 [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### このドキュメントを翻訳する
 
@@ -29,9 +29,9 @@ layout: page
 
 ## 寄付
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+皆様のご厚意に感謝いたします。
 
-* Github Sponsors (Platinum, Gold Sponsors etc)
+* Github Sponsors (プラチナ、ゴールドスポンサーなど)
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
