@@ -3,18 +3,18 @@ title: DBResolver
 layout: page
 ---
 
-DBResolver adds multiple databases support to GORM, the following features are supported:
+DBResolverはGORMの複数データベースへの対応を可能としています。以下の機能がサポートされています。
 
-* Multiple sources, replicas
-* Read/Write Splitting
-* Automatic connection switching based on the working table/struct
-* Manual connection switching
-* Sources/Replicas load balancing
-* Works for RAW SQL
+* 複数DB/レプリカへの接続対応
+* 読み取り/書き込みの分割
+* テーブルや構造体に基づいた自動での接続切替
+* 手動での接続切替
+* プライマリやレプリカへのロードバランシング
+* 素のSQLでの動作
 
 https://github.com/go-gorm/dbresolver
 
-## Usage
+## 使用方法
 
 ```go
 import (
@@ -41,15 +41,15 @@ db.Use(dbresolver.Register(dbresolver.Config{
 }, "orders", &Product{}, "secondary"))
 ```
 
-## Transaction
+## トランザクション
 
-When using transaction, DBResolver will use the transaction and won't switch to sources/replicas
+トランザクションを使用する場合、DBResolverは同一接続内でのトランザクションを使用するため、接続先の切り替えは行われません。
 
-## Automatic connection switching
+## 接続の自動切替
 
-DBResolver will automatically switch connection based on the working table/struct
+テーブル/構造体に基づいて自動的に接続を切り替えることができます。
 
-For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
+素のSQLの場合は、SQLからテーブル名を抽出してDBResolverの設定を参照します。また、SQL文が (`SELECT... FOR UPDATE` 以外の) `SELECT` で始まるSQLでなければ、Sourcesで指定したDBが使用されます。 例:
 
 ```go
 // `User` Resolver Examples
