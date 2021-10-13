@@ -14,7 +14,7 @@ DBResolverはGORMの複数データベースへの対応を可能としていま
 
 https://github.com/go-gorm/dbresolver
 
-## Usage
+## 使用方法
 
 ```go
 import (
@@ -41,7 +41,7 @@ db.Use(dbresolver.Register(dbresolver.Config{
 }, "orders", &Product{}, "secondary"))
 ```
 
-## Transaction
+## トランザクション
 
 When using transaction, DBResolver will use the transaction and won't switch to sources/replicas
 
