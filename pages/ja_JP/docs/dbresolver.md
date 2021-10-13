@@ -43,9 +43,9 @@ db.Use(dbresolver.Register(dbresolver.Config{
 
 ## トランザクション
 
-When using transaction, DBResolver will use the transaction and won't switch to sources/replicas
+トランザクションを使用する場合、DBResolverは同一接続内でのトランザクションを使用するため、接続先の切り替えは行われません。
 
-## Automatic connection switching
+## 接続の自動切替
 
 DBResolver will automatically switch connection based on the working table/struct
 
