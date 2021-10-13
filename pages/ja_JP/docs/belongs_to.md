@@ -7,7 +7,7 @@ layout: page
 
 `belongs to`アソシエーションは、モデルの各インスタンスが他のモデルの1つのインスタンスに "属する "ように、他のモデルとの1対1の接続を設定します。
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company, the following types represent that relationship. Notice here that, on the `User` object, there is both a `CompanyID` as well as a `Company`. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
+たとえばユーザと会社が存在するアプリケーションがあり、各ユーザは1つの会社に所属する場合、以下のモデル定義はその関係性を表します。 ここで注意が必要なのは、 `User` オブジェクトには、 `CompanyID` と `Company` の両方がある点です。 デフォルトでは、 `CompanyID` は `User` と `Company` 間の外部キーを使った関連の作成に暗黙的に使われます。従って、`Company` の情報を埋めるためにCompanyID は `User` に含まれる必要があります。
 
 ```go
 // `User`は`Company`に属します。 `CompanyID`は外部キーです。
@@ -24,7 +24,7 @@ type Company struct {
 }
 ```
 
-Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
+構造体内部にある別の構造体の読み込みの詳細については、 [Eager Loading](belongs_to.html#Eager-Loading) を参照してください。
 
 ## Override Foreign Key
 
