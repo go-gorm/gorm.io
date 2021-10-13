@@ -47,9 +47,9 @@ db.Use(dbresolver.Register(dbresolver.Config{
 
 ## 接続の自動切替
 
-DBResolver will automatically switch connection based on the working table/struct
+テーブル/構造体に基づいて自動的に接続を切り替えることができます。
 
-For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
+素のSQLの場合は、SQLからテーブル名を抽出してDBResolverの設定を参照します。また、SQL文が (`SELECT... FOR UPDATE` 以外の) `SELECT` で始まるSQLでなければ、Sourcesで指定したDBが使用されます。 例:
 
 ```go
 // `User` Resolver Examples
