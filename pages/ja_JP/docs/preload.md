@@ -5,7 +5,7 @@ layout: page
 
 ## Preload
 
-GORMは、 `Preload`で他のSQL内のリレーションを事前読み込みできます。例：
+GORMの `Preload` を使用すると、別のSQLを発行して関連レコードを eager loading することができます。例：
 
 ```go
 type User struct {
@@ -32,9 +32,9 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 // SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
 ```
 
-## Joins Preloading
+## Joins による Preloading
 
-`Preload` はアソシエーションデータを別々のクエリにロードします。 `Join Preload` は内部結合を使用してアソシエーションデータをロードします。例：
+`Preload` はアソシエーションデータを別々のクエリでロードします。 `Join Preload` は内部結合を使用してアソシエーションデータをロードします。例：
 
 ```go
 db.Joins("Company").Joins("Manager").Joins("Account").First(&user, 1)
@@ -42,7 +42,7 @@ db.Joins("Company").Joins("Manager").Joins("Account").First(&user, "users.name =
 db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2,3,4,5})
 ```
 
-Join with conditions
+条件を指定して結合する
 
 ```go
 db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
@@ -50,7 +50,7 @@ db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
+**注意** `Join Preload` は、1 対 1 関係にあるリレーションで動作します。例えば `has one`, `belongs to` がそれにあたります。
 {% endnote %}
 
 ## Preload All
