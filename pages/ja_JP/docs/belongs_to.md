@@ -49,7 +49,7 @@ type Company struct {
 }
 ```
 
-## Override References
+## 参照のデフォルト設定を上書きする
 
 Belongs to リレーションにおいて、GORMは通常、所有する側にあるモデルの主キーをリレーションの外部キーの値として使用します。 上記の例では `Company` の `ID` がそれに該当します。
 
@@ -62,7 +62,7 @@ type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // Codeを参照先として使用する
+  Company   Company `gorm:"references:Code"` // Codeを参照として使用する
 }
 
 type Company struct {
@@ -72,17 +72,17 @@ type Company struct {
 }
 ```
 
-## CRUD with Belongs To
+## Belongs ToリレーションでのCRUD処理
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Belongs toリレーションを使った処理の詳細については [Association Mode](associations.html#Association-Mode) を参照してください。
 
 ## Eager Loading
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORMでは、 `Preload` または `Joins` を使うことで、belongs toリレーションの Eager Loadingを行うことができます。詳細については [Preload (Eager loading)](preload.html) を参照してください。
 
-## FOREIGN KEY Constraints
+## 外部キー制約
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+`constraint` タグを使用することで、 `OnUpdate`, `OnDelete` の制約を掛けることができます。指定した制約はGORMを使ったマイグレーション実行時に作成されます。例：
 
 ```go
 type User struct {
