@@ -26,13 +26,13 @@ type Company struct {
 
 構造体内部にある別の構造体の読み込みの詳細については、 [Eager Loading](belongs_to.html#Eager-Loading) を参照してください。
 
-## Override Foreign Key
+## 外部キーのデフォルト設定を上書きする
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Belongs to リレーションを定義するには、外部キーが存在する必要があります。デフォルトの外部キーでは、所有する側にあるモデルの型名とそのモデルの主キーのフィールド名を使用します。
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+上記の例では、`Company` に属する `User` モデルを定義する際、規約に従い、外部キーを `CompanyID` としています。
 
-GORM provides a way to customize the foreign key, for example:
+GORMは外部キーをカスタマイズする方法を提供しています。例：
 
 ```go
 type User struct {
@@ -51,18 +51,18 @@ type Company struct {
 
 ## Override References
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+Belongs to リレーションにおいて、GORMは通常、所有する側にあるモデルの主キーをリレーションの外部キーの値として使用します。 上記の例では `Company` の `ID` がそれに該当します。
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+UserをCompanyに割り当てた場合、GORMはCompanyの `ID` をUserの `CompanyID`フィールドに保存します。
 
-You are able to change it with tag `references`, e.g:
+`references` タグを設定することで、対象となるフィールドを変更することができます。
 
 ```go
 type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // use Code as references
+  Company   Company `gorm:"references:Code"` // Codeを参照先として使用する
 }
 
 type Company struct {
