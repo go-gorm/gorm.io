@@ -1,5 +1,5 @@
 ---
-title: Write Plugins
+title: プラグインの作成
 layout: page
 ---
 
