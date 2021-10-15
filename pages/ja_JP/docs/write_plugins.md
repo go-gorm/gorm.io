@@ -1,5 +1,5 @@
 ---
-title: Write Plugins
+title: プラグインの作成
 layout: page
 ---
 
@@ -82,9 +82,9 @@ db.Callback().Create().Replace("gorm:create", newCreateFunction)
 // replace callback `gorm:create` with new function `newCreateFunction` for Create process
 ```
 
-### Register Callback with orders
+### 実行順序を指定してCallbackを登録する
 
-Register callbacks with orders
+実行順序を指定してCallbackを登録することができます。
 
 ```go
 // before gorm:create
@@ -112,13 +112,13 @@ db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
 db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
-### Defined Callbacks
+### 定義済みのCallbacks
 
-GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to power current GORM features, check them out before starting your plugins
+GORMをより高機能にするために、 GORMにはすでに [定義されているCallbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) があります。プラグインを作成する前にそれらをチェックしてみるとよいでしょう。
 
-## Plugin
+## プラグイン
 
-GORM provides a `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
+GORMにはプラグインを登録するための `Use` メソッドがあります。プラグインは `Plugin` インターフェイスを実装している必要があります。
 
 ```go
 type Plugin interface {
@@ -127,10 +127,10 @@ type Plugin interface {
 }
 ```
 
-The `Initialize` method will be invoked when registering the plugin into GORM first time, and GORM will save the registered plugins, access them like:
+GORMにプラグインを登録すると `Initialize` メソッドが実行されます。 GORMは登録されたプラグインを保存しているため、以下のようにアクセスすることができます:
 
 ```go
 db.Config.Plugins[pluginName]
 ```
 
-Checkout [Prometheus](prometheus.html) as example
+プラグインの例として [Prometheus](prometheus.html) を参照するとよいでしょう。

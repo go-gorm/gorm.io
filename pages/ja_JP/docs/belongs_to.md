@@ -7,7 +7,7 @@ layout: page
 
 `belongs to`アソシエーションは、モデルの各インスタンスが他のモデルの1つのインスタンスに "属する "ように、他のモデルとの1対1の接続を設定します。
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company, the following types represent that relationship. Notice here that, on the `User` object, there is both a `CompanyID` as well as a `Company`. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
+たとえばユーザと会社が存在するアプリケーションがあり、各ユーザは1つの会社に所属する場合、以下のモデル定義はその関係性を表します。 ここで注意が必要なのは、 `User` オブジェクトには、 `CompanyID` と `Company` の両方がある点です。 デフォルトでは、 `CompanyID` は `User` と `Company` 間の外部キーを使った関連の作成に暗黙的に使われます。従って、`Company` の情報を埋めるためにCompanyID は `User` に含まれる必要があります。
 
 ```go
 // `User`は`Company`に属します。 `CompanyID`は外部キーです。
@@ -24,15 +24,15 @@ type Company struct {
 }
 ```
 
-Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
+構造体内部にある別の構造体の読み込みの詳細については、 [Eager Loading](belongs_to.html#Eager-Loading) を参照してください。
 
-## Override Foreign Key
+## 外部キーのデフォルト設定を上書きする
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Belongs to リレーションを定義するには、外部キーが存在する必要があります。デフォルトの外部キーでは、所有する側にあるモデルの型名とそのモデルの主キーのフィールド名を使用します。
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+上記の例では、`Company` に属する `User` モデルを定義する際、規約に従い、外部キーを `CompanyID` としています。
 
-GORM provides a way to customize the foreign key, for example:
+GORMは外部キーをカスタマイズする方法を提供しています。例：
 
 ```go
 type User struct {
@@ -49,20 +49,20 @@ type Company struct {
 }
 ```
 
-## Override References
+## 参照のデフォルト設定を上書きする
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+Belongs to リレーションにおいて、GORMは通常、所有する側にあるモデルの主キーをリレーションの外部キーの値として使用します。 上記の例では `Company` の `ID` がそれに該当します。
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+UserをCompanyに割り当てた場合、GORMはCompanyの `ID` をUserの `CompanyID`フィールドに保存します。
 
-You are able to change it with tag `references`, e.g:
+`references` タグを設定することで、対象となるフィールドを変更することができます。
 
 ```go
 type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // use Code as references
+  Company   Company `gorm:"references:Code"` // Codeを参照として使用する
 }
 
 type Company struct {
@@ -72,17 +72,17 @@ type Company struct {
 }
 ```
 
-## CRUD with Belongs To
+## Belongs ToリレーションでのCRUD処理
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Belongs toリレーションを使った処理の詳細については [Association Mode](associations.html#Association-Mode) を参照してください。
 
 ## Eager Loading
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORMでは、 `Preload` または `Joins` を使うことで、belongs toリレーションの Eager Loadingを行うことができます。詳細については [Preload (Eager loading)](preload.html) を参照してください。
 
-## FOREIGN KEY Constraints
+## 外部キー制約
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+`constraint` タグを使用することで、 `OnUpdate`, `OnDelete` の制約を掛けることができます。指定した制約はGORMを使ったマイグレーション実行時に作成されます。例：
 
 ```go
 type User struct {

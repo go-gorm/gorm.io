@@ -1,15 +1,15 @@
 ---
-title: Write Driver
+title: ドライバの作成
 layout: page
 ---
 
-## Write new driver
+## 新しいドライバを作成する
 
-GORM provides official support for `sqlite`, `mysql`, `postgres`, `sqlserver`.
+GORMは `sqlite`, `mysql`, `postgres`, `sqlserver` を公式にサポートしています。
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+いくつかのデータベースは `mysql` または `postgres` と互換性があります。 互換性がある場合は、それらのデータベース固有の文法を使用することができます。
 
-For others, you can create a new driver, it needs to implement [the dialect interface](https://pkg.go.dev/gorm.io/gorm?tab=doc#Dialector).
+上記以外のデータベース使用する場合、新しいドライバを作成することができます。ドライバの作成には [Dialector](https://pkg.go.dev/gorm.io/gorm?tab=doc#Dialector) インターフェイスを実装する必要があります。
 
 ```go
 type Dialector interface {
@@ -24,4 +24,4 @@ type Dialector interface {
 }
 ```
 
-Checkout the [MySQL Driver](https://github.com/go-gorm/mysql) as example
+例として [MySQL Driver](https://github.com/go-gorm/mysql) を確認してみると良いでしょう。

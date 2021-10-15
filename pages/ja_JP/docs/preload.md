@@ -5,7 +5,7 @@ layout: page
 
 ## Preload
 
-GORMは、 `Preload`で他のSQL内のリレーションを事前読み込みできます。例：
+GORMの `Preload` を使用すると、別のSQLを発行して関連レコードを eager loading することができます。例：
 
 ```go
 type User struct {
@@ -32,9 +32,9 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 // SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
 ```
 
-## Joins Preloading
+## Joins による Preloading
 
-`Preload` はアソシエーションデータを別々のクエリにロードします。 `Join Preload` は内部結合を使用してアソシエーションデータをロードします。例：
+`Preload` はアソシエーションデータを別々のクエリでロードします。 `Join Preload` は内部結合を使用してアソシエーションデータをロードします。例：
 
 ```go
 db.Joins("Company").Joins("Manager").Joins("Account").First(&user, 1)
@@ -42,7 +42,7 @@ db.Joins("Company").Joins("Manager").Joins("Account").First(&user, "users.name =
 db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2,3,4,5})
 ```
 
-Join with conditions
+条件を指定して結合する
 
 ```go
 db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
@@ -50,12 +50,12 @@ db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
+**注意** `Join Preload` は、1 対 1 関係にあるリレーションで動作します。例えば `has one`, `belongs to` がそれにあたります。
 {% endnote %}
 
 ## Preload All
 
-`clause.Associations` can work with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
+レコード作成/更新時の `Select` で指定するのと同様に、 `Preload` でも `clause.Associations` を指定することができます。全ての関連レコードを `Preload` する際にこれを使用することができます。例：
 
 ```go
 type User struct {
@@ -70,15 +70,15 @@ type User struct {
 db.Preload(clause.Associations).Find(&users)
 ```
 
-`clause.Associations` won't preload nested associations, but you can use it with [Nested Preloading](#nested_preloading) together, e.g:
+`clause.Associations` はネストした関連のPreloadは行いません。しかし、 [Nested Preloading](#nested_preloading) と併用することができます。例:
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload(clause.Associations).Find(&users)
 ```
 
-## Preload with conditions
+## 条件付きのPreload
 
-GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
+GORMでは条件付きでのPreloadが可能です。これは [Inline Conditions](query.html#inline_conditions) と同様の動作になります。
 
 ```go
 // Preload Orders with conditions
@@ -91,9 +91,9 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 // SELECT * FROM orders WHERE user_id IN (1,2) AND state NOT IN ('cancelled');
 ```
 
-## Custom Preloading SQL
+## Preload の SQL をカスタマイズする
 
-You are able to custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
+`func(db *gorm.DB) *gorm.DB` を引数に渡すことで、PreloadのSQLをカスタマイズできます。例：
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
@@ -105,12 +105,13 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 
 ## <span id="nested_preloading">Nested Preloading</span>
 
-GORM supports nested preloading, for example:
+GORMはネストした関連データのPreloadをサポートしています。例：
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)
 
 // Customize Preload conditions for `Orders`
-// And GORM won't preload unmatched order's OrderItems then
+// `Orders` の Preload をカスタマイズして、
+// 条件に一致しない `Orders` の `OrderItems` を preloadしないようにする
 db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
 ```

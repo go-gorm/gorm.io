@@ -6,7 +6,7 @@ layout: page
 DBResolverはGORMの複数データベースへの対応を可能としています。以下の機能がサポートされています。
 
 * 複数DB/レプリカへの接続対応
-* 読み取り/書き込みの分割
+* 読み取り/書き込みの分離
 * テーブルや構造体に基づいた自動での接続切替
 * 手動での接続切替
 * プライマリやレプリカへのロードバランシング
@@ -70,28 +70,28 @@ db.Find(&Order{}) // replicas `db8`
 db.Table("orders").Find(&Report{}) // replicas `db8`
 ```
 
-## Read/Write Splitting
+## 読み取り/書き込みの分離
 
-Read/Write splitting with DBResolver based on the current used [GORM callbacks](https://gorm.io/docs/write_plugins.html).
+現在使用されている [GORM callbacks](https://gorm.io/docs/write_plugins.html) に基づいて、DBResolverで読み取り/書き込みを分離できます。
 
-For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
+`Query` や `Row` のコールバックでは、 `Write Model` が指定されていない限り `レプリカ` が使用されます。 `Raw` コールバックについては、SQLが `SELECT` で始まり読み込み処理のみと判断された場合は `レプリカ` が使用されます。
 
-## Manual connection switching
+## 手動での接続切替
 
 ```go
-// Use Write Mode: read user from sources `db1`
+// Write Modeを使用する：`db1`からuserレコードを読み込む
 db.Clauses(dbresolver.Write).First(&user)
 
-// Specify Resolver: read user from `secondary`'s replicas: db8
+// Resolverを指定する：`secondary` のレプリカである db8 から userレコードを読み込む
 db.Clauses(dbresolver.Use("secondary")).First(&user)
 
-// Specify Resolver and Write Mode: read user from `secondary`'s sources: db6 or db7
+// Resolverを指定 かつ Write Modeを使用する：`secondary` のデータソースである db6 または db7 からuserレコードを読み込む
 db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 
-## Load Balancing
+## 負荷分散
 
-GORM supports load balancing sources/replicas based on policy, the policy should be a struct implements following interface:
+GORMは、ポリシーに基づいたロードバランシングをサポートしています。ポリシーを定めるには、以下のインターフェイスを実装する構造体を用意する必要があります。
 
 ```go
 type Policy interface {
@@ -99,9 +99,9 @@ type Policy interface {
 }
 ```
 
-Currently only the `RandomPolicy` implemented and it is the default option if no other policy specified.
+現在は `RandomPolicy` のみ実装されています。他のポリシーが指定されていない場合はこれがデフォルトのオプションとなります。
 
-## Connection Pool
+## コネクションプール
 
 ```go
 db.Use(
