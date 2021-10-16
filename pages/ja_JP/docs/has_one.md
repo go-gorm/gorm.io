@@ -96,7 +96,7 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs")
 ```
 
-`polymorphicValue`タグを使用して、ポリモーフィック型の値を変更できます。例：
+`polymorphicValue`タグを使用して、polymorphic typeとして登録される値を変更できます。例：
 
 ```go
 type Dog struct {
@@ -117,15 +117,15 @@ db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master")
 ```
 
-## CRUD with Has One
+## Has OneリレーションでのCRUD処理
 
-`has one`と利用するには[Association Mode](associations.html#Association-Mode)を参照してください。
+`Has one` リレーションを使った処理の詳細については [Association Mode](associations.html#Association-Mode) を参照してください。
 
 ## Eager Loading
 
-GORM allows eager loading `has one` associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORMでは、 `Preload` または `Joins` を使うことで、`has one` リレーションの Eager Loadingを行うことができます。詳細については [Preload (Eager loading)](preload.html) を参照してください。
 
-## Self-Referential Has One
+## Has One での自己参照
 
 ```go
 type User struct {
@@ -136,9 +136,9 @@ type User struct {
 }
 ```
 
-## FOREIGN KEY Constraints
+## 外部キー制約
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+`constraint` タグを使用することで、 `OnUpdate`, `OnDelete` の制約を掛けることができます。指定した制約はGORMを使ったマイグレーション実行時に作成されます。例：
 
 ```go
 type User struct {
@@ -153,4 +153,4 @@ type CreditCard struct {
 }
 ```
 
-You are also allowed to delete selected has one associations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+削除時に `Select` を使用することで、 指定した has one の関連も削除することができます。詳細については [Delete with Select](associations.html#delete_with_select) を参照してください。
