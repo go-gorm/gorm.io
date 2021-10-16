@@ -5,7 +5,7 @@ layout: page
 
 ## Has One
 
-`has one` は、別のモデルとの一対一の接続を設定しますが、セマンティクス（とその結果）は多少異なります。 このアソシエーションは、モデルの各インスタンスが別のモデルの1つのインスタンスを含んでいるか、または所有していることを示します。
+`has one` は、別のモデルと一対一となる関連を設定します。関連するモデルによって、セマンティクス（と因果関係）は多少異なります。 このアソシエーションは、モデルの各インスタンスが別のモデルの1つのインスタンスを含んでいるか、または所有していることを示します。
 
 例えば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを1枚しか持つことができないとします。
 
@@ -69,7 +69,7 @@ type CreditCard struct {
 
 ## Polymorphism Association
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field
+GORMは `has one` と `has many` アソシエーションにおいて、polymorphism associationをサポートしています。所有する側のエンティティのテーブル名が polymorphic type のフィールドに保存され、 主キーが polymorphic 用のフィールドに保存されます。
 
 ```go
 type Cat struct {
