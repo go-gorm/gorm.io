@@ -28,12 +28,12 @@ GORM2.0はスクラッチからの書き直しをしているため、互換性�
 
 [GORM V1 Docs](https://v1.gorm.io)
 
-Breaking Changes:
+破壊的変更
 
-* `gorm.Open` returns `*gorm.DB` instead of `gorm.DB`
-* Updating will only update changed fields
-* Soft Delete's will only check `deleted_at IS NULL`
-* New ToDBName logic Common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` was converted to lowercase, so `HTTP`'s db name is `http`, but not `h_t_t_p`, but for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it to `sku`
+* `gorm.Open` は `*gorm.DB` 型 ではなく`gorm.DB` 型を返すようになります
+* 更新は変更されたフィールドのみ反映されるようになります
+* 論理削除は `deleted_at IS NULL` のチェックのみ行われるようになります
+* データベース名への変換ロジックの更新： [golint](https://github.com/golang/lint/blob/master/lint.go#L702) にある `HTTP` や `URI` のような省略形の名称は今までも問題なく lowercase に変換されていました。つまり `HTTP` は `h_t_t_p`ではなく `http` へ変換ができていました。しかし、リストにないその他の省略形の名称はその限りではなく、例えば `SKU` は `s_k_u` に変換されてしまっていました。今回の変更でそれが `sku` となるようになります。
 * `RecordNotFound`エラー が `ErrRecordNotFound` に改名されました
-* `mssql` dialect has been renamed to `github.com/jinzhu/gorm/dialects/mssql`
-* `Hstore` has been moved to package `github.com/jinzhu/gorm/dialects/postgres`
+* `mssql` 固有の設定は `github.com/jinzhu/gorm/dialects/mssql` に変更されました
+* `Hstore` は `github.com/jinzhu/gorm/dialects/postgres` パッケージに移動されました
