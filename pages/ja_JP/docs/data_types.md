@@ -1,5 +1,5 @@
 ---
-title: Customize Data Types
+title: データ型のカスタマイズ
 layout: page
 ---
 
