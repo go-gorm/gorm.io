@@ -55,7 +55,7 @@ type Post struct {
 
 ### GormDataTypeInterface
 
-GORM will read column's database type from [tag](models.html#tags) `type`, if not found, will check if the struct implemented interface `GormDBDataTypeInterface` or `GormDataTypeInterface` and will use its result as data type
+GORMはカラムのデータ型を `type` [tag](models.html#tags) から読み取ります。タグが指定されていない場合は、`GormDBDataTypeInterface` か `GormDataTypeInterface` が実装されているかをチェックします。インターフェイスが実装されている場合は、インターフェイスのメソッドの結果をデータ型として使用します。
 
 ```go
 type GormDataTypeInterface interface {
@@ -67,7 +67,7 @@ type GormDBDataTypeInterface interface {
 }
 ```
 
-The result of `GormDataType` will be used as the general data type and can be obtained from `schema.Field`'s field `DataType`, which might be helpful when [writing plugins](write_plugins.html) or [hooks](hooks.html) for example:
+`GormDataType` メソッドの返却値は通常のデータ型として使用され、`schema.Field` の `DataType` からも取得できます。これは [プラグインを作成する](write_plugins.html) 際や [hooksを利用する](hooks.html) 際に役立ちます。例：
 
 ```go
 func (JSON) GormDataType() string {
