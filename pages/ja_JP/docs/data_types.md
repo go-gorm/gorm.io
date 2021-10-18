@@ -86,7 +86,7 @@ func (user User) BeforeCreate(tx *gorm.DB) {
 }
 ```
 
-`GormDBDataType` usually returns the right data type for current driver when migrating, for example:
+`GormDBDataType` は通常、マイグレーション時に使用しているドライバに適切なデータ型を返します。例：
 
 ```go
 func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
@@ -104,22 +104,22 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 }
 ```
 
-If the struct hasn't implemented the `GormDBDataTypeInterface` or `GormDataTypeInterface` interface, GORM will guess its data type from the struct's first field, for example, will use `string` for `NullString`
+構造体が `GormDBDataTypeInterface` や `GormDataTypeInterface` インターフェイスを実装していない場合、GORMはその構造体の一番最初のフィールドからデータ型を推測します。例えば以下の `NullString` では `string` がデータ型として使用されます。
 
 ```go
 type NullString struct {
-  String string // use the first field's data type
+  String string // 最初のフィールドのデータ型を使用する
   Valid  bool
 }
 
 type User struct {
-  Name NullString // data type will be string
+  Name NullString // データ方は string となる
 }
 ```
 
 ### <span id="gorm_valuer_interface">GormValuerInterface</span>
 
-GORM provides a `GormValuerInterface` interface, which can allow to create/update from SQL Expr or value based on context, for example:
+GORMは `GormValuerInterface` インターフェイスを提供しています。これにより、SQL式での作成/更新やコンテキストに基づいた値での作成/更新を行うことができます。例：
 
 ```go
 // GORM Valuer interface
@@ -128,7 +128,7 @@ type GormValuerInterface interface {
 }
 ```
 
-#### Create/Update from SQL Expr
+#### SQL Expr での作成/更新
 
 ```go
 type Location struct {
@@ -170,11 +170,11 @@ db.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`location`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-You can also create/update with SQL Expr from map, checkout [Create From SQL Expr](create.html#create_from_sql_expr) and [Update with SQL Expression](update.html#update_from_sql_expr) for details
+マップを使用した SQL Expr でレコードを作成/更新することもできます。詳細については、 [SQL式/Context Valuer で作成する](create.html#create_from_sql_expr) および [SQL式で更新する](update.html#update_from_sql_expr) をチェックしてください。
 
-#### Value based on Context
+#### コンテキストに基づく値
 
-If you want to create or update a value depends on current context, you can also implements the `GormValuerInterface` interface, for example:
+現在のコンテキストに基づいて値を作成または更新したい場合は、 `GormValuerInterface` インターフェイスを実装することで実現可能です。
 
 ```go
 type EncryptedString struct {
