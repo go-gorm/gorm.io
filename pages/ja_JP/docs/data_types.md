@@ -194,7 +194,7 @@ func (es EncryptedString) GormValue(ctx context.Context, db *gorm.DB) (expr clau
 
 ### Clause Expression
 
-If you want to build some query helpers, you can make a struct that implements the `clause.Expression` interface:
+クエリヘルパーを構築したい場合、`clause.Expression` インターフェイスを実装する構造体を作成することで実現することができます。
 
 ```go
 type Expression interface {
@@ -202,10 +202,10 @@ type Expression interface {
 }
 ```
 
-Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) and [SQL Builder](sql_builder.html#clauses) for details, the following is an example of usage:
+詳細については [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) と [SQL Builder](sql_builder.html#clauses) を確認してください。以下は使い方の例です：
 
 ```go
-// Generates SQL with clause Expression
+// clause.Expression を使用してSQLを生成する
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("role"))
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 
@@ -225,6 +225,6 @@ db.Find(&user, datatypes.JSONQuery("attributes").Equals("jinzhu", "name"))
 // SELECT * FROM "user" WHERE json_extract_path_text("attributes"::json,'name') = 'jinzhu'
 ```
 
-## Customized Data Types Collections
+## 独自データ型のコレクション
 
-We created a Github repo for customized data types collections [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), pull request welcome ;)
+[https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes) のGithubリポジトリに独自データ型のコレクションを用意しています。プルリクエストを歓迎しています！
