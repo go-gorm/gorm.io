@@ -8,13 +8,13 @@ GORM2.0はスクラッチから書き直しているため、互換性のないA
 **Highlights**
 
 * パフォーマンスの改善
-* Modularity
-* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
-* Nested Transaction/SavePoint/RollbackTo SavePoint supports
-* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements, CRUD with SQL Expr and Context Valuer
-* Full self-reference relationships support, Join Table improvements, Association Mode for batch data
+* モジュール化
+* Contextへの対応、Batch Insertの追加、Prepared State Modeの追加、DryRun Modeの追加、Join Preload機能の追加、Find結果のマップへの変換、マップでのCreate、FindInBatchesのサポート
+* トランザクションのネスト、セーブポイント、セーブポイントへのロールバックのサポート
+* SQL Builder、名前付き引数、集約条件、Upsert、ロック、Optimizer/Index/Comment Hintsのサポート、サブクエリの改善、SQL式とContext ValuerによるCRUD
+* 自己参照の完全なサポート、テーブル結合の改善、大量データでのAssociation Modeの対応
 * Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
+* フィールド権限のサポート：読み取り専用、書き込み専用、作成専用、更新専用、無視するフィールド
 * New plugin system, provides official plugins for multiple databases, read/write splitting, prometheus integrations...
 * New Hooks API: unified interface with plugins
 * New Migrator: allows to create database foreign keys for relationships, smarter AutoMigrate, constraints/checker support, enhanced index support
@@ -92,7 +92,7 @@ db.CreateInBatches(users, 100)
 
 #### Prepared Statement Mode
 
-Prepared Statement Mode creates prepared stmt and caches them to speed up future calls
+Prepared Statement Mode はプリペアドステートメントを作成し、またその後の呼出を高速化するためにそれらをキャッシュします。
 
 ```go
 // globally mode, all operations will create prepared stmt and cache to speed up
