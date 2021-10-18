@@ -3,15 +3,15 @@ title: データ型のカスタマイズ
 layout: page
 ---
 
-GORM provides few interfaces that allow users to define well-supported customized data types for GORM, takes [json](https://github.com/go-gorm/datatypes/blob/master/json.go) as an example
+GORMで使用できる独自のデータ型をユーザ自身で定義できるようにするために、GORMにはいくつかのインターフェースが用意されています。[json](https://github.com/go-gorm/datatypes/blob/master/json.go) を例として参照してみるとよいでしょう。
 
-## Implements Customized Data Type
+## 独自のデータ型を実装する
 
 ### Scanner / Valuer
 
-The customized data type has to implement the [Scanner](https://pkg.go.dev/database/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces, so GORM knowns to how to receive/save it into the database
+独自のデータ型を使用するためには、[Scanner](https://pkg.go.dev/database/sql#Scanner) と [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイを実装する必要があります。これらのインターフェイスを実装することで、DBからの値の取得処理やDBへの保存処理をGORMが行うことが可能になります。
 
-For example:
+例：
 
 ```go
 type JSON json.RawMessage
@@ -38,7 +38,7 @@ func (j JSON) Value() (driver.Value, error) {
 }
 ```
 
-There are many third party packages implement the `Scanner`/`Valuer` interface, which can be used with GORM together, for example:
+多くのサードパーティ製パッケージが `Scanner`/`Valuer` インターフェイスを実装しており、それらはGORMと併用することができます。例：
 
 ```go
 import (
