@@ -3,7 +3,7 @@ title: Hooks
 layout: page
 ---
 
-## Object Life Cycle
+## オブジェクトのライフサイクル
 
 Hooks are functions that are called before or after creation/querying/updating/deletion.
 
