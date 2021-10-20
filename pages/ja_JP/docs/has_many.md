@@ -48,9 +48,9 @@ type CreditCard struct {
 
 GORMは通常、所有する側のモデルの主キーをリレーションの外部キーの値として使用します。上記の例では、 `User` の `ID` がそれに該当します。
 
-When you assign credit cards to a user, GORM will save the user's `ID` into credit cards' `UserID` field.
+クレジットカードがあるユーザに与えられたとする場合、GORMはユーザの `ID` をクレジットカードの `UserID` フィールドに保存します。
 
-You are able to change it with tag `references`, e.g:
+`references` タグを設定することで、対象となるフィールドを変更することができます。
 
 ```go
 type User struct {
@@ -68,7 +68,7 @@ type CreditCard struct {
 
 ## Polymorphism Association
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key value into the polymorphic field
+GORMは `has one` と `has many` アソシエーションにおいて、polymorphism associationをサポートしています。所有する側のエンティティのテーブル名が polymorphic type のフィールドに保存され、主キーが polymorphic 用のフィールドに保存されます。
 
 ```go
 type Dog struct {
@@ -89,7 +89,7 @@ db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs"), ("toy2","1","dogs")
 ```
 
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
+`polymorphicValue`タグを使用して、polymorphic typeとして登録される値を変更できます。例：
 
 ```go
 type Dog struct {
@@ -110,15 +110,15 @@ db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
 ```
 
-## CRUD with Has Many
+## Has ManyリレーションでのCRUD処理
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with has many relations
+Has many リレーションを使った処理の詳細については [Association Mode](associations.html#Association-Mode) を参照してください。
 
 ## Eager Loading
 
-GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
+GORMでは、 `Preload` を使うことで、has manyリレーションの Eager Loadingを行うことができます。詳細については [Preload (Eager loading)](preload.html) を参照してください。
 
-## Self-Referential Has Many
+## Has Many での自己参照
 
 ```go
 type User struct {
@@ -129,9 +129,9 @@ type User struct {
 }
 ```
 
-## FOREIGN KEY Constraints
+## 外部キー制約
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+`constraint` タグを使用することで、 `OnUpdate`, `OnDelete` の制約を掛けることができます。指定した制約はGORMを使ったマイグレーション実行時に作成されます。例：
 
 ```go
 type User struct {
@@ -146,4 +146,4 @@ type CreditCard struct {
 }
 ```
 
-You are also allowed to delete selected has many associations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+削除時に `Select` を使用することで、 指定した has many の関連も削除することができます。詳細については [Delete with Select](associations.html#delete_with_select) を参照してください。
