@@ -51,7 +51,7 @@ type CreditCard struct {
 
 デフォルトでは, 所有されているエンティティは `has one`モデルの主キーを外部キーとして保持します。以下の`Name`の例のように別のフィールドを保持するように変更することもできます。
 
-`references`タグを用いて変更することもできます。
+`references` タグを設定することで、対象となるフィールドを変更することができます。
 
 ```go
 type User struct {
@@ -69,7 +69,7 @@ type CreditCard struct {
 
 ## Polymorphism Association
 
-GORMは `has one` と `has many` アソシエーションにおいて、polymorphism associationをサポートしています。所有する側のエンティティのテーブル名が polymorphic type のフィールドに保存され、 主キーが polymorphic 用のフィールドに保存されます。
+GORMは `has one` と `has many` アソシエーションにおいて、polymorphism associationをサポートしています。所有する側のエンティティのテーブル名が polymorphic type のフィールドに保存され、主キーが polymorphic 用のフィールドに保存されます。
 
 ```go
 type Cat struct {
