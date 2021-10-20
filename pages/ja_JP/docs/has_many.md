@@ -5,12 +5,12 @@ layout: page
 
 ## Has Many
 
-A `has many` association sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+`has many` アソシエーションは別のモデルとの1対多となる関連を設定します。`has one` と異なり、所有する側となるモデルは0個以上のモデルのインスタンスを保有します。
 
-For example, if your application includes users and credit card, and each user can have many credit cards.
+例えば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを複数持つことができる場合は以下のようになります。
 
 ```go
-// User has many CreditCards, UserID is the foreign key
+// User は複数の CreditCards を持ちます。UserID は外部キーとなります。
 type User struct {
   gorm.Model
   CreditCards []CreditCard
@@ -23,13 +23,13 @@ type CreditCard struct {
 }
 ```
 
-## Override Foreign Key
+## 外部キーのデフォルト設定を上書きする
 
-To define a `has many` relationship, a foreign key must exist. The default foreign key's name is the owner's type name plus the name of its primary key field
+`has many` リレーションを定義するには、外部キーが必要となります。 デフォルトの外部キーの名前は、所有する側のモデルの型名とそのモデルの主キーのフィールドの名前です。
 
-For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+例えば、 `User` に属するモデルを定義するには、外部キーは `UserID` でなければなりません。
 
-To use another field as foreign key, you can customize it with a `foreignKey` tag, e.g:
+別のフィールドを外部キーとして使用するには、 `foreignKey` タグを使用してカスタマイズします。例：
 
 ```go
 type User struct {
@@ -44,9 +44,9 @@ type CreditCard struct {
 }
 ```
 
-## Override References
+## 参照フィールドのデフォルト設定を上書きする
 
-GORM usually uses the owner's primary key as the foreign key's value, for the above example, it is the `User`'s `ID`,
+GORMは通常、所有する側のモデルの主キーをリレーションの外部キーの値として使用します。上記の例では、 `User` の `ID` がそれに該当します。
 
 When you assign credit cards to a user, GORM will save the user's `ID` into credit cards' `UserID` field.
 
