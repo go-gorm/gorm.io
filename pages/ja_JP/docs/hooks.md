@@ -147,11 +147,12 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
   // Modify current operation through tx.Statement, e.g:
+  // tx.Statement を使用して現在の操作を変更する。例：
   tx.Statement.Select("Name", "Age")
   tx.Statement.AddClause(clause.OnConflict{DoNothing: true})
 
-  // tx is new session mode with the `NewDB` option
-  // operations based on it will run inside same transaction but without any current conditions
+  // tx は `NewDB` オプションで生成された new session mode のインスタンス
+  // tx を利用した操作は 同一トランザクション内で実行されますが、元の処理の状態は反映されません
   var role Role
   err := tx.First(&role, "name = ?", user.Role).Error
   // SELECT * FROM roles WHERE name = "admin"
