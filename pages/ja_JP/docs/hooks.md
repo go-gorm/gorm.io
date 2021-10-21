@@ -5,17 +5,17 @@ layout: page
 
 ## オブジェクトのライフサイクル
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+Hooks は 作成／取得／更新／削除 処理の前後に呼び出される関数です。
 
-If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+指定のメソッドをモデルに対して定義すると、作成・更新・取得・削除時にそのメソッドが自動的に呼び出されます。 定義したメソッドが返した場合、GORMは以降の操作を中止し、トランザクションをロールバックします。
 
-The type of hook methods should be `func(*gorm.DB) error`
+`func(*gorm.DB) error` が Hooks メソッドの型となります。
 
 ## Hooks
 
-### Creating an object
+### オブジェクトの作成
 
-Available hooks for creating
+作成処理時に利用可能なHooks
 
 ```go
 // begin transaction
@@ -29,7 +29,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-Code Example:
+コード例：
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -50,7 +50,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 ```
 
 {% note warn %}
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is committed, if you return any error in your hooks, the change will be rollbacked
+**注意** デフォルトでは、GORMでの保存/削除操作はトランザクション内で実行されます。 つまり、トランザクション内で行われた変更はコミットされるまで参照できません。Hookメソッドがエラーを返却した場合、変更はロールバックされます。
 {% endnote %}
 
 ```go
@@ -62,9 +62,9 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### オブジェクトの更新
 
-Available hooks for updating
+更新処理時に利用可能なHooks
 
 ```go
 // begin transaction
@@ -78,7 +78,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-Code Example:
+コード例：
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -97,9 +97,9 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### オブジェクトの削除
 
-Available hooks for deleting
+削除処理時に利用可能なHooks
 
 ```go
 // begin transaction
@@ -109,10 +109,10 @@ AfterDelete
 // commit or rollback transaction
 ```
 
-Code Example:
+コード例：
 
 ```go
-// Updating data in same transaction
+// 同一トランザクション内でのデータの更新
 func (u *User) AfterDelete(tx *gorm.DB) (err error) {
   if u.Confirmed {
     tx.Model(&Address{}).Where("user_id = ?", u.ID).Update("invalid", false)
@@ -121,9 +121,9 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Querying an object
+### オブジェクトを取得する
 
-Available hooks for querying
+取得処理時に利用可能なHooks
 
 ```go
 // load data from database
@@ -131,7 +131,7 @@ Available hooks for querying
 AfterFind
 ```
 
-Code Example:
+コード例：
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -142,7 +142,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 }
 ```
 
-## Modify current operation
+## 現在の操作を変更する
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
