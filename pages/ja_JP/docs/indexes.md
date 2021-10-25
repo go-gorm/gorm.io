@@ -3,13 +3,13 @@ title: インデックス
 layout: page
 ---
 
-GORM allows create database index with tag `index`, `uniqueIndex`, those indexes will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORMでは `index` や `uniqueIndex` タグを使用して、インデックスを作成することができます。定義されたインデックスは [GORMの AutoMigrate や CreateTable](migration.html) 実行時に作成されます。
 
-## Index Tag
+## indexタグ
 
-GORM accepts lots of index settings, like `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`, `option`
+`class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`, `option` など、多くのindexの設定を指定できます。
 
-Check the following example for how to use it
+使用方法については、以下の例を参照してください。
 
 ```go
 type User struct {
@@ -34,7 +34,7 @@ type User struct {
 
 ### uniqueIndex
 
-tag `uniqueIndex` works similar like `index`, it equals to `index:,unique`
+`uniqueIndex` タグは `index` と似た働きを持ち、 `index:,unique` を指定するのと等しくなります。
 
 ```go
 type User struct {
@@ -43,9 +43,9 @@ type User struct {
 }
 ```
 
-## Composite Indexes
+## 複合インデックス
 
-Use same index name for two fields will creates composite indexes, for example:
+2つのフィールドに同じインデックス名を使用すると、複合インデックスが作成されます。例：
 
 ```go
 type User struct {
@@ -54,11 +54,11 @@ type User struct {
 }
 ```
 
-### Fields Priority
+### フィールドの優先度
 
-The column order of a composite index has an impact on its performance so it must be chosen carefully
+複合インデックスを指定する際、カラムの順序がパフォーマンスに影響を与えます。そのため、順序は慎重に指定する必要があります。
 
-You can specify the order with the `priority` option, the default priority value is `10`, if priority value is the same, the order will be based on model struct's field index
+`priority` オプションで順序を指定できます。デフォルトの優先度の値は `10`です。 priorityの値が同じ場合、順序は構造体のフィールドの並びに基づいて設定されます。
 
 ```go
 type User struct {
@@ -80,9 +80,9 @@ type User struct {
 // column order: number, name
 ```
 
-## Multiple indexes
+## 複数のインデックス
 
-A field accepts multiple `index`, `uniqueIndex` tags that will create multiple indexes on a field
+1つのフィールドには複数の `index`, `uniqueIndex` タグを指定できます。その場合、1つのフィールドに対して複数のインデックスが作成されます。
 
 ```go
 type UserIndex struct {
