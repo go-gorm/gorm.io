@@ -48,17 +48,17 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
+GORM APIを使用することも可能です。[DryRun Mode](session.html) を使用してSQLの準備を行い、後の処理でそのSQLをプリペアードステートメントとともに実行することができます。詳細については、[Session Mode](session.html) を参照してください。
 
-## Select Fields
+## フィールドを選択する
 
-By default GORM select all fields when querying, you can use `Select` to specify fields you want
+デフォルトの設定では、クエリ実行時にすべてのフィールドが選択されます。 `Select` を使用して、必要なフィールドを指定できます。
 
 ```go
 db.Select("Name", "Age").Find(&Users{})
 ```
 
-Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)
+または、 [便利なフィールドの選択](advanced_query.html) を使用するために、よりフィールド数を少なくした構造体を定義します。
 
 ```go
 type User struct {
