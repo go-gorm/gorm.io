@@ -1,13 +1,13 @@
 ---
-title: Performance
+title: パフォーマンス
 layout: page
 ---
 
-GORM optimizes many things to improve the performance, the default performance should good for most applications, but there are still some tips for how to improve it for your application.
+GORMは、パフォーマンスを向上させるために多くの最適化を行っています。デフォルトのパフォーマンスはほとんどのアプリケーションにとって良いものとなっているでしょう。 しかし、アプリケーションのパフォーマンスを向上させるテクニックがまだいくつかあります。
 
-## [Disable Default Transaction](transactions.html)
+## [デフォルトトランザクションを無効にする](transactions.html)
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization
+GORMはデータの一貫性を確保するために、書き込み操作（作成/更新/削除）をトランザクション内で実行します。これはパフォーマンスにとっては悪影響を及ぼしますが、初期化中に無効にすることも可能です。
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -15,9 +15,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## [Caches Prepared Statement](session.html)
+## [プリペアードステートメントをキャッシュする](session.html)
 
-Creates a prepared statement when executing any SQL and caches them to speed up future calls
+SQLを実行する際にプリペアードステートメントを作成し、以降の呼び出しを高速化するためにそれをキャッシュすることができます。
 
 ```go
 // Globally mode
@@ -33,12 +33,12 @@ tx.Model(&user).Update("Age", 18)
 ```
 
 {% note warn %}
-**NOTE** Also refer how to enable interpolateparams for MySQL to reduce roundtrip https://github.com/go-sql-driver/mysql#interpolateparams
+**注** ラウンドトリップを減らすためにMySQLのinterpolateparamsを有効にする方法も参照するとよいでしょう。 https://github.com/go-sql-driver/mysql#interpolateparams
 {% endnote %}
 
-### [SQL Builder with PreparedStmt](sql_builder.html)
+### [プリペアードステートメントを用いたSQL Builder](sql_builder.html)
 
-Prepared Statement works with RAW SQL also, for example:
+プリペアードステートメントは RAW SQL とも併用できます。例：
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
