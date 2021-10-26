@@ -85,7 +85,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 
 ## [インデックスヒント](hints.html)
 
-[Index](indexes.html) はデータ検索とSQLクエリのパフォーマンスを高速化するために使用されます。 `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
+[Index](indexes.html) はデータ検索とSQLクエリのパフォーマンスを高速化するために使用されます。 `Index Hints` は、クエリ処理で使用するべきインデックスの情報をオプティマイザに提供します。これにより、オプティマイザのものよりも効率的な実行計画を指定できるようになります。
 
 ```go
 import "gorm.io/hints"
@@ -103,6 +103,6 @@ db.Clauses(
 // SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
 ```
 
-## Read/Write Splitting
+## 読み取り/書き込みの分離
 
-Increase data throughput through read/write splitting, check out [Database Resolver](dbresolver.html)
+読み取り/書き込み処理の分離により、スループットを向上させることも可能です。詳細については [Database Resolover](dbresolver.html) を確認してください。
