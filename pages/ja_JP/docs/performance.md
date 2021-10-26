@@ -81,11 +81,11 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 
 ## [Iteration / FindInBatches](advanced_query.html)
 
-Query and process records with iteration or in batches
+イテレーションやバッチ処理でのクエリやレコード処理をすることも可能です。
 
-## [Index Hints](hints.html)
+## [インデックスヒント](hints.html)
 
-[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
+[Index](indexes.html) はデータ検索とSQLクエリのパフォーマンスを高速化するために使用されます。 `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
 
 ```go
 import "gorm.io/hints"
