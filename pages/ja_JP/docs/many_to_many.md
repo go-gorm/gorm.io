@@ -81,12 +81,12 @@ type Profile struct {
 ```
 
 {% note warn %}
-**NOTE:** Some databases only allow create database foreign keys that reference on a field having unique index, so you need to specify the `unique index` tag if you are creating database foreign keys when migrating
+**注意** いくつかのデータベースでは、外部キーが参照するフィールドにユニークインデックスを設定する必要があります。そのため、それらのデータベースでのマイグレーションで外部キーを作成する場合は、`uniqueIndex` タグを指定する必要があります。
 {% endnote %}
 
-## Self-Referential Many2Many
+## Many2Many での自己参照
 
-Self-referencing many2many relationship
+many2manyリレーションにおける自己参照も可能です。
 
 ```go
 type User struct {
@@ -101,13 +101,13 @@ type User struct {
 
 ## Eager Loading
 
-GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
+GORMでは、 `Preload` を使うことで、many2manyリレーションの Eager Loadingを行うことができます。詳細については [Preload (Eager loading)](preload.html) を参照してください。
 
-## CRUD with Many2Many
+## Many2ManyリレーションでのCRUD処理
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with many2many relations
+many2many リレーションを使った処理の詳細については [Association Mode](associations.html#Association-Mode) を参照してください。
 
-## Customize JoinTable
+## 結合テーブルをカスタマイズする
 
 `JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can setup it with `SetupJoinTable`, for example:
 
