@@ -60,7 +60,7 @@ type Language struct {
 //   foreign key: language_id, reference: languages.id
 ```
 
-To override them, you can use tag `foreignKey`, `references`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
+デフォルトの設定を上書くには、`foreignKey`、`references`、`joinForeignKey`、`joinReferences` などのタグを使用します。これらを全て指定する必要はなく、1つのみ使用して外部キー／参照の設定を上書きすることも可能です。
 
 ```go
 type User struct {
