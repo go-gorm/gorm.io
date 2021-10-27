@@ -179,7 +179,7 @@ db.Migrator().DropConstraint(&User{}, "CreditCards")
 db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
 ```
 
-### Indexes
+### Index
 
 ```go
 type User struct {
@@ -187,15 +187,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// Create index for Name field
+// Nameフィールドにインデックスを作成する
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// Drop index for Name field
+// Nameフィールドのインデックスを削除する
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// Check Index exists
+// インデックスが存在するかチェックする
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -204,18 +204,18 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// Rename index name
+// インデックス名を変更する
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
-## Constraints
+## 制約
 
-GORMは、テーブルの自動マイグレーション時や作成時に制約を作成します。詳細は [Constraints](constraints.html) または [Database Indexes](indexes.html) を参照してください。
+GORMは、テーブルの自動マイグレーション時や作成時に制約を作成します。詳細は [制約](constraints.html) または [インデックス](indexes.html) を参照してください。
 
-## Other Migration Tools
+## その他のマイグレーションツール
 
-GORMのAutoMigrateはほとんどのケースでうまく機能しますが、より本格的なスキーママイグレーションツールを利用する際は、、GORMが提供している一般的なDBインターフェースが役に立ちます
+GORMのAutoMigrateはほとんどのケースでうまく機能しますが、より本格的なスキーママイグレーションツールを利用する際は、GORMが提供している一般的なDBインターフェースが役に立ちます
 
 ```go
 // returns `*sql.DB`
