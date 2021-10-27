@@ -7,10 +7,10 @@ layout: page
 
 Many to Many では2つのモデル間に結合テーブルを追加します。
 
-For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
+例えばユーザと言語について考えると、ユーザは複数の言語を話すことができ、また複数のユーザが特定の言語を話すことができるとした場合、以下のようになります。
 
 ```go
-// User has and belongs to many languages, `user_languages` is the join table
+// User は複数の言語を所有し、かつ言語に属しています。`user_languages` が結合テーブルになります
 type User struct {
   gorm.Model
   Languages []Language `gorm:"many2many:user_languages;"`
@@ -22,12 +22,12 @@ type Language struct {
 }
 ```
 
-When using GORM `AutoMigrate` to create a table for `User`, GORM will create the join table automatically
+GORMの `AutoMigrate` を使用して `User` テーブルを作成する場合、GORMは自動的に結合テーブルを作成します。
 
-## Back-Reference
+## 後方参照（Back-Reference）
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// User は複数の言語を所有し、かつ言語に属しています。`user_languages` が結合テーブルになります
 type User struct {
   gorm.Model
   Languages []*Language `gorm:"many2many:user_languages;"`
@@ -40,9 +40,9 @@ type Language struct {
 }
 ```
 
-## Override Foreign Key
+## 外部キーのデフォルト設定を上書きする
 
-For a `many2many` relationship, the join table owns the foreign key which references two models, for example:
+`many2many` リレーションでは、結合テーブルは2つのモデルを参照する外部キーを持ちます。例：
 
 ```go
 type User struct {
