@@ -109,10 +109,10 @@ many2many リレーションを使った処理の詳細については [Associat
 
 ## 結合テーブルをカスタマイズする
 
-`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can setup it with `SetupJoinTable`, for example:
+`Join Table`（結合テーブル）は、`Soft Delete`、`Hooks`などをサポートしたり、外部キー以外のフィールドを持つようなフル機能のモデルとして定義できます。これの設定には `SetupJoinTable` を使用します。例：
 
 {% note warn %}
-**NOTE:** Customized join table's foreign keys required to be composited primary keys or composited unique index
+**注意：** 結合テーブルをカスタマイズする場合、結合テーブルの外部キーを複合主キーにする、あるいは外部キーに複合ユニークインデックスを貼る必要があります。
 {% endnote %}
 
 ```go
@@ -138,14 +138,14 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// Change model Person's field Addresses' join table to PersonAddress
-// PersonAddress must defined all required foreign keys or it will raise error
+// PersonモデルのAddressフィールドの結合テーブルをPersonAddressに変更する
+// PersonAddressには必要な外部キーが全て定義されていなければならず、定義されていない場合はエラーとなる
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
-## FOREIGN KEY Constraints
+## 外部キー制約
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+`constraint` タグを使用することで、 `OnUpdate`, `OnDelete` の制約を掛けることができます。指定した制約はGORMを使ったマイグレーション実行時に作成されます。例：
 
 ```go
 type User struct {
@@ -161,13 +161,13 @@ type Language struct {
 // CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
-You are also allowed to delete selected many2many relations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+削除時に `Select` を使用することで、 指定した many2many リレーションも削除することができます。詳細については [Delete with Select](associations.html#delete_with_select) を参照してください。
 
-## Composite Foreign Keys
+## 複合外部キー
 
-If you are using [Composite Primary Keys](composite_primary_key.html) for your models, GORM will enable composite foreign keys by default
+モデルに [複合主キー](composite_primary_key.html) を定義している場合、GORMはデフォルトで複合外部キーを有効化します。
 
-You are allowed to override the default foreign keys, to specify multiple foreign keys, just separate those keys' name by commas, for example:
+デフォルトの外部キーを上書いて、複数の外部キーを指定することができます。指定するにはキー名をカンマで区切るだけです。例：
 
 ```go
 type Tag struct {
@@ -202,4 +202,4 @@ type Blog struct {
 //   foreign key: tag_id, reference: tags.id
 ```
 
-Also check out [Composite Primary Keys](composite_primary_key.html)
+[複合主キー](composite_primary_key.html) も参照するとよいでしょう。
