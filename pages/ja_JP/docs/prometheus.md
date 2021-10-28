@@ -3,11 +3,11 @@ title: Prometheus
 layout: page
 ---
 
-GORM provides Prometheus plugin to collect [DBStats](https://pkg.go.dev/database/sql?tab=doc#DBStats) or user-defined metrics
+GORMはPrometheusプラグインを提供しており、これを利用して [DBStats](https://pkg.go.dev/database/sql?tab=doc#DBStats) やユーザー定義のメトリクスを収集することができます。
 
 https://github.com/go-gorm/prometheus
 
-## Usage
+## 使い方
 
 ```go
 import (
