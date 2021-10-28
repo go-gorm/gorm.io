@@ -1,9 +1,9 @@
 ---
-title: Composite Primary Key
-layout: page
+title: Bileşik Birincil Anahtar
+layout: sayfa
 ---
 
-Set multiple fields as primary key creates composite primary key, for example:
+Birden fazla birincil anahtar oluşturmak birleşik birincil anahtar oluşturur, örnek olarak:
 
 ```go
 type Product struct {
@@ -14,7 +14,7 @@ type Product struct {
 }
 ```
 
-**Note** integer `PrioritizedPrimaryField` enables `AutoIncrement` by default, to disable it, you need to turn off `autoIncrement` for the int fields:
+**Not** Sayısal `BirlesikBirincilAlan` başlangıç olarak `AutoIncrement(OtomatikArtan)` gelir, bunu kapatmak için `autoIncrement` alanını kapatmalısınız:
 
 ```go
 type Product struct {
