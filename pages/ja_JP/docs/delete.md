@@ -76,11 +76,28 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
+### Returning Data From Deleted Rows
+
+Return deleted data, only works for database support Returning, for example:
+
+```go
+// return all columns
+var users = []User
+DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
+// DELETE FROM `users` WHERE role = "admin" RETURNING *
+// users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
+
+// return specified columns
+DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
+// DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
+// users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
+```
+
 ## 論理削除
 
-モデルに `gorm.DeletedAt` フィールド ( `gorm.Model`に含まれている) が存在している場合、削除時は自動的にSoft Deleteが実行されるようになります!
+If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
 
-`Delete`メソッドを呼び出しても、 レコードはデータベースから削除されません。代わりに、GORMは`DeletedAt`フィールドの値に現在の時刻を設定し、そのレコードは通常のクエリメソッドでは検索できなくなります。
+When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
 
 ```go
 // user's ID is `111`
@@ -96,7 +113,7 @@ db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-モデルに`gorm.Model`を含めたくない場合、以下のようにして論理削除機能を有効にできます。
+If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
 
 ```go
 type User struct {
@@ -106,27 +123,27 @@ type User struct {
 }
 ```
 
-### 論理削除されたレコードを取得する
+### Find soft deleted records
 
-`Unscoped`を用いることで、論理削除されたレコードを取得することができます。
+You can find soft deleted records with `Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### 完全な削除（物理削除）
+### Delete permanently
 
-`Unscoped`を用いることで、条件に一致したレコードを物理削除できます。
+You can delete matched records permanently with `Unscoped`
 
 ```go
 db.Unscoped().Delete(&order)
 // DELETE FROM orders WHERE id=10;
 ```
 
-### 削除フラグ
+### Delete Flag
 
-UNIXタイムスタンプを削除フラグとして使用する
+Use unix second as delete flag
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -145,7 +162,7 @@ UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
 {% note warn %}
-**INFO** ユニークなフィールドがあるテーブルで論理削除を使用する場合、UNIXタイムを利用した `DeletedAt` フィールドとの複合インデックスを作成するとよいでしょう。例:
+**INFO** when using unique field with soft delete, you should create a composite index with the unix second based `DeletedAt` field, e.g:
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -158,7 +175,7 @@ type User struct {
 ```
 {% endnote %}
 
-`1` / `0` を削除フラグとして使用する
+Use `1` / `0` as delete flag
 
 ```go
 import "gorm.io/plugin/soft_delete"
