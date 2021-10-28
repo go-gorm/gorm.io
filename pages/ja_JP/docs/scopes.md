@@ -3,11 +3,11 @@ title: Scopes
 layout: page
 ---
 
-Scopes allow you to re-use commonly used logic, the shared logic needs to defined as type `func(*gorm.DB) *gorm.DB`
+Scopes を利用することで、共通で使用されるロジックを再利用することができます。共有ロジックは `func(*gorm.DB) *gorm.DB` という型として定義します。
 
-## Query
+## レコードの取得
 
-Scope examples for querying
+レコード取得時のScopeの例です。
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -65,9 +65,9 @@ db.Scopes(Paginate(r)).Find(&users)
 db.Scopes(Paginate(r)).Find(&articles)
 ```
 
-## Updates
+## レコードの更新
 
-Scope examples for updating/deleting
+レコードの更新/削除時の例です。
 
 ```go
 func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {
