@@ -14,7 +14,7 @@ db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 
 ## Set / Get
 
-Use `Set` / `Get` pass settings to hooks methods, for example:
+`Set` / `Get` を使用して hooks メソッドに設定を受け渡すことができます。例：
 
 ```go
 type User struct {
