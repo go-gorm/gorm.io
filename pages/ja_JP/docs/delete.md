@@ -76,7 +76,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-### 削除されたレコードを返却する
+### 削除されたレコードのデータを返却する
 
 Returningをサポートしているデータベースであれば、削除されたデータを取得することができます。例：
 
@@ -100,20 +100,20 @@ DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "sal
 `Delete` メソッドを実行した際、レコードはデータベースから物理削除されません。代わりに、`DeletedAt` フィールドに現在の時刻が設定され、そのレコードは通常のクエリ系のメソッドでは検索できなくなります。
 
 ```go
-// user's ID is `111`
+// userのIDは`111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// 一括削除
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when querying
+// 論理削除されたレコードは取得処理時に無視されます
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+モデルに `gorm.Model` を含めたくない場合は、以下のようにすることで論理削除機能を有効にできます。
 
 ```go
 type User struct {
@@ -123,27 +123,27 @@ type User struct {
 }
 ```
 
-### Find soft deleted records
+### 論理削除されたレコードを取得する
 
-You can find soft deleted records with `Unscoped`
+`Unscoped`を用いることで、論理削除されたレコードを取得することができます。
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Delete permanently
+### 完全な削除（物理削除）
 
-You can delete matched records permanently with `Unscoped`
+`Unscoped`を用いることで、レコードを物理削除できます。
 
 ```go
 db.Unscoped().Delete(&order)
 // DELETE FROM orders WHERE id=10;
 ```
 
-### Delete Flag
+### 削除フラグ
 
-Use unix second as delete flag
+UNIXタイムスタンプを削除フラグとして使用することができます。
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -162,7 +162,7 @@ UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
 {% note warn %}
-**INFO** when using unique field with soft delete, you should create a composite index with the unix second based `DeletedAt` field, e.g:
+**INFO** ユニークなフィールドがあるテーブルで論理削除を使用する場合、UNIXタイムを利用した `DeletedAt` フィールドとの複合インデックスを作成するとよいでしょう。例:
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -175,7 +175,7 @@ type User struct {
 ```
 {% endnote %}
 
-Use `1` / `0` as delete flag
+`1` / `0` を削除フラグとして使用する。
 
 ```go
 import "gorm.io/plugin/soft_delete"
