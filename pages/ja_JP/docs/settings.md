@@ -67,7 +67,7 @@ type CreditCard struct {
   // ...
 }
 
-// When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
+// アソシエーション作成時に、GORMは新しい `*Statement` を作成します。そのため、他のインスタンスの設定を取得できません。
 func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
   myValue, ok := tx.InstanceGet("my_value")
   // ok => false
