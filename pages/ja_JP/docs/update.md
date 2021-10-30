@@ -209,45 +209,45 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
-### Returning Data From Modified Rows
+### 変更されたレコードのデータを返却する
 
-Return changed data, only works for database support Returning, for example:
+Returningをサポートしているデータベースであれば、変更されたデータを取得することができます。例：
 
 ```go
-// return all columns
+// すべてのカラムを返却する
 var users = []User
 DB.Model(&users).Clauses(clause.Returning{}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
 // UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// return specified columns
+// 指定のカラムのみ返却する
 DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
 // UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
 ```
 
-### Check Field has changed?
+### フィールドが変更されたかチェックする
 
-GORM provides `Changed` method could be used in **Before Update Hooks**, it will return the field changed or not
+GORMには **Before Update Hooks** で使用できる `Changed` メソッドをがあります。これはフィールドが変更されたかどうかを返却します。
 
-The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the updating value from `Update` / `Updates` equals the model value, will return true if it is changed and not omitted
+`Changed` は `Update`, `Updates` メソッド実行時のみ機能します。また、 `Update` / `Updates` に渡す値とモデルの値が比較可能である場合のみ更新をチェックし、値が変更されていて かつ 更新対象から除外されていなければ true を返却します。
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
   // if Role changed
-    if tx.Statement.Changed("Role") {
+  if tx.Statement.Changed("Role") {
     return errors.New("role not allowed to change")
-    }
+  }
 
   if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
     tx.Statement.SetColumn("Age", 18)
   }
 
   // if any fields changed
-    if tx.Statement.Changed() {
-        tx.Statement.SetColumn("RefreshedAt", time.Now())
-    }
-    return nil
+  if tx.Statement.Changed() {
+    tx.Statement.SetColumn("RefreshedAt", time.Now())
+  }
+  return nil
 }
 
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"})
@@ -267,9 +267,9 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 // Changed("Name") => false, `Name` not selected to update
 ```
 
-### Change Updating Values
+### 更新値の変更
 
-To change updating values in Before Hooks, you should use `SetColumn` unless it is a full updates with `Save`, for example:
+`Save` による全フィールドの更新でなければ、`SetColumn` を使用して Before Hooks 内で更新値を変更することができます。例：
 
 ```go
 func (user *User) BeforeSave(tx *gorm.DB) (err error) {
