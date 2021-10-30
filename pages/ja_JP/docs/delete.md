@@ -76,18 +76,18 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-### Returning Data From Deleted Rows
+### 削除されたレコードを返却する
 
-Return deleted data, only works for database support Returning, for example:
+Returningをサポートしているデータベースであれば、削除されたデータを取得することができます。例：
 
 ```go
-// return all columns
+// すべてのカラムを返却する
 var users = []User
 DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// return specified columns
+// 指定のカラムのみ返却する
 DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
@@ -95,9 +95,9 @@ DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "sal
 
 ## 論理削除
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+(`gorm.Model`にも含まれている) `gorm.DeletedAt` フィールドがモデルに含まれている場合、そのモデルは自動的に論理削除されるようになります。
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+`Delete` メソッドを実行した際、レコードはデータベースから物理削除されません。代わりに、`DeletedAt` フィールドに現在の時刻が設定され、そのレコードは通常のクエリ系のメソッドでは検索できなくなります。
 
 ```go
 // user's ID is `111`
