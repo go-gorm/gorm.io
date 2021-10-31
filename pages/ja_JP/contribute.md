@@ -45,6 +45,6 @@ layout: page
 
 * AliPay
 
-![使用支付宝捐款](/sponsors-imgs/alipay.png "使用支付宝捐款")
+![Alipayを使用して寄付する](/sponsors-imgs/alipay.png "Alipayを使用して寄付する")
 
 <br>
