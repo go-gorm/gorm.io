@@ -1,37 +1,37 @@
 ---
 menu:
   home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  docs: <i class="fa fa-book"></i>ドキュメント
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fab fa-slack"></i>Community
+  community: <i class="fab fa-slack"></i>コミュニティ
   contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  search: ドキュメントを検索する
 index:
-  get_started: Get started
+  get_started: はじめに
 page:
-  contents: Contents
-  back_to_top: Back to Top
-  improve: Improve this page
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  contents: 内容
+  back_to_top: トップに戻る
+  improve: このページを改善する
+  prev: 前へ
+  next: 次へ
+  last_updated: "最終更新: %s"
 sidebar:
   docs:
     getting_started: Getting Started
-    overview: Overview
-    declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
+    overview: 概要
+    declaring_models: モデルを宣言する
+    conventions: 規約
+    connecting_to_the_database: データベースに接続する
     crud_interface: CRUD Interface
-    create: Create
-    query: Query
-    advanced_query: Advanced Query
-    update: Update
-    delete: Delete
+    create: レコードの作成
+    query: レコードの取得
+    advanced_query: 高度なクエリ
+    update: レコードの更新
+    delete: レコードの削除
     raw_sql_and_builder: Raw SQL & SQL Builder
-    batch: Batch Processing
-    associations: Associations
+    batch: バッチ処理
+    associations: アソシエーション
     belongs_to: Belongs To
     has_one: Has One
     has_many: Has Many
@@ -40,30 +40,30 @@ sidebar:
     preload: Preloading (Eager Loading)
     tutorials: Tutorials
     context: Context
-    error_handling: Error Handling
+    error_handling: エラーハンドリング
     method_chaining: Method Chaining
     session: Session
     hooks: Hooks
-    transactions: Transactions
-    migration: Migration
+    transactions: トランザクション
+    migration: マイグレーション
     logger: Logger
-    generic_interface: Generic Database Interface
-    performance: Performance
-    data_types: Customize Data Types
+    generic_interface: 汎用データベースインターフェース
+    performance: パフォーマンス
+    data_types: データ型のカスタマイズ
     scopes: Scopes
-    settings: Settings
+    settings: 値の受け渡し
     advanced_topics: Advanced Topics
     dbresolver: Database Resolver
     prometheus: Prometheus
     hints: Hints
-    indexes: Indexes
-    constraints: Constraints
-    composite_primary_key: Composite Primary Key
-    security: Security
+    indexes: Index
+    constraints: 制約
+    composite_primary_key: 複合主キー
+    security: セキュリティ
     gorm_config: GORM Config
-    write_plugins: Write Plugins
-    write_driver: Write Driver
-    change_log: ChangeLog
-    community: Community
-    contribute: Contribute
-    translate: Translate current site
+    write_plugins: プラグインの作成
+    write_driver: ドライバの作成
+    change_log: 変更履歴
+    community: コミュニティ
+    contribute: 貢献する
+    translate: 現在のサイトを翻訳する
