@@ -139,7 +139,7 @@ for rows.Next() {
 }
 ```
 
-## Advanced
+## 高度な機能
 
 ### <span id="clauses">Clauses</span>
 
@@ -184,13 +184,13 @@ db.Offset(10).Limit(5).Find(&users)
 // SELECT * FROM `users` LIMIT 5 OFFSET 10
 ```
 
-Which is supported because GORM allows database driver register Clause Builder to replace the default one, take the [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45) as example
+データベースドライバがClause Builderを登録することで、デフォルトのものを置き換えることが可能になっているため、この機能がサポートされています。 例として [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45) を参照してみるとよいでしょう。
 
 ### Clause Options
 
-GORM defined [Many Clauses](https://github.com/go-gorm/gorm/tree/master/clause), and some clauses provide advanced options can be used for your application
+GORMは [多くのClauses](https://github.com/go-gorm/gorm/tree/master/clause) を定義しています。いくつかのClausesは高度なオプションを提供し、アプリケーションで使用することができます。
 
-Although most of them are rarely used, if you find GORM public API can't match your requirements, may be good to check them out, for example:
+ほとんど使われることはないかもしれませんが、もしGORMのAPIがアプリケーションの要求にマッチしない場合は、それらを調べてみてもよいでしょう。例：
 
 ```go
 db.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
@@ -199,7 +199,7 @@ db.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
 
 ### StatementModifier
 
-GORM provides interface [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier) allows you modify statement to match your requirements, take [Hints](hints.html) as example
+GORMは [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier) インターフェイスを提供しており、これを利用することでアプリケーションの要求に合うようにstatementを修正することが可能になります。例として [Hints](hints.html) を参照するとよいでしょう。
 
 ```go
 import "gorm.io/hints"
