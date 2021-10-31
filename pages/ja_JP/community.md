@@ -1,20 +1,20 @@
 ---
-title: GORM Community
+title: GORMコミュニティ
 layout: page
 ---
 
-## Ask
+## 質問
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[良い質問をするには？](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
 * Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
 
-## Chat
+## チャット
 
 * Gitter - [https://gitter.im/jinzhu/gorm](https://gitter.im/jinzhu/gorm)
 
-## Links
+## リンク
 
 * An admin system based on GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
