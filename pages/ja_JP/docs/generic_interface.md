@@ -1,5 +1,5 @@
 ---
-title: 一般的なデータベースインターフェース sql.DB
+title: 汎用データベースインターフェース（sql.DB）
 layout: page
 ---
 
