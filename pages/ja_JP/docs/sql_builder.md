@@ -145,7 +145,7 @@ for rows.Next() {
 
 GORMは内部的にSQLビルダーを使用してSQLを生成します。各操作に対し、GORMは `*gorm.Statement` オブジェクトを作成し、すべてのGORM APIで `Statement`に`Clause` を追加/変更し、最終的にこれらの `Clause` にもとづいてSQLを生成します。
 
-For example, when querying with `First`, it adds the following clauses to the `Statement`
+例えば `First` でレコードを取得する場合、`First` は内部的に、以下の `Clauses` を `Statement` に追加します。
 
 ```go
 clause.Select{Columns: "*"}
@@ -156,25 +156,25 @@ clause.OrderByColumn{
 }
 ```
 
-Then GORM build finally querying SQL in the `Query` callbacks like:
+その後、GORMは `Query` コールバックで最終的に実行されるSQLクエリを組み立てます。
 
 ```go
 Statement.Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")
 ```
 
-Which generate SQL:
+生成されるSQLは以下のようになります。
 
 ```sql
 SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 ```
 
-You can define your own `Clause` and use it with GORM, it needs to implements [Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface)
+独自の `Clause` を定義して、それを利用することも可能です。その際は [Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface) を実装する必要があります。
 
-Check out [examples](https://github.com/go-gorm/gorm/tree/master/clause) for reference
+詳細については [examples](https://github.com/go-gorm/gorm/tree/master/clause) を参照してください。
 
 ### Clause Builder
 
-For different databases, Clauses may generate different SQL, for example:
+データベースの種類によって、Clausesはそれぞれ異なるSQLを生成します。例：
 
 ```go
 db.Offset(10).Limit(5).Find(&users)
