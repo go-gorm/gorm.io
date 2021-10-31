@@ -76,7 +76,7 @@ db.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = 
 
 ## DryRun Mode
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
+`SQL` を実行せずに生成のみ行います。生成されたSQLを前もって準備またはテストする際に使用することができます。詳細については [Session](session.html) を確認してください。
 
 ```go
 stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
@@ -86,7 +86,7 @@ stmt.Vars         //=> []interface{}{1}
 
 ## `Row` & `Rows`
 
-Get result as `*sql.Row`
+結果を `*sql.Row` として取得します。
 
 ```go
 // SQLの組み立てにGORM APIを使用
@@ -98,7 +98,7 @@ row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row
 row.Scan(&name, &age, &email)
 ```
 
-Get result as `*sql.Rows`
+結果を `*sql.Rows` として取得します。
 
 ```go
 // SQLの組み立てにGORM APIを使用
@@ -120,7 +120,7 @@ for rows.Next() {
 }
 ```
 
-Checkout [FindInBatches](advanced_query.html) for how to query and process records in batch Checkout [Group Conditions](advanced_query.html#group_conditions) for how to build complicated SQL Query
+バッチ処理でのレコード取得やレコード処理の方法については、[FindInBatches](advanced_query.html) を参照してください。また、複雑なSQLクエリの構築方法については、[Group Conditions](advanced_query.html#group_conditions) を参照してください。
 
 ## Scan `*sql.Rows` into struct
 
