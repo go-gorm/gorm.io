@@ -143,7 +143,7 @@ for rows.Next() {
 
 ### <span id="clauses">Clauses</span>
 
-GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
+GORMは内部的にSQLビルダーを使用してSQLを生成します。各操作に対し、GORMは `*gorm.Statement` オブジェクトを作成し、すべてのGORM APIで `Statement`に`Clause` を追加/変更し、最終的にこれらの `Clause` にもとづいてSQLを生成します。
 
 For example, when querying with `First`, it adds the following clauses to the `Statement`
 
