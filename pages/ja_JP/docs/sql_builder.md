@@ -5,7 +5,7 @@ layout: page
 
 ## Raw SQL
 
-Query Raw SQL with `Scan`
+`Scan` を使用して素のSQLでレコードを取得することができます。
 
 ```go
 type Result struct {
@@ -26,7 +26,7 @@ var users []User
 db.Raw("UPDATE users SET name = ? WHERE age = ? RETURNING id, name", "jinzhu", 20).Scan(&users)
 ```
 
-`Exec` with Raw SQL
+素のSQLで `Exec` を実行することも可能です。
 
 ```go
 db.Exec("DROP TABLE users")
@@ -37,12 +37,12 @@ db.Exec("UPDATE users SET money = ? WHERE name = ?", gorm.Expr("money * ? + ?", 
 ```
 
 {% note warn %}
-**NOTE** GORM allows cache prepared statement to increase performance, checkout [Performance](performance.html) for details
+**注** GORMはパフォーマンスを向上のためにプリペアードステートメントをキャッシュすることができます。詳細は [Performance](performance.html) を参照してください。
 {% endnote %}
 
-## <span id="named_argument">Named Argument</span>
+## <span id="named_argument">名前付き引数</span>
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg), `map[string]interface{}{}` or struct, for example:
+GORMは [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) や `map[string]interface{}{}` 、構造体を使用した名前付き引数をサポートしています。例：
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -89,11 +89,11 @@ stmt.Vars         //=> []interface{}{1}
 Get result as `*sql.Row`
 
 ```go
-// Use GORM API build SQL
+// SQLの組み立てにGORM APIを使用
 row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
 row.Scan(&name, &age)
 
-// Use Raw SQL
+// 素のSQLを使用
 row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row()
 row.Scan(&name, &age, &email)
 ```
@@ -101,7 +101,7 @@ row.Scan(&name, &age, &email)
 Get result as `*sql.Rows`
 
 ```go
-// Use GORM API build SQL
+// SQLの組み立てにGORM APIを使用
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows()
 defer rows.Close()
 for rows.Next() {
@@ -110,7 +110,7 @@ for rows.Next() {
   // do something
 }
 
-// Raw SQL
+// 素のSQL
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows()
 defer rows.Close()
 for rows.Next() {
