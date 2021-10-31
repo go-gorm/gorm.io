@@ -122,9 +122,9 @@ for rows.Next() {
 
 バッチ処理でのレコード取得やレコード処理の方法については、[FindInBatches](advanced_query.html) を参照してください。また、複雑なSQLクエリの構築方法については、[Group Conditions](advanced_query.html#group_conditions) を参照してください。
 
-## Scan `*sql.Rows` into struct
+## `*sql.Rows` を構造体へ Scan
 
-Use `ScanRows` to scan a row into a struct, for example:
+`ScanRows` を使用して、取得した行データを構造体にScanすることができます。例：
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
