@@ -120,7 +120,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 GORMでは取得結果を`map[string]interface{}`や`[]map[string]interface{}`に代入することができます。その際 `Model`や`Table` の指定を忘れないでください。例：
 
 ```go
-var result map[string]interface{}
+result := map[string]interface{}{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}
