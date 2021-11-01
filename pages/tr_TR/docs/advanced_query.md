@@ -120,7 +120,7 @@ Daha fazla detay için [Raw SQL ve SQL Builder](sql_builder.html#named_argument)
 Gorm sonuçları `map[string]interface{}` yada `[]map[string]interface{}` şeklinde aramanızı destekler, alanları `Model` yada `Table` şeklinde belirtmeyi unutmayın, örnek olarak:
 
 ```go
-var result map[string]interface{}
+result := map[string]interface{}{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}
