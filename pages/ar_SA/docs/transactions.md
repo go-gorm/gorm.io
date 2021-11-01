@@ -73,7 +73,9 @@ db.Transaction(func(tx *gorm.DB) error {
 // Commit user1, user3
 ```
 
-## Transactions by manual
+## Control the transaction manually
+
+Gorm supports calling transaction control functions (commit / rollback) directly, for example:
 
 ```go
 tx := DB. Begin()
