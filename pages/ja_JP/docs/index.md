@@ -12,13 +12,13 @@ layout: page
 * フック (Before/After Create/Save/Update/Delete/Find)
 * `Preload`, `Joins`を使ったイーガーロード
 * トランザクション、ネスティング、セーブポイント、セーブポイントへのロールバック
-* Context, Prepared Statement Mode, DryRun Mode
-* Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
-* SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
-* Composite Primary Key, Indexes, Constraints
+* Context、プリペアードステートメント、DryRunへの対応
+* Batch Insert, FindInBatches, マップを使用してのFind/Create, SQL式やContext Valuerを使用したCRUD操作への対応
+* SQL Builder、Upsert、ロック、Optimizer/Index/Comment ヒント、名前付き引数、サブクエリの対応
+* 複合主キー、インデックス、データベース制約への対応
 * オートマイグレーション
-* ロガー
-* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
+* Logger
+* 拡張性のある柔軟なプラグインAPI: データベースリゾルバ(複数のデータベース、読み取り/書き込み分割) や Prometheus など
 * すべての機能に付属するテストコード
 * デベロッパーフレンドリー
 

@@ -65,7 +65,9 @@ db.Transaction(func(tx *gorm.DB) error {
 // Commit user1, user3
 ```
 
-## Транзакции вручную
+## Control the transaction manually
+
+Gorm supports calling transaction control functions (commit / rollback) directly, for example:
 
 ```go
 // начало транзакции
@@ -115,7 +117,7 @@ func CreateAnimals(db *gorm.DB) error {
 
 ## SavePoint, RollbackTo
 
-GORM предоставляет `SavePoint`, `RollbackTo` для сохранения точек и возврата к точке сохранения, например:
+GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
 
 ```go
 tx := db.Begin()

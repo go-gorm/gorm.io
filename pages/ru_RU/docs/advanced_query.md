@@ -120,7 +120,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 GORM позволяет отображать результаты сканирования в `map[string]interface{}` или `[]map[string]interface{}`, не забудьте указать `Model` или `Table`, как в примере ниже:
 
 ```go
-var result map[string]interface{}
+result := map[string]interface{}{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}

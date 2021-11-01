@@ -76,27 +76,44 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-## 软删除
+### Returning Data From Deleted Rows
 
-如果您的模型包含了一个 `gorm.DeletedAt` 字段（`gorm.Model` 已经包含了该字段)，它将自动获得软删除的能力！
-
-拥有软删除能力的模型调用 `Delete` 时，记录不会被从数据库中真正删除。但 GORM 会将 `DeletedAt` 置为当前时间， 并且你不能再通过正常的查询方法找到该记录。
+Return deleted data, only works for database support Returning, for example:
 
 ```go
-// user 的 ID 是 `111`
+// return all columns
+var users = []User
+DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
+// DELETE FROM `users` WHERE role = "admin" RETURNING *
+// users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
+
+// return specified columns
+DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
+// DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
+// users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
+```
+
+## 软删除
+
+If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+
+When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+
+```go
+// user's ID is `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// 批量删除
+// Batch Delete
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// 在查询时会忽略被软删除的记录
+// Soft deleted records will be ignored when querying
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-如果您不想引入 `gorm.Model`，您也可以这样启用软删除特性：
+If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
 
 ```go
 type User struct {
@@ -106,18 +123,18 @@ type User struct {
 }
 ```
 
-### 查找被软删除的记录
+### Find soft deleted records
 
-您可以使用 `Unscoped` 找到被软删除的记录
+You can find soft deleted records with `Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### 永久删除
+### Delete permanently
 
-您也可以使用 `Unscoped` 永久删除匹配的记录
+You can delete matched records permanently with `Unscoped`
 
 ```go
 db.Unscoped().Delete(&order)
@@ -126,7 +143,7 @@ db.Unscoped().Delete(&order)
 
 ### Delete Flag
 
-将 unix 时间戳作为 delete flag
+Use unix second as delete flag
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -137,15 +154,15 @@ type User struct {
   DeletedAt soft_delete.DeletedAt
 }
 
-// 查询
+// Query
 SELECT * FROM users WHERE deleted_at = 0;
 
-// 删除
+// Delete
 UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
 {% note warn %}
-**INFO** 在配合 unique 字段使用软删除时，您需要使用这个基于 unix 时间戳的 `DeletedAt` 字段创建一个复合索引，例如：
+**INFO** when using unique field with soft delete, you should create a composite index with the unix second based `DeletedAt` field, e.g:
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -158,7 +175,7 @@ type User struct {
 ```
 {% endnote %}
 
-使用 `1` / `0` 作为 delete flag
+Use `1` / `0` as delete flag
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -169,9 +186,9 @@ type User struct {
   IsDel soft_delete.DeletedAt `gorm:"softDelete:flag"`
 }
 
-// 查询
+// Query
 SELECT * FROM users WHERE is_del = 0;
 
-// 删除
+// Delete
 UPDATE users SET is_del = 1 WHERE ID = 1;
 ```

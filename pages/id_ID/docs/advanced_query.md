@@ -120,7 +120,7 @@ Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more de
 GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
 
 ```go
-var result map[string]interface{}
+result := map[string]interface{}{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}

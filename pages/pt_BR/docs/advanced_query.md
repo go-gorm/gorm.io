@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Seleção Inteligente de Campos</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM permite selecionar campos específicos com [`Select`](query.html), se você frequentemente usa isso em seu aplicativo, talvez você queira definir uma estrutura menor para uso da API, que pode selecionar campos específicos automaticamente, por exemplo:
 
 ```go
 type User struct {
@@ -120,7 +120,7 @@ Consulte [SQL Puro e Construtor de SQL](sql_builder.html#named_argument) para ma
 O GORM mapear o resultado de uma consulta para `map[string]interface{}` ou `[]map[string]interface{}`, não esqueça de definir o `Model` ou `Table`, por exemplo:
 
 ```go
-var result map[string]interface{}
+result := map[string]interface{}{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}

@@ -209,6 +209,23 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
+### Returning Data From Modified Rows
+
+Return changed data, only works for database support Returning, for example:
+
+```go
+// return all columns
+var users = []User
+DB.Model(&users).Clauses(clause.Returning{}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
+// UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING *
+// users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
+
+// return specified columns
+DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
+// UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING `name`, `salary`
+// users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
+```
+
 ### Check Field has changed?
 
 GORM provides `Changed` method could be used in **Before Update Hooks**, it will return the field changed or not
@@ -217,16 +234,16 @@ The `Changed` method only works with methods `Update`, `Updates`, and it only ch
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
-  // если изменилось поле Role
+  // if Role changed
     if tx.Statement.Changed("Role") {
     return errors.New("role not allowed to change")
     }
 
-  if tx.Statement.Changed("Name", "Admin") { // если изменилось поле Name или Role
+  if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
     tx.Statement.SetColumn("Age", 18)
   }
 
-  // если изменилось любое поле
+  // if any fields changed
     if tx.Statement.Changed() {
         tx.Statement.SetColumn("RefreshedAt", time.Now())
     }
@@ -236,18 +253,18 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"})
-// Changed("Name") => false, `Name` не изменилось
+// Changed("Name") => false, `Name` not changed
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{
   "name": "jinzhu2", "admin": false,
 })
-// Changed("Name") => false, `Name` не выбрано для обновления
+// Changed("Name") => false, `Name` not selected to update
 
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})
-// Changed("Name") => false, `Name` не изменилось
+// Changed("Name") => false, `Name` not changed
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"})
-// Changed("Name") => false, `Name` не выбрано для обновления
+// Changed("Name") => false, `Name` not selected to update
 ```
 
 ### Change Updating Values

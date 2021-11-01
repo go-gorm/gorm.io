@@ -1,6 +1,6 @@
 ---
 title: Gelişmiş Sorgu
-layout: page
+layout: sayfa
 ---
 
 ## <span id="smart_select">Akıllı Alan Seçimi</span>
@@ -113,14 +113,14 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+Daha fazla detay için [Raw SQL ve SQL Builder](sql_builder.html#named_argument)
 
-## Find To Map
+## Map ile Arama
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+Gorm sonuçları `map[string]interface{}` yada `[]map[string]interface{}` şeklinde aramanızı destekler, alanları `Model` yada `Table` şeklinde belirtmeyi unutmayın, örnek olarak:
 
 ```go
-var result map[string]interface{}
+result := map[string]interface{}{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}
@@ -179,15 +179,15 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions)
+Oluşturulmuşsa ilk kaydı getirir, aksi halde verilen koşullar doğrultusunda yeni bir kayıt oluşturur(sadece struct map koşullarıyla çalışır)
 
 ```go
-// User not found, create a new record with give conditions
+// User bulunamadı, verilen koşullarla yeni bir tane oluştur
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Bu koşulla User bulundu `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
@@ -250,7 +250,7 @@ Refer [Optimizer Hints/Index/Comment](hints.html) for more details
 
 ## Iteration
 
-GORM supports iterating through Rows
+GORM Satırlar arasında gezinmenize olanak sağlar
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -362,7 +362,7 @@ Checkout [Scopes](scopes.html) for details
 
 ## <span id="count">Count</span>
 
-Get matched records count
+Eşleşmiş kayıtların sayısı
 
 ```go
 var count int64

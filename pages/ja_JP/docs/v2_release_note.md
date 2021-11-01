@@ -8,13 +8,13 @@ GORM2.0はスクラッチから書き直しているため、互換性のないA
 **Highlights**
 
 * パフォーマンスの改善
-* Modularity
-* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
-* Nested Transaction/SavePoint/RollbackTo SavePoint supports
-* SQL Builder, Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements, CRUD with SQL Expr and Context Valuer
-* Full self-reference relationships support, Join Table improvements, Association Mode for batch data
+* モジュール化
+* Contextへの対応、Batch Insertの追加、Prepared State Modeの追加、DryRun Modeの追加、Join Preload機能の追加、Find結果のマップへの変換、マップでのCreate、FindInBatchesのサポート
+* トランザクションのネスト、セーブポイント、セーブポイントへのロールバックのサポート
+* SQL Builder、名前付き引数、集約条件、Upsert、ロック、Optimizer/Index/Comment Hintsのサポート、サブクエリの改善、SQL式とContext ValuerによるCRUD
+* 自己参照の完全なサポート、テーブル結合の改善、大量データでのAssociation Modeの対応
 * Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
+* フィールド権限のサポート：読み取り専用、書き込み専用、作成専用、更新専用、無視するフィールド
 * New plugin system, provides official plugins for multiple databases, read/write splitting, prometheus integrations...
 * New Hooks API: unified interface with plugins
 * New Migrator: allows to create database foreign keys for relationships, smarter AutoMigrate, constraints/checker support, enhanced index support
@@ -92,7 +92,7 @@ db.CreateInBatches(users, 100)
 
 #### Prepared Statement Mode
 
-Prepared Statement Mode creates prepared stmt and caches them to speed up future calls
+Prepared Statement Mode はプリペアドステートメントを作成し、またその後の呼出を高速化するためにそれらをキャッシュします。
 
 ```go
 // globally mode, all operations will create prepared stmt and cache to speed up
@@ -107,7 +107,7 @@ tx.Model(&user).Update("Age", 18)
 
 #### DryRun Mode
 
-Generates SQL without executing, can be used to check or test generated SQL
+SQLを実行せずに生成のみ行い、生成されたSQLを確認またはテストするために使用できます。
 
 ```go
 stmt := db.Session(&Session{DryRun: true}).Find(&user, 1).Statement
@@ -116,26 +116,26 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
-#### Join Preload
+#### Joins による Preload
 
-Preload associations using INNER JOIN, and will handle null data to avoid failing to scan
+INNER JOIN を使用して関連データをPreloadし、scanに失敗しないようnullデータのハンドリングも行います。
 
 ```go
 db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2})
 ```
 
-#### Find To Map
+#### 取得結果をマップに代入
 
-Scan result to `map[string]interface{}` or `[]map[string]interface{}`
+レコードの取得結果を `map[string]interface{}` や `[]map[string]interface{}` にscanすることができます。
 
 ```go
 var result map[string]interface{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 ```
 
-#### Create From Map
+#### Mapを使ってレコードを作成する
 
-Create from map `map[string]interface{}` or `[]map[string]interface{}`
+`map[string]interface{}` や `[]map[string]interface{}` でレコードを作成することができます。
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{"Name": "jinzhu", "Age": 18})
@@ -150,7 +150,7 @@ db.Model(&User{}).Create(datas)
 
 #### FindInBatches
 
-Query and process records in batch
+バッチ処理におけるクエリやレコード処理を行うことができます。
 
 ```go
 result := db.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {

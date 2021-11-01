@@ -120,7 +120,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 GORM 允许扫描结果至 `map[string]interface{}` 或 `[]map[string]interface{}`，此时别忘了指定 `Model` 或 `Table`，例如：
 
 ```go
-var result map[string]interface{}
+result := map[string]interface{}{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}

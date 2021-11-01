@@ -1,6 +1,6 @@
 ---
 title: Conventions
-layout: page
+layout: sayfa
 ---
 
 ## `ID` as Primary Key

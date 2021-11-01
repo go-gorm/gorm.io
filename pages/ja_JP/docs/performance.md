@@ -1,13 +1,13 @@
 ---
-title: Performance
+title: パフォーマンス
 layout: page
 ---
 
-GORM optimizes many things to improve the performance, the default performance should good for most applications, but there are still some tips for how to improve it for your application.
+GORMは、パフォーマンスを向上させるために多くの最適化を行っています。デフォルトのパフォーマンスはほとんどのアプリケーションにとって良いものとなっているでしょう。 しかし、アプリケーションのパフォーマンスを向上させるテクニックがまだいくつかあります。
 
-## [Disable Default Transaction](transactions.html)
+## [デフォルトトランザクションを無効にする](transactions.html)
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization
+GORMはデータの一貫性を確保するために、書き込み操作（作成/更新/削除）をトランザクション内で実行します。これはパフォーマンスにとっては悪影響を及ぼしますが、初期化中に無効にすることも可能です。
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -15,9 +15,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## [Caches Prepared Statement](session.html)
+## [プリペアードステートメントをキャッシュする](session.html)
 
-Creates a prepared statement when executing any SQL and caches them to speed up future calls
+SQLを実行する際にプリペアードステートメントを作成し、以降の呼び出しを高速化するためにそれをキャッシュすることができます。
 
 ```go
 // Globally mode
@@ -33,12 +33,12 @@ tx.Model(&user).Update("Age", 18)
 ```
 
 {% note warn %}
-**NOTE** Also refer how to enable interpolateparams for MySQL to reduce roundtrip https://github.com/go-sql-driver/mysql#interpolateparams
+**注** ラウンドトリップを減らすためにMySQLのinterpolateparamsを有効にする方法も参照するとよいでしょう。 https://github.com/go-sql-driver/mysql#interpolateparams
 {% endnote %}
 
-### [SQL Builder with PreparedStmt](sql_builder.html)
+### [プリペアードステートメントを用いたSQL Builder](sql_builder.html)
 
-Prepared Statement works with RAW SQL also, for example:
+プリペアードステートメントは RAW SQL とも併用できます。例：
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -48,17 +48,17 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
+GORM APIを使用することも可能です。[DryRun Mode](session.html) を使用してSQLの準備を行い、後の処理でそのSQLをプリペアードステートメントとともに実行することができます。詳細については、[Session Mode](session.html) を参照してください。
 
-## Select Fields
+## フィールドを選択する
 
-By default GORM select all fields when querying, you can use `Select` to specify fields you want
+デフォルトの設定では、クエリ実行時にすべてのフィールドが選択されます。 `Select` を使用して、必要なフィールドを指定できます。
 
 ```go
 db.Select("Name", "Age").Find(&Users{})
 ```
 
-Or define a smaller API struct to use the [smart select fields feature](advanced_query.html)
+または、 [便利なフィールドの選択](advanced_query.html) を使用するために、よりフィールド数を少なくした構造体を定義します。
 
 ```go
 type User struct {
@@ -81,11 +81,11 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 
 ## [Iteration / FindInBatches](advanced_query.html)
 
-Query and process records with iteration or in batches
+イテレーションやバッチ処理でのクエリやレコード処理をすることも可能です。
 
-## [Index Hints](hints.html)
+## [インデックスヒント](hints.html)
 
-[Index](indexes.html) is used to speed up data search and SQL query performance. `Index Hints` gives the optimizer information about how to choose indexes during query processing, which gives the flexibility to choose a more efficient execution plan than the optimizer
+[Index](indexes.html) はデータ検索とSQLクエリのパフォーマンスを高速化するために使用されます。 `Index Hints` は、クエリ処理で使用するべきインデックスの情報をオプティマイザに提供します。これにより、オプティマイザのものよりも効率的な実行計画を指定できるようになります。
 
 ```go
 import "gorm.io/hints"
@@ -103,6 +103,6 @@ db.Clauses(
 // SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
 ```
 
-## Read/Write Splitting
+## 読み取り/書き込みの分離
 
-Increase data throughput through read/write splitting, check out [Database Resolver](dbresolver.html)
+読み取り/書き込み処理の分離により、スループットを向上させることも可能です。詳細については [Database Resolover](dbresolver.html) を確認してください。

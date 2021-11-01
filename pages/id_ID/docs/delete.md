@@ -76,11 +76,28 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
+### Returning Data From Deleted Rows
+
+Return deleted data, only works for database support Returning, for example:
+
+```go
+// return all columns
+var users = []User
+DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
+// DELETE FROM `users` WHERE role = "admin" RETURNING *
+// users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
+
+// return specified columns
+DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
+// DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
+// users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
+```
+
 ## Soft Delete
 
-Jika di dalam model anda menyertakan file`gorm.DeleteAt`  bidang termasuk dalam `gorm.Model`, itu dapat menghapus ability secara otomatis
+If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
 
-Saat memanggil`Code` ,  data tidak akan di hapus dari database , tapi, GORM akan mengatur `DeletedAt`  nilai dari saat ini  dan data tidak akan di temukan lagi jika ita menggunakan metode query biasa.
+When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
 
 ```go
 // user's ID is `111`
@@ -96,7 +113,7 @@ db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-Jika kamu tidak akan memasukkan `gorm.Model`, kamu bisa  mengaktifkan fitur hapus soft
+If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
 
 ```go
 type User struct {
@@ -108,7 +125,7 @@ type User struct {
 
 ### Find soft deleted records
 
-Anda dapat menemukandata record yang di hapusdengan`Unscoped`
+You can find soft deleted records with `Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
@@ -117,7 +134,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ### Delete permanently
 
-Anda dapat menghapus record yang cocok secara permanen dengan menggunakan Unscoped
+You can delete matched records permanently with `Unscoped`
 
 ```go
 db.Unscoped().Delete(&order)

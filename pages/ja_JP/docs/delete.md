@@ -76,27 +76,44 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-## 論理削除
+### 削除されたレコードのデータを返却する
 
-モデルに `gorm.DeletedAt` フィールド ( `gorm.Model`に含まれている) が存在している場合、削除時は自動的にSoft Deleteが実行されるようになります!
-
-`Delete`メソッドを呼び出しても、 レコードはデータベースから削除されません。代わりに、GORMは`DeletedAt`フィールドの値に現在の時刻を設定し、そのレコードは通常のクエリメソッドでは検索できなくなります。
+Returningをサポートしているデータベースであれば、削除されたデータを取得することができます。例：
 
 ```go
-// user's ID is `111`
+// すべてのカラムを返却する
+var users = []User
+DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
+// DELETE FROM `users` WHERE role = "admin" RETURNING *
+// users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
+
+// 指定のカラムのみ返却する
+DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
+// DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
+// users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
+```
+
+## 論理削除
+
+(`gorm.Model`にも含まれている) `gorm.DeletedAt` フィールドがモデルに含まれている場合、そのモデルは自動的に論理削除されるようになります。
+
+`Delete` メソッドを実行した際、レコードはデータベースから物理削除されません。代わりに、`DeletedAt` フィールドに現在の時刻が設定され、そのレコードは通常のクエリ系のメソッドでは検索できなくなります。
+
+```go
+// userのIDは`111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// 一括削除
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when querying
+// 論理削除されたレコードは取得処理時に無視されます
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-モデルに`gorm.Model`を含めたくない場合、以下のようにして論理削除機能を有効にできます。
+モデルに `gorm.Model` を含めたくない場合は、以下のようにすることで論理削除機能を有効にできます。
 
 ```go
 type User struct {
@@ -117,7 +134,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ### 完全な削除（物理削除）
 
-`Unscoped`を用いることで、条件に一致したレコードを物理削除できます。
+`Unscoped`を用いることで、レコードを物理削除できます。
 
 ```go
 db.Unscoped().Delete(&order)
@@ -126,7 +143,7 @@ db.Unscoped().Delete(&order)
 
 ### 削除フラグ
 
-UNIXタイムスタンプを削除フラグとして使用する
+UNIXタイムスタンプを削除フラグとして使用することができます。
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -158,7 +175,7 @@ type User struct {
 ```
 {% endnote %}
 
-`1` / `0` を削除フラグとして使用する
+`1` / `0` を削除フラグとして使用する。
 
 ```go
 import "gorm.io/plugin/soft_delete"

@@ -3,11 +3,11 @@ title: Prometheus
 layout: page
 ---
 
-GORM provides Prometheus plugin to collect [DBStats](https://pkg.go.dev/database/sql?tab=doc#DBStats) or user-defined metrics
+GORMはPrometheusプラグインを提供しており、これを利用して [DBStats](https://pkg.go.dev/database/sql?tab=doc#DBStats) やユーザー定義のメトリクスを収集することができます。
 
 https://github.com/go-gorm/prometheus
 
-## Usage
+## 使い方
 
 ```go
 import (
@@ -32,9 +32,9 @@ db.Use(prometheus.New(prometheus.Config{
 }))
 ```
 
-## User-Defined Metrics
+## ユーザー定義のメトリクス
 
-You can define your metrics and collect them with GORM Prometheus plugin, which needs to implements `MetricsCollector` interface
+Prometheusプラグインを使用して、メトリクスの定義、またそれを収集することができます。 これには `MetricsCollector` インターフェースの実装が必要になります。
 
 ```go
 type MetricsCollector interface {
@@ -44,7 +44,7 @@ type MetricsCollector interface {
 
 ### MySQL
 
-GORM provides an example for how to collect MySQL Status as metrics, check it out [prometheus.MySQL](https://github.com/go-gorm/prometheus/blob/master/mysql.go)
+以下はMySQLのステータスをメトリクスとして収集する例です。詳細は [prometheus.MySQL](https://github.com/go-gorm/prometheus/blob/master/mysql.go) をチェックしてください。
 
 ```go
 &prometheus.MySQL{

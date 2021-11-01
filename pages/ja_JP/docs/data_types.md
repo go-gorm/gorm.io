@@ -1,17 +1,17 @@
 ---
-title: Customize Data Types
+title: データ型のカスタマイズ
 layout: page
 ---
 
-GORM provides few interfaces that allow users to define well-supported customized data types for GORM, takes [json](https://github.com/go-gorm/datatypes/blob/master/json.go) as an example
+GORMで使用できる独自のデータ型をユーザ自身で定義できるようにするために、GORMにはいくつかのインターフェースが用意されています。[json](https://github.com/go-gorm/datatypes/blob/master/json.go) を例として参照してみるとよいでしょう。
 
-## Implements Customized Data Type
+## 独自のデータ型を実装する
 
 ### Scanner / Valuer
 
-The customized data type has to implement the [Scanner](https://pkg.go.dev/database/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces, so GORM knowns to how to receive/save it into the database
+独自のデータ型を使用するためには、[Scanner](https://pkg.go.dev/database/sql#Scanner) と [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイを実装する必要があります。これらのインターフェイスを実装することで、DBからの値の取得処理やDBへの保存処理をGORMが行うことが可能になります。
 
-For example:
+例：
 
 ```go
 type JSON json.RawMessage
@@ -38,7 +38,7 @@ func (j JSON) Value() (driver.Value, error) {
 }
 ```
 
-There are many third party packages implement the `Scanner`/`Valuer` interface, which can be used with GORM together, for example:
+多くのサードパーティ製パッケージが `Scanner`/`Valuer` インターフェイスを実装しており、それらはGORMと併用することができます。例：
 
 ```go
 import (
@@ -55,7 +55,7 @@ type Post struct {
 
 ### GormDataTypeInterface
 
-GORM will read column's database type from [tag](models.html#tags) `type`, if not found, will check if the struct implemented interface `GormDBDataTypeInterface` or `GormDataTypeInterface` and will use its result as data type
+GORMはカラムのデータ型を `type` [tag](models.html#tags) から読み取ります。タグが指定されていない場合は、`GormDBDataTypeInterface` か `GormDataTypeInterface` が実装されているかをチェックします。インターフェイスが実装されている場合は、インターフェイスのメソッドの結果をデータ型として使用します。
 
 ```go
 type GormDataTypeInterface interface {
@@ -67,7 +67,7 @@ type GormDBDataTypeInterface interface {
 }
 ```
 
-The result of `GormDataType` will be used as the general data type and can be obtained from `schema.Field`'s field `DataType`, which might be helpful when [writing plugins](write_plugins.html) or [hooks](hooks.html) for example:
+`GormDataType` メソッドの返却値は通常のデータ型として使用され、`schema.Field` の `DataType` からも取得できます。これは [プラグインを作成する](write_plugins.html) 際や [hooksを利用する](hooks.html) 際に役立ちます。例：
 
 ```go
 func (JSON) GormDataType() string {
@@ -86,7 +86,7 @@ func (user User) BeforeCreate(tx *gorm.DB) {
 }
 ```
 
-`GormDBDataType` usually returns the right data type for current driver when migrating, for example:
+`GormDBDataType` は通常、マイグレーション時に使用しているドライバに適切なデータ型を返します。例：
 
 ```go
 func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
@@ -104,22 +104,22 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 }
 ```
 
-If the struct hasn't implemented the `GormDBDataTypeInterface` or `GormDataTypeInterface` interface, GORM will guess its data type from the struct's first field, for example, will use `string` for `NullString`
+構造体が `GormDBDataTypeInterface` や `GormDataTypeInterface` インターフェイスを実装していない場合、GORMはその構造体の一番最初のフィールドからデータ型を推測します。例えば以下の `NullString` では `string` がデータ型として使用されます。
 
 ```go
 type NullString struct {
-  String string // use the first field's data type
+  String string // 最初のフィールドのデータ型を使用する
   Valid  bool
 }
 
 type User struct {
-  Name NullString // data type will be string
+  Name NullString // データ方は string となる
 }
 ```
 
 ### <span id="gorm_valuer_interface">GormValuerInterface</span>
 
-GORM provides a `GormValuerInterface` interface, which can allow to create/update from SQL Expr or value based on context, for example:
+GORMは `GormValuerInterface` インターフェイスを提供しています。これにより、SQL式での作成/更新やコンテキストに基づいた値での作成/更新を行うことができます。例：
 
 ```go
 // GORM Valuer interface
@@ -128,7 +128,7 @@ type GormValuerInterface interface {
 }
 ```
 
-#### Create/Update from SQL Expr
+#### SQL Expr での作成/更新
 
 ```go
 type Location struct {
@@ -170,11 +170,11 @@ db.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`location`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-You can also create/update with SQL Expr from map, checkout [Create From SQL Expr](create.html#create_from_sql_expr) and [Update with SQL Expression](update.html#update_from_sql_expr) for details
+マップを使用した SQL Expr でレコードを作成/更新することもできます。詳細については、 [SQL式/Context Valuer で作成する](create.html#create_from_sql_expr) および [SQL式で更新する](update.html#update_from_sql_expr) をチェックしてください。
 
-#### Value based on Context
+#### コンテキストに基づく値
 
-If you want to create or update a value depends on current context, you can also implements the `GormValuerInterface` interface, for example:
+現在のコンテキストに基づいて値を作成または更新したい場合は、 `GormValuerInterface` インターフェイスを実装することで実現可能です。
 
 ```go
 type EncryptedString struct {
@@ -194,7 +194,7 @@ func (es EncryptedString) GormValue(ctx context.Context, db *gorm.DB) (expr clau
 
 ### Clause Expression
 
-If you want to build some query helpers, you can make a struct that implements the `clause.Expression` interface:
+クエリヘルパーを構築したい場合、`clause.Expression` インターフェイスを実装する構造体を作成することで実現することができます。
 
 ```go
 type Expression interface {
@@ -202,10 +202,10 @@ type Expression interface {
 }
 ```
 
-Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) and [SQL Builder](sql_builder.html#clauses) for details, the following is an example of usage:
+詳細については [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) と [SQL Builder](sql_builder.html#clauses) を確認してください。以下は使い方の例です：
 
 ```go
-// Generates SQL with clause Expression
+// clause.Expression を使用してSQLを生成する
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("role"))
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 
@@ -225,6 +225,6 @@ db.Find(&user, datatypes.JSONQuery("attributes").Equals("jinzhu", "name"))
 // SELECT * FROM "user" WHERE json_extract_path_text("attributes"::json,'name') = 'jinzhu'
 ```
 
-## Customized Data Types Collections
+## 独自データ型のコレクション
 
-We created a Github repo for customized data types collections [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), pull request welcome ;)
+[https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes) のGithubリポジトリに独自データ型のコレクションを用意しています。プルリクエストを歓迎しています！

@@ -5,12 +5,12 @@ layout: page
 
 ## Many To Many
 
-Many to Many add a join table between two models.
+Many to Many では2つのモデル間に結合テーブルを追加します。
 
-For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
+例えばユーザと言語について考えると、ユーザは複数の言語を話すことができ、また複数のユーザが特定の言語を話すことができるとした場合、以下のようになります。
 
 ```go
-// User has and belongs to many languages, `user_languages` is the join table
+// User は複数の言語を所有し、かつ言語に属しています。`user_languages` が結合テーブルになります
 type User struct {
   gorm.Model
   Languages []Language `gorm:"many2many:user_languages;"`
@@ -22,12 +22,12 @@ type Language struct {
 }
 ```
 
-When using GORM `AutoMigrate` to create a table for `User`, GORM will create the join table automatically
+GORMの `AutoMigrate` を使用して `User` テーブルを作成する場合、GORMは自動的に結合テーブルを作成します。
 
-## Back-Reference
+## 後方参照（Back-Reference）
 
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// User は複数の言語を所有し、かつ言語に属しています。`user_languages` が結合テーブルになります
 type User struct {
   gorm.Model
   Languages []*Language `gorm:"many2many:user_languages;"`
@@ -40,9 +40,9 @@ type Language struct {
 }
 ```
 
-## Override Foreign Key
+## 外部キーのデフォルト設定を上書きする
 
-For a `many2many` relationship, the join table owns the foreign key which references two models, for example:
+`many2many` リレーションでは、結合テーブルは2つのモデルを参照する外部キーを持ちます。例：
 
 ```go
 type User struct {
@@ -60,7 +60,7 @@ type Language struct {
 //   foreign key: language_id, reference: languages.id
 ```
 
-To override them, you can use tag `foreignKey`, `references`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
+デフォルトの設定を上書くには、`foreignKey`、`references`、`joinForeignKey`、`joinReferences` などのタグを使用します。これらを全て指定する必要はなく、1つのみ使用して外部キー／参照の設定を上書きすることも可能です。
 
 ```go
 type User struct {
@@ -81,12 +81,12 @@ type Profile struct {
 ```
 
 {% note warn %}
-**NOTE:** Some databases only allow create database foreign keys that reference on a field having unique index, so you need to specify the `unique index` tag if you are creating database foreign keys when migrating
+**注意** いくつかのデータベースでは、外部キーが参照するフィールドにユニークインデックスを設定する必要があります。そのため、それらのデータベースでのマイグレーションで外部キーを作成する場合は、`uniqueIndex` タグを指定する必要があります。
 {% endnote %}
 
-## Self-Referential Many2Many
+## Many2Many での自己参照
 
-Self-referencing many2many relationship
+many2manyリレーションにおける自己参照も可能です。
 
 ```go
 type User struct {
@@ -101,18 +101,18 @@ type User struct {
 
 ## Eager Loading
 
-GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
+GORMでは、 `Preload` を使うことで、many2manyリレーションの Eager Loadingを行うことができます。詳細については [Preload (Eager loading)](preload.html) を参照してください。
 
-## CRUD with Many2Many
+## Many2ManyリレーションでのCRUD処理
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with many2many relations
+many2many リレーションを使った処理の詳細については [Association Mode](associations.html#Association-Mode) を参照してください。
 
-## Customize JoinTable
+## 結合テーブルをカスタマイズする
 
-`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can setup it with `SetupJoinTable`, for example:
+`Join Table`（結合テーブル）は、`Soft Delete`、`Hooks`などをサポートしたり、外部キー以外のフィールドを持つようなフル機能のモデルとして定義できます。これの設定には `SetupJoinTable` を使用します。例：
 
 {% note warn %}
-**NOTE:** Customized join table's foreign keys required to be composited primary keys or composited unique index
+**注意：** 結合テーブルをカスタマイズする場合、結合テーブルの外部キーを複合主キーにする、あるいは外部キーに複合ユニークインデックスを貼る必要があります。
 {% endnote %}
 
 ```go
@@ -138,14 +138,14 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// Change model Person's field Addresses' join table to PersonAddress
-// PersonAddress must defined all required foreign keys or it will raise error
+// PersonモデルのAddressフィールドの結合テーブルをPersonAddressに変更する
+// PersonAddressには必要な外部キーが全て定義されていなければならず、定義されていない場合はエラーとなる
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
-## FOREIGN KEY Constraints
+## 外部キー制約
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+`constraint` タグを使用することで、 `OnUpdate`, `OnDelete` の制約を掛けることができます。指定した制約はGORMを使ったマイグレーション実行時に作成されます。例：
 
 ```go
 type User struct {
@@ -161,13 +161,13 @@ type Language struct {
 // CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
-You are also allowed to delete selected many2many relations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+削除時に `Select` を使用することで、 指定した many2many リレーションも削除することができます。詳細については [Delete with Select](associations.html#delete_with_select) を参照してください。
 
-## Composite Foreign Keys
+## 複合外部キー
 
-If you are using [Composite Primary Keys](composite_primary_key.html) for your models, GORM will enable composite foreign keys by default
+モデルに [複合主キー](composite_primary_key.html) を定義している場合、GORMはデフォルトで複合外部キーを有効化します。
 
-You are allowed to override the default foreign keys, to specify multiple foreign keys, just separate those keys' name by commas, for example:
+デフォルトの外部キーを上書いて、複数の外部キーを指定することができます。指定するにはキー名をカンマで区切るだけです。例：
 
 ```go
 type Tag struct {
@@ -202,4 +202,4 @@ type Blog struct {
 //   foreign key: tag_id, reference: tags.id
 ```
 
-Also check out [Composite Primary Keys](composite_primary_key.html)
+[複合主キー](composite_primary_key.html) も参照するとよいでしょう。

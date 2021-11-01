@@ -5,10 +5,10 @@ layout: page
 
 ## Auto Migration
 
-スキーマを自動的にマイグレーションし、スキーマを最新の状態に保ちます。
+スキーマ定義のマイグレーションを自動で行い、スキーマを最新の状態に保ちます。
 
 {% note warn %}
-**注意:** AutoMigrate はテーブル、外部キー、制約、カラム、インデックスを作成します。 カラムのサイズ、精度、null可否などが変更された場合、既存のカラムの型を変更します。 しかし、あなたのデータを守るために、カラムの削除などの処理は**実行されません**
+**注意:** AutoMigrate はテーブル、外部キー、制約、カラム、インデックスを作成します。 カラムのサイズ、精度、null可否などが変更された場合、既存のカラムの型を変更します。 しかし、データを守るために、使われなくなったカラムの削除は**実行されません**。
 {% endnote %}
 
 ```go
@@ -86,21 +86,21 @@ db.Migrator().CurrentDatabase()
 ### Tables
 
 ```go
-// Create table for `User`
+// `User` テーブルを作成する
 db.Migrator().CreateTable(&User{})
 
-// Append "ENGINE=InnoDB" to the creating table SQL for `User`
+// `User` テーブル作成時のSQLに "ENGINE=InnoDB" を追加する
 db.Set("gorm:table_options", "ENGINE=InnoDB").Migrator().CreateTable(&User{})
 
-// Check table for `User` exists or not
+// `User` テーブルが存在するかどうかをチェックする
 db.Migrator().HasTable(&User{})
 db.Migrator().HasTable("users")
 
-// Drop table if exists (will ignore or delete foreign key constraints when dropping)
+// テーブルが存在する場合はDropする（外部キー制約は無視するか削除する）
 db.Migrator().DropTable(&User{})
 db.Migrator().DropTable("users")
 
-// Rename old table to new table
+// テーブル名を新しいものに変更する
 db.Migrator().RenameTable(&User{}, &UserInfo{})
 db.Migrator().RenameTable("users", "user_infos")
 ```
@@ -112,13 +112,13 @@ type User struct {
   Name string
 }
 
-// Add name field
+// nameフィールドを追加する
 db.Migrator().AddColumn(&User{}, "Name")
-// Drop name field
+// nameフィールドを削除する
 db.Migrator().DropColumn(&User{}, "Name")
-// Alter name field
+// nameフィールドを変更する
 db.Migrator().AlterColumn(&User{}, "Name")
-// Check column exists
+// カラムが存在するかチェックする
 db.Migrator().HasColumn(&User{}, "Name")
 
 type User struct {
@@ -126,7 +126,7 @@ type User struct {
   NewName string
 }
 
-// Rename column to new name
+// カラム名を変更する
 db.Migrator().RenameColumn(&User{}, "Name", "NewName")
 db.Migrator().RenameColumn(&User{}, "name", "new_name")
 
@@ -134,24 +134,24 @@ db.Migrator().RenameColumn(&User{}, "name", "new_name")
 db.Migrator().ColumnTypes(&User{}) ([]*sql.ColumnType, error)
 ```
 
-### Constraints
+### Constraints（制約）
 
 ```go
 type UserIndex struct {
   Name  string `gorm:"check:name_checker,name <> 'jinzhu'"`
 }
 
-// Create constraint
+// 制約の作成
 db.Migrator().CreateConstraint(&User{}, "name_checker")
 
-// Drop constraint
+// 制約の削除
 db.Migrator().DropConstraint(&User{}, "name_checker")
 
-// Check constraint exists
+// 制約が存在するかチェックする
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
-Create foreign keys for relations
+リレーション用の外部キーを作成することもできます。
 
 ```go
 type User struct {
@@ -165,21 +165,21 @@ type CreditCard struct {
   UserID uint
 }
 
-// create database foreign key for user & credit_cards
+// user と credit_cards で使用するための外部キーを作成する
 db.Migrator().CreateConstraint(&User{}, "CreditCards")
 db.Migrator().CreateConstraint(&User{}, "fk_users_credit_cards")
 // ALTER TABLE `credit_cards` ADD CONSTRAINT `fk_users_credit_cards` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 
-// check database foreign key for user & credit_cards exists or not
+// user と credit_cards で使用する外部キーが存在するかチェックする
 db.Migrator().HasConstraint(&User{}, "CreditCards")
 db.Migrator().HasConstraint(&User{}, "fk_users_credit_cards")
 
-// drop database foreign key for user & credit_cards
+// user と credit_cards で使用する外部キーを削除する
 db.Migrator().DropConstraint(&User{}, "CreditCards")
 db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
 ```
 
-### Indexes
+### Index
 
 ```go
 type User struct {
@@ -187,15 +187,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// Create index for Name field
+// Nameフィールドにインデックスを作成する
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// Drop index for Name field
+// Nameフィールドのインデックスを削除する
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// Check Index exists
+// インデックスが存在するかチェックする
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -204,18 +204,18 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// Rename index name
+// インデックス名を変更する
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
-## Constraints
+## 制約
 
-GORMは、テーブルの自動マイグレーション時や作成時に制約を作成します。詳細は [Constraints](constraints.html) または [Database Indexes](indexes.html) を参照してください。
+GORMは、テーブルの自動マイグレーション時や作成時に制約を作成します。詳細は [制約](constraints.html) または [インデックス](indexes.html) を参照してください。
 
-## Other Migration Tools
+## その他のマイグレーションツール
 
-GORMのAutoMigrateはほとんどのケースでうまく機能しますが、より本格的なスキーママイグレーションツールを利用する際は、、GORMが提供している一般的なDBインターフェースが役に立ちます
+GORMのAutoMigrateはほとんどのケースでうまく機能しますが、より本格的なスキーママイグレーションツールを利用する際は、GORMが提供している一般的なDBインターフェースが役に立ちます
 
 ```go
 // returns `*sql.DB`

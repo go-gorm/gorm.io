@@ -120,7 +120,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 GORM은 `map[string]interface{}` 또는 `[]map[string]interface{}` 을 통해 결과값을 조회 할 수 있으며, 특정 `Model` 또는 `Table` 을 빠트리지 마십시오.
 
 ```go
-var result map[string]interface{}
+result := map[string]interface{}{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 
 var results []map[string]interface{}
