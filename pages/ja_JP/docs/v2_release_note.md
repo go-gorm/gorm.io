@@ -107,7 +107,7 @@ tx.Model(&user).Update("Age", 18)
 
 #### DryRun Mode
 
-Generates SQL without executing, can be used to check or test generated SQL
+SQLを実行せずに生成のみ行い、生成されたSQLを確認またはテストするために使用できます。
 
 ```go
 stmt := db.Session(&Session{DryRun: true}).Find(&user, 1).Statement
@@ -116,7 +116,7 @@ stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = ?  // MySQL
 stmt.Vars         //=> []interface{}{1}
 ```
 
-#### Join Preload
+#### Joins による Preload
 
 Preload associations using INNER JOIN, and will handle null data to avoid failing to scan
 
