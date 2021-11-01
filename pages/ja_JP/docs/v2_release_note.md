@@ -118,24 +118,24 @@ stmt.Vars         //=> []interface{}{1}
 
 #### Joins による Preload
 
-Preload associations using INNER JOIN, and will handle null data to avoid failing to scan
+INNER JOIN を使用して関連データをPreloadし、scanに失敗しないようnullデータのハンドリングも行います。
 
 ```go
 db.Joins("Company").Joins("Manager").Joins("Account").Find(&users, "users.id IN ?", []int{1,2})
 ```
 
-#### Find To Map
+#### 取得結果をマップに代入
 
-Scan result to `map[string]interface{}` or `[]map[string]interface{}`
+レコードの取得結果を `map[string]interface{}` や `[]map[string]interface{}` にscanすることができます。
 
 ```go
 var result map[string]interface{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 ```
 
-#### Create From Map
+#### Mapを使ってレコードを作成する
 
-Create from map `map[string]interface{}` or `[]map[string]interface{}`
+`map[string]interface{}` や `[]map[string]interface{}` でレコードを作成することができます。
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{"Name": "jinzhu", "Age": 18})
@@ -150,7 +150,7 @@ db.Model(&User{}).Create(datas)
 
 #### FindInBatches
 
-Query and process records in batch
+バッチ処理におけるクエリやレコード処理を行うことができます。
 
 ```go
 result := db.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
