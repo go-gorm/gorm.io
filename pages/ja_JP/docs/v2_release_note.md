@@ -13,9 +13,9 @@ GORM2.0はスクラッチから書き直しているため、互換性のないA
 * トランザクションのネスト、セーブポイント、セーブポイントへのロールバックのサポート
 * SQL Builder、名前付き引数、集約条件、Upsert、ロック、Optimizer/Index/Comment Hintsのサポート、サブクエリの改善、SQL式とContext ValuerによるCRUD
 * 自己参照の完全なサポート、テーブル結合の改善、大量データでのAssociation Modeの対応
-* Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
+* 複数フィールドでの作成・更新日時のトラッキング、Unix (ミリ・ナノ) 秒でのトラッキングのサポート
 * フィールド権限のサポート：読み取り専用、書き込み専用、作成専用、更新専用、無視するフィールド
-* New plugin system, provides official plugins for multiple databases, read/write splitting, prometheus integrations...
+* 新しいプラグインシステム、複数データベースで使用可能な公式プラグインの提供、読み取り/書き込み分離、prometheusとのインテグレーション
 * 新しいHooksのAPI：プラグインと統合されたインターフェイス
 * 新しいマイグレーション処理：リレーション用の外部キーの作成への対応、スマートなAutoMigrate、制約/checkへの対応、強化されたインデックスのサポート
 * 新しいLogger：contextへの対応、拡張性の向上
@@ -246,7 +246,7 @@ db.Model(&user).Update(
 
 #### Upsert
 
-`clause.OnConflict` provides compatible Upsert support for different databases (SQLite, MySQL, PostgreSQL, SQL Server)
+`clause.OnConflict` は複数のデータベース(SQLite, MySQL, PostgreSQL, SQL Server) に対応したUpsertを提供しています。
 
 ```go
 import "gorm.io/gorm/clause"
@@ -300,9 +300,9 @@ db.Clauses(hints.Comment("select", "master")).Find(&User{})
 // SELECT /*master*/ * FROM `users`;
 ```
 
-Check out [Hints](hints.html) for details
+詳細については [Hints](hints.html) を参照してください。
 
-#### CRUD From SQL Expr/Context Valuer
+#### SQL式/Context Valuer でのCRUD処理
 
 ```go
 type Location struct {
@@ -333,7 +333,7 @@ db.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`point`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-Check out [Customize Data Types](data_types.html#gorm_valuer_interface) for details
+詳細については [データ型のカスタマイズ](data_types.html#gorm_valuer_interface) を参照してください。
 
 #### Field permissions
 
