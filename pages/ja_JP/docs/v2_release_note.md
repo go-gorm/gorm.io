@@ -16,11 +16,11 @@ GORM2.0はスクラッチから書き直しているため、互換性のないA
 * Multiple fields allowed to track create/update time, UNIX (milli/nano) seconds supports
 * フィールド権限のサポート：読み取り専用、書き込み専用、作成専用、更新専用、無視するフィールド
 * New plugin system, provides official plugins for multiple databases, read/write splitting, prometheus integrations...
-* New Hooks API: unified interface with plugins
-* New Migrator: allows to create database foreign keys for relationships, smarter AutoMigrate, constraints/checker support, enhanced index support
-* New Logger: context support, improved extensibility
-* Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
-* Better customized data type support (e.g: JSON)
+* 新しいHooksのAPI：プラグインと統合されたインターフェイス
+* 新しいマイグレーション処理：リレーション用の外部キーの作成への対応、スマートなAutoMigrate、制約/checkへの対応、強化されたインデックスのサポート
+* 新しいLogger：contextへの対応、拡張性の向上
+* 統一された命名規約：テーブル名、フィールド名、結合テーブル名、外部キー、Check制約、インデックス名のルール
+* 独自のデータ型へのさらなるサポート（例：JSON）
 
 ## How To Upgrade
 
@@ -159,7 +159,7 @@ result := db.Where("age>?", 13).FindInBatches(&results, 100, func(tx *gorm.DB, b
 })
 ```
 
-#### Nested Transaction
+#### トランザクションのネスト
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
@@ -192,9 +192,9 @@ tx.RollbackTo("sp1") // rollback user2
 tx.Commit() // commit user1
 ```
 
-#### Named Argument
+#### 名前付き引数
 
-GORM supports use `sql.NamedArg`, `map[string]interface{}` as named arguments
+GORMでは `sql.NamedArg`, `map[string]interface{}` を名前付き引数で使用できます。
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -216,7 +216,7 @@ db.Exec(
 // UPDATE users SET name1 = "jinzhu", name2 = "jinzhu2", name3 = "jinzhu"
 ```
 
-#### Group Conditions
+#### 条件のグループ化
 
 ```go
 db.Where(
@@ -228,7 +228,7 @@ db.Where(
 // SELECT * FROM pizzas WHERE (pizza = 'pepperoni' AND (size = 'small' OR size = 'medium')) OR (pizza = 'hawaiian' AND size = 'xlarge')
 ```
 
-#### SubQuery
+#### サブクエリ
 
 ```go
 // Where SubQuery
