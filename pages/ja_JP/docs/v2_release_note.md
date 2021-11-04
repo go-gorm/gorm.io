@@ -364,19 +364,19 @@ type User struct {
 
 #### 複数データベース、読み取り/書き込み分離
 
-GORM provides multiple databases, read/write splitting support with plugin `DB Resolver`, which also supports auto-switching database/table based on current struct/table, and multiple sources、replicas supports with customized load-balancing logic
+GORMは `DB Resolver` プラグインでの複数データベース接続や読み取り／書き込みの分離をサポートしています。また、構造体やテーブルに基づくデータベースやテーブルの自動切替や、複数DBソース、独自のロードバランシングロジックを用いた複数レプリカもサポートしています。
 
-Check out [Database Resolver](dbresolver.html) for details
+詳細については、 [Database Resolver](dbresolver.html) を参照してください。
 
 #### Prometheus
 
-GORM provides plugin `Prometheus` to collect `DBStats` and user-defined metrics
+GORMは `Prometheus` プラグインを提供しており、これを利用して `DBStats` やユーザー定義のメトリクスを収集することができます。
 
-Check out [Prometheus](prometheus.html) for details
+詳細については [Prometheus](prometheus.html) を参照してください。
 
-#### Naming Strategy
+#### 命名戦略
 
-GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html) for details
+GORMでは、デフォルトの `NamingStrategy` をオーバーライドすることで、デフォルトの命名規約を変更することができます。`NameingStrategy` は `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName` の構築で利用されています。詳細については [GORM Config](gorm_config.html) を参照してください。
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -386,14 +386,14 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 #### Logger
 
-* Context support
-* Customize/turn off the colors in the log
-* Slow SQL log, default slow SQL time is 200ms
-* Optimized the SQL log format so that it can be copied and executed in a database console
+* Context のサポート
+* ログ出力時のカラーのカスタマイズ／出力オフ可能
+* スロークエリログ（デフォルトのスロークエリの基準は200ms）
+* データベースコンソールでのコピー・実行を可能にするSQLログフォーマットを最適化
 
 #### Transaction Mode
 
-By default, all GORM write operations run inside a transaction to ensure data consistency, you can disable it during initialization to speed up write operations if it is not required
+デフォルトでは、すべてのGORMの書き込み操作はデータの一貫性を確保するためにトランザクション内で実行されます。 不要であれば初期化時にこれ無効化して、書き込み操作を高速化することもできます。
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -401,11 +401,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-#### DataTypes (JSON as example)
+#### データ型（例：JSON）
 
-GORM optimizes support for custom types, so you can define a struct to support all databases
+独自型のサポートを最適化し、すべてのデータベースをサポートする構造体を定義することができます。
 
-The following takes JSON as an example (which supports SQLite, MySQL, Postgres, refer: https://github.com/go-gorm/datatypes/blob/master/json.go)
+以下はJSONを例としてあげています。(SQLite、MySQL、Postgresをサポートしています。詳細は https://github.com/go-gorm/datatypes/blob/master/json.go を参照してください。)
 
 ```go
 import "gorm.io/datatypes"
@@ -429,7 +429,7 @@ db.First(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 
 #### Smart Select
 
-GORM allows select specific fields with [`Select`](query.html), and in V2, GORM provides smart select mode if you are querying with a smaller struct
+GORMでは [``Select](query.html) を使用して、特定のフィールドのみ選択することができます。またV2では、より小さい構造体でレコードを取得する場合に向けて、smart select modeを提供しています。
 
 ```go
 type User struct {
