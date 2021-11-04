@@ -335,9 +335,9 @@ db.Model(&User{ID: 1}).Updates(User{
 
 詳細については [データ型のカスタマイズ](data_types.html#gorm_valuer_interface) を参照してください。
 
-#### Field permissions
+#### フィールドに対する権限
 
-Field permissions support, permission levels: read-only, write-only, create-only, update-only, ignored
+フィールド権限のサポートと権限レベル：読み取り専用、書き込み専用、作成専用、更新専用、無視するフィールド
 
 ```go
 type User struct {
@@ -350,19 +350,19 @@ type User struct {
 }
 ```
 
-#### Track creating/updating time/unix (milli/nano) seconds for multiple fields
+#### 複数フィールドでの作成・更新時間のトラッキング／Unix (ミリ・ナノ) 秒でのトラッキング
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix Nano seconds as updating time
-  Updated2  int64 `gorm:"autoUpdateTime:milli"` // Use unix Milli seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  CreatedAt time.Time // 作成時に値がゼロ値の場合、現在時間がセットされる
+  UpdatedAt int       // 更新時、または作成時の値がゼロ値の場合、現在のUNIX秒がセットされる
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // 更新時間としてUNIXナノ秒を使用する
+  Updated2  int64 `gorm:"autoUpdateTime:milli"`// 更新時間としてUNIXミリ秒を使用する
+  Created   int64 `gorm:"autoCreateTime"`      // 作成時間としてUNIX秒を使用する
 }
 ```
 
-#### Multiple Databases, Read/Write Splitting
+#### 複数データベース、読み取り/書き込み分離
 
 GORM provides multiple databases, read/write splitting support with plugin `DB Resolver`, which also supports auto-switching database/table based on current struct/table, and multiple sources、replicas supports with customized load-balancing logic
 
