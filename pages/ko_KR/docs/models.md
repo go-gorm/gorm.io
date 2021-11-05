@@ -78,11 +78,11 @@ If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply 
 
 ```go
 type User struct {
-  CreatedAt time.Time // 생성시간을 기록합니다.
-  UpdatedAt int       // 업데이트 시간을 UnixTime으로 기록합니다. (기본값:0)
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // 업데이트 시간을 UnixTime(nano)로 기록합니다.
-  Updated   int64 `gorm:"autoUpdateTime:milli"`//업데이트 시간을 UnixTime(milli)로 기록합니다.
-  Created   int64 `gorm:"autoCreateTime"`      // 생성시간을 UnixTime으로 기록합니다.
+  CreatedAt time.Time // Set to current time if it is zero on creating
+  UpdatedAt int       // Set to current unix seconds on updating or if it is zero on creating
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix nano seconds as updating time
+  Updated   int64 `gorm:"autoUpdateTime:milli"`// Use unix milli seconds as updating time
+  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
 }
 ```
 
