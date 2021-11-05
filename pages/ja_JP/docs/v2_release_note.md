@@ -455,49 +455,50 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 Association Mode はデータの一括処理をサポートしています。例:
 
 ```go
-// Find all roles for all users
+// 全てのユーザの全役割を取得する
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all user's team
+// 全ユーザのチームからユーザAを削除する
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get unduplicated count of members in all user's team
+// 重複を取り除いた全ユーザのチームの件数を取得する
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, argument's length need to equal to data's length or will returns error
+// 一括処理で `Append` や `Replace` を使用する場合は、それらの関数の引数とデータの数（以下でいう users の数）が一致している必要があります。
+// 一致していない場合はエラーが返却されます
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// 例: 3人のユーザがいて、user1のチームにユーザA、user2のチームにユーザB、user3のチームにユーザABCを全員追加します
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// user1のチームをユーザAのみに、user2のチームをユーザBのみに、user3のチームをユーザABCのみにそれぞれリセットします
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-#### Delete Associations when deleting
+#### レコード削除時に関連付けを削除
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+レコード削除時に `Select` を使用することで、has one / has many / many2many 関係にある関連も同時に削除することができます。例:
 
 ```go
-// delete user's account when deleting user
+// ユーザ削除時に ユーザのアカウントも削除します
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// ユーザ削除時に ユーザの注文とクレジットカードの関連レコードも削除します
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// ユーザ削除時に ユーザ全ての has one / has many / many2many の関連レコードも削除します
 db.Select(clause.Associations).Delete(&user)
 
-// delete user's account when deleting users
+// 複数ユーザ削除時に それぞれのユーザのアカウントも削除します
 db.Select("Account").Delete(&users)
 ```
 
-## Breaking Changes
+## 下位互換性のない変更
 
-We are trying to list big breaking changes or those changes can't be caught by the compilers, please create an issue or pull request [here](https://github.com/go-gorm/gorm.io) if you found any unlisted breaking changes
+大きな破壊的変更やコンパイラで把握できない変更をリスト化しています。記載されていない破壊的変更を見つけた場合は、issue または pull request を [ここ](https://github.com/go-gorm/gorm.io) で作成することをお願いしています。
 
-#### Tags
+#### タグ
 
-* GORM V2 prefer write tag name in `camelCase`, tags in `snake_case` won't works anymore, for example: `auto_increment`, `unique_index`, `polymorphic_value`, `embedded_prefix`, check out [Model Tags](models.html#tags)
-* Tags used to specify foreign keys changed to `foreignKey`, `references`, check out [Associations Tags](associations.html#tags)
+* GORM V2ではタグ名は `camelCase` となり、`snake_case` でのタグは無効になります。（例： `auto_increment`, `unique_index`, `polymorphic_value`, `embedded_prefix`）詳細は [モデルのタグ](models.html#tags) を参照してください。
+* 外部キーを指定するために使用するタグは `foreignKey`, `references` に変更されました。詳細は [アソシエーションのタグ](associations.html#tags) を参照してください。
 
 #### Table Name
 
