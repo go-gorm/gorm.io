@@ -3,7 +3,7 @@ title: Escopos
 layout: page
 ---
 
-Scopes allow you to re-use commonly used logic, the shared logic needs to defined as type `func(*gorm.DB) *gorm.DB`
+Scopes allow you to re-use commonly used logic, the shared logic needs to be defined as type `func(*gorm.DB) *gorm.DB`
 
 ## Query
 
