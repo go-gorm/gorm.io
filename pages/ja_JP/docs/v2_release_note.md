@@ -452,7 +452,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 
 #### Associations Batch Mode
 
-Association Mode supports batch data, e.g:
+Association Mode はデータの一括処理をサポートしています。例:
 
 ```go
 // Find all roles for all users
