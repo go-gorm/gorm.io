@@ -3,7 +3,7 @@ title: Scopes
 layout: page
 ---
 
-Scopes allow you to re-use commonly used logic, the shared logic needs to be defined as type `func(*gorm.DB) *gorm.DB`
+Scopes を利用することで、共通で使用されるロジックを再利用することができます。共有ロジックは `func(*gorm.DB) *gorm.DB` という型として定義します。
 
 ## レコードの取得
 
