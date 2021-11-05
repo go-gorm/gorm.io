@@ -81,13 +81,13 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 Returningをサポートしているデータベースであれば、削除されたデータを取得することができます。例：
 
 ```go
-// return all columns
+// すべてのカラムを返却する
 var users []User
 DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// return specified columns
+// 指定のカラムのみ返却する
 DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
