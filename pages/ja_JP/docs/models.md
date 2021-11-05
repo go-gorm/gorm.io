@@ -78,11 +78,11 @@ time.Timeの代わりにUNIX (ミリ/ナノ) 秒を保存したい場合、フ�
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updating or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix nano seconds as updating time
-  Updated   int64 `gorm:"autoUpdateTime:milli"`// Use unix milli seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  CreatedAt time.Time // 作成時に値がゼロ値の場合、現在時間がセットされる
+  UpdatedAt int       // 更新時、または作成時の値がゼロ値の場合、現在のUNIX秒がセットされる
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // 更新時間としてUNIXナノ秒を使用する
+  Updated   int64 `gorm:"autoUpdateTime:milli"`// 更新時間としてUNIX msを使用する
+  Created   int64 `gorm:"autoCreateTime"`      // 作成時間としてUNIX秒を使用する
 }
 ```
 
