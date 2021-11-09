@@ -3,8 +3,6 @@ concurrency: 'update-stats'
 
 on:
   schedule:
-    # Run this once per day, towards the end of the day for keeping the most
-    # recent data point most meaningful (hours are interpreted in UTC).
     - cron: "0 23 * * *"
   workflow_dispatch: # Allow for running this manually.
 
@@ -21,7 +19,5 @@ jobs:
       - name: run-ghrs
         uses: jgehrcke/github-repo-stats@v1.1.0
         with:
-          # Define the stats repositories (the repos to fetch stats for and to generate the reports for).
           repository: ${{ matrix.statsRepo }}
-          # Data branch: Branch to push data to (in the data repo).
-          databranch: repo-stats
+          ghtoken: ${{ secrets.ghrs_github_api_token }}
