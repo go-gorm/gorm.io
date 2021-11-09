@@ -23,10 +23,5 @@ jobs:
         with:
           # Define the stats repositories (the repos to fetch stats for and to generate the reports for).
           repository: ${{ matrix.statsRepo }}
-          # Set a GitHub API token that can read the stats
-          # repository, and that can push to the data
-          # repository (which this workflow file lives in),
-          # to store data and the report files.
-          ghtoken: ${{ secrets.ghrs_github_api_token }}
           # Data branch: Branch to push data to (in the data repo).
           databranch: repo-stats
