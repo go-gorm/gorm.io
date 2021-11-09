@@ -82,7 +82,7 @@ Returningをサポートしているデータベースであれば、削除さ�
 
 ```go
 // すべてのカラムを返却する
-var users = []User
+var users []User
 DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}

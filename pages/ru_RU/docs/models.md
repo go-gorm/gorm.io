@@ -79,7 +79,7 @@ GORM использует `CreatedAt`, `UpdatedAt` для отслеживани
 ```go
 type User struct {
   CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updaing or if it is zero on creating
+  UpdatedAt int       // Set to current unix seconds on updating or if it is zero on creating
   Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix nano seconds as updating time
   Updated   int64 `gorm:"autoUpdateTime:milli"`// Use unix milli seconds as updating time
   Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
