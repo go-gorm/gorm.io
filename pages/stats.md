@@ -11,7 +11,7 @@ layout: page
  iframe {
    margin: 0;
    width: 100%;
-   height: 500px;
+   height: 600px;
  }
 </style>
 
