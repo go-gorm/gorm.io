@@ -101,9 +101,18 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## İsimli Argümanlar
+## IN with multiple columns
 
-Gorm isimli argümanları [ `sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) veya `map[string]interface{}{}` ile destekler, örneğin:
+Selecting IN with multiple columns
+
+```go
+db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"jinzhu2", 19, "user"}}).Find(&users)
+// SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
+```
+
+## Named Argument
+
+GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -113,11 +122,11 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Daha fazla detay için [Raw SQL ve SQL Builder](sql_builder.html#named_argument)
+Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
 
-## Map ile Arama
+## Find To Map
 
-Gorm sonuçları `map[string]interface{}` yada `[]map[string]interface{}` şeklinde aramanızı destekler, alanları `Model` yada `Table` şeklinde belirtmeyi unutmayın, örnek olarak:
+GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
 
 ```go
 result := map[string]interface{}{}
@@ -179,15 +188,15 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Oluşturulmuşsa ilk kaydı getirir, aksi halde verilen koşullar doğrultusunda yeni bir kayıt oluşturur(sadece struct map koşullarıyla çalışır)
+Get first matched record or create a new one with given conditions (only works with struct, map conditions)
 
 ```go
-// User bulunamadı, verilen koşullarla yeni bir tane oluştur
+// User not found, create a new record with give conditions
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Bu koşulla User bulundu `name` = `jinzhu`
+// Found user with `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
@@ -250,7 +259,7 @@ Refer [Optimizer Hints/Index/Comment](hints.html) for more details
 
 ## Iteration
 
-GORM Satırlar arasında gezinmenize olanak sağlar
+GORM supports iterating through Rows
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -362,7 +371,7 @@ Checkout [Scopes](scopes.html) for details
 
 ## <span id="count">Count</span>
 
-Eşleşmiş kayıtların sayısı
+Get matched records count
 
 ```go
 var count int64
