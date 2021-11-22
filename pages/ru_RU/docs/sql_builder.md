@@ -76,12 +76,25 @@ db.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = 
 
 ## DryRun Mode
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
+Generate `SQL` and its arguments without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
 
 ```go
 stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
+```
+
+## ToSQL
+
+Returns generated `SQL` without executing.
+
+GORM uses the database/sql's argument placeholders to construct the SQL statement, which will automatically escape arguments to avoid SQL injection, but the generated SQL don't provide the safety guarantees, please only use it for debugging.
+
+```go
+sql := DB.ToSQL(func(tx *gorm.DB) *gorm.DB {
+  return tx.Model(&User{}).Where("id = ?", 100).Limit(10).Order("age desc").Find(&[]User{})
+})
+sql //=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL ORDER BY age desc LIMIT 10
 ```
 
 ## `Row` & `Rows`
@@ -139,7 +152,7 @@ for rows.Next() {
 }
 ```
 
-## Дополнительно
+## Advanced
 
 ### <span id="clauses">Clauses</span>
 
@@ -178,9 +191,9 @@ For different databases, Clauses may generate different SQL, for example:
 
 ```go
 db.Offset(10).Limit(5).Find(&users)
-// Сгенерировано для SQL Server
+// Generated for SQL Server
 // SELECT * FROM "users" OFFSET 10 ROW FETCH NEXT 5 ROWS ONLY
-// Сгенерировано для MySQL
+// Generated for MySQL
 // SELECT * FROM `users` LIMIT 5 OFFSET 10
 ```
 
