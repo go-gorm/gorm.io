@@ -32,6 +32,7 @@ layout: page
 * [go-paginate - cursor-based pagination](https://github.com/raphaelvigee/go-paginate)
 * [zapgorm - Uber's Zap logging driver for gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber's Zap logging driver for gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
+* [gorm-newrelic-telemetry-plugin - A plugin to allow telemetry by NewRelic Go Agent for GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
 
 ## <span id="contribute">Contribute to this page</span>
 
