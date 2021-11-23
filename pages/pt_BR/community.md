@@ -20,6 +20,8 @@ layout: page
 
 * Go-admin é framework que usa o Gorm - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
+* Article that validate GORM as ORM to Golang with CRUD implementation with SQLite database on tests - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
+
 ## Vídeos
 
 * Tutorial rápido sobre o Gorm, escrito por [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
@@ -30,6 +32,7 @@ layout: page
 * [go-paginate - paginação baseada em cursor](https://github.com/raphaelvigee/go-paginate)
 * [zapgorm - Uber's Zap driver de logging para Gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber's Zap driver de logging para Gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
+* [gorm-newrelic-telemetry-plugin - A plugin to allow telemetry by NewRelic Go Agent for GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
 
 ## <span id="contribute">Contribua para esta página</span>
 
