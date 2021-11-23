@@ -76,12 +76,25 @@ db.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = 
 
 ## DryRun Mode
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
+Generate `SQL` and its arguments without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
 
 ```go
 stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
+```
+
+## ToSQL
+
+Returns generated `SQL` without executing.
+
+GORM uses the database/sql's argument placeholders to construct the SQL statement, which will automatically escape arguments to avoid SQL injection, but the generated SQL don't provide the safety guarantees, please only use it for debugging.
+
+```go
+sql := DB.ToSQL(func(tx *gorm.DB) *gorm.DB {
+  return tx.Model(&User{}).Where("id = ?", 100).Limit(10).Order("age desc").Find(&[]User{})
+})
+sql //=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL ORDER BY age desc LIMIT 10
 ```
 
 ## `Row` & `Rows`
@@ -148,18 +161,18 @@ GORM uses SQL builder generates SQL internally, for each operation, GORM creates
 For example, when querying with `First`, it adds the following clauses to the `Statement`
 
 ```go
-clause. Select{Columns: "*"}
-clause. From{Tables: clause. CurrentTable}
-clause. Limit{Limit: 1}
-clause. OrderByColumn{
-  Column: clause. Column{Table: clause. CurrentTable, Name: clause. PrimaryKey},
+clause.Select{Columns: "*"}
+clause.From{Tables: clause.CurrentTable}
+clause.Limit{Limit: 1}
+clause.OrderByColumn{
+  Column: clause.Column{Table: clause.CurrentTable, Name: clause.PrimaryKey},
 }
 ```
 
 Then GORM build finally querying SQL in the `Query` callbacks like:
 
 ```go
-Statement. Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")
+Statement.Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")
 ```
 
 Which generate SQL:
@@ -177,8 +190,11 @@ Check out [examples](https://github.com/go-gorm/gorm/tree/master/clause) for ref
 For different databases, Clauses may generate different SQL, for example:
 
 ```go
-Find(&User{})
-// SELECT * /*+ hint */ FROM `users`
+db.Offset(10).Limit(5).Find(&users)
+// Generated for SQL Server
+// SELECT * FROM "users" OFFSET 10 ROW FETCH NEXT 5 ROWS ONLY
+// Generated for MySQL
+// SELECT * FROM `users` LIMIT 5 OFFSET 10
 ```
 
 Which is supported because GORM allows database driver register Clause Builder to replace the default one, take the [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45) as example
