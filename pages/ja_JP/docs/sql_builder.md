@@ -76,7 +76,7 @@ db.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = 
 
 ## DryRun Mode
 
-Generate `SQL` and its arguments without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
+実行せずに、`SQL` とその引数の生成だけを行います。生成されたSQLの確認やテストを行えます。詳細については[Session](session.html) を確認してください。
 
 ```go
 stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
@@ -86,7 +86,7 @@ stmt.Vars         //=> []interface{}{1}
 
 ## ToSQL
 
-Returns generated `SQL` without executing.
+実行はせずに、生成された `SQL` を返します。
 
 GORM uses the database/sql's argument placeholders to construct the SQL statement, which will automatically escape arguments to avoid SQL injection, but the generated SQL don't provide the safety guarantees, please only use it for debugging.
 
