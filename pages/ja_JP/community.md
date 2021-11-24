@@ -20,7 +20,7 @@ layout: page
 
 * Go-adminはGormを基盤にしているフレームワーク - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
-* Article that validate GORM as ORM to Golang with CRUD implementation with SQLite database on tests - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
+* SQLiteでのCRUD実装で、GoのORMとしてのGORMを検証する記事 - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
 
 ## 動画
 
