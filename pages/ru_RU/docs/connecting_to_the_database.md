@@ -3,7 +3,7 @@ title: Подключение к базе данных
 layout: страница
 ---
 
-GORM officially supports databases MySQL, PostgreSQL, SQLite, SQL Server
+GORM официально поддерживает базы данных MySQL, PostgreSQL, SQlite, SQL Server
 
 ## MySQL
 
@@ -24,12 +24,12 @@ func main() {
 **ПРИМЕЧАНИЕ:** Для корректной обработки `time.Time`, вам нужно включить `parseTime` как параметр. ([больше параметров](https://github.com/go-sql-driver/mysql#parameters)) Для полной поддержки кодировки UTF-8, вам необходимо изменить `charset=utf8` на `charset=utf8mb4`. Смотрите [эту статью](https://mathiasbynens.be/notes/mysql-utf8mb4) для подробностей
 {% endnote %}
 
-MySQL Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
+Драйвер MySQL предоставляет [несколько расширенных настроек](https://github.com/go-gorm/mysql), которые можно использовать при инициализации, например:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
   DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // имя источника данных
-  DefaultStringSize: 256, // значение по умолчанию для строковых полей
+  DefaultStringSize: 256, // размер значения по умолчанию для строковых полей
   DisableDatetimePrecision: true, // отключить точность полей типа datetime, которая не поддерживается до версии MySQL 5.6
   DontSupportRenameIndex: true, // drop & create при переименовании индекса, переименование индекса не поддерживается с версии MySQL 5.7, MariaDB
   DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
@@ -39,7 +39,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### Настройка драйвера
 
-GORM позволяет настроить драйвер MYSQL, используя опции `DriverName`, например:
+GORM позволяет настроить драйвер MySQL, используя опции `DriverName`, например:
 
 ```go
 import (
@@ -177,34 +177,34 @@ func main() {
   // Select
   db.Find(&user, "id = ?", 10)
 
-  // Batch Insert
+  // Insert партиями
   var users = []User{user1, user2, user3}
   db.Create(&users)
   // ...
 }
 ```
 
-## Connection Pool
+## Пул соединений
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM использует [database/sql](https://pkg.go.dev/database/sql) для поддержания пула соединений
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleConns устанавливает максимальное количество соединений в пуле незанятых соединений.
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns устанавливает максимальное количество открытых подключений к базе данных.
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime устанавливает максимальное количество времени, в течение которого соединение может быть повторно использовано.
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+Смотрите подробнее в [Generic Interface](generic_interface.html)
 
-## Unsupported Databases
+## Неподдерживаемые базы данных
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Некоторые базы данных могут быть совместимы с диалектами `mysql` или `postgres`, в этом случае можно просто использовать диалект для этих баз данных.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+Для других баз данных, [вам предлагается сделать драйвер самостоятельно, pull request приветствуется!](write_driver.html)
