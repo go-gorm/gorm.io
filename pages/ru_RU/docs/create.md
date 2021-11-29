@@ -232,7 +232,7 @@ type User struct {
 
 ```go
 type User struct {
-  ID        string `gorm:"default:uuid_generate_v3()"` // db func
+  ID        string `gorm:"default:uuid_generate_v3()"` // функция в базе данных
   FirstName string
   LastName  string
   Age       uint8
@@ -244,15 +244,15 @@ When using virtual/generated value, you might need to disable its creating/updat
 
 ### <span id="upsert">Upsert (Создать или обновить) / При конфликте</span>
 
-GORM provides compatible Upsert support for different databases
+GORM обеспечивает поддержку Upsert для различных баз данных
 
 ```go
 import "gorm.io/gorm/clause"
 
-// Do nothing on conflict
+// Ничего не делать при конфликтах
 db.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Update columns to default value on `id` conflict
+// Обновить столбцы до значения по умолчанию при конфликте `id`
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -260,14 +260,14 @@ db.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// Use SQL expression
+// Использовать выражение SQL
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"count": gorm.Expr("GREATEST(count, VALUES(count))")}),
 }).Create(&users)
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `count`=GREATEST(count, VALUES(count));
 
-// Update columns to new value on `id` conflict
+// Обновить столбцы до нового значения при конфликте `id`
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
@@ -276,13 +276,13 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
 
-// Update all columns, except primary keys, to new value on conflict
+// Обновить все столбцы, кроме первичных ключей, до нового значения при конфликте
 db.Clauses(clause.OnConflict{
   UpdateAll: true,
 }).Create(&users)
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age", ...;
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+Смотрите также `FirstOrInit`, `FirstOrCreate` в [Расширенные запросы](advanced_query.html)
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+Смотрите [Сырой SQL и Конструктор SQL](sql_builder.html) для подробностей
