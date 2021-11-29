@@ -118,26 +118,26 @@ db.Model(&User{}).Create([]map[string]interface{}{
 **ПРИМЕЧАНИЕ** При создании из карты, хуки не будут вызваны, связи не будут сохранены и значения первичных ключей не будут заполнены
 {% endnote %}
 
-## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
+## <span id="create_from_sql_expr">Метод Create с помощью SQL выражения/значения контекста</span>
 
-GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+GORM позволяет вставить данные при помощи выражения SQL. Существует два способа достижения этой цели: создать из `map[string]interface{}` или с помощью [Пользовательских типов данных](data_types.html#gorm_valuer_interface), например:
 
 ```go
-// Create from map
+// Create с помощью карты
 db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`location`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// Create from customized data type
+// Create с помощью собственных типов
 type Location struct {
     X, Y int
 }
 
-// Scan implements the sql.Scanner interface
+// Метод Scan использующий интерфейс sql.Scanner
 func (loc *Location) Scan(v interface{}) error {
-  // Scan a value into struct from database driver
+  // Scan значение в структуру из драйвера базы данных
 }
 
 func (loc Location) GormDataType() string {
@@ -165,9 +165,9 @@ db.Create(&User{
 
 ## Дополнительно
 
-### <span id="create_with_associations">Создать со связями</span>
+### <span id="create_with_associations">Create со связями</span>
 
-When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
+При создании со связями, если значение связей не равно нулю, эти связи будут добавлены, и будут применены методы их `хуков`.
 
 ```go
 type CreditCard struct {
@@ -190,7 +190,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`, for example:
+Вы можете пропустить сохранение связей с помощью `Select`, `Omit`, например:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -201,7 +201,7 @@ db.Omit(clause.Associations).Create(&user)
 
 ### <span id="default_values">Значения по умолчанию</span>
 
-You can define default values for fields with tag `default`, for example:
+Вы можете определить значения по умолчанию для полей при помощи тега `default`, например:
 
 ```go
 type User struct {
@@ -211,10 +211,10 @@ type User struct {
 }
 ```
 
-Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+Значение по умолчанию *будет использовано* при добавлении записи в БД для полей с [нулевыми-значениями](https://tour.golang.org/basics/12)
 
 {% note warn %}
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**ПРИМЕЧАНИЕ** Любые нулевые значение, например `0`, `''`, `false` не будут сохранены в базу данных. Для полей с определенным значением по умолчанию, вы можете использовать Scanner/Valuer для избежания этого, например:
 {% endnote %}
 
 ```go
@@ -227,7 +227,7 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+**ПРИМЕЧАНИЕ** Вы должны установить тег `default` для полей по умолчанию или значения virtual/generated в базе данных. Если вы хотите пропустить определенные значения по умолчанию при миграции, вы должны использовать `default:(-)`, например:
 {% endnote %}
 
 ```go
