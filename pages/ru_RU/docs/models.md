@@ -57,20 +57,20 @@ type Model struct {
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
-  Name string `gorm:"->;<-:create"` // allow read and create
-  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`  // ignore this field when write and read with struct
+  Name string `gorm:"<-:create"` // разрешены чтение и создание
+  Name string `gorm:"<-:update"` // разрешены чтение и изменение
+  Name string `gorm:"<-"`        // разрешены чтение и запись(создание и изменение)
+  Name string `gorm:"<-:false"`  // разрешено чтение, запрещена запись
+  Name string `gorm:"->"`        // только чтение (запрещена запись, если настроено)
+  Name string `gorm:"->;<-:create"` // разрешены чтение и создание
+  Name string `gorm:"->:false;<-:create"` // разрешено только чтение (запрещено чтение из базы)
+  Name string `gorm:"-"`  // игнорирование этого поля при записи и чтении из структуры
 }
 ```
 
 ### <name id="time_tracking">Создание/обновление Time/Unix (Milli/Nano) секунд отслеживания</span>
 
-GORM использует `CreatedAt`, `UpdatedAt` для отслеживания создания/обновления времени. Если эти поля определены GORM автоматически установит [текущее время](gorm_config.html#now_func) при создании/обновлении
+GORM использует `CreatedAt`, `UpdatedAt` для отслеживания создания/обновления времени. Если эти поля определены, GORM автоматически установит [текущее время](gorm_config.html#now_func) при создании/обновлении
 
 Чтобы использовать поля с другим именем, вы можете настроить эти поля при помощи тегов `autoCreateTime`, `autoUpdateTime`
 
@@ -78,15 +78,15 @@ GORM использует `CreatedAt`, `UpdatedAt` для отслеживани
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updating or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix nano seconds as updating time
-  Updated   int64 `gorm:"autoUpdateTime:milli"`// Use unix milli seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  CreatedAt time.Time // Установить текущее время, если оно равно нулю при создании
+  UpdatedAt int       // Установить в формате секунд unix при обновлении или создание, если оно равно нулю
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // Использование формата unix в наносекундах в качестве времени обновления
+  Updated   int64 `gorm:"autoUpdateTime:milli"`// Использование формата unix в миллисекундах в качестве времени обновления
+  Created   int64 `gorm:"autoCreateTime"`      // Использование формата unix в секундах при создании
 }
 ```
 
-### <span id="embedded_struct">Встроенный struct</span>
+### <span id="embedded_struct">Вложенные структуры</span>
 
 Для анонимных полей GORM будет включать свои поля в свою же родительскую структуру, например:
 
