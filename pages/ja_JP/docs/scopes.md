@@ -65,9 +65,42 @@ db.Scopes(Paginate(r)).Find(&users)
 db.Scopes(Paginate(r)).Find(&articles)
 ```
 
-## レコードの更新
+## Dynamically Table
 
-レコードの更新/削除時の例です。
+Use `Scopes` to dynamically set the query Table
+
+```go
+func TableOfYear(user *User, year int) func(db *gorm.DB) *gorm.DB {
+  return func(db *gorm.DB) *gorm.DB {
+        tableName := user.TableName() + strconv.Itoa(year)
+        return db.Table(tableName)
+  }
+}
+
+DB.Scopes(TableOfYear(user, 2019)).Find(&users)
+// SELECT * FROM users_2019;
+
+DB.Scopes(TableOfYear(user, 2020)).Find(&users)
+// SELECT * FROM users_2020;
+
+// Table form different database
+func TableOfOrg(user *User, dbName string) func(db *gorm.DB) *gorm.DB {
+  return func(db *gorm.DB) *gorm.DB {
+        tableName := dbName + "." + user.TableName()
+        return db.Table(tableName)
+  }
+}
+
+DB.Scopes(TableOfOrg(user, "org1")).Find(&users)
+// SELECT * FROM org1.users;
+
+DB.Scopes(TableOfOrg(user, "org2")).Find(&users)
+// SELECT * FROM org1.users;
+```
+
+## Updates
+
+Scope examples for updating/deleting
 
 ```go
 func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {
