@@ -101,18 +101,18 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## IN with multiple columns
+## 複数カラムでのIN
 
-Selecting IN with multiple columns
+IN句で複数カラムを指定してレコードを取得することができます。
 
 ```go
 db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"jinzhu2", 19, "user"}}).Find(&users)
 // SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
 ```
 
-## Named Argument
+## 名前付き引数
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORMは[`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg)や`map[string]interface{}{}`を使用した名前付き引数をサポートしています 。例：
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -122,11 +122,11 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+より詳細については、 [Raw SQL and SQL Builder](sql_builder.html#named_argument) も参照してみてください。
 
-## Find To Map
+## 取得結果をマップに代入
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORMでは取得結果を `map[string]interface{}`や `[]map[string]interface{}` に代入することができます。その際 `Model` や `Table` の指定を忘れないでください。例：
 
 ```go
 result := map[string]interface{}{}
@@ -138,36 +138,36 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+条件に最初に一致するレコードを取得するか、指定された条件を使用して構造体のインスタンスを初期化します (構造体、map条件でのみ動作します)。
 
 ```go
-// User not found, initialize it with give conditions
+// ユーザを取得できないため、与えられた条件でユーザを初期化
 db.FirstOrInit(&user, User{Name: "non_existing"})
 // user -> User{Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// `name` = `jinzhu` の条件でユーザを取得できた
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-// Found user with `name` = `jinzhu`
+// `name` = `jinzhu` の条件でユーザを取得できた
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+レコードが見つからない場合のみ、struct をより多くの属性で初期化できます。これらの `Attrs（属性）` はSQLクエリの生成には使用されません。
 
 ```go
-// User not found, initialize it with give conditions and Attrs
+// Userが見つからないため、取得条件とAttrsで指定された属性で構造体を初期化
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// User not found, initialize it with give conditions and Attrs
+// Userが見つからないため、取得条件とAttrsで指定された属性で構造体を初期化
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// `name` = `jinzhu` のUserが見つかったため、Attrsで指定された属性は無視される
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
