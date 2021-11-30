@@ -65,9 +65,9 @@ db.Scopes(Paginate(r)).Find(&users)
 db.Scopes(Paginate(r)).Find(&articles)
 ```
 
-## Dynamically Table
+## テーブルを動的に指定する
 
-Use `Scopes` to dynamically set the query Table
+`Scopes` を使用して、クエリのテーブルを動的に設定することができます。
 
 ```go
 func TableOfYear(user *User, year int) func(db *gorm.DB) *gorm.DB {
@@ -98,9 +98,9 @@ DB.Scopes(TableOfOrg(user, "org2")).Find(&users)
 // SELECT * FROM org1.users;
 ```
 
-## Updates
+## レコードの更新
 
-Scope examples for updating/deleting
+レコードの更新/削除時の例です。
 
 ```go
 func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {
