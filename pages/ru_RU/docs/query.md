@@ -167,7 +167,7 @@ db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 
 ### <span id="specify_search_fields">Указание полей поиска для структуры</span>
 
-When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
+При поиске с помощью структуры, вы можете указать конкретные значения из структуры для использования в запросе, передав в `Where()` соответствующее имя поля или таблицы, например:
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -177,9 +177,9 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 // SELECT * FROM users WHERE age = 0;
 ```
 
-### <span id="inline_conditions">Inline Condition</span>
+### <span id="inline_conditions">Встроенное условие</span>
 
-Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
+Условия запроса могут быть использованы с такими методами, как `First` и `Find`, по аналогии с `Where`.
 
 ```go
 // Get by primary key if it were a non-integer type
