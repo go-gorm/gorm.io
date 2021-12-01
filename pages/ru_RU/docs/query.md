@@ -38,24 +38,24 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 var user User
 var users []User  
 
-// works because destination struct is passed in
+// сработает, потому что передана целевая структура
 db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// works because model is specified using `db.Model()`
+// сработает, потому что модель указана с использованием `db.Model()`
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// doesn't work
+// не будет работать, т.к. result не структура и не использована `db.Model()`
 result := map[string]interface{}{}
 db.Table("users").First(&result)
 
-// works with Take
+// сработает с методом Take
 result := map[string]interface{}{}
 db.Table("users").Take(&result)
 
-// no primary key defined, results will be ordered by first field (i.e., `Code`)
+// первичный ключ не определен, результат будет отсортирован по первому полю `Code`
 type Language struct {
   Code string
   Name string
@@ -64,9 +64,9 @@ db.First(&Language{})
 // SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
 ```
 
-### Retrieving objects with primary key
+### Получение объектов по первичному ключу
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
+Объекты могут быть получены с помощью первичного ключа, используя [Inline Conditions](#inline_conditions) , если первичный ключ является числом. При работе со строками нужно проявлять особую осторожность, чтобы избежать инъекции SQL; подробности см. в разделе [ Безопасность ](security.html).
 
 ```go
 db.First(&user, 10)
@@ -79,34 +79,34 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If the primary key is a string (for example, like a uuid), the query will be written as follows:
+Если первичный ключ - строка (например, uuid), то запрос будет записан следующим образом:
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-## Retrieving all objects
+## Получение всех объектов
 
 ```go
-// Get all records
+// Получить все записи
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // returns found records count, equals `len(users)`
-result.Error        // returns error
+result.RowsAffected // возвращает количество найденных записей, что эквивалентно `len(users)`
+result.Error        // возвращает ошибку
 ```
 
 ## Условия
 
-### String Conditions
+### Строковые условия
 
 ```go
-// Get first matched record
+// Получение первой совпавшей записи
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
-// Get all matched records
+// Получение всех совпавших записей
 db.Where("name <> ?", "jinzhu").Find(&users)
 // SELECT * FROM users WHERE name <> 'jinzhu';
 
@@ -131,24 +131,24 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Struct & Map Conditions
+### Условия в структурах и картах
 
 ```go
-// Struct
+// Структура
 db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20 ORDER BY id LIMIT 1;
 
-// Map
+// Карта
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice of primary keys
+// Слайс первичных ключей
 db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
 
 {% note warn %}
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**ПРИМЕЧАНИЕ** При запросе с помощью структуры, GORM будет запрашивать только не нулевые поля. Это означает, что значение поля равное `0`, `''`, `false` или другие [нулевые значения](https://tour.golang.org/basics/12), не будут использоваться для построения условий запроса, например:
 {% endnote %}
 
 ```go
@@ -156,16 +156,16 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
+Чтобы включить нулевые значения в условия запроса, вы можете использовать карту, которая будет включать все значения пар ключ-значение в качестве условий запроса, например:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-For more details, see [Specify Struct search fields](#specify_search_fields).
+Подробнее см. [Указание полей поиска для структуры](#specify_search_fields).
 
-### <span id="specify_search_fields">Specify Struct search fields</span>
+### <span id="specify_search_fields">Указание полей поиска для структуры</span>
 
 When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
 
