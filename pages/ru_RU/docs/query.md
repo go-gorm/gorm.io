@@ -8,31 +8,31 @@ layout: страница
 GORM предоставляет методы `First`, `Take`, `Last` для получения одного объекта из базы данных. Эти методы добавляют условие `LIMIT 1` при запросе к базе данных, но если запись не найдена, вернется ошибка `ErrRecordNotFound`.
 
 ```go
-// Get the first record ordered by primary key
+// Получение первой записи при сортировке по первичному ключу "id"
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// Получение одной записи без указания порядка сортировки
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// Get last record, ordered by primary key desc
+// Получение последней записи, отсортированные по первичному ключу "id" по убыванию
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
 result := db.First(&user)
-result.RowsAffected // returns count of records found
-result.Error        // returns error or nil
+result.RowsAffected // возвращает количество найденных записей
+result.Error        // возвращает error или nil
 
-// check error ErrRecordNotFound
+// проверка ошибки на ErrRecordNotFound
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
 {% note warn %}
-If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`, the `Find` method accepts both struct and slice data
+Если вы не хотите проверять наличие ошибки `ErrRecordNotFound` ошибки, вы можете использовать метод `Find` следующим образом `db.Limit(1).Find(&user)`, метод `Find` принимает такие типы данных как структура, так и слайс.
 {% endnote %}
 
-The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
+Методы `First` и `Last` найдут первую и последнюю запись (соответственно) по порядку первичного ключа. Они работают только тогда, когда указатель на целевую структуру передается методам в качестве аргумента или когда модель указана с помощью `db.Model()`. Кроме того, если первичный ключ не определен для соответствующей модели, то модель будет упорядочена по первому полю. Например:
 
 ```go
 var user User
