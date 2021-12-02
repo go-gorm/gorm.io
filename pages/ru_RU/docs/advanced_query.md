@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // следующие сотни полей
 }
 
 type APIUser struct {
