@@ -182,11 +182,11 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 Условия запроса могут быть использованы с такими методами, как `First` и `Find`, по аналогии с `Where`.
 
 ```go
-// Get by primary key if it were a non-integer type
+// Получить по первичному ключу, если это не целочисленный тип.
 db.First(&user, "id = ?", "string_primary_key")
 // SELECT * FROM users WHERE id = 'string_primary_key';
 
-// Plain SQL
+// Обычный SQL
 db.Find(&user, "name = ?", "jinzhu")
 // SELECT * FROM users WHERE name = "jinzhu";
 
