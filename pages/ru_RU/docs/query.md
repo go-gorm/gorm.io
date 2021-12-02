@@ -193,56 +193,56 @@ db.Find(&user, "name = ?", "jinzhu")
 db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
 // SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
 
-// Struct
+// Структура
 db.Find(&users, User{Age: 20})
 // SELECT * FROM users WHERE age = 20;
 
-// Map
+// Карта
 db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Not Conditions
+### Условие Not
 
-Build NOT conditions, works similar to `Where`
+Построение с условием NOT, работает аналогично `Where`
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE NOT name = "jinzhu" ORDER BY id LIMIT 1;
 
-// Not In
+// Условие Not In
 db.Not(map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}).Find(&users)
 // SELECT * FROM users WHERE name NOT IN ("jinzhu", "jinzhu 2");
 
-// Struct
+// Структура
 db.Not(User{Name: "jinzhu", Age: 18}).First(&user)
 // SELECT * FROM users WHERE name <> "jinzhu" AND age <> 18 ORDER BY id LIMIT 1;
 
-// Not In slice of primary keys
+// Слайс первичных ключей с Not In 
 db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-### Or Conditions
+### Условие Or
 
 ```go
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
 // SELECT * FROM users WHERE role = 'admin' OR role = 'super_admin';
 
-// Struct
+// Структура
 db.Where("name = 'jinzhu'").Or(User{Name: "jinzhu 2", Age: 18}).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 
-// Map
+// Карта
 db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age": 18}).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
+Для более сложных SQL-запросов. также смотрите [Групповые условия в расширенном запросе](advanced_query.html#group_conditions).
 
 ## Выбор определенных полей
 
-`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
+`Select` позволяет указать поля, которые вы хотите получить из базы данных. В противном случае, GORM выберет все поля по умолчанию.
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -255,17 +255,17 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-Also check out [Smart Select Fields](advanced_query.html#smart_select)
+Также смотрите [Умный выбор полей](advanced_query.html#smart_select)
 
-## Порядок сортировки
+## Порядок сортировки Order
 
-Specify order when retrieving records from the database
+Укажите порядок Order при получении записей из базы данных
 
 ```go
 db.Order("age desc, name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
-// Multiple orders
+// Множественные сортировки
 db.Order("age desc").Order("name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
@@ -275,15 +275,15 @@ db.Clauses(clause.OrderBy{
 // SELECT * FROM users ORDER BY FIELD(id,1,2,3)
 ```
 
-## Limit & Offset
+## Limit и Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit` указывает максимальное количество записей для извлечения, `Offset` указывает количество пропущенных записей перед началом возврата записей
 
 ```go
 db.Limit(3).Find(&users)
 // SELECT * FROM users LIMIT 3;
 
-// Cancel limit condition with -1
+// Отменить условие limit с помощью Limit(-1)
 db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 // SELECT * FROM users LIMIT 10; (users1)
 // SELECT * FROM users; (users2)
@@ -294,15 +294,15 @@ db.Offset(3).Find(&users)
 db.Limit(10).Offset(5).Find(&users)
 // SELECT * FROM users OFFSET 5 LIMIT 10;
 
-// Cancel offset condition with -1
+// Отменить условие смещения с помощью Offset(-1)
 db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
 ```
 
-Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
+Обратитесь к [Пагинация](scopes.html#pagination) для получения подробной информации о том, как сделать пагинацию
 
-## Group By & Having
+## Group и Having
 
 ```go
 type result struct {
@@ -336,17 +336,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+Выбор уникальных значений из модели
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
+`Distinct` также работает с [`Pluck`](advanced_query.html#pluck) и [`Count`](advanced_query.html#count)
 
 ## Joins
 
-Specify Joins conditions
+Указание условия Joins
 
 ```go
 type result struct {
@@ -364,13 +364,13 @@ for rows.Next() {
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// multiple joins with parameter
+// несколько joins с параметрами
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
-### Joins Preloading
+### Joins с предварительной загрузкой
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+Вы можете использовать `Joins` для предзагрузки связей в одном SQL запросе, например:
 
 ```go
 db.Joins("Company").Find(&users)
