@@ -5,7 +5,7 @@ layout: страница
 
 ## <span id="smart_select">Умный выбор полей</span>
 
-GORM позволяет выбрать конкретные поля при помощи [`Select`](query.html), если вы часто используете объект в вашем приложении, возможно вы захотите определить меньший struct для использования с API, который может выбирать конкретные поля автоматически, например:
+GORM позволяет выбрать конкретные поля при помощи [`Select`](query.html). Если вы часто используете это в вашем приложении, возможно вы захотите определить меньшую структуру для использования с API, который может выбирать конкретные поля автоматически, например:
 
 ```go
 type User struct {
@@ -58,9 +58,9 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-Обратитесь к [Raw SQL и SQL Builder](sql_builder.html) для получения более подробной информации
+Смотрите [Чистый SQL и Конструктор SQL](sql_builder.html) для получения более подробной информации
 
-## Под Запрос
+## Подзапрос
 
 Подзапрос может быть вложен в запрос, GORM сгенерирует подзапрос при использовании `*gorm.DB` объекта в качестве параметра
 
@@ -101,18 +101,18 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## IN with multiple columns
+## IN с несколькими столбцами
 
-Selecting IN with multiple columns
+Выборка IN с несколькими столбцами
 
 ```go
 db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"jinzhu2", 19, "user"}}).Find(&users)
 // SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
 ```
 
-## Named Argument
+## Именованные аргументы
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM поддерживает именованные аргументы при использовании [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) или `map[string]interface{}{}`, например:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -122,11 +122,11 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+Смотрите [Чистый SQL и Конструктор SQL](sql_builder.html#named_argument) для подробностей
 
-## Find To Map
+## Find с картами
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORM позволяет отображать результаты сканирования в `map[string]interface{}` или `[]map[string]interface{}`, не забудьте указать `Model` или `Table`, как в примере ниже:
 
 ```go
 result := map[string]interface{}{}
@@ -138,7 +138,7 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+Получить первую найденную запись, или инициализировать новую с заданными параметрами (работает только со структурой и map)
 
 ```go
 // User not found, initialize it with give conditions
