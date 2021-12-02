@@ -95,7 +95,7 @@ type User struct {
   gorm.Model
   Name string
 }
-// equals
+// эквивалентно
 type User struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
@@ -118,7 +118,7 @@ type Blog struct {
   Author  Author `gorm:"embedded"`
   Upvotes int32
 }
-// equals
+// эквивалентно
 type Blog struct {
   ID    int64
     Name  string
@@ -135,7 +135,7 @@ type Blog struct {
   Author  Author `gorm:"embedded;embeddedPrefix:author_"`
   Upvotes int32
 }
-// equals
+// эквивалентно
 type Blog struct {
   ID          int64
     AuthorName  string
