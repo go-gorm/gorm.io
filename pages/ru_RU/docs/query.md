@@ -377,18 +377,18 @@ db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Join with conditions
+Join с условиями
 
 ```go
 db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
-For more details, please refer to [Preloading (Eager Loading)](preload.html).
+Для получения более подробной информации обратитесь к [Предзагрузка (Нетерпеливая загрузка данных)](preload.html).
 
 ## <span id="scan">Scan</span>
 
-Scanning results into a struct works similarly to the way we use `Find`
+Запись результата в структуру работает аналогично `Find`
 
 ```go
 type Result struct {
@@ -399,6 +399,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
 
-// Raw SQL
+// Чистый SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
