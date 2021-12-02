@@ -138,49 +138,49 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Получить первую найденную запись, или инициализировать новую с заданными параметрами (работает только со структурой и map)
+Получить первую найденную запись, или инициализировать новую с заданными параметрами (работает только со структурой и картой)
 
 ```go
-// User not found, initialize it with give conditions
+// Пользователь user не найден, создаем новую запись с данными значениями
 db.FirstOrInit(&user, User{Name: "non_existing"})
 // user -> User{Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Найден user с `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-// Found user with `name` = `jinzhu`
+// Найден user с `name` = `jinzhu`
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+инициализировать структуру с дополнительными параметрами. Если запись не найдена, эти `Attrs` не будут использованы в построении запроса SQL
 
 ```go
-// User not found, initialize it with give conditions and Attrs
+// Пользователь не найден, инициализировать структуру с указанными параметрами и атрибутами Attrs
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// User not found, initialize it with give conditions and Attrs
+// Пользователь не найден, инициализировать структуру с указанными параметрами и атрибутами Attrs
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// Найден пользователь с параметрами `name` = `jinzhu`, атрибуты Attrs будут проигнорированы
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
-// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
+// пользователь -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+Метод `Assign` назначает атрибуты в структуру, независимо от того, найдена запись или нет, эти атрибуты не будут участвовать в генерации запроса SQL и не будут сохранены в БД
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// User не найден, создать его с данными условиями и с атрибутами в Assign 
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// Найден user с `name` = `jinzhu`, обновить запись с атрибутами в Assign 
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 20}
@@ -188,35 +188,35 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions)
+Получить первую совпавшую запись или создать новую с указанными параметрами (работает только со структурами и картами)
 
 ```go
-// User not found, create a new record with give conditions
+// User не найден, создать новую запись с заданными условиями
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Найден user с `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+Создание структуры с дополнительными атрибутами если запись не найдена. Эти `Attrs` атрибуты не будут использованы в построении SQL запроса
 
 ```go
-// User not found, create it with give conditions and Attrs
+// User не найден, создать его с данными условиями и атрибутами в Attrs
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// Найден user с `name` = `jinzhu`, атрибуты в Attrs будут проигнорированы
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+Метод `Assign` назначает атрибуты к записи, будет работать независимо от того, найдена запись или нет.
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
