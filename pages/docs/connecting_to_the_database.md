@@ -62,6 +62,7 @@ GORM allows to initialize `*gorm.DB` with an existing database connection
 ```go
 import (
   "database/sql"
+  "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
@@ -116,6 +117,7 @@ GORM allows to initialize `*gorm.DB` with an existing database connection
 ```go
 import (
   "database/sql"
+  "gorm.io/driver/postgres"
   "gorm.io/gorm"
 )
 
