@@ -1,7 +1,7 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Ana Sayfa
-  docs: <i class="fa fa-book"></i>Dökümanlar
+  home: <i class="fa fa-home"></i>Dökümanlar
+  docs: <i class="fa fa-book"></i>Dokümanlar
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
   community: <i class="fab fa-slack"></i>Topluluk
