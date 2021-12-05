@@ -52,33 +52,33 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 **ПРИМЕЧАНИЕ** При обновлении со структурой, GORM будет обновлять только ненулевые поля, вы можете использовать `карту` для обновления атрибутов или с помощью `Select` для указания полей для обновления
 {% endnote %}
 
-## Update Selected Fields
+## Обновить выбранные поля
 
-If you want to update selected fields or ignore some fields when updating, you can use `Select`, `Omit`
+Если вы хотите обновить выбранные или игнорировать некоторые поля при обновлении, вы можете использовать `Select`, `Omit`
 
 ```go
-// Select with Map
-// User's ID is `111`:
+// Select с картой
+// User's ID = `111`:
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello' WHERE id=111;
 
 db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Select with Struct (select zero value fields)
+// Select со структурой (выберите поля с нулевыми значениями)
 db.Model(&user).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 
-// Select all fields (select all fields include zero value fields)
+// Select всех полей (выбор всех полей включая нулевые поля)
 db.Model(&user).Select("*").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
 
-// Select all fields but omit Role (select all fields include zero value fields)
+// Select всех полей, но пропустить(Omit) Role (выбор всех полей включая нулевые поля)
 db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
 ```
 
-## Update Hooks
+## Хуки Update
 
-GORM allows hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`, those methods will be called when updating a record, refer [Hooks](hooks.html) for details
+GORM позволяет использовать хуки `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`, эти методы будут вызваны при обновлении записи, смотрите [Хуки](hooks.html) для подробностей
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -89,25 +89,25 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Batch Updates
+## Updates пакетами
 
-If we haven't specified a record having primary key value with `Model`, GORM will perform a batch updates
+Если мы не указали запись, имеющую значение первичного ключа, с помощью `Model`, GORM будет выполнять пакетное обновление
 
 ```go
-// Update with struct
+// Update с помощью структуры
 db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE role = 'admin';
 
-// Update with map
+// Update с помощью карты
 db.Table("users").Where("id IN ?", []int{10, 11}).Updates(map[string]interface{}{"name": "hello", "age": 18})
 // UPDATE users SET name='hello', age=18 WHERE id IN (10, 11);
 ```
 
-### <span id="block_global_updates">Block Global Updates</span>
+### <span id="block_global_updates">Глобальные блокировки при Updates</span>
 
-If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error by default
+Если вы выполните пакетное обновление без каких-либо условий, GORM НЕ выполнит его и вернет ошибку `ErrMissingWhereClause`
 
-You have to use some conditions or use raw SQL or enable the `AllowGlobalUpdate` mode, for example:
+Вы должны использовать некоторые условия или использовать чистый SQL или включить режим `AllowGlobalUpdate`, например:
 
 ```go
 db.Model(&User{}).Update("name", "jinzhu").Error // gorm.ErrMissingWhereClause
@@ -124,22 +124,22 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name",
 
 ### Количество обновленных записей
 
-Get the number of rows affected by a update
+Получение количества измененных строк
 
 ```go
-// Get updated records count with `RowsAffected`
+// Получение количество обновленных записей с помощью `RowsAffected`
 result := db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE role = 'admin';
 
-result.RowsAffected // returns updated records count
-result.Error        // returns updating error
+result.RowsAffected // возвращает количество обновленных записей
+result.Error        // возвращает ошибку при обновлении
 ```
 
-## Advanced
+## Расширенный Update
 
-### <span id="update_from_sql_expr">Update with SQL Expression</span>
+### <span id="update_from_sql_expr">Обновление с помощью SQL выражения</span>
 
-GORM allows updates column with SQL expression, e.g:
+GORM позволяет обновлять столбец с выражением SQL, например:
 
 ```go
 // product's ID is `3`
