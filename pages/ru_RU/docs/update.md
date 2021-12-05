@@ -18,10 +18,10 @@ db.Save(&user)
 
 ## Обновление одного столбца
 
-When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
+При обновлении одного столбца с `Обновить`, он должен иметь какие-либо условия или может вызвать ошибку `ErrsingWhereClause`, смотрите [Block Global Updates](#block_global_updates) для деталей. При использовании метода `Model` и его значение имеют первичное значение и первичный ключ будет использоваться для построения условия, например:
 
 ```go
-// Update with conditions
+// Update с условиями
 db.Model(&User{}).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE active=true;
 
@@ -29,27 +29,27 @@ db.Model(&User{}).Where("active = ?", true).Update("name", "hello")
 db.Model(&user).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update with conditions and model value
+// Update с условиями и значением Model
 db.Model(&user).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
 ```
 
-## Updates multiple columns
+## Обновление нескольких столбцов
 
-`Updates` supports update with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
+`Updates` поддерживают обновление с помощью `структур` или `map[string]interface{}`, при обновлении со `структурой` по умолчанию будет обновлять только не-нулевые поля
 
 ```go
-// Update attributes with `struct`, will only update non-zero fields
+// Обновление атрибутами `структуры`, будут обновляться только не нулевые поля
 db.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
 // UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 
-// Update attributes with `map`
+// Обновление атрибутов с помощью `карты`
 db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
 
 {% note warn %}
-**NOTE** When update with struct, GORM will only update non-zero fields, you might want to use `map` to update attributes or use `Select` to specify fields to update
+**ПРИМЕЧАНИЕ** При обновлении со структурой, GORM будет обновлять только ненулевые поля, вы можете использовать `карту` для обновления атрибутов или с помощью `Select` для указания полей для обновления
 {% endnote %}
 
 ## Update Selected Fields
