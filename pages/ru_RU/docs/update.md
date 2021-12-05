@@ -230,7 +230,7 @@ DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"
 
 GORM предоставляет метод `Changed`, который может быть использован в **Before Update Hooks** при обновлении для проверки полей, которые будут обновлены или не обновлены
 
-The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the updating value from `Update` / `Updates` equals the model value, will return true if it is changed and not omitted
+Метод `Changed` работает только с методами `Update`, `Updates`, и он только проверяет, соответствует ли значение обновления из `Update` / `Updates` значению модели, вернет true, если оно было изменено, а не пропущено
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -267,9 +267,9 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 // Changed("Name") => false, `Name` not selected to update
 ```
 
-### Change Updating Values
+### Изменение обновляемых данных
 
-To change updating values in Before Hooks, you should use `SetColumn` unless it is a full updates with `Save`, for example:
+Чтобы изменить обновляемые значения в хуках Before, вы должны использовать `SetColumn`, если это не полные обновления с `Save`, например:
 
 ```go
 func (user *User) BeforeSave(tx *gorm.DB) (err error) {
