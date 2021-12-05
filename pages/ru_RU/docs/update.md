@@ -142,7 +142,7 @@ result.Error        // возвращает ошибку при обновлен
 GORM позволяет обновлять столбец с выражением SQL, например:
 
 ```go
-// product's ID is `3`
+// product's ID = `3`
 db.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
 // UPDATE "products" SET "price" = price * 2 + 100, "updated_at" = '2013-11-17 21:34:10' WHERE "id" = 3;
 
@@ -156,10 +156,10 @@ db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity > 1;
 ```
 
-And GORM also allows update with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
+Также GORM позволяет обновлять данные с помощью SQL выражения/Context Valuer с [настраиваемыми типами данных](data_types.html#gorm_valuer_interface), например:
 
 ```go
-// Create from customized data type
+// Создание с помощью собственных типов данных
 type Location struct {
     X, Y int
 }
@@ -178,9 +178,9 @@ db.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`location`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-### Update from SubQuery
+### Update с помощью вложенного запроса
 
-Update a table by using SubQuery
+Обновление таблицы с помощью вложенного запроса
 
 ```go
 db.Model(&user).Update("company_name", db.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
@@ -191,9 +191,9 @@ db.Table("users as u").Where("name = ?", "jinzhu").Update("company_name", db.Tab
 db.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{}{}{"company_name": db.Table("companies as c").Select("name").Where("c.id = u.company_id")})
 ```
 
-### Without Hooks/Time Tracking
+### Без использования хуков/отслеживания времени
 
-If you want to skip `Hooks` methods and don't track the update time when updating, you can use `UpdateColumn`, `UpdateColumns`, it works like `Update`, `Updates`
+Если вы хотите пропустить методы `Хуков`  и не отслеживать время обновления при обновлении, вы можете использовать `UpdateColumn`, `UpdateColumns` - это работает как и `Update`, `Updates`
 
 ```go
 // Обновить одну колонку
@@ -209,26 +209,26 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
-### Returning Data From Modified Rows
+### Возврат данных из измененных строк
 
-Return changed data, only works for database support Returning, for example:
+Возврат измененных данных работает только для поддерживаемых баз данных, например:
 
 ```go
-// return all columns
+// возвращает все столбцы
 var users []User
 DB.Model(&users).Clauses(clause.Returning{}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
 // UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// return specified columns
+// возвращает указанные столбцы
 DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
 // UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
 ```
 
-### Check Field has changed?
+### Проверка, изменилось ли поле?
 
-GORM provides `Changed` method could be used in **Before Update Hooks**, it will return the field changed or not
+GORM предоставляет метод `Changed`, который может быть использован в **Before Update Hooks** при обновлении для проверки полей, которые будут обновлены или не обновлены
 
 The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the updating value from `Update` / `Updates` equals the model value, will return true if it is changed and not omitted
 
