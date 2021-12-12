@@ -30,7 +30,7 @@ db.Where(fmt.Sprintf("name = %v", userInput)).First(&user)
 db.First(&user, "name = ?", userInput)
 
 // SQL injection
-db..First(&user, fmt.Sprintf("name = %v", userInput))
+db.First(&user, fmt.Sprintf("name = %v", userInput))
 ```
 
 ## SQL injection Methods
