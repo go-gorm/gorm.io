@@ -56,6 +56,12 @@ db.Clauses(clause.Locking{
   Table: clause.Table{Name: clause.CurrentTable},
 }).Find(&users)
 // SELECT * FROM `users` FOR SHARE OF `users`
+
+db.Clauses(clause.Locking{
+  Strength: "UPDATE",
+  Options: "NOWAIT",
+}).Find(&users)
+// SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
 자세한 내용은 [Raw SQL and SQL Builder](sql_builder.html) 을 참고하세요.
