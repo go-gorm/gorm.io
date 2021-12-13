@@ -55,7 +55,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### 既存のデータベース接続
 
-GORMでは、既存のデータベース接続で `*gorm.DB` を初期化することができます。
+GORMでは、すでに確立されているデータベース接続を使って `*gorm.DB` を初期化することができます。
 
 ```go
 import (
