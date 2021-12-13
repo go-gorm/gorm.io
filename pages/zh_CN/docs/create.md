@@ -184,7 +184,7 @@ type User struct {
 
 db.Create(&User{
   Name: "jinzhu",
-  CreditCard: CreditCard{Number: "411111111111"}
+  CreditCard: CreditCard{Number: "411111111111"},
 })
 // INSERT INTO `users` ...
 // INSERT INTO `credit_cards` ...
@@ -214,7 +214,7 @@ type User struct {
 插入记录到数据库时，默认值 *会被用于* 填充值为 [零值](https://tour.golang.org/basics/12) 的字段
 
 {% note warn %}
-**注意** 像 `0`、`''`、`false` 等零值，不会将这些字段定义的默认值保存到数据库。您需要使用指针类型或 Scanner/Valuer 来避免这个问题，例如：
+**注意** 像 `0`、`''`、`false` 等零值，对于定义了默认值的字段，不会将这些零值保存到数据库。您需要使用指针类型或 Scanner/Valuer 来避免这个问题，例如：
 {% endnote %}
 
 ```go
