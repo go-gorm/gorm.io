@@ -60,6 +60,7 @@ GORM 允许通过一个现有的数据库连接来初始化 `*gorm.DB`
 ```go
 import (
   "database/sql"
+  "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
@@ -114,6 +115,7 @@ GORM 允许通过一个现有的数据库连接来初始化 `*gorm.DB`
 ```go
 import (
   "database/sql"
+  "gorm.io/driver/postgres"
   "gorm.io/gorm"
 )
 
