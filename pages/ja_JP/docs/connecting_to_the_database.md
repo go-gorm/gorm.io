@@ -60,6 +60,7 @@ GORMでは、既存のデータベース接続で `*gorm.DB` を初期化する�
 ```go
 import (
   "database/sql"
+  "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
@@ -114,6 +115,7 @@ GORMでは、既存のデータベース接続で `*gorm.DB` を初期化する�
 ```go
 import (
   "database/sql"
+  "gorm.io/driver/postgres"
   "gorm.io/gorm"
 )
 
