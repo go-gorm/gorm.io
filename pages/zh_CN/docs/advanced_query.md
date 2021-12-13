@@ -56,6 +56,12 @@ db.Clauses(clause.Locking{
   Table: clause.Table{Name: clause.CurrentTable},
 }).Find(&users)
 // SELECT * FROM `users` FOR SHARE OF `users`
+
+db.Clauses(clause.Locking{
+  Strength: "UPDATE",
+  Options: "NOWAIT",
+}).Find(&users)
+// SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
 查看 [原生 SQL 及构造器](sql_builder.html) 获取详情
