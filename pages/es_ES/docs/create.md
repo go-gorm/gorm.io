@@ -184,7 +184,7 @@ type User struct {
 
 db.Create(&User{
   Name: "jinzhu",
-  CreditCard: CreditCard{Number: "411111111111"}
+  CreditCard: CreditCard{Number: "411111111111"},
 })
 // INSERT INTO `users` ...
 // INSERT INTO `credit_cards` ...
