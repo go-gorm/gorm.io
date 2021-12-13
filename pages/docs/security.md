@@ -33,6 +33,22 @@ db.First(&user, "name = ?", userInput)
 db.First(&user, fmt.Sprintf("name = %v", userInput))
 ```
 
+When retrieving objects with number primary key by user's input, you should check the type of variable.
+
+```go
+userInputID := "1=1;drop table users;"
+// safe, return error
+id,err := strconv.Atoi(userInputID)
+if err != nil {
+    return error
+}
+db.First(&user, id)
+
+// SQL injection
+db.First(&user, userInputID)
+// SELECT * FROM users WHERE 1=1;drop table users;
+```
+
 ## SQL injection Methods
 
 To support some features, some inputs are not escaped, be careful when using user's input with those methods
