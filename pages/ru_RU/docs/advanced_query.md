@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // следующие сотни полей
 }
 
 type APIUser struct {
@@ -21,7 +21,7 @@ type APIUser struct {
   Name string
 }
 
-// Выбор`id`, `name` автоматически при выборке
+// Выбор`id`, `name` автоматически при запросе
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
@@ -56,6 +56,12 @@ db.Clauses(clause.Locking{
   Table: clause.Table{Name: clause.CurrentTable},
 }).Find(&users)
 // SELECT * FROM `users` FOR SHARE OF `users`
+
+db.Clauses(clause.Locking{
+  Strength: "UPDATE",
+  Options: "NOWAIT",
+}).Find(&users)
+// SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
 Смотрите [Чистый SQL и Конструктор SQL](sql_builder.html) для получения более подробной информации
@@ -314,7 +320,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
+Запрос одного столбца из базы данных и запись его в слайс, если вы хотите получить несколько столбцов - используйте `Select` вместе с [`Scan`](query.html#scan) для этого
 
 ```go
 var ages []int64
@@ -329,14 +335,14 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Requesting more than one column, use `Scan` or `Find` like this:
+// Запрос больше одного столбца, используйте `Scan` или `Find` как в примере:
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
 ## Scopes
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+`Scopes` позволяют указать часто используемые запросы, которые можно использовать позже как методы
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -358,20 +364,20 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// Найдите все заказы по кредитным картам на сумму более 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// Найдите все заказы наложенным платежом на сумму более 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// Найдите все оплаченные, отправленные заказы на сумму более 1000
 ```
 
-Checkout [Scopes](scopes.html) for details
+Смотрите [Scopes](scopes.html) для получения дополнительной информации
 
 ## <span id="count">Count</span>
 
-Get matched records count
+Получение количество найденных записей
 
 ```go
 var count int64

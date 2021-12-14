@@ -26,11 +26,27 @@ db.Where(fmt.Sprintf("name = %v", userInput)).First(&user)
 ## Строчные условия
 
 ```go
-// будет экранировано
+// will be escaped
 db.First(&user, "name = ?", userInput)
 
-// SQL инъекция
-db..First(&user, fmt.Sprintf("name = %v", userInput))
+// SQL injection
+db.First(&user, fmt.Sprintf("name = %v", userInput))
+```
+
+When retrieving objects with number primary key by user's input, you should check the type of variable.
+
+```go
+userInputID := "1=1;drop table users;"
+// safe, return error
+id,err := strconv.Atoi(userInputID)
+if err != nil {
+    return error
+}
+db.First(&user, id)
+
+// SQL injection
+db.First(&user, userInputID)
+// SELECT * FROM users WHERE 1=1;drop table users;
 ```
 
 ## Методы SQL инъекции

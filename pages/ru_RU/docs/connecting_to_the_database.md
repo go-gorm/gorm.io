@@ -60,6 +60,7 @@ GORM позволяет инициализировать `*gorm.DB` с суще�
 ```go
 import (
   "database/sql"
+  "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
@@ -114,6 +115,7 @@ GORM позволяет инициализировать `*gorm.DB` с суще�
 ```go
 import (
   "database/sql"
+  "gorm.io/driver/postgres"
   "gorm.io/gorm"
 )
 

@@ -26,16 +26,32 @@ db.Where(fmt.Sprintf("name = %v", userInput)).First(&user)
 ## 内联条件
 
 ```go
-// 会被转义
+// will be escaped
 db.First(&user, "name = ?", userInput)
 
-// SQL 注入
+// SQL injection
 db.First(&user, fmt.Sprintf("name = %v", userInput))
+```
+
+When retrieving objects with number primary key by user's input, you should check the type of variable.
+
+```go
+userInputID := "1=1;drop table users;"
+// safe, return error
+id,err := strconv.Atoi(userInputID)
+if err != nil {
+    return error
+}
+db.First(&user, id)
+
+// SQL injection
+db.First(&user, userInputID)
+// SELECT * FROM users WHERE 1=1;drop table users;
 ```
 
 ## SQL 注入方法
 
-为了支持某些功能，一些输入不会被转义，调用方法时要小心用户输入的参数。
+To support some features, some inputs are not escaped, be careful when using user's input with those methods
 
 ```go
 db.Select("name; drop table users;").First(&user)
@@ -54,4 +70,4 @@ db.Exec("select name from users; drop table users;")
 db.Order("name; drop table users;").First(&user)
 ```
 
-避免 SQL 注入的一般原则是，不信任用户提交的数据。您可以进行白名单验证来测试用户的输入是否为已知安全的、已批准、已定义的输入，并且在使用用户的输入时，仅将它们作为参数。
+The general rule to avoid SQL injection is don't trust user-submitted data, you can perform whitelist validation to test user input against an existing set of known, approved, and defined input, and when using user's input, only use them as an argument.

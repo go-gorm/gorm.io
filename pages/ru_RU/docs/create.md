@@ -1,5 +1,5 @@
 ---
-title: Создание
+title: Create
 layout: страница
 ---
 

@@ -60,6 +60,7 @@ GORM `*gorm.DB`'yi varolan bir veritabanı bağlantısı ile başlatmaya imkân 
 ```go
 import (
   "database/sql"
+  "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
@@ -114,6 +115,7 @@ GORM `*gorm.DB`'yi varolan bir veritabanı bağlantısı ile başlatmaya imkân 
 ```go
 import (
   "database/sql"
+  "gorm.io/driver/postgres"
   "gorm.io/gorm"
 )
 
