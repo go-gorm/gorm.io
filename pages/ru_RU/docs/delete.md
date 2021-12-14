@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## Удалить с помощью первичного ключа
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out [Query Inline Conditions](query.html#inline_conditions) for details
+GORM позволяет удалять объекты по первичному ключу (ключам) с помощью встроенного условия, оно работает с числами, подробности смотрите в [Query Inline Conditions](query.html#inline_conditions)
 
 ```go
 db.Delete(&User{}, 10)
