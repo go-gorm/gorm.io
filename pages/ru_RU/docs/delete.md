@@ -1,5 +1,5 @@
 ---
-title: Удалить
+title: Delete
 layout: страница
 ---
 
