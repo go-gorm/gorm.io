@@ -35,16 +35,8 @@ layout: page
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
-* Open Collective
-
-[https://opencollective.com/gorm](https://opencollective.com/gorm)
-
 * Patreon
 
 [https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
-
-* AliPay
-
-![使用支付宝捐款](/sponsors-imgs/alipay.png "使用支付宝捐款")
 
 <br>
