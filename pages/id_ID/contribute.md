@@ -35,16 +35,8 @@ Kebaikan dan kemurahan hati Anda sangat kami hargai, terima kasih banyak untuk s
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
-* Buka Kolektif
-
-[https://opencollective.com/gorm](https://opencollective.com/gorm)
-
-* Pelindung
+* Patreon
 
 [https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
-
-* AliPay
-
-![Gunakan Alipay untuk berdonasi](/sponsors-imgs/alipay.png "Gunakan Alipay untuk berdonasi")
 
 <br>
