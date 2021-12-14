@@ -162,7 +162,7 @@ UPDATE users SET deleted_at = /* текущее время в unix секунд�
 ```
 
 {% note warn %}
-**INFO** when using unique field with soft delete, you should create a composite index with the unix second based `DeletedAt` field, e.g:
+**ИНФОРМАЦИЯ** при использовании уникального поля с мягким удалением, вы сначала должны создать составной индекс с помощью поля, использующего unix-время в секундах, на основе `DeletedAt`, например:
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -175,7 +175,7 @@ type User struct {
 ```
 {% endnote %}
 
-Use `1` / `0` as delete flag
+Использование `1` / `0` в качестве флага удаления
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -186,9 +186,9 @@ type User struct {
   IsDel soft_delete.DeletedAt `gorm:"softDelete:flag"`
 }
 
-// Query
+// Запрос
 SELECT * FROM users WHERE is_del = 0;
 
-// Delete
+// Удаление
 UPDATE users SET is_del = 1 WHERE ID = 1;
 ```
