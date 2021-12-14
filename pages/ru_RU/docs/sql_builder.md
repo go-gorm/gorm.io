@@ -5,7 +5,7 @@ layout: страница
 
 ## Чистый SQL
 
-Query Raw SQL with `Scan`
+Запрос сырых SQL с помощью `Scan`
 
 ```go
 type Result struct {
@@ -26,23 +26,23 @@ var users []User
 db.Raw("UPDATE users SET name = ? WHERE age = ? RETURNING id, name", "jinzhu", 20).Scan(&users)
 ```
 
-`Exec` with Raw SQL
+`Exec` с помощью сырого SQL
 
 ```go
 db.Exec("DROP TABLE users")
 db.Exec("UPDATE orders SET shipped_at = ? WHERE id IN ?", time.Now(), []int64{1, 2, 3})
 
-// Exec with SQL Expression
+// Exec с помощью сырого выражения SQL
 db.Exec("UPDATE users SET money = ? WHERE name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
 ```
 
 {% note warn %}
-**NOTE** GORM allows cache prepared statement to increase performance, checkout [Performance](performance.html) for details
+**ПРИМЕЧАНИЕ** GORM позволяет кэшировать подготовленные операторы для повышения производительности, подробности смотрите в [Производительность](performance.html)
 {% endnote %}
 
-## <span id="named_argument">Named Argument</span>
+## <span id="named_argument">Именованные аргументы</span>
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg), `map[string]interface{}{}` or struct, for example:
+GORM поддерживает именованные аргументы с помощью [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg), `map[string]interface{}{}` или структуры, например:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -51,7 +51,7 @@ db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&us
 db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(&result3)
 // SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
 
-// Named Argument with Raw SQL
+// Именованные аргументы в сыром SQL
 db.Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
    sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(&user)
 // SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
@@ -74,9 +74,9 @@ db.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = 
 // SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
 ```
 
-## DryRun Mode
+## Режим DryRun
 
-Generate `SQL` and its arguments without executing, can be used to prepare or test generated SQL, Checkout [Session](session.html) for details
+Генерировать `SQL` и его аргументы без выполнения, может быть использовано для подготовки или тестирования сгенерированного SQL. Смотрите [Сессии](session.html) для деталей
 
 ```go
 stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
@@ -86,9 +86,9 @@ stmt.Vars         //=> []interface{}{1}
 
 ## ToSQL
 
-Returns generated `SQL` without executing.
+Возвращает сгенерированный `SQL` без выполнения.
 
-GORM uses the database/sql's argument placeholders to construct the SQL statement, which will automatically escape arguments to avoid SQL injection, but the generated SQL don't provide the safety guarantees, please only use it for debugging.
+GORM использует плейсхолдеры аргументов базы данных/sql для построения запроса SQL, которые автоматически защищают от инъекций SQL, но сгенерированный SQL не предоставляет гарантий безопасности. Пожалуйста, используйте его только для отладки.
 
 ```go
 sql := DB.ToSQL(func(tx *gorm.DB) *gorm.DB {
@@ -97,21 +97,21 @@ sql := DB.ToSQL(func(tx *gorm.DB) *gorm.DB {
 sql //=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL ORDER BY age desc LIMIT 10
 ```
 
-## `Row` & `Rows`
+## `Row` и `Rows`
 
-Get result as `*sql.Row`
+Получение результата как `*sql.Row`
 
 ```go
-// Use GORM API build SQL
+// Использование GORM API для построения SQL
 row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
 row.Scan(&name, &age)
 
-// Use Raw SQL
+// Использование сырого SQL
 row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row()
 row.Scan(&name, &age, &email)
 ```
 
-Get result as `*sql.Rows`
+Получение результата как `*sql.Rows`
 
 ```go
 // Use GORM API build SQL
