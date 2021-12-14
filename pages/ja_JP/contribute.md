@@ -35,16 +35,8 @@ layout: page
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
-* Open Collective
-
-[https://opencollective.com/gorm](https://opencollective.com/gorm)
-
 * Patreon
 
 [https://www.patreon.com/jinzhu](https://www.patreon.com/jinzhu)
-
-* AliPay
-
-![Alipayを使用して寄付する](/sponsors-imgs/alipay.png "Alipayを使用して寄付する")
 
 <br>
