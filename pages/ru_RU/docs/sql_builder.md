@@ -99,7 +99,7 @@ sql //=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL O
 
 ## `Row` и `Rows`
 
-Получение результата как `*sql.Row`
+Получение `*sql.Row` в результате запроса
 
 ```go
 // Использование GORM API для построения SQL
@@ -111,33 +111,33 @@ row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row
 row.Scan(&name, &age, &email)
 ```
 
-Получение результата как `*sql.Rows`
+Получение `*sql.Rows` в результате запроса
 
 ```go
-// Use GORM API build SQL
+// Использование GORM API для построения SQL
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows()
 defer rows.Close()
 for rows.Next() {
   rows.Scan(&name, &age, &email)
 
-  // do something
+  // делаем что-нибудь
 }
 
-// Raw SQL
+// Сырой SQL
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows()
 defer rows.Close()
 for rows.Next() {
   rows.Scan(&name, &age, &email)
 
-  // do something
+  // делаем что-нибудь
 }
 ```
 
-Checkout [FindInBatches](advanced_query.html) for how to query and process records in batch Checkout [Group Conditions](advanced_query.html#group_conditions) for how to build complicated SQL Query
+Посмотрите [FindInBatches](advanced_query.html), как запрашивать и обрабатывать записи пакетом. Ознакомьтесь с [Группировка условий](advanced_query.html#group_conditions) для создания сложных SQL запросов
 
-## Scan `*sql.Rows` into struct
+## Сканирование `*sql.Rows` в структуру
 
-Use `ScanRows` to scan a row into a struct, for example:
+Используйте `ScanRows`, чтобы отсканировать строку в структуру, например:
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
@@ -145,20 +145,20 @@ defer rows.Close()
 
 var user User
 for rows.Next() {
-  // ScanRows scan a row into user
+  // ScanRows сканирует строку в user
   db.ScanRows(rows, &user)
 
-  // do something
+  // делаем что-нибудь
 }
 ```
 
-## Advanced
+## Расширенный режим
 
 ### <span id="clauses">Clauses</span>
 
-GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
+GORM использует SQL конструктор для генерирования SQL внутри себя. Для каждой операции GORM создает объект `*gorm.Statement`, все GORM API добавляют/изменяют `Clause` для `Statement`, и в конце GORM генерирует SQL на основе этих пунктов.
 
-For example, when querying with `First`, it adds the following clauses to the `Statement`
+Например, при запросе с помощью `First` GORM добавляет следующие пункты в `Statement`
 
 ```go
 clause.Select{Columns: "*"}
@@ -169,13 +169,13 @@ clause.OrderByColumn{
 }
 ```
 
-Then GORM build finally querying SQL in the `Query` callbacks like:
+Затем GORM строит окончательный запрос SQL в `Запросе` callback функции, например:
 
 ```go
 Statement.Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")
 ```
 
-Which generate SQL:
+Который сгенерирует SQL:
 
 ```sql
 SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
