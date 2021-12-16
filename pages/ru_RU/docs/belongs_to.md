@@ -5,9 +5,9 @@ layout: страница
 
 ## Принадлежит к (Belongs To)
 
-Связь `belongs to` устанавливает связь один к одному с другой моделью, таким образом, чтобы каждый экземпляр объявленной модели "belongs to" связывался с другой.
+Отношение `belongs to` устанавливает связь один к одному с другой моделью, таким образом, чтобы каждый экземпляр объявленной модели "принадлежал" одному экземпляру другой модели.
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company, the following types represent that relationship. Notice here that, on the `User` object, there is both a `CompanyID` as well as a `Company`. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
+Например, если в вашем приложении есть пользователи и компании, и каждый пользователь может быть только в одной компании, то следующие типы отражают это отношение. Обратите внимание, что у объекта `User` есть `CompanyID` и `Company`. По умолчанию, `CompanyID` неявно используется для создания отношения внешнего ключа между таблицами `User` и `Company`, и поэтому должен быть включен в структуру `User` для заполнения внутренней структуры `Company`.
 
 ```go
 // `User` belongs to `Company`, `CompanyID` это внешний ключ
@@ -24,15 +24,15 @@ type Company struct {
 }
 ```
 
-Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
+Подробнее о заполнении внутренней структуры см. в [Нетерпеливая загрузка](belongs_to.html#Eager-Loading).
 
-## Переопределить внешний ключ
+## Переопределение внешнего ключа
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Чтобы определить отношение "belongs to", внешний ключ должен существовать, внешний ключ по умолчанию использует имя типа владельца плюс имя его первичного поля.
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+Для приведенного выше примера, чтобы определить модель `User`, которая принадлежит `Company`, внешний ключ должен быть `CompanyID` по соглашению
 
-GORM provides a way to customize the foreign key, for example:
+GORM предоставляет возможность настраивать внешний ключ, например:
 
 ```go
 type User struct {
@@ -51,11 +51,11 @@ type Company struct {
 
 ## Переопределить ссылки
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+Для отношения belongs to GORM обычно использует первичное поле владельца в качестве значения внешнего ключа, в приведенном выше примере это поле `Company` `ID`.
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+Когда вы назначаете пользователя в компанию, GORM сохраняет `ID` компании в поле `CompanyID` пользователя.
 
-You are able to change it with tag `references`, e.g:
+Вы можете изменить это с помощью тега `references`, например:
 
 ```go
 type User struct {
@@ -74,15 +74,15 @@ type Company struct {
 
 ## CRUD с Belongs To
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Пожалуйста, ознакомьтесь с [Режим связи](associations.html#Association-Mode) для работы с отношениями один к одному
 
 ## Нетерпеливая загрузка
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM позволяет использовать нетерпеливую загрузку для отношений belongs to с `Preload` или `Joins`, подробнее смотрите [Предзагрузка (Нетерпеливая загрузка)](preload.html).
 
 ## Ограничения внешних ключей
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+Вы можете установить ограничения `OnUpdate`, `OnDelete` с помощью тега `constraint`. Они будут созданы при миграции с помощью GORM, например:
 
 ```go
 type User struct {

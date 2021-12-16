@@ -1,5 +1,5 @@
 ---
-title: Удалить
+title: Delete
 layout: страница
 ---
 
@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## Удалить с помощью первичного ключа
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out [Query Inline Conditions](query.html#inline_conditions) for details
+GORM позволяет удалять объекты по первичному ключу (ключам) с помощью встроенного условия, оно работает с числами, подробности смотрите в [Query Inline Conditions](query.html#inline_conditions)
 
 ```go
 db.Delete(&User{}, 10)
@@ -47,7 +47,7 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 ## <span id="batch_delete">Пакетное удаление</span>
 
-The specified value has no primary value, GORM will perform a batch delete, it will delete all matched records
+Первичный ключ не указан и GORM выполнит пакетное удаление, при этом будут удалены все совпадающие записи
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
@@ -57,11 +57,11 @@ db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-### Глобальное удаление
+### Запрет глобального удаления
 
 Если вы выполняете пакетное удаление без условий, GORM не выполнит его и вернет ошибку `ErrMissingWhereClause`
 
-Вы должны использовать любые условия, использовать raw SQL или включить режим `AllowGlobalUpdate` , например:
+Вы должны использовать любые условия, использовать чистый SQL или включить режим `AllowGlobalUpdate`, например:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -76,18 +76,18 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-### Returning Data From Deleted Rows
+### Возврат данных при удалении строк
 
-Return deleted data, only works for database support Returning, for example:
+Возвращает измененные данные, работает только для поддерживаемых баз данных, например:
 
 ```go
-// return all columns
+// вернет все столбцы
 var users []User
 DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// return specified columns
+// возвращает указанные столбцы
 DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
@@ -95,25 +95,25 @@ DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "sal
 
 ## Мягкое удаление
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+Если ваша модель включает поле `gorm.DeletedAt` (которое входит в `gorm.Model`), она получит возможность мягкого удаления автоматически!
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+При вызове `Delete` запись НЕ БУДЕТ удалена из базы данных, но GORM установит в значение `DeletedAt` текущее время, и данные больше нельзя будет найти с помощью обычных методов запроса.
 
 ```go
-// user's ID is `111`
+// ID пользователя `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// пакетное удаление
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when querying
+// мягко удаленные записи будут проигнорированы при запросе
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+Если вы не хотите включать `gorm.Model` в свою модель, вы можете включить мягкое удаление:
 
 ```go
 type User struct {
@@ -123,27 +123,27 @@ type User struct {
 }
 ```
 
-### Find soft deleted records
+### Найти записи после мягкого удаления
 
-You can find soft deleted records with `Unscoped`
+Вы можете найти мягко удаленные записи с помощью `Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Delete permanently
+### Безвозвратное удаление
 
-You can delete matched records permanently with `Unscoped`
+Вы можете навсегда удалить совпадающие записи с помощью `Unscoped`
 
 ```go
 db.Unscoped().Delete(&order)
 // DELETE FROM orders WHERE id=10;
 ```
 
-### Delete Flag
+### Флаги удаления
 
-Use unix second as delete flag
+Использование формата unix в секундах как флаг удаления
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -154,15 +154,15 @@ type User struct {
   DeletedAt soft_delete.DeletedAt
 }
 
-// Query
+// Запрос
 SELECT * FROM users WHERE deleted_at = 0;
 
-// Delete
-UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
+// Удаление
+UPDATE users SET deleted_at = /* текущее время в unix секундах */ WHERE ID = 1;
 ```
 
 {% note warn %}
-**INFO** when using unique field with soft delete, you should create a composite index with the unix second based `DeletedAt` field, e.g:
+**ИНФОРМАЦИЯ** при использовании уникального поля с мягким удалением, вы сначала должны создать составной индекс с помощью поля, использующего unix-время в секундах, на основе `DeletedAt`, например:
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -175,7 +175,7 @@ type User struct {
 ```
 {% endnote %}
 
-Use `1` / `0` as delete flag
+Использование `1` / `0` в качестве флага удаления
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -186,9 +186,9 @@ type User struct {
   IsDel soft_delete.DeletedAt `gorm:"softDelete:flag"`
 }
 
-// Query
+// Запрос
 SELECT * FROM users WHERE is_del = 0;
 
-// Delete
+// Удаление
 UPDATE users SET is_del = 1 WHERE ID = 1;
 ```

@@ -26,14 +26,14 @@ db.Where(fmt.Sprintf("name = %v", userInput)).First(&user)
 ## インライン条件
 
 ```go
-// will be escaped
+// エスケープされる
 db.First(&user, "name = ?", userInput)
 
-// SQL injection
+// SQLインジェクションが起こりうる
 db.First(&user, fmt.Sprintf("name = %v", userInput))
 ```
 
-When retrieving objects with number primary key by user's input, you should check the type of variable.
+ユーザ入力による主キーの数値を使用してオブジェクトを取得する場合は、変数の型を確認するべきです。
 
 ```go
 userInputID := "1=1;drop table users;"
@@ -51,7 +51,7 @@ db.First(&user, userInputID)
 
 ## SQLインジェクションが発生し得るメソッド
 
-To support some features, some inputs are not escaped, be careful when using user's input with those methods
+いくつかの機能をサポートするために、一部の入力はエスケープされません。それらのメソッドでユーザーの入力を使用する場合は注意が必要です。
 
 ```go
 db.Select("name; drop table users;").First(&user)
@@ -70,4 +70,4 @@ db.Exec("select name from users; drop table users;")
 db.Order("name; drop table users;").First(&user)
 ```
 
-The general rule to avoid SQL injection is don't trust user-submitted data, you can perform whitelist validation to test user input against an existing set of known, approved, and defined input, and when using user's input, only use them as an argument.
+SQLインジェクションを避けるための一般的なルールは、ユーザーが送信したデータを信頼しないことです。 あらかじめ用意された入力データセットと比較することで、許可されたデータであるかを検証することができます。またユーザーの入力を使用する場合は、引数としてのみ使用するようにしてください。
