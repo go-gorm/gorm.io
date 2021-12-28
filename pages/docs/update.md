@@ -60,7 +60,7 @@ If you want to update selected fields or ignore some fields when updating, you c
 ```go
 // Select with Map
 // User's ID is `111`:
-db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
+db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello"})
 // UPDATE users SET name='hello' WHERE id=111;
 
 db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
