@@ -194,7 +194,7 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions)
+Varsa ilk kaydı getirir, aksi halde verilen koşullar doğrultusunda yeni bir kayıt oluşturur (sadece struct map koşullarıyla çalışır)
 
 ```go
 // User not found, create a new record with give conditions
