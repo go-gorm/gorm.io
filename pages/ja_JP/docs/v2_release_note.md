@@ -561,7 +561,7 @@ ALTER TABLE `Profiles` ADD CONSTRAINT `fk_users_profiles` FORIEGN KEY (`useres_i
 
 #### Method Chain Safety/Goroutine Safety
 
-To reduce GC allocs, GORM V2 will share `Statement` when using method chains, and will only create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, to reuse a `*gorm.DB`, you need to make sure it just after a `New Session Method`, for example:
+GCアロケーションを削減するため、GORM V2では メソッドチェインを使用時に `Statement` を共有します。新しく初期化された `*gorm.DB` や `New Session Method` 後にのみ、新規の `Statement` インスタンスを作成します。`*gorm.DB` を再利用するには、`New Session Method` コール後であることを確認する必要があります。
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -596,7 +596,7 @@ for i := 0; i < 100; i++ {
 }
 ```
 
-Check out [Method Chain](method_chaining.html) for details
+詳細については [Method Chain](method_chaining.html) を参照してください。
 
 #### Default Value
 
