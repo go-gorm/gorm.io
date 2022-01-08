@@ -113,7 +113,7 @@ type NullString struct {
 }
 
 type User struct {
-  Name NullString // データ方は string となる
+  Name NullString // データ型は string となる
 }
 ```
 
