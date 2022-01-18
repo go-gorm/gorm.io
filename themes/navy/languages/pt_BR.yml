@@ -1,27 +1,27 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  home: <i class="fa fa-home"></i>Início
+  docs: <i class="fa fa-book"></i>Documentação
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fab fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  community: <i class="fab fa-slack"></i>Comunidade
+  contribute: <i class="fa fa-rocket"></i>Contribua
+  search: Pesquisar documentos...
 index:
   get_started: Introdução
 page:
-  contents: Contents
-  back_to_top: Back to Top
-  improve: Improve this page
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  contents: Conteúdo
+  back_to_top: Voltar ao topo
+  improve: Melhorar esta página
+  prev: Anterior
+  next: Próximo
+  last_updated: "Última atualização: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
+    getting_started: Primeiros passos
+    overview: Visão geral
     declaring_models: Declaring Models
-    conventions: Conventions
+    conventions: Convenções
     connecting_to_the_database: Connecting to Database
     crud_interface: CRUD Interface
     create: Create
@@ -51,8 +51,8 @@ sidebar:
     performance: Performance
     data_types: Customize Data Types
     scopes: Scopes
-    settings: Settings
-    advanced_topics: Advanced Topics
+    settings: Confirgurações
+    advanced_topics: Tópicos avançados
     dbresolver: Database Resolver
     prometheus: Prometheus
     hints: Hints
