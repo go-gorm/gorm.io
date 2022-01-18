@@ -81,12 +81,12 @@ type Profile struct {
 ```
 
 {% note warn %}
-**NOTE:** Some databases only allow create database foreign keys that reference on a field having unique index, so you need to specify the `unique index` tag if you are creating database foreign keys when migrating
+**ПРИМЕЧАНИЕ:** Некоторые базы данных позволяют создавать только внешние ключи базы данных, которые ссылаются на поле, имеющее уникальный индекс, поэтому вам необходимо указать тег `unique index`, если вы создаете внешние ключи базы данных при миграции
 {% endnote %}
 
 ## Самосвязанный Many2Many
 
-Self-referencing many2many relationship
+Самосвязанные отношения «многие-многие»
 
 ```go
 type User struct {
