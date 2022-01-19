@@ -146,4 +146,4 @@ type CreditCard struct {
 }
 ```
 
-You are also allowed to delete selected has many associations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+Вы также можете удалить выбранные ассоциации has many с помощью `Select` при удалении, ознакомьтесь с [Delete with Select](associations.html#delete_with_select) для подробностей

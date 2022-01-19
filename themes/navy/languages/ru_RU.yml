@@ -4,7 +4,7 @@ menu:
   docs: <i class="fa fa-book"></i>Документация
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fab fa-slack"></i>Community
+  community: <i class="fab fa-slack"></i>Сообщество
   contribute: <i class="fa fa-rocket"></i>Внести вклад
   search: Поиск в документации...
 index:

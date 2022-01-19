@@ -1,47 +1,47 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  home: <i class="fa fa-home"></i>Início
+  docs: <i class="fa fa-book"></i>Documentação
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fab fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  community: <i class="fab fa-slack"></i>Comunidade
+  contribute: <i class="fa fa-rocket"></i>Contribua
+  search: Pesquisar documentos...
 index:
-  get_started: Get started
+  get_started: Introdução
 page:
-  contents: Contents
-  back_to_top: Back to Top
-  improve: Improve this page
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  contents: Conteúdo
+  back_to_top: Voltar ao topo
+  improve: Melhorar esta página
+  prev: Anterior
+  next: Próximo
+  last_updated: "Última atualização: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
-    declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
-    crud_interface: CRUD Interface
-    create: Create
-    query: Query
-    advanced_query: Advanced Query
-    update: Update
-    delete: Delete
+    getting_started: Primeiros passos
+    overview: Visão geral
+    declaring_models: Declarando modelos
+    conventions: Convenções
+    connecting_to_the_database: Conectar ao banco de dados
+    crud_interface: Interface CRUD
+    create: Criar
+    query: Consulta
+    advanced_query: Consulta avançada
+    update: Atualizar
+    delete: Deletar
     raw_sql_and_builder: Raw SQL & SQL Builder
-    batch: Batch Processing
+    batch: Processamento em lote
     associations: Associations
     belongs_to: Belongs To
     has_one: Has One
     has_many: Has Many
-    many_to_many: Many To Many
+    many_to_many: Muitos-para-muitos
     association_mode: Association Mode
     preload: Preloading (Eager Loading)
-    tutorials: Tutorials
-    context: Context
-    error_handling: Error Handling
-    method_chaining: Method Chaining
+    tutorials: Tutoriais
+    context: Contexto
+    error_handling: Tratamento de erros
+    method_chaining: Encadeamento de métodos
     session: Session
     hooks: Hooks
     transactions: Transactions
@@ -51,19 +51,19 @@ sidebar:
     performance: Performance
     data_types: Customize Data Types
     scopes: Scopes
-    settings: Settings
-    advanced_topics: Advanced Topics
+    settings: Confirgurações
+    advanced_topics: Tópicos avançados
     dbresolver: Database Resolver
     prometheus: Prometheus
-    hints: Hints
+    hints: Dicas
     indexes: Indexes
     constraints: Constraints
     composite_primary_key: Composite Primary Key
     security: Security
-    gorm_config: GORM Config
+    gorm_config: Configurações do GORM
     write_plugins: Write Plugins
     write_driver: Write Driver
     change_log: ChangeLog
-    community: Community
-    contribute: Contribute
-    translate: Translate current site
+    community: Comunidade
+    contribute: Contribuir
+    translate: Traduzir o site atual

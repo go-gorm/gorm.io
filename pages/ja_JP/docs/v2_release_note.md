@@ -491,7 +491,7 @@ db.Select(clause.Associations).Delete(&user)
 db.Select("Account").Delete(&users)
 ```
 
-## 下位互換性のない変更
+## 後方互換性のない変更
 
 大きな破壊的変更やコンパイラで把握できない変更をリスト化しています。記載されていない破壊的変更を見つけた場合は、issue または pull request を [ここ](https://github.com/go-gorm/gorm.io) で作成することをお願いしています。
 
@@ -500,9 +500,9 @@ db.Select("Account").Delete(&users)
 * GORM V2ではタグ名は `camelCase` となり、`snake_case` でのタグは無効になります。（例： `auto_increment`, `unique_index`, `polymorphic_value`, `embedded_prefix`）詳細は [モデルのタグ](models.html#tags) を参照してください。
 * 外部キーを指定するために使用するタグは `foreignKey`, `references` に変更されました。詳細は [アソシエーションのタグ](associations.html#tags) を参照してください。
 
-#### Table Name
+#### テーブル名
 
-`TableName` will *not* allow dynamic table name anymore, the result of `TableName` will be cached for future
+`TableName` は動的なテーブル名を *許可しなくなります* 。`TableName` の結果はのちの処理のためにキャッシュされます。
 
 ```go
 func (User) TableName() string {
@@ -510,7 +510,7 @@ func (User) TableName() string {
 }
 ```
 
-Please use `Scopes` for dynamic tables, for example:
+動的にテーブル名を変更するには、 `Scopes` を使用してください。例:
 
 ```go
 func UserTable(u *User) func(*gorm.DB) *gorm.DB {
@@ -522,38 +522,38 @@ func UserTable(u *User) func(*gorm.DB) *gorm.DB {
 db.Scopes(UserTable(&user)).Create(&user)
 ```
 
-#### Creating and Deleting Tables requires the use of the Migrator
+#### テーブル作成・削除時のMigratorの使用必須化
 
-Previously tables could be created and dropped as follows:
+以前は以下のようにテーブルを作成・削除することができました:
 
 ```go
 db.CreateTable(&MyTable{})
 db.DropTable(&MyTable{})
 ```
 
-Now you do the following:
+これからは以下のようになります:
 
 ```go
 db.Migrator().CreateTable(&MyTable{})
 db.Migrator().DropTable(&MyTable{})
 ```
 
-#### Foreign Keys
+####  外部キー
 
-A way of adding foreign key constraints was;
+外部キー制約を追加する方法は以下のようにする必要がありました:
 
 ```go
 db.Model(&MyTable{}).AddForeignKey("profile_id", "profiles(id)", "NO ACTION", "NO ACTION")
 ```
 
-Now you add constraints as follows:
+これからは以下のようにして制約を追加します:
 
 ```go
 db.Migrator().CreateConstraint(&Users{}), "Profiles")
 db.Migrator().CreateConstraint(&Users{}), "fk_users_profiles")
 ```
 
-which translates to the following sql code for postgres:
+これは postgresの場合は以下のSQLコードに変換されます:
 
 ```sql
 ALTER TABLE `Profiles` ADD CONSTRAINT `fk_users_profiles` FORIEGN KEY (`useres_id`) REFRENCES `users`(`id`))
@@ -561,7 +561,7 @@ ALTER TABLE `Profiles` ADD CONSTRAINT `fk_users_profiles` FORIEGN KEY (`useres_i
 
 #### Method Chain Safety/Goroutine Safety
 
-To reduce GC allocs, GORM V2 will share `Statement` when using method chains, and will only create new `Statement` instances for new initialized `*gorm.DB` or after a `New Session Method`, to reuse a `*gorm.DB`, you need to make sure it just after a `New Session Method`, for example:
+GCアロケーションを削減するため、GORM V2では メソッドチェインを使用時に `Statement` を共有します。新しく初期化された `*gorm.DB` や `New Session Method` 後にのみ、新規の `Statement` インスタンスを作成します。`*gorm.DB` を再利用するには、`New Session Method` コール後であることを確認する必要があります。
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -596,7 +596,7 @@ for i := 0; i < 100; i++ {
 }
 ```
 
-Check out [Method Chain](method_chaining.html) for details
+詳細については [Method Chain](method_chaining.html) を参照してください。
 
 #### Default Value
 
