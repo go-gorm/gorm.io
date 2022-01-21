@@ -59,7 +59,7 @@ func main() {
 
   // Read
   var product Product
-  db.First(&product, 1) // 根据整形主键查找
+  db.First(&product, 1) // 根据整型主键查找
   db.First(&product, "code = ?", "D42") // 查找 code 字段值为 D42 的记录
 
   // Update - 将 product 的 price 更新为 200
