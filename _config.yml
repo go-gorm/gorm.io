@@ -11,7 +11,7 @@ author_url: https://github.com/jinzhu
 language: en
 timezone: UTC
 source_dir: pages
-skip_render: [driver/**, plugin/**, datatypes.html, gorm.html, hints.html, gen.html]
+skip_render: [driver/**, plugin/**, datatypes.html, gorm.html, hints.html, gen.html, sharding.html]
 
 # URL
 url: http://gorm.io
