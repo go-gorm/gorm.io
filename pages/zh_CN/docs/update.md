@@ -209,41 +209,41 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
 
-### Returning Data From Modified Rows
+### 返回修改行的数据
 
-Return changed data, only works for database support Returning, for example:
+返回被修改的数据，仅适用于支持 Returning 的数据库，例如：
 
 ```go
-// return all columns
+// 返回所有列
 var users []User
 DB.Model(&users).Clauses(clause.Returning{}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
 // UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// return specified columns
+// 返回指定的列
 DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
 // UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
 ```
 
-### Check Field has changed?
+### 检查字段是否有变更？
 
-GORM provides `Changed` method could be used in **Before Update Hooks**, it will return the field changed or not
+GORM 提供了 `Changed` 方法，它可以被用在 **Before Update Hook** 里，它会返回字段是否有变更的布尔值
 
-The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the updating value from `Update` / `Updates` equals the model value, will return true if it is changed and not omitted
+`Changed` 方法只能与 `Update`、`Updates` 方法一起使用，并且它只是检查 Model 对象字段的值与 `Update`、`Updates` 的值是否相等，如果值有变更，且字段没有被忽略，则返回 true
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
-  // if Role changed
+  // 如果 Role 字段有变更
     if tx.Statement.Changed("Role") {
     return errors.New("role not allowed to change")
     }
 
-  if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
+  if tx.Statement.Changed("Name", "Admin") { // 如果 Name 或 Role 字段有变更
     tx.Statement.SetColumn("Age", 18)
   }
 
-  // if any fields changed
+  // 如果任意字段有变更
     if tx.Statement.Changed() {
         tx.Statement.SetColumn("RefreshedAt", time.Now())
     }
@@ -253,23 +253,23 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu"})
-// Changed("Name") => false, `Name` not changed
+// Changed("Name") => false, 因为 `Name` 没有变更
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(map[string]interface{
   "name": "jinzhu2", "admin": false,
 })
-// Changed("Name") => false, `Name` not selected to update
+// Changed("Name") => false, 因为 `Name` 没有被 Select 选中并更新
 
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu2"})
 // Changed("Name") => true
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})
-// Changed("Name") => false, `Name` not changed
+// Changed("Name") => false, 因为 `Name` 没有变更
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"})
-// Changed("Name") => false, `Name` not selected to update
+// Changed("Name") => false, 因为 `Name` 没有被 Select 选中并更新
 ```
 
-### Change Updating Values
+### 在 Update 时修改值
 
-To change updating values in Before Hooks, you should use `SetColumn` unless it is a full updates with `Save`, for example:
+若要在 Before 钩子中改变要更新的值，如果它是一个完整的更新，可以使用 `Save`；否则，应该使用 `SetColumn` ，例如：
 
 ```go
 func (user *User) BeforeSave(tx *gorm.DB) (err error) {
