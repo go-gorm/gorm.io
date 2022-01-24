@@ -55,7 +55,7 @@ type Language struct {
   Name string
 }
 
-// Join Table: user_languages
+// 连接表：user_languages
 //   foreign key: user_id, reference: users.id
 //   foreign key: language_id, reference: languages.id
 ```
@@ -75,7 +75,7 @@ type Profile struct {
     UserRefer uint `gorm:"index:,unique"`
 }
 
-// Which creates join table: user_profiles
+// 会创建连接表：user_profiles
 //   foreign key: user_refer_id, reference: users.refer
 //   foreign key: profile_refer, reference: profiles.user_refer
 ```
