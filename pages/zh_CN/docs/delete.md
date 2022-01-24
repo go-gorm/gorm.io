@@ -76,7 +76,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-### Returning Data From Deleted Rows
+### 返回删除行的数据
 
 Return deleted data, only works for database support Returning, for example:
 
