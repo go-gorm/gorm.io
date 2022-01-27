@@ -11,12 +11,12 @@ docs:
     delete: delete.html
     raw_sql_and_builder: sql_builder.html
   associations:
-     belongs_to: belongs_to.html
-     has_one: has_one.html
-     has_many: has_many.html
-     many_to_many: many_to_many.html
-     association_mode: associations.html
-     preload: preload.html
+    belongs_to: belongs_to.html
+    has_one: has_one.html
+    has_many: has_many.html
+    many_to_many: many_to_many.html
+    association_mode: associations.html
+    preload: preload.html
   tutorials:
     context: context.html
     error_handling: error_handling.html
@@ -34,6 +34,7 @@ docs:
     settings: settings.html
   advanced_topics:
     dbresolver: dbresolver.html
+    sharding: sharding.html
     prometheus: prometheus.html
     hints: hints.html
     indexes: indexes.html
