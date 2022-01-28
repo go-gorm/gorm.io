@@ -16,6 +16,6 @@ comments: false
 * <i class="fa fa-rocket" aria-hidden="true"></i> Композитный первичный ключ, индексы, ограничения
 * <i class="fa fa-rocket" aria-hidden="true"></i> Авто миграция
 * <i class="fa fa-rocket" aria-hidden="true"></i> Logger
-* <i class="fa fa-rocket" aria-hidden="true"></i> Расширяемый плагин API: Резолвер Баз данных (нножество БД, разделение чтения/записи) / Prometheus...
+* <i class="fa fa-rocket" aria-hidden="true"></i> Расширяемое и гибкое API для плагинов: Резолвер баз данных (нножество БД, разделение чтения/записи) / Prometheus...
 * <i class="fa fa-rocket" aria-hidden="true"></i> Каждая функция поставляется с тестами
 * <i class="fa fa-rocket" aria-hidden="true"></i> Дружественная для разработчиков
