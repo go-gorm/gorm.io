@@ -598,11 +598,11 @@ for i := 0; i < 100; i++ {
 
 詳細については [Method Chain](method_chaining.html) を参照してください。
 
-#### Default Value
+#### デフォルト値
 
-GORM V2 won't auto-reload default values created with database function after creating, checkout [Default Values](create.html#default_values) for details
+GORM V2は、データベース関数で作成されたデフォルト値をレコード作成後に自動リロードしません。詳細は [デフォルト値](create.html#default_values) を参照してください。
 
-#### Soft Delete
+#### 論理削除
 
 GORM V1 will enable soft delete if the model has a field named `DeletedAt`, in V2, you need to use `gorm.DeletedAt` for the model wants to enable the feature, e.g:
 
