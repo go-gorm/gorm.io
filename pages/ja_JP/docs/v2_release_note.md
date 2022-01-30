@@ -625,7 +625,7 @@ type User struct {
 
 #### BlockGlobalUpdate
 
-GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+GORM V2 では `BlockGlobalUpdate` がデフォルトで有効になっています。Global Update/Delete を実行するには、何らかの条件を指定する、素のSQLを使用する、あるいは `AllowGlobalUpdate` モードを有効にする必要があります。例：
 
 ```go
 db.Where("1 = 1").Delete(&User{})
@@ -637,7 +637,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 #### ErrRecordNotFound
 
-GORM V2 only returns `ErrRecordNotFound` when you are querying with methods `First`, `Last`, `Take` which is expected to return some result, and we have also removed method `RecordNotFound` in V2, please use `errors.Is` to check the error, e.g:
+GORM V2 、何らかの結果が期待されるメソッドである `First`, `Last`, `Take` を使用して読み取りをした場合に、 `ErrRecordNotFound` を返却します。また、V2では `RecordNotFound` メソッドをなくしました。そのため、エラーをチェックするには `errors.Is` を使用してください。
 
 ```go
 err := db.First(&user).Error
@@ -646,7 +646,7 @@ errors.Is(err, gorm.ErrRecordNotFound)
 
 #### Hooks Method
 
-Before/After Create/Update/Save/Find/Delete must be defined as a method of type `func(tx *gorm.DB) error` in V2, which has unified interfaces like plugin callbacks, if defined as other types, a warning log will be printed and it won't take effect, check out [Hooks](hooks.html) for details
+V2ではBefore/After Create/Update/Save/Find/Delete メソッドは `func(tx *gorm.DB) error` の型のメソッドとして定義され、plugin callbacksのように統一されたインターフェイスを持っています。型が一致しない場合はwarning logが出力され、hooks methodは有効になりません。詳細は [Hooks](hooks.html) を参照してください。
 
 ```go
 func (user *User) BeforeCreate(tx *gorm.DB) error {
@@ -662,9 +662,9 @@ func (user *User) BeforeCreate(tx *gorm.DB) error {
 }
 ```
 
-#### Update Hooks support `Changed` to check fields changed or not
+#### フィールドが更新されたどうかをチェックするための `Changed` がUpdate Hooksで使用可能
 
-When updating with `Update`, `Updates`, You can use `Changed` method in Hooks `BeforeUpdate`, `BeforeSave` to check a field changed or not
+`Update`, `Updates` メソッドで更新を行なった場合、フィールドが更新されたかどうかを確認するために `Changed` メソッドを `BeforeUpdate`, `BeforeSave` 内で使用することができます。
 
 ```go
 func (user *User) BeforeUpdate(tx *gorm.DB) error {
@@ -695,21 +695,21 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` not selected to update
 ```
 
-#### Plugins
+#### プラグイン
 
-Plugin callbacks also need be defined as a method of type `func(tx *gorm.DB) error`, check out [Write Plugins](write_plugins.html) for details
+プラグインの callbacks は `func(tx *gorm.DB) error` 型のメソッドとして定義されます。詳細は [プラグインの作成](write_plugins.html) を参照してください。
 
-#### Updating with struct
+#### 構造体を使った更新
 
-When updating with struct, GORM V2 allows to use `Select` to select zero-value fields to update them, for example:
+構造体を使用して更新処理を行なった場合、GORM V2では `Select` を使用してフィールドをゼロ値で更新することができます。例：
 
 ```go
 db.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
 ```
 
-#### Associations
+#### アソシエーション
 
-GORM V1 allows to use some settings to skip create/update associations, in V2, you can use `Select` to do the job, for example:
+GORM V1では、関連の作成/更新をスキップするためにいくつかの設定を使用することができました。V2では `Select` を使用することで同様の処理を実行することができます。例：
 
 ```go
 db.Omit(clause.Associations).Create(&user)
