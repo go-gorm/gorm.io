@@ -14,7 +14,7 @@ layout: page
 
 ## 编写和翻译文档
 
-* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
+* 编写、修正文档，使 GORM 的变得更好 [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### 翻译该网站
 

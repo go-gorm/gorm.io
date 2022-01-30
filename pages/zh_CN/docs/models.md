@@ -78,11 +78,11 @@ GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果�
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updating or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix nano seconds as updating time
-  Updated   int64 `gorm:"autoUpdateTime:milli"`// Use unix milli seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  CreatedAt time.Time // 在创建时，如果该字段值为零值，则使用当前时间填充
+  UpdatedAt int       // 在创建时该字段值为零值或者在更新时，使用当前时间戳秒数填充
+  Updated   int64 `gorm:"autoUpdateTime:nano"` // 使用时间戳填纳秒数充更新时间
+  Updated   int64 `gorm:"autoUpdateTime:milli"` // 使用时间戳毫秒数填充更新时间
+  Created   int64 `gorm:"autoCreateTime"`      // 使用时间戳秒数填充创建时间
 }
 ```
 

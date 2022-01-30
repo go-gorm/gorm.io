@@ -9,7 +9,7 @@ GORM предоставляет некоторые интерфейсы, кот�
 
 ### Scanner / Valuer
 
-The customized data type has to implement the [Scanner](https://pkg.go.dev/database/sql#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces, so GORM knowns to how to receive/save it into the database
+Настраиваемый тип данных должен реализовывать интерфейсы [Scanner](https://pkg.go.dev/database/sql#Scanner) и [Valuer](https://pkg.go.dev/database/sql/driver#Valuer), чтобы GORM знал, как получить/сохранить его в базе данных
 
 Например:
 
@@ -38,7 +38,7 @@ func (j JSON) Value() (driver.Value, error) {
 }
 ```
 
-There are many third party packages implement the `Scanner`/`Valuer` interface, which can be used with GORM together, for example:
+Существует много сторонних пакетов реализующих интерфейсы `Scanner`/`Valuer`, которые могут использоваться вместе с GORM, например:
 
 ```go
 import (
@@ -55,7 +55,7 @@ type Post struct {
 
 ### Интерфейс GormDataTypeInterface
 
-GORM will read column's database type from [tag](models.html#tags) `type`, if not found, will check if the struct implemented interface `GormDBDataTypeInterface` or `GormDataTypeInterface` and will use its result as data type
+GORM будет считывать тип столбца базы данных из [тега](models.html#tags) `type`, если он не найден, проверит, реализует ли структура интерфейс `GormDBDataTypeInterface` или `GormDataTypeInterface` и будет использовать его результат в качестве типа данных
 
 ```go
 type GormDataTypeInterface interface {
@@ -67,7 +67,7 @@ type GormDBDataTypeInterface interface {
 }
 ```
 
-The result of `GormDataType` will be used as the general data type and can be obtained from `schema.Field`'s field `DataType`, which might be helpful when [writing plugins](write_plugins.html) or [hooks](hooks.html) for example:
+Результат `GormDataType` будет использован в качестве общего типа данных и может быть получен из поля `DataType` типа `schema.Field`, что может быть полезно при [написании плагинов](write_plugins.html) или [хуков](hooks.html), например:
 
 ```go
 func (JSON) GormDataType() string {

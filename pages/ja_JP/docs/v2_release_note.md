@@ -598,13 +598,13 @@ for i := 0; i < 100; i++ {
 
 詳細については [Method Chain](method_chaining.html) を参照してください。
 
-#### Default Value
+#### デフォルト値
 
-GORM V2 won't auto-reload default values created with database function after creating, checkout [Default Values](create.html#default_values) for details
+GORM V2は、データベース関数で作成されたデフォルト値をレコード作成後に自動リロードしません。詳細は [デフォルト値](create.html#default_values) を参照してください。
 
-#### Soft Delete
+#### 論理削除
 
-GORM V1 will enable soft delete if the model has a field named `DeletedAt`, in V2, you need to use `gorm.DeletedAt` for the model wants to enable the feature, e.g:
+GORM V1 ではモデルに `DeletedAt` という名前のフィールドがある場合は論理削除が有効になっていましが。V2で論理削除の機能を有効にするには、モデルに `gorm.DeletedAt` を使用する必要があります。
 
 ```go
 type User struct {
@@ -620,12 +620,12 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE:** `gorm.Model` is using `gorm.DeletedAt`, if you are embedding it, nothing needs to change
+**注意:** `gorm.Model` は `gorm.DeletedAt`を使用しています。そのため、このモデルを埋め込んでいる場合は何も変更する必要はありません。
 {% endnote %}
 
 #### BlockGlobalUpdate
 
-GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+GORM V2 では `BlockGlobalUpdate` がデフォルトで有効になっています。Global Update/Delete を実行するには、何らかの条件を指定する、素のSQLを使用する、あるいは `AllowGlobalUpdate` モードを有効にする必要があります。例：
 
 ```go
 db.Where("1 = 1").Delete(&User{})
@@ -637,7 +637,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 #### ErrRecordNotFound
 
-GORM V2 only returns `ErrRecordNotFound` when you are querying with methods `First`, `Last`, `Take` which is expected to return some result, and we have also removed method `RecordNotFound` in V2, please use `errors.Is` to check the error, e.g:
+GORM V2 、何らかの結果が期待されるメソッドである `First`, `Last`, `Take` を使用して読み取りをした場合に、 `ErrRecordNotFound` を返却します。また、V2では `RecordNotFound` メソッドをなくしました。そのため、エラーをチェックするには `errors.Is` を使用してください。
 
 ```go
 err := db.First(&user).Error
@@ -646,7 +646,7 @@ errors.Is(err, gorm.ErrRecordNotFound)
 
 #### Hooks Method
 
-Before/After Create/Update/Save/Find/Delete must be defined as a method of type `func(tx *gorm.DB) error` in V2, which has unified interfaces like plugin callbacks, if defined as other types, a warning log will be printed and it won't take effect, check out [Hooks](hooks.html) for details
+V2ではBefore/After Create/Update/Save/Find/Delete メソッドは `func(tx *gorm.DB) error` の型のメソッドとして定義され、plugin callbacksのように統一されたインターフェイスを持っています。型が一致しない場合はwarning logが出力され、hooks methodは有効になりません。詳細は [Hooks](hooks.html) を参照してください。
 
 ```go
 func (user *User) BeforeCreate(tx *gorm.DB) error {
@@ -662,9 +662,9 @@ func (user *User) BeforeCreate(tx *gorm.DB) error {
 }
 ```
 
-#### Update Hooks support `Changed` to check fields changed or not
+#### フィールドが更新されたどうかをチェックするための `Changed` がUpdate Hooksで使用可能
 
-When updating with `Update`, `Updates`, You can use `Changed` method in Hooks `BeforeUpdate`, `BeforeSave` to check a field changed or not
+`Update`, `Updates` メソッドで更新を行なった場合、フィールドが更新されたかどうかを確認するために `Changed` メソッドを `BeforeUpdate`, `BeforeSave` 内で使用することができます。
 
 ```go
 func (user *User) BeforeUpdate(tx *gorm.DB) error {
@@ -695,21 +695,21 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(User{Name: "jinzhu"})  // Changed
 db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzhu2"}) // Changed("Name") => false, `Name` not selected to update
 ```
 
-#### Plugins
+#### プラグイン
 
-Plugin callbacks also need be defined as a method of type `func(tx *gorm.DB) error`, check out [Write Plugins](write_plugins.html) for details
+プラグインの callbacks は `func(tx *gorm.DB) error` 型のメソッドとして定義されます。詳細は [プラグインの作成](write_plugins.html) を参照してください。
 
-#### Updating with struct
+#### 構造体を使った更新
 
-When updating with struct, GORM V2 allows to use `Select` to select zero-value fields to update them, for example:
+構造体を使用して更新処理を行なった場合、GORM V2では `Select` を使用してフィールドをゼロ値で更新することができます。例：
 
 ```go
 db.Model(&user).Select("Role", "Age").Update(User{Name: "jinzhu", Role: "", Age: 0})
 ```
 
-#### Associations
+#### アソシエーション
 
-GORM V1 allows to use some settings to skip create/update associations, in V2, you can use `Select` to do the job, for example:
+GORM V1では、関連の作成/更新をスキップするためにいくつかの設定を使用することができました。V2では `Select` を使用することで同様の処理を実行することができます。例：
 
 ```go
 db.Omit(clause.Associations).Create(&user)
@@ -718,16 +718,16 @@ db.Omit(clause.Associations).Save(&user)
 db.Select("Company").Save(&user)
 ```
 
-and GORM V2 doesn't allow preload with `Set("gorm:auto_preload", true)` anymore, you can use `Preload` with `clause.Associations`, e.g:
+そしてGORM V2は `Set("gorm:auto_preload", true)` でのpreloadができなくなりました。`clause.Associations` と共に `Preload` を使用できます。
 
 ```go
 // preload all associations
 db.Preload(clause.Associations).Find(&users)
 ```
 
-Also, checkout field permissions, which can be used to skip creating/updating associations globally
+また、フィールドの権限についても確認してください。それらは関連の作成/更新をスキップするためにグローバルに使用できます。
 
-GORM V2 will use upsert to save associations when creating/updating a record, won't save full associations data anymore to protect your data from saving uncompleted data, for example:
+GORM V2 はレコードの作成/更新時に、upsert を使用して関連付けを保存します。 不完全なデータが保存されるのを防ぐため、すべての関連データを保存することはしなくなります。例：
 
 ```go
 user := User{
@@ -754,9 +754,9 @@ db.Create(&user)
 // COMMIT;
   ```
 
-#### Join Table
+#### 中間テーブル
 
-In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and define other fields, e.g:
+GORM V2では、`中間テーブル` は `SoftDelete`, `Hooks`, あるいは他のフィールドを定義するなど、機能を持つモデルとして定義することができます。
 
 ```go
 type Person struct {
@@ -785,7 +785,7 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
-After that, you could use normal GORM methods to operate the join table data, for example:
+中間テーブルのデータを操作するために、通常のGORMメソッドを使用することができます。例：
 
 ```go
 var results []PersonAddress
@@ -798,11 +798,11 @@ db.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
 
 #### Count
 
-Count only accepts `*int64` as the argument
+Count は `*int64` のみを引数として受け付けます。
 
-#### Transactions
+#### トランザクション
 
-some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
+`RollbackUnlessCommitted` のようないくつかのトランザクションメソッドが削除されました。トランザクションをラップするために `Transaction` メソッドを使用すると良いでしょう。
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
@@ -821,17 +821,17 @@ db.Transaction(func(tx *gorm.DB) error {
 })
 ```
 
-Checkout [Transactions](transactions.html) for details
+詳細については [トランザクション](transactions.html) を参照してください。
 
 #### Migrator
 
-* Migrator will create database foreign keys by default
-* Migrator is more independent, many API renamed to provide better support for each database with unified API interfaces
-* AutoMigrate will alter column's type if its size, precision, nullable changed
-* Support Checker through tag `check`
-* Enhanced tag setting for `index`
+* Migratorはデフォルトで外部キーを作成します
+* Migratorはより独立し、統合されたAPIインターフェースで各データベースをよりサポートするため、多くのAPIの名称が変更されています
+* AutoMigrate はカラムのサイズ、精度、null可否などが変更された場合、既存のカラムの型を変更します
+* `check` タグを使用することで Checker をサポートします
+* `index` タグでの設定の強化
 
-Checkout [Migration](migration.html) for details
+詳細については [マイグレーション](migration.html) を参照してください。
 
 ```go
 type UserIndex struct {

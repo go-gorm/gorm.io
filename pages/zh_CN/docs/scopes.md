@@ -3,7 +3,7 @@ title: Scopes
 layout: page
 ---
 
-Scopes allow you to re-use commonly used logic, the shared logic needs to be defined as type `func(*gorm.DB) *gorm.DB`
+作用域允许你复用通用的逻辑，这种共享逻辑需要定义为类型`func(*gorm.DB) *gorm.DB`。
 
 ## 查询
 
@@ -65,9 +65,9 @@ db.Scopes(Paginate(r)).Find(&users)
 db.Scopes(Paginate(r)).Find(&articles)
 ```
 
-## Dynamically Table
+## 动态表
 
-Use `Scopes` to dynamically set the query Table
+使用 `Scopes` 来动态指定查询的表
 
 ```go
 func TableOfYear(user *User, year int) func(db *gorm.DB) *gorm.DB {
@@ -98,9 +98,9 @@ DB.Scopes(TableOfOrg(user, "org2")).Find(&users)
 // SELECT * FROM org1.users;
 ```
 
-## Updates
+## 更新
 
-Scope examples for updating/deleting
+Scope 更新、删除示例：
 
 ```go
 func CurOrganization(r *http.Request) func(db *gorm.DB) *gorm.DB {

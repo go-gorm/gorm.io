@@ -3,7 +3,7 @@ menu:
   home: <i class="fa fa-home"></i>主页
   docs: <i class="fa fa-book"></i>文档
   api: <i class="fa fa-cogs"></i>API
-  github: <i class="fa fa-github"></i>Github
+  github: <i class="fa fa-github"></i>GitHub
   community: <i class="fab fa-slack"></i>社区
   contribute: <i class="fa fa-rocket"></i>贡献
   search: 搜索文档...
@@ -54,6 +54,7 @@ sidebar:
     settings: 设置
     advanced_topics: 高级主题
     dbresolver: Database Resolver
+    sharding: Sharding
     prometheus: Prometheus
     hints: 提示
     indexes: 索引

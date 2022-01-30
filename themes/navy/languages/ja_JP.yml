@@ -54,6 +54,7 @@ sidebar:
     settings: 値の受け渡し
     advanced_topics: Advanced Topics
     dbresolver: Database Resolver
+    sharding: シャーディング
     prometheus: Prometheus
     hints: Hints
     indexes: Index

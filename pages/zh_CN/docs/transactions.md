@@ -65,9 +65,9 @@ db.Transaction(func(tx *gorm.DB) error {
 // Commit user1, user3
 ```
 
-## Control the transaction manually
+## 手动事务
 
-Gorm supports calling transaction control functions (commit / rollback) directly, for example:
+Gorm 支持直接调用事务控制方法（commit、rollback），例如：
 
 ```go
 // 开始事务
@@ -117,7 +117,7 @@ func CreateAnimals(db *gorm.DB) error {
 
 ## SavePoint、RollbackTo
 
-GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
+GORM 提供了 `SavePoint`、`Rollbackto` 方法，来提供保存点以及回滚至保存点功能，例如：
 
 ```go
 tx := db.Begin()

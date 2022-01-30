@@ -54,6 +54,7 @@ sidebar:
     settings: 설정
     advanced_topics: Advanced Topics
     dbresolver: Database Resolver
+    sharding: Sharding
     prometheus: Prometheus
     hints: Hints
     indexes: Indexes

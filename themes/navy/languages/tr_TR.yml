@@ -54,6 +54,7 @@ sidebar:
     settings: Ayarlar
     advanced_topics: İleri düzey Konular
     dbresolver: Veritabanı Çözücü
+    sharding: Sharding
     prometheus: Prometheus
     hints: İpuçları
     indexes: İndeksler
