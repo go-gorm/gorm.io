@@ -718,16 +718,16 @@ db.Omit(clause.Associations).Save(&user)
 db.Select("Company").Save(&user)
 ```
 
-and GORM V2 doesn't allow preload with `Set("gorm:auto_preload", true)` anymore, you can use `Preload` with `clause.Associations`, e.g:
+そしてGORM V2は `Set("gorm:auto_preload", true)` でのpreloadができなくなりました。`clause.Associations` と共に `Preload` を使用できます。
 
 ```go
 // preload all associations
 db.Preload(clause.Associations).Find(&users)
 ```
 
-Also, checkout field permissions, which can be used to skip creating/updating associations globally
+また、フィールドの権限についても確認してください。それらは関連の作成/更新をスキップするためにグローバルに使用できます。
 
-GORM V2 will use upsert to save associations when creating/updating a record, won't save full associations data anymore to protect your data from saving uncompleted data, for example:
+GORM V2 はレコードの作成/更新時に、upsert を使用して関連付けを保存します。 不完全なデータが保存されるのを防ぐため、すべての関連データを保存することはしなくなります。例：
 
 ```go
 user := User{
@@ -754,9 +754,9 @@ db.Create(&user)
 // COMMIT;
   ```
 
-#### Join Table
+#### 中間テーブル
 
-In GORM V2, a `JoinTable` can be a full-featured model, with features like `Soft Delete`，`Hooks`, and define other fields, e.g:
+GORM V2では、`中間テーブル` は `SoftDelete`, `Hooks`, あるいは他のフィールドを定義するなど、機能を持つモデルとして定義することができます。
 
 ```go
 type Person struct {
@@ -785,7 +785,7 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
-After that, you could use normal GORM methods to operate the join table data, for example:
+中間テーブルのデータを操作するために、通常のGORMメソッドを使用することができます。例：
 
 ```go
 var results []PersonAddress
@@ -798,11 +798,11 @@ db.Create(&PersonAddress{PersonID: person.ID, AddressID: address.ID})
 
 #### Count
 
-Count only accepts `*int64` as the argument
+Count は `*int64` のみを引数として受け付けます。
 
-#### Transactions
+#### トランザクション
 
-some transaction methods like `RollbackUnlessCommitted` removed, prefer to use method `Transaction` to wrap your transactions
+`RollbackUnlessCommitted` のようないくつかのトランザクションメソッドが削除されました。トランザクションをラップするために `Transaction` メソッドを使用すると良いでしょう。
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
@@ -821,17 +821,17 @@ db.Transaction(func(tx *gorm.DB) error {
 })
 ```
 
-Checkout [Transactions](transactions.html) for details
+詳細については [トランザクション](transactions.html) を参照してください。
 
 #### Migrator
 
-* Migrator will create database foreign keys by default
-* Migrator is more independent, many API renamed to provide better support for each database with unified API interfaces
-* AutoMigrate will alter column's type if its size, precision, nullable changed
-* Support Checker through tag `check`
-* Enhanced tag setting for `index`
+* Migratorはデフォルトで外部キーを作成します
+* Migratorはより独立し、統合されたAPIインターフェースで各データベースをよりサポートするため、多くのAPIの名称が変更されています
+* AutoMigrate はカラムのサイズ、精度、null可否などが変更された場合、既存のカラムの型を変更します
+* `check` タグを使用することで Checker をサポートします
+* `index` タグでの設定の強化
 
-Checkout [Migration](migration.html) for details
+詳細については [マイグレーション](migration.html) を参照してください。
 
 ```go
 type UserIndex struct {
