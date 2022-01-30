@@ -623,9 +623,9 @@ type User struct {
 **注意:** `gorm.Model` は `gorm.DeletedAt`を使用しています。そのため、このモデルを埋め込んでいる場合は何も変更する必要はありません。
 {% endnote %}
 
-#### GlobalUpdateを防ぐ
+#### BlockGlobalUpdate
 
-GORM V2では `BlockGlobalUpdate` がデフォルトで有効になっています。Global Update/Delete を実行するには、何らかの条件を指定するか素のSQLを使用する、あるいは `AllowGlobalUpdate` モードを有効にする必要があります。
+GORM V2 enabled `BlockGlobalUpdate` mode by default, to trigger a global update/delete, you have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Where("1 = 1").Delete(&User{})
