@@ -3,13 +3,13 @@ title: Sharding
 layout: page
 ---
 
-Sharding plugin using SQL parser and replace for splits large tables into smaller ones, redirects Query into sharding tables. Give you a high performance database access.
+シャーディングプラグインは、巨大なテーブルを小さいテーブルに分割し、シャーディングテーブルにクエリをリダイレクトするために、SQLパーサーを使用してクエリを置き換えます。 高パフォーマンスなデータベスアクセスが可能となります。
 
 https://github.com/go-gorm/sharding
 
 ## Features
 
-- Non-intrusive design. Load the plugin, specify the config, and all done.
+- Non-intrusive design. プラグインをロードして設定を指定するだけで使用できます。
 - Lighting-fast. No network based middlewares, as fast as Go.
 - Multiple database support. PostgreSQL tested, MySQL and SQLite is coming.
 - Allows you custom the Primary Key generator (Built in keygen, Sequence, Snowflake ...).
