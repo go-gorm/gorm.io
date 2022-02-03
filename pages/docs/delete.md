@@ -9,6 +9,7 @@ When deleting a record, the deleted value needs to have primary key or it will t
 
 ```go
 // Email's ID is `10`
+email.id = 10
 db.Delete(&email)
 // DELETE from emails where id = 10;
 
