@@ -498,6 +498,7 @@ db.Select("Account").Delete(&users)
 
 * GORM V2 使用 `camelCase` 风格的 tag 名。`snake_case` 风格的 tag 已经失效，例如： `auto_increment`、`unique_index`、`polymorphic_value`、`embeded_prefix`，查看 [Model Tag](models.html#tags) 获取详情
 * 用于指定外键的 tag 已变更为 `foreignKey`，`references`，查看 [Association Tag](associations.html#tags) 获取详情
+* Not support `sql` tag
 
 #### Table Name
 
