@@ -16,6 +16,6 @@ comments: false
 * <i class="fa fa-rocket" aria-hidden="true"></i> Composite Primary Key, Indexes, Constraints
 * <i class="fa fa-rocket" aria-hidden="true"></i> Auto Migrations
 * <i class="fa fa-rocket" aria-hidden="true"></i> Logger
-* <i class="fa fa-rocket" aria-hidden="true"></i> Extendable, flexible plugin API: Database Resolver (multiple databases, read/write splitting) / Prometheus...
-* <i class="fa fa-rocket" aria-hidden="true"></i> Every feature comes with tests
+* <i class="fa fa-rocket" aria-hidden="true"></i> Erweiterbare und flexible Plugin API: Datenbank Resolver(mehrere Datenbanken, lese/schreib Trennung) / Prometheus...
+* <i class="fa fa-rocket" aria-hidden="true"></i> Jedes Feature enthält Tests
 * <i class="fa fa-rocket" aria-hidden="true"></i> Entwickler-freundlich
