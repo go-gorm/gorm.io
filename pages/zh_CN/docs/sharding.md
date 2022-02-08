@@ -49,27 +49,27 @@ db.Use(sharding.Register(sharding.Config{
 db.Create(&Order{UserID: 2})
 // sql: INSERT INTO orders_2 ...
 
-// Show have use Raw SQL to insert, this will insert into orders_03
+// 原生 SQL 插入示例，这会插入到 orders_03 表
 db.Exec("INSERT INTO orders(user_id) VALUES(?)", int64(3))
 
-// This will throw ErrMissingShardingKey error, because there not have sharding key presented.
+// 这会抛出 ErrMissingShardingKey 错误，因此此处没有提供 sharding key
 db.Create(&Order{Amount: 10, ProductID: 100})
 fmt.Println(err)
 
-// Find, this will redirect query to orders_02
+// Find 方法，这会检索 order_02 表
 var orders []Order
 db.Model(&Order{}).Where("user_id", int64(2)).Find(&orders)
 fmt.Printf("%#v\n", orders)
 
-// Raw SQL also supported
+// 原生 SQL 也是支持的
 db.Raw("SELECT * FROM orders WHERE user_id = ?", int64(3)).Scan(&orders)
 fmt.Printf("%#v\n", orders)
 
-// This will throw ErrMissingShardingKey error, because WHERE conditions not included sharding key
+// 这会抛出 ErrMissingShardingKey 错误，因为 WHERE 条件没有包含 sharding key
 err = db.Model(&Order{}).Where("product_id", "1").Find(&orders).Error
 fmt.Println(err)
 
-// Update and Delete are similar to create and query
+// Update 和 Delete 方法与创建、查询类似
 db.Exec("UPDATE orders SET product_id = ? WHERE user_id = ?", 2, int64(3))
 err = db.Exec("DELETE FROM orders WHERE product_id = 3").Error
 fmt.Println(err) // ErrMissingShardingKey
