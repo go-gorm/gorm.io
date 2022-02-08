@@ -498,6 +498,7 @@ We are trying to list big breaking changes or those changes can't be caught by t
 
 * GORM V2 prefer write tag name in `camelCase`, tags in `snake_case` won't works anymore, for example: `auto_increment`, `unique_index`, `polymorphic_value`, `embedded_prefix`, check out [Model Tags](models.html#tags)
 * Tags used to specify foreign keys changed to `foreignKey`, `references`, check out [Associations Tags](associations.html#tags)
+* Not support `sql` tag
 
 #### Table Name
 
