@@ -33,6 +33,7 @@ layout: page
 * [zapgorm - Uber's Zap driver de logging para Gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber's Zap driver de logging para Gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 * [gorm-newrelic-telemetry-plugin - A plugin to allow telemetry by NewRelic Go Agent for GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
+* [Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
 
 ## <span id="contribute">Contribua para esta página</span>
 
