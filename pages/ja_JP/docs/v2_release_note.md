@@ -499,7 +499,7 @@ db.Select("Account").Delete(&users)
 
 * GORM V2ではタグ名は `camelCase` となり、`snake_case` でのタグは無効になります。（例： `auto_increment`, `unique_index`, `polymorphic_value`, `embedded_prefix`）詳細は [モデルのタグ](models.html#tags) を参照してください。
 * 外部キーを指定するために使用するタグは `foreignKey`, `references` に変更されました。詳細は [アソシエーションのタグ](associations.html#tags) を参照してください。
-* Not support `sql` tag
+* `sql` タグをサポートしなくなりました。
 
 #### テーブル名
 
