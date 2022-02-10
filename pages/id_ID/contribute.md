@@ -14,7 +14,7 @@ layout: halaman
 
 ## Dokumentasi dan Penulisan
 
-* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
+* Bantu dokumentasi GORM menjadi lebih baik dengan menuliskan konten baru, memperbaiki materi yang sudah ada di [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### Terjemahkan situs ini
 
