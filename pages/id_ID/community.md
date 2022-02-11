@@ -3,9 +3,9 @@ title: GORM Community
 layout: page
 ---
 
-## Ask
+## Pertanyaan
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[Bagaimana saya mengajukan pertanyaan yang baik?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
 * Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
@@ -37,4 +37,4 @@ layout: page
 
 ## <span id="contribute">Contribute to this page</span>
 
-Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) to add your awesome links
+Silahkan ubah [halaman ini](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) untuk menambahkan link
