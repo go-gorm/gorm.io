@@ -152,13 +152,25 @@ for rows.Next() {
 }
 ```
 
-## Расширенный режим
+## <span id="connection">Connection</span>
+
+Run mutliple SQL in same db tcp connection (not in a transaction)
+
+```go
+db.Connection(func(tx *gorm.DB) error {
+  tx.Exec("SET my.role = ?", "admin")
+
+  tx.First(&User{})
+})
+```
+
+## Advanced
 
 ### <span id="clauses">Clauses</span>
 
-GORM использует SQL конструктор для генерирования SQL внутри себя. Для каждой операции GORM создает объект `*gorm.Statement`, все GORM API добавляют/изменяют `Оператор` для `Statement`, и в конце GORM генерирует SQL на основе этих операторов.
+GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
 
-Например, при запросе с помощью `First` GORM добавляет следующие пункты в `Statement`
+For example, when querying with `First`, it adds the following clauses to the `Statement`
 
 ```go
 clause.Select{Columns: "*"}
@@ -169,39 +181,39 @@ clause.OrderByColumn{
 }
 ```
 
-Затем GORM строит окончательный запрос SQL в `Запросе` callback функции, например:
+Then GORM build finally querying SQL in the `Query` callbacks like:
 
 ```go
 Statement.Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")
 ```
 
-Который сгенерирует SQL:
+Which generate SQL:
 
 ```sql
 SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 ```
 
-Вы можете определить свой `Оператор` и использовать его с GORM, но он должен реализовывать [Интерфейс](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface)
+You can define your own `Clause` and use it with GORM, it needs to implements [Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface)
 
-Ознакомьтесь с [примерами](https://github.com/go-gorm/gorm/tree/master/clause) использования.
+Check out [examples](https://github.com/go-gorm/gorm/tree/master/clause) for reference
 
 ### Построитель операторов
 
-Для различных баз данных Операторы могут генерировать разные SQL, например:
+For different databases, Clauses may generate different SQL, for example:
 
 ```go
 db.Offset(10).Limit(5).Find(&users)
-// Генерация для SQL Server
+// Generated for SQL Server
 // SELECT * FROM "users" OFFSET 10 ROW FETCH NEXT 5 ROWS ONLY
-// Генерация для MySQL
+// Generated for MySQL
 // SELECT * FROM `users` LIMIT 5 OFFSET 10
 ```
 
-Что поддерживается, поскольку GORM позволяет драйверу базы данных регистрировать конструктор операторов для замены стандартного, возьмем в качестве примера [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45)
+Which is supported because GORM allows database driver register Clause Builder to replace the default one, take the [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45) as example
 
 ### Варианты операторов
 
-GORM определяет [много операторов](https://github.com/go-gorm/gorm/tree/master/clause), а некоторые операторы предоставляют расширенные опции и могут быть использованы для вашего приложения
+GORM defined [Many Clauses](https://github.com/go-gorm/gorm/tree/master/clause), and some clauses provide advanced options can be used for your application
 
 Although most of them are rarely used, if you find GORM public API can't match your requirements, may be good to check them out, for example:
 
@@ -212,7 +224,7 @@ db.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
 
 ### StatementModifier
 
-GORM предоставляет интерфейс [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier), позволяющий вам изменить выражение в соответствии с вашими требованиями, возьмем [Hints](hints.html) в качестве примера
+GORM provides interface [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier) allows you modify statement to match your requirements, take [Hints](hints.html) as example
 
 ```go
 import "gorm.io/hints"
