@@ -153,6 +153,18 @@ for rows.Next() {
 }
 ```
 
+## <span id="connection">Connection</span>
+
+Run mutliple SQL in same db tcp connection (not in a transaction)
+
+```go
+db.Connection(func(tx *gorm.DB) error {
+  tx.Exec("SET my.role = ?", "admin")
+
+  tx.First(&User{})
+})
+```
+
 ## Advanced
 
 ### <span id="clauses">Clauses</span>
