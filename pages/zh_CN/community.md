@@ -33,6 +33,7 @@ layout: page
 * [zapgorm - Uber 的 Zap 日志驱动程序，适用版本gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber 的 Zap 日志驱动程序，适用版本gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 * [gorm-newrelic-telemetry-plugin - 在 GORM 使用 NewRelic Go Agent 来进行跟踪事务，跟踪数据库调用等](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
+* [Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
 
 ## <span id="contribute">完善本页面</span>
 

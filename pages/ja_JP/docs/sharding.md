@@ -3,20 +3,20 @@ title: Sharding
 layout: page
 ---
 
-Sharding plugin using SQL parser and replace for splits large tables into smaller ones, redirects Query into sharding tables. Give you a high performance database access.
+シャーディングプラグインは、巨大なテーブルを小さいテーブルに分割し、シャーディングテーブルにクエリをリダイレクトするために、SQLパーサーを使用してクエリを置き換えます。 高パフォーマンスなデータベスアクセスが可能となります。
 
 https://github.com/go-gorm/sharding
 
-## Features
+## 特徴
 
-- Non-intrusive design. Load the plugin, specify the config, and all done.
-- Lighting-fast. No network based middlewares, as fast as Go.
-- Multiple database support. PostgreSQL tested, MySQL and SQLite is coming.
-- Allows you custom the Primary Key generator (Built in keygen, Sequence, Snowflake ...).
+- シンプルなデザイン。 プラグインをロードして設定を指定するだけで使用できます。
+- 高速な動作。 Goと同じくらい速く、ネットワークに依存しないミドルウェア。
+- 複数のデータベースのサポート。 PostgreSQLは動作検証済み、MySQLとSQLiteは今後追加されます。
+- プライマリキージェネレータをカスタマイズできます(ビルトインのkeygen、Sequence、Snowflake...)
 
-## Usage
+## 使用方法
 
-Config the sharding middleware, register the tables which you want to shard. See [Godoc](https://pkg.go.dev/github.com/go-gorm/sharding) for config details.
+シャーディングミドルウェアを設定し、シャーディング対象のテーブルを登録します。 設定の詳細は [Godoc](https://pkg.go.dev/github.com/go-gorm/sharding) を参照してください。
 
 ```go
 import (
@@ -38,41 +38,41 @@ db.Use(sharding.Register(sharding.Config{
     ShardingKey:         "user_id",
     NumberOfShards:      256,
     PrimaryKeyGenerator: sharding.PKSnowflake,
-    // This case for show up give notifications, audit_logs table use same sharding rule.
+    // このケースでは、notificationsとaudit_logsテーブルに同じシャーディングルールを適用します。
 }, Notification{}, AuditLog{}))
 ```
 
-Use the db session as usual. Just note that the query should have the `Sharding Key` when operate sharding tables.
+通常通りdbセッションを使用します。 シャーディング対象のテーブルを操作する場合は、クエリに `Sharding Key` を持つ必要があることに注意してください。
 
 ```go
-// Gorm create example, this will insert to orders_02
+// GORMでのレコード作成例。この場合 orders_02 にレコードが挿入されます。
 db.Create(&Order{UserID: 2})
-// sql: INSERT INTO orders_2 ...
+// sql: INSERT INTO orders_02 ...
 
-// Show have use Raw SQL to insert, this will insert into orders_03
+// 素のSQLでのinsert。この場合 orders_03 にレコードが挿入されます。
 db.Exec("INSERT INTO orders(user_id) VALUES(?)", int64(3))
 
-// This will throw ErrMissingShardingKey error, because there not have sharding key presented.
+// シャーディングキーがないため、これは ErrMissingShardingKey エラーが発生します。
 db.Create(&Order{Amount: 10, ProductID: 100})
 fmt.Println(err)
 
-// Find, this will redirect query to orders_02
+// Findの場合です。これは orders_02 にクエリがリダイレクトされます。
 var orders []Order
 db.Model(&Order{}).Where("user_id", int64(2)).Find(&orders)
 fmt.Printf("%#v\n", orders)
 
-// Raw SQL also supported
+// 素のSQLでの取得もサポートされています。
 db.Raw("SELECT * FROM orders WHERE user_id = ?", int64(3)).Scan(&orders)
 fmt.Printf("%#v\n", orders)
 
-// This will throw ErrMissingShardingKey error, because WHERE conditions not included sharding key
+// WHERE条件にシャーディングキーが含まれていないため、これは ErrMissingShardingKey エラーが発生します。
 err = db.Model(&Order{}).Where("product_id", "1").Find(&orders).Error
 fmt.Println(err)
 
-// Update and Delete are similar to create and query
+// Update と Delete は作成や取得時と同様です
 db.Exec("UPDATE orders SET product_id = ? WHERE user_id = ?", 2, int64(3))
 err = db.Exec("DELETE FROM orders WHERE product_id = 3").Error
 fmt.Println(err) // ErrMissingShardingKey
 ```
 
-The full example is [here](https://github.com/go-gorm/sharding/tree/main/examples).
+より詳細な例は [こちら](https://github.com/go-gorm/sharding/tree/main/examples) にあります。

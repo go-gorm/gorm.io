@@ -3,9 +3,9 @@ title: GORM Community
 layout: page
 ---
 
-## Ask
+## Pertanyaan
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[Bagaimana saya mengajukan pertanyaan yang baik?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
 * Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
@@ -33,7 +33,8 @@ layout: page
 * [zapgorm - Uber's Zap logging driver for gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber's Zap logging driver for gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 * [gorm-newrelic-telemetry-plugin - A plugin to allow telemetry by NewRelic Go Agent for GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
+* [Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
 
 ## <span id="contribute">Contribute to this page</span>
 
-Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) to add your awesome links
+Silahkan ubah [halaman ini](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) untuk menambahkan link

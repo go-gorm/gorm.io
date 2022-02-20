@@ -152,13 +152,25 @@ for rows.Next() {
 }
 ```
 
-## 高级选项
+## <span id="connection">Connection</span>
+
+Run mutliple SQL in same db tcp connection (not in a transaction)
+
+```go
+db.Connection(func(tx *gorm.DB) error {
+  tx.Exec("SET my.role = ?", "admin")
+
+  tx.First(&User{})
+})
+```
+
+## Advanced
 
 ### <span id="clauses">子句（Clause）</span>
 
-GORM 内部使用 SQL builder 生成 SQL。对于每个操作，GORM 都会创建一个 `*gorm.Statement` 对象，所有的 GORM API 都是在为 `statement` 添加/修改 `Clause`，最后，GORM 会根据这些 Clause 生成 SQL
+GORM uses SQL builder generates SQL internally, for each operation, GORM creates a `*gorm.Statement` object, all GORM APIs add/change `Clause` for the `Statement`, at last, GORM generated SQL based on those clauses
 
-例如，当通过 `First` 进行查询时，它会在 `Statement` 中添加以下 Clause
+For example, when querying with `First`, it adds the following clauses to the `Statement`
 
 ```go
 clause.Select{Columns: "*"}
@@ -169,41 +181,41 @@ clause.OrderByColumn{
 }
 ```
 
-然后 GORM 在 `Query` callback 中构建最终的查询 SQL，像这样：
+Then GORM build finally querying SQL in the `Query` callbacks like:
 
 ```go
 Statement.Build("SELECT", "FROM", "WHERE", "GROUP BY", "ORDER BY", "LIMIT", "FOR")
 ```
 
-生成 SQL：
+Which generate SQL:
 
 ```sql
 SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 ```
 
-您可以自定义 `Clause` 并与 GORM 一起使用，这需要实现 [Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface) 接口
+You can define your own `Clause` and use it with GORM, it needs to implements [Interface](https://pkg.go.dev/gorm.io/gorm/clause?tab=doc#Interface)
 
-可以参考 [示例](https://github.com/go-gorm/gorm/tree/master/clause)
+Check out [examples](https://github.com/go-gorm/gorm/tree/master/clause) for reference
 
 ### 子句构造器
 
-不同的数据库, Clause 可能会生成不同的 SQL，例如：
+For different databases, Clauses may generate different SQL, for example:
 
 ```go
 db.Offset(10).Limit(5).Find(&users)
-// SQL Server 会生成
+// Generated for SQL Server
 // SELECT * FROM "users" OFFSET 10 ROW FETCH NEXT 5 ROWS ONLY
-// MySQL 会生成
+// Generated for MySQL
 // SELECT * FROM `users` LIMIT 5 OFFSET 10
 ```
 
-之所以支持 Clause，是因为 GORM 允许数据库驱动程序通过注册 Clause Builder 来取代默认值，这儿有一个 [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45) 的示例
+Which is supported because GORM allows database driver register Clause Builder to replace the default one, take the [Limit](https://github.com/go-gorm/sqlserver/blob/512546241200023819d2e7f8f2f91d7fb3a52e42/sqlserver.go#L45) as example
 
 ### 子句选项
 
-GORM 定义了很多 [Clause](https://github.com/go-gorm/gorm/tree/master/clause)，其中一些 Clause 提供了你可能会用到的选项
+GORM defined [Many Clauses](https://github.com/go-gorm/gorm/tree/master/clause), and some clauses provide advanced options can be used for your application
 
-尽管很少会用到它们，但如果你发现 GORM API 与你的预期不符合。这可能可以很好地检查它们，例如：
+Although most of them are rarely used, if you find GORM public API can't match your requirements, may be good to check them out, for example:
 
 ```go
 db.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
@@ -212,7 +224,7 @@ db.Clauses(clause.Insert{Modifier: "IGNORE"}).Create(&user)
 
 ### StatementModifier
 
-GORM 提供了 [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier) 接口，允许您修改语句，使其符合您的要求，这儿有一个 [Hint](hints.html) 示例
+GORM provides interface [StatementModifier](https://pkg.go.dev/gorm.io/gorm?tab=doc#StatementModifier) allows you modify statement to match your requirements, take [Hints](hints.html) as example
 
 ```go
 import "gorm.io/hints"

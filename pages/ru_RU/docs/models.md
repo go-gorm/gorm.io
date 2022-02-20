@@ -57,14 +57,15 @@ type Model struct {
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // разрешены чтение и создание
-  Name string `gorm:"<-:update"` // разрешены чтение и изменение
-  Name string `gorm:"<-"`        // разрешены чтение и запись(создание и изменение)
-  Name string `gorm:"<-:false"`  // разрешено чтение, запрещена запись
-  Name string `gorm:"->"`        // только чтение (запрещена запись, если настроено)
-  Name string `gorm:"->;<-:create"` // разрешены чтение и создание
-  Name string `gorm:"->:false;<-:create"` // разрешено только чтение (запрещено чтение из базы)
-  Name string `gorm:"-"`  // игнорирование этого поля при записи и чтении из структуры
+  Name string `gorm:"<-:create"` // allow read and create
+  Name string `gorm:"<-:update"` // allow read and update
+  Name string `gorm:"<-"`        // allow read and write (create and update)
+  Name string `gorm:"<-:false"`  // allow read, disable write permission
+  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
+  Name string `gorm:"->;<-:create"` // allow read and create
+  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
+  Name string `gorm:"-"`  // ignore this field when write and read with struct
+  Name string `gorm:"migration"` // // ignore this field when migration
 }
 ```
 
