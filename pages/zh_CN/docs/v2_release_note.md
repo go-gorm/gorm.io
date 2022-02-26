@@ -235,7 +235,7 @@ db.Where(
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 
 // From 子查询
-db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE age = 18
 
 // Update 子查询

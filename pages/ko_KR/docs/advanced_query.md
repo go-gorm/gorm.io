@@ -84,7 +84,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 GORM은 FROM 절의 서브쿼리를 `Table` 메서드와 함께 사용할 수 있습니다. 예시:
 
 ```go
-db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
 subQuery1 := db.Model(&User{}).Select("name")
