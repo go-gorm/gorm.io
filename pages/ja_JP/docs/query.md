@@ -386,9 +386,30 @@ db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 
 詳細については、 [Preloading (Eager Loading)](preload.html) を参照してください。
 
+### Joins a Derived Table
+
+You can also use `Joins` to join a derived table.
+
+```go
+type User struct {
+    Id  int
+    Age int
+}
+
+type Order struct {
+    UserId     int
+    FinishedAt *time.Time
+}
+
+query := db.Table("order").Select("MAX(order.finished_at) as latest").Joins("left join user user on order.user_id = user.id").Where("user.age > ?", 18).Group("order.user_id")
+db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Scan(&results)
+// SELECT `order`.`user_id`,`order`.`finished_at` FROM `order` join (SELECT MAX(order.finished_at) as latest FROM `order` left join user user on order.user_id = user.id WHERE user.age > 18 GROUP BY `order`.`user_id`) q on order.finished_at = q.latest
+```
+
+
 ## <span id="scan">Scan</span>
 
-レコード取得結果の構造体へのScanは、`Find`の使う方法と同様になります。
+Scanning results into a struct works similarly to the way we use `Find`
 
 ```go
 type Result struct {
