@@ -95,7 +95,7 @@ DB.Scopes(TableOfOrg(user, "org1")).Find(&users)
 // SELECT * FROM org1.users;
 
 DB.Scopes(TableOfOrg(user, "org2")).Find(&users)
-// SELECT * FROM org1.users;
+// SELECT * FROM org2.users;
 ```
 
 ## Updates
