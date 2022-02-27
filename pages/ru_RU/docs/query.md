@@ -386,9 +386,30 @@ db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 
 Для получения более подробной информации обратитесь к [Предзагрузка (Нетерпеливая загрузка данных)](preload.html).
 
+### Joins a Derived Table
+
+You can also use `Joins` to join a derived table.
+
+```go
+type User struct {
+    Id  int
+    Age int
+}
+
+type Order struct {
+    UserId     int
+    FinishedAt *time.Time
+}
+
+query := db.Table("order").Select("MAX(order.finished_at) as latest").Joins("left join user user on order.user_id = user.id").Where("user.age > ?", 18).Group("order.user_id")
+db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Scan(&results)
+// SELECT `order`.`user_id`,`order`.`finished_at` FROM `order` join (SELECT MAX(order.finished_at) as latest FROM `order` left join user user on order.user_id = user.id WHERE user.age > 18 GROUP BY `order`.`user_id`) q on order.finished_at = q.latest
+```
+
+
 ## <span id="scan">Scan</span>
 
-Запись результата в структуру работает аналогично `Find`
+Scanning results into a struct works similarly to the way we use `Find`
 
 ```go
 type Result struct {
@@ -399,6 +420,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
 
-// Чистый SQL
+// Raw SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
