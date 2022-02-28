@@ -154,7 +154,7 @@ for rows.Next() {
 
 ## <span id="connection">Connection</span>
 
-Run mutliple SQL in same db tcp connection (not in a transaction)
+同じtcp接続で複数のSQLを実行することができます(トランザクションを意味するものではありません)
 
 ```go
 db.Connection(func(tx *gorm.DB) error {
@@ -164,7 +164,7 @@ db.Connection(func(tx *gorm.DB) error {
 })
 ```
 
-## Advanced
+## 高度な機能
 
 ### <span id="clauses">Clauses</span>
 
