@@ -386,9 +386,9 @@ db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 
 詳細については、 [Preloading (Eager Loading)](preload.html) を参照してください。
 
-### Joins a Derived Table
+### 導出表の結合
 
-You can also use `Joins` to join a derived table.
+`Joins` を使用して導出表を結合することもできます。
 
 ```go
 type User struct {
@@ -409,7 +409,7 @@ db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Sc
 
 ## <span id="scan">Scan</span>
 
-Scanning results into a struct works similarly to the way we use `Find`
+レコード取得結果の構造体へのScanは、`Find`の使う方法と同様になります。
 
 ```go
 type Result struct {

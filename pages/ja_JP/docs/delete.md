@@ -50,10 +50,10 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 主キーが指定されていない場合、GORMは指定された条件にマッチしたレコードの一括削除を実行します。
 
 ```go
-db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
+db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
 // DELETE from emails where email LIKE "%jinzhu%";
 
-db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
+db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 

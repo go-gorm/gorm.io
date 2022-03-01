@@ -50,10 +50,10 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 如果指定的值不包括主属性，那么 GORM 会执行批量删除，它将删除所有匹配的记录
 
 ```go
-db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
+db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
 // DELETE from emails where email LIKE "%jinzhu%";
 
-db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
+db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
