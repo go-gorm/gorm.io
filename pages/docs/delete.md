@@ -50,10 +50,10 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 The specified value has no primary value, GORM will perform a batch delete, it will delete all matched records
 
 ```go
-db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
+db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
 // DELETE from emails where email LIKE "%jinzhu%";
 
-db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
+db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
