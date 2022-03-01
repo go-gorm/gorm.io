@@ -50,10 +50,10 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 Первичный ключ не указан и GORM выполнит пакетное удаление, при этом будут удалены все совпадающие записи
 
 ```go
-db.Where("email LIKE ?", "%jinzhu%").Delete(Email{})
+db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
 // DELETE from emails where email LIKE "%jinzhu%";
 
-db.Delete(Email{}, "email LIKE ?", "%jinzhu%")
+db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
