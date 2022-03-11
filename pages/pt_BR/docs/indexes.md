@@ -3,13 +3,13 @@ title: Índices
 layout: page
 ---
 
-GORM allows create database index with tag `index`, `uniqueIndex`, those indexes will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORM permite criar índice de banco de dados com tag `index`, `uniqueIndex`, esses índices serão criados quando rodam as funções [AutoMigrate ou CreateTable](migration.html)
 
-## Index Tag
+## Tag Index
 
-GORM accepts lots of index settings, like `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`, `option`
+GORM aceita muitas configurações de índice, como `class`, `type`, `where`, `comment`,  `expression`, `sort`, `collate`, `option`
 
-Check the following example for how to use it
+Veja o exemplo abaixo para saber como usá-lo
 
 ```go
 type User struct {
