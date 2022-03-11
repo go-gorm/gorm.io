@@ -3,9 +3,9 @@ title: Guia do GORM
 layout: page
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+A fantástica biblioteca ORM para Golang, projetada para ser amigável para desenvolvedores.
 
-## Overview
+## Visão Geral
 
 * Full-Featured ORM
 * Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
