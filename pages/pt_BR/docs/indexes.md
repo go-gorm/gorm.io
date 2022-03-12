@@ -34,7 +34,7 @@ type User struct {
 
 ### uniqueIndex
 
-tag `uniqueIndex` works similar like `index`, it equals to `index:,unique`
+A tag `uniqueIndex` funciona de forma similar ao `index`, é igual a `index:unique`
 
 ```go
 type User struct {
@@ -43,9 +43,9 @@ type User struct {
 }
 ```
 
-## Composite Indexes
+## Índices compostos
 
-Use same index name for two fields will creates composite indexes, for example:
+Usar o mesmo nome de índice para dois campos irá criar índices compostos, por exemplo:
 
 ```go
 type User struct {
@@ -54,35 +54,35 @@ type User struct {
 }
 ```
 
-### Fields Priority
+### Prioridade dos campos
 
-The column order of a composite index has an impact on its performance so it must be chosen carefully
+A ordem das colunas de um índice composto tem um impacto no seu desempenho, então ele deve ser escolhido com cuidado
 
-You can specify the order with the `priority` option, the default priority value is `10`, if priority value is the same, the order will be based on model struct's field index
+Você pode especificar a ordem com a opção `priority` , o valor da prioridade padrão é `10`, se o valor da prioridade for o mesmo, a ordem será baseada no índice de campo do modelo de estrutura
 
 ```go
 type User struct {
     Name   string `gorm:"index:idx_member"`
     Number string `gorm:"index:idx_member"`
 }
-// column order: name, number
+// ordem das colunas: name, number
 
 type User struct {
     Name   string `gorm:"index:idx_member,priority:2"`
     Number string `gorm:"index:idx_member,priority:1"`
 }
-// column order: number, name
+// ordem das colunas: number, name
 
 type User struct {
     Name   string `gorm:"index:idx_member,priority:12"`
     Number string `gorm:"index:idx_member"`
 }
-// column order: number, name
+// ordem das colunas: number, name
 ```
 
-## Multiple indexes
+## Múltiplos índices
 
-A field accepts multiple `index`, `uniqueIndex` tags that will create multiple indexes on a field
+Um campo aceita múltiplas tags `index`, `uniqueIndex` que irão criar vários índices em um campo
 
 ```go
 type UserIndex struct {
