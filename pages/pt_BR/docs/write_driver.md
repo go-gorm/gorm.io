@@ -1,11 +1,11 @@
 ---
-title: Criar um Driver
+title: Escrever um Driver
 layout: page
 ---
 
-## Write new driver
+## Escreva um novo driver
 
-GORM provides official support for `sqlite`, `mysql`, `postgres`, `sqlserver`.
+O GORM tem suporte oficial para `sqlite`, `mysql`, `postgres`, `sqlserver`.
 
 Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
