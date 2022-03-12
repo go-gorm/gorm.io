@@ -3,11 +3,11 @@ title: Hints
 layout: page
 ---
 
-GORM provides optimizer/index/comment hints support
+O GORM tem suporte a hints de otimização, índice e comentário
 
 https://github.com/go-gorm/hints
 
-## Optimizer Hints
+## Hints de otimização
 
 ```go
 import "gorm.io/hints"
@@ -16,7 +16,7 @@ db.Clauses(hints.New("hint")).Find(&User{})
 // SELECT * /*+ hint */ FROM `users`
 ```
 
-## Index Hints
+## Hints de índice
 
 ```go
 import "gorm.io/hints"
@@ -34,7 +34,7 @@ db.Clauses(
 // SELECT * FROM `users` FORCE INDEX FOR ORDER BY (`idx_user_name`,`idx_user_id`) IGNORE INDEX FOR GROUP BY (`idx_user_name`)"
 ```
 
-## Comment Hints
+## Hints de comentário
 
 ```go
 import "gorm.io/hints"
