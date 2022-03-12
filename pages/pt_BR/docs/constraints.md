@@ -3,11 +3,11 @@ title: Constraints
 layout: page
 ---
 
-GORM allows create database constraints with tag, constraints will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORM permite criar contraints com a tag, restrições serão criadas quando [ executar o AutoMigrate ou CreateTable com GORM](migration.html)
 
 ## CHECK Constraint
 
-Create CHECK constraints with tag `check`
+Crie CHECK constraints com a tag `check`
 
 ```go
 type UserIndex struct {
