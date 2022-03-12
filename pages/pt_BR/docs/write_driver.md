@@ -7,9 +7,9 @@ layout: page
 
 O GORM tem suporte oficial para `sqlite`, `mysql`, `postgres`, `sqlserver`.
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Alguns bancos de dados podem ser compatíveis com o dialeto do `mysql` ou `postgres`, nesse caso seria possível usar o dialeto para essas bases de dados.
 
-For others, you can create a new driver, it needs to implement [the dialect interface](https://pkg.go.dev/gorm.io/gorm?tab=doc#Dialector).
+Para outros, você pode escrever um novo driver, ele precisa implementar [a interface de dialeto](https://pkg.go.dev/gorm.io/gorm?tab=doc#Dialector).
 
 ```go
 type Dialector interface {
@@ -24,4 +24,4 @@ type Dialector interface {
 }
 ```
 
-Checkout the [MySQL Driver](https://github.com/go-gorm/mysql) as example
+Consulte o [Driver do MySQL](https://github.com/go-gorm/mysql) como exemplo
