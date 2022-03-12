@@ -3,26 +3,26 @@ title: Transações
 layout: page
 ---
 
-## Disable Default Transaction
+## Desabilitar a transação padrão
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required, you will gain about 30%+ performance improvement after that
+O GORM executa operações de escrita (create/update/delete) dentro de uma transação para garantir a consistência de dados, você pode desativá-la durante a inicialização se não for necessário, você ganhará cerca de 30%+ de melhoria de desempenho depois disso
 
 ```go
-// Globally disable
+// Desabilitar globalmente
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   SkipDefaultTransaction: true,
 })
 
-// Continuous session mode
+// Desabilita durante a sessão
 tx := db.Session(&Session{SkipDefaultTransaction: true})
 tx.First(&user, 1)
 tx.Find(&users)
 tx.Model(&user).Update("Age", 18)
 ```
 
-## Transaction
+## Transação
 
-To perform a set of operations within a transaction, the general flow is as below.
+Para executar um conjunto de operações dentro de uma transação, o fluxo geral será como o mostrado abaixo.
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
@@ -41,9 +41,9 @@ db.Transaction(func(tx *gorm.DB) error {
 })
 ```
 
-### Nested Transactions
+### Transações aninhadas
 
-GORM supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
+O GORM suporta transações aninhadas, você pode reverter um subconjunto de operações realizadas dentro do escopo de uma transação maior, por exemplo:
 
 ```go
 db.Transaction(func(tx *gorm.DB) error {
@@ -65,9 +65,9 @@ db.Transaction(func(tx *gorm.DB) error {
 // Commit user1, user3
 ```
 
-## Control the transaction manually
+## Controle manualmente a transação
 
-Gorm supports calling transaction control functions (commit / rollback) directly, for example:
+O Gorm suporta chamadas diretas às funções de controle da transação  (commit / rollback), por exemplo:
 
 ```go
 // begin a transaction
@@ -85,7 +85,7 @@ tx.Rollback()
 tx.Commit()
 ```
 
-### A Specific Example
+### Um Exemplo Específico
 
 ```go
 func CreateAnimals(db *gorm.DB) error {
@@ -117,7 +117,7 @@ func CreateAnimals(db *gorm.DB) error {
 
 ## SavePoint, RollbackTo
 
-GORM provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
+O GORM fornece `SavePoint`, `RollbackPara` para salvar pontos e voltar a um ponto de salvamento, por exemplo:
 
 ```go
 tx := db.Begin()
