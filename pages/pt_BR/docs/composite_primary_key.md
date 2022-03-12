@@ -3,7 +3,7 @@ title: Chave Primária Composta
 layout: page
 ---
 
-Set multiple fields as primary key creates composite primary key, for example:
+Definir vários campos como a chave primária cria chave primária composta, por exemplo:
 
 ```go
 type Product struct {
@@ -14,7 +14,7 @@ type Product struct {
 }
 ```
 
-**Note** integer `PrioritizedPrimaryField` enables `AutoIncrement` by default, to disable it, you need to turn off `autoIncrement` for the int fields:
+**Note** que o inteiro `PrioritizedPrimaryField` habilita o  `AutoIncrement` por padrão, para desativá-lo, você precisa desabilitar o `autoIncrement` para os campos de inserção:
 
 ```go
 type Product struct {
