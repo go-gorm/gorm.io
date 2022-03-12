@@ -5,9 +5,9 @@ layout: page
 
 ## Logger
 
-Gorm has a [default logger implementation](https://github.com/go-gorm/gorm/blob/master/logger/logger.go), it will print Slow SQL and happening errors by default
+O GORM tem uma [ implementação padrão de logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go), ele irá exibir, por padrão,  as consultas SQL mais demoradas e erros que possam acontecer.
 
-The logger accepts few options, you can customize it during initialization, for example:
+O logger aceita poucas opções, você pode personalizá-lo durante a inicialização, por exemplo:
 
 ```go
 newLogger := logger.New(
@@ -31,9 +31,9 @@ tx.First(&user)
 tx.Model(&user).Update("Age", 18)
 ```
 
-### Log Levels
+### Níveis de Log
 
-GORM defined log levels: `Silent`, `Error`, `Warn`, `Info`
+O GORM tem definido os níveis de log: `Silent`, `Error`, `Warn`, `Info`
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
@@ -43,17 +43,17 @@ db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
 
 ### Debug
 
-Debug a single operation, change current operation's log level to logger.Info
+Para debuggar uma única operação, alterar o nível de log da operação atual para logger.Info
 
 ```go
 db.Debug().Where("name = ?", "jinzhu").First(&User{})
 ```
 
-## Customize Logger
+## Personalizar Logger
 
-Refer to GORM's [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) for how to define your own one
+Consulte o [logger padrão](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) do GORM para definir o seu próprio
 
-The logger needs to implement the following interface, it accepts `context`, so you can use it for log tracing
+O logger precisa implementar a seguinte interface, ele aceita `context`, para que você possa usá-lo para rastreamento de log
 
 ```go
 type Interface interface {
