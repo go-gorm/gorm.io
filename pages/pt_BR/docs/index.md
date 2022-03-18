@@ -3,33 +3,33 @@ title: Guia do GORM
 layout: page
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+A fantástica biblioteca ORM para Golang, projetada para ser amigável para desenvolvedores.
 
-## Overview
+## Visão Geral
 
-* Full-Featured ORM
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
+* ORM Completo
+* Associações (Has One, Has Many, Belongs To, Many To Many, Poliformismo e Single-table inheritance)
 * Hooks (Before/After Create/Save/Update/Delete/Find)
-* Eager loading with `Preload`, `Joins`
-* Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
-* Context, Prepared Statement Mode, DryRun Mode
-* Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
+* Pré-carregamento de dados com `Preload`, `Joins`
+* Transações, Transações Aninhadas, Save Point, Rollback para Save Point
+* Context, Modo Prepared Statement e DryRun
+* Batch Insert, FindInBatches, Find/Create com Map, CRUD com SQL Expr e Context Valuer
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
-* Composite Primary Key, Indexes, Constraints
-* Auto Migrations
+* Chave Primária Composta, Índices e Constraints
+* Migrações automáticas
 * Logger
-* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
-* Every feature comes with tests
-* Developer Friendly
+* API flexível e extensível: Database Resolver (vários bancos de dados, leitura e escritas separadas) / Prometheus...
+* Todas as funcionalidades desenvolvidas com testes
+* Amigável para Desenvolvedores
 
-## Install
+## Instalação
 
 ```sh
 go get -u gorm.io/gorm
 go get -u gorm.io/driver/sqlite
 ```
 
-## Quick Start
+## Vamos começar!
 
 ```go
 package main

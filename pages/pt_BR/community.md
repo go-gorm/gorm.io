@@ -20,7 +20,7 @@ layout: page
 
 * Go-admin é framework que usa o Gorm - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
-* Article that validate GORM as ORM to Golang with CRUD implementation with SQLite database on tests - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
+* Artigo que usa GORM como ORM para Golang com implementação CRUD com SQLite como base de dados de testes - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
 
 ## Vídeos
 
@@ -32,8 +32,8 @@ layout: page
 * [go-paginate - paginação baseada em cursor](https://github.com/raphaelvigee/go-paginate)
 * [zapgorm - Uber's Zap driver de logging para Gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber's Zap driver de logging para Gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
-* [gorm-newrelic-telemetry-plugin - A plugin to allow telemetry by NewRelic Go Agent for GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
-* [Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
+* [gorm-newrelic-telemetry-plugin - Um plugin que permite a telemetria de NewRelic Go Agent para GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
+* [Driver para SQLite em Go](https://github.com/glebarez/sqlite)
 
 ## <span id="contribute">Contribua para esta página</span>
 

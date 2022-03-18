@@ -1,11 +1,11 @@
 ---
-title: Ajustes
+title: Confirgurações
 layout: page
 ---
 
-GORM provides `Set`, `Get`, `InstanceSet`, `InstanceGet` methods allow users pass values to [hooks](hooks.html) or other methods
+O GORM tem os métodos `Set`, `Get`, `InstanceSet`, `InstanceGet` que permitem ao usuário passar valores ao [hooks](hooks.html) ou a outros métodos
 
-GORM uses this for some features, like pass creating table options when migrating table.
+O GORM usa isso para algumas funções, como passar configurações da tabela quando realizar a migração.
 
 ```go
 // Add table suffix when creating tables
@@ -14,7 +14,7 @@ db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 
 ## Set / Get
 
-Use `Set` / `Get` pass settings to hooks methods, for example:
+Use o `Set` / `Get` para passar configurações os métodos hooks, por exemplo:
 
 ```go
 type User struct {
@@ -47,7 +47,7 @@ db.Set("my_value", myValue).Create(&User{})
 
 ## InstanceSet / InstanceGet
 
-Use `InstanceSet` / `InstanceGet` pass settings to current `*Statement`'s hooks methods, for example:
+Use o `InstanceSet` / `InstanceGet` para passar configurações ao `*Statement` (estado atual) dos métodos hooks, por exemplo:
 
 ```go
 type User struct {

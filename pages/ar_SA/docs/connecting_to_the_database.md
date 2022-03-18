@@ -117,7 +117,7 @@ import (
   "gorm.io/gorm"
 )
 
-sqlDB, err := sql.Open("postgres", "mydb_dsn")
+sqlDB, err := sql.Open("pgx", "mydb_dsn")
 gormDB, err := gorm.Open(postgres.New(postgres.Config{
   Conn: sqlDB,
 }), &gorm.Config{})
