@@ -61,11 +61,12 @@ type User struct {
   Name string `gorm:"<-:update"` // allow read and update
   Name string `gorm:"<-"`        // allow read and write (create and update)
   Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
+  Name string `gorm:"->"`        // readonly (disable write permission unless it configured)
   Name string `gorm:"->;<-:create"` // allow read and create
   Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`  // ignore this field when write and read with struct
-  Name string `gorm:"migration"` // // ignore this field when migration
+  Name string `gorm:"-"`            // ignore this field when write and read with struct
+  Name string `gorm:"-:all"`        // ignore this field when write, read and migrate with struct
+  Name string `gorm:"-:migration"`  // ignore this field when migrate with struct
 }
 ```
 
@@ -172,7 +173,7 @@ type Blog struct {
 | check                  | 创建检查约束，例如 `check:age > 13`，查看 [约束](constraints.html) 获取详情                                                                                                                                                                               |
 | <-                     | 设置字段写入的权限， `<-:create` 只创建、`<-:update` 只更新、`<-:false` 无写入权限、`<-` 创建和更新权限                                                                                                                                                       |
 | ->                     | 设置字段读的权限，`->:false` 无读权限                                                                                                                                                                                                                |
-| -                      | 忽略该字段，`-` 无读写权限                                                                                                                                                                                                                            |
+| -                      | ignore this field, `-` no read/write permission, `-:migration` no migrate permission, `-:all` no read/write/migrate permission                                                                                                             |
 | comment                | 迁移时为字段添加注释                                                                                                                                                                                                                                 |
 
 ### 关联标签
