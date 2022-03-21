@@ -61,11 +61,12 @@ type User struct {
   Name string `gorm:"<-:update"` // allow read and update
   Name string `gorm:"<-"`        // allow read and write (create and update)
   Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
+  Name string `gorm:"->"`        // readonly (disable write permission unless it configured)
   Name string `gorm:"->;<-:create"` // allow read and create
   Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`  // ignore this field when write and read with struct
-  Name string `gorm:"migration"` // // ignore this field when migration
+  Name string `gorm:"-"`            // ignore this field when write and read with struct
+  Name string `gorm:"-:all"`        // ignore this field when write, read and migrate with struct
+  Name string `gorm:"-:migration"`  // ignore this field when migrate with struct
 }
 ```
 
@@ -172,7 +173,7 @@ Tags are optional to use when declaring models, GORM supports the following tags
 | check                  | creates check constraint, eg: `check:age > 13`, refer [Constraints](constraints.html)                                                                                                                                                                                                                                                                                                                                                      |
 | <-                     | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no write permission, `<-` create and update permission                                                                                                                                                                                                                                                                     |
 | ->                     | set field's read permission, `->:false` no read permission                                                                                                                                                                                                                                                                                                                                                                                 |
-| -                      | ignore this field, `-` no read/write permission                                                                                                                                                                                                                                                                                                                                                                                               |
+| -                      | ignore this field, `-` no read/write permission, `-:migration` no migrate permission, `-:all` no read/write/migrate permission                                                                                                                                                                                                                                                                                                                |
 | comment                | add comment for field when migration                                                                                                                                                                                                                                                                                                                                                                                                          |
 
 ### Associations Tags
