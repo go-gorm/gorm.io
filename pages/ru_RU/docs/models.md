@@ -61,11 +61,12 @@ type User struct {
   Name string `gorm:"<-:update"` // allow read and update
   Name string `gorm:"<-"`        // allow read and write (create and update)
   Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured )
+  Name string `gorm:"->"`        // readonly (disable write permission unless it configured)
   Name string `gorm:"->;<-:create"` // allow read and create
   Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`  // ignore this field when write and read with struct
-  Name string `gorm:"migration"` // // ignore this field when migration
+  Name string `gorm:"-"`            // ignore this field when write and read with struct
+  Name string `gorm:"-:all"`        // ignore this field when write, read and migrate with struct
+  Name string `gorm:"-:migration"`  // ignore this field when migrate with struct
 }
 ```
 
@@ -172,7 +173,7 @@ type Blog struct {
 | check                  | создает ограничение проверки (constraint), например: `check:(age > 13)`, см. [Ограничения](constraints.html)                                                                                                                                                                                                                                                                                                                                                                                                          |
 | <-                     | задать разрешение на запись, `<-:create` только для создания, `<-:update` только обновление, `<-:false` нет разрешения на запись, `<-` разрешение на создание и обновление                                                                                                                                                                                                                                                                                                                                   |
 | ->                     | задать разрешение на чтение, `->:false` нет разрешения на чтение                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| -                      | игнорировать это поле, `-` нет разрешения на чтение/запись                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| -                      | ignore this field, `-` no read/write permission, `-:migration` no migrate permission, `-:all` no read/write/migrate permission                                                                                                                                                                                                                                                                                                                                                                                           |
 | comment                | добавить комментарий для поля при миграции                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 ### Взаимосвязи
