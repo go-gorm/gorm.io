@@ -24,8 +24,8 @@ BeforeCreate
 // save before associations
 // insert into database
 // save after associations
-AfterCreate
 AfterSave
+AfterCreate
 // commit or rollback transaction
 ```
 
@@ -73,8 +73,8 @@ BeforeUpdate
 // save before associations
 // update database
 // save after associations
-AfterUpdate
 AfterSave
+AfterUpdate
 // commit or rollback transaction
 ```
 

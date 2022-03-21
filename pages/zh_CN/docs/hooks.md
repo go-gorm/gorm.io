@@ -24,8 +24,8 @@ BeforeCreate
 // 关联前的 save
 // 插入记录至 db
 // 关联后的 save
-AfterCreate
 AfterSave
+AfterCreate
 // 提交或回滚事务
 ```
 
@@ -73,8 +73,8 @@ BeforeUpdate
 // 关联前的 save
 // 更新 db
 // 关联后的 save
-AfterUpdate
 AfterSave
+AfterUpdate
 // 提交或回滚事务
 ```
 
