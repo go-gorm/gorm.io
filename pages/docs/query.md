@@ -319,11 +319,13 @@ db.Model(&User{}).Select("name, sum(age) as total").Group("name").Having("name =
 // SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "group"
 
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Rows()
+defer rows.Close()
 for rows.Next() {
   ...
 }
 
 rows, err := db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Group("date(created_at)").Having("sum(amount) > ?", 100).Rows()
+defer rows.Close()
 for rows.Next() {
   ...
 }
