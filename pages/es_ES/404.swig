@@ -10,6 +10,6 @@ comments: false
   <p>Archivo no encontrado</p>
 
   <p>
-    The site configured at this address does not contain the requested file.
+    Este sitio no contiene el archivo que buscas.
   </p>
 <div>
