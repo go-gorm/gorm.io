@@ -3,7 +3,7 @@ title: Requête avancée
 layout: page
 ---
 
-## <span id="smart_select">Smart Select Fields</span>
+## <span id="smart_select">Champs de sélection intelligente</span>
 
 GORM permet de sélectionner des champs spécifiques avec [`Select`](query.html), si vous l'utilisez souvent dans votre application, peut-être que vous préférerez définir une structure plus petite pour l'utilisation de l'API qui peut sélectionner des champs spécifiques automatiquement, par exemple :
 
