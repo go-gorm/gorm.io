@@ -1,11 +1,11 @@
 ---
-title: Advanced Query
+title: Kueri Lanjutan
 layout: page
 ---
 
-## <span id="smart_select">Smart Select Fields</span>
+## <span id="smart_select">Bidang Pilih Pintar</span>
 
-GORM mengijinkan memilih field tertentu dengan [` Select `](query.html), jika Anda sering menggunakan ini dalam aplikasi Anda, mungkin Anda ingin mendefinisikan struct yang lebih simpel untuk penggunaan API yang dapat memilih field tertentu secara otomatis, misalnya:
+GORM mengijinkan memilih bidang tertentu dengan [`Pilih`](query.html), jika Anda sering menggunakan ini dalam aplikasi Anda, mungkin Anda ingin mendefinisikan struktur yang lebih simpel untuk penggunaan API yang dapat memilih bidang tertentu secara otomatis, misalnya:
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // ratusan bidang
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// Pilih bidang `id`, `name` secara otomatis saat proses kueri
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**CATATAN** mode `QueryFields` akan memilih berdasarkan nama semua bidang untuk model saat ini
 {% endnote %}
 
 ```go
@@ -36,16 +36,14 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
-
-// Session Mode
+// SELECT `users`.`name`, `users`.`age`, ... // Mode Sesi
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## Penguncian (FOR UPDATE)
 
-GORM supports different types of locks, for example:
+GORM mendukung berbagai jenis penguncian, misalnya:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -64,11 +62,11 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+Rujuk ke [SQL mentahan dan pembuat SQL](sql_builder.html) untuk detail lebih lanjut
 
-## SubQuery
+## Sub-Kueri
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+Sebuah sub-kueri dapat disarangkan dalam sebuah kueri, GORM dapat menghasilkan sub-kueri saat menggunakan objek `*gorm.DB` sebagai parameternya
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -79,9 +77,9 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
-### <span id="from_subquery">From SubQuery</span>
+### <span id="from_subquery">Dari Sub-Kueri</span>
 
-GORM allows you using subquery in FROM clause with method `Table`, for example:
+GORM memungkinkan Anda menggunakan sub-kueri dalam klausa FROM dengan metode `Table`, misalnya:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
@@ -93,9 +91,9 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
 
-## <span id="group_conditions">Group Conditions</span>
+## <span id="group_conditions">Pengelompokan Kondisi</span>
 
-Easier to write complicated SQL query with Group Conditions
+Lebih mudah untuk menulis kueri SQL yang rumit dengan pengelompokan kondisi
 
 ```go
 db.Where(
@@ -107,7 +105,7 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## IN with multiple columns
+## IN dengan Beberapa Kolom
 
 Selecting IN with multiple columns
 
