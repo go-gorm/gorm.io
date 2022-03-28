@@ -107,16 +107,16 @@ db.Where(
 
 ## IN dengan Beberapa Kolom
 
-Selecting IN with multiple columns
+Memilih IN dengan beberapa kolom
 
 ```go
 db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"jinzhu2", 19, "user"}}).Find(&users)
 // SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
 ```
 
-## Named Argument
+## Argumen Bernama
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM mendukung argumen bernama dengan [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) atau `map[string]interface{}{}`, misalnya:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -126,11 +126,11 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+Lihat ke [SQL mentahan dan pembuat SQL](sql_builder.html) untuk detail lebih lanjut
 
-## Find To Map
+## Pencarian ke Map
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORM memungkinkan hasil pindaian ke `map[string]interface{}` atau `[]map[string]interface{}`, jangan lup untuk menentukan `Model` atau `Table`, misalnya:
 
 ```go
 result := map[string]interface{}{}
@@ -142,49 +142,49 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+Dapatkan catatan pertama yang cocok atau inisialisasi instance baru dengan kondisi yang diberikan (hanya berfungsi dengan kondisi struct atau map)
 
 ```go
-// User not found, initialize it with give conditions
+// Pengguna tidak ditemukan, menginisiasi dengan kondisi yang diberikan
 db.FirstOrInit(&user, User{Name: "non_existing"})
 // user -> User{Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Pengguna ditemukan dengan `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-// Found user with `name` = `jinzhu`
+// Pengguna ditemukan dengan `name` = `jinzhu`
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+inisialisasi struct dengan lebih banyak atribut jika catatan tidak ditemukan, `Attrs` tersebut tidak akan digunakan untuk membuat kueri SQL
 
 ```go
-// User not found, initialize it with give conditions and Attrs
+// Pengguna tidak ditemukan, menginisiasi dengan kondisi yang diberikan
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// User not found, initialize it with give conditions and Attrs
+// Pengguna tidak ditemukan, menginisiasi dengan kondisi yang diberikan
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// Pengguna ditemukan dengan `name` = `jinzhu`, atribut akan diabaikan
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+`Assign` atribut ke struct terlepas dari ditemukan atau tidak, atribut tersebut tidak akan digunakan untuk membuat kueri SQL dan data akhir tidak akan disimpan ke dalam database
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// Pengguna tidak ditemukan, menginisiasi dengan kondisi yang diberikan dan menambahkan atribut
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// Pengguna ditemukan dengan `name` = `jinzhu`, memperbaruinya dengan atribut yang diberikan
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 20}
@@ -192,53 +192,53 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions)
+Dapatkan catatan pertama yang cocok atau buat yang baru dengan kondisi tertentu (hanya berfungsi dengan struct, kondisi map)
 
 ```go
-// User not found, create a new record with give conditions
+// Pengguna tidak ditemukan, membuat catatan baru dengan kondisi yang diberikan
 db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Pengguna ditemukan dengan `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 ```
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+Buat struct dengan lebih banyak atribut jika catatan tidak ditemukan, `Attrs` tersebut tidak akan digunakan untuk membuat kueri SQL
 
 ```go
-// User not found, create it with give conditions and Attrs
+// Pengguna tidak ditemukan, membuat catatan baru dengan kondisi dan atribut yang diberikan
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// Pengguna ditemukan dengan `name` = `jinzhu`, atribut akan diabaikan
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+`Assign` atribut ke catatan, terlepas itu ditemukan atau tidak dan menyimpannya kembali ke database.
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// Pengguna tidak ditemukan, membuat catatan baru dengan kondisi dan atribut yang diberikan
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// Pengguna ditemukan dengan `name` = `jinzhu`, perbarui dengan atribut yang diberikan
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // UPDATE users SET age=20 WHERE id = 111;
 // user -> User{ID: 111, Name: "jinzhu", Age: 20}
 ```
 
-## Optimizer/Index Hints
+## Optimizer/Indeks Hints
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
+Optimizer hints memungkinkan untuk mengontrol pengoptimal kueri untuk memilih rencana eksekusi kueri tertentu, GORM mendukungnya dengan `gorm.io/hints`, misalnya:
 
 ```go
 import "gorm.io/hints"
@@ -247,7 +247,7 @@ db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allow passing index hints to the database in case the query planner gets confused.
+Indeks hints memungkinkan melewatkan petunjuk indeks ke database jika perencana kueri bingung.
 
 ```go
 import "gorm.io/hints"
@@ -259,11 +259,11 @@ db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-Refer [Optimizer Hints/Index/Comment](hints.html) for more details
+Rujuk ke [Optimizer Hints/Indeks/Komentar](hints.html) untuk detail lebih lanjut
 
-## Iteration
+## Pengulangan
 
-GORM supports iterating through Rows
+GORM mendukung pengulangan melalui baris
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -271,41 +271,41 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
+  // ScanRows merupakan metode dari `gorm.DB`, dapat digunakan untuk memindai suatu baris ke sebuah struct
   db.ScanRows(rows, &user)
 
-  // do something
+  // lakukan sesuatu
 }
 ```
 
 ## FindInBatches
 
-Query and process records in batch
+Meng-kueri dan memproses dalam suatu batch
 
 ```go
-// batch size 100
+// ukuran batch 100
 result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // batch processing found records
+    // pemroses batch menemukan catatan
   }
 
   tx.Save(&results)
 
-  tx.RowsAffected // number of records in this batch
+  tx.RowsAffected // jumlah catatan di batch ini
 
   batch // Batch 1, 2, 3
 
-  // returns error will stop future batches
+  // mengembalikan eror dan memberhentikan batch berikutnya
   return nil
 })
 
-result.Error // returned error
-result.RowsAffected // processed records count in all batches
+result.Error // mengembalikan eror
+result.RowsAffected // catatan yang diproses dihitung di semua batch
 ```
 
-## Query Hooks
+## Hook Kueri
 
-GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
+GORM memungkinkan hook `AfterFind` untuk kueri, itu akan dipanggil saat meminta catatan, lihat [Hooks](hooks.html) untuk detailnya
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -318,7 +318,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
+Kueri satu kolom dari database dan pindai menjadi irisan, jika Anda ingin membuat kueri beberapa kolom, gunakan `Select` dengan [`Scan`](query.html#scan) sebagai gantinya
 
 ```go
 var ages []int64
@@ -329,18 +329,18 @@ db.Model(&User{}).Pluck("name", &names)
 
 db.Table("deleted_users").Pluck("name", &names)
 
-// Distinct Pluck
+// Pluck berbeda
 db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Requesting more than one column, use `Scan` or `Find` like this:
+// Meminta lebih dari satu kolom, gunakan `Scan` atau `Find` seperti ini:
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
 ## Scopes
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+`Scopes` memungkinkan Anda menentukan kueri yang umum digunakan yang dapat dirujuk sebagai pemanggilan metode
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -362,20 +362,20 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// Cari semua kartu kredit dengan jumlah lebih dari 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// Cari semua pesanan COD dengan jumlah lebih dari 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// Cari semua pesanan dibayar dan dikirim dengan jumlah lebih dari 1000
 ```
 
-Checkout [Scopes](scopes.html) for details
+Rujuk ke [Scopes](scopes.html) untuk detail lebih lanjut
 
 ## <span id="count">Count</span>
 
-Get matched records count
+Dapatkan jumlah catatan yang sesuai
 
 ```go
 var count int64
@@ -395,7 +395,7 @@ db.Model(&User{}).Distinct("name").Count(&count)
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
 // SELECT count(distinct(name)) FROM deleted_users
 
-// Count with Group
+// Hitung dalam kelompok
 users := []User{
   {Name: "name1"},
   {Name: "name2"},
