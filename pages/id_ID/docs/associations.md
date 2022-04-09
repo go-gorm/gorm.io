@@ -1,11 +1,11 @@
 ---
-title: Associations
+title: Asosiasi
 layout: page
 ---
 
-## Auto Create/Update
+## Buat/Pembaruan Otomatis
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORM akan menyimpan asosiasi dan referensinya secara otomatis menggunakan [Upsert](create.html#upsert) saat membuat/memperbarui catatan.
 
 ```go
 user := User{
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+Jika Anda ingin memperbarui data asosiasi, Anda harus menggunakan mode `FullSaveAssociations`:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -45,9 +45,9 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // ...
 ```
 
-## Skip Auto Create/Update
+## Lewati Buat/Pembaruan Otomatis
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+Untuk melewati simpan otomatis saat membuat/memperbarui, Anda dapat menggunakan `Select` atau `Omit`, misalnya:
 
 ```go
 user := User{
@@ -68,27 +68,27 @@ db.Select("Name").Create(&user)
 // INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
 db.Omit("BillingAddress").Create(&user)
-// Skip create BillingAddress when creating a user
+// Lewati pembuatan BillingAddress saat membuat pengguna baru
 
 db.Omit(clause.Associations).Create(&user)
-// Skip all associations when creating a user
+// Lewati semua asosiasi saat membuat pengguna
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**CATATAN:** Untuk asosiasi bangak-ke-banyak GORM akan melakukan upsert pada asosiasi sebelum membuat referensi tabel join, jika anda ingin melewatkan upserting dari asosiasi, anda dapat melewatinya seperti:
 
 ```go
 db.Omit("Languages.*").Create(&user)
 ```
 
-The following code will skip the creation of the association and its references
+Kode berikut akan melewatkan pembuatan asosiasi dan referensinya
 
 ```go
 db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
-## Select/Omit Association fields
+## Pilih/Abaikan bidang Asosiasi
 
 ```go
 user := User{
@@ -97,16 +97,16 @@ user := User{
   ShippingAddress: Address{Address1: "Shipping Address - Address 1", Address2: "addr2"},
 }
 
-// Create user and his BillingAddress, ShippingAddress
-// When creating the BillingAddress only use its address1, address2 fields and omit others
+// Buat pengguna dan BillingAddress-nya, ShippingAddress
+// Saat membuat BillingAddress hanya gunakan field address1, address2 dan hilangkan yang lain
 db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
 
 db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 ```
 
-## Association Mode
+## Mode Asosiasi
 
-Association Mode contains some commonly used helper methods to handle relationships
+Mode Asosiasi berisi beberapa metode pembantu yang umum digunakan untuk menangani hubungan
 
 ```go
 // Start Association Mode
