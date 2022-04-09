@@ -109,24 +109,24 @@ db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 Mode Asosiasi berisi beberapa metode pembantu yang umum digunakan untuk menangani hubungan
 
 ```go
-// Start Association Mode
+// Mulai mode asosiasi
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// `user` adalah model sumber, harus berisi kunci utama
+// `Languages` adalah nama bidang hubungan
+// Jika dua persyaratan di atas cocok, Mode Asosiasi harus dimulai dengan sukses, atau itu akan mengembalikan kesalahan
 db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Cari Asosiasi
 
-Find matched associations
+Cari asosiasi yang sesuai
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-Find associations with conditions
+Cari asosiasi dengan kondisi
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
@@ -135,9 +135,9 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Menambahkan Asosiasi
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+Tambahkan asosiasi baru untuk `many to many`, `has many`, ganti asosiasi saat ini untuk `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -147,9 +147,9 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### Ubah Asosiasi
 
-Replace current associations with new ones
+Ganti asosiasi saat ini dengan yang baru
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -157,26 +157,26 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Hapus Asosiasi
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+Hapus hubungan antara sumber & argumen jika ada, hanya hapus referensi, tidak akan menghapus objek tersebut dari DB.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Bersihkan Asosiasi
 
-Remove all reference between source & association, won't delete those associations
+Hapus semua referensi antara sumber & asosiasi, tidak akan menghapus asosiasi tersebut
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Hitung Asosiasi
 
-Return the count of current associations
+Kembalikan jumlah asosiasi saat ini
 
 ```go
 db.Model(&user).Association("Languages").Count()
@@ -186,71 +186,71 @@ codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Batch Data
+### Data Batch
 
-Association Mode supports batch data, e.g:
+Mode Asosiasi mendukung data batch, mis:
 
 ```go
-// Find all roles for all users
+// Cari semua peran untuk semua pengguna
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all user's team
+// Hapus Pengguna A dari semua tim pengguna
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get distinct count of all users' teams
+// Dapatkan hitungan berbeda dari semua tim pengguna
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
-var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// Untuk `Append`, `Replace` dengan data batch, panjang argumen harus sama dengan panjang data atau akan mengembalikan kesalahan
+var pengguna = []User{user1, user2, user3}
+// misalnya: kami memiliki 3 pengguna, Tambahkan penggunaA ke tim pengguna1, tambahkan penggunaB ke tim pengguna2, tambahkan penggunaA, penggunaB, dan penggunaC ke tim pengguna3
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// Setel ulang tim pengguna1 ke penggunaA，setel ulang tim pengguna2 ke penggunaB, setel ulang tim pengguna3 ke penggunaA, penggunaB, dan penggunaC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">Hapus dengan Pilihan</span>
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+Anda diperbolehkan untuk menghapus yang dipilih memiliki satu/memiliki banyak/banyak2 banyak hubungan dengan `Select` saat menghapus catatan, misalnya:
 
 ```go
-// delete user's account when deleting user
+// hapus akun pengguna saat menghapus pengguna
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// hapus Pesanan pengguna, hubungan Kartu Kredit saat menghapus pengguna
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// hapus hubungan pengguna memiliki satu/banyak/banyak2 banyak saat menghapus pengguna
 db.Select(clause.Associations).Delete(&user)
 
-// delete each user's account when deleting users
+// hapus akun setiap pengguna saat menghapus pengguna
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those priamry keys as conditions to delete selected associations
+**CATATAN:** Asosiasi hanya akan dihapus jika kunci utama catatan yang dihapus bukan nol, GORM akan menggunakan kunci priamry tersebut sebagai ketentuan untuk menghapus asosiasi yang dipilih
 
 ```go
-// DOESN'T WORK
+// TIDAK BERFUNGSI
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// will delete all user with name `jinzhu`, but those user's account won't be deleted
+// akan menghapus semua pengguna dengan nama `jinzhu`, tetapi akun pengguna tersebut tidak akan dihapus
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
+// akan menghapus pengguna dengan nama = `jinzhu` dan id = `1`, dan akun pengguna `1` akan dihapus
 
 db.Select("Account").Delete(&User{ID: 1})
-// will delete the user with id = `1`, and user `1`'s account will be deleted
+// akan menghapus pengguna dengan id = `1`, dan akun pengguna `1` akan dihapus
 ```
 {% endnote %}
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">Tag Asosiasi</span>
 
-| Tag              | Description                                                                                        |
-| ---------------- | -------------------------------------------------------------------------------------------------- |
-| foreignKey       | Specifies column name of the current model that is used as a foreign key to the join table         |
-| references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
-| polymorphic      | Specifies polymorphic type such as model name                                                      |
-| polymorphicValue | Specifies polymorphic value, default table name                                                    |
-| many2many        | Specifies join table name                                                                          |
-| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
-| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table                 |
-| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`                                                   |
+| Tag              | Deskripsi                                                                                      |
+| ---------------- | ---------------------------------------------------------------------------------------------- |
+| foreignKey       | Menentukan nama kolom dari model saat ini yang digunakan sebagai kunci asing ke tabel gabungan |
+| references       | Menentukan nama kolom tabel referensi yang dipetakan ke kunci asing tabel gabungan             |
+| polymorphic      | Menentukan tipe polimorfik seperti nama model                                                  |
+| polymorphicValue | Menentukan nilai polimorfik, nama tabel default                                                |
+| many2many        | Menentukan nama tabel yang digabung                                                            |
+| joinForeignKey   | Menentukan nama kolom kunci asing dari tabel gabungan yang memetakan ke tabel saat ini         |
+| joinReferences   | Menentukan nama kolom kunci asing dari tabel gabungan yang memetakan ke tabel referensi        |
+| constraint       | Batasan relasi, mis: `OnUpdate`,`OnDelete`                                                     |
