@@ -278,8 +278,8 @@ func (user *User) BeforeSave(tx *gorm.DB) (err error) {
   }
 
   if tx.Statement.Changed("Code") {
-    s.Age += 20
-    tx.Statement.SetColumn("Age", s.Age+20)
+    user.Age += 20
+    tx.Statement.SetColumn("Age", user.Age)
   }
 }
 
