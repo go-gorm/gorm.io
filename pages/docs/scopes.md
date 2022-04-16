@@ -44,12 +44,12 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 func Paginate(r *http.Request) func(db *gorm.DB) *gorm.DB {
   return func (db *gorm.DB) *gorm.DB {
     q := r.URL.Query()
-    page, _ := strconv.Atoi(q.Query("page"))
+    page, _ := strconv.Atoi(q.Get("page"))
     if page == 0 {
       page = 1
     }
 
-    pageSize, _ := strconv.Atoi(q.Query("page_size"))
+    pageSize, _ := strconv.Atoi(q.Get("page_size"))
     switch {
     case pageSize > 100:
       pageSize = 100
