@@ -5,7 +5,7 @@ layout: 페이지
 
 ## 단일 객체 조회
 
-GORM provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
+GORM은 단일 객체를 조회하기 위해 `First`, `Take`, `Last` 메서드를 제공합니다. 해당 메서드는 데이터베이스로 전송될 쿼리문에 `LIMIT 1` 구문을 추가하고, 만일 해당하는 레코드가 없을 경우 `ErrRecordNotFound` 에러를 반환합니다.
 
 ```go
 // Get the first record ordered by primary key
@@ -29,10 +29,10 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
 {% note warn %}
-If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`, the `Find` method accepts both struct and slice data
+만약 `ErrRecordNotFound` 에러를 피하고 싶다면, `Find` 메서드를 `db.Limit(1).Find(&user)` 이렇게 사용하실 수 있습니다. `Find` 메서드는 구조체와 슬라이스를 전부 지원합니다.
 {% endnote %}
 
-The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
+`First` 와 `Last` 메서드는 각각 기본키 정렬 기준으로 첫번째와 마지막 레코드를 조회합니다. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
 
 ```go
 var user User
