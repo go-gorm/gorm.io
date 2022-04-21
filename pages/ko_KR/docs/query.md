@@ -1,9 +1,9 @@
 ---
-title: Query
+title: 선택
 layout: 페이지
 ---
 
-## Retrieving a single object
+## 단일 객체 조회
 
 GORM provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
 
