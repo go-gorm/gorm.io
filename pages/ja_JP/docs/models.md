@@ -57,16 +57,15 @@ type Model struct {
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured)
-  Name string `gorm:"->;<-:create"` // allow read and create
-  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`            // ignore this field when write and read with struct
-  Name string `gorm:"-:all"`        // ignore this field when write, read and migrate with struct
-  Name string `gorm:"-:migration"`  // ignore this field when migrate with struct
+  Name string `gorm:"<-:create"` // 読み取り、作成が可能
+  Name string `gorm:"<-:update"` // 読み取り、更新が可能
+  Name string `gorm:"<-"`        // 読み取り、書き込みが可能 (createとupdate)
+  Name string `gorm:"<-:false"`  // 読み取り可能、書き込み無効
+  Name string `gorm:"->"`        // 読み取り専用 (変更されない限り、書き込みが無効 )
+  Name string `gorm:"->;<-:create"` // 読み取りと作成が可能
+  Name string `gorm:"->:false;<-:create"` // 作成専用 (dbからの読み取りは無効)
+  Name string `gorm:"-"`  // 構造体を使用した書き込みと読み込みの際にこのフィールドを無視する
+  Name string `gorm:"migration"` // マイグレーション時にこのフィールドを無視する
 }
 ```
 
