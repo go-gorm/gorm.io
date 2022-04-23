@@ -59,13 +59,14 @@ type Model struct {
 type User struct {
   Name string `gorm:"<-:create"` // 読み取り、作成が可能
   Name string `gorm:"<-:update"` // 読み取り、更新が可能
-  Name string `gorm:"<-"`        // 読み取り、書き込みが可能 (createとupdate)
+  Name string `gorm:"<-"`       // 読み取り、書き込みが可能 (createとupdate)
   Name string `gorm:"<-:false"`  // 読み取り可能、書き込み無効
   Name string `gorm:"->"`        // 読み取り専用 (変更されない限り、書き込みが無効 )
   Name string `gorm:"->;<-:create"` // 読み取りと作成が可能
   Name string `gorm:"->:false;<-:create"` // 作成専用 (dbからの読み取りは無効)
-  Name string `gorm:"-"`  // 構造体を使用した書き込みと読み込みの際にこのフィールドを無視する
-  Name string `gorm:"migration"` // マイグレーション時にこのフィールドを無視する
+  Name string `gorm:"-"`            // 構造体を使用した書き込みと読み込みの際にこのフィールドを無視する
+  Name string `gorm:"-:all"`        // 構造体を使用した書き込み、読み取り、マイグレーションの際にこのフィールドを無視する
+  Name string `gorm:"-:migration"`  // マイグレーション時にこのフィールドを無視する
 }
 ```
 
@@ -172,7 +173,7 @@ type Blog struct {
 | check                  | CHECK制約を作成します（例： `check:age > 13` ）。[制約](constraints.html) も参照                                                                                                                                                                                                                                          |
 | <-                     | フィールドの書き込み権限を設定します。`<-:create` は作成のみ可能、 `<-:update` は更新のみ可能、`<-:false` は書き込み権限がない、`<-` は作成／更新権限があることを意味します                                                                                                                                                                                     |
 | ->                     | フィールドの読み込み権限を設定します。`->:false` は読み込み権限がないことを意味します                                                                                                                                                                                                                                                        |
-| -                      | ignore this field, `-` no read/write permission, `-:migration` no migrate permission, `-:all` no read/write/migrate permission                                                                                                                                                                             |
+| -                      | このフィールドを無視します。 `-` は読み取り/書き込み権限なし、 `-:migration` はマイグレーション権限なし、 `-:all` は読み取り/書き込み/マイグレーション権限がないことを意味します。                                                                                                                                                                                                  |
 | comment                | マイグレーション実行時にフィールドにコメントを追加できます                                                                                                                                                                                                                                                                              |
 
 ### アソシエーションで使用できるタグ
