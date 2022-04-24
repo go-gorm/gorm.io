@@ -14,7 +14,7 @@ layout: sayfa
 
 ## Dokümantasyon ve Yazım
 
-* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
+* Yeni bir içerik yazarak veya mevcut içerikleri düzelterek GORM'un dokümantasyonunun daha iyi olmasını sağla [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### Bu siteyi çevir
 
