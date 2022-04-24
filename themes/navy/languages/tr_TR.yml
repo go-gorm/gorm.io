@@ -54,7 +54,7 @@ sidebar:
     settings: Ayarlar
     advanced_topics: İleri düzey Konular
     dbresolver: Veritabanı Çözücü
-    sharding: Sharding
+    sharding: Yatay bölümleme (Sharding)
     prometheus: Prometheus
     hints: İpuçları
     indexes: İndeksler
