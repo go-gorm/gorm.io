@@ -1,27 +1,27 @@
 ---
-title: Write Plugins
+title: Membuat Plugin
 layout: page
 ---
 
-## Callbacks
+## Panggilan Balik
 
-GORM itself is powered by `Callbacks`, it has callbacks for `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw`, you could fully customize GORM with them as you want
+GORM tersendiri mendukung `Callbacks`, memiliki panggilan balik untuk `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw`, Anda dapat sepenuhnya menyesuaikan GORM dengan mereka seperti yang Anda inginkan
 
-Callbacks are registered into the global `*gorm.DB`, not the session-level, if you require `*gorm.DB` with different callbacks, you need to initialize another `*gorm.DB`
+Callback terdaftar ke `*gorm.DB` global, bukan tingkat sesi, jika Anda memerlukan `*gorm.DB` dengan callback yang berbeda, Anda perlu menginisialisasi `*gorm.DB` lain
 
-### Register Callback
+### Mendaftarkan Panggilan Balik
 
-Register a callback into callbacks
+Daftarkan panggilan balik ke panggilan balik
 
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // crop image fields and upload them to CDN, dummy code
+    // potong bidang gambar dan unggah ke CDN, kode dummy
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
-          // Get value from field
+          // Mendapatkan nilai dari bidng
           if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
@@ -29,96 +29,96 @@ func cropImage(db *gorm.DB) {
           }
         }
       case reflect.Struct:
-        // Get value from field
+        // Mendapatkan nilai dari bidang
         if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); !isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
 
-        // Set value to field
+        // Menentukan nilai ke bidang
         err := field.Set(db.Statement.ReflectValue, "newValue")
       }
     }
 
-    // All fields for current model
+    // Semua bidang untuk model saat ini
     db.Statement.Schema.Fields
 
-    // All primary key fields for current model
+    // Semua bidang kunci utama untuk model saat ini
     db.Statement.Schema.PrimaryFields
 
-    // Prioritized primary key field: field with DB name `id` or the first defined primary key
+    // Bidang kunci utama yang diprioritaskan: bidang dengan nama DB `id` atau kunci utama pertama yang ditentukan
     db.Statement.Schema.PrioritizedPrimaryField
 
-    // All relationships for current model
+    // Semua hubungan untuk model saat ini
     db.Statement.Schema.Relationships
 
-    // Find field with field name or db name
+    // Temukan bidang dengan nama bidang atau nama db
     field := db.Statement.Schema.LookUpField("Name")
 
-    // processing
+    // memproses
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// register a callback for Create process
+// daftarkan panggilan balik untuk proses Buat
 ```
 
-### Delete Callback
+### Menhapus Panggilan Balik
 
-Delete a callback from callbacks
+Hapus panggilan balik dari panggilan balik
 
 ```go
 db.Callback().Create().Remove("gorm:create")
-// delete callback `gorm:create` from Create callbacks
+// hapus panggilan balik `gorm: create` dari Buat panggilan balik
 ```
 
-### Replace Callback
+### Mengganti Panggilan Balik
 
-Replace a callback having the same name with the new one
+Ganti panggilan balik yang memiliki nama yang sama dengan yang baru
 
 ```go
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
-// replace callback `gorm:create` with new function `newCreateFunction` for Create process
+// ganti callback `gorm:create` dengan fungsi baru `newCreateFunction` untuk proses Create
 ```
 
-### Register Callback with orders
+### Daftarkan Panggilan Balik dengan `Orders`
 
-Register callbacks with orders
+Daftarkan Panggilan Balik dengan `Orders`
 
 ```go
-// before gorm:create
+// sebelum gorm:create
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
 
-// after gorm:create
+// setelah gorm:create
 db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
 
-// after gorm:query
+// setelah gorm:query
 db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
 
-// after gorm:delete
+// setelah gorm:delete
 db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
 
-// before gorm:update
+// sebelum gorm: perbarui
 db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
 
-// before gorm:create and after gorm:before_create
+// sebelum gorm:buat dan setelah gorm:sebelum_buat
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 
-// before any other callbacks
+// sebelum panggilan balik lainnya
 db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
 
-// after any other callbacks
+// setelah panggilan balik lainnya
 db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
-### Defined Callbacks
+### Mendefinisikan Panggilan Balik
 
-GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to power current GORM features, check them out before starting your plugins
+GORM telah menetapkan [beberapa panggilan balik](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) untuk mengaktifkan fitur GORM saat ini, periksa sebelum memulai plugin Anda
 
 ## Plugin
 
-GORM provides a `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
+GORM menyediakan metode `Use` untuk mendaftarkan plugin, plugin perlu mengimplementasikan antarmuka `Plugin`
 
 ```go
 type Plugin interface {
@@ -127,10 +127,10 @@ type Plugin interface {
 }
 ```
 
-The `Initialize` method will be invoked when registering the plugin into GORM first time, and GORM will save the registered plugins, access them like:
+Metode `Initialize` akan dipanggil saat mendaftarkan plugin ke GORM pertama kali, dan GORM akan menyimpan plugin yang terdaftar, mengaksesnya seperti:
 
 ```go
 db.Config.Plugins[pluginName]
 ```
 
-Checkout [Prometheus](prometheus.html) as example
+Lihat [Prometheus](prometheus.html) sebagai contoh

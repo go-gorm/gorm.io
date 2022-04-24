@@ -9,7 +9,7 @@ GORMで使用できる独自のデータ型をユーザ自身で定義できる�
 
 ### Scanner / Valuer
 
-独自のデータ型を使用するためには、[Scanner](https://pkg.go.dev/database/sql#Scanner) と [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイを実装する必要があります。これらのインターフェイスを実装することで、DBからの値の取得処理やDBへの保存処理をGORMが行うことが可能になります。
+独自のデータ型を使用するためには、[Scanner](https://pkg.go.dev/database/sql#Scanner) と [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) インターフェイスを実装する必要があります。これらのインターフェイスを実装することで、DBからの値の取得処理やDBへの保存処理をGORMが行うことが可能になります。
 
 例：
 
