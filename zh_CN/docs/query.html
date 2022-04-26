@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>查询 | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://gorm.io/zh_CN/docs/query.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="http://gorm.io/docs/query.html">
+    
+      <link rel="alternative" hreflang="zh_CN" href="http://gorm.io/zh_CN/docs/query.html">
+    
+      <link rel="alternative" hreflang="de_DE" href="http://gorm.io/de_DE/docs/query.html">
+    
+      <link rel="alternative" hreflang="es_ES" href="http://gorm.io/es_ES/docs/query.html">
+    
+      <link rel="alternative" hreflang="id_ID" href="http://gorm.io/id_ID/docs/query.html">
+    
+      <link rel="alternative" hreflang="it_IT" href="http://gorm.io/it_IT/docs/query.html">
+    
+      <link rel="alternative" hreflang="ja_JP" href="http://gorm.io/ja_JP/docs/query.html">
+    
+      <link rel="alternative" hreflang="ru_RU" href="http://gorm.io/ru_RU/docs/query.html">
+    
+      <link rel="alternative" hreflang="fr_FR" href="http://gorm.io/fr_FR/docs/query.html">
+    
+      <link rel="alternative" hreflang="ko_KR" href="http://gorm.io/ko_KR/docs/query.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM">
+  <!-- Open Graph -->
+  <meta name="description" content="检索单个对象GORM 提供了 First、Take、Last 方法，以便从数据库中检索单个对象。当查询数据库时它添加了 LIMIT 1 条件，且没有找到记录时，它会返回 ErrRecordNotFound 错误 &#x2F;&#x2F; 获取第一条记录（主键升序）db.First(&amp;user)&#x2F;&#x2F; SELECT * FROM users ORDER BY id LIMIT 1;&#x2F;&#x2F; 获取一条记录，没有指定排序">
+<meta property="og:type" content="website">
+<meta property="og:title" content="查询">
+<meta property="og:url" content="http://gorm.io/zh_CN/docs/query.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="检索单个对象GORM 提供了 First、Take、Last 方法，以便从数据库中检索单个对象。当查询数据库时它添加了 LIMIT 1 条件，且没有找到记录时，它会返回 ErrRecordNotFound 错误 &#x2F;&#x2F; 获取第一条记录（主键升序）db.First(&amp;user)&#x2F;&#x2F; SELECT * FROM users ORDER BY id LIMIT 1;&#x2F;&#x2F; 获取一条记录，没有指定排序">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-26T02:31:58.546Z">
+<meta property="article:modified_time" content="2022-04-26T02:31:58.546Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/zh_CN/" id="logo">GORM</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/zh_CN/docs/" class="main-nav-link"><i class="fa fa-book"></i>文档</a><a href="/zh_CN/community.html" class="main-nav-link"><i class="fab fa-slack"></i>社区</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/zh_CN/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>贡献</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="搜索文档...">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>简体中文</span></label>
+      <select id="lang-select" data-canonical="docs/query.html">
+        
+          <option value="en">English</option>
+        
+          <option value="zh_CN" selected>简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="es_ES">Español</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="ja_JP">日本語</option>
+        
+          <option value="ru_RU">Русский</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">查询</h1>
+                
+                <a href="https://translate.gorm.io/project/go-gorm/zh-CN" target="_blank" rel="noopener" class="article-edit-link" title="改进此页面"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><h2 id="检索单个对象" class="article-heading"><a href="#检索单个对象" class="headerlink" title="检索单个对象"></a>检索单个对象<a class="article-anchor" href="#检索单个对象" aria-hidden="true"></a></h2><p>GORM 提供了 <code>First</code>、<code>Take</code>、<code>Last</code> 方法，以便从数据库中检索单个对象。当查询数据库时它添加了 <code>LIMIT 1</code> 条件，且没有找到记录时，它会返回 <code>ErrRecordNotFound</code> 错误</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 获取第一条记录（主键升序）</span></span><br><span class="line">db.First(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users ORDER BY id LIMIT 1;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取一条记录，没有指定排序字段</span></span><br><span class="line">db.Take(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users LIMIT 1;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取最后一条记录（主键降序）</span></span><br><span class="line">db.Last(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users ORDER BY id DESC LIMIT 1;</span></span><br><span class="line"></span><br><span class="line">result := db.First(&amp;user)</span><br><span class="line">result.RowsAffected <span class="comment">// 返回找到的记录数</span></span><br><span class="line">result.Error        <span class="comment">// returns error or nil</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 检查 ErrRecordNotFound 错误</span></span><br><span class="line">errors.Is(result.Error, gorm.ErrRecordNotFound)</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note warn"><p>如果你想避免<code>ErrRecordNotFound</code>错误，你可以使用<code>Find</code>，比如<code>db.Limit(1).Find(&amp;user)</code>，<code>Find</code>方法可以接受struct和slice的数据。</p>
+</blockquote>
+
+<p><code>First</code> 和 <code>Last</code> 会根据主键排序，分别查询第一条和最后一条记录。 只有在目标 struct 是指针或者通过 <code>db.Model()</code> 指定 model 时，该方法才有效。 此外，如果相关 model 没有定义主键，那么将按 model 的第一个字段进行排序。 例如:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> user User</span><br><span class="line"><span class="keyword">var</span> users []User  </span><br><span class="line"></span><br><span class="line"><span class="comment">// 有效，因为目标 struct 是指针</span></span><br><span class="line">db.First(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 有效，因为通过 `db.Model()` 指定了 model</span></span><br><span class="line">result := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{}</span><br><span class="line">db.Model(&amp;User{}).First(&amp;result)</span><br><span class="line"><span class="comment">// SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 无效</span></span><br><span class="line">result := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{}</span><br><span class="line">db.Table(<span class="string">"users"</span>).First(&amp;result)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 配合 Take 有效</span></span><br><span class="line">result := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{}</span><br><span class="line">db.Table(<span class="string">"users"</span>).Take(&amp;result)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 未指定主键，会根据第一个字段排序(即：`Code`)</span></span><br><span class="line"><span class="keyword">type</span> Language <span class="keyword">struct</span> {</span><br><span class="line">  Code <span class="keyword">string</span></span><br><span class="line">  Name <span class="keyword">string</span></span><br><span class="line">}</span><br><span class="line">db.First(&amp;Language{})</span><br><span class="line"><span class="comment">// SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="用主键检索" class="article-heading"><a href="#用主键检索" class="headerlink" title="用主键检索"></a>用主键检索<a class="article-anchor" href="#用主键检索" aria-hidden="true"></a></h3><p>如果主键是数字类型，您可以使用 <a href="#inline_conditions">内联条件</a> 来检索对象。 传入字符串参数时，需要特别注意 SQL 注入问题，查看 <a href="security.html">安全</a> 获取详情.</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.First(&amp;user, <span class="number">10</span>)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE id = 10;</span></span><br><span class="line"></span><br><span class="line">db.First(&amp;user, <span class="string">"10"</span>)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE id = 10;</span></span><br><span class="line"></span><br><span class="line">db.Find(&amp;users, []<span class="keyword">int</span>{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>})</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE id IN (1,2,3);</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果主键是字符串（例如像 uuid），查询将被写成这样：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.First(&amp;user, <span class="string">"id = ?"</span>, <span class="string">"1b74413f-f3b8-409f-ac47-e8c062e3472a"</span>)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="检索全部对象" class="article-heading"><a href="#检索全部对象" class="headerlink" title="检索全部对象"></a>检索全部对象<a class="article-anchor" href="#检索全部对象" aria-hidden="true"></a></h2><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 获取全部记录</span></span><br><span class="line">result := db.Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users;</span></span><br><span class="line"></span><br><span class="line">result.RowsAffected <span class="comment">// 返回找到的记录数，相当于 `len(users)`</span></span><br><span class="line">result.Error        <span class="comment">// returns error</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="条件" class="article-heading"><a href="#条件" class="headerlink" title="条件"></a>条件<a class="article-anchor" href="#条件" aria-hidden="true"></a></h2><h3 id="String-条件" class="article-heading"><a href="#String-条件" class="headerlink" title="String 条件"></a>String 条件<a class="article-anchor" href="#String-条件" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 获取第一条匹配的记录</span></span><br><span class="line">db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).First(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取全部匹配的记录</span></span><br><span class="line">db.Where(<span class="string">"name &lt;&gt; ?"</span>, <span class="string">"jinzhu"</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name &lt;&gt; 'jinzhu';</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// IN</span></span><br><span class="line">db.Where(<span class="string">"name IN ?"</span>, []<span class="keyword">string</span>{<span class="string">"jinzhu"</span>, <span class="string">"jinzhu 2"</span>}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name IN ('jinzhu','jinzhu 2');</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// LIKE</span></span><br><span class="line">db.Where(<span class="string">"name LIKE ?"</span>, <span class="string">"%jin%"</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name LIKE '%jin%';</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// AND</span></span><br><span class="line">db.Where(<span class="string">"name = ? AND age &gt;= ?"</span>, <span class="string">"jinzhu"</span>, <span class="string">"22"</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' AND age &gt;= 22;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Time</span></span><br><span class="line">db.Where(<span class="string">"updated_at &gt; ?"</span>, lastWeek).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE updated_at &gt; '2000-01-01 00:00:00';</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// BETWEEN</span></span><br><span class="line">db.Where(<span class="string">"created_at BETWEEN ? AND ?"</span>, lastWeek, today).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Struct-amp-Map-条件" class="article-heading"><a href="#Struct-amp-Map-条件" class="headerlink" title="Struct &amp; Map 条件"></a>Struct &amp; Map 条件<a class="article-anchor" href="#Struct-amp-Map-条件" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Struct</span></span><br><span class="line">db.Where(&amp;User{Name: <span class="string">"jinzhu"</span>, Age: <span class="number">20</span>}).First(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = "jinzhu" AND age = 20 ORDER BY id LIMIT 1;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Map</span></span><br><span class="line">db.Where(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"name"</span>: <span class="string">"jinzhu"</span>, <span class="string">"age"</span>: <span class="number">20</span>}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = "jinzhu" AND age = 20;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 主键切片条件</span></span><br><span class="line">db.Where([]<span class="keyword">int64</span>{<span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE id IN (20, 21, 22);</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note warn"><p><strong>注意</strong> 当使用结构作为条件查询时，GORM 只会查询非零值字段。这意味着如果您的字段值为 <code>0</code>、<code>''</code>、<code>false</code> 或其他 <a href="https://tour.golang.org/basics/12" target="_blank" rel="noopener">零值</a>，该字段不会被用于构建查询条件，例如：</p>
+</blockquote>
+
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Where(&amp;User{Name: <span class="string">"jinzhu"</span>, Age: <span class="number">0</span>}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = "jinzhu";</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果想要包含零值查询条件，你可以使用 map，其会包含所有 key-value 的查询条件，例如：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Where(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"Name"</span>: <span class="string">"jinzhu"</span>, <span class="string">"Age"</span>: <span class="number">0</span>}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = "jinzhu" AND age = 0;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>查看 <a href="#specify_search_fields">指定结构体查询字段</a> 获取详情.</p>
+<h3 id="指定结构体查询字段" class="article-heading"><a href="#指定结构体查询字段" class="headerlink" title="指定结构体查询字段"></a><span id="specify_search_fields">指定结构体查询字段</span><a class="article-anchor" href="#指定结构体查询字段" aria-hidden="true"></a></h3><p>当使用 struct 进行查询时，你可以通过向 <code>Where()</code> 传入 struct 来指定查询条件的字段、值、表名，例如：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Where(&amp;User{Name: <span class="string">"jinzhu"</span>}, <span class="string">"name"</span>, <span class="string">"Age"</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = "jinzhu" AND age = 0;</span></span><br><span class="line"></span><br><span class="line">db.Where(&amp;User{Name: <span class="string">"jinzhu"</span>}, <span class="string">"Age"</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE age = 0;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="内联条件" class="article-heading"><a href="#内联条件" class="headerlink" title="内联条件"></a><span id="inline_conditions">内联条件</span><a class="article-anchor" href="#内联条件" aria-hidden="true"></a></h3><p>查询条件也可以被内联到 <code>First</code> 和 <code>Find</code> 之类的方法中，其用法类似于 <code>Where</code>。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 根据主键获取记录，如果是非整型主键</span></span><br><span class="line">db.First(&amp;user, <span class="string">"id = ?"</span>, <span class="string">"string_primary_key"</span>)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE id = 'string_primary_key';</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Plain SQL</span></span><br><span class="line">db.Find(&amp;user, <span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = "jinzhu";</span></span><br><span class="line"></span><br><span class="line">db.Find(&amp;users, <span class="string">"name &lt;&gt; ? AND age &gt; ?"</span>, <span class="string">"jinzhu"</span>, <span class="number">20</span>)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name &lt;&gt; "jinzhu" AND age &gt; 20;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Struct</span></span><br><span class="line">db.Find(&amp;users, User{Age: <span class="number">20</span>})</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE age = 20;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Map</span></span><br><span class="line">db.Find(&amp;users, <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"age"</span>: <span class="number">20</span>})</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE age = 20;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Not-条件" class="article-heading"><a href="#Not-条件" class="headerlink" title="Not 条件"></a>Not 条件<a class="article-anchor" href="#Not-条件" aria-hidden="true"></a></h3><p>构建 NOT 条件，用法与 <code>Where</code> 类似</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Not(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).First(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE NOT name = "jinzhu" ORDER BY id LIMIT 1;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Not In</span></span><br><span class="line">db.Not(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"name"</span>: []<span class="keyword">string</span>{<span class="string">"jinzhu"</span>, <span class="string">"jinzhu 2"</span>}}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name NOT IN ("jinzhu", "jinzhu 2");</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Struct</span></span><br><span class="line">db.Not(User{Name: <span class="string">"jinzhu"</span>, Age: <span class="number">18</span>}).First(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name &lt;&gt; "jinzhu" AND age &lt;&gt; 18 ORDER BY id LIMIT 1;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 不在主键切片中的记录</span></span><br><span class="line">db.Not([]<span class="keyword">int64</span>{<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>}).First(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Or-条件" class="article-heading"><a href="#Or-条件" class="headerlink" title="Or 条件"></a>Or 条件<a class="article-anchor" href="#Or-条件" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Where(<span class="string">"role = ?"</span>, <span class="string">"admin"</span>).Or(<span class="string">"role = ?"</span>, <span class="string">"super_admin"</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE role = 'admin' OR role = 'super_admin';</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Struct</span></span><br><span class="line">db.Where(<span class="string">"name = 'jinzhu'"</span>).Or(User{Name: <span class="string">"jinzhu 2"</span>, Age: <span class="number">18</span>}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Map</span></span><br><span class="line">db.Where(<span class="string">"name = 'jinzhu'"</span>).Or(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"name"</span>: <span class="string">"jinzhu 2"</span>, <span class="string">"age"</span>: <span class="number">18</span>}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>更复杂的 SQL 查询， 请查看 <a href="advanced_query.html#group_conditions">高级查询中的组条件</a>。</p>
+<h2 id="选择特定字段" class="article-heading"><a href="#选择特定字段" class="headerlink" title="选择特定字段"></a>选择特定字段<a class="article-anchor" href="#选择特定字段" aria-hidden="true"></a></h2><p><code>Select</code> 允许您指定从数据库中检索哪些字段， 默认情况下，GORM 会检索所有字段。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Select(<span class="string">"name"</span>, <span class="string">"age"</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT name, age FROM users;</span></span><br><span class="line"></span><br><span class="line">db.Select([]<span class="keyword">string</span>{<span class="string">"name"</span>, <span class="string">"age"</span>}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT name, age FROM users;</span></span><br><span class="line"></span><br><span class="line">db.Table(<span class="string">"users"</span>).Select(<span class="string">"COALESCE(age,?)"</span>, <span class="number">42</span>).Rows()</span><br><span class="line"><span class="comment">// SELECT COALESCE(age,'42') FROM users;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>还可以看一看 <a href="advanced_query.html#smart_select">智能选择字段</a></p>
+<h2 id="Order" class="article-heading"><a href="#Order" class="headerlink" title="Order"></a>Order<a class="article-anchor" href="#Order" aria-hidden="true"></a></h2><p>指定从数据库检索记录时的排序方式</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Order(<span class="string">"age desc, name"</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users ORDER BY age desc, name;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 多个 order</span></span><br><span class="line">db.Order(<span class="string">"age desc"</span>).Order(<span class="string">"name"</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users ORDER BY age desc, name;</span></span><br><span class="line"></span><br><span class="line">db.Clauses(clause.OrderBy{</span><br><span class="line">  Expression: clause.Expr{SQL: <span class="string">"FIELD(id,?)"</span>, Vars: []<span class="keyword">interface</span>{}{[]<span class="keyword">int</span>{<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}}, WithoutParentheses: <span class="literal">true</span>},</span><br><span class="line">}).Find(&amp;User{})</span><br><span class="line"><span class="comment">// SELECT * FROM users ORDER BY FIELD(id,1,2,3)</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Limit-amp-Offset" class="article-heading"><a href="#Limit-amp-Offset" class="headerlink" title="Limit &amp; Offset"></a>Limit &amp; Offset<a class="article-anchor" href="#Limit-amp-Offset" aria-hidden="true"></a></h2><p><code>Limit</code> 指定获取记录的最大数量 <code>Offset</code> 指定在开始返回记录之前要跳过的记录数量</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Limit(<span class="number">3</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users LIMIT 3;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过 -1 消除 Limit 条件</span></span><br><span class="line">db.Limit(<span class="number">10</span>).Find(&amp;users1).Limit(<span class="number">-1</span>).Find(&amp;users2)</span><br><span class="line"><span class="comment">// SELECT * FROM users LIMIT 10; (users1)</span></span><br><span class="line"><span class="comment">// SELECT * FROM users; (users2)</span></span><br><span class="line"></span><br><span class="line">db.Offset(<span class="number">3</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users OFFSET 3;</span></span><br><span class="line"></span><br><span class="line">db.Limit(<span class="number">10</span>).Offset(<span class="number">5</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users OFFSET 5 LIMIT 10;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过 -1 消除 Offset 条件</span></span><br><span class="line">db.Offset(<span class="number">10</span>).Find(&amp;users1).Offset(<span class="number">-1</span>).Find(&amp;users2)</span><br><span class="line"><span class="comment">// SELECT * FROM users OFFSET 10; (users1)</span></span><br><span class="line"><span class="comment">// SELECT * FROM users; (users2)</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>查看 <a href="scopes.html#pagination">Pagination</a> 学习如何写一个分页器</p>
+<h2 id="Group-By-amp-Having" class="article-heading"><a href="#Group-By-amp-Having" class="headerlink" title="Group By &amp; Having"></a>Group By &amp; Having<a class="article-anchor" href="#Group-By-amp-Having" aria-hidden="true"></a></h2><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> result <span class="keyword">struct</span> {</span><br><span class="line">  Date  time.Time</span><br><span class="line">  Total <span class="keyword">int</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Model(&amp;User{}).Select(<span class="string">"name, sum(age) as total"</span>).Where(<span class="string">"name LIKE ?"</span>, <span class="string">"group%"</span>).Group(<span class="string">"name"</span>).First(&amp;result)</span><br><span class="line"><span class="comment">// SELECT name, sum(age) as total FROM `users` WHERE name LIKE "group%" GROUP BY `name` LIMIT 1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">db.Model(&amp;User{}).Select(<span class="string">"name, sum(age) as total"</span>).Group(<span class="string">"name"</span>).Having(<span class="string">"name = ?"</span>, <span class="string">"group"</span>).Find(&amp;result)</span><br><span class="line"><span class="comment">// SELECT name, sum(age) as total FROM `users` GROUP BY `name` HAVING name = "group"</span></span><br><span class="line"></span><br><span class="line">rows, err := db.Table(<span class="string">"orders"</span>).Select(<span class="string">"date(created_at) as date, sum(amount) as total"</span>).Group(<span class="string">"date(created_at)"</span>).Rows()</span><br><span class="line"><span class="keyword">defer</span> rows.Close()</span><br><span class="line"><span class="keyword">for</span> rows.Next() {</span><br><span class="line">  ...</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">rows, err := db.Table(<span class="string">"orders"</span>).Select(<span class="string">"date(created_at) as date, sum(amount) as total"</span>).Group(<span class="string">"date(created_at)"</span>).Having(<span class="string">"sum(amount) &gt; ?"</span>, <span class="number">100</span>).Rows()</span><br><span class="line"><span class="keyword">defer</span> rows.Close()</span><br><span class="line"><span class="keyword">for</span> rows.Next() {</span><br><span class="line">  ...</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Result <span class="keyword">struct</span> {</span><br><span class="line">  Date  time.Time</span><br><span class="line">  Total <span class="keyword">int64</span></span><br><span class="line">}</span><br><span class="line">db.Table(<span class="string">"orders"</span>).Select(<span class="string">"date(created_at) as date, sum(amount) as total"</span>).Group(<span class="string">"date(created_at)"</span>).Having(<span class="string">"sum(amount) &gt; ?"</span>, <span class="number">100</span>).Scan(&amp;results)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Distinct" class="article-heading"><a href="#Distinct" class="headerlink" title="Distinct"></a>Distinct<a class="article-anchor" href="#Distinct" aria-hidden="true"></a></h2><p>从模型中选择不相同的值</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Distinct(<span class="string">"name"</span>, <span class="string">"age"</span>).Order(<span class="string">"name, age desc"</span>).Find(&amp;results)</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>Distinct</code> 也可以配合 <a href="advanced_query.html#pluck"><code>Pluck</code></a>, <a href="advanced_query.html#count"><code>Count</code></a> 使用</p>
+<h2 id="Joins" class="article-heading"><a href="#Joins" class="headerlink" title="Joins"></a>Joins<a class="article-anchor" href="#Joins" aria-hidden="true"></a></h2><p>指定 Joins 条件</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> result <span class="keyword">struct</span> {</span><br><span class="line">  Name  <span class="keyword">string</span></span><br><span class="line">  Email <span class="keyword">string</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Model(&amp;User{}).Select(<span class="string">"users.name, emails.email"</span>).Joins(<span class="string">"left join emails on emails.user_id = users.id"</span>).Scan(&amp;result{})</span><br><span class="line"><span class="comment">// SELECT users.name, emails.email FROM `users` left join emails on emails.user_id = users.id</span></span><br><span class="line"></span><br><span class="line">rows, err := db.Table(<span class="string">"users"</span>).Select(<span class="string">"users.name, emails.email"</span>).Joins(<span class="string">"left join emails on emails.user_id = users.id"</span>).Rows()</span><br><span class="line"><span class="keyword">for</span> rows.Next() {</span><br><span class="line">  ...</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Table(<span class="string">"users"</span>).Select(<span class="string">"users.name, emails.email"</span>).Joins(<span class="string">"left join emails on emails.user_id = users.id"</span>).Scan(&amp;results)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 带参数的多表连接</span></span><br><span class="line">db.Joins(<span class="string">"JOIN emails ON emails.user_id = users.id AND emails.email = ?"</span>, <span class="string">"jinzhu@example.org"</span>).Joins(<span class="string">"JOIN credit_cards ON credit_cards.user_id = users.id"</span>).Where(<span class="string">"credit_cards.number = ?"</span>, <span class="string">"411111111111"</span>).Find(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Joins-预加载" class="article-heading"><a href="#Joins-预加载" class="headerlink" title="Joins 预加载"></a>Joins 预加载<a class="article-anchor" href="#Joins-预加载" aria-hidden="true"></a></h3><p>您可以使用 <code>Joins</code> 实现单条 SQL 预加载关联记录，例如：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Joins(<span class="string">"Company"</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>带条件的 Join</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Joins(<span class="string">"Company"</span>, DB.Where(&amp;Company{Alive: <span class="literal">true</span>})).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>更多细节请参阅 <a href="preload.html">预加载 (Eager Loading)</a>。</p>
+<h3 id="Joins-a-Derived-Table" class="article-heading"><a href="#Joins-a-Derived-Table" class="headerlink" title="Joins a Derived Table"></a>Joins a Derived Table<a class="article-anchor" href="#Joins-a-Derived-Table" aria-hidden="true"></a></h3><p>You can also use <code>Joins</code> to join a derived table.</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Id  <span class="keyword">int</span></span><br><span class="line">    Age <span class="keyword">int</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Order <span class="keyword">struct</span> {</span><br><span class="line">    UserId     <span class="keyword">int</span></span><br><span class="line">    FinishedAt *time.Time</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">query := db.Table(<span class="string">"order"</span>).Select(<span class="string">"MAX(order.finished_at) as latest"</span>).Joins(<span class="string">"left join user user on order.user_id = user.id"</span>).Where(<span class="string">"user.age &gt; ?"</span>, <span class="number">18</span>).Group(<span class="string">"order.user_id"</span>)</span><br><span class="line">db.Model(&amp;Order{}).Joins(<span class="string">"join (?) q on order.finished_at = q.latest"</span>, query).Scan(&amp;results)</span><br><span class="line"><span class="comment">// SELECT `order`.`user_id`,`order`.`finished_at` FROM `order` join (SELECT MAX(order.finished_at) as latest FROM `order` left join user user on order.user_id = user.id WHERE user.age &gt; 18 GROUP BY `order`.`user_id`) q on order.finished_at = q.latest</span></span><br></pre></td></tr></tbody></table></figure>
+
+
+<h2 id="Scan" class="article-heading"><a href="#Scan" class="headerlink" title="Scan"></a><span id="scan">Scan</span><a class="article-anchor" href="#Scan" aria-hidden="true"></a></h2><p>Scanning results into a struct works similarly to the way we use <code>Find</code></p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Result <span class="keyword">struct</span> {</span><br><span class="line">  Name <span class="keyword">string</span></span><br><span class="line">  Age  <span class="keyword">int</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> result Result</span><br><span class="line">db.Table(<span class="string">"users"</span>).Select(<span class="string">"name"</span>, <span class="string">"age"</span>).Where(<span class="string">"name = ?"</span>, <span class="string">"Antonio"</span>).Scan(&amp;result)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Raw SQL</span></span><br><span class="line">db.Raw(<span class="string">"SELECT name, age FROM users WHERE name = ?"</span>, <span class="string">"Antonio"</span>).Scan(&amp;result)</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+              </div>
+
+              
+              <div>
+                <a href="v2_release_note.html" target="_blank">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Latest GORM Release&color=red&&style=for-the-badge&logo=go&logoColor=red">
+                </a>
+              </div>
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2022-04-26T02:31:58.546Z" itemprop="dateModified">最后更新于 2022-04-26</time>
+<a href="create.html" class="article-footer-prev" title="创建"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="advanced_query.html" class="article-footer-next" title="高级查询"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <div class="sponsor_item">
+        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors</h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors</h1>
+      <div class="sponsor_item">
+        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              
+<section id="comments">
+<div id="disqus_thread"></div>
+</sction>
+
+<script>
+var disqus_config = function () {
+this.page.url = 'http://gorm.io/zh_CN/docs/query.html';
+this.page.identifier = 'http://gorm.io/zh_CN/docs/query.html';
+this.language = 'zh';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://gormv2.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">内容</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#检索单个对象"><span class="toc-text">检索单个对象</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#用主键检索"><span class="toc-text">用主键检索</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#检索全部对象"><span class="toc-text">检索全部对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#条件"><span class="toc-text">条件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#String-条件"><span class="toc-text">String 条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Struct-amp-Map-条件"><span class="toc-text">Struct &amp; Map 条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#指定结构体查询字段"><span class="toc-text">指定结构体查询字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内联条件"><span class="toc-text">内联条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Not-条件"><span class="toc-text">Not 条件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Or-条件"><span class="toc-text">Or 条件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#选择特定字段"><span class="toc-text">选择特定字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Order"><span class="toc-text">Order</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Limit-amp-Offset"><span class="toc-text">Limit &amp; Offset</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Group-By-amp-Having"><span class="toc-text">Group By &amp; Having</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Distinct"><span class="toc-text">Distinct</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Joins"><span class="toc-text">Joins</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Joins-预加载"><span class="toc-text">Joins 预加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Joins-a-Derived-Table"><span class="toc-text">Joins a Derived Table</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scan"><span class="toc-text">Scan</span></a></li></ol>
+
+              
+                <a href="https://translate.gorm.io/project/go-gorm/zh-CN" target="_blank" id="article-improve">
+                  改进此页面
+                </a>
+              
+              <a href="#" id="article-toc-top">回到顶部</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">入门指南</strong><a href="index.html" class="sidebar-link">概述</a><a href="models.html" class="sidebar-link">声明模型</a><a href="connecting_to_the_database.html" class="sidebar-link">连接到数据库</a><strong class="sidebar-title">CRUD 接口</strong><a href="create.html" class="sidebar-link">创建</a><a href="query.html" class="sidebar-link current">查询</a><a href="advanced_query.html" class="sidebar-link">高级查询</a><a href="update.html" class="sidebar-link">更新</a><a href="delete.html" class="sidebar-link">删除</a><a href="sql_builder.html" class="sidebar-link">原生 SQL 和 SQL 生成器</a><strong class="sidebar-title">关联</strong><a href="belongs_to.html" class="sidebar-link">Belongs To</a><a href="has_one.html" class="sidebar-link">Has One</a><a href="has_many.html" class="sidebar-link">Has Many</a><a href="many_to_many.html" class="sidebar-link">Many To Many</a><a href="associations.html" class="sidebar-link">关联模式</a><a href="preload.html" class="sidebar-link">预加载</a><strong class="sidebar-title">教程</strong><a href="context.html" class="sidebar-link">Context</a><a href="error_handling.html" class="sidebar-link">错误处理</a><a href="method_chaining.html" class="sidebar-link">链式操作</a><a href="session.html" class="sidebar-link">Session</a><a href="hooks.html" class="sidebar-link">钩子</a><a href="transactions.html" class="sidebar-link">事务</a><a href="migration.html" class="sidebar-link">迁移</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">通用数据库接口</a><a href="performance.html" class="sidebar-link">性能</a><a href="data_types.html" class="sidebar-link">自定义数据类型</a><a href="scopes.html" class="sidebar-link">Scope</a><a href="conventions.html" class="sidebar-link">约定</a><a href="settings.html" class="sidebar-link">设置</a><strong class="sidebar-title">高级主题</strong><a href="dbresolver.html" class="sidebar-link">Database Resolver</a><a href="sharding.html" class="sidebar-link">Sharding</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">提示</a><a href="indexes.html" class="sidebar-link">索引</a><a href="constraints.html" class="sidebar-link">约束</a><a href="composite_primary_key.html" class="sidebar-link">复合主键</a><a href="security.html" class="sidebar-link">安全</a><a href="gorm_config.html" class="sidebar-link">GORM 配置</a><a href="write_plugins.html" class="sidebar-link">编写插件</a><a href="write_driver.html" class="sidebar-link">编写驱动</a><a href="changelog.html" class="sidebar-link">更新日志</a><a href="/community.html" class="sidebar-link">社区</a><a href="/contribute.html" class="sidebar-link">贡献</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">翻译当前页面</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2022 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://www.qiniu.com/" target="_blank">七牛云</a> 对 CDN 的赞助，<a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>主页</a>
+      </li>
+      <a href="/zh_CN/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>文档</a><a href="/zh_CN/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>社区</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/zh_CN/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>贡献</a>
+    </ul>
+    
+      <strong class="mobile-nav-title">入门指南</strong><a href="index.html" class="mobile-nav-link">概述</a><a href="models.html" class="mobile-nav-link">声明模型</a><a href="connecting_to_the_database.html" class="mobile-nav-link">连接到数据库</a><strong class="mobile-nav-title">CRUD 接口</strong><a href="create.html" class="mobile-nav-link">创建</a><a href="query.html" class="mobile-nav-link current">查询</a><a href="advanced_query.html" class="mobile-nav-link">高级查询</a><a href="update.html" class="mobile-nav-link">更新</a><a href="delete.html" class="mobile-nav-link">删除</a><a href="sql_builder.html" class="mobile-nav-link">原生 SQL 和 SQL 生成器</a><strong class="mobile-nav-title">关联</strong><a href="belongs_to.html" class="mobile-nav-link">Belongs To</a><a href="has_one.html" class="mobile-nav-link">Has One</a><a href="has_many.html" class="mobile-nav-link">Has Many</a><a href="many_to_many.html" class="mobile-nav-link">Many To Many</a><a href="associations.html" class="mobile-nav-link">关联模式</a><a href="preload.html" class="mobile-nav-link">预加载</a><strong class="mobile-nav-title">教程</strong><a href="context.html" class="mobile-nav-link">Context</a><a href="error_handling.html" class="mobile-nav-link">错误处理</a><a href="method_chaining.html" class="mobile-nav-link">链式操作</a><a href="session.html" class="mobile-nav-link">Session</a><a href="hooks.html" class="mobile-nav-link">钩子</a><a href="transactions.html" class="mobile-nav-link">事务</a><a href="migration.html" class="mobile-nav-link">迁移</a><a href="logger.html" class="mobile-nav-link">Logger</a><a href="generic_interface.html" class="mobile-nav-link">通用数据库接口</a><a href="performance.html" class="mobile-nav-link">性能</a><a href="data_types.html" class="mobile-nav-link">自定义数据类型</a><a href="scopes.html" class="mobile-nav-link">Scope</a><a href="conventions.html" class="mobile-nav-link">约定</a><a href="settings.html" class="mobile-nav-link">设置</a><strong class="mobile-nav-title">高级主题</strong><a href="dbresolver.html" class="mobile-nav-link">Database Resolver</a><a href="sharding.html" class="mobile-nav-link">Sharding</a><a href="prometheus.html" class="mobile-nav-link">Prometheus</a><a href="hints.html" class="mobile-nav-link">提示</a><a href="indexes.html" class="mobile-nav-link">索引</a><a href="constraints.html" class="mobile-nav-link">约束</a><a href="composite_primary_key.html" class="mobile-nav-link">复合主键</a><a href="security.html" class="mobile-nav-link">安全</a><a href="gorm_config.html" class="mobile-nav-link">GORM 配置</a><a href="write_plugins.html" class="mobile-nav-link">编写插件</a><a href="write_driver.html" class="mobile-nav-link">编写驱动</a><a href="changelog.html" class="mobile-nav-link">更新日志</a><a href="/community.html" class="mobile-nav-link">社区</a><a href="/contribute.html" class="mobile-nav-link">贡献</a><a href="/contribute.html#Translate-this-site" class="mobile-nav-link">翻译当前页面</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>简体中文</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/query.html">
+      
+        <option value="en">English</option>
+      
+        <option value="zh_CN" selected>简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="es_ES">Español</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="ja_JP">日本語</option>
+      
+        <option value="ru_RU">Русский</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>

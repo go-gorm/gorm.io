@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja_JP">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>規約 | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://gorm.io/ja_JP/docs/conventions.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="http://gorm.io/docs/conventions.html">
+    
+      <link rel="alternative" hreflang="zh_CN" href="http://gorm.io/zh_CN/docs/conventions.html">
+    
+      <link rel="alternative" hreflang="de_DE" href="http://gorm.io/de_DE/docs/conventions.html">
+    
+      <link rel="alternative" hreflang="es_ES" href="http://gorm.io/es_ES/docs/conventions.html">
+    
+      <link rel="alternative" hreflang="id_ID" href="http://gorm.io/id_ID/docs/conventions.html">
+    
+      <link rel="alternative" hreflang="it_IT" href="http://gorm.io/it_IT/docs/conventions.html">
+    
+      <link rel="alternative" hreflang="ja_JP" href="http://gorm.io/ja_JP/docs/conventions.html">
+    
+      <link rel="alternative" hreflang="ru_RU" href="http://gorm.io/ru_RU/docs/conventions.html">
+    
+      <link rel="alternative" hreflang="fr_FR" href="http://gorm.io/fr_FR/docs/conventions.html">
+    
+      <link rel="alternative" hreflang="ko_KR" href="http://gorm.io/ko_KR/docs/conventions.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM">
+  <!-- Open Graph -->
+  <meta name="description" content="主キーとしての IDGORMはデフォルトで、テーブルの主キーとして ID という名前のフィールドを使用します。 type User struct &amp;#123;  ID   string &#x2F;&#x2F;フィールドはデフォルトでは &#96;ID&#96; という名前のフィールドがプライマリフィールドとして使われます。  Name string&amp;#125;  他のフィールドを primaryKey タグで主キーとして設定できま">
+<meta property="og:type" content="website">
+<meta property="og:title" content="規約">
+<meta property="og:url" content="http://gorm.io/ja_JP/docs/conventions.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="主キーとしての IDGORMはデフォルトで、テーブルの主キーとして ID という名前のフィールドを使用します。 type User struct &amp;#123;  ID   string &#x2F;&#x2F;フィールドはデフォルトでは &#96;ID&#96; という名前のフィールドがプライマリフィールドとして使われます。  Name string&amp;#125;  他のフィールドを primaryKey タグで主キーとして設定できま">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2022-04-26T02:31:58.530Z">
+<meta property="article:modified_time" content="2022-04-26T02:31:58.530Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/ja_JP/" id="logo">GORM</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/ja_JP/docs/" class="main-nav-link"><i class="fa fa-book"></i>ドキュメント</a><a href="/ja_JP/community.html" class="main-nav-link"><i class="fab fa-slack"></i>コミュニティ</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/ja_JP/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="ドキュメントを検索する">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>日本語</span></label>
+      <select id="lang-select" data-canonical="docs/conventions.html">
+        
+          <option value="en">English</option>
+        
+          <option value="zh_CN">简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="es_ES">Español</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="ja_JP" selected>日本語</option>
+        
+          <option value="ru_RU">Русский</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">規約</h1>
+                
+                <a href="https://translate.gorm.io/project/go-gorm/ja" target="_blank" rel="noopener" class="article-edit-link" title="このページを改善する"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><h2 id="主キーとしての-ID" class="article-heading"><a href="#主キーとしての-ID" class="headerlink" title="主キーとしての ID"></a>主キーとしての <code>ID</code><a class="article-anchor" href="#主キーとしての-ID" aria-hidden="true"></a></h2><p>GORMはデフォルトで、テーブルの主キーとして <code>ID</code> という名前のフィールドを使用します。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">&nbsp; ID &nbsp; <span class="keyword">string</span> <span class="comment">//フィールドはデフォルトでは `ID` という名前のフィールドがプライマリフィールドとして使われます。</span></span><br><span class="line">&nbsp; Name <span class="keyword">string</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>他のフィールドを <code>primaryKey</code> タグで主キーとして設定できます</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Set field `UUID` as primary field</span></span><br><span class="line"><span class="keyword">type</span> Animal <span class="keyword">struct</span> {</span><br><span class="line">&nbsp; ID &nbsp; &nbsp; <span class="keyword">int64</span></span><br><span class="line">&nbsp; UUID &nbsp; <span class="keyword">string</span> <span class="string">`gorm:"primaryKey"`</span></span><br><span class="line">&nbsp; Name &nbsp; <span class="keyword">string</span></span><br><span class="line">&nbsp; Age &nbsp; &nbsp;<span class="keyword">int64</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><a href="composite_primary_key.html">Composite Primary Key</a> も参照してください。</p>
+<h2 id="複数形のテーブル名" class="article-heading"><a href="#複数形のテーブル名" class="headerlink" title="複数形のテーブル名"></a>複数形のテーブル名<a class="article-anchor" href="#複数形のテーブル名" aria-hidden="true"></a></h2><p>GORMは構造体名をテーブル名として<code>snake_cases</code>のように複数形にします。構造体 <code>User</code> の場合、対応するテーブル名は規約により <code>users</code> となります。</p>
+<h3 id="テーブル名" class="article-heading"><a href="#テーブル名" class="headerlink" title="テーブル名"></a>テーブル名<a class="article-anchor" href="#テーブル名" aria-hidden="true"></a></h3><p><code>Tabler</code> インターフェイスを実装することで、デフォルトのテーブル名を変更することができます。例：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Tabler <span class="keyword">interface</span> {</span><br><span class="line">    TableName() <span class="keyword">string</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// TableName overrides the table name used by User to `profiles`</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(User)</span> <span class="title">TableName</span><span class="params">()</span> <span class="title">string</span></span> {</span><br><span class="line">&nbsp; <span class="keyword">return</span> <span class="string">"profiles"</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note warn"><p><strong>注意</strong> メソッドの戻り値はキャッシュされるため、 <code>TableName</code>は動的な名前を許可していません。動的にテーブル名を変更するには、 <code>Scopes</code> で解決することができます。例:</p>
+</blockquote>
+
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">UserTable</span><span class="params">(user User)</span> <span class="title">func</span> <span class="params">(tx *gorm.DB)</span> *<span class="title">gorm</span>.<span class="title">DB</span></span> {</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">func</span> <span class="params">(tx *gorm.DB)</span> *<span class="title">gorm</span>.<span class="title">DB</span></span> {</span><br><span class="line">    <span class="keyword">if</span> user.Admin {</span><br><span class="line">      <span class="keyword">return</span> tx.Table(<span class="string">"admin_users"</span>)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> tx.Table(<span class="string">"users"</span>)</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Scopes(UserTable(user)).Create(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="一時的に名前を指定する" class="article-heading"><a href="#一時的に名前を指定する" class="headerlink" title="一時的に名前を指定する"></a>一時的に名前を指定する<a class="article-anchor" href="#一時的に名前を指定する" aria-hidden="true"></a></h3><p><code>Table</code>メソッドで一時的にテーブル名を指定できます。例:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Create table `deleted_users` with struct User's fields</span></span><br><span class="line">db.Table(<span class="string">"deleted_users"</span>).AutoMigrate(&amp;User{})</span><br><span class="line"></span><br><span class="line"><span class="comment">// Query data from another table</span></span><br><span class="line"><span class="keyword">var</span> deletedUsers []User</span><br><span class="line">db.Table(<span class="string">"deleted_users"</span>).Find(&amp;deletedUsers)</span><br><span class="line"><span class="comment">// SELECT * FROM deleted_users;</span></span><br><span class="line"></span><br><span class="line">db.Table(<span class="string">"deleted_users"</span>).Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Delete(&amp;User{})</span><br><span class="line"><span class="comment">// DELETE FROM deleted_users WHERE name = 'jinzhu';</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>FROM句でサブクエリを使用する方法については、 <a href="advanced_query.html#from_subquery">From SubQuery</a> を参照してください。</p>
+<h3 id="NamingStrategy" class="article-heading"><a href="#NamingStrategy" class="headerlink" title="NamingStrategy"></a><span id="naming_strategy">NamingStrategy</span><a class="article-anchor" href="#NamingStrategy" aria-hidden="true"></a></h3><p><code>TableName</code>, <code>ColumnName</code>, <code>JoinTableName</code>, <code>RelationshipFKName</code>, <code>CheckerName</code>, <code>IndexName</code>の生成に使用されている<code>NamingStrategy</code>をオーバーライドすることで、デフォルトの命名規則を変更できます。詳細は<a href="gorm_config.html#naming_strategy">GORM Config</a>を参照してください。</p>
+<h2 id="カラム名" class="article-heading"><a href="#カラム名" class="headerlink" title="カラム名"></a>カラム名<a class="article-anchor" href="#カラム名" aria-hidden="true"></a></h2><p>規約に従い、データベースのカラム名はフィールド名の<code>snake_case</code>を使用します。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">&nbsp; ID &nbsp; &nbsp; &nbsp; &nbsp;<span class="keyword">uint</span> &nbsp; &nbsp; &nbsp;<span class="comment">// column name is `id`</span></span><br><span class="line">&nbsp; Name &nbsp; &nbsp; &nbsp;<span class="keyword">string</span> &nbsp; &nbsp;<span class="comment">// column name is `name`</span></span><br><span class="line">&nbsp; Birthday &nbsp;time.Time <span class="comment">// column name is `birthday`</span></span><br><span class="line">&nbsp; CreatedAt time.Time <span class="comment">// column name is `created_at`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>column</code> タグか <a href="#naming_strategy"><code>NamingStrategy</code></a> を利用することでカラム名を上書きできます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Animal <span class="keyword">struct</span> {</span><br><span class="line">&nbsp; AnimalID <span class="keyword">int64</span> &nbsp; &nbsp; <span class="string">`gorm:"column:beast_id"`</span> &nbsp; &nbsp; &nbsp; &nbsp; <span class="comment">// set name to `beast_id`</span></span><br><span class="line">&nbsp; Birthday time.Time <span class="string">`gorm:"column:day_of_the_beast"`</span> <span class="comment">// set name to `day_of_the_beast`</span></span><br><span class="line">&nbsp; Age &nbsp; &nbsp; &nbsp;<span class="keyword">int64</span> &nbsp; &nbsp; <span class="string">`gorm:"column:age_of_the_beast"`</span> <span class="comment">// set name to `age_of_the_beast`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="タイムスタンプのトラッキング" class="article-heading"><a href="#タイムスタンプのトラッキング" class="headerlink" title="タイムスタンプのトラッキング"></a>タイムスタンプのトラッキング<a class="article-anchor" href="#タイムスタンプのトラッキング" aria-hidden="true"></a></h2><h3 id="CreatedAt" class="article-heading"><a href="#CreatedAt" class="headerlink" title="CreatedAt"></a>CreatedAt<a class="article-anchor" href="#CreatedAt" aria-hidden="true"></a></h3><p><code>CreatedAt</code>フィールドを持つモデルの場合、フィールドの値がゼロ値であれば、レコード作成時に現在時刻が設定されます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Create(&amp;user) <span class="comment">// set `CreatedAt` to current time</span></span><br><span class="line"></span><br><span class="line">user2 := User{Name: <span class="string">"jinzhu"</span>, CreatedAt: time.Now()}</span><br><span class="line">db.Create(&amp;user2) <span class="comment">// user2's `CreatedAt` won't be changed</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// To change its value, you could use `Update`</span></span><br><span class="line">db.Model(&amp;user).Update(<span class="string">"CreatedAt"</span>, time.Now())</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="UpdatedAt" class="article-heading"><a href="#UpdatedAt" class="headerlink" title="UpdatedAt"></a>UpdatedAt<a class="article-anchor" href="#UpdatedAt" aria-hidden="true"></a></h3><p><code>UpdateAt</code>フィールドを持つモデルの場合、フィールドの値がゼロ値であれば、レコードの更新時または作成時に現在時刻が設定されます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Save(&amp;user) <span class="comment">// set `UpdatedAt` to current time</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Update(<span class="string">"name"</span>, <span class="string">"jinzhu"</span>) <span class="comment">// will set `UpdatedAt` to current time</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).UpdateColumn(<span class="string">"name"</span>, <span class="string">"jinzhu"</span>) <span class="comment">// `UpdatedAt` won't be changed</span></span><br><span class="line"></span><br><span class="line">user2 := User{Name: <span class="string">"jinzhu"</span>, UpdatedAt: time.Now()}</span><br><span class="line">db.Create(&amp;user2) <span class="comment">// user2's `UpdatedAt` won't be changed when creating</span></span><br><span class="line"></span><br><span class="line">user3 := User{Name: <span class="string">"jinzhu"</span>, UpdatedAt: time.Now()}</span><br><span class="line">db.Save(&amp;user3) <span class="comment">// user3's `UpdatedAt` will change to current time when updating</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note undefined"><p><strong>注意</strong> GORMでは、複数のタイムトラッキング用のフィールドを定義することや、UNIX(ナノ/ミリ)秒でタイムトラッキングすることが可能です。詳細については <a href="models.html#time_tracking">Models</a> をチェックしてください。</p>
+</blockquote>
+</body></html>
+              </div>
+
+              
+              <div>
+                <a href="v2_release_note.html" target="_blank">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Latest GORM Release&color=red&&style=for-the-badge&logo=go&logoColor=red">
+                </a>
+              </div>
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2022-04-26T02:31:58.530Z" itemprop="dateModified">最終更新: 2022-04-26</time>
+<a href="scopes.html" class="article-footer-prev" title="Scopes"><i class="fa fa-chevron-left"></i><span>前へ</span></a><a href="settings.html" class="article-footer-next" title="値の受け渡し"><span>次へ</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <div class="sponsor_item">
+        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors</h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors</h1>
+      <div class="sponsor_item">
+        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              
+<section id="comments">
+<div id="disqus_thread"></div>
+</sction>
+
+<script>
+var disqus_config = function () {
+this.page.url = 'http://gorm.io/ja_JP/docs/conventions.html';
+this.page.identifier = 'http://gorm.io/ja_JP/docs/conventions.html';
+this.language = 'jp';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://gormv2.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">内容</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#主キーとしての-ID"><span class="toc-text">主キーとしての ID</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#複数形のテーブル名"><span class="toc-text">複数形のテーブル名</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#テーブル名"><span class="toc-text">テーブル名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一時的に名前を指定する"><span class="toc-text">一時的に名前を指定する</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#NamingStrategy"><span class="toc-text">NamingStrategy</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#カラム名"><span class="toc-text">カラム名</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#タイムスタンプのトラッキング"><span class="toc-text">タイムスタンプのトラッキング</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CreatedAt"><span class="toc-text">CreatedAt</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#UpdatedAt"><span class="toc-text">UpdatedAt</span></a></li></ol></li></ol>
+
+              
+                <a href="https://translate.gorm.io/project/go-gorm/ja" target="_blank" id="article-improve">
+                  このページを改善する
+                </a>
+              
+              <a href="#" id="article-toc-top">トップに戻る</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">概要</a><a href="models.html" class="sidebar-link">モデルを宣言する</a><a href="connecting_to_the_database.html" class="sidebar-link">データベースに接続する</a><strong class="sidebar-title">CRUD Interface</strong><a href="create.html" class="sidebar-link">レコードの作成</a><a href="query.html" class="sidebar-link">レコードの取得</a><a href="advanced_query.html" class="sidebar-link">高度なクエリ</a><a href="update.html" class="sidebar-link">レコードの更新</a><a href="delete.html" class="sidebar-link">レコードの削除</a><a href="sql_builder.html" class="sidebar-link">Raw SQL & SQL Builder</a><strong class="sidebar-title">アソシエーション</strong><a href="belongs_to.html" class="sidebar-link">Belongs To</a><a href="has_one.html" class="sidebar-link">Has One</a><a href="has_many.html" class="sidebar-link">Has Many</a><a href="many_to_many.html" class="sidebar-link">Many To Many</a><a href="associations.html" class="sidebar-link">Association Mode</a><a href="preload.html" class="sidebar-link">Preloading (Eager Loading)</a><strong class="sidebar-title">Tutorials</strong><a href="context.html" class="sidebar-link">Context</a><a href="error_handling.html" class="sidebar-link">エラーハンドリング</a><a href="method_chaining.html" class="sidebar-link">Method Chaining</a><a href="session.html" class="sidebar-link">Session</a><a href="hooks.html" class="sidebar-link">Hooks</a><a href="transactions.html" class="sidebar-link">トランザクション</a><a href="migration.html" class="sidebar-link">マイグレーション</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">汎用データベースインターフェース</a><a href="performance.html" class="sidebar-link">パフォーマンス</a><a href="data_types.html" class="sidebar-link">データ型のカスタマイズ</a><a href="scopes.html" class="sidebar-link">Scopes</a><a href="conventions.html" class="sidebar-link current">規約</a><a href="settings.html" class="sidebar-link">値の受け渡し</a><strong class="sidebar-title">Advanced Topics</strong><a href="dbresolver.html" class="sidebar-link">Database Resolver</a><a href="sharding.html" class="sidebar-link">シャーディング</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">Hints</a><a href="indexes.html" class="sidebar-link">Index</a><a href="constraints.html" class="sidebar-link">制約</a><a href="composite_primary_key.html" class="sidebar-link">複合主キー</a><a href="security.html" class="sidebar-link">セキュリティ</a><a href="gorm_config.html" class="sidebar-link">GORM Config</a><a href="write_plugins.html" class="sidebar-link">プラグインの作成</a><a href="write_driver.html" class="sidebar-link">ドライバの作成</a><a href="changelog.html" class="sidebar-link">変更履歴</a><a href="/community.html" class="sidebar-link">コミュニティ</a><a href="/contribute.html" class="sidebar-link">貢献する</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">現在のサイトを翻訳する</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2022 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://www.qiniu.com/" target="_blank">七牛云</a> 对 CDN 的赞助，<a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>Home</a>
+      </li>
+      <a href="/ja_JP/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>ドキュメント</a><a href="/ja_JP/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>コミュニティ</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/ja_JP/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+    </ul>
+    
+      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">概要</a><a href="models.html" class="mobile-nav-link">モデルを宣言する</a><a href="connecting_to_the_database.html" class="mobile-nav-link">データベースに接続する</a><strong class="mobile-nav-title">CRUD Interface</strong><a href="create.html" class="mobile-nav-link">レコードの作成</a><a href="query.html" class="mobile-nav-link">レコードの取得</a><a href="advanced_query.html" class="mobile-nav-link">高度なクエリ</a><a href="update.html" class="mobile-nav-link">レコードの更新</a><a href="delete.html" class="mobile-nav-link">レコードの削除</a><a href="sql_builder.html" class="mobile-nav-link">Raw SQL & SQL Builder</a><strong class="mobile-nav-title">アソシエーション</strong><a href="belongs_to.html" class="mobile-nav-link">Belongs To</a><a href="has_one.html" class="mobile-nav-link">Has One</a><a href="has_many.html" class="mobile-nav-link">Has Many</a><a href="many_to_many.html" class="mobile-nav-link">Many To Many</a><a href="associations.html" class="mobile-nav-link">Association Mode</a><a href="preload.html" class="mobile-nav-link">Preloading (Eager Loading)</a><strong class="mobile-nav-title">Tutorials</strong><a href="context.html" class="mobile-nav-link">Context</a><a href="error_handling.html" class="mobile-nav-link">エラーハンドリング</a><a href="method_chaining.html" class="mobile-nav-link">Method Chaining</a><a href="session.html" class="mobile-nav-link">Session</a><a href="hooks.html" class="mobile-nav-link">Hooks</a><a href="transactions.html" class="mobile-nav-link">トランザクション</a><a href="migration.html" class="mobile-nav-link">マイグレーション</a><a href="logger.html" class="mobile-nav-link">Logger</a><a href="generic_interface.html" class="mobile-nav-link">汎用データベースインターフェース</a><a href="performance.html" class="mobile-nav-link">パフォーマンス</a><a href="data_types.html" class="mobile-nav-link">データ型のカスタマイズ</a><a href="scopes.html" class="mobile-nav-link">Scopes</a><a href="conventions.html" class="mobile-nav-link current">規約</a><a href="settings.html" class="mobile-nav-link">値の受け渡し</a><strong class="mobile-nav-title">Advanced Topics</strong><a href="dbresolver.html" class="mobile-nav-link">Database Resolver</a><a href="sharding.html" class="mobile-nav-link">シャーディング</a><a href="prometheus.html" class="mobile-nav-link">Prometheus</a><a href="hints.html" class="mobile-nav-link">Hints</a><a href="indexes.html" class="mobile-nav-link">Index</a><a href="constraints.html" class="mobile-nav-link">制約</a><a href="composite_primary_key.html" class="mobile-nav-link">複合主キー</a><a href="security.html" class="mobile-nav-link">セキュリティ</a><a href="gorm_config.html" class="mobile-nav-link">GORM Config</a><a href="write_plugins.html" class="mobile-nav-link">プラグインの作成</a><a href="write_driver.html" class="mobile-nav-link">ドライバの作成</a><a href="changelog.html" class="mobile-nav-link">変更履歴</a><a href="/community.html" class="mobile-nav-link">コミュニティ</a><a href="/contribute.html" class="mobile-nav-link">貢献する</a><a href="/contribute.html#Translate-this-site" class="mobile-nav-link">現在のサイトを翻訳する</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>日本語</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/conventions.html">
+      
+        <option value="en">English</option>
+      
+        <option value="zh_CN">简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="es_ES">Español</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="ja_JP" selected>日本語</option>
+      
+        <option value="ru_RU">Русский</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ja_JP">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>モデルを宣言する | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://gorm.io/ja_JP/docs/models.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="http://gorm.io/docs/models.html">
+    
+      <link rel="alternative" hreflang="zh_CN" href="http://gorm.io/zh_CN/docs/models.html">
+    
+      <link rel="alternative" hreflang="de_DE" href="http://gorm.io/de_DE/docs/models.html">
+    
+      <link rel="alternative" hreflang="es_ES" href="http://gorm.io/es_ES/docs/models.html">
+    
+      <link rel="alternative" hreflang="id_ID" href="http://gorm.io/id_ID/docs/models.html">
+    
+      <link rel="alternative" hreflang="it_IT" href="http://gorm.io/it_IT/docs/models.html">
+    
+      <link rel="alternative" hreflang="ja_JP" href="http://gorm.io/ja_JP/docs/models.html">
+    
+      <link rel="alternative" hreflang="ru_RU" href="http://gorm.io/ru_RU/docs/models.html">
+    
+      <link rel="alternative" hreflang="fr_FR" href="http://gorm.io/fr_FR/docs/models.html">
+    
+      <link rel="alternative" hreflang="ko_KR" href="http://gorm.io/ko_KR/docs/models.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM">
+  <!-- Open Graph -->
+  <meta name="description" content="モデルを宣言するモデルは Goの基本型、（基本型の）ポインタ&#x2F;エイリアス、 Scanner および Valuer インターフェイスを実装するカスタム型からなる通常の構造体です。 例： type User struct &amp;#123;  ID           uint  Name         string  Email        *string  Age          uint8  B">
+<meta property="og:type" content="website">
+<meta property="og:title" content="モデルを宣言する">
+<meta property="og:url" content="http://gorm.io/ja_JP/docs/models.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="モデルを宣言するモデルは Goの基本型、（基本型の）ポインタ&#x2F;エイリアス、 Scanner および Valuer インターフェイスを実装するカスタム型からなる通常の構造体です。 例： type User struct &amp;#123;  ID           uint  Name         string  Email        *string  Age          uint8  B">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2022-04-26T02:31:58.530Z">
+<meta property="article:modified_time" content="2022-04-26T02:31:58.530Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/ja_JP/" id="logo">GORM</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/ja_JP/docs/" class="main-nav-link"><i class="fa fa-book"></i>ドキュメント</a><a href="/ja_JP/community.html" class="main-nav-link"><i class="fab fa-slack"></i>コミュニティ</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/ja_JP/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="ドキュメントを検索する">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>日本語</span></label>
+      <select id="lang-select" data-canonical="docs/models.html">
+        
+          <option value="en">English</option>
+        
+          <option value="zh_CN">简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="es_ES">Español</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="ja_JP" selected>日本語</option>
+        
+          <option value="ru_RU">Русский</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">モデルを宣言する</h1>
+                
+                <a href="https://translate.gorm.io/project/go-gorm/ja" target="_blank" rel="noopener" class="article-edit-link" title="このページを改善する"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><h2 id="モデルを宣言する" class="article-heading"><a href="#モデルを宣言する" class="headerlink" title="モデルを宣言する"></a>モデルを宣言する<a class="article-anchor" href="#モデルを宣言する" aria-hidden="true"></a></h2><p>モデルは Goの基本型、（基本型の）ポインタ/エイリアス、 <a href="https://pkg.go.dev/database/sql/?tab=doc#Scanner" target="_blank" rel="noopener">Scanner</a> および <a href="https://pkg.go.dev/database/sql/driver#Valuer" target="_blank" rel="noopener">Valuer</a> インターフェイスを実装するカスタム型からなる通常の構造体です。</p>
+<p>例：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID           <span class="keyword">uint</span></span><br><span class="line">  Name         <span class="keyword">string</span></span><br><span class="line">  Email        *<span class="keyword">string</span></span><br><span class="line">  Age          <span class="keyword">uint8</span></span><br><span class="line">  Birthday     *time.Time</span><br><span class="line">  MemberNumber sql.NullString</span><br><span class="line">  ActivatedAt  sql.NullTime</span><br><span class="line">  CreatedAt    time.Time</span><br><span class="line">  UpdatedAt    time.Time</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="規約" class="article-heading"><a href="#規約" class="headerlink" title="規約"></a>規約<a class="article-anchor" href="#規約" aria-hidden="true"></a></h2><p>GORMの方針は「設定より規約」です。デフォルトでは、GORMは主キーとしての<code>ID</code>、テーブル名を表すための複数形かつ<code>スネークケース</code>な構造体名、 <code>スネークケース</code>なカラム名、作成と更新の時間をトラッキングするための<code>CreatedAt</code>、<code>UpdatedAt</code>フィールドを利用します。</p>
+<p>GORMで採用されている規約に従うと、設定やコードを記述する手間が大幅に減少します。 要件が規約と一致しない場合、 <a href="conventions.html">GORMではそれらを設定を変更することができます</a></p>
+<h2 id="gorm-Model" class="article-heading"><a href="#gorm-Model" class="headerlink" title="gorm.Model"></a>gorm.Model<a class="article-anchor" href="#gorm-Model" aria-hidden="true"></a></h2><p>GORMは <code>gorm.Model</code> 構造体を定義しています。これには <code>ID</code>, <code>CreatedAt</code>, <code>UpdatedAt</code>, <code>DeletedAt</code> のフィールドが含まれます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// gorm.Modelの定義</span></span><br><span class="line"><span class="keyword">type</span> Model <span class="keyword">struct</span> {</span><br><span class="line">  ID        <span class="keyword">uint</span>           <span class="string">`gorm:"primaryKey"`</span></span><br><span class="line">  CreatedAt time.Time</span><br><span class="line">  UpdatedAt time.Time</span><br><span class="line">  DeletedAt gorm.DeletedAt <span class="string">`gorm:"index"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>この構造体を埋め込むことで、これらのフィールドを自身の構造体に含めることができます。 <a href="#embedded_struct">Embedded Struct</a> も参照してください。</p>
+<h2 id="高度な機能" class="article-heading"><a href="#高度な機能" class="headerlink" title="高度な機能"></a>高度な機能<a class="article-anchor" href="#高度な機能" aria-hidden="true"></a></h2><h3 id="フィールドレベルの権限" class="article-heading"><a href="#フィールドレベルの権限" class="headerlink" title="フィールドレベルの権限"></a><span id="field_permission">フィールドレベルの権限</span><a class="article-anchor" href="#フィールドレベルの権限" aria-hidden="true"></a></h3><p>エクスポートされているフィールドは、GORMでのCRUD操作が全て可能となっていますが、タグでフィールドレベルの権限を変更することができます。 これにより、読み取り専用、書き込み専用、作成専用、更新専用、または除外するフィールドを作成できます。</p>
+<blockquote class="note warn"><p><strong>注意</strong> GORM Migrator を使用してテーブルを作成した場合、除外設定されたフィールドは作成されません</p>
+</blockquote>
+
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  Name <span class="keyword">string</span> <span class="string">`gorm:"&lt;-:create"`</span> <span class="comment">// 読み取り、作成が可能</span></span><br><span class="line">  Name <span class="keyword">string</span> <span class="string">`gorm:"&lt;-:update"`</span> <span class="comment">// 読み取り、更新が可能</span></span><br><span class="line">  Name <span class="keyword">string</span> <span class="string">`gorm:"&lt;-"`</span>       <span class="comment">// 読み取り、書き込みが可能 (createとupdate)</span></span><br><span class="line">  Name <span class="keyword">string</span> <span class="string">`gorm:"&lt;-:false"`</span>  <span class="comment">// 読み取り可能、書き込み無効</span></span><br><span class="line">  Name <span class="keyword">string</span> <span class="string">`gorm:"-&gt;"`</span>        <span class="comment">// 読み取り専用 (変更されない限り、書き込みが無効 )</span></span><br><span class="line">  Name <span class="keyword">string</span> <span class="string">`gorm:"-&gt;;&lt;-:create"`</span> <span class="comment">// 読み取りと作成が可能</span></span><br><span class="line">  Name <span class="keyword">string</span> <span class="string">`gorm:"-&gt;:false;&lt;-:create"`</span> <span class="comment">// 作成専用 (dbからの読み取りは無効)</span></span><br><span class="line">  Name <span class="keyword">string</span> <span class="string">`gorm:"-"`</span>            <span class="comment">// 構造体を使用した書き込みと読み込みの際にこのフィールドを無視する</span></span><br><span class="line">  Name <span class="keyword">string</span> <span class="string">`gorm:"-:all"`</span>        <span class="comment">// 構造体を使用した書き込み、読み取り、マイグレーションの際にこのフィールドを無視する</span></span><br><span class="line">  Name <span class="keyword">string</span> <span class="string">`gorm:"-:migration"`</span>  <span class="comment">// マイグレーション時にこのフィールドを無視する</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="作成・更新日時のトラッキング／Unix-ミリ・ナノ-秒でのトラッキング" class="article-heading"><a href="#作成・更新日時のトラッキング／Unix-ミリ・ナノ-秒でのトラッキング" class="headerlink" title="作成・更新日時のトラッキング／Unix (ミリ・ナノ) 秒でのトラッキング"></a><name id="time_tracking">作成・更新日時のトラッキング／Unix (ミリ・ナノ) 秒でのトラッキング</name><a class="article-anchor" href="#作成・更新日時のトラッキング／Unix-ミリ・ナノ-秒でのトラッキング" aria-hidden="true"></a></h3><p>GORMの規約では、作成/更新時間をトラッキングするのに <code>CreatedAt</code>, <code>UpdatedAt</code> を使用します。それらのフィールドがモデルに定義されている場合、作成/更新時間に<a href="gorm_config.html#now_func">現在時刻</a>を値としてセットします。</p>
+<p>別の名前のフィールドを使用する場合、 <code>autoCreateTime</code>、 <code>autoUpdateTime</code> タグを使用することで設定を変更することができます。</p>
+<p>time.Timeの代わりにUNIX (ミリ/ナノ) 秒を保存したい場合、フィールドのデータ型を <code>time.Time</code> から <code>int</code> に変更するだけで保存が可能になります。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  CreatedAt time.Time <span class="comment">// 作成時に値がゼロ値の場合、現在時間がセットされる</span></span><br><span class="line">  UpdatedAt <span class="keyword">int</span>       <span class="comment">// 更新時、または作成時の値がゼロ値の場合、現在のUNIX秒がセットされる</span></span><br><span class="line">  Updated   <span class="keyword">int64</span> <span class="string">`gorm:"autoUpdateTime:nano"`</span> <span class="comment">// 更新時間としてUNIXナノ秒を使用する</span></span><br><span class="line">  Updated   <span class="keyword">int64</span> <span class="string">`gorm:"autoUpdateTime:milli"`</span><span class="comment">// 更新時間としてUNIX msを使用する</span></span><br><span class="line">  Created   <span class="keyword">int64</span> <span class="string">`gorm:"autoCreateTime"`</span>      <span class="comment">// 作成時間としてUNIX秒を使用する</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="構造体の埋め込み" class="article-heading"><a href="#構造体の埋め込み" class="headerlink" title="構造体の埋め込み"></a><span id="embedded_struct">構造体の埋め込み</span><a class="article-anchor" href="#構造体の埋め込み" aria-hidden="true"></a></h3><p>匿名（anonymous field）フィールドでモデルの定義がなされている場合、埋め込まれた構造体のフィールドは親の構造体のフィールドとして含まれることになります。例：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  gorm.Model</span><br><span class="line">  Name <span class="keyword">string</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// equals</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID        <span class="keyword">uint</span>           <span class="string">`gorm:"primaryKey"`</span></span><br><span class="line">  CreatedAt time.Time</span><br><span class="line">  UpdatedAt time.Time</span><br><span class="line">  DeletedAt gorm.DeletedAt <span class="string">`gorm:"index"`</span></span><br><span class="line">  Name <span class="keyword">string</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>通常のフィールドで構造体の定義がなされている場合、 <code>embedded</code> タグを使用して構造体の埋め込みを行うことができます。例：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Author <span class="keyword">struct</span> {</span><br><span class="line">    Name  <span class="keyword">string</span></span><br><span class="line">    Email <span class="keyword">string</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  ID      <span class="keyword">int</span></span><br><span class="line">  Author  Author <span class="string">`gorm:"embedded"`</span></span><br><span class="line">  Upvotes <span class="keyword">int32</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// equals</span></span><br><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  ID    <span class="keyword">int64</span></span><br><span class="line">    Name  <span class="keyword">string</span></span><br><span class="line">    Email <span class="keyword">string</span></span><br><span class="line">  Upvotes  <span class="keyword">int32</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>また、 <code>embeddedPrefix</code> タグを使用することで、埋め込まれた構造体のフィールド名にプレフィックスを追加することができます。例：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  ID      <span class="keyword">int</span></span><br><span class="line">  Author  Author <span class="string">`gorm:"embedded;embeddedPrefix:author_"`</span></span><br><span class="line">  Upvotes <span class="keyword">int32</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// equals</span></span><br><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  ID          <span class="keyword">int64</span></span><br><span class="line">    AuthorName  <span class="keyword">string</span></span><br><span class="line">    AuthorEmail <span class="keyword">string</span></span><br><span class="line">  Upvotes     <span class="keyword">int32</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+
+<h3 id="フィールドに指定可能なタグ" class="article-heading"><a href="#フィールドに指定可能なタグ" class="headerlink" title="フィールドに指定可能なタグ"></a><span id="tags">フィールドに指定可能なタグ</span><a class="article-anchor" href="#フィールドに指定可能なタグ" aria-hidden="true"></a></h3><p>タグはモデル宣言時に任意で使用できます。GORMは以下のタグをサポートしています。（タグは大文字小文字を区別しませんが、 <code>camelCase</code> が推奨されます）</p>
+<table>
+<thead>
+<tr>
+<th>タグ名</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>column</td>
+<td>データベースのカラム名</td>
+</tr>
+<tr>
+<td>type</td>
+<td>列のデータ型を指定できます。bool, int, uint, float, string, time, bytes などの全てのデータベースで動作する一般的なデータ型と互換性のあるものが良いでしょう。また、<code>not null</code>, <code>size</code>, <code>autoIncrement</code>… などの他のタグと併用することも可能です。 <code>varbinary(8)</code> などの特定のデータベースでのみ使用可能なデータ型もサポートしていますが、それらのデータ型を使用する場合は、データ型をフルで指定する必要があります。例： <code>MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT</code></td>
+</tr>
+<tr>
+<td>size</td>
+<td>列データのサイズ/長さを指定できます。例: <code>size:256</code></td>
+</tr>
+<tr>
+<td>primaryKey</td>
+<td>主キーとなる列を指定できます</td>
+</tr>
+<tr>
+<td>unique</td>
+<td>一意な列として指定できます</td>
+</tr>
+<tr>
+<td>default</td>
+<td>列のデフォルト値を指定できます</td>
+</tr>
+<tr>
+<td>precision</td>
+<td>列の精度（小数の有効桁数）を指定できます</td>
+</tr>
+<tr>
+<td>scale</td>
+<td>列の小数点以下桁数を指定できます</td>
+</tr>
+<tr>
+<td>not null</td>
+<td>列をNOT NULLに指定できます</td>
+</tr>
+<tr>
+<td>autoIncrement</td>
+<td>AutoIncrement可能な列として指定できます</td>
+</tr>
+<tr>
+<td>autoIncrementIncrement</td>
+<td>AutoIncrementで処理毎にインクリメントされる値の増加分を指定できます</td>
+</tr>
+<tr>
+<td>embedded</td>
+<td>フィールドの埋め込みを指定できます</td>
+</tr>
+<tr>
+<td>embeddedPrefix</td>
+<td>埋め込まれたフィールドに対して、列名のプレフィックスを指定できます</td>
+</tr>
+<tr>
+<td>autoCreateTime</td>
+<td>作成時に現在日時が自動で登録されるカラムを指定できます。 <code>int</code> 型のフィールドに対してはUNIX秒の値が設定されますが、ナノ秒/ミリ秒で登録したい場合は <code>nano</code>/<code>milli</code> を指定します。例： <code>autoCreateTime:nano</code></td>
+</tr>
+<tr>
+<td>autoUpdateTime</td>
+<td>作成/更新時に現在日時が自動で登録されるカラムを指定できます。 <code>int</code> 型のフィールドに対してはUNIX秒の値が設定されますが、ナノ秒/ミリ秒で登録したい場合は <code>nano</code>/<code>milli</code> を指定します。例： <code>autoUpdateTime:milli</code></td>
+</tr>
+<tr>
+<td>index</td>
+<td>オプション付きのインデックスを作成できます。複数のフィールドで同じ名前を使用した場合は複合インデックスが作成されます。詳細は <a href="indexes.html">インデックス</a> を参照してください。</td>
+</tr>
+<tr>
+<td>uniqueIndex</td>
+<td><code>index</code> と同じですが、こちらはユニークインデックスを作成します。</td>
+</tr>
+<tr>
+<td>check</td>
+<td>CHECK制約を作成します（例： <code>check:age &gt; 13</code> ）。<a href="constraints.html">制約</a> も参照</td>
+</tr>
+<tr>
+<td>&lt;-</td>
+<td>フィールドの書き込み権限を設定します。<code>&lt;-:create</code> は作成のみ可能、 <code>&lt;-:update</code> は更新のみ可能、<code>&lt;-:false</code> は書き込み権限がない、<code>&lt;-</code> は作成／更新権限があることを意味します</td>
+</tr>
+<tr>
+<td>-&gt;</td>
+<td>フィールドの読み込み権限を設定します。<code>-&gt;:false</code> は読み込み権限がないことを意味します</td>
+</tr>
+<tr>
+<td>-</td>
+<td>このフィールドを無視します。 <code>-</code> は読み取り/書き込み権限なし、 <code>-:migration</code> はマイグレーション権限なし、 <code>-:all</code> は読み取り/書き込み/マイグレーション権限がないことを意味します。</td>
+</tr>
+<tr>
+<td>comment</td>
+<td>マイグレーション実行時にフィールドにコメントを追加できます</td>
+</tr>
+</tbody></table>
+<h3 id="アソシエーションで使用できるタグ" class="article-heading"><a href="#アソシエーションで使用できるタグ" class="headerlink" title="アソシエーションで使用できるタグ"></a>アソシエーションで使用できるタグ<a class="article-anchor" href="#アソシエーションで使用できるタグ" aria-hidden="true"></a></h3><p>GORMではアソシエーション用のタグを使用することで、外部キー、制約、many2many（多対多）テーブルなどを設定できます。詳細は <a href="associations.html#tags">Associations section</a> を参照してください。</p>
+</body></html>
+              </div>
+
+              
+              <div>
+                <a href="v2_release_note.html" target="_blank">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Latest GORM Release&color=red&&style=for-the-badge&logo=go&logoColor=red">
+                </a>
+              </div>
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2022-04-26T02:31:58.530Z" itemprop="dateModified">最終更新: 2022-04-26</time>
+<a href="index.html" class="article-footer-prev" title="概要"><i class="fa fa-chevron-left"></i><span>前へ</span></a><a href="connecting_to_the_database.html" class="article-footer-next" title="データベースに接続する"><span>次へ</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <div class="sponsor_item">
+        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors</h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors</h1>
+      <div class="sponsor_item">
+        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              
+<section id="comments">
+<div id="disqus_thread"></div>
+</sction>
+
+<script>
+var disqus_config = function () {
+this.page.url = 'http://gorm.io/ja_JP/docs/models.html';
+this.page.identifier = 'http://gorm.io/ja_JP/docs/models.html';
+this.language = 'jp';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://gormv2.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">内容</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#モデルを宣言する"><span class="toc-text">モデルを宣言する</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#規約"><span class="toc-text">規約</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gorm-Model"><span class="toc-text">gorm.Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高度な機能"><span class="toc-text">高度な機能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#フィールドレベルの権限"><span class="toc-text">フィールドレベルの権限</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#作成・更新日時のトラッキング／Unix-ミリ・ナノ-秒でのトラッキング"><span class="toc-text">作成・更新日時のトラッキング／Unix (ミリ・ナノ) 秒でのトラッキング</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#構造体の埋め込み"><span class="toc-text">構造体の埋め込み</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#フィールドに指定可能なタグ"><span class="toc-text">フィールドに指定可能なタグ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#アソシエーションで使用できるタグ"><span class="toc-text">アソシエーションで使用できるタグ</span></a></li></ol></li></ol>
+
+              
+                <a href="https://translate.gorm.io/project/go-gorm/ja" target="_blank" id="article-improve">
+                  このページを改善する
+                </a>
+              
+              <a href="#" id="article-toc-top">トップに戻る</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">概要</a><a href="models.html" class="sidebar-link current">モデルを宣言する</a><a href="connecting_to_the_database.html" class="sidebar-link">データベースに接続する</a><strong class="sidebar-title">CRUD Interface</strong><a href="create.html" class="sidebar-link">レコードの作成</a><a href="query.html" class="sidebar-link">レコードの取得</a><a href="advanced_query.html" class="sidebar-link">高度なクエリ</a><a href="update.html" class="sidebar-link">レコードの更新</a><a href="delete.html" class="sidebar-link">レコードの削除</a><a href="sql_builder.html" class="sidebar-link">Raw SQL & SQL Builder</a><strong class="sidebar-title">アソシエーション</strong><a href="belongs_to.html" class="sidebar-link">Belongs To</a><a href="has_one.html" class="sidebar-link">Has One</a><a href="has_many.html" class="sidebar-link">Has Many</a><a href="many_to_many.html" class="sidebar-link">Many To Many</a><a href="associations.html" class="sidebar-link">Association Mode</a><a href="preload.html" class="sidebar-link">Preloading (Eager Loading)</a><strong class="sidebar-title">Tutorials</strong><a href="context.html" class="sidebar-link">Context</a><a href="error_handling.html" class="sidebar-link">エラーハンドリング</a><a href="method_chaining.html" class="sidebar-link">Method Chaining</a><a href="session.html" class="sidebar-link">Session</a><a href="hooks.html" class="sidebar-link">Hooks</a><a href="transactions.html" class="sidebar-link">トランザクション</a><a href="migration.html" class="sidebar-link">マイグレーション</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">汎用データベースインターフェース</a><a href="performance.html" class="sidebar-link">パフォーマンス</a><a href="data_types.html" class="sidebar-link">データ型のカスタマイズ</a><a href="scopes.html" class="sidebar-link">Scopes</a><a href="conventions.html" class="sidebar-link">規約</a><a href="settings.html" class="sidebar-link">値の受け渡し</a><strong class="sidebar-title">Advanced Topics</strong><a href="dbresolver.html" class="sidebar-link">Database Resolver</a><a href="sharding.html" class="sidebar-link">シャーディング</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">Hints</a><a href="indexes.html" class="sidebar-link">Index</a><a href="constraints.html" class="sidebar-link">制約</a><a href="composite_primary_key.html" class="sidebar-link">複合主キー</a><a href="security.html" class="sidebar-link">セキュリティ</a><a href="gorm_config.html" class="sidebar-link">GORM Config</a><a href="write_plugins.html" class="sidebar-link">プラグインの作成</a><a href="write_driver.html" class="sidebar-link">ドライバの作成</a><a href="changelog.html" class="sidebar-link">変更履歴</a><a href="/community.html" class="sidebar-link">コミュニティ</a><a href="/contribute.html" class="sidebar-link">貢献する</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">現在のサイトを翻訳する</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2022 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://www.qiniu.com/" target="_blank">七牛云</a> 对 CDN 的赞助，<a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>Home</a>
+      </li>
+      <a href="/ja_JP/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>ドキュメント</a><a href="/ja_JP/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>コミュニティ</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/ja_JP/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+    </ul>
+    
+      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">概要</a><a href="models.html" class="mobile-nav-link current">モデルを宣言する</a><a href="connecting_to_the_database.html" class="mobile-nav-link">データベースに接続する</a><strong class="mobile-nav-title">CRUD Interface</strong><a href="create.html" class="mobile-nav-link">レコードの作成</a><a href="query.html" class="mobile-nav-link">レコードの取得</a><a href="advanced_query.html" class="mobile-nav-link">高度なクエリ</a><a href="update.html" class="mobile-nav-link">レコードの更新</a><a href="delete.html" class="mobile-nav-link">レコードの削除</a><a href="sql_builder.html" class="mobile-nav-link">Raw SQL & SQL Builder</a><strong class="mobile-nav-title">アソシエーション</strong><a href="belongs_to.html" class="mobile-nav-link">Belongs To</a><a href="has_one.html" class="mobile-nav-link">Has One</a><a href="has_many.html" class="mobile-nav-link">Has Many</a><a href="many_to_many.html" class="mobile-nav-link">Many To Many</a><a href="associations.html" class="mobile-nav-link">Association Mode</a><a href="preload.html" class="mobile-nav-link">Preloading (Eager Loading)</a><strong class="mobile-nav-title">Tutorials</strong><a href="context.html" class="mobile-nav-link">Context</a><a href="error_handling.html" class="mobile-nav-link">エラーハンドリング</a><a href="method_chaining.html" class="mobile-nav-link">Method Chaining</a><a href="session.html" class="mobile-nav-link">Session</a><a href="hooks.html" class="mobile-nav-link">Hooks</a><a href="transactions.html" class="mobile-nav-link">トランザクション</a><a href="migration.html" class="mobile-nav-link">マイグレーション</a><a href="logger.html" class="mobile-nav-link">Logger</a><a href="generic_interface.html" class="mobile-nav-link">汎用データベースインターフェース</a><a href="performance.html" class="mobile-nav-link">パフォーマンス</a><a href="data_types.html" class="mobile-nav-link">データ型のカスタマイズ</a><a href="scopes.html" class="mobile-nav-link">Scopes</a><a href="conventions.html" class="mobile-nav-link">規約</a><a href="settings.html" class="mobile-nav-link">値の受け渡し</a><strong class="mobile-nav-title">Advanced Topics</strong><a href="dbresolver.html" class="mobile-nav-link">Database Resolver</a><a href="sharding.html" class="mobile-nav-link">シャーディング</a><a href="prometheus.html" class="mobile-nav-link">Prometheus</a><a href="hints.html" class="mobile-nav-link">Hints</a><a href="indexes.html" class="mobile-nav-link">Index</a><a href="constraints.html" class="mobile-nav-link">制約</a><a href="composite_primary_key.html" class="mobile-nav-link">複合主キー</a><a href="security.html" class="mobile-nav-link">セキュリティ</a><a href="gorm_config.html" class="mobile-nav-link">GORM Config</a><a href="write_plugins.html" class="mobile-nav-link">プラグインの作成</a><a href="write_driver.html" class="mobile-nav-link">ドライバの作成</a><a href="changelog.html" class="mobile-nav-link">変更履歴</a><a href="/community.html" class="mobile-nav-link">コミュニティ</a><a href="/contribute.html" class="mobile-nav-link">貢献する</a><a href="/contribute.html#Translate-this-site" class="mobile-nav-link">現在のサイトを翻訳する</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>日本語</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/models.html">
+      
+        <option value="en">English</option>
+      
+        <option value="zh_CN">简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="es_ES">Español</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="ja_JP" selected>日本語</option>
+      
+        <option value="ru_RU">Русский</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>

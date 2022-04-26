@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>Связи | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://gorm.io/ru_RU/docs/associations.html">
+  <!-- Alternative links -->
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM">
+  <!-- Open Graph -->
+  <meta name="description" content="Автоматические Create&#x2F;UpdateGORM будет автоматически сохранять связи и их ссылки с помощью Upsert при создании&#x2F;обновлении записи. user :&#x3D; User&amp;#123;  Name:            &quot;jinzhu&quot;,  BillingAddress:  Addre">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Связи">
+<meta property="og:url" content="http://gorm.io/ru_RU/docs/associations.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="Автоматические Create&#x2F;UpdateGORM будет автоматически сохранять связи и их ссылки с помощью Upsert при создании&#x2F;обновлении записи. user :&#x3D; User&amp;#123;  Name:            &quot;jinzhu&quot;,  BillingAddress:  Addre">
+<meta property="og:locale" content="ru_RU">
+<meta property="article:published_time" content="2022-04-26T02:31:58.538Z">
+<meta property="article:modified_time" content="2022-04-26T02:31:58.538Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/ru_RU/" id="logo">GORM</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/ru_RU/docs/" class="main-nav-link"><i class="fa fa-book"></i>Документация</a><a href="/ru_RU/community.html" class="main-nav-link"><i class="fab fa-slack"></i>Сообщество</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/ru_RU/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Внести вклад</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Поиск в документации...">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>Русский</span></label>
+      <select id="lang-select" data-canonical="docs/associations.html">
+        
+          <option value="en">English</option>
+        
+          <option value="zh_CN">简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="es_ES">Español</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="ja_JP">日本語</option>
+        
+          <option value="ru_RU" selected>Русский</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">Связи</h1>
+                
+                <a href="https://translate.gorm.io/project/go-gorm/ru" target="_blank" rel="noopener" class="article-edit-link" title="Улучшить эту страницу"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><h2 id="Автоматические-Create-Update" class="article-heading"><a href="#Автоматические-Create-Update" class="headerlink" title="Автоматические Create/Update"></a>Автоматические Create/Update<a class="article-anchor" href="#Автоматические-Create-Update" aria-hidden="true"></a></h2><p>GORM будет автоматически сохранять связи и их ссылки с помощью <a href="create.html#upsert">Upsert</a> при создании/обновлении записи.</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">user := User{</span><br><span class="line">  Name:            <span class="string">"jinzhu"</span>,</span><br><span class="line">  BillingAddress:  Address{Address1: <span class="string">"Billing Address - Address 1"</span>},</span><br><span class="line">  ShippingAddress: Address{Address1: <span class="string">"Shipping Address - Address 1"</span>},</span><br><span class="line">  Emails:          []Email{</span><br><span class="line">    {Email: <span class="string">"jinzhu@example.com"</span>},</span><br><span class="line">    {Email: <span class="string">"jinzhu-2@example.com"</span>},</span><br><span class="line">  },</span><br><span class="line">  Languages:       []Language{</span><br><span class="line">    {Name: <span class="string">"ZH"</span>},</span><br><span class="line">    {Name: <span class="string">"EN"</span>},</span><br><span class="line">  },</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Create(&amp;user)</span><br><span class="line"><span class="comment">// BEGIN TRANSACTION;</span></span><br><span class="line"><span class="comment">// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;</span></span><br><span class="line"><span class="comment">// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);</span></span><br><span class="line"><span class="comment">// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;</span></span><br><span class="line"><span class="comment">// INSERT INTO "languages" ("name") VALUES ('ZH'), ('EN') ON DUPLICATE KEY DO NOTHING;</span></span><br><span class="line"><span class="comment">// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1), (111, 2) ON DUPLICATE KEY DO NOTHING;</span></span><br><span class="line"><span class="comment">// COMMIT;</span></span><br><span class="line"></span><br><span class="line">db.Save(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Если понадобится обновить данные связей, то следует использовать режим <code>FullSaveAssociations</code>:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Session(&amp;gorm.Session{FullSaveAssociations: <span class="literal">true</span>}).Updates(&amp;user)</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY SET address1=VALUES(address1);</span></span><br><span class="line"><span class="comment">// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);</span></span><br><span class="line"><span class="comment">// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY SET email=VALUES(email);</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Пропуск-автоматических-Create-Update" class="article-heading"><a href="#Пропуск-автоматических-Create-Update" class="headerlink" title="Пропуск автоматических Create/Update"></a>Пропуск автоматических Create/Update<a class="article-anchor" href="#Пропуск-автоматических-Create-Update" aria-hidden="true"></a></h2><p>Чтобы пропустить автоматическое сохранение при <code>create</code> / <code>update</code>, можно воспользоваться <code>Select</code> либо <code>Omit</code>, пример:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">user := User{</span><br><span class="line">  Name:            <span class="string">"jinzhu"</span>,</span><br><span class="line">  BillingAddress:  Address{Address1: <span class="string">"Billing Address - Address 1"</span>},</span><br><span class="line">  ShippingAddress: Address{Address1: <span class="string">"Shipping Address - Address 1"</span>},</span><br><span class="line">  Emails:          []Email{</span><br><span class="line">    {Email: <span class="string">"jinzhu@example.com"</span>},</span><br><span class="line">    {Email: <span class="string">"jinzhu-2@example.com"</span>},</span><br><span class="line">  },</span><br><span class="line">  Languages:       []Language{</span><br><span class="line">    {Name: <span class="string">"ZH"</span>},</span><br><span class="line">    {Name: <span class="string">"EN"</span>},</span><br><span class="line">  },</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Select(<span class="string">"Name"</span>).Create(&amp;user)</span><br><span class="line"><span class="comment">// INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);</span></span><br><span class="line"></span><br><span class="line">db.Omit(<span class="string">"BillingAddress"</span>).Create(&amp;user)</span><br><span class="line"><span class="comment">// Пропустить создание &lt;i&gt;BillingAddress&lt;/i&gt; при создании &lt;i&gt;user&lt;/i&gt;</span></span><br><span class="line"></span><br><span class="line">db.Omit(clause.Associations).Create(&amp;user)</span><br><span class="line"><span class="comment">// Пропуск всех связей при создании &lt;i&gt;user&lt;/i&gt;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note warn"><p><strong>Примечание:</strong> Для связей <code>many2many</code> GORM будет вставлять связи перед созданием ссылок на <code>join</code> таблицу, если понадобится пропустить вставку связей, то сделать это можно следующим образом:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Omit(<span class="string">"Languages.*"</span>).Create(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Следующий код пропустит создание связи и ее ссылок</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Omit(<span class="string">"Languages"</span>).Create(&amp;user)</span><br></pre></td></tr></tbody></table></figure></blockquote>
+
+<h2 id="Выбрать-пропускать-поля-ассоциации" class="article-heading"><a href="#Выбрать-пропускать-поля-ассоциации" class="headerlink" title="Выбрать/пропускать поля ассоциации"></a>Выбрать/пропускать поля ассоциации<a class="article-anchor" href="#Выбрать-пропускать-поля-ассоциации" aria-hidden="true"></a></h2><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">user := User{</span><br><span class="line">  Name:            <span class="string">"jinzhu"</span>,</span><br><span class="line">  BillingAddress:  Address{Address1: <span class="string">"Billing Address - Address 1"</span>, Address2: <span class="string">"addr2"</span>},</span><br><span class="line">  ShippingAddress: Address{Address1: <span class="string">"Shipping Address - Address 1"</span>, Address2: <span class="string">"addr2"</span>},</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create user and his BillingAddress, ShippingAddress</span></span><br><span class="line"><span class="comment">// When creating the BillingAddress only use its address1, address2 fields and omit others</span></span><br><span class="line">db.Select(<span class="string">"BillingAddress.Address1"</span>, <span class="string">"BillingAddress.Address2"</span>).Create(&amp;user)</span><br><span class="line"></span><br><span class="line">db.Omit(<span class="string">"BillingAddress.Address2"</span>, <span class="string">"BillingAddress.CreatedAt"</span>).Create(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Типы-ассоциаций" class="article-heading"><a href="#Типы-ассоциаций" class="headerlink" title="Типы ассоциаций"></a>Типы ассоциаций<a class="article-anchor" href="#Типы-ассоциаций" aria-hidden="true"></a></h2><p>Режим связывания включает некоторые часто используемые вспомогательные методы для обработки отношений</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Start Association Mode</span></span><br><span class="line"><span class="keyword">var</span> user User</span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>)</span><br><span class="line"><span class="comment">// `user` is the source model, it must contains primary key</span></span><br><span class="line"><span class="comment">// `Languages` is a relationship's field name</span></span><br><span class="line"><span class="comment">// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error</span></span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Error</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Поиск-связей" class="article-heading"><a href="#Поиск-связей" class="headerlink" title="Поиск связей"></a>Поиск связей<a class="article-anchor" href="#Поиск-связей" aria-hidden="true"></a></h3><p>Поиск подходящей ассоциации</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Find(&amp;languages)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Поиск ассоциаций с условиями</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">codes := []<span class="keyword">string</span>{<span class="string">"zh-CN"</span>, <span class="string">"en-US"</span>, <span class="string">"ja-JP"</span>}</span><br><span class="line">db.Model(&amp;user).Where(<span class="string">"code IN ?"</span>, codes).Association(<span class="string">"Languages"</span>).Find(&amp;languages)</span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Where(<span class="string">"code IN ?"</span>, codes).Order(<span class="string">"code desc"</span>).Association(<span class="string">"Languages"</span>).Find(&amp;languages)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Добавление-связей" class="article-heading"><a href="#Добавление-связей" class="headerlink" title="Добавление связей"></a>Добавление связей<a class="article-anchor" href="#Добавление-связей" aria-hidden="true"></a></h3><p>Добавление новых связей для <code>многие-ко-многим</code> <code>много</code>, заменяет текущие связи <code>один</code>, <code>принадлежит</code></p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Append([]Language{languageZH, languageEN})</span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Append(&amp;Language{Name: <span class="string">"DE"</span>})</span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"CreditCard"</span>).Append(&amp;CreditCard{Number: <span class="string">"411111111111"</span>})</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Замена-связей" class="article-heading"><a href="#Замена-связей" class="headerlink" title="Замена связей"></a>Замена связей<a class="article-anchor" href="#Замена-связей" aria-hidden="true"></a></h3><p>Замена текущих связей новыми</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Replace([]Language{languageZH, languageEN})</span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Replace(Language{Name: <span class="string">"DE"</span>}, languageEN)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Удаление-связей" class="article-heading"><a href="#Удаление-связей" class="headerlink" title="Удаление связей"></a>Удаление связей<a class="article-anchor" href="#Удаление-связей" aria-hidden="true"></a></h3><p>Удаление связи между источником и связанными аргументами приводит к удалению ссылки, но сами объекты из БД не удаляются.</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Delete([]Language{languageZH, languageEN})</span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Delete(languageZH, languageEN)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Очистка-связей" class="article-heading"><a href="#Очистка-связей" class="headerlink" title="Очистка связей"></a>Очистка связей<a class="article-anchor" href="#Очистка-связей" aria-hidden="true"></a></h3><p>Удаляет все ссылки между источником и связью, не удаляя связь</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Clear()</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Подсчет-связей" class="article-heading"><a href="#Подсчет-связей" class="headerlink" title="Подсчет связей"></a>Подсчет связей<a class="article-anchor" href="#Подсчет-связей" aria-hidden="true"></a></h3><p>Возвращает количество существующих связей</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Count()</span><br><span class="line"></span><br><span class="line"><span class="comment">// Count with conditions</span></span><br><span class="line">codes := []<span class="keyword">string</span>{<span class="string">"zh-CN"</span>, <span class="string">"en-US"</span>, <span class="string">"ja-JP"</span>}</span><br><span class="line">db.Model(&amp;user).Where(<span class="string">"code IN ?"</span>, codes).Association(<span class="string">"Languages"</span>).Count()</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Пакетная-обработка" class="article-heading"><a href="#Пакетная-обработка" class="headerlink" title="Пакетная обработка"></a>Пакетная обработка<a class="article-anchor" href="#Пакетная-обработка" aria-hidden="true"></a></h3><p>Режим связывания поддерживает пакетную обработку, пример:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Find all roles for all users</span></span><br><span class="line">db.Model(&amp;users).Association(<span class="string">"Role"</span>).Find(&amp;roles)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Delete User A from all user's team</span></span><br><span class="line">db.Model(&amp;users).Association(<span class="string">"Team"</span>).Delete(&amp;userA)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get distinct count of all users' teams</span></span><br><span class="line">db.Model(&amp;users).Association(<span class="string">"Team"</span>).Count()</span><br><span class="line"></span><br><span class="line"><span class="comment">// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error</span></span><br><span class="line"><span class="keyword">var</span> users = []User{user1, user2, user3}</span><br><span class="line"><span class="comment">// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team</span></span><br><span class="line">db.Model(&amp;users).Association(<span class="string">"Team"</span>).Append(&amp;userA, &amp;userB, &amp;[]User{userA, userB, userC})</span><br><span class="line"><span class="comment">// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC</span></span><br><span class="line">db.Model(&amp;users).Association(<span class="string">"Team"</span>).Replace(&amp;userA, &amp;userB, &amp;[]User{userA, userB, userC})</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Удаление-связанных-ассоциируемых-записей" class="article-heading"><a href="#Удаление-связанных-ассоциируемых-записей" class="headerlink" title="Удаление связанных(ассоциируемых) записей"></a><span id="delete_with_select">Удаление связанных(ассоциируемых) записей</span><a class="article-anchor" href="#Удаление-связанных-ассоциируемых-записей" aria-hidden="true"></a></h2><p>Вы можете удалять указанные связи <code>has one</code> / <code>has many</code> / <code>many2many</code> по выборке <code>Select</code> при удалении записей, например:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// delete user's account when deleting user</span></span><br><span class="line">db.Select(<span class="string">"Account"</span>).Delete(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete user's Orders, CreditCards relations when deleting user</span></span><br><span class="line">db.Select(<span class="string">"Orders"</span>, <span class="string">"CreditCards"</span>).Delete(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete user's has one/many/many2many relations when deleting user</span></span><br><span class="line">db.Select(clause.Associations).Delete(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete each user's account when deleting users</span></span><br><span class="line">db.Select(<span class="string">"Account"</span>).Delete(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note warn"><p><strong>ПРИМЕЧАНИЕ:</strong> Связи будут удалены только в том случае, если первичный ключ удаления записи не равен нулю, GORM будет использовать эти ключи как условия для удаления выбранных ассоциаций</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">/ DOESN<span class="string">'T WORK</span></span><br><span class="line"><span class="string">db.Select("Account").Where("name = ?", "jinzhu").Delete(&amp;User{})</span></span><br><span class="line"><span class="string">// will delete all user with name `jinzhu`, but those user'</span>s account won<span class="string">'t be deleted</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">db.Select("Account").Where("name = ?", "jinzhu").Delete(&amp;User{ID: 1})</span></span><br><span class="line"><span class="string">// will delete the user with name = `jinzhu` and id = `1`, and user `1`'</span>s account will be deleted</span><br><span class="line"></span><br><span class="line">db.Select(<span class="string">"Account"</span>).Delete(&amp;User{ID: <span class="number">1</span>})</span><br><span class="line"><span class="comment">// will delete the user with id = `1`, and user `1`'s account will be deleted</span></span><br></pre></td></tr></tbody></table></figure></blockquote>
+
+<h2 id="Теги-связей-ассоциаций" class="article-heading"><a href="#Теги-связей-ассоциаций" class="headerlink" title="Теги связей(ассоциаций)"></a><span id="tags">Теги связей(ассоциаций)</span><a class="article-anchor" href="#Теги-связей-ассоциаций" aria-hidden="true"></a></h2><table>
+<thead>
+<tr>
+<th>Тег</th>
+<th>Описание</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>foreignKey</td>
+<td>Указывает имя столбца текущей модели, которая используется в качестве внешнего ключа для соединяемой таблицы</td>
+</tr>
+<tr>
+<td>references</td>
+<td>Задает имя столбца связанной таблицы, сопоставленной с внешним ключом объединенной таблицы</td>
+</tr>
+<tr>
+<td>polymorphic</td>
+<td>Задает полиморфный тип, например название модели</td>
+</tr>
+<tr>
+<td>polymorphicValue</td>
+<td>Указывает полиморфное значение, название таблицы по умолчанию</td>
+</tr>
+<tr>
+<td>many2many</td>
+<td>Указывает имя таблицы связи</td>
+</tr>
+<tr>
+<td>joinForeignKey</td>
+<td>Задает имя столбца внешнего ключа объединяемой таблицы, которое сопоставляется с текущей таблицей</td>
+</tr>
+<tr>
+<td>joinReferences</td>
+<td>Задает имя столбца внешнего ключа объединяемой таблицы, которое сопоставляется с связанной таблицей</td>
+</tr>
+<tr>
+<td>constraint</td>
+<td>Правила связей, например: <code>OnUpdate</code>,<code>OnDelete</code></td>
+</tr>
+</tbody></table>
+</body></html>
+              </div>
+
+              
+              <div>
+                <a href="v2_release_note.html" target="_blank">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Latest GORM Release&color=red&&style=for-the-badge&logo=go&logoColor=red">
+                </a>
+              </div>
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2022-04-26T02:31:58.538Z" itemprop="dateModified">Последнее обновление: 2022-04-26</time>
+<a href="many_to_many.html" class="article-footer-prev" title="Many To Many"><i class="fa fa-chevron-left"></i><span>Пред.</span></a><a href="preload.html" class="article-footer-next" title="Предзагрузка (Нетерпеливая загрузка)"><span>След.</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <div class="sponsor_item">
+        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors</h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors</h1>
+      <div class="sponsor_item">
+        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              
+<section id="comments">
+<div id="disqus_thread"></div>
+</sction>
+
+<script>
+var disqus_config = function () {
+this.page.url = 'http://gorm.io/ru_RU/docs/associations.html';
+this.page.identifier = 'http://gorm.io/ru_RU/docs/associations.html';
+this.language = 'ru';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://gormv2.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">Содержимое</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Автоматические-Create-Update"><span class="toc-text">Автоматические Create&#x2F;Update</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Пропуск-автоматических-Create-Update"><span class="toc-text">Пропуск автоматических Create&#x2F;Update</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Выбрать-пропускать-поля-ассоциации"><span class="toc-text">Выбрать&#x2F;пропускать поля ассоциации</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Типы-ассоциаций"><span class="toc-text">Типы ассоциаций</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Поиск-связей"><span class="toc-text">Поиск связей</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Добавление-связей"><span class="toc-text">Добавление связей</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Замена-связей"><span class="toc-text">Замена связей</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Удаление-связей"><span class="toc-text">Удаление связей</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Очистка-связей"><span class="toc-text">Очистка связей</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Подсчет-связей"><span class="toc-text">Подсчет связей</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Пакетная-обработка"><span class="toc-text">Пакетная обработка</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Удаление-связанных-ассоциируемых-записей"><span class="toc-text">Удаление связанных(ассоциируемых) записей</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Теги-связей-ассоциаций"><span class="toc-text">Теги связей(ассоциаций)</span></a></li></ol>
+
+              
+                <a href="https://translate.gorm.io/project/go-gorm/ru" target="_blank" id="article-improve">
+                  Улучшить эту страницу
+                </a>
+              
+              <a href="#" id="article-toc-top">Вернуться к началу</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">Начало работы</strong><a href="index.html" class="sidebar-link">Обзор</a><a href="models.html" class="sidebar-link">Объявление моделей</a><a href="connecting_to_the_database.html" class="sidebar-link">Подключение к базе данных</a><strong class="sidebar-title">CRUD интерфейс</strong><a href="create.html" class="sidebar-link">Создать</a><a href="query.html" class="sidebar-link">Запрос</a><a href="advanced_query.html" class="sidebar-link">Расширенный запрос</a><a href="update.html" class="sidebar-link">Обновление</a><a href="delete.html" class="sidebar-link">Удалить</a><a href="sql_builder.html" class="sidebar-link">Raw SQL и конструктор SQL</a><strong class="sidebar-title">Связи</strong><a href="belongs_to.html" class="sidebar-link">Belongs To</a><a href="has_one.html" class="sidebar-link">Has One</a><a href="has_many.html" class="sidebar-link">Has Many</a><a href="many_to_many.html" class="sidebar-link">Many To Many</a><a href="associations.html" class="sidebar-link current">Режим связи</a><a href="preload.html" class="sidebar-link">Предзагрузка (Нетерпеливая загрузка)</a><strong class="sidebar-title">Обучение</strong><a href="context.html" class="sidebar-link">Контекст</a><a href="error_handling.html" class="sidebar-link">Обработка ошибок</a><a href="method_chaining.html" class="sidebar-link">Цепочки методов</a><a href="session.html" class="sidebar-link">Сессия</a><a href="hooks.html" class="sidebar-link">Хуки</a><a href="transactions.html" class="sidebar-link">Транзакции</a><a href="migration.html" class="sidebar-link">Миграция</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">Универсальный интерфейс базы данных</a><a href="performance.html" class="sidebar-link">Производительность</a><a href="data_types.html" class="sidebar-link">Настройка типов данных</a><a href="scopes.html" class="sidebar-link">Области</a><a href="conventions.html" class="sidebar-link">Преобразования</a><a href="settings.html" class="sidebar-link">Настройки</a><strong class="sidebar-title">Дополнительные возможности</strong><a href="dbresolver.html" class="sidebar-link">Резолвер базы данных</a><a href="sharding.html" class="sidebar-link">Sharding</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">Подсказки</a><a href="indexes.html" class="sidebar-link">Индексы</a><a href="constraints.html" class="sidebar-link">Ограничения</a><a href="composite_primary_key.html" class="sidebar-link">Композитный первичный ключ</a><a href="security.html" class="sidebar-link">Безопасность</a><a href="gorm_config.html" class="sidebar-link">Настройки GORM</a><a href="write_plugins.html" class="sidebar-link">Написание плагинов</a><a href="write_driver.html" class="sidebar-link">Написание драйверов</a><a href="changelog.html" class="sidebar-link">История изменений</a><a href="/community.html" class="sidebar-link">Сообщество</a><a href="/contribute.html" class="sidebar-link">Внести вклад</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">Перевести текущий сайт</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2022 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://www.qiniu.com/" target="_blank">七牛云</a> 对 CDN 的赞助，<a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>Главная</a>
+      </li>
+      <a href="/ru_RU/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>Документация</a><a href="/ru_RU/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>Сообщество</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/ru_RU/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Внести вклад</a>
+    </ul>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>Русский</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/associations.html">
+      
+        <option value="en">English</option>
+      
+        <option value="zh_CN">简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="es_ES">Español</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="ja_JP">日本語</option>
+      
+        <option value="ru_RU" selected>Русский</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>

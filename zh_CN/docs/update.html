@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>更新 | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://gorm.io/zh_CN/docs/update.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="http://gorm.io/docs/update.html">
+    
+      <link rel="alternative" hreflang="zh_CN" href="http://gorm.io/zh_CN/docs/update.html">
+    
+      <link rel="alternative" hreflang="de_DE" href="http://gorm.io/de_DE/docs/update.html">
+    
+      <link rel="alternative" hreflang="es_ES" href="http://gorm.io/es_ES/docs/update.html">
+    
+      <link rel="alternative" hreflang="id_ID" href="http://gorm.io/id_ID/docs/update.html">
+    
+      <link rel="alternative" hreflang="it_IT" href="http://gorm.io/it_IT/docs/update.html">
+    
+      <link rel="alternative" hreflang="ja_JP" href="http://gorm.io/ja_JP/docs/update.html">
+    
+      <link rel="alternative" hreflang="ru_RU" href="http://gorm.io/ru_RU/docs/update.html">
+    
+      <link rel="alternative" hreflang="fr_FR" href="http://gorm.io/fr_FR/docs/update.html">
+    
+      <link rel="alternative" hreflang="ko_KR" href="http://gorm.io/ko_KR/docs/update.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM">
+  <!-- Open Graph -->
+  <meta name="description" content="保存所有字段Save 会保存所有的字段，即使字段是零值 db.First(&amp;user)user.Name &#x3D; &quot;jinzhu 2&quot;user.Age &#x3D; 100db.Save(&amp;user)&#x2F;&#x2F; UPDATE users SET name&#x3D;&#39;jinzhu 2&#39;, age&#x3D;100, birthday&#x3D;&#39;2016-01-01&#39;, updated_at &#x3D; &#39;2013-11-17 21:34">
+<meta property="og:type" content="website">
+<meta property="og:title" content="更新">
+<meta property="og:url" content="http://gorm.io/zh_CN/docs/update.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="保存所有字段Save 会保存所有的字段，即使字段是零值 db.First(&amp;user)user.Name &#x3D; &quot;jinzhu 2&quot;user.Age &#x3D; 100db.Save(&amp;user)&#x2F;&#x2F; UPDATE users SET name&#x3D;&#39;jinzhu 2&#39;, age&#x3D;100, birthday&#x3D;&#39;2016-01-01&#39;, updated_at &#x3D; &#39;2013-11-17 21:34">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-26T02:31:58.546Z">
+<meta property="article:modified_time" content="2022-04-26T02:31:58.546Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/zh_CN/" id="logo">GORM</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/zh_CN/docs/" class="main-nav-link"><i class="fa fa-book"></i>文档</a><a href="/zh_CN/community.html" class="main-nav-link"><i class="fab fa-slack"></i>社区</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/zh_CN/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>贡献</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="搜索文档...">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>简体中文</span></label>
+      <select id="lang-select" data-canonical="docs/update.html">
+        
+          <option value="en">English</option>
+        
+          <option value="zh_CN" selected>简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="es_ES">Español</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="ja_JP">日本語</option>
+        
+          <option value="ru_RU">Русский</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">更新</h1>
+                
+                <a href="https://translate.gorm.io/project/go-gorm/zh-CN" target="_blank" rel="noopener" class="article-edit-link" title="改进此页面"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><h2 id="保存所有字段" class="article-heading"><a href="#保存所有字段" class="headerlink" title="保存所有字段"></a>保存所有字段<a class="article-anchor" href="#保存所有字段" aria-hidden="true"></a></h2><p><code>Save</code> 会保存所有的字段，即使字段是零值</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.First(&amp;user)</span><br><span class="line"></span><br><span class="line">user.Name = <span class="string">"jinzhu 2"</span></span><br><span class="line">user.Age = <span class="number">100</span></span><br><span class="line">db.Save(&amp;user)</span><br><span class="line"><span class="comment">// UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="更新单个列" class="article-heading"><a href="#更新单个列" class="headerlink" title="更新单个列"></a>更新单个列<a class="article-anchor" href="#更新单个列" aria-hidden="true"></a></h2><p>当使用 <code>Update</code> 更新单个列时，你需要指定条件，否则会返回 <code>ErrMissingWhereClause</code> 错误，查看 <a href="#block_global_updates">Block Global Updates</a> 获取详情。当使用了 <code>Model</code> 方法，且该对象主键有值，该值会被用于构建条件，例如：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 条件更新</span></span><br><span class="line">db.Model(&amp;User{}).Where(<span class="string">"active = ?"</span>, <span class="literal">true</span>).Update(<span class="string">"name"</span>, <span class="string">"hello"</span>)</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE active=true;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// User 的 ID 是 `111`</span></span><br><span class="line">db.Model(&amp;user).Update(<span class="string">"name"</span>, <span class="string">"hello"</span>)</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据条件和 model 的值进行更新</span></span><br><span class="line">db.Model(&amp;user).Where(<span class="string">"active = ?"</span>, <span class="literal">true</span>).Update(<span class="string">"name"</span>, <span class="string">"hello"</span>)</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="更新多列" class="article-heading"><a href="#更新多列" class="headerlink" title="更新多列"></a>更新多列<a class="article-anchor" href="#更新多列" aria-hidden="true"></a></h2><p><code>Updates</code> 方法支持 <code>struct</code> 和 <code>map[string]interface{}</code> 参数。当使用 <code>struct</code> 更新时，默认情况下，GORM 只会更新非零值的字段</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 根据 `struct` 更新属性，只会更新非零值的字段</span></span><br><span class="line">db.Model(&amp;user).Updates(User{Name: <span class="string">"hello"</span>, Age: <span class="number">18</span>, Active: <span class="literal">false</span>})</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据 `map` 更新属性</span></span><br><span class="line">db.Model(&amp;user).Updates(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"name"</span>: <span class="string">"hello"</span>, <span class="string">"age"</span>: <span class="number">18</span>, <span class="string">"active"</span>: <span class="literal">false</span>})</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note warn"><p><strong>注意</strong> 当通过 struct 更新时，GORM 只会更新非零字段。 如果您想确保指定字段被更新，你应该使用 <code>Select</code> 更新选定字段，或使用 <code>map</code> 来完成更新操作</p>
+</blockquote>
+
+<h2 id="更新选定字段" class="article-heading"><a href="#更新选定字段" class="headerlink" title="更新选定字段"></a>更新选定字段<a class="article-anchor" href="#更新选定字段" aria-hidden="true"></a></h2><p>如果您想要在更新时选定、忽略某些字段，您可以使用 <code>Select</code>、<code>Omit</code></p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 使用 Map 进行 Select</span></span><br><span class="line"><span class="comment">// User's ID is `111`:</span></span><br><span class="line">db.Model(&amp;user).Select(<span class="string">"name"</span>).Updates(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"name"</span>: <span class="string">"hello"</span>, <span class="string">"age"</span>: <span class="number">18</span>, <span class="string">"active"</span>: <span class="literal">false</span>})</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello' WHERE id=111;</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Omit(<span class="string">"name"</span>).Updates(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"name"</span>: <span class="string">"hello"</span>, <span class="string">"age"</span>: <span class="number">18</span>, <span class="string">"active"</span>: <span class="literal">false</span>})</span><br><span class="line"><span class="comment">// UPDATE users SET age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用 Struct 进行 Select（会 select 零值的字段）</span></span><br><span class="line">db.Model(&amp;user).Select(<span class="string">"Name"</span>, <span class="string">"Age"</span>).Updates(User{Name: <span class="string">"new_name"</span>, Age: <span class="number">0</span>})</span><br><span class="line"><span class="comment">// UPDATE users SET name='new_name', age=0 WHERE id=111;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Select 所有字段（查询包括零值字段的所有字段）</span></span><br><span class="line">db.Model(&amp;user).Select(<span class="string">"*"</span>).Update(User{Name: <span class="string">"jinzhu"</span>, Role: <span class="string">"admin"</span>, Age: <span class="number">0</span>})</span><br><span class="line"></span><br><span class="line"><span class="comment">// Select 除 Role 外的所有字段（包括零值字段的所有字段）</span></span><br><span class="line">db.Model(&amp;user).Select(<span class="string">"*"</span>).Omit(<span class="string">"Role"</span>).Update(User{Name: <span class="string">"jinzhu"</span>, Role: <span class="string">"admin"</span>, Age: <span class="number">0</span>})</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="更新-Hook" class="article-heading"><a href="#更新-Hook" class="headerlink" title="更新 Hook"></a>更新 Hook<a class="article-anchor" href="#更新-Hook" aria-hidden="true"></a></h2><p>对于更新操作，GORM 支持 <code>BeforeSave</code>、<code>BeforeUpdate</code>、<code>AfterSave</code>、<code>AfterUpdate</code> 钩子，这些方法将在更新记录时被调用，详情请参阅 <a href="hooks.html">钩子</a></p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *User)</span> <span class="title">BeforeUpdate</span><span class="params">(tx *gorm.DB)</span> <span class="params">(err error)</span></span> {</span><br><span class="line">    <span class="keyword">if</span> u.Role == <span class="string">"admin"</span> {</span><br><span class="line">        <span class="keyword">return</span> errors.New(<span class="string">"admin user not allowed to update"</span>)</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="批量更新" class="article-heading"><a href="#批量更新" class="headerlink" title="批量更新"></a>批量更新<a class="article-anchor" href="#批量更新" aria-hidden="true"></a></h2><p>如果您尚未通过 <code>Model</code> 指定记录的主键，则 GORM 会执行批量更新</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 根据 struct 更新</span></span><br><span class="line">db.Model(User{}).Where(<span class="string">"role = ?"</span>, <span class="string">"admin"</span>).Updates(User{Name: <span class="string">"hello"</span>, Age: <span class="number">18</span>})</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello', age=18 WHERE role = 'admin';</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据 map 更新</span></span><br><span class="line">db.Table(<span class="string">"users"</span>).Where(<span class="string">"id IN ?"</span>, []<span class="keyword">int</span>{<span class="number">10</span>, <span class="number">11</span>}).Updates(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"name"</span>: <span class="string">"hello"</span>, <span class="string">"age"</span>: <span class="number">18</span>})</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello', age=18 WHERE id IN (10, 11);</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="阻止全局更新" class="article-heading"><a href="#阻止全局更新" class="headerlink" title="阻止全局更新"></a><span id="block_global_updates">阻止全局更新</span><a class="article-anchor" href="#阻止全局更新" aria-hidden="true"></a></h3><p>如果在没有任何条件的情况下执行批量更新，默认情况下，GORM 不会执行该操作，并返回 <code>ErrMissingWhereClause</code> 错误</p>
+<p>对此，你必须加一些条件，或者使用原生 SQL，或者启用 <code>AllowGlobalUpdate</code> 模式，例如：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;User{}).Update(<span class="string">"name"</span>, <span class="string">"jinzhu"</span>).Error <span class="comment">// gorm.ErrMissingWhereClause</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;User{}).Where(<span class="string">"1 = 1"</span>).Update(<span class="string">"name"</span>, <span class="string">"jinzhu"</span>)</span><br><span class="line"><span class="comment">// UPDATE users SET `name` = "jinzhu" WHERE 1=1</span></span><br><span class="line"></span><br><span class="line">db.Exec(<span class="string">"UPDATE users SET name = ?"</span>, <span class="string">"jinzhu"</span>)</span><br><span class="line"><span class="comment">// UPDATE users SET name = "jinzhu"</span></span><br><span class="line"></span><br><span class="line">db.Session(&amp;gorm.Session{AllowGlobalUpdate: <span class="literal">true</span>}).Model(&amp;User{}).Update(<span class="string">"name"</span>, <span class="string">"jinzhu"</span>)</span><br><span class="line"><span class="comment">// UPDATE users SET `name` = "jinzhu"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="更新的记录数" class="article-heading"><a href="#更新的记录数" class="headerlink" title="更新的记录数"></a>更新的记录数<a class="article-anchor" href="#更新的记录数" aria-hidden="true"></a></h3><p>获取受更新影响的行数</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 通过 `RowsAffected` 得到更新的记录数</span></span><br><span class="line">result := db.Model(User{}).Where(<span class="string">"role = ?"</span>, <span class="string">"admin"</span>).Updates(User{Name: <span class="string">"hello"</span>, Age: <span class="number">18</span>})</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello', age=18 WHERE role = 'admin';</span></span><br><span class="line"></span><br><span class="line">result.RowsAffected <span class="comment">// 更新的记录数</span></span><br><span class="line">result.Error        <span class="comment">// 更新的错误</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="高级选项" class="article-heading"><a href="#高级选项" class="headerlink" title="高级选项"></a>高级选项<a class="article-anchor" href="#高级选项" aria-hidden="true"></a></h2><h3 id="使用-SQL-表达式更新" class="article-heading"><a href="#使用-SQL-表达式更新" class="headerlink" title="使用 SQL 表达式更新"></a><span id="update_from_sql_expr">使用 SQL 表达式更新</span><a class="article-anchor" href="#使用-SQL-表达式更新" aria-hidden="true"></a></h3><p>GORM 允许使用 SQL 表达式更新列，例如：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// product 的 ID 是 `3`</span></span><br><span class="line">db.Model(&amp;product).Update(<span class="string">"price"</span>, gorm.Expr(<span class="string">"price * ? + ?"</span>, <span class="number">2</span>, <span class="number">100</span>))</span><br><span class="line"><span class="comment">// UPDATE "products" SET "price" = price * 2 + 100, "updated_at" = '2013-11-17 21:34:10' WHERE "id" = 3;</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;product).Updates(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"price"</span>: gorm.Expr(<span class="string">"price * ? + ?"</span>, <span class="number">2</span>, <span class="number">100</span>)})</span><br><span class="line"><span class="comment">// UPDATE "products" SET "price" = price * 2 + 100, "updated_at" = '2013-11-17 21:34:10' WHERE "id" = 3;</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;product).UpdateColumn(<span class="string">"quantity"</span>, gorm.Expr(<span class="string">"quantity - ?"</span>, <span class="number">1</span>))</span><br><span class="line"><span class="comment">// UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3;</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;product).Where(<span class="string">"quantity &gt; 1"</span>).UpdateColumn(<span class="string">"quantity"</span>, gorm.Expr(<span class="string">"quantity - ?"</span>, <span class="number">1</span>))</span><br><span class="line"><span class="comment">// UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity &gt; 1;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>并且 GORM 也允许使用 SQL 表达式、<a href="data_types.html#gorm_valuer_interface">自定义数据类型</a>的 Context Valuer 来更新，例如：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 根据自定义数据类型创建</span></span><br><span class="line"><span class="keyword">type</span> Location <span class="keyword">struct</span> {</span><br><span class="line">    X, Y <span class="keyword">int</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(loc Location)</span> <span class="title">GormValue</span><span class="params">(ctx context.Context, db *gorm.DB)</span> <span class="title">clause</span>.<span class="title">Expr</span></span> {</span><br><span class="line">  <span class="keyword">return</span> clause.Expr{</span><br><span class="line">    SQL:  <span class="string">"ST_PointFromText(?)"</span>,</span><br><span class="line">    Vars: []<span class="keyword">interface</span>{}{fmt.Sprintf(<span class="string">"POINT(%d %d)"</span>, loc.X, loc.Y)},</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Model(&amp;User{ID: <span class="number">1</span>}).Updates(User{</span><br><span class="line">  Name:  <span class="string">"jinzhu"</span>,</span><br><span class="line">  Location: Location{X: <span class="number">100</span>, Y: <span class="number">100</span>},</span><br><span class="line">})</span><br><span class="line"><span class="comment">// UPDATE `user_with_points` SET `name`="jinzhu",`location`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="根据子查询进行更新" class="article-heading"><a href="#根据子查询进行更新" class="headerlink" title="根据子查询进行更新"></a>根据子查询进行更新<a class="article-anchor" href="#根据子查询进行更新" aria-hidden="true"></a></h3><p>使用子查询更新表</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Update(<span class="string">"company_name"</span>, db.Model(&amp;Company{}).Select(<span class="string">"name"</span>).Where(<span class="string">"companies.id = users.company_id"</span>))</span><br><span class="line"><span class="comment">// UPDATE "users" SET "company_name" = (SELECT name FROM companies WHERE companies.id = users.company_id);</span></span><br><span class="line"></span><br><span class="line">db.Table(<span class="string">"users as u"</span>).Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Update(<span class="string">"company_name"</span>, db.Table(<span class="string">"companies as c"</span>).Select(<span class="string">"name"</span>).Where(<span class="string">"c.id = u.company_id"</span>))</span><br><span class="line"></span><br><span class="line">db.Table(<span class="string">"users as u"</span>).Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Updates(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{}{<span class="string">"company_name"</span>: db.Table(<span class="string">"companies as c"</span>).Select(<span class="string">"name"</span>).Where(<span class="string">"c.id = u.company_id"</span>)})</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="不使用-Hook-和时间追踪" class="article-heading"><a href="#不使用-Hook-和时间追踪" class="headerlink" title="不使用 Hook 和时间追踪"></a>不使用 Hook 和时间追踪<a class="article-anchor" href="#不使用-Hook-和时间追踪" aria-hidden="true"></a></h3><p>如果您想在更新时跳过 <code>Hook</code> 方法且不追踪更新时间，可以使用 <code>UpdateColumn</code>、<code>UpdateColumns</code>，其用法类似于 <code>Update</code>、<code>Updates</code></p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 更新单个列</span></span><br><span class="line">db.Model(&amp;user).UpdateColumn(<span class="string">"name"</span>, <span class="string">"hello"</span>)</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello' WHERE id = 111;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 更新多个列</span></span><br><span class="line">db.Model(&amp;user).UpdateColumns(User{Name: <span class="string">"hello"</span>, Age: <span class="number">18</span>})</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello', age=18 WHERE id = 111;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 更新选中的列</span></span><br><span class="line">db.Model(&amp;user).Select(<span class="string">"name"</span>, <span class="string">"age"</span>).UpdateColumns(User{Name: <span class="string">"hello"</span>, Age: <span class="number">0</span>})</span><br><span class="line"><span class="comment">// UPDATE users SET name='hello', age=0 WHERE id = 111;</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="返回修改行的数据" class="article-heading"><a href="#返回修改行的数据" class="headerlink" title="返回修改行的数据"></a>返回修改行的数据<a class="article-anchor" href="#返回修改行的数据" aria-hidden="true"></a></h3><p>返回被修改的数据，仅适用于支持 Returning 的数据库，例如：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// 返回所有列</span></span><br><span class="line"><span class="keyword">var</span> users []User</span><br><span class="line">DB.Model(&amp;users).Clauses(clause.Returning{}).Where(<span class="string">"role = ?"</span>, <span class="string">"admin"</span>).Update(<span class="string">"salary"</span>, gorm.Expr(<span class="string">"salary * ?"</span>, <span class="number">2</span>))</span><br><span class="line"><span class="comment">// UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING *</span></span><br><span class="line"><span class="comment">// users =&gt; []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回指定的列</span></span><br><span class="line">DB.Model(&amp;users).Clauses(clause.Returning{Columns: []clause.Column{{Name: <span class="string">"name"</span>}, {Name: <span class="string">"salary"</span>}}}).Where(<span class="string">"role = ?"</span>, <span class="string">"admin"</span>).Update(<span class="string">"salary"</span>, gorm.Expr(<span class="string">"salary * ?"</span>, <span class="number">2</span>))</span><br><span class="line"><span class="comment">// UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING `name`, `salary`</span></span><br><span class="line"><span class="comment">// users =&gt; []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="检查字段是否有变更？" class="article-heading"><a href="#检查字段是否有变更？" class="headerlink" title="检查字段是否有变更？"></a>检查字段是否有变更？<a class="article-anchor" href="#检查字段是否有变更？" aria-hidden="true"></a></h3><p>GORM 提供了 <code>Changed</code> 方法，它可以被用在 <strong>Before Update Hook</strong> 里，它会返回字段是否有变更的布尔值</p>
+<p><code>Changed</code> 方法只能与 <code>Update</code>、<code>Updates</code> 方法一起使用，并且它只是检查 Model 对象字段的值与 <code>Update</code>、<code>Updates</code> 的值是否相等，如果值有变更，且字段没有被忽略，则返回 true</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *User)</span> <span class="title">BeforeUpdate</span><span class="params">(tx *gorm.DB)</span> <span class="params">(err error)</span></span> {</span><br><span class="line">  <span class="comment">// 如果 Role 字段有变更</span></span><br><span class="line">    <span class="keyword">if</span> tx.Statement.Changed(<span class="string">"Role"</span>) {</span><br><span class="line">    <span class="keyword">return</span> errors.New(<span class="string">"role not allowed to change"</span>)</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> tx.Statement.Changed(<span class="string">"Name"</span>, <span class="string">"Admin"</span>) { <span class="comment">// 如果 Name 或 Role 字段有变更</span></span><br><span class="line">    tx.Statement.SetColumn(<span class="string">"Age"</span>, <span class="number">18</span>)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果任意字段有变更</span></span><br><span class="line">    <span class="keyword">if</span> tx.Statement.Changed() {</span><br><span class="line">        tx.Statement.SetColumn(<span class="string">"RefreshedAt"</span>, time.Now())</span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Model(&amp;User{ID: <span class="number">1</span>, Name: <span class="string">"jinzhu"</span>}).Updates(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{<span class="string">"name"</span>: <span class="string">"jinzhu2"</span>})</span><br><span class="line"><span class="comment">// Changed("Name") =&gt; true</span></span><br><span class="line">db.Model(&amp;User{ID: <span class="number">1</span>, Name: <span class="string">"jinzhu"</span>}).Updates(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{<span class="string">"name"</span>: <span class="string">"jinzhu"</span>})</span><br><span class="line"><span class="comment">// Changed("Name") =&gt; false, 因为 `Name` 没有变更</span></span><br><span class="line">db.Model(&amp;User{ID: <span class="number">1</span>, Name: <span class="string">"jinzhu"</span>}).Select(<span class="string">"Admin"</span>).Updates(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{</span><br><span class="line">  <span class="string">"name"</span>: <span class="string">"jinzhu2"</span>, <span class="string">"admin"</span>: <span class="literal">false</span>,</span><br><span class="line">})</span><br><span class="line"><span class="comment">// Changed("Name") =&gt; false, 因为 `Name` 没有被 Select 选中并更新</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;User{ID: <span class="number">1</span>, Name: <span class="string">"jinzhu"</span>}).Updates(User{Name: <span class="string">"jinzhu2"</span>})</span><br><span class="line"><span class="comment">// Changed("Name") =&gt; true</span></span><br><span class="line">db.Model(&amp;User{ID: <span class="number">1</span>, Name: <span class="string">"jinzhu"</span>}).Updates(User{Name: <span class="string">"jinzhu"</span>})</span><br><span class="line"><span class="comment">// Changed("Name") =&gt; false, 因为 `Name` 没有变更</span></span><br><span class="line">db.Model(&amp;User{ID: <span class="number">1</span>, Name: <span class="string">"jinzhu"</span>}).Select(<span class="string">"Admin"</span>).Updates(User{Name: <span class="string">"jinzhu2"</span>})</span><br><span class="line"><span class="comment">// Changed("Name") =&gt; false, 因为 `Name` 没有被 Select 选中并更新</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="在-Update-时修改值" class="article-heading"><a href="#在-Update-时修改值" class="headerlink" title="在 Update 时修改值"></a>在 Update 时修改值<a class="article-anchor" href="#在-Update-时修改值" aria-hidden="true"></a></h3><p>若要在 Before 钩子中改变要更新的值，如果它是一个完整的更新，可以使用 <code>Save</code>；否则，应该使用 <code>SetColumn</code> ，例如：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(user *User)</span> <span class="title">BeforeSave</span><span class="params">(tx *gorm.DB)</span> <span class="params">(err error)</span></span> {</span><br><span class="line">  <span class="keyword">if</span> pw, err := bcrypt.GenerateFromPassword(user.Password, <span class="number">0</span>); err == <span class="literal">nil</span> {</span><br><span class="line">    tx.Statement.SetColumn(<span class="string">"EncryptedPassword"</span>, pw)</span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> tx.Statement.Changed(<span class="string">"Code"</span>) {</span><br><span class="line">    user.Age += <span class="number">20</span></span><br><span class="line">    tx.Statement.SetColumn(<span class="string">"Age"</span>, user.Age)</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Update(<span class="string">"Name"</span>, <span class="string">"jinzhu"</span>)</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+              </div>
+
+              
+              <div>
+                <a href="v2_release_note.html" target="_blank">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Latest GORM Release&color=red&&style=for-the-badge&logo=go&logoColor=red">
+                </a>
+              </div>
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2022-04-26T02:31:58.546Z" itemprop="dateModified">最后更新于 2022-04-26</time>
+<a href="advanced_query.html" class="article-footer-prev" title="高级查询"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="delete.html" class="article-footer-next" title="删除"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <div class="sponsor_item">
+        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors</h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors</h1>
+      <div class="sponsor_item">
+        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              
+<section id="comments">
+<div id="disqus_thread"></div>
+</sction>
+
+<script>
+var disqus_config = function () {
+this.page.url = 'http://gorm.io/zh_CN/docs/update.html';
+this.page.identifier = 'http://gorm.io/zh_CN/docs/update.html';
+this.language = 'zh';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://gormv2.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">内容</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#保存所有字段"><span class="toc-text">保存所有字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新单个列"><span class="toc-text">更新单个列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新多列"><span class="toc-text">更新多列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新选定字段"><span class="toc-text">更新选定字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更新-Hook"><span class="toc-text">更新 Hook</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#批量更新"><span class="toc-text">批量更新</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#阻止全局更新"><span class="toc-text">阻止全局更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#更新的记录数"><span class="toc-text">更新的记录数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#高级选项"><span class="toc-text">高级选项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#使用-SQL-表达式更新"><span class="toc-text">使用 SQL 表达式更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#根据子查询进行更新"><span class="toc-text">根据子查询进行更新</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#不使用-Hook-和时间追踪"><span class="toc-text">不使用 Hook 和时间追踪</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#返回修改行的数据"><span class="toc-text">返回修改行的数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#检查字段是否有变更？"><span class="toc-text">检查字段是否有变更？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在-Update-时修改值"><span class="toc-text">在 Update 时修改值</span></a></li></ol></li></ol>
+
+              
+                <a href="https://translate.gorm.io/project/go-gorm/zh-CN" target="_blank" id="article-improve">
+                  改进此页面
+                </a>
+              
+              <a href="#" id="article-toc-top">回到顶部</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">入门指南</strong><a href="index.html" class="sidebar-link">概述</a><a href="models.html" class="sidebar-link">声明模型</a><a href="connecting_to_the_database.html" class="sidebar-link">连接到数据库</a><strong class="sidebar-title">CRUD 接口</strong><a href="create.html" class="sidebar-link">创建</a><a href="query.html" class="sidebar-link">查询</a><a href="advanced_query.html" class="sidebar-link">高级查询</a><a href="update.html" class="sidebar-link current">更新</a><a href="delete.html" class="sidebar-link">删除</a><a href="sql_builder.html" class="sidebar-link">原生 SQL 和 SQL 生成器</a><strong class="sidebar-title">关联</strong><a href="belongs_to.html" class="sidebar-link">Belongs To</a><a href="has_one.html" class="sidebar-link">Has One</a><a href="has_many.html" class="sidebar-link">Has Many</a><a href="many_to_many.html" class="sidebar-link">Many To Many</a><a href="associations.html" class="sidebar-link">关联模式</a><a href="preload.html" class="sidebar-link">预加载</a><strong class="sidebar-title">教程</strong><a href="context.html" class="sidebar-link">Context</a><a href="error_handling.html" class="sidebar-link">错误处理</a><a href="method_chaining.html" class="sidebar-link">链式操作</a><a href="session.html" class="sidebar-link">Session</a><a href="hooks.html" class="sidebar-link">钩子</a><a href="transactions.html" class="sidebar-link">事务</a><a href="migration.html" class="sidebar-link">迁移</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">通用数据库接口</a><a href="performance.html" class="sidebar-link">性能</a><a href="data_types.html" class="sidebar-link">自定义数据类型</a><a href="scopes.html" class="sidebar-link">Scope</a><a href="conventions.html" class="sidebar-link">约定</a><a href="settings.html" class="sidebar-link">设置</a><strong class="sidebar-title">高级主题</strong><a href="dbresolver.html" class="sidebar-link">Database Resolver</a><a href="sharding.html" class="sidebar-link">Sharding</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">提示</a><a href="indexes.html" class="sidebar-link">索引</a><a href="constraints.html" class="sidebar-link">约束</a><a href="composite_primary_key.html" class="sidebar-link">复合主键</a><a href="security.html" class="sidebar-link">安全</a><a href="gorm_config.html" class="sidebar-link">GORM 配置</a><a href="write_plugins.html" class="sidebar-link">编写插件</a><a href="write_driver.html" class="sidebar-link">编写驱动</a><a href="changelog.html" class="sidebar-link">更新日志</a><a href="/community.html" class="sidebar-link">社区</a><a href="/contribute.html" class="sidebar-link">贡献</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">翻译当前页面</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2022 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://www.qiniu.com/" target="_blank">七牛云</a> 对 CDN 的赞助，<a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>主页</a>
+      </li>
+      <a href="/zh_CN/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>文档</a><a href="/zh_CN/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>社区</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/zh_CN/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>贡献</a>
+    </ul>
+    
+      <strong class="mobile-nav-title">入门指南</strong><a href="index.html" class="mobile-nav-link">概述</a><a href="models.html" class="mobile-nav-link">声明模型</a><a href="connecting_to_the_database.html" class="mobile-nav-link">连接到数据库</a><strong class="mobile-nav-title">CRUD 接口</strong><a href="create.html" class="mobile-nav-link">创建</a><a href="query.html" class="mobile-nav-link">查询</a><a href="advanced_query.html" class="mobile-nav-link">高级查询</a><a href="update.html" class="mobile-nav-link current">更新</a><a href="delete.html" class="mobile-nav-link">删除</a><a href="sql_builder.html" class="mobile-nav-link">原生 SQL 和 SQL 生成器</a><strong class="mobile-nav-title">关联</strong><a href="belongs_to.html" class="mobile-nav-link">Belongs To</a><a href="has_one.html" class="mobile-nav-link">Has One</a><a href="has_many.html" class="mobile-nav-link">Has Many</a><a href="many_to_many.html" class="mobile-nav-link">Many To Many</a><a href="associations.html" class="mobile-nav-link">关联模式</a><a href="preload.html" class="mobile-nav-link">预加载</a><strong class="mobile-nav-title">教程</strong><a href="context.html" class="mobile-nav-link">Context</a><a href="error_handling.html" class="mobile-nav-link">错误处理</a><a href="method_chaining.html" class="mobile-nav-link">链式操作</a><a href="session.html" class="mobile-nav-link">Session</a><a href="hooks.html" class="mobile-nav-link">钩子</a><a href="transactions.html" class="mobile-nav-link">事务</a><a href="migration.html" class="mobile-nav-link">迁移</a><a href="logger.html" class="mobile-nav-link">Logger</a><a href="generic_interface.html" class="mobile-nav-link">通用数据库接口</a><a href="performance.html" class="mobile-nav-link">性能</a><a href="data_types.html" class="mobile-nav-link">自定义数据类型</a><a href="scopes.html" class="mobile-nav-link">Scope</a><a href="conventions.html" class="mobile-nav-link">约定</a><a href="settings.html" class="mobile-nav-link">设置</a><strong class="mobile-nav-title">高级主题</strong><a href="dbresolver.html" class="mobile-nav-link">Database Resolver</a><a href="sharding.html" class="mobile-nav-link">Sharding</a><a href="prometheus.html" class="mobile-nav-link">Prometheus</a><a href="hints.html" class="mobile-nav-link">提示</a><a href="indexes.html" class="mobile-nav-link">索引</a><a href="constraints.html" class="mobile-nav-link">约束</a><a href="composite_primary_key.html" class="mobile-nav-link">复合主键</a><a href="security.html" class="mobile-nav-link">安全</a><a href="gorm_config.html" class="mobile-nav-link">GORM 配置</a><a href="write_plugins.html" class="mobile-nav-link">编写插件</a><a href="write_driver.html" class="mobile-nav-link">编写驱动</a><a href="changelog.html" class="mobile-nav-link">更新日志</a><a href="/community.html" class="mobile-nav-link">社区</a><a href="/contribute.html" class="mobile-nav-link">贡献</a><a href="/contribute.html#Translate-this-site" class="mobile-nav-link">翻译当前页面</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>简体中文</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/update.html">
+      
+        <option value="en">English</option>
+      
+        <option value="zh_CN" selected>简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="es_ES">Español</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="ja_JP">日本語</option>
+      
+        <option value="ru_RU">Русский</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>

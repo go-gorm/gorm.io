@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es_ES">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>Write Plugins | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://gorm.io/es_ES/docs/write_plugins.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="http://gorm.io/docs/write_plugins.html">
+    
+      <link rel="alternative" hreflang="zh_CN" href="http://gorm.io/zh_CN/docs/write_plugins.html">
+    
+      <link rel="alternative" hreflang="de_DE" href="http://gorm.io/de_DE/docs/write_plugins.html">
+    
+      <link rel="alternative" hreflang="es_ES" href="http://gorm.io/es_ES/docs/write_plugins.html">
+    
+      <link rel="alternative" hreflang="id_ID" href="http://gorm.io/id_ID/docs/write_plugins.html">
+    
+      <link rel="alternative" hreflang="it_IT" href="http://gorm.io/it_IT/docs/write_plugins.html">
+    
+      <link rel="alternative" hreflang="ja_JP" href="http://gorm.io/ja_JP/docs/write_plugins.html">
+    
+      <link rel="alternative" hreflang="ru_RU" href="http://gorm.io/ru_RU/docs/write_plugins.html">
+    
+      <link rel="alternative" hreflang="fr_FR" href="http://gorm.io/fr_FR/docs/write_plugins.html">
+    
+      <link rel="alternative" hreflang="ko_KR" href="http://gorm.io/ko_KR/docs/write_plugins.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM">
+  <!-- Open Graph -->
+  <meta name="description" content="CallbacksGORM itself is powered by Callbacks, it has callbacks for Create, Query, Update, Delete, Row, Raw, you could fully customize GORM with them as you want Callbacks are registered into the globa">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Write Plugins">
+<meta property="og:url" content="http://gorm.io/es_ES/docs/write_plugins.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="CallbacksGORM itself is powered by Callbacks, it has callbacks for Create, Query, Update, Delete, Row, Raw, you could fully customize GORM with them as you want Callbacks are registered into the globa">
+<meta property="og:locale" content="es_ES">
+<meta property="article:published_time" content="2022-04-26T02:31:58.522Z">
+<meta property="article:modified_time" content="2022-04-26T02:31:58.522Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/es_ES/" id="logo">GORM</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/es_ES/docs/" class="main-nav-link"><i class="fa fa-lock"></i>Documentación</a><a href="/es_ES/community.html" class="main-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/es_ES/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Contribuir</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Buscar documentos...">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>Español</span></label>
+      <select id="lang-select" data-canonical="docs/write_plugins.html">
+        
+          <option value="en">English</option>
+        
+          <option value="zh_CN">简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="es_ES" selected>Español</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="ja_JP">日本語</option>
+        
+          <option value="ru_RU">Русский</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">Write Plugins</h1>
+                
+                <a href="https://translate.gorm.io/project/go-gorm/es-ES" target="_blank" rel="noopener" class="article-edit-link" title="Mejora este documento"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><h2 id="Callbacks" class="article-heading"><a href="#Callbacks" class="headerlink" title="Callbacks"></a>Callbacks<a class="article-anchor" href="#Callbacks" aria-hidden="true"></a></h2><p>GORM itself is powered by <code>Callbacks</code>, it has callbacks for <code>Create</code>, <code>Query</code>, <code>Update</code>, <code>Delete</code>, <code>Row</code>, <code>Raw</code>, you could fully customize GORM with them as you want</p>
+<p>Callbacks are registered into the global <code>*gorm.DB</code>, not the session-level, if you require <code>*gorm.DB</code> with different callbacks, you need to initialize another <code>*gorm.DB</code></p>
+<h3 id="Register-Callback" class="article-heading"><a href="#Register-Callback" class="headerlink" title="Register Callback"></a>Register Callback<a class="article-anchor" href="#Register-Callback" aria-hidden="true"></a></h3><p>Register a callback into callbacks</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">cropImage</span><span class="params">(db *gorm.DB)</span></span> {</span><br><span class="line">  <span class="keyword">if</span> db.Statement.Schema != <span class="literal">nil</span> {</span><br><span class="line">    <span class="comment">// crop image fields and upload them to CDN, dummy code</span></span><br><span class="line">    <span class="keyword">for</span> _, field := <span class="keyword">range</span> db.Statement.Schema.Fields {</span><br><span class="line">      <span class="keyword">switch</span> db.Statement.ReflectValue.Kind() {</span><br><span class="line">      <span class="keyword">case</span> reflect.Slice, reflect.Array:</span><br><span class="line">        <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; db.Statement.ReflectValue.Len(); i++ {</span><br><span class="line">          <span class="comment">// Get value from field</span></span><br><span class="line">          <span class="keyword">if</span> fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {</span><br><span class="line">            <span class="keyword">if</span> crop, ok := fieldValue.(CropInterface); ok {</span><br><span class="line">              crop.Crop()</span><br><span class="line">            }</span><br><span class="line">          }</span><br><span class="line">        }</span><br><span class="line">      <span class="keyword">case</span> reflect.Struct:</span><br><span class="line">        <span class="comment">// Get value from field</span></span><br><span class="line">        <span class="keyword">if</span> fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); !isZero {</span><br><span class="line">          <span class="keyword">if</span> crop, ok := fieldValue.(CropInterface); ok {</span><br><span class="line">            crop.Crop()</span><br><span class="line">          }</span><br><span class="line">        }</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Set value to field</span></span><br><span class="line">        err := field.Set(db.Statement.ReflectValue, <span class="string">"newValue"</span>)</span><br><span class="line">      }</span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">    <span class="comment">// All fields for current model</span></span><br><span class="line">    db.Statement.Schema.Fields</span><br><span class="line"></span><br><span class="line">    <span class="comment">// All primary key fields for current model</span></span><br><span class="line">    db.Statement.Schema.PrimaryFields</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Prioritized primary key field: field with DB name `id` or the first defined primary key</span></span><br><span class="line">    db.Statement.Schema.PrioritizedPrimaryField</span><br><span class="line"></span><br><span class="line">    <span class="comment">// All relationships for current model</span></span><br><span class="line">    db.Statement.Schema.Relationships</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Find field with field name or db name</span></span><br><span class="line">    field := db.Statement.Schema.LookUpField(<span class="string">"Name"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// processing</span></span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Callback().Create().Register(<span class="string">"crop_image"</span>, cropImage)</span><br><span class="line"><span class="comment">// register a callback for Create process</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Delete-Callback" class="article-heading"><a href="#Delete-Callback" class="headerlink" title="Delete Callback"></a>Delete Callback<a class="article-anchor" href="#Delete-Callback" aria-hidden="true"></a></h3><p>Delete a callback from callbacks</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Callback().Create().Remove(<span class="string">"gorm:create"</span>)</span><br><span class="line"><span class="comment">// delete callback `gorm:create` from Create callbacks</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Replace-Callback" class="article-heading"><a href="#Replace-Callback" class="headerlink" title="Replace Callback"></a>Replace Callback<a class="article-anchor" href="#Replace-Callback" aria-hidden="true"></a></h3><p>Replace a callback having the same name with the new one</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Callback().Create().Replace(<span class="string">"gorm:create"</span>, newCreateFunction)</span><br><span class="line"><span class="comment">// replace callback `gorm:create` with new function `newCreateFunction` for Create process</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Register-Callback-with-orders" class="article-heading"><a href="#Register-Callback-with-orders" class="headerlink" title="Register Callback with orders"></a>Register Callback with orders<a class="article-anchor" href="#Register-Callback-with-orders" aria-hidden="true"></a></h3><p>Register callbacks with orders</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// before gorm:create</span></span><br><span class="line">db.Callback().Create().Before(<span class="string">"gorm:create"</span>).Register(<span class="string">"update_created_at"</span>, updateCreated)</span><br><span class="line"></span><br><span class="line"><span class="comment">// after gorm:create</span></span><br><span class="line">db.Callback().Create().After(<span class="string">"gorm:create"</span>).Register(<span class="string">"update_created_at"</span>, updateCreated)</span><br><span class="line"></span><br><span class="line"><span class="comment">// after gorm:query</span></span><br><span class="line">db.Callback().Query().After(<span class="string">"gorm:query"</span>).Register(<span class="string">"my_plugin:after_query"</span>, afterQuery)</span><br><span class="line"></span><br><span class="line"><span class="comment">// after gorm:delete</span></span><br><span class="line">db.Callback().Delete().After(<span class="string">"gorm:delete"</span>).Register(<span class="string">"my_plugin:after_delete"</span>, afterDelete)</span><br><span class="line"></span><br><span class="line"><span class="comment">// before gorm:update</span></span><br><span class="line">db.Callback().Update().Before(<span class="string">"gorm:update"</span>).Register(<span class="string">"my_plugin:before_update"</span>, beforeUpdate)</span><br><span class="line"></span><br><span class="line"><span class="comment">// before gorm:create and after gorm:before_create</span></span><br><span class="line">db.Callback().Create().Before(<span class="string">"gorm:create"</span>).After(<span class="string">"gorm:before_create"</span>).Register(<span class="string">"my_plugin:before_create"</span>, beforeCreate)</span><br><span class="line"></span><br><span class="line"><span class="comment">// before any other callbacks</span></span><br><span class="line">db.Callback().Create().Before(<span class="string">"*"</span>).Register(<span class="string">"update_created_at"</span>, updateCreated)</span><br><span class="line"></span><br><span class="line"><span class="comment">// after any other callbacks</span></span><br><span class="line">db.Callback().Create().After(<span class="string">"*"</span>).Register(<span class="string">"update_created_at"</span>, updateCreated)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Defined-Callbacks" class="article-heading"><a href="#Defined-Callbacks" class="headerlink" title="Defined Callbacks"></a>Defined Callbacks<a class="article-anchor" href="#Defined-Callbacks" aria-hidden="true"></a></h3><p>GORM has defined <a href="https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go" target="_blank" rel="noopener">some callbacks</a> to power current GORM features, check them out before starting your plugins</p>
+<h2 id="Plugin" class="article-heading"><a href="#Plugin" class="headerlink" title="Plugin"></a>Plugin<a class="article-anchor" href="#Plugin" aria-hidden="true"></a></h2><p>GORM provides a <code>Use</code> method to register plugins, the plugin needs to implement the <code>Plugin</code> interface</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Plugin <span class="keyword">interface</span> {</span><br><span class="line">  Name() <span class="keyword">string</span></span><br><span class="line">  Initialize(*gorm.DB) error</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>The <code>Initialize</code> method will be invoked when registering the plugin into GORM first time, and GORM will save the registered plugins, access them like:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Config.Plugins[pluginName]</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Checkout <a href="prometheus.html">Prometheus</a> as example</p>
+</body></html>
+              </div>
+
+              
+              <div>
+                <a href="v2_release_note.html" target="_blank">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Latest GORM Release&color=red&&style=for-the-badge&logo=go&logoColor=red">
+                </a>
+              </div>
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2022-04-26T02:31:58.522Z" itemprop="dateModified">Última actualización: 2022-04-26</time>
+<a href="gorm_config.html" class="article-footer-prev" title="Configuración de GORM"><i class="fa fa-chevron-left"></i><span>Anterior</span></a><a href="write_driver.html" class="article-footer-next" title="Escribir conectores"><span>Siguiente</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <div class="sponsor_item">
+        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors</h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors</h1>
+      <div class="sponsor_item">
+        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              
+<section id="comments">
+<div id="disqus_thread"></div>
+</sction>
+
+<script>
+var disqus_config = function () {
+this.page.url = 'http://gorm.io/es_ES/docs/write_plugins.html';
+this.page.identifier = 'http://gorm.io/es_ES/docs/write_plugins.html';
+this.language = 'es';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://gormv2.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">Contenido</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Callbacks"><span class="toc-text">Callbacks</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Register-Callback"><span class="toc-text">Register Callback</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Delete-Callback"><span class="toc-text">Delete Callback</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Replace-Callback"><span class="toc-text">Replace Callback</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Register-Callback-with-orders"><span class="toc-text">Register Callback with orders</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Defined-Callbacks"><span class="toc-text">Defined Callbacks</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Plugin"><span class="toc-text">Plugin</span></a></li></ol>
+
+              
+                <a href="https://translate.gorm.io/project/go-gorm/es-ES" target="_blank" id="article-improve">
+                  Mejora este documento
+                </a>
+              
+              <a href="#" id="article-toc-top">Ir al principio de la página</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">Primeros pasos</strong><a href="index.html" class="sidebar-link">Resumen</a><a href="models.html" class="sidebar-link">Declarando modelos</a><a href="connecting_to_the_database.html" class="sidebar-link">Conectar a la base de datos</a><strong class="sidebar-title">Interfaz CRUD</strong><a href="create.html" class="sidebar-link">Crear</a><a href="query.html" class="sidebar-link">Consulta</a><a href="advanced_query.html" class="sidebar-link">Consulta avanzada</a><a href="update.html" class="sidebar-link">Actualizar</a><a href="delete.html" class="sidebar-link">Eliminar</a><a href="sql_builder.html" class="sidebar-link">Consultas SQL Directas</a><strong class="sidebar-title">Asociaciones</strong><a href="belongs_to.html" class="sidebar-link">Pertenece a</a><a href="has_one.html" class="sidebar-link">Tiene un</a><a href="has_many.html" class="sidebar-link">Tiene muchos</a><a href="many_to_many.html" class="sidebar-link">Muchos a muchos</a><a href="associations.html" class="sidebar-link">Tipos de asociación</a><a href="preload.html" class="sidebar-link">Precarga (Carga Antigua)</a><strong class="sidebar-title">Tutoriales</strong><a href="context.html" class="sidebar-link">Contexto</a><a href="error_handling.html" class="sidebar-link">Manejo de Errores</a><a href="method_chaining.html" class="sidebar-link">Concatenar métodos</a><a href="session.html" class="sidebar-link">Sesión</a><a href="hooks.html" class="sidebar-link">Disparadores</a><a href="transactions.html" class="sidebar-link">Transacciones</a><a href="migration.html" class="sidebar-link">Migraciones</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">Interfaz de base de datos genérica</a><a href="performance.html" class="sidebar-link">Rendimiento</a><a href="data_types.html" class="sidebar-link">Tipos de Datos Personalizados</a><a href="scopes.html" class="sidebar-link">Ámbitos</a><a href="conventions.html" class="sidebar-link">Convenciones</a><a href="settings.html" class="sidebar-link">Configuración</a><strong class="sidebar-title">Temas Avanzados</strong><a href="dbresolver.html" class="sidebar-link">Resolución de base de datos</a><a href="sharding.html" class="sidebar-link">Sharding</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">Pistas</a><a href="indexes.html" class="sidebar-link">Índices</a><a href="constraints.html" class="sidebar-link">Restricciones</a><a href="composite_primary_key.html" class="sidebar-link">Clave primaria compuesta</a><a href="security.html" class="sidebar-link">Seguridad</a><a href="gorm_config.html" class="sidebar-link">Configuración de GORM</a><a href="write_plugins.html" class="sidebar-link current">Escribir Plugins</a><a href="write_driver.html" class="sidebar-link">Escribir conectores</a><a href="changelog.html" class="sidebar-link">Registro de cambios</a><a href="/community.html" class="sidebar-link">Comunidad</a><a href="/contribute.html" class="sidebar-link">Contribuir</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">Traducir sitio actual</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2022 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://www.qiniu.com/" target="_blank">七牛云</a> 对 CDN 的赞助，<a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i> Inicio</a>
+      </li>
+      <a href="/es_ES/docs/" class="mobile-nav-link"><i class="fa fa-lock"></i>Documentación</a><a href="/es_ES/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/es_ES/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Contribuir</a>
+    </ul>
+    
+      <strong class="mobile-nav-title">Primeros pasos</strong><a href="index.html" class="mobile-nav-link">Resumen</a><a href="models.html" class="mobile-nav-link">Declarando modelos</a><a href="connecting_to_the_database.html" class="mobile-nav-link">Conectar a la base de datos</a><strong class="mobile-nav-title">Interfaz CRUD</strong><a href="create.html" class="mobile-nav-link">Crear</a><a href="query.html" class="mobile-nav-link">Consulta</a><a href="advanced_query.html" class="mobile-nav-link">Consulta avanzada</a><a href="update.html" class="mobile-nav-link">Actualizar</a><a href="delete.html" class="mobile-nav-link">Eliminar</a><a href="sql_builder.html" class="mobile-nav-link">Consultas SQL Directas</a><strong class="mobile-nav-title">Asociaciones</strong><a href="belongs_to.html" class="mobile-nav-link">Pertenece a</a><a href="has_one.html" class="mobile-nav-link">Tiene un</a><a href="has_many.html" class="mobile-nav-link">Tiene muchos</a><a href="many_to_many.html" class="mobile-nav-link">Muchos a muchos</a><a href="associations.html" class="mobile-nav-link">Tipos de asociación</a><a href="preload.html" class="mobile-nav-link">Precarga (Carga Antigua)</a><strong class="mobile-nav-title">Tutoriales</strong><a href="context.html" class="mobile-nav-link">Contexto</a><a href="error_handling.html" class="mobile-nav-link">Manejo de Errores</a><a href="method_chaining.html" class="mobile-nav-link">Concatenar métodos</a><a href="session.html" class="mobile-nav-link">Sesión</a><a href="hooks.html" class="mobile-nav-link">Disparadores</a><a href="transactions.html" class="mobile-nav-link">Transacciones</a><a href="migration.html" class="mobile-nav-link">Migraciones</a><a href="logger.html" class="mobile-nav-link">Logger</a><a href="generic_interface.html" class="mobile-nav-link">Interfaz de base de datos genérica</a><a href="performance.html" class="mobile-nav-link">Rendimiento</a><a href="data_types.html" class="mobile-nav-link">Tipos de Datos Personalizados</a><a href="scopes.html" class="mobile-nav-link">Ámbitos</a><a href="conventions.html" class="mobile-nav-link">Convenciones</a><a href="settings.html" class="mobile-nav-link">Configuración</a><strong class="mobile-nav-title">Temas Avanzados</strong><a href="dbresolver.html" class="mobile-nav-link">Resolución de base de datos</a><a href="sharding.html" class="mobile-nav-link">Sharding</a><a href="prometheus.html" class="mobile-nav-link">Prometheus</a><a href="hints.html" class="mobile-nav-link">Pistas</a><a href="indexes.html" class="mobile-nav-link">Índices</a><a href="constraints.html" class="mobile-nav-link">Restricciones</a><a href="composite_primary_key.html" class="mobile-nav-link">Clave primaria compuesta</a><a href="security.html" class="mobile-nav-link">Seguridad</a><a href="gorm_config.html" class="mobile-nav-link">Configuración de GORM</a><a href="write_plugins.html" class="mobile-nav-link current">Escribir Plugins</a><a href="write_driver.html" class="mobile-nav-link">Escribir conectores</a><a href="changelog.html" class="mobile-nav-link">Registro de cambios</a><a href="/community.html" class="mobile-nav-link">Comunidad</a><a href="/contribute.html" class="mobile-nav-link">Contribuir</a><a href="/contribute.html#Translate-this-site" class="mobile-nav-link">Traducir sitio actual</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>Español</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/write_plugins.html">
+      
+        <option value="en">English</option>
+      
+        <option value="zh_CN">简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="es_ES" selected>Español</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="ja_JP">日本語</option>
+      
+        <option value="ru_RU">Русский</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru_RU">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>Настройки GORM | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://gorm.io/ru_RU/docs/gorm_config.html">
+  <!-- Alternative links -->
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM">
+  <!-- Open Graph -->
+  <meta name="description" content="GORM предоставляет конфигурацию, которую можно использовать во время инициализации type Config struct &amp;#123;  SkipDefaultTransaction   bool  NamingStrategy           schema.Namer  Logger">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Настройки GORM">
+<meta property="og:url" content="http://gorm.io/ru_RU/docs/gorm_config.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="GORM предоставляет конфигурацию, которую можно использовать во время инициализации type Config struct &amp;#123;  SkipDefaultTransaction   bool  NamingStrategy           schema.Namer  Logger">
+<meta property="og:locale" content="ru_RU">
+<meta property="article:published_time" content="2022-04-26T02:31:58.538Z">
+<meta property="article:modified_time" content="2022-04-26T02:31:58.538Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/ru_RU/" id="logo">GORM</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/ru_RU/docs/" class="main-nav-link"><i class="fa fa-book"></i>Документация</a><a href="/ru_RU/community.html" class="main-nav-link"><i class="fab fa-slack"></i>Сообщество</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/ru_RU/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Внести вклад</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Поиск в документации...">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>Русский</span></label>
+      <select id="lang-select" data-canonical="docs/gorm_config.html">
+        
+          <option value="en">English</option>
+        
+          <option value="zh_CN">简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="es_ES">Español</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="ja_JP">日本語</option>
+        
+          <option value="ru_RU" selected>Русский</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">Настройки GORM</h1>
+                
+                <a href="https://translate.gorm.io/project/go-gorm/ru" target="_blank" rel="noopener" class="article-edit-link" title="Улучшить эту страницу"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><p>GORM предоставляет конфигурацию, которую можно использовать во время инициализации</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Config <span class="keyword">struct</span> {</span><br><span class="line">  SkipDefaultTransaction   <span class="keyword">bool</span></span><br><span class="line">  NamingStrategy           schema.Namer</span><br><span class="line">  Logger                   logger.Interface</span><br><span class="line">  NowFunc                  <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">time</span>.<span class="title">Time</span></span></span><br><span class="line">  DryRun                   <span class="keyword">bool</span></span><br><span class="line">  PrepareStmt              <span class="keyword">bool</span></span><br><span class="line">  DisableNestedTransaction <span class="keyword">bool</span></span><br><span class="line">  AllowGlobalUpdate        <span class="keyword">bool</span></span><br><span class="line">  DisableAutomaticPing     <span class="keyword">bool</span></span><br><span class="line">  DisableForeignKeyConstraintWhenMigrating <span class="keyword">bool</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="SkipDefaultTransaction" class="article-heading"><a href="#SkipDefaultTransaction" class="headerlink" title="SkipDefaultTransaction"></a>SkipDefaultTransaction<a class="article-anchor" href="#SkipDefaultTransaction" aria-hidden="true"></a></h2><p>GORM выполняет операции записи (создания/обновления/удаления) внутри транзакции, чтобы обеспечить целостность данных, вы можете отключить транзакции в процессе инициализации, если они не требуются</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"gorm.db"</span>), &amp;gorm.Config{</span><br><span class="line">  SkipDefaultTransaction: <span class="literal">true</span>,</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="NamingStrategy" class="article-heading"><a href="#NamingStrategy" class="headerlink" title="NamingStrategy"></a><span id="naming_strategy">NamingStrategy</span><a class="article-anchor" href="#NamingStrategy" aria-hidden="true"></a></h2><p>GORM позволяет пользователям изменять преобразование имен, переопределяя стандартный <code>NamingStrategy</code>, который должен реализовывать интерфейс <code>Namer</code></p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Namer <span class="keyword">interface</span> {</span><br><span class="line">    TableName(table <span class="keyword">string</span>) <span class="keyword">string</span></span><br><span class="line">    SchemaName(table <span class="keyword">string</span>) <span class="keyword">string</span></span><br><span class="line">    ColumnName(table, column <span class="keyword">string</span>) <span class="keyword">string</span></span><br><span class="line">    JoinTableName(table <span class="keyword">string</span>) <span class="keyword">string</span></span><br><span class="line">    RelationshipFKName(Relationship) <span class="keyword">string</span></span><br><span class="line">    CheckerName(table, column <span class="keyword">string</span>) <span class="keyword">string</span></span><br><span class="line">    IndexName(table, column <span class="keyword">string</span>) <span class="keyword">string</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>По умолчанию <code>NamingStrategy</code> также предоставляет некоторые опции, таким образом:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"gorm.db"</span>), &amp;gorm.Config{</span><br><span class="line">  NamingStrategy: schema.NamingStrategy{</span><br><span class="line">    TablePrefix: <span class="string">"t_"</span>,   <span class="comment">// table name prefix, table for `User` would be `t_users`</span></span><br><span class="line">    SingularTable: <span class="literal">true</span>, <span class="comment">// use singular table name, table for `User` would be `user` with this option enabled</span></span><br><span class="line">    NoLowerCase: <span class="literal">true</span>, <span class="comment">// skip the snake_casing of names</span></span><br><span class="line">    NameReplacer: strings.NewReplacer(<span class="string">"CID"</span>, <span class="string">"Cid"</span>), <span class="comment">// use name replacer to change struct/field name before convert it to db name</span></span><br><span class="line">  },</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Logger" class="article-heading"><a href="#Logger" class="headerlink" title="Logger"></a>Logger<a class="article-anchor" href="#Logger" aria-hidden="true"></a></h2><p>Разрешены изменения логирования по умолчанию в GORM, переопределяя эту опцию, смотрите <a href="logger.html">Logger</a> для получения более подробной информации</p>
+<h2 id="NowFunc" class="article-heading"><a href="#NowFunc" class="headerlink" title="NowFunc"></a><span id="now_func">NowFunc</span><a class="article-anchor" href="#NowFunc" aria-hidden="true"></a></h2><p>Изменить функцию, используемую при создании новой отметки времени</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"gorm.db"</span>), &amp;gorm.Config{</span><br><span class="line">  NowFunc: <span class="function"><span class="keyword">func</span><span class="params">()</span> <span class="title">time</span>.<span class="title">Time</span></span> {</span><br><span class="line">    <span class="keyword">return</span> time.Now().Local()</span><br><span class="line">  },</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="DryRun" class="article-heading"><a href="#DryRun" class="headerlink" title="DryRun"></a>DryRun<a class="article-anchor" href="#DryRun" aria-hidden="true"></a></h2><p>Генерировать <code>SQL</code> без выполнения, может быть использован для подготовки или тестирования SQL, смотрите <a href="session.html">Сессии</a> для подробностей</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"gorm.db"</span>), &amp;gorm.Config{</span><br><span class="line">  DryRun: <span class="literal">false</span>,</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="PrepareStmt" class="article-heading"><a href="#PrepareStmt" class="headerlink" title="PrepareStmt"></a>PrepareStmt<a class="article-anchor" href="#PrepareStmt" aria-hidden="true"></a></h2><p><code>PreparedStmt (подготовка stmt)</code> создает подготовленную операцию при выполнении любого SQL и кэширует ее для ускорения будущих запросов, смотрите <a href="session.html">Сессии</a> для подробностей</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"gorm.db"</span>), &amp;gorm.Config{</span><br><span class="line">  PrepareStmt: <span class="literal">false</span>,</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="DisableNestedTransaction" class="article-heading"><a href="#DisableNestedTransaction" class="headerlink" title="DisableNestedTransaction"></a>DisableNestedTransaction<a class="article-anchor" href="#DisableNestedTransaction" aria-hidden="true"></a></h2><p>When using <code>Transaction</code> method inside a db transaction, GORM will use <code>SavePoint(savedPointName)</code>, <code>RollbackTo(savedPointName)</code> to give you the nested transaction support, you could disable it by using the <code>DisableNestedTransaction</code> option, refer <a href="session.html">Session</a> for details</p>
+<h2 id="AllowGlobalUpdate" class="article-heading"><a href="#AllowGlobalUpdate" class="headerlink" title="AllowGlobalUpdate"></a>AllowGlobalUpdate<a class="article-anchor" href="#AllowGlobalUpdate" aria-hidden="true"></a></h2><p>Enable global update/delete, refer <a href="session.html">Session</a> for details</p>
+<h2 id="DisableAutomaticPing" class="article-heading"><a href="#DisableAutomaticPing" class="headerlink" title="DisableAutomaticPing"></a>DisableAutomaticPing<a class="article-anchor" href="#DisableAutomaticPing" aria-hidden="true"></a></h2><p>GORM automatically ping database after initialized to check database availability, disable it by setting it to <code>true</code></p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"gorm.db"</span>), &amp;gorm.Config{</span><br><span class="line">  DisableAutomaticPing: <span class="literal">true</span>,</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="DisableForeignKeyConstraintWhenMigrating" class="article-heading"><a href="#DisableForeignKeyConstraintWhenMigrating" class="headerlink" title="DisableForeignKeyConstraintWhenMigrating"></a>DisableForeignKeyConstraintWhenMigrating<a class="article-anchor" href="#DisableForeignKeyConstraintWhenMigrating" aria-hidden="true"></a></h2><p>GORM creates database foreign key constraints automatically when <code>AutoMigrate</code> or <code>CreateTable</code>, disable this by setting it to <code>true</code>, refer <a href="migration.html">Migration</a> for details</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"gorm.db"</span>), &amp;gorm.Config{</span><br><span class="line">  DisableForeignKeyConstraintWhenMigrating: <span class="literal">true</span>,</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+              </div>
+
+              
+              <div>
+                <a href="v2_release_note.html" target="_blank">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Latest GORM Release&color=red&&style=for-the-badge&logo=go&logoColor=red">
+                </a>
+              </div>
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2022-04-26T02:31:58.538Z" itemprop="dateModified">Последнее обновление: 2022-04-26</time>
+<a href="security.html" class="article-footer-prev" title="Безопасность"><i class="fa fa-chevron-left"></i><span>Пред.</span></a><a href="write_plugins.html" class="article-footer-next" title="Написание плагинов"><span>След.</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <div class="sponsor_item">
+        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors</h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors</h1>
+      <div class="sponsor_item">
+        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              
+<section id="comments">
+<div id="disqus_thread"></div>
+</sction>
+
+<script>
+var disqus_config = function () {
+this.page.url = 'http://gorm.io/ru_RU/docs/gorm_config.html';
+this.page.identifier = 'http://gorm.io/ru_RU/docs/gorm_config.html';
+this.language = 'ru';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://gormv2.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">Содержимое</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SkipDefaultTransaction"><span class="toc-text">SkipDefaultTransaction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NamingStrategy"><span class="toc-text">NamingStrategy</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Logger"><span class="toc-text">Logger</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NowFunc"><span class="toc-text">NowFunc</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DryRun"><span class="toc-text">DryRun</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PrepareStmt"><span class="toc-text">PrepareStmt</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DisableNestedTransaction"><span class="toc-text">DisableNestedTransaction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#AllowGlobalUpdate"><span class="toc-text">AllowGlobalUpdate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DisableAutomaticPing"><span class="toc-text">DisableAutomaticPing</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DisableForeignKeyConstraintWhenMigrating"><span class="toc-text">DisableForeignKeyConstraintWhenMigrating</span></a></li></ol>
+
+              
+                <a href="https://translate.gorm.io/project/go-gorm/ru" target="_blank" id="article-improve">
+                  Улучшить эту страницу
+                </a>
+              
+              <a href="#" id="article-toc-top">Вернуться к началу</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">Начало работы</strong><a href="index.html" class="sidebar-link">Обзор</a><a href="models.html" class="sidebar-link">Объявление моделей</a><a href="connecting_to_the_database.html" class="sidebar-link">Подключение к базе данных</a><strong class="sidebar-title">CRUD интерфейс</strong><a href="create.html" class="sidebar-link">Создать</a><a href="query.html" class="sidebar-link">Запрос</a><a href="advanced_query.html" class="sidebar-link">Расширенный запрос</a><a href="update.html" class="sidebar-link">Обновление</a><a href="delete.html" class="sidebar-link">Удалить</a><a href="sql_builder.html" class="sidebar-link">Raw SQL и конструктор SQL</a><strong class="sidebar-title">Связи</strong><a href="belongs_to.html" class="sidebar-link">Belongs To</a><a href="has_one.html" class="sidebar-link">Has One</a><a href="has_many.html" class="sidebar-link">Has Many</a><a href="many_to_many.html" class="sidebar-link">Many To Many</a><a href="associations.html" class="sidebar-link">Режим связи</a><a href="preload.html" class="sidebar-link">Предзагрузка (Нетерпеливая загрузка)</a><strong class="sidebar-title">Обучение</strong><a href="context.html" class="sidebar-link">Контекст</a><a href="error_handling.html" class="sidebar-link">Обработка ошибок</a><a href="method_chaining.html" class="sidebar-link">Цепочки методов</a><a href="session.html" class="sidebar-link">Сессия</a><a href="hooks.html" class="sidebar-link">Хуки</a><a href="transactions.html" class="sidebar-link">Транзакции</a><a href="migration.html" class="sidebar-link">Миграция</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">Универсальный интерфейс базы данных</a><a href="performance.html" class="sidebar-link">Производительность</a><a href="data_types.html" class="sidebar-link">Настройка типов данных</a><a href="scopes.html" class="sidebar-link">Области</a><a href="conventions.html" class="sidebar-link">Преобразования</a><a href="settings.html" class="sidebar-link">Настройки</a><strong class="sidebar-title">Дополнительные возможности</strong><a href="dbresolver.html" class="sidebar-link">Резолвер базы данных</a><a href="sharding.html" class="sidebar-link">Sharding</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">Подсказки</a><a href="indexes.html" class="sidebar-link">Индексы</a><a href="constraints.html" class="sidebar-link">Ограничения</a><a href="composite_primary_key.html" class="sidebar-link">Композитный первичный ключ</a><a href="security.html" class="sidebar-link">Безопасность</a><a href="gorm_config.html" class="sidebar-link current">Настройки GORM</a><a href="write_plugins.html" class="sidebar-link">Написание плагинов</a><a href="write_driver.html" class="sidebar-link">Написание драйверов</a><a href="changelog.html" class="sidebar-link">История изменений</a><a href="/community.html" class="sidebar-link">Сообщество</a><a href="/contribute.html" class="sidebar-link">Внести вклад</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">Перевести текущий сайт</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2022 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://www.qiniu.com/" target="_blank">七牛云</a> 对 CDN 的赞助，<a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>Главная</a>
+      </li>
+      <a href="/ru_RU/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>Документация</a><a href="/ru_RU/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>Сообщество</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/ru_RU/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Внести вклад</a>
+    </ul>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>Русский</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/gorm_config.html">
+      
+        <option value="en">English</option>
+      
+        <option value="zh_CN">简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="es_ES">Español</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="ja_JP">日本語</option>
+      
+        <option value="ru_RU" selected>Русский</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>

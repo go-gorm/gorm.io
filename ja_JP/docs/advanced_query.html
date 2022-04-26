@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="ja_JP">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>高度なクエリ | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://gorm.io/ja_JP/docs/advanced_query.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="http://gorm.io/docs/advanced_query.html">
+    
+      <link rel="alternative" hreflang="zh_CN" href="http://gorm.io/zh_CN/docs/advanced_query.html">
+    
+      <link rel="alternative" hreflang="de_DE" href="http://gorm.io/de_DE/docs/advanced_query.html">
+    
+      <link rel="alternative" hreflang="es_ES" href="http://gorm.io/es_ES/docs/advanced_query.html">
+    
+      <link rel="alternative" hreflang="id_ID" href="http://gorm.io/id_ID/docs/advanced_query.html">
+    
+      <link rel="alternative" hreflang="it_IT" href="http://gorm.io/it_IT/docs/advanced_query.html">
+    
+      <link rel="alternative" hreflang="ja_JP" href="http://gorm.io/ja_JP/docs/advanced_query.html">
+    
+      <link rel="alternative" hreflang="ru_RU" href="http://gorm.io/ru_RU/docs/advanced_query.html">
+    
+      <link rel="alternative" hreflang="fr_FR" href="http://gorm.io/fr_FR/docs/advanced_query.html">
+    
+      <link rel="alternative" hreflang="ko_KR" href="http://gorm.io/ko_KR/docs/advanced_query.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM">
+  <!-- Open Graph -->
+  <meta name="description" content="便利なフィールドの選択GORMでは Select で選択するフィールド指定することができます。アプリケーションでこれを頻繁に使用する場合は、特定のフィールドを自動的に選択できる、用途に適した構造体を定義するとよいでしょう。例: type User struct &amp;#123;  ID     uint  Name   string  Age    int  Gender string  &#x2F;&#x2F; hun">
+<meta property="og:type" content="website">
+<meta property="og:title" content="高度なクエリ">
+<meta property="og:url" content="http://gorm.io/ja_JP/docs/advanced_query.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="便利なフィールドの選択GORMでは Select で選択するフィールド指定することができます。アプリケーションでこれを頻繁に使用する場合は、特定のフィールドを自動的に選択できる、用途に適した構造体を定義するとよいでしょう。例: type User struct &amp;#123;  ID     uint  Name   string  Age    int  Gender string  &#x2F;&#x2F; hun">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:published_time" content="2022-04-26T02:31:58.530Z">
+<meta property="article:modified_time" content="2022-04-26T02:31:58.530Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+</head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/ja_JP/" id="logo">GORM</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/ja_JP/docs/" class="main-nav-link"><i class="fa fa-book"></i>ドキュメント</a><a href="/ja_JP/community.html" class="main-nav-link"><i class="fab fa-slack"></i>コミュニティ</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/ja_JP/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="ドキュメントを検索する">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>日本語</span></label>
+      <select id="lang-select" data-canonical="docs/advanced_query.html">
+        
+          <option value="en">English</option>
+        
+          <option value="zh_CN">简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="es_ES">Español</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="ja_JP" selected>日本語</option>
+        
+          <option value="ru_RU">Русский</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">高度なクエリ</h1>
+                
+                <a href="https://translate.gorm.io/project/go-gorm/ja" target="_blank" rel="noopener" class="article-edit-link" title="このページを改善する"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><h2 id="便利なフィールドの選択" class="article-heading"><a href="#便利なフィールドの選択" class="headerlink" title="便利なフィールドの選択"></a><span id="smart_select">便利なフィールドの選択</span><a class="article-anchor" href="#便利なフィールドの選択" aria-hidden="true"></a></h2><p>GORMでは <a href="query.html"><code>Select</code></a> で選択するフィールド指定することができます。アプリケーションでこれを頻繁に使用する場合は、特定のフィールドを自動的に選択できる、用途に適した構造体を定義するとよいでしょう。例:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID     <span class="keyword">uint</span></span><br><span class="line">  Name   <span class="keyword">string</span></span><br><span class="line">  Age    <span class="keyword">int</span></span><br><span class="line">  Gender <span class="keyword">string</span></span><br><span class="line">  <span class="comment">// hundreds of fields</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> APIUser <span class="keyword">struct</span> {</span><br><span class="line">  ID   <span class="keyword">uint</span></span><br><span class="line">  Name <span class="keyword">string</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Select `id`, `name` automatically when querying</span></span><br><span class="line">db.Model(&amp;User{}).Limit(<span class="number">10</span>).Find(&amp;APIUser{})</span><br><span class="line"><span class="comment">// SELECT `id`, `name` FROM `users` LIMIT 10</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note warn"><p><strong>注意</strong> <code>QueryFields</code> モードを有効にすると、モデルのすべてのフィールド名を選択するようになります。</p>
+</blockquote>
+
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"gorm.db"</span>), &amp;gorm.Config{</span><br><span class="line">  QueryFields: <span class="literal">true</span>,</span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">db.Find(&amp;user)</span><br><span class="line"><span class="comment">// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Session Mode</span></span><br><span class="line">db.Session(&amp;gorm.Session{QueryFields: <span class="literal">true</span>}).Find(&amp;user)</span><br><span class="line"><span class="comment">// SELECT `users`.`name`, `users`.`age`, ... FROM `users`</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="ロック-FOR-UPDATE" class="article-heading"><a href="#ロック-FOR-UPDATE" class="headerlink" title="ロック (FOR UPDATE)"></a>ロック (FOR UPDATE)<a class="article-anchor" href="#ロック-FOR-UPDATE" aria-hidden="true"></a></h2><p>GORMは数種類のロック処理をサポートしています。例:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Clauses(clause.Locking{Strength: <span class="string">"UPDATE"</span>}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM `users` FOR UPDATE</span></span><br><span class="line"></span><br><span class="line">db.Clauses(clause.Locking{</span><br><span class="line">  Strength: <span class="string">"SHARE"</span>,</span><br><span class="line">  Table: clause.Table{Name: clause.CurrentTable},</span><br><span class="line">}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM `users` FOR SHARE OF `users`</span></span><br><span class="line"></span><br><span class="line">db.Clauses(clause.Locking{</span><br><span class="line">  Strength: <span class="string">"UPDATE"</span>,</span><br><span class="line">  Options: <span class="string">"NOWAIT"</span>,</span><br><span class="line">}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM `users` FOR UPDATE NOWAIT</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>詳細については、<a href="sql_builder.html">Raw SQL and SQL Builder</a>を参照してください。</p>
+<h2 id="サブクエリ" class="article-heading"><a href="#サブクエリ" class="headerlink" title="サブクエリ"></a>サブクエリ<a class="article-anchor" href="#サブクエリ" aria-hidden="true"></a></h2><p>クエリ内にサブクエリをネストすることができます。GORMは、パラメータとして <code>*gorm.DB</code> オブジェクトを使用するとサブクエリを生成できます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Where(<span class="string">"amount &gt; (?)"</span>, db.Table(<span class="string">"orders"</span>).Select(<span class="string">"AVG(amount)"</span>)).Find(&amp;orders)</span><br><span class="line"><span class="comment">// SELECT * FROM "orders" WHERE amount &gt; (SELECT AVG(amount) FROM "orders");</span></span><br><span class="line"></span><br><span class="line">subQuery := db.Select(<span class="string">"AVG(age)"</span>).Where(<span class="string">"name LIKE ?"</span>, <span class="string">"name%"</span>).Table(<span class="string">"users"</span>)</span><br><span class="line">db.Select(<span class="string">"AVG(age) as avgage"</span>).Group(<span class="string">"name"</span>).Having(<span class="string">"AVG(age) &gt; (?)"</span>, subQuery).Find(&amp;results)</span><br><span class="line"><span class="comment">// SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) &gt; (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="From句でのサブクエリ" class="article-heading"><a href="#From句でのサブクエリ" class="headerlink" title="From句でのサブクエリ"></a><span id="from_subquery">From句でのサブクエリ</span><a class="article-anchor" href="#From句でのサブクエリ" aria-hidden="true"></a></h3><p>GORMでは、<code>Table</code>を用いることで、FROM句でサブクエリを使用することができます。例:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Table(<span class="string">"(?) as u"</span>, db.Model(&amp;User{}).Select(<span class="string">"name"</span>, <span class="string">"age"</span>)).Where(<span class="string">"age = ?"</span>, <span class="number">18</span>}).Find(&amp;User{})</span><br><span class="line"><span class="comment">// SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18</span></span><br><span class="line"></span><br><span class="line">subQuery1 := db.Model(&amp;User{}).Select(<span class="string">"name"</span>)</span><br><span class="line">subQuery2 := db.Model(&amp;Pet{}).Select(<span class="string">"name"</span>)</span><br><span class="line">db.Table(<span class="string">"(?) as u, (?) as p"</span>, subQuery1, subQuery2).Find(&amp;User{})</span><br><span class="line"><span class="comment">// SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="条件をグループ化する" class="article-heading"><a href="#条件をグループ化する" class="headerlink" title="条件をグループ化する"></a><span id="group_conditions">条件をグループ化する</span><a class="article-anchor" href="#条件をグループ化する" aria-hidden="true"></a></h2><p>グループ条件で複雑な SQL クエリを簡単に記述できます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Where(</span><br><span class="line">    db.Where(<span class="string">"pizza = ?"</span>, <span class="string">"pepperoni"</span>).Where(db.Where(<span class="string">"size = ?"</span>, <span class="string">"small"</span>).Or(<span class="string">"size = ?"</span>, <span class="string">"medium"</span>)),</span><br><span class="line">).Or(</span><br><span class="line">    db.Where(<span class="string">"pizza = ?"</span>, <span class="string">"hawaiian"</span>).Where(<span class="string">"size = ?"</span>, <span class="string">"xlarge"</span>),</span><br><span class="line">).Find(&amp;Pizza{}).Statement</span><br><span class="line"></span><br><span class="line"><span class="comment">// SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="複数カラムでのIN" class="article-heading"><a href="#複数カラムでのIN" class="headerlink" title="複数カラムでのIN"></a>複数カラムでのIN<a class="article-anchor" href="#複数カラムでのIN" aria-hidden="true"></a></h2><p>IN句で複数カラムを指定してレコードを取得することができます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Where(<span class="string">"(name, age, role) IN ?"</span>, [][]<span class="keyword">interface</span>{}{{<span class="string">"jinzhu"</span>, <span class="number">18</span>, <span class="string">"admin"</span>}, {<span class="string">"jinzhu2"</span>, <span class="number">19</span>, <span class="string">"user"</span>}}).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="名前付き引数" class="article-heading"><a href="#名前付き引数" class="headerlink" title="名前付き引数"></a>名前付き引数<a class="article-anchor" href="#名前付き引数" aria-hidden="true"></a></h2><p>GORMは<a href="https://tip.golang.org/pkg/database/sql/#NamedArg" target="_blank" rel="noopener"><code>sql.NamedArg</code></a>や<code>map[string]interface{}{}</code>を使用した名前付き引数をサポートしています 。例：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Where(<span class="string">"name1 = @name OR name2 = @name"</span>, sql.Named(<span class="string">"name"</span>, <span class="string">"jinzhu"</span>)).Find(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"</span></span><br><span class="line"></span><br><span class="line">db.Where(<span class="string">"name1 = @name OR name2 = @name"</span>, <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"name"</span>: <span class="string">"jinzhu"</span>}).First(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>より詳細については、 <a href="sql_builder.html#named_argument">Raw SQL and SQL Builder</a> も参照してみてください。</p>
+<h2 id="取得結果をマップに代入" class="article-heading"><a href="#取得結果をマップに代入" class="headerlink" title="取得結果をマップに代入"></a>取得結果をマップに代入<a class="article-anchor" href="#取得結果をマップに代入" aria-hidden="true"></a></h2><p>GORMでは取得結果を <code>map[string]interface{}</code>や <code>[]map[string]interface{}</code> に代入することができます。その際 <code>Model</code> や <code>Table</code> の指定を忘れないでください。例：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">result := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{}</span><br><span class="line">db.Model(&amp;User{}).First(&amp;result, <span class="string">"id = ?"</span>, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> results []<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}</span><br><span class="line">db.Table(<span class="string">"users"</span>).Find(&amp;results)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="FirstOrInit" class="article-heading"><a href="#FirstOrInit" class="headerlink" title="FirstOrInit"></a>FirstOrInit<a class="article-anchor" href="#FirstOrInit" aria-hidden="true"></a></h2><p>条件に最初に一致するレコードを取得するか、指定された条件を使用して構造体のインスタンスを初期化します (構造体、map条件でのみ動作します)。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// ユーザを取得できないため、与えられた条件でユーザを初期化</span></span><br><span class="line">db.FirstOrInit(&amp;user, User{Name: <span class="string">"non_existing"</span>})</span><br><span class="line"><span class="comment">// user -&gt; User{Name: "non_existing"}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `name` = `jinzhu` の条件でユーザを取得できた</span></span><br><span class="line">db.Where(User{Name: <span class="string">"jinzhu"</span>}).FirstOrInit(&amp;user)</span><br><span class="line"><span class="comment">// user -&gt; User{ID: 111, Name: "Jinzhu", Age: 18}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `name` = `jinzhu` の条件でユーザを取得できた</span></span><br><span class="line">db.FirstOrInit(&amp;user, <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">interface</span>{}{<span class="string">"name"</span>: <span class="string">"jinzhu"</span>})</span><br><span class="line"><span class="comment">// user -&gt; User{ID: 111, Name: "Jinzhu", Age: 18}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>レコードが見つからない場合のみ、struct をより多くの属性で初期化できます。これらの <code>Attrs（属性）</code> はSQLクエリの生成には使用されません。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Userが見つからないため、取得条件とAttrsで指定された属性で構造体を初期化</span></span><br><span class="line">db.Where(User{Name: <span class="string">"non_existing"</span>}).Attrs(User{Age: <span class="number">20</span>}).FirstOrInit(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;</span></span><br><span class="line"><span class="comment">// user -&gt; User{Name: "non_existing", Age: 20}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Userが見つからないため、取得条件とAttrsで指定された属性で構造体を初期化</span></span><br><span class="line">db.Where(User{Name: <span class="string">"non_existing"</span>}).Attrs(<span class="string">"age"</span>, <span class="number">20</span>).FirstOrInit(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;</span></span><br><span class="line"><span class="comment">// user -&gt; User{Name: "non_existing", Age: 20}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `name` = `jinzhu` のUserが見つかったため、Attrsで指定された属性は無視される</span></span><br><span class="line">db.Where(User{Name: <span class="string">"Jinzhu"</span>}).Attrs(User{Age: <span class="number">20</span>}).FirstOrInit(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;</span></span><br><span class="line"><span class="comment">// user -&gt; User{ID: 111, Name: "Jinzhu", Age: 18}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>Assign</code> メソッドを使用すると、レコードが見つかったかどうかにかかわらず、指定した値を構造体に割り当てます。このメソッドで指定した属性はレコード取得時のSQLクエリには使用されません。また、生成されたデータのデータベースへの登録も行われません。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Userが見つからないため、取得条件とAssignで指定された属性で構造体を初期化</span></span><br><span class="line">db.Where(User{Name: <span class="string">"non_existing"</span>}).Assign(User{Age: <span class="number">20</span>}).FirstOrInit(&amp;user)</span><br><span class="line"><span class="comment">// user -&gt; User{Name: "non_existing", Age: 20}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `name` = `jinzhu` のUserが見つかったため、取得レコードの値とAssignで指定された値で構造体を生成</span></span><br><span class="line">db.Where(User{Name: <span class="string">"Jinzhu"</span>}).Assign(User{Age: <span class="number">20</span>}).FirstOrInit(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;</span></span><br><span class="line"><span class="comment">// user -&gt; User{ID: 111, Name: "Jinzhu", Age: 20}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="FirstOrCreate" class="article-heading"><a href="#FirstOrCreate" class="headerlink" title="FirstOrCreate"></a>FirstOrCreate<a class="article-anchor" href="#FirstOrCreate" aria-hidden="true"></a></h2><p>条件に最初に一致するレコードを取得するか、指定された条件で新しいレコードを作成します (構造体、map条件でのみ動作します)。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Userが見つからないため、指定された条件でレコードを作成する</span></span><br><span class="line">db.FirstOrCreate(&amp;user, User{Name: <span class="string">"non_existing"</span>})</span><br><span class="line"><span class="comment">// INSERT INTO "users" (name) VALUES ("non_existing");</span></span><br><span class="line"><span class="comment">// user -&gt; User{ID: 112, Name: "non_existing"}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `name` = `jinzhu` のUserが見つかった</span></span><br><span class="line">db.Where(User{Name: <span class="string">"jinzhu"</span>}).FirstOrCreate(&amp;user)</span><br><span class="line"><span class="comment">// user -&gt; User{ID: 111, Name: "jinzhu", "Age": 18}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>Attrs</code> メソッドを使用すると、レコードが見つからない場合に作成されるデータの属性をより多く指定することができます。このメソッドで指定した属性はレコード取得時のSQLクエリには使用されません。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Userが見つからないため、取得条件とAttrsで指定された属性でレコードを作成</span></span><br><span class="line">db.Where(User{Name: <span class="string">"non_existing"</span>}).Attrs(User{Age: <span class="number">20</span>}).FirstOrCreate(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;</span></span><br><span class="line"><span class="comment">// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);</span></span><br><span class="line"><span class="comment">// user -&gt; User{ID: 112, Name: "non_existing", Age: 20}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `name` = `jinzhu`のユーザが見つかったため、Attrsで指定された属性は無視される</span></span><br><span class="line">db.Where(User{Name: <span class="string">"jinzhu"</span>}).Attrs(User{Age: <span class="number">20</span>}).FirstOrCreate(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;</span></span><br><span class="line"><span class="comment">// user -&gt; User{ID: 111, Name: "jinzhu", Age: 18}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>Assign</code> メソッドを使用すると、レコードが見つかったどうかにかかわらず、指定した値をデータベースに登録します。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Userが見つからないため、取得条件とAssignで指定された属性でレコードを作成</span></span><br><span class="line">db.Where(User{Name: <span class="string">"non_existing"</span>}).Assign(User{Age: <span class="number">20</span>}).FirstOrCreate(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;</span></span><br><span class="line"><span class="comment">// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);</span></span><br><span class="line"><span class="comment">// user -&gt; User{ID: 112, Name: "non_existing", Age: 20}</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// `name` = `jinzhu`のUserが見つかったため、Assignの値で取得したレコードを更新する</span></span><br><span class="line">db.Where(User{Name: <span class="string">"jinzhu"</span>}).Assign(User{Age: <span class="number">20</span>}).FirstOrCreate(&amp;user)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;</span></span><br><span class="line"><span class="comment">// UPDATE users SET age=20 WHERE id = 111;</span></span><br><span class="line"><span class="comment">// user -&gt; User{ID: 111, Name: "jinzhu", Age: 20}</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Optimizer-Index-Hints" class="article-heading"><a href="#Optimizer-Index-Hints" class="headerlink" title="Optimizer/Index Hints"></a>Optimizer/Index Hints<a class="article-anchor" href="#Optimizer-Index-Hints" aria-hidden="true"></a></h2><p>オプティマイザヒントを利用することで、特定のクエリ実行計画を選択するようオプティマイザを制御することができます。GORMでは、 <code>gorm.io/hints</code> でそれをサポートしています。例：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"gorm.io/hints"</span></span><br><span class="line"></span><br><span class="line">db.Clauses(hints.New(<span class="string">"MAX_EXECUTION_TIME(10000)"</span>)).Find(&amp;User{})</span><br><span class="line"><span class="comment">// SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>クエリプランナーが最適なクエリを計画できていない場合、データベースにインデックスヒントを渡すことができます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"gorm.io/hints"</span></span><br><span class="line"></span><br><span class="line">db.Clauses(hints.UseIndex(<span class="string">"idx_user_name"</span>)).Find(&amp;User{})</span><br><span class="line"><span class="comment">// SELECT * FROM `users` USE INDEX (`idx_user_name`)</span></span><br><span class="line"></span><br><span class="line">db.Clauses(hints.ForceIndex(<span class="string">"idx_user_name"</span>, <span class="string">"idx_user_id"</span>).ForJoin()).Find(&amp;User{})</span><br><span class="line"><span class="comment">// SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>詳細については、 <a href="hints.html">Optimizer Hints/Index/Comment</a> を参照してください。</p>
+<h2 id="Iteration" class="article-heading"><a href="#Iteration" class="headerlink" title="Iteration"></a>Iteration<a class="article-anchor" href="#Iteration" aria-hidden="true"></a></h2><p>GORMは行ごとのイテレーション処理をサポートしています。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">rows, err := db.Model(&amp;User{}).Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Rows()</span><br><span class="line"><span class="keyword">defer</span> rows.Close()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> rows.Next() {</span><br><span class="line">  <span class="keyword">var</span> user User</span><br><span class="line">  <span class="comment">// ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct</span></span><br><span class="line">  db.ScanRows(rows, &amp;user)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// do something</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="FindInBatches" class="article-heading"><a href="#FindInBatches" class="headerlink" title="FindInBatches"></a>FindInBatches<a class="article-anchor" href="#FindInBatches" aria-hidden="true"></a></h2><p>バッチ処理におけるクエリやレコード処理を行うことができます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// batch size 100</span></span><br><span class="line">result := db.Where(<span class="string">"processed = ?"</span>, <span class="literal">false</span>).FindInBatches(&amp;results, <span class="number">100</span>, <span class="function"><span class="keyword">func</span><span class="params">(tx *gorm.DB, batch <span class="keyword">int</span>)</span> <span class="title">error</span></span> {</span><br><span class="line">  <span class="keyword">for</span> _, result := <span class="keyword">range</span> results {</span><br><span class="line">    <span class="comment">// batch processing found records</span></span><br><span class="line">  }</span><br><span class="line"></span><br><span class="line">  tx.Save(&amp;results)</span><br><span class="line"></span><br><span class="line">  tx.RowsAffected <span class="comment">// number of records in this batch</span></span><br><span class="line"></span><br><span class="line">  batch <span class="comment">// Batch 1, 2, 3</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// returns error will stop future batches</span></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">result.Error <span class="comment">// returned error</span></span><br><span class="line">result.RowsAffected <span class="comment">// processed records count in all batches</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Query-Hooks" class="article-heading"><a href="#Query-Hooks" class="headerlink" title="Query Hooks"></a>Query Hooks<a class="article-anchor" href="#Query-Hooks" aria-hidden="true"></a></h2><p>GORMではレコード取得のフック処理に <code>AfterFind</code> を利用することができます。このメソッドはレコードを取得時に呼び出されます。 詳細は <a href="hooks.html">Hooks</a> を参照してください。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *User)</span> <span class="title">AfterFind</span><span class="params">(tx *gorm.DB)</span> <span class="params">(err error)</span></span> {</span><br><span class="line">  <span class="keyword">if</span> u.Role == <span class="string">""</span> {</span><br><span class="line">    u.Role = <span class="string">"user"</span></span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Pluck" class="article-heading"><a href="#Pluck" class="headerlink" title="Pluck"></a><span id="pluck">Pluck</span><a class="article-anchor" href="#Pluck" aria-hidden="true"></a></h2><p>1つのカラムからのみ値を取得してsliceに代入することができます。複数のカラムから値を取得する場合は、 <code>Select</code> と <a href="query.html#scan"><code>Scan</code></a> を代わりに利用する必要があります。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> ages []<span class="keyword">int64</span></span><br><span class="line">db.Model(&amp;users).Pluck(<span class="string">"age"</span>, &amp;ages)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> names []<span class="keyword">string</span></span><br><span class="line">db.Model(&amp;User{}).Pluck(<span class="string">"name"</span>, &amp;names)</span><br><span class="line"></span><br><span class="line">db.Table(<span class="string">"deleted_users"</span>).Pluck(<span class="string">"name"</span>, &amp;names)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Distinct Pluck</span></span><br><span class="line">db.Model(&amp;User{}).Distinct().Pluck(<span class="string">"Name"</span>, &amp;names)</span><br><span class="line"><span class="comment">// SELECT DISTINCT `name` FROM `users`</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2つ以上のカラムを指定する場合は、以下のように `Scan` もしくは `Find` を利用します</span></span><br><span class="line">db.Select(<span class="string">"name"</span>, <span class="string">"age"</span>).Scan(&amp;users)</span><br><span class="line">db.Select(<span class="string">"name"</span>, <span class="string">"age"</span>).Find(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Scopes" class="article-heading"><a href="#Scopes" class="headerlink" title="Scopes"></a>Scopes<a class="article-anchor" href="#Scopes" aria-hidden="true"></a></h2><p>共通で使用されるクエリ処理は関数化することができます。<code>Scopes</code> を使用すると、関数化されたクエリ処理を指定することができます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">AmountGreaterThan1000</span><span class="params">(db *gorm.DB)</span> *<span class="title">gorm</span>.<span class="title">DB</span></span> {</span><br><span class="line">  <span class="keyword">return</span> db.Where(<span class="string">"amount &gt; ?"</span>, <span class="number">1000</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">PaidWithCreditCard</span><span class="params">(db *gorm.DB)</span> *<span class="title">gorm</span>.<span class="title">DB</span></span> {</span><br><span class="line">  <span class="keyword">return</span> db.Where(<span class="string">"pay_mode_sign = ?"</span>, <span class="string">"C"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">PaidWithCod</span><span class="params">(db *gorm.DB)</span> *<span class="title">gorm</span>.<span class="title">DB</span></span> {</span><br><span class="line">  <span class="keyword">return</span> db.Where(<span class="string">"pay_mode_sign = ?"</span>, <span class="string">"C"</span>)</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">OrderStatus</span><span class="params">(status []<span class="keyword">string</span>)</span> <span class="title">func</span> <span class="params">(db *gorm.DB)</span> *<span class="title">gorm</span>.<span class="title">DB</span></span> {</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">func</span> <span class="params">(db *gorm.DB)</span> *<span class="title">gorm</span>.<span class="title">DB</span></span> {</span><br><span class="line">    <span class="keyword">return</span> db.Where(<span class="string">"status IN (?)"</span>, status)</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&amp;orders)</span><br><span class="line"><span class="comment">// Find all credit card orders and amount greater than 1000</span></span><br><span class="line"></span><br><span class="line">db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&amp;orders)</span><br><span class="line"><span class="comment">// Find all COD orders and amount greater than 1000</span></span><br><span class="line"></span><br><span class="line">db.Scopes(AmountGreaterThan1000, OrderStatus([]<span class="keyword">string</span>{<span class="string">"paid"</span>, <span class="string">"shipped"</span>})).Find(&amp;orders)</span><br><span class="line"><span class="comment">// Find all paid, shipped orders that amount greater than 1000</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>詳細については <a href="scopes.html">Scopes</a> を確認してください。</p>
+<h2 id="Count" class="article-heading"><a href="#Count" class="headerlink" title="Count"></a><span id="count">Count</span><a class="article-anchor" href="#Count" aria-hidden="true"></a></h2><p>条件に一致したレコード数を取得することができます。</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> count <span class="keyword">int64</span></span><br><span class="line">db.Model(&amp;User{}).Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Or(<span class="string">"name = ?"</span>, <span class="string">"jinzhu 2"</span>).Count(&amp;count)</span><br><span class="line"><span class="comment">// SELECT count(1) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'</span></span><br><span class="line"></span><br><span class="line">db.Model(&amp;User{}).Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Count(&amp;count)</span><br><span class="line"><span class="comment">// SELECT count(1) FROM users WHERE name = 'jinzhu'; (count)</span></span><br><span class="line"></span><br><span class="line">db.Table(<span class="string">"deleted_users"</span>).Count(&amp;count)</span><br><span class="line"><span class="comment">// SELECT count(1) FROM deleted_users;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Count with Distinct</span></span><br><span class="line">db.Model(&amp;User{}).Distinct(<span class="string">"name"</span>).Count(&amp;count)</span><br><span class="line"><span class="comment">// SELECT COUNT(DISTINCT(`name`)) FROM `users`</span></span><br><span class="line"></span><br><span class="line">db.Table(<span class="string">"deleted_users"</span>).Select(<span class="string">"count(distinct(name))"</span>).Count(&amp;count)</span><br><span class="line"><span class="comment">// SELECT count(distinct(name)) FROM deleted_users</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Count with Group</span></span><br><span class="line">users := []User{</span><br><span class="line">  {Name: <span class="string">"name1"</span>},</span><br><span class="line">  {Name: <span class="string">"name2"</span>},</span><br><span class="line">  {Name: <span class="string">"name3"</span>},</span><br><span class="line">  {Name: <span class="string">"name3"</span>},</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Model(&amp;User{}).Group(<span class="string">"name"</span>).Count(&amp;count)</span><br><span class="line">count <span class="comment">// =&gt; 3</span></span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+              </div>
+
+              
+              <div>
+                <a href="v2_release_note.html" target="_blank">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Latest GORM Release&color=red&&style=for-the-badge&logo=go&logoColor=red">
+                </a>
+              </div>
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2022-04-26T02:31:58.530Z" itemprop="dateModified">最終更新: 2022-04-26</time>
+<a href="query.html" class="article-footer-prev" title="レコードの取得"><i class="fa fa-chevron-left"></i><span>前へ</span></a><a href="update.html" class="article-footer-next" title="レコードの更新"><span>次へ</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <div class="sponsor_item">
+        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <!-- <h1>Platinum Sponsors</h1> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+
+      <h1>Gold Sponsors</h1>
+      <div class="sponsor_item">
+        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+
+      <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              
+<section id="comments">
+<div id="disqus_thread"></div>
+</sction>
+
+<script>
+var disqus_config = function () {
+this.page.url = 'http://gorm.io/ja_JP/docs/advanced_query.html';
+this.page.identifier = 'http://gorm.io/ja_JP/docs/advanced_query.html';
+this.language = 'jp';
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://gormv2.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">内容</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#便利なフィールドの選択"><span class="toc-text">便利なフィールドの選択</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ロック-FOR-UPDATE"><span class="toc-text">ロック (FOR UPDATE)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#サブクエリ"><span class="toc-text">サブクエリ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#From句でのサブクエリ"><span class="toc-text">From句でのサブクエリ</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#条件をグループ化する"><span class="toc-text">条件をグループ化する</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#複数カラムでのIN"><span class="toc-text">複数カラムでのIN</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#名前付き引数"><span class="toc-text">名前付き引数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#取得結果をマップに代入"><span class="toc-text">取得結果をマップに代入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FirstOrInit"><span class="toc-text">FirstOrInit</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FirstOrCreate"><span class="toc-text">FirstOrCreate</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Optimizer-Index-Hints"><span class="toc-text">Optimizer&#x2F;Index Hints</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Iteration"><span class="toc-text">Iteration</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#FindInBatches"><span class="toc-text">FindInBatches</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Query-Hooks"><span class="toc-text">Query Hooks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pluck"><span class="toc-text">Pluck</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scopes"><span class="toc-text">Scopes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Count"><span class="toc-text">Count</span></a></li></ol>
+
+              
+                <a href="https://translate.gorm.io/project/go-gorm/ja" target="_blank" id="article-improve">
+                  このページを改善する
+                </a>
+              
+              <a href="#" id="article-toc-top">トップに戻る</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">概要</a><a href="models.html" class="sidebar-link">モデルを宣言する</a><a href="connecting_to_the_database.html" class="sidebar-link">データベースに接続する</a><strong class="sidebar-title">CRUD Interface</strong><a href="create.html" class="sidebar-link">レコードの作成</a><a href="query.html" class="sidebar-link">レコードの取得</a><a href="advanced_query.html" class="sidebar-link current">高度なクエリ</a><a href="update.html" class="sidebar-link">レコードの更新</a><a href="delete.html" class="sidebar-link">レコードの削除</a><a href="sql_builder.html" class="sidebar-link">Raw SQL & SQL Builder</a><strong class="sidebar-title">アソシエーション</strong><a href="belongs_to.html" class="sidebar-link">Belongs To</a><a href="has_one.html" class="sidebar-link">Has One</a><a href="has_many.html" class="sidebar-link">Has Many</a><a href="many_to_many.html" class="sidebar-link">Many To Many</a><a href="associations.html" class="sidebar-link">Association Mode</a><a href="preload.html" class="sidebar-link">Preloading (Eager Loading)</a><strong class="sidebar-title">Tutorials</strong><a href="context.html" class="sidebar-link">Context</a><a href="error_handling.html" class="sidebar-link">エラーハンドリング</a><a href="method_chaining.html" class="sidebar-link">Method Chaining</a><a href="session.html" class="sidebar-link">Session</a><a href="hooks.html" class="sidebar-link">Hooks</a><a href="transactions.html" class="sidebar-link">トランザクション</a><a href="migration.html" class="sidebar-link">マイグレーション</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">汎用データベースインターフェース</a><a href="performance.html" class="sidebar-link">パフォーマンス</a><a href="data_types.html" class="sidebar-link">データ型のカスタマイズ</a><a href="scopes.html" class="sidebar-link">Scopes</a><a href="conventions.html" class="sidebar-link">規約</a><a href="settings.html" class="sidebar-link">値の受け渡し</a><strong class="sidebar-title">Advanced Topics</strong><a href="dbresolver.html" class="sidebar-link">Database Resolver</a><a href="sharding.html" class="sidebar-link">シャーディング</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">Hints</a><a href="indexes.html" class="sidebar-link">Index</a><a href="constraints.html" class="sidebar-link">制約</a><a href="composite_primary_key.html" class="sidebar-link">複合主キー</a><a href="security.html" class="sidebar-link">セキュリティ</a><a href="gorm_config.html" class="sidebar-link">GORM Config</a><a href="write_plugins.html" class="sidebar-link">プラグインの作成</a><a href="write_driver.html" class="sidebar-link">ドライバの作成</a><a href="changelog.html" class="sidebar-link">変更履歴</a><a href="/community.html" class="sidebar-link">コミュニティ</a><a href="/contribute.html" class="sidebar-link">貢献する</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">現在のサイトを翻訳する</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2022 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://www.qiniu.com/" target="_blank">七牛云</a> 对 CDN 的赞助，<a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>Home</a>
+      </li>
+      <a href="/ja_JP/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>ドキュメント</a><a href="/ja_JP/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>コミュニティ</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/ja_JP/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+    </ul>
+    
+      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">概要</a><a href="models.html" class="mobile-nav-link">モデルを宣言する</a><a href="connecting_to_the_database.html" class="mobile-nav-link">データベースに接続する</a><strong class="mobile-nav-title">CRUD Interface</strong><a href="create.html" class="mobile-nav-link">レコードの作成</a><a href="query.html" class="mobile-nav-link">レコードの取得</a><a href="advanced_query.html" class="mobile-nav-link current">高度なクエリ</a><a href="update.html" class="mobile-nav-link">レコードの更新</a><a href="delete.html" class="mobile-nav-link">レコードの削除</a><a href="sql_builder.html" class="mobile-nav-link">Raw SQL & SQL Builder</a><strong class="mobile-nav-title">アソシエーション</strong><a href="belongs_to.html" class="mobile-nav-link">Belongs To</a><a href="has_one.html" class="mobile-nav-link">Has One</a><a href="has_many.html" class="mobile-nav-link">Has Many</a><a href="many_to_many.html" class="mobile-nav-link">Many To Many</a><a href="associations.html" class="mobile-nav-link">Association Mode</a><a href="preload.html" class="mobile-nav-link">Preloading (Eager Loading)</a><strong class="mobile-nav-title">Tutorials</strong><a href="context.html" class="mobile-nav-link">Context</a><a href="error_handling.html" class="mobile-nav-link">エラーハンドリング</a><a href="method_chaining.html" class="mobile-nav-link">Method Chaining</a><a href="session.html" class="mobile-nav-link">Session</a><a href="hooks.html" class="mobile-nav-link">Hooks</a><a href="transactions.html" class="mobile-nav-link">トランザクション</a><a href="migration.html" class="mobile-nav-link">マイグレーション</a><a href="logger.html" class="mobile-nav-link">Logger</a><a href="generic_interface.html" class="mobile-nav-link">汎用データベースインターフェース</a><a href="performance.html" class="mobile-nav-link">パフォーマンス</a><a href="data_types.html" class="mobile-nav-link">データ型のカスタマイズ</a><a href="scopes.html" class="mobile-nav-link">Scopes</a><a href="conventions.html" class="mobile-nav-link">規約</a><a href="settings.html" class="mobile-nav-link">値の受け渡し</a><strong class="mobile-nav-title">Advanced Topics</strong><a href="dbresolver.html" class="mobile-nav-link">Database Resolver</a><a href="sharding.html" class="mobile-nav-link">シャーディング</a><a href="prometheus.html" class="mobile-nav-link">Prometheus</a><a href="hints.html" class="mobile-nav-link">Hints</a><a href="indexes.html" class="mobile-nav-link">Index</a><a href="constraints.html" class="mobile-nav-link">制約</a><a href="composite_primary_key.html" class="mobile-nav-link">複合主キー</a><a href="security.html" class="mobile-nav-link">セキュリティ</a><a href="gorm_config.html" class="mobile-nav-link">GORM Config</a><a href="write_plugins.html" class="mobile-nav-link">プラグインの作成</a><a href="write_driver.html" class="mobile-nav-link">ドライバの作成</a><a href="changelog.html" class="mobile-nav-link">変更履歴</a><a href="/community.html" class="mobile-nav-link">コミュニティ</a><a href="/contribute.html" class="mobile-nav-link">貢献する</a><a href="/contribute.html#Translate-this-site" class="mobile-nav-link">現在のサイトを翻訳する</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>日本語</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/advanced_query.html">
+      
+        <option value="en">English</option>
+      
+        <option value="zh_CN">简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="es_ES">Español</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="ja_JP" selected>日本語</option>
+      
+        <option value="ru_RU">Русский</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>
