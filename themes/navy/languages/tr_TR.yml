@@ -54,6 +54,7 @@ sidebar:
     settings: Ayarlar
     advanced_topics: İleri düzey Konular
     dbresolver: Veritabanı Çözücü
+    serializer: Serializer
     sharding: Yatay bölümleme (Sharding)
     prometheus: Prometheus
     hints: İpuçları

@@ -54,6 +54,7 @@ sidebar:
     settings: Pengaturan
     advanced_topics: Topik Lanjutan
     dbresolver: Pemecah Database
+    serializer: Serializer
     sharding: Pecahan
     prometheus: Prometeus
     hints: Petunjuk

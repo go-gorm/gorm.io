@@ -54,6 +54,7 @@ sidebar:
     settings: Configuración
     advanced_topics: Temas Avanzados
     dbresolver: Resolución de base de datos
+    serializer: Serializer
     sharding: Sharding
     prometheus: Prometheus
     hints: Pistas
