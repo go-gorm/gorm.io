@@ -45,7 +45,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
   <!-- RSS -->
-  <link rel="alternate" href="/atom.xml" title="GORM">
+  <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
   <meta name="description" content="Die fantastische ORM Bibliothek für Golang, stets auf Entwickler-Freundlichkeit aus.">
 <meta property="og:type" content="website">
@@ -54,8 +54,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="Die fantastische ORM Bibliothek für Golang, stets auf Entwickler-Freundlichkeit aus.">
 <meta property="og:locale" content="de_DE">
-<meta property="article:published_time" content="2022-04-26T02:31:58.518Z">
-<meta property="article:modified_time" content="2022-04-26T02:31:58.518Z">
+<meta property="article:published_time" content="2022-04-30T11:17:29.326Z">
+<meta property="article:modified_time" content="2022-04-30T11:17:29.326Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -68,7 +68,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-WSNPD75');</script>
 
 
-</head>
+<meta name="generator" content="Hexo 6.1.0"></head>
 
 <body>
   <div id="container">
@@ -127,23 +127,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <span id="banner-start-command">go get -u gorm.io/gorm</span><a id="banner-start-link" href="docs/"><i class="fa fa-arrow-right"></i></a>
     </div>
     <div id="banner-share"><div class="shields-images">
-  <a href="https://github.com/go-gorm/gorm/stargazers" target="_blank" rel="noopener">
+  <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm/stargazers">
     <img alt="GitHub stars" src="https://img.shields.io/github/stars/go-gorm/gorm?color=1e94de&style=for-the-badge&logo=github">
   </a>
 
-  <a href="https://github.com/go-gorm/gorm/network/members" target="_blank" rel="noopener">
+  <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm/network/members">
     <img alt="GitHub forks" src="https://img.shields.io/github/forks/go-gorm/gorm?color=1e94de&style=for-the-badge&logo=github">
   </a>
 
-  <a href="https://github.com/go-gorm/gorm/graphs/contributors" target="_blank" rel="noopener">
+  <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm/graphs/contributors">
     <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/go-gorm/gorm?color=1e94de&style=for-the-badge&logo=github">
   </a>
 
-  <a href="https://github.com/jinzhu" target="_blank" rel="noopener">
+  <a target="_blank" rel="noopener" href="https://github.com/jinzhu">
     <img alt="GitHub followers" src="https://img.shields.io/github/followers/jinzhu?color=1e94de&style=for-the-badge&logo=github">
   </a>
 
-  <a href="https://twitter.com/zhangjinzhu" target="_blank" rel="noopener">
+  <a target="_blank" rel="noopener" href="https://twitter.com/zhangjinzhu">
     <img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/zhangjinzhu?label=Jinzhu&style=for-the-badge&logo=twitter&logoColor=%23FFF&color=%234494D8">
   </a>
 
@@ -167,16 +167,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <ul>
 <li><i class="fa fa-rocket" aria-hidden="true"></i> Voll-funktionales ORM</li>
 <li><i class="fa fa-rocket" aria-hidden="true"></i> Associations (has one, has many, belongs to, many to many, polymorphism, single-table inheritance)</li>
-<li><i class="fa fa-rocket" aria-hidden="true"></i> Hooks (before/after create/save/update/delete/find)</li>
+<li><i class="fa fa-rocket" aria-hidden="true"></i> Hooks (before&#x2F;after create&#x2F;save&#x2F;update&#x2F;delete&#x2F;find)</li>
 <li><i class="fa fa-rocket" aria-hidden="true"></i> Eager loading with Preload, Joins</li>
 <li><i class="fa fa-rocket" aria-hidden="true"></i> Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point</li>
 <li><i class="fa fa-rocket" aria-hidden="true"></i> Context, Prepared Statement Mode, DryRun Mode</li>
-<li><i class="fa fa-rocket" aria-hidden="true"></i> Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer</li>
-<li><i class="fa fa-rocket" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery</li>
+<li><i class="fa fa-rocket" aria-hidden="true"></i> Batch Insert, FindInBatches, Find&#x2F;Create with Map, CRUD with SQL Expr and Context Valuer</li>
+<li><i class="fa fa-rocket" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer&#x2F;Index&#x2F;Comment Hints, Named Argument, SubQuery</li>
 <li><i class="fa fa-rocket" aria-hidden="true"></i> Composite Primary Key, Indexes, Constraints</li>
 <li><i class="fa fa-rocket" aria-hidden="true"></i> Auto Migrations</li>
 <li><i class="fa fa-rocket" aria-hidden="true"></i> Logger</li>
-<li><i class="fa fa-rocket" aria-hidden="true"></i> Erweiterbare und flexible Plugin API: Datenbank Resolver(mehrere Datenbanken, lese/schreib Trennung) / Prometheus…</li>
+<li><i class="fa fa-rocket" aria-hidden="true"></i> Erweiterbare und flexible Plugin API: Datenbank Resolver(mehrere Datenbanken, lese&#x2F;schreib Trennung) &#x2F; Prometheus…</li>
 <li><i class="fa fa-rocket" aria-hidden="true"></i> Jedes Feature enthält Tests</li>
 <li><i class="fa fa-rocket" aria-hidden="true"></i> Entwickler-freundlich</li>
 </ul>
