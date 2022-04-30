@@ -54,6 +54,7 @@ sidebar:
     settings: Настройки
     advanced_topics: Дополнительные возможности
     dbresolver: Резолвер базы данных
+    serializer: Serializer
     sharding: Sharding
     prometheus: Prometheus
     hints: Подсказки
