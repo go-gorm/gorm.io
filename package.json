@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "hexo": {
-    "version": "4.2.1"
+    "version": "5.4.2"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",

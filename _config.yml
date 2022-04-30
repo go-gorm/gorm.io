@@ -34,7 +34,8 @@ google_tag_manager: GTM-WSNPD75
 
 # Writing
 new_post_name: :title.md # File name of new posts
-external_link: true # Open external links in new tab
+external_link:
+  enable: true # Open external links in new tab
 filename_case: 0
 relative_link: false
 highlight:
