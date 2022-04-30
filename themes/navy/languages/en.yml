@@ -60,6 +60,7 @@ sidebar:
 
     advanced_topics: Advanced Topics
     dbresolver: Database Resolver
+    serializer: Serializer
     sharding: Sharding
     prometheus: Prometheus
     hints: Hints
