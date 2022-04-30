@@ -35,6 +35,7 @@ docs:
   advanced_topics:
     dbresolver: dbresolver.html
     sharding: sharding.html
+    serializer: serializer.html
     prometheus: prometheus.html
     hints: hints.html
     indexes: indexes.html
