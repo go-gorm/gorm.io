@@ -54,8 +54,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="モデルを宣言するモデルは Goの基本型、（基本型の）ポインタ&#x2F;エイリアス、 Scanner および Valuer インターフェイスを実装するカスタム型からなる通常の構造体です。 例： type User struct &amp;#123;  ID           uint  Name         string  Email        *string  Age          uin">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2022-04-30T11:17:29.338Z">
-<meta property="article:modified_time" content="2022-04-30T11:17:29.338Z">
+<meta property="article:published_time" content="2022-04-30T13:35:39.689Z">
+<meta property="article:modified_time" content="2022-04-30T13:35:39.689Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -182,84 +182,88 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <td>列のデータ型を指定できます。bool, int, uint, float, string, time, bytes などの全てのデータベースで動作する一般的なデータ型と互換性のあるものが良いでしょう。また、<code>not null</code>, <code>size</code>, <code>autoIncrement</code>… などの他のタグと併用することも可能です。 <code>varbinary(8)</code> などの特定のデータベースでのみ使用可能なデータ型もサポートしていますが、それらのデータ型を使用する場合は、データ型をフルで指定する必要があります。例： <code>MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT</code></td>
 </tr>
 <tr>
+<td>serializer</td>
+<td>specifies serializer for how to serialize and deserialize data into db, e.g: <code>serializer:json/gob/unixtime</code></td>
+</tr>
+<tr>
 <td>size</td>
-<td>列データのサイズ/長さを指定できます。例: <code>size:256</code></td>
+<td>specifies column data size/length, e.g: <code>size:256</code></td>
 </tr>
 <tr>
 <td>primaryKey</td>
-<td>主キーとなる列を指定できます</td>
+<td>specifies column as primary key</td>
 </tr>
 <tr>
 <td>unique</td>
-<td>一意な列として指定できます</td>
+<td>specifies column as unique</td>
 </tr>
 <tr>
 <td>default</td>
-<td>列のデフォルト値を指定できます</td>
+<td>specifies column default value</td>
 </tr>
 <tr>
 <td>precision</td>
-<td>列の精度（小数の有効桁数）を指定できます</td>
+<td>specifies column precision</td>
 </tr>
 <tr>
 <td>scale</td>
-<td>列の小数点以下桁数を指定できます</td>
+<td>specifies column scale</td>
 </tr>
 <tr>
 <td>not null</td>
-<td>列をNOT NULLに指定できます</td>
+<td>specifies column as NOT NULL</td>
 </tr>
 <tr>
 <td>autoIncrement</td>
-<td>AutoIncrement可能な列として指定できます</td>
+<td>specifies column auto incrementable</td>
 </tr>
 <tr>
 <td>autoIncrementIncrement</td>
-<td>AutoIncrementで処理毎にインクリメントされる値の増加分を指定できます</td>
+<td>auto increment step, controls the interval between successive column values</td>
 </tr>
 <tr>
 <td>embedded</td>
-<td>フィールドの埋め込みを指定できます</td>
+<td>embed the field</td>
 </tr>
 <tr>
 <td>embeddedPrefix</td>
-<td>埋め込まれたフィールドに対して、列名のプレフィックスを指定できます</td>
+<td>column name prefix for embedded fields</td>
 </tr>
 <tr>
 <td>autoCreateTime</td>
-<td>作成時に現在日時が自動で登録されるカラムを指定できます。 <code>int</code> 型のフィールドに対してはUNIX秒の値が設定されますが、ナノ秒/ミリ秒で登録したい場合は <code>nano</code>/<code>milli</code> を指定します。例： <code>autoCreateTime:nano</code></td>
+<td>track current time when creating, for <code>int</code> fields, it will track unix seconds, use value <code>nano</code>/<code>milli</code> to track unix nano/milli seconds, e.g: <code>autoCreateTime:nano</code></td>
 </tr>
 <tr>
 <td>autoUpdateTime</td>
-<td>作成/更新時に現在日時が自動で登録されるカラムを指定できます。 <code>int</code> 型のフィールドに対してはUNIX秒の値が設定されますが、ナノ秒/ミリ秒で登録したい場合は <code>nano</code>/<code>milli</code> を指定します。例： <code>autoUpdateTime:milli</code></td>
+<td>track current time when creating/updating, for <code>int</code> fields, it will track unix seconds, use value <code>nano</code>/<code>milli</code> to track unix nano/milli seconds, e.g: <code>autoUpdateTime:milli</code></td>
 </tr>
 <tr>
 <td>index</td>
-<td>オプション付きのインデックスを作成できます。複数のフィールドで同じ名前を使用した場合は複合インデックスが作成されます。詳細は <a href="indexes.html">インデックス</a> を参照してください。</td>
+<td>create index with options, use same name for multiple fields creates composite indexes, refer <a href="indexes.html">Indexes</a> for details</td>
 </tr>
 <tr>
 <td>uniqueIndex</td>
-<td><code>index</code> と同じですが、こちらはユニークインデックスを作成します。</td>
+<td>same as <code>index</code>, but create uniqued index</td>
 </tr>
 <tr>
 <td>check</td>
-<td>CHECK制約を作成します（例： <code>check:age &gt; 13</code> ）。<a href="constraints.html">制約</a> も参照</td>
+<td>creates check constraint, eg: <code>check:age &gt; 13</code>, refer <a href="constraints.html">Constraints</a></td>
 </tr>
 <tr>
 <td>&lt;-</td>
-<td>フィールドの書き込み権限を設定します。<code>&lt;-:create</code> は作成のみ可能、 <code>&lt;-:update</code> は更新のみ可能、<code>&lt;-:false</code> は書き込み権限がない、<code>&lt;-</code> は作成／更新権限があることを意味します</td>
+<td>set field’s write permission, <code>&lt;-:create</code> create-only field, <code>&lt;-:update</code> update-only field, <code>&lt;-:false</code> no write permission, <code>&lt;-</code> create and update permission</td>
 </tr>
 <tr>
 <td>-&gt;</td>
-<td>フィールドの読み込み権限を設定します。<code>-&gt;:false</code> は読み込み権限がないことを意味します</td>
+<td>set field’s read permission, <code>-&gt;:false</code> no read permission</td>
 </tr>
 <tr>
 <td>-</td>
-<td>このフィールドを無視します。 <code>-</code> は読み取り/書き込み権限なし、 <code>-:migration</code> はマイグレーション権限なし、 <code>-:all</code> は読み取り/書き込み/マイグレーション権限がないことを意味します。</td>
+<td>ignore this field, <code>-</code> no read/write permission, <code>-:migration</code> no migrate permission, <code>-:all</code> no read/write/migrate permission</td>
 </tr>
 <tr>
 <td>comment</td>
-<td>マイグレーション実行時にフィールドにコメントを追加できます</td>
+<td>add comment for field when migration</td>
 </tr>
 </tbody></table>
 <h3 id="アソシエーションで使用できるタグ" class="article-heading"><a href="#アソシエーションで使用できるタグ" class="headerlink" title="アソシエーションで使用できるタグ"></a>アソシエーションで使用できるタグ<a class="article-anchor" href="#アソシエーションで使用できるタグ" aria-hidden="true"></a></h3><p>GORMではアソシエーション用のタグを使用することで、外部キー、制約、many2many（多対多）テーブルなどを設定できます。詳細は <a href="associations.html#tags">Associations section</a> を参照してください。</p>
@@ -275,7 +279,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-04-30T11:17:29.338Z" itemprop="dateModified">最終更新: 2022-04-30</time>
+                <time class="article-footer-updated" datetime="2022-04-30T13:35:39.689Z" itemprop="dateModified">最終更新: 2022-04-30</time>
 <a href="index.html" class="article-footer-prev" title="概要"><i class="fa fa-chevron-left"></i><span>前へ</span></a><a href="connecting_to_the_database.html" class="article-footer-next" title="データベースに接続する"><span>次へ</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
