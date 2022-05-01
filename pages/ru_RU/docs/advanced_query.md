@@ -194,17 +194,19 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Получить первую совпавшую запись или создать новую с указанными параметрами (работает только со структурами и картами)
+Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
 
 ```go
-// User не найден, создать новую запись с заданными условиями
-db.FirstOrCreate(&user, User{Name: "non_existing"})
+// User not found, create a new record with give conditions
+result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
+// result.RowsAffected // => 0
 
-// Найден user с `name` = `jinzhu`
-db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
+// Found user with `name` = `jinzhu`
+result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
+// result.RowsAffected // => 0
 ```
 
 Создание структуры с дополнительными атрибутами если запись не найдена. Эти `Attrs` атрибуты не будут использованы в построении SQL запроса
