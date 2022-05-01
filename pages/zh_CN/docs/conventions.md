@@ -127,24 +127,40 @@ db.Create(&user2) // user2 的 `CreatedAt` 不会被修改
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
-### UpdatedAt
-
-对于有 `UpdatedAt` 字段的模型，更新记录时，将该字段的值设为当前时间。创建记录时，如果该字段值为零值，则将该字段的值设为当前时间
+You can disable the timestamp tracking by setting `autoCreateTime` tag to `false`, for example:
 
 ```go
-db.Save(&user) // 将 `UpdatedAt` 设为当前时间
+type User struct {
+  CreatedAt time.Time `gorm:"autoCreateTime:false"`
+}
+```
 
-db.Model(&user).Update("name", "jinzhu") // 会将 `UpdatedAt` 设为当前时间
+### UpdatedAt
 
-db.Model(&user).UpdateColumn("name", "jinzhu") // `UpdatedAt` 不会被修改
+For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
+
+```go
+db.Save(&user) // set `UpdatedAt` to current time
+
+db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+
+db.Model(&user).UpdateColumn("name", "jinzhu") // `UpdatedAt` won't be changed
 
 user2 := User{Name: "jinzhu", UpdatedAt: time.Now()}
-db.Create(&user2) // 创建记录时，user2 的 `UpdatedAt` 不会被修改
+db.Create(&user2) // user2's `UpdatedAt` won't be changed when creating
 
 user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
-db.Save(&user3) // 更新世，user3 的 `UpdatedAt` 会修改为当前时间
+db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
+```
+
+You can disable the timestamp tracking by setting `autoUpdateTime` tag to `false`, for example:
+
+```go
+type User struct {
+  UpdatedAt time.Time `gorm:"autoUpdateTime:false"`
+}
 ```
 
 {% note %}
-**注意** GORM 支持拥有多种类型的时间追踪字段。可以根据 UNIX（毫/纳）秒，查看 [Model](models.html#time_tracking) 获取详情
+**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
 {% endnote %}
