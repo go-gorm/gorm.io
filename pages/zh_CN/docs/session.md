@@ -6,18 +6,22 @@ layout: page
 GORM 提供了 `Session` 方法，这是一个 [`New Session Method`](method_chaining.html)，它允许创建带配置的新建会话模式：
 
 ```go
-// Session 配置
+// Session Configuration
 type Session struct {
-  DryRun                 bool
-  PrepareStmt            bool
-  NewDB                  bool
-  SkipHooks              bool
-  SkipDefaultTransaction bool
-  AllowGlobalUpdate      bool
-  FullSaveAssociations   bool
-  Context                context.Context
-  Logger                 logger.Interface
-  NowFunc                func() time.Time
+  DryRun                   bool
+  PrepareStmt              bool
+  NewDB                    bool
+  Initialized              bool
+  SkipHooks                bool
+  SkipDefaultTransaction   bool
+  DisableNestedTransaction bool
+  AllowGlobalUpdate        bool
+  FullSaveAssociations     bool
+  QueryFields              bool
+  Context                  context.Context
+  Logger                   logger.Interface
+  NowFunc                  func() time.Time
+  CreateBatchSize          int
 }
 ```
 
@@ -103,9 +107,17 @@ tx2.First(&user)
 // SELECT * FROM users WHERE name = "jinzhu" ORDER BY id
 ```
 
-## 跳过钩子
+## Initialized
 
-如果您想跳过 `钩子` 方法，您可以使用 `SkipHooks` 会话模式，例如：
+Create a new initialized DB, which is not Method Chain/Gortoutine Safe anymore, refer [Method Chaining](method_chaining.html)
+
+```go
+tx := db.Session(&gorm.Session{Initialized: true})
+```
+
+## Skip Hooks
+
+If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -121,9 +133,9 @@ DB.Session(&gorm.Session{SkipHooks: true}).Delete(&user)
 DB.Session(&gorm.Session{SkipHooks: true}).Model(User{}).Where("age > ?", 18).Updates(&user)
 ```
 
-## 禁用嵌套事务
+## DisableNestedTransaction
 
-在一个 DB 事务中使用 `Transaction` 方法，GORM 会使用 `SavePoint(savedPointName)`，`RollbackTo(savedPointName)` 为你提供嵌套事务支持。 你可以通过 `DisableNestedTransaction` 选项关闭它，例如：
+When using `Transaction` method inside a DB transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support. You can disable it by using the `DisableNestedTransaction` option, for example:
 
 ```go
 db.Session(&gorm.Session{
@@ -133,7 +145,7 @@ db.Session(&gorm.Session{
 
 ## AllowGlobalUpdate
 
-GORM 默认不允许进行全局 update/delete，该操作会返回 `ErrMissingWhereClause` 错误。 您可以通过将一个选项设置为 true 来启用它，例如：
+GORM doesn't allow global update/delete by default, will return `ErrMissingWhereClause` error. You can set this option to true to enable it, for example:
 
 ```go
 db.Session(&gorm.Session{
@@ -144,7 +156,7 @@ db.Session(&gorm.Session{
 
 ## FullSaveAssociations
 
-在创建、更新记录时，GORM 会通过 [Upsert](create.html#upsert) 自动保存关联及其引用记录。 如果您想要更新关联的数据，您应该使用 ` FullSaveAssociations ` 模式，例如：
+GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record. If you want to update associations' data, you should use the `FullSaveAssociations` mode, for example:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -157,17 +169,17 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## Context
 
-通过 `Context` 选项，您可以传入 `Context` 来追踪 SQL 操作，例如：
+With the `Context` option, you can set the `Context` for following SQL operations, for example:
 
 ```go
 timeoutCtx, _ := context.WithTimeout(context.Background(), time.Second)
 tx := db.Session(&Session{Context: timeoutCtx})
 
-tx.First(&user) // 带 timeoutCtx 的查询
-tx.Model(&user).Update("role", "admin") // 带 timeoutCtx 的更新
+tx.First(&user) // query with context timeoutCtx
+tx.Model(&user).Update("role", "admin") // update with context timeoutCtx
 ```
 
-GORM 也提供了快捷调用方法 `WithContext`，其实现如下：
+GORM also provides shortcut method `WithContext`,  here is the definition:
 
 ```go
 func (db *DB) WithContext(ctx context.Context) *DB {
@@ -177,7 +189,7 @@ func (db *DB) WithContext(ctx context.Context) *DB {
 
 ## Logger
 
-Gorm 允许使用 `Logger` 选项自定义内建 Logger，例如：
+Gorm allows customizing built-in logger with the `Logger` option, for example:
 
 ```go
 newLogger := logger.New(log.New(os.Stdout, "\r\n", log.LstdFlags),
@@ -191,11 +203,11 @@ db.Session(&Session{Logger: newLogger})
 db.Session(&Session{Logger: logger.Default.LogMode(logger.Silent)})
 ```
 
-查看 [Logger](logger.html) 获取详情.
+Checkout [Logger](logger.html) for more details.
 
 ## NowFunc
 
-`NowFunc` 允许改变 GORM 获取当前时间的实现，例如：
+`NowFunc` allows changing the function to get current time of GORM, for example:
 
 ```go
 db.Session(&Session{
@@ -207,7 +219,7 @@ db.Session(&Session{
 
 ## Debug
 
-`Debug` 只是将会话的 `Logger` 修改为调试模式的快捷方法，其实现如下：
+`Debug` is a shortcut method to change session's `Logger` to debug mode,  here is the definition:
 
 ```go
 func (db *DB) Debug() (tx *DB) {
@@ -223,8 +235,8 @@ Select by fields
 
 ```go
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // 带该选项
-// SELECT * FROM `users` // 不带该选项
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+// SELECT * FROM `users` // without this option
 ```
 
 ## CreateBatchSize
@@ -235,6 +247,6 @@ Default batch size
 users = [5000]User{{Name: "jinzhu", Pets: []Pet{pet1, pet2, pet3}}...}
 
 db.Session(&gorm.Session{CreateBatchSize: 1000}).Create(&users)
-// INSERT INTO users xxx (需 5 次)
-// INSERT INTO pets xxx (需 15 次)
+// INSERT INTO users xxx (5 batches)
+// INSERT INTO pets xxx (15 batches)
 ```
