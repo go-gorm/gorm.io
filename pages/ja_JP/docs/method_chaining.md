@@ -11,111 +11,115 @@ db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 
 GORMには `Chain Method`, `Finisher Method`, `New Session Method` という3種類のメソッドがあります:
 
+After a `Chain method`, `Finisher Method`, GORM returns an initialized `*gorm.DB` instance, which is NOT safe to reuse anymore, or new generated SQL might be polluted by the previous conditions, for example:
+
+```go
+queryDB := DB.Where("name = ?", "jinzhu")
+
+queryDB.First(&user)
+// SELECT * FROM users WHERE name = "jinzhu"
+
+queryDB.Where("name = ?", "jinzhu2").First(&user2)
+// SELECT * FROM users WHERE name = "jinzhu" AND name = "jinzhu2"
+```
+
+In order to reuse a initialized `*gorm.DB` instance, you can use a `New Session Method` to create a shareable `*gorm.DB`, e.g:
+
+```go
+queryDB := DB.Where("name = ?", "jinzhu").Session(&gorm.Session{})
+
+queryDB.First(&user)
+// SELECT * FROM users WHERE name = "jinzhu"
+
+queryDB.Where("name = ?", "jinzhu2").First(&user2)
+// SELECT * FROM users WHERE name = "jinzhu2"
+```
+
 ## Chain Method
 
-Chain Methodsは現在の`Statement`を変更したり、`Clauses`を追加するメソッドです。
+Chain methods are methods to modify or add `Clauses` to current `Statement`, like:
 
-`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` はSQLを生成する他のメソッドとは共用不可)... などがあります。
+`Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` can't be used with other chainable methods to build SQL)...
 
-[Chain Methodの一覧](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)はこちらです。`Clauses`についての詳細は [SQL Builder](sql_builder.html)を参照してください。
+Here is [the full lists](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), also check out the [SQL Builder](sql_builder.html) for more details about `Clauses`.
 
 ## <span id="finisher_method">Finisher Method</span>
 
-Finisher Methodは登録されたコールバックを即時に実行するメソッドであり、この種類のメソッドが呼び出されるとSQLを生成して実行します。
+Finishers are immediate methods that execute registered callbacks, which will generate and execute SQL, like those methods:
 
-`Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`... などがあります。
+`Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`...
 
-こちらの [Finisher Methodの一覧](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) も参照してください。
+Check out [the full lists](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) here.
 
-## New Session Mode
+## <span id="goroutine_safe">New Session Method</span>
 
-`*gorm.DB`が初期化された、あるいは、`New Session Method`が実行された場合、 その後のメソッド呼び出しは、現在の `Statement` インスタンスを使用せずに新しいインスタンスを作成します。
+GORM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details.
 
-GROMは `Session`, `WithContext`, `Debug` を `New Session Method` として定義しています。詳細については [Session](session.html)を参照してください。
+After a `Chain method`, `Finisher Method`, GORM returns an initialized `*gorm.DB` instance, which is NOT safe to reuse anymore, you should use a `New Session Method` to mark the `*gorm.DB` as shareable.
 
-以下の例で説明しましょう。
+Let's explain it with examples:
 
-例１：
+Example 1:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db は新規に初期化された *gorm.DB であるため、 `New Session Mode` に該当します
+// db is a new initialized `*gorm.DB`, which is safe to reuse
+
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).Find(&users)
-// `Where("name = ?", "jinzhu")` が最初のメソッド呼び出しとなり、新規の `Statement` を作成します
-// `Where("age = ?", 18)` は条件を追加した `Statement` を返却します
-// `Find(&users)` はFinisher Methodであるため、登録されたクエリコールバックを呼び出し、以下のSQLを生成・実行します:
+// `Where("name = ?", "jinzhu")` is the first chain method call, it will create an initialized `*gorm.DB` instance, aka `*gorm.Statement`
+// `Where("age = ?", 18)` is the second chain method call, it reuses the above `*gorm.Statement`, adds new condition `age = 18` to it
+// `Find(&users)` is a finisher method, it executes registered Query Callbacks, which generates and runs the following SQL:
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18;
 
 db.Where("name = ?", "jinzhu2").Where("age = ?", 20).Find(&users)
-// `Where("name = ?", "jinzhu2")` が最初のメソッド呼び出しとなり、これも新規の `Statement` を作成します
-// `Where("age = ?", 20)` は条件を追加した `Statement` を返却します
-// `Find(&users)` はFinisher Methodであるため、登録されたクエリコールバックを呼び出し、以下のSQLを生成・実行します:
+// `Where("name = ?", "jinzhu2")` is also the first chain method call, it creates a new `*gorm.Statement`
+// `Where("age = ?", 20)` reuses the above `Statement`, and add conditions to it
+// `Find(&users)` is a finisher method, it executes registered Query Callbacks, generates and runs the following SQL:
 // SELECT * FROM users WHERE name = 'jinzhu2' AND age = 20;
 
 db.Find(&users)
-// `Find(&users)` はFinisher Methodであり、これが `New Session Mode` の `*gorm.DB` の最初のメソッド呼び出しとなります。
-// 新しい `Statement` を作成し、登録されたクエリコールバックを呼び出し、以下のSQLを生成・実行します:
+// `Find(&users)` is a finisher method call, it also creates a new `Statement` and executes registered Query Callbacks, generates and runs the following SQL:
 // SELECT * FROM users;
 ```
 
-例２：
+(Bad) Example 2:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-// db は新規に初期化された *gorm.DB であるため、 `New Session Mode` に該当します
-tx := db.Where("name = ?", "jinzhu")
-// `Where("name = ?", "jinzhu")` が最初のメソッド呼び出しとなり、新規の `Statement` を作成し条件を追加します
+// db is a new initialized *gorm.DB, which is safe to reuse
 
+tx := db.Where("name = ?", "jinzhu")
+// `Where("name = ?", "jinzhu")` returns an initialized `*gorm.Statement` instance after chain method `Where`, which is NOT safe to reuse
+
+// good case
 tx.Where("age = ?", 18).Find(&users)
-// `tx.Where("age = ?", 18)` は上記の `Statement` を再利用し, 同じ `Statement` に条件を追加します
-// `Find(&users)` はFinisher Methodであるため、登録されたクエリコールバックを呼び出し、以下のSQLを生成・実行します:
+// `tx.Where("age = ?", 18)` use the above `*gorm.Statement`, adds new condition to it
+// `Find(&users)` is a finisher method call, it executes registered Query Callbacks, generates and runs the following SQL:
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18
 
+// bad case
 tx.Where("age = ?", 28).Find(&users)
-// `tx.Where("age = ?", 18)` は上記の `Statement` を再利用し, 同じ `Statement` に条件を追加します
-// `Find(&users)` はFinisher Methodであるため、登録されたクエリコールバックを呼び出し、以下のSQLを生成・実行します:
+// `tx.Where("age = ?", 18)` also use the above `*gorm.Statement`, and keep adding conditions to it
+// So the following generated SQL is polluted by the previous conditions:
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 28;
 ```
 
-{% note warn %}
-**注意** 例 2 では、GORMが `Statement` を再利用したため、最初のクエリが 2 番目の生成SQLに影響を与えています。 これは予期しない問題を引き起こす可能性があります。これを回避するには、 [Goroutine Safety](#goroutine_safe) を参照してください。
-{% endnote %}
-
-## <span id="goroutine_safe">Method Chain Safety/Goroutine Safety</span>
-
-新規に初期化された `*gorm.DB` や `New Session Method` の後においては、メソッドを呼び出すと新しい `Statement` が生成されます。`*gorm.DB`を再利用する際は、 `New Session Mode` であることを確認する必要があります。例：
+Example 3:
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-
-// 新規に初期化された *gorm.DB であるため安全である
-for i := 0; i < 100; i++ {
-  go db.Where(...).First(&user)
-}
-
-tx := db.Where("name = ?", "jinzhu")
-// Statementを使いまわしているため、安全ではない
-for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user)
-}
-
-ctx, _ := context.WithTimeout(context.Background(), time.Second)
-ctxDB := db.WithContext(ctx)
-// `New Session Method` の後であるため、安全である
-for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user)
-}
-
-ctx, _ := context.WithTimeout(context.Background(), time.Second)
-ctxDB := db.Where("name = ?", "jinzhu").WithContext(ctx)
-//  `New Session Method` の後であるため、安全である
-for i := 0; i < 100; i++ {
-  go ctxDB.Where(...).First(&user) // `name = 'jinzhu'` が適用される
-}
+// db is a new initialized *gorm.DB, which is safe to reuse
 
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
-//  `New Session Method` の後であるため、安全である
-for i := 0; i < 100; i++ {
-  go tx.Where(...).First(&user) // `name = 'jinzhu'` が適用される
-}
+tx := db.Where("name = ?", "jinzhu").WithContext(context.Background())
+tx := db.Where("name = ?", "jinzhu").Debug()
+// `Session`, `WithContext`, `Debug` returns `*gorm.DB` marked as safe to reuse, newly initialized `*gorm.Statement` based on it keeps current conditions
+
+// good case
+tx.Where("age = ?", 18).Find(&users)
+// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18
+
+// good case
+tx.Where("age = ?", 28).Find(&users)
+// SELECT * FROM users WHERE name = 'jinzhu' AND age = 28;
 ```

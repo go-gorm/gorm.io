@@ -11,16 +11,17 @@ type Session struct {
   DryRun                   bool
   PrepareStmt              bool
   NewDB                    bool
+  Initialized              bool
   SkipHooks                bool
   SkipDefaultTransaction   bool
   DisableNestedTransaction bool
   AllowGlobalUpdate        bool
   FullSaveAssociations     bool
   QueryFields              bool
-  CreateBatchSize          int
   Context                  context.Context
   Logger                   logger.Interface
   NowFunc                  func() time.Time
+  CreateBatchSize          int
 }
 ```
 
@@ -104,6 +105,14 @@ tx.First(&user, "id = ?", 10)
 tx2 := db.Where("name = ?", "jinzhu").Session(&gorm.Session{})
 tx2.First(&user)
 // SELECT * FROM users WHERE name = "jinzhu" ORDER BY id
+```
+
+## Initialized
+
+Create a new initialized DB, which is not Method Chain/Gortoutine Safe anymore, refer [Method Chaining](method_chaining.html)
+
+```go
+tx := db.Session(&gorm.Session{Initialized: true})
 ```
 
 ## Skip Hooks

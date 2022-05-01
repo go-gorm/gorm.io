@@ -194,17 +194,19 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Varsa ilk kaydı getirir, aksi halde verilen koşullar doğrultusunda yeni bir kayıt oluşturur (sadece struct map koşullarıyla çalışır)
+Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
 
 ```go
 // User not found, create a new record with give conditions
-db.FirstOrCreate(&user, User{Name: "non_existing"})
+result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
+// result.RowsAffected // => 0
 
 // Found user with `name` = `jinzhu`
-db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
+result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
+// result.RowsAffected // => 0
 ```
 
 Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query

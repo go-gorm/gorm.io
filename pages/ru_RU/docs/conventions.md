@@ -127,24 +127,40 @@ db.Create(&user2) // поле `CreatedAt` не будет изменено
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
-### UpdatedAt
-
-Для моделей, имеющих поле `UpdatedAt`, оно будет установлено в текущее время при обновлении или создании записи, если её значение равно нулю
+You can disable the timestamp tracking by setting `autoCreateTime` tag to `false`, for example:
 
 ```go
-db.Save(&user) // установить `UpdatedAt` в текущее время
+type User struct {
+  CreatedAt time.Time `gorm:"autoCreateTime:false"`
+}
+```
 
-db.Model(&user).Update("name", "jinzhu") // установить `UpdatedAt` в текущее время
+### UpdatedAt
 
-db.Model(&user).UpdateColumn("name", "jinzhu") // `UpdatedAt` не изменится
+For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
+
+```go
+db.Save(&user) // set `UpdatedAt` to current time
+
+db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+
+db.Model(&user).UpdateColumn("name", "jinzhu") // `UpdatedAt` won't be changed
 
 user2 := User{Name: "jinzhu", UpdatedAt: time.Now()}
-db.Create(&user2) // `UpdatedAt` не будет изменено при создании
+db.Create(&user2) // user2's `UpdatedAt` won't be changed when creating
 
 user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
-db.Save(&user3) // `UpdatedAt` будет обновлено в текуще время при обновлении
+db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
+```
+
+You can disable the timestamp tracking by setting `autoUpdateTime` tag to `false`, for example:
+
+```go
+type User struct {
+  UpdatedAt time.Time `gorm:"autoUpdateTime:false"`
+}
 ```
 
 {% note %}
-**ПРИМЕЧАНИЕ** GORM поддерживает множество полей отслеживания времени, отслеживание с другими полями или отслеживание в UNIX (nano/milli), смотрите [Модели](models.html#time_tracking) для подробностей
+**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
 {% endnote %}

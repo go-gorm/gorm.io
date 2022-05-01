@@ -194,17 +194,19 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-获取第一条匹配的记录，或者根据给定的条件创建一条新纪录（仅支持 sturct 和 map 条件）
+Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
 
 ```go
-// 未找到 user，则根据给定条件创建一条新纪录
-db.FirstOrCreate(&user, User{Name: "non_existing"})
+// User not found, create a new record with give conditions
+result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
+// result.RowsAffected // => 0
 
-// 找到了 `name` = `jinzhu` 的 user
-db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
+// Found user with `name` = `jinzhu`
+result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
+// result.RowsAffected // => 0
 ```
 
 如果没有找到记录，可以使用包含更多的属性的结构体创建记录，`Attrs` 不会被用于生成查询 SQL 。

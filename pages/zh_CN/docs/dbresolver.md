@@ -11,6 +11,7 @@ DBResolver 为 GORM 提供了多个数据库支持，支持以下功能：
 * 手动切换连接
 * Sources/Replicas 负载均衡
 * 适用于原生 SQL
+* Transaction
 
 https://github.com/go-gorm/dbresolver
 
@@ -41,15 +42,11 @@ db.Use(dbresolver.Register(dbresolver.Config{
 }, "orders", &Product{}, "secondary"))
 ```
 
-## 事务
+## Automatic connection switching
 
-使用 transaction 时，DBResolver 也会使用一个事务，且不会切换 sources/replicas 连接
+DBResolver will automatically switch connection based on the working table/struct
 
-## 自动切换连接
-
-DBResolver 会根据工作表、struct 自动切换连接
-
-对于原生 SQL，DBResolver 会从 SQL 中提取表名以匹配 Resolver，除非 SQL 开头为 `SELECT`（select for update 除外），否则 DBResolver 总是会使用 `sources` ，例如：
+For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
 
 ```go
 // `User` Resolver 示例
@@ -70,13 +67,13 @@ db.Find(&Order{}) // replicas `db8`
 db.Table("orders").Find(&Report{}) // replicas `db8`
 ```
 
-## 读写分离
+## Read/Write Splitting
 
-DBResolver 的读写分离目前是基于 [GORM callback](https://gorm.io/docs/write_plugins.html) 实现的。
+Read/Write splitting with DBResolver based on the current used [GORM callbacks](https://gorm.io/docs/write_plugins.html).
 
-对于 `Query`、`Row` callback，如果手动指定为 `Write` 模式，此时会使用 `sources`，否则使用 `replicas`。 对于 `Raw` callback，如果 SQL 是以 `SELECT` 开头，语句会被认为是只读的，会使用 `replicas`，否则会使用 `sources`。
+For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
 
-## 手动切换连接
+## Manual connection switching
 
 ```go
 // 使用 Write 模式：从 sources db `db1` 读取 user
@@ -89,9 +86,26 @@ db.Clauses(dbresolver.Use("secondary")).First(&user)
 db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 
+## Transaction
+
+When using transaction, DBResolver will keep using the transaction and won't switch to sources/replicas based on configuration
+
+But you can specifies which DB to use before starting a transaction, for example:
+
+```go
+// Start transaction based on default replicas db
+tx := DB.Clauses(dbresolver.Read).Begin()
+
+// Start transaction based on default sources db
+tx := DB.Clauses(dbresolver.Write).Begin()
+
+// Start transaction based on `secondary`'s sources
+tx := DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).Begin()
+```
+
 ## 负载均衡
 
-GORM 支持基于策略的 sources/replicas 负载均衡，自定义策略应该是一个实现了以下接口的 struct：
+GORM supports load balancing sources/replicas based on policy, the policy should be a struct implements following interface:
 
 ```go
 type Policy interface {
@@ -99,7 +113,7 @@ type Policy interface {
 }
 ```
 
-当前只实现了一个 `RandomPolicy` 策略，如果没有指定其它策略，它就是默认策略。
+Currently only the `RandomPolicy` implemented and it is the default option if no other policy specified.
 
 ## 连接池
 

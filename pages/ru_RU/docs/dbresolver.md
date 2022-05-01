@@ -11,6 +11,7 @@ DBResolver добавляет поддержку нескольких баз д�
 * Ручное переключение подключения
 * Исходные/репликационные балансировки нагрузки
 * Работает для RAW SQL
+* Transaction
 
 https://github.com/go-gorm/dbresolver
 
@@ -41,15 +42,11 @@ db.Use(dbresolver.Register(dbresolver.Config{
 }, "orders", &Product{}, "secondary"))
 ```
 
-## Транзакция
+## Automatic connection switching
 
-При использовании транзакции DBResolver будет использовать транзакцию и не будет переключаться на реплики
+DBResolver will automatically switch connection based on the working table/struct
 
-## Автоматическое переключение подключения
-
-DBResolver автоматически переключит соединение на основе таблицы/struct
-
-Для RAW SQL, DBResolver извлечет имя таблицы из SQL в соответствии с резолвером, и будет использовать `sources`, если SQL не начинается с `SELECT` (исключая SELECT... FOR UPDATE</code>), например:
+For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
 
 ```go
 // `User` Resolver Examples
@@ -70,13 +67,13 @@ db.Find(&Order{}) // replicas `db8`
 db.Table("orders").Find(&Report{}) // replicas `db8`
 ```
 
-## Разделение чтения/записи
+## Read/Write Splitting
 
-Разделение Чтения/Записи с DBResolver на основе текущего [Обратного вызова GORM](https://gorm.io/docs/write_plugins.html).
+Read/Write splitting with DBResolver based on the current used [GORM callbacks](https://gorm.io/docs/write_plugins.html).
 
-Для `Query`, `Row` обратного вызова, будет использовать `реплики`, если только указан режим `Write` Для `Raw` обратного вызова, считается только чтением и будут использоваться `реплики`, если SQL начинается с `SELECT`
+For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
 
-## Ручное переключение подключения
+## Manual connection switching
 
 ```go
 // Use Write Mode: read user from sources `db1`
@@ -89,9 +86,26 @@ db.Clauses(dbresolver.Use("secondary")).First(&user)
 db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 
+## Transaction
+
+When using transaction, DBResolver will keep using the transaction and won't switch to sources/replicas based on configuration
+
+But you can specifies which DB to use before starting a transaction, for example:
+
+```go
+// Start transaction based on default replicas db
+tx := DB.Clauses(dbresolver.Read).Begin()
+
+// Start transaction based on default sources db
+tx := DB.Clauses(dbresolver.Write).Begin()
+
+// Start transaction based on `secondary`'s sources
+tx := DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).Begin()
+```
+
 ## Балансировка Нагрузки
 
-GORM поддерживает балансировку нагрузки мастер/реплики на основе политики, политика - это struct реализующий следующий интерфейс:
+GORM supports load balancing sources/replicas based on policy, the policy should be a struct implements following interface:
 
 ```go
 type Policy interface {
@@ -99,7 +113,7 @@ type Policy interface {
 }
 ```
 
-В настоящее время реализована только `RandomPolicy` и это вариант по умолчанию, если не указана политика.
+Currently only the `RandomPolicy` implemented and it is the default option if no other policy specified.
 
 ## Пул подключений
 

@@ -36,7 +36,7 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 
 ```go
 var user User
-var users []User  
+var users []User
 
 // works because destination struct is passed in
 db.First(&user)
@@ -84,6 +84,18 @@ db.Find(&users, []int{1,2,3})
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
+```
+
+When the destination object has a primary value, the primary key will be used to build the condition, for example:
+
+```go
+var user = User{ID: 10}
+db.First(&user)
+// SELECT * FROM users WHERE id = 10;
+
+var result User
+db.Model(User{ID: 10}).First(&result)
+// SELECT * FROM users WHERE id = 10;
 ```
 
 ## すべてのオブジェクトを取得する
@@ -148,7 +160,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**注** 構造体を使ってクエリを実行するとき、GORMは非ゼロ値なフィールドのみを利用します。つまり、フィールドの値が `0`, `''`, `false` または他の [ゼロ値](https://tour.golang.org/basics/12)の場合、 クエリ条件の作成に使用されません。以下例：
+**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
 {% endnote %}
 
 ```go
@@ -156,18 +168,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-クエリ条件にゼロ値を含めるには、次のように、クエリ条件としてすべてのkey-valuesを含むマップを使用できます。
+To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-詳細については、 [Struct search fields](#specify_search_fields) を参照してください。
+For more details, see [Specify Struct search fields](#specify_search_fields).
 
 ### <span id="specify_search_fields">構造体の検索フィールドを指定する</span>
 
-構造体を使用して検索する場合、フィールド名かテーブルのカラム名を `Where()` に記載することで、構造体の特定の値のみをクエリ条件で使用することができます。 例えば:
+When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -179,7 +191,7 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 
 ### <span id="inline_conditions">インライン条件</span>
 
-クエリ条件は、 `where` と同様の方法で `First` や `Find` のようなメソッドにインライン展開することができます。
+Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
 
 ```go
 // Get by primary key if it were a non-integer type
@@ -204,7 +216,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 
 ### Not条件
 
-NOT条件も、`Where` と同様の指定方法になります。
+Build NOT conditions, works similar to `Where`
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -238,11 +250,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-より複雑なクエリについては [Group Conditions in Advanced Query](advanced_query.html#group_conditions) も参照してください。
+For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
 
 ## 特定のフィールドのみ選択
 
-`Select` を使用すると、データベースから取得するフィールドを指定できます。 取得フィールドの指定がない場合、GORMはデフォルトですべてのフィールドを選択します。
+`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -255,11 +267,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-[Smart Select Fields](advanced_query.html#smart_select) も参照してみてください。
+Also check out [Smart Select Fields](advanced_query.html#smart_select)
 
 ## Order
 
-データベースからレコードを取得する際の順序を指定できます。
+Specify order when retrieving records from the database
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -277,7 +289,7 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit`は取得するレコードの最大数を指定します。 `Offset`はスキップするレコードの数を指定します。
+`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
 
 ```go
 db.Limit(3).Find(&users)
@@ -300,7 +312,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-ページネーターの作成方法については、 [Pagination](scopes.html#pagination) を参照してください。
+Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
 
 ## Group By & Having
 
@@ -338,17 +350,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-重複した行を削除した値を取得することができます。
+Selecting distinct values from the model
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct`は[`Pluck`](advanced_query.html#pluck)や[`Count`](advanced_query.html#count)とともに利用することができます。
+`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
 
 ## Joins
 
-結合条件を指定することができます。
+Specify Joins conditions
 
 ```go
 type result struct {
@@ -372,25 +384,25 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ### Joins Preloading
 
-単一クエリで関連データをeager loadingするのに`Joins`を使用することができます。例：
+You can use `Joins` eager loading associations with a single SQL, for example:
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-条件を指定して結合
+Join with conditions
 
 ```go
 db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
-詳細については、 [Preloading (Eager Loading)](preload.html) を参照してください。
+For more details, please refer to [Preloading (Eager Loading)](preload.html).
 
 ### 導出表の結合
 
-`Joins` を使用して導出表を結合することもできます。
+You can also use `Joins` to join a derived table.
 
 ```go
 type User struct {
@@ -411,7 +423,7 @@ db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Sc
 
 ## <span id="scan">Scan</span>
 
-レコード取得結果の構造体へのScanは、`Find`の使う方法と同様になります。
+Scanning results into a struct works similarly to the way we use `Find`
 
 ```go
 type Result struct {

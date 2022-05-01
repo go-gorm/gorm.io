@@ -11,6 +11,7 @@ DBResolverはGORMの複数データベースへの対応を可能としていま
 * 手動での接続切替
 * プライマリやレプリカへのロードバランシング
 * 素のSQLでの動作
+* Transaction
 
 https://github.com/go-gorm/dbresolver
 
@@ -41,15 +42,11 @@ db.Use(dbresolver.Register(dbresolver.Config{
 }, "orders", &Product{}, "secondary"))
 ```
 
-## トランザクション
+## Automatic connection switching
 
-トランザクションを使用する場合、DBResolverは同一接続内でのトランザクションを使用するため、接続先の切り替えは行われません。
+DBResolver will automatically switch connection based on the working table/struct
 
-## 接続の自動切替
-
-テーブル/構造体に基づいて自動的に接続を切り替えることができます。
-
-素のSQLの場合は、SQLからテーブル名を抽出してDBResolverの設定を参照します。また、SQL文が (`SELECT... FOR UPDATE` 以外の) `SELECT` で始まるSQLでなければ、Sourcesで指定したDBが使用されます。 例:
+For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
 
 ```go
 // `User` Resolver Examples
@@ -70,13 +67,13 @@ db.Find(&Order{}) // replicas `db8`
 db.Table("orders").Find(&Report{}) // replicas `db8`
 ```
 
-## 読み取り/書き込みの分離
+## Read/Write Splitting
 
-現在使用されている [GORM callbacks](https://gorm.io/docs/write_plugins.html) に基づいて、DBResolverで読み取り/書き込みを分離できます。
+Read/Write splitting with DBResolver based on the current used [GORM callbacks](https://gorm.io/docs/write_plugins.html).
 
-`Query` や `Row` のコールバックでは、 `Write Model` が指定されていない限り `レプリカ` が使用されます。 `Raw` コールバックについては、SQLが `SELECT` で始まり読み込み処理のみと判断された場合は `レプリカ` が使用されます。
+For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
 
-## 手動での接続切替
+## Manual connection switching
 
 ```go
 // Write Modeを使用する：`db1`からuserレコードを読み込む
@@ -89,9 +86,26 @@ db.Clauses(dbresolver.Use("secondary")).First(&user)
 db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 
+## Transaction
+
+When using transaction, DBResolver will keep using the transaction and won't switch to sources/replicas based on configuration
+
+But you can specifies which DB to use before starting a transaction, for example:
+
+```go
+// Start transaction based on default replicas db
+tx := DB.Clauses(dbresolver.Read).Begin()
+
+// Start transaction based on default sources db
+tx := DB.Clauses(dbresolver.Write).Begin()
+
+// Start transaction based on `secondary`'s sources
+tx := DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).Begin()
+```
+
 ## 負荷分散
 
-GORMは、ポリシーに基づいたロードバランシングをサポートしています。ポリシーを定めるには、以下のインターフェイスを実装する構造体を用意する必要があります。
+GORM supports load balancing sources/replicas based on policy, the policy should be a struct implements following interface:
 
 ```go
 type Policy interface {
@@ -99,7 +113,7 @@ type Policy interface {
 }
 ```
 
-現在は `RandomPolicy` のみ実装されています。他のポリシーが指定されていない場合はこれがデフォルトのオプションとなります。
+Currently only the `RandomPolicy` implemented and it is the default option if no other policy specified.
 
 ## コネクションプール
 
