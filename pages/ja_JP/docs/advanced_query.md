@@ -194,17 +194,19 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-条件に最初に一致するレコードを取得するか、指定された条件で新しいレコードを作成します (構造体、map条件でのみ動作します)。
+Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
 
 ```go
-// Userが見つからないため、指定された条件でレコードを作成する
-db.FirstOrCreate(&user, User{Name: "non_existing"})
+// User not found, create a new record with give conditions
+result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
+// result.RowsAffected // => 0
 
-// `name` = `jinzhu` のUserが見つかった
-db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
+// Found user with `name` = `jinzhu`
+result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
+// result.RowsAffected // => 0
 ```
 
 `Attrs` メソッドを使用すると、レコードが見つからない場合に作成されるデータの属性をより多く指定することができます。このメソッドで指定した属性はレコード取得時のSQLクエリには使用されません。
