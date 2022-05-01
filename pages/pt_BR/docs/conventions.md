@@ -127,6 +127,14 @@ db.Create(&user2) // user2's `CreatedAt` won't be changed
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
+You can disable the timestamp tracking by setting `autoCreateTime` tag to `false`, for example:
+
+```go
+type User struct {
+  CreatedAt time.Time `gorm:"autoCreateTime:false"`
+}
+```
+
 ### UpdatedAt
 
 For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
@@ -143,6 +151,14 @@ db.Create(&user2) // user2's `UpdatedAt` won't be changed when creating
 
 user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
 db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
+```
+
+You can disable the timestamp tracking by setting `autoUpdateTime` tag to `false`, for example:
+
+```go
+type User struct {
+  UpdatedAt time.Time `gorm:"autoUpdateTime:false"`
+}
 ```
 
 {% note %}
