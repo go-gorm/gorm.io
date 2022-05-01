@@ -11,6 +11,7 @@ DBResolver adds multiple databases support to GORM, the following features are s
 * Manual connection switching
 * Sources/Replicas load balancing
 * Works for RAW SQL
+* Transaction
 
 https://github.com/go-gorm/dbresolver
 
@@ -40,10 +41,6 @@ db.Use(dbresolver.Register(dbresolver.Config{
   Replicas: []gorm.Dialector{mysql.Open("db8_dsn")},
 }, "orders", &Product{}, "secondary"))
 ```
-
-## Transaction
-
-When using transaction, DBResolver will use the transaction and won't switch to sources/replicas
 
 ## Automatic connection switching
 
@@ -88,6 +85,23 @@ db.Clauses(dbresolver.Use("secondary")).First(&user)
 
 // Specify Resolver and Write Mode: read user from `secondary`'s sources: db6 or db7
 db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
+```
+
+## Transaction
+
+When using transaction, DBResolver will keep using the transaction and won't switch to sources/replicas based on configuration
+
+But you can specifies which DB to use before starting a transaction, for example:
+
+```go
+// Start transaction based on default replicas db
+tx := DB.Clauses(dbresolver.Read).Begin()
+
+// Start transaction based on default sources db
+tx := DB.Clauses(dbresolver.Write).Begin()
+
+// Start transaction based on `secondary`'s sources
+tx := DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).Begin()
 ```
 
 ## Load Balancing
