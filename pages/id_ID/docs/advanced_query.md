@@ -192,17 +192,19 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Dapatkan catatan pertama yang cocok atau buat yang baru dengan kondisi tertentu (hanya berfungsi dengan struct, kondisi map)
+Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
 
 ```go
-// Pengguna tidak ditemukan, membuat catatan baru dengan kondisi yang diberikan
-db.FirstOrCreate(&user, User{Name: "non_existing"})
+// User not found, create a new record with give conditions
+result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
+// result.RowsAffected // => 0
 
-// Pengguna ditemukan dengan `name` = `jinzhu`
-db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
+// Found user with `name` = `jinzhu`
+result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
+// result.RowsAffected // => 0
 ```
 
 Buat struct dengan lebih banyak atribut jika catatan tidak ditemukan, `Attrs` tersebut tidak akan digunakan untuk membuat kueri SQL
