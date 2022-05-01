@@ -36,7 +36,7 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 
 ```go
 var user User
-var users []User  
+var users []User
 
 // works because destination struct is passed in
 db.First(&user)
@@ -84,6 +84,18 @@ If the primary key is a string (for example, like a uuid), the query will be wri
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
+```
+
+When the destination object has a primary value, the primary key will be used to build the condition, for example:
+
+```go
+var user = User{ID: 10}
+db.First(&user)
+// SELECT * FROM users WHERE id = 10;
+
+var result User
+db.Model(User{ID: 10}).First(&result)
+// SELECT * FROM users WHERE id = 10;
 ```
 
 ## Retrieving all objects
