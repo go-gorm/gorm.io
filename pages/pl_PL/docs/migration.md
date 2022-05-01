@@ -52,15 +52,16 @@ type Migrator interface {
   DropTable(dst ...interface{}) error
   HasTable(dst interface{}) bool
   RenameTable(oldName, newName interface{}) error
+  GetTables() (tableList []string, err error)
 
   // Columns
   AddColumn(dst interface{}, field string) error
   DropColumn(dst interface{}, field string) error
   AlterColumn(dst interface{}, field string) error
+  MigrateColumn(dst interface{}, field *schema.Field, columnType ColumnType) error
   HasColumn(dst interface{}, field string) bool
   RenameColumn(dst interface{}, oldName, field string) error
-  MigrateColumn(dst interface{}, field *schema.Field, columnType *sql.ColumnType) error
-  ColumnTypes(dst interface{}) ([]*sql.ColumnType, error)
+  ColumnTypes(dst interface{}) ([]ColumnType, error)
 
   // Constraints
   CreateConstraint(dst interface{}, name string) error
@@ -131,7 +132,22 @@ db.Migrator().RenameColumn(&User{}, "Name", "NewName")
 db.Migrator().RenameColumn(&User{}, "name", "new_name")
 
 // ColumnTypes
-db.Migrator().ColumnTypes(&User{}) ([]*sql.ColumnType, error)
+db.Migrator().ColumnTypes(&User{}) ([]gorm.ColumnType, error)
+
+type ColumnType interface {
+    Name() string
+    DatabaseTypeName() string                 // varchar
+    ColumnType() (columnType string, ok bool) // varchar(64)
+    PrimaryKey() (isPrimaryKey bool, ok bool)
+    AutoIncrement() (isAutoIncrement bool, ok bool)
+    Length() (length int64, ok bool)
+    DecimalSize() (precision int64, scale int64, ok bool)
+    Nullable() (nullable bool, ok bool)
+    Unique() (unique bool, ok bool)
+    ScanType() reflect.Type
+    Comment() (value string, ok bool)
+    DefaultValue() (value string, ok bool)
+}
 ```
 
 ### Constraints
