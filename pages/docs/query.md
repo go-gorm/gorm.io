@@ -72,9 +72,6 @@ Objects can be retrieved using primary key by using [Inline Conditions](#inline_
 db.First(&user, 10)
 // SELECT * FROM users WHERE id = 10;
 
-db.First(&user, "10")
-// SELECT * FROM users WHERE id = 10;
-
 db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
@@ -420,7 +417,6 @@ query := db.Table("order").Select("MAX(order.finished_at) as latest").Joins("lef
 db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Scan(&results)
 // SELECT `order`.`user_id`,`order`.`finished_at` FROM `order` join (SELECT MAX(order.finished_at) as latest FROM `order` left join user user on order.user_id = user.id WHERE user.age > 18 GROUP BY `order`.`user_id`) q on order.finished_at = q.latest
 ```
-
 
 ## <span id="scan">Scan</span>
 
