@@ -127,7 +127,7 @@ db.Create(&user2) // user2's `CreatedAt` won't be changed
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
-You can disable the timestamp tracking by setting `autoCreateTime` tag to `false`, for example:
+`autoCreateTime` タグを `false`に設定すると、タイムスタンプのトラッキングを無効にできます。例：
 
 ```go
 type User struct {
@@ -137,7 +137,7 @@ type User struct {
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
+`UpdatedAt`フィールドを持つモデルの場合、フィールドの値がゼロ値であれば、レコードの更新時または作成時に現在時刻が設定されます。
 
 ```go
 db.Save(&user) // set `UpdatedAt` to current time
@@ -153,7 +153,7 @@ user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
 db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
 ```
 
-You can disable the timestamp tracking by setting `autoUpdateTime` tag to `false`, for example:
+`autoUpdateTime` タグを `false`に設定すると、タイムスタンプのトラッキングを無効にできます。例：
 
 ```go
 type User struct {
