@@ -3,11 +3,11 @@ title: Performance
 layout: page
 ---
 
-GORM optimizes many things to improve the performance, the default performance should good for most applications, but there are still some tips for how to improve it for your application.
+GORM optimizes many things to improve the performance, the default performance should be good for most applications, but there are still some tips for how to improve it for your application.
 
 ## [Disable Default Transaction](transactions.html)
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization
+GORM performs write (create/update/delete) operations inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization
 
 ```go
 db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
