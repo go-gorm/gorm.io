@@ -549,8 +549,8 @@ db.Model(&MyTable{}).AddForeignKey("profile_id", "profiles(id)", "NO ACTION", "N
 现在您需要这样添加约束：
 
 ```go
-db.Migrator().CreateConstraint(&Users{}), "Profiles")
-db.Migrator().CreateConstraint(&Users{}), "fk_users_profiles")
+db.Migrator().CreateConstraint(&Users{}, "Profiles")
+db.Migrator().CreateConstraint(&Users{}, "fk_users_profiles")
 ```
 
 对于postgres，GORM 会将其翻译为：
