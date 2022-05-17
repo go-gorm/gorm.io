@@ -227,7 +227,7 @@ db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**CATATAN:** Asosiasi hanya akan dihapus jika kunci utama catatan yang dihapus bukan nol, GORM akan menggunakan kunci priamry tersebut sebagai ketentuan untuk menghapus asosiasi yang dipilih
+**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
 // TIDAK BERFUNGSI
