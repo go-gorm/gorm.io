@@ -47,15 +47,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORMは、パフォーマンスを向上させるために多くの最適化を行っています。デフォルトのパフォーマンスはほとんどのアプリケーションにとって良いものとなっているでしょう。 しかし、アプリケーションのパフォーマンスを向上させるテクニックがまだいくつかあります。 デフォルトトランザクションを無効にするGORMはデータの一貫性を確保するために、書き込み操作（作成&#x2F;更新&#x2F;削除）をトランザクシ">
+  <meta name="description" content="GORM optimizes many things to improve the performance, the default performance should be good for most applications, but there are still some tips for how to improve it for your application. デフォルトトランザ">
 <meta property="og:type" content="website">
 <meta property="og:title" content="パフォーマンス">
 <meta property="og:url" content="http://gorm.io/ja_JP/docs/performance.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORMは、パフォーマンスを向上させるために多くの最適化を行っています。デフォルトのパフォーマンスはほとんどのアプリケーションにとって良いものとなっているでしょう。 しかし、アプリケーションのパフォーマンスを向上させるテクニックがまだいくつかあります。 デフォルトトランザクションを無効にするGORMはデータの一貫性を確保するために、書き込み操作（作成&#x2F;更新&#x2F;削除）をトランザクシ">
+<meta property="og:description" content="GORM optimizes many things to improve the performance, the default performance should be good for most applications, but there are still some tips for how to improve it for your application. デフォルトトランザ">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2022-05-17T02:01:19.832Z">
-<meta property="article:modified_time" content="2022-05-17T02:01:19.832Z">
+<meta property="article:published_time" content="2022-05-17T02:29:23.966Z">
+<meta property="article:modified_time" content="2022-05-17T02:29:23.966Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -134,8 +134,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>GORMは、パフォーマンスを向上させるために多くの最適化を行っています。デフォルトのパフォーマンスはほとんどのアプリケーションにとって良いものとなっているでしょう。 しかし、アプリケーションのパフォーマンスを向上させるテクニックがまだいくつかあります。</p>
-<h2 id="デフォルトトランザクションを無効にする" class="article-heading"><a href="#デフォルトトランザクションを無効にする" class="headerlink" title="デフォルトトランザクションを無効にする"></a><a href="transactions.html">デフォルトトランザクションを無効にする</a><a class="article-anchor" href="#デフォルトトランザクションを無効にする" aria-hidden="true"></a></h2><p>GORMはデータの一貫性を確保するために、書き込み操作（作成/更新/削除）をトランザクション内で実行します。これはパフォーマンスにとっては悪影響を及ぼしますが、初期化中に無効にすることも可能です。</p>
+                <html><head></head><body><p>GORM optimizes many things to improve the performance, the default performance should be good for most applications, but there are still some tips for how to improve it for your application.</p>
+<h2 id="デフォルトトランザクションを無効にする" class="article-heading"><a href="#デフォルトトランザクションを無効にする" class="headerlink" title="デフォルトトランザクションを無効にする"></a><a href="transactions.html">デフォルトトランザクションを無効にする</a><a class="article-anchor" href="#デフォルトトランザクションを無効にする" aria-hidden="true"></a></h2><p>GORM performs write (create/update/delete) operations inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"gorm.db"</span>), &amp;gorm.Config{</span><br><span class="line">  SkipDefaultTransaction: <span class="literal">true</span>,</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="プリペアードステートメントをキャッシュする" class="article-heading"><a href="#プリペアードステートメントをキャッシュする" class="headerlink" title="プリペアードステートメントをキャッシュする"></a><a href="session.html">プリペアードステートメントをキャッシュする</a><a class="article-anchor" href="#プリペアードステートメントをキャッシュする" aria-hidden="true"></a></h2><p>SQLを実行する際にプリペアードステートメントを作成し、以降の呼び出しを高速化するためにそれをキャッシュすることができます。</p>
@@ -171,7 +171,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-05-17T02:01:19.832Z" itemprop="dateModified">最終更新: 2022-05-17</time>
+                <time class="article-footer-updated" datetime="2022-05-17T02:29:23.966Z" itemprop="dateModified">最終更新: 2022-05-17</time>
 <a href="generic_interface.html" class="article-footer-prev" title="汎用データベースインターフェース"><i class="fa fa-chevron-left"></i><span>前へ</span></a><a href="data_types.html" class="article-footer-next" title="データ型のカスタマイズ"><span>次へ</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
