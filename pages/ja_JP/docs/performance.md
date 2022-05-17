@@ -3,11 +3,11 @@ title: パフォーマンス
 layout: page
 ---
 
-GORMは、パフォーマンスを向上させるために多くの最適化を行っています。デフォルトのパフォーマンスはほとんどのアプリケーションにとって良いものとなっているでしょう。 しかし、アプリケーションのパフォーマンスを向上させるテクニックがまだいくつかあります。
+GORM optimizes many things to improve the performance, the default performance should be good for most applications, but there are still some tips for how to improve it for your application.
 
 ## [デフォルトトランザクションを無効にする](transactions.html)
 
-GORMはデータの一貫性を確保するために、書き込み操作（作成/更新/削除）をトランザクション内で実行します。これはパフォーマンスにとっては悪影響を及ぼしますが、初期化中に無効にすることも可能です。
+GORM performs write (create/update/delete) operations inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{

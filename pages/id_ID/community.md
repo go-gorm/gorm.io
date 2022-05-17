@@ -34,6 +34,7 @@ layout: page
 * [zapgorm2 - Driver logging Zap Uber untuk gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 * [gorm-newrelic-telemetry-plugin - Sebuah plugin yang memungkinkan telemetri oleh NewRelic Go Agent untuk GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
 * [Driver sqlite Pure-Go](https://github.com/glebarez/sqlite)
+* [Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
 
 ## <span id="contribute">Kontirbusi ke halamain ini</span>
 

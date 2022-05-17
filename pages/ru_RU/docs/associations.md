@@ -227,7 +227,7 @@ db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**ПРИМЕЧАНИЕ:** Связи будут удалены только в том случае, если первичный ключ удаления записи не равен нулю, GORM будет использовать эти ключи как условия для удаления выбранных ассоциаций
+**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
 / DOESN'T WORK

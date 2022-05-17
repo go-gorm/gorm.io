@@ -230,7 +230,7 @@ db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**注意:** レコード削除時の主キーがゼロ値でない場合のみ、関連レコードの削除も可能となります。GORMは選択された関連を削除するための条件として主キーを使用します。
+**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
 // DOESN'T WORK

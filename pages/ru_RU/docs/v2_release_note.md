@@ -549,8 +549,8 @@ db.Model(&MyTable{}).AddForeignKey("profile_id", "profiles(id)", "NO ACTION", "N
 Now you add constraints as follows:
 
 ```go
-db.Migrator().CreateConstraint(&Users{}), "Profiles")
-db.Migrator().CreateConstraint(&Users{}), "fk_users_profiles")
+db.Migrator().CreateConstraint(&Users{}, "Profiles")
+db.Migrator().CreateConstraint(&Users{}, "fk_users_profiles")
 ```
 
 which translates to the following sql code for postgres:

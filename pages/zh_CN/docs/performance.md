@@ -3,11 +3,11 @@ title: 性能
 layout: page
 ---
 
-GORM 已经优化了许多东西来提高性能，其默认性能对大多数应用来说都够用了。但这里还是有一些关于如何为您的应用改进性能的方法。
+GORM optimizes many things to improve the performance, the default performance should be good for most applications, but there are still some tips for how to improve it for your application.
 
 ## [禁用默认事务](transactions.html)
 
-对于写操作（创建、更新、删除），为了确保数据的完整性，GORM 会将它们封装在事务内运行。但这会降低性能，你可以在初始化时禁用这种方式
+GORM performs write (create/update/delete) operations inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{

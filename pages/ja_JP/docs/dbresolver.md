@@ -11,7 +11,7 @@ DBResolverはGORMの複数データベースへの対応を可能としていま
 * 手動での接続切替
 * プライマリやレプリカへのロードバランシング
 * 素のSQLでの動作
-* Transaction
+* トランザクション
 
 https://github.com/go-gorm/dbresolver
 
@@ -73,7 +73,7 @@ Read/Write splitting with DBResolver based on the current used [GORM callbacks](
 
 For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
 
-## Manual connection switching
+## 手動での接続切替
 
 ```go
 // Write Modeを使用する：`db1`からuserレコードを読み込む
