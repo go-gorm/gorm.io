@@ -230,7 +230,7 @@ db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those priamry keys as conditions to delete selected associations
+**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
 // DOESN'T WORK
