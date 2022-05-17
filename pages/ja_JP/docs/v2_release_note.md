@@ -550,8 +550,8 @@ db.Model(&MyTable{}).AddForeignKey("profile_id", "profiles(id)", "NO ACTION", "N
 これからは以下のようにして制約を追加します:
 
 ```go
-db.Migrator().CreateConstraint(&Users{}), "Profiles")
-db.Migrator().CreateConstraint(&Users{}), "fk_users_profiles")
+db.Migrator().CreateConstraint(&Users{}, "Profiles")
+db.Migrator().CreateConstraint(&Users{}, "fk_users_profiles")
 ```
 
 これは postgresの場合は以下のSQLコードに変換されます:
