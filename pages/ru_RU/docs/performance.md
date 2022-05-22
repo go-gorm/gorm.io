@@ -3,11 +3,11 @@ title: Производительность
 layout: страница
 ---
 
-GORM optimizes many things to improve the performance, the default performance should be good for most applications, but there are still some tips for how to improve it for your application.
+В GORM используется много оптимизаций для улучшения производительности и производительность по умолчанию должна быть достаточной для большинства приложений, но все же есть несколько советов, как улучшить ее для вашего приложения.
 
 ## [Отключить транзакцию по умолчанию](transactions.html)
 
-GORM performs write (create/update/delete) operations inside a transaction to ensure data consistency, which is bad for performance, you can disable it during initialization
+GORM выполняет операции записи (создание/обновление/удаление) внутри транзакции для обеспечения согласованности данных, что плохо сказывается на производительности, но вы можете отключить это поведение во время инициализации
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -33,12 +33,12 @@ tx.Model(&user).Update("Age", 18)
 ```
 
 {% note warn %}
-**NOTE** Also refer how to enable interpolateparams for MySQL to reduce roundtrip https://github.com/go-sql-driver/mysql#interpolateparams
+**NOTE** Также смотрите https://github.com/go-sql-driver/mysql#interpolateparams, как включить параметр interpolateparams для MySQL, чтобы сократить количество запросов
 {% endnote %}
 
 ### [Конструктор SQL с подготовкой](sql_builder.html)
 
-Prepared Statement works with RAW SQL also, for example:
+Подготовленный запрос работает также с сырым SQL, например:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -48,11 +48,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
-You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
+Вы также можете использовать GORM API для подготовки SQL с [DryRun Mode](session.html), и выполнить его с подготовленным запросом позже, смотрите [режим сессии](session.html) для получения подробной информации
 
 ## Выбрать поля
 
-By default GORM select all fields when querying, you can use `Select` to specify fields you want
+По умолчанию GORM выбирает все поля при запросе, вы можете использовать `Select` для указания нужных вам полей
 
 ```go
 db.Select("Name", "Age").Find(&Users{})
