@@ -42,11 +42,11 @@ db.Use(dbresolver.Register(dbresolver.Config{
 }, "orders", &Product{}, "secondary"))
 ```
 
-## Automatic connection switching
+## 接続の自動切替
 
-DBResolver will automatically switch connection based on the working table/struct
+操作対象のテーブル/構造体に基づいて自動的に接続を切り替えることができます。
 
-For RAW SQL, DBResolver will extract the table name from the SQL to match the resolver, and will use `sources` unless the SQL begins with `SELECT` (excepts `SELECT... FOR UPDATE`), for example:
+素のSQLの場合は、SQLからテーブル名を抽出してDBResolverの設定を参照します。また、SQL文が (`SELECT... FOR UPDATE` 以外の) `SELECT` で始まるSQLでなければ、Sourcesで指定したDBが使用されます。 例:
 
 ```go
 // `User` Resolver Examples
@@ -67,11 +67,11 @@ db.Find(&Order{}) // replicas `db8`
 db.Table("orders").Find(&Report{}) // replicas `db8`
 ```
 
-## Read/Write Splitting
+## 読み取り/書き込みの分離
 
-Read/Write splitting with DBResolver based on the current used [GORM callbacks](https://gorm.io/docs/write_plugins.html).
+現在使用されている [GORM callbacks](https://gorm.io/docs/write_plugins.html) に基づいて、DBResolverで読み取り/書き込みを分離できます。
 
-For `Query`, `Row` callback, will use `replicas` unless `Write` mode specified For `Raw` callback, statements are considered read-only and will use `replicas` if the SQL starts with `SELECT`
+`Query` や `Row` のコールバックでは、 `Write Model` が指定されていない限り `Replicas` が使用されます。 `Raw` コールバックについては、SQLが `SELECT` で始まり読み込み処理のみと判断された場合は `Replicas` が使用されます。
 
 ## 手動での接続切替
 
@@ -86,7 +86,7 @@ db.Clauses(dbresolver.Use("secondary")).First(&user)
 db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 ```
 
-## Transaction
+## トランザクション
 
 When using transaction, DBResolver will keep using the transaction and won't switch to sources/replicas based on configuration
 
