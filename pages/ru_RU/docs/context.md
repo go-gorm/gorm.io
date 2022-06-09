@@ -23,6 +23,17 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
+## Context timeout
+
+You could passing in a context with a timeout to `db.WithContext` to set timeout for long running queries, for example:
+
+```go
+ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+defer cancel()
+
+db.WithContext(ctx).Find(&users)
+```
+
 ## Context in Hooks/Callbacks
 
 You could access the `Context` object from current `Statement`, for example:
