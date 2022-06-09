@@ -49,3 +49,24 @@ docs:
     community: /community.html
     contribute: /contribute.html
     translate: /contribute.html#Translate-this-site
+gen:
+  getting_started:
+    overview: index.html
+  dao_generator:
+    overview: dao.html
+    create: create.html
+    update: update.html
+    query: query.html
+    delete: delete.html
+    associations: associations.html
+  type_safe_sql:
+    overview: type_safe_sql.html
+    dynamic_sql: dynamic_sql.html
+  database_to_structs:
+    overview: database_to_structs.html
+    fields: fields.html
+    methods: methods.html
+  advanced_topics:
+    gorm_clause: clause.html
+    transaction: transaction.html
+    plugins: plugins.html
