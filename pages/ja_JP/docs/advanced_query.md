@@ -197,13 +197,13 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 最初に一致するレコードを取得するか、または指定された条件で新しいレコードを作成します (構造体、マップ条件のみ使用可能です)。 `RowsAffected` は作成/更新されたレコード数を返します。
 
 ```go
-// ユーザが見つからないため、与えられた条件でレコードを作成する
+// User not found, create a new record with give conditions
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
-// result.RowsAffected // => 0
+// result.RowsAffected // => 1
 
-// `name` = `jinzhu` のユーザが存在する場合
+// Found user with `name` = `jinzhu`
 result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 // result.RowsAffected // => 0
