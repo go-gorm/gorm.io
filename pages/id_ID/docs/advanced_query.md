@@ -199,7 +199,7 @@ Get first matched record or create a new one with given conditions (only works w
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
-// result.RowsAffected // => 0
+// result.RowsAffected // => 1
 
 // Found user with `name` = `jinzhu`
 result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
