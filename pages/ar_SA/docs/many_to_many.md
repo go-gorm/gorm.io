@@ -27,6 +27,7 @@ When using GORM `AutoMigrate` to create a table for `User`, GORM will create the
 
 ## Back-Reference
 
+### Declare
 ```go
 type User struct {
   gorm. Model
@@ -41,22 +42,41 @@ type Language struct {
 // CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
+### Retrieve
+```go
+// Retrieve user list with edger loading languages
+func GetAllUsers(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("Languages").Find(&users).Error
+    return users, err
+}
+
+// Retrieve language list with edger loading users
+func GetAllLanguages(db *gorm.DB) ([]Language, error) {
+    var languages []Language
+    err := db.Model(&Language{}).Preload("Users").Find(&languages).Error
+    return languages, err
+}
+```
+
 ## Override Foreign Key
 
 For a `many2many` relationship, the join table owns the foreign key which references two models, for example:
 
 ```go
 type User struct {
-  gorm. Model
-  Languages []Language `gorm:"many2many:user_speaks;"`
+  gorm.Model
+  Languages []Language `gorm:"many2many:user_languages;"`
 }
 
 type Language struct {
-  Code string `gorm:"primarykey"`
+  gorm.Model
   Name string
 }
 
-// CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
+// Join Table: user_languages
+//   foreign key: user_id, reference: users.id
+//   foreign key: language_id, reference: languages.id
 ```
 
 To override them, you can use tag `foreignKey`, `references`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
@@ -89,16 +109,13 @@ Self-referencing many2many relationship
 
 ```go
 type User struct {
-  gorm. Model
-  Languages []Language `gorm:"many2many:user_speaks;"`
+  gorm.Model
+    Friends []*User `gorm:"many2many:user_friends"`
 }
 
-type Language struct {
-  Code string `gorm:"primarykey"`
-  Name string
-}
-
-// CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
+// Which creates join table: user_friends
+//   foreign key: user_id, reference: users.id
+//   foreign key: friend_id, reference: users.id
 ```
 
 ## Eager Loading
@@ -151,7 +168,7 @@ You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will 
 
 ```go
 type User struct {
-  gorm. Model
+  gorm.Model
   Languages []Language `gorm:"many2many:user_speaks;"`
 }
 
