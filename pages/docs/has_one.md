@@ -9,6 +9,7 @@ A `has one` association sets up a one-to-one connection with another model, but 
 
 For example, if your application includes users and credit cards, and each user can only have one credit card.
 
+### Declare
 ```go
 // User has one CreditCard, CreditCardID is the foreign key
 type User struct {
@@ -20,6 +21,16 @@ type CreditCard struct {
   gorm.Model
   Number string
   UserID uint
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading credit card
+func GetAll(db *gorm.DB) ([]User, error) {
+	var users []User
+	err := db.Model(&User{}).Preload("CreditCard").Find(&users).Error
+	return users, err
 }
 ```
 
