@@ -9,6 +9,7 @@ A `has many` association sets up a one-to-many connection with another model, un
 
 For example, if your application includes users and credit card, and each user can have many credit cards.
 
+### Declare
 ```go
 // User has many CreditCards, UserID is the foreign key
 type User struct {
@@ -20,6 +21,16 @@ type CreditCard struct {
   gorm.Model
   Number string
   UserID uint
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading credit cards
+func GetAll(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("CreditCards").Find(&users).Error
+    return users, err
 }
 ```
 
