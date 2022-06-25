@@ -9,6 +9,7 @@ layout: page
 
 例えば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを1枚しか持つことができないとします。
 
+### Declare
 ```go
 // Userは1つだけCreditCardを持ちます。CreditCardIDは外部キーです。
 type User struct {
@@ -20,6 +21,16 @@ type CreditCard struct {
   gorm.Model
   Number string
   UserID uint
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading credit card
+func GetAll(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("CreditCard").Find(&users).Error
+    return users, err
 }
 ```
 
@@ -37,7 +48,7 @@ type CreditCard struct {
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // UserNameを外部キーとして利用する。
+  // use UserName as foreign key
 }
 
 type CreditCard struct {
