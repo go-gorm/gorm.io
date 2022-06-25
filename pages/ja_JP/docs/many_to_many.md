@@ -26,6 +26,7 @@ GORMの `AutoMigrate` を使用して `User` テーブルを作成する場合�
 
 ## 後方参照（Back-Reference）
 
+### Declare
 ```go
 // User は複数の言語を所有し、かつ言語に属しています。`user_languages` が結合テーブルになります
 type User struct {
@@ -37,6 +38,23 @@ type Language struct {
   gorm.Model
   Name string
   Users []*User `gorm:"many2many:user_languages;"`
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading languages
+func GetAllUsers(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("Languages").Find(&users).Error
+    return users, err
+}
+
+// Retrieve language list with edger loading users
+func GetAllLanguages(db *gorm.DB) ([]Language, error) {
+    var languages []Language
+    err := db.Model(&Language{}).Preload("Users").Find(&languages).Error
+    return languages, err
 }
 ```
 
@@ -138,8 +156,8 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// PersonモデルのAddressフィールドの結合テーブルをPersonAddressに変更する
-// PersonAddressには必要な外部キーが全て定義されていなければならず、定義されていない場合はエラーとなる
+// Change model Person's field Addresses' join table to PersonAddress
+// PersonAddress must defined all required foreign keys or it will raise error
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
