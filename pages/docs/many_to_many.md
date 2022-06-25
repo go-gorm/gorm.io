@@ -26,6 +26,7 @@ When using GORM `AutoMigrate` to create a table for `User`, GORM will create the
 
 ## Back-Reference
 
+### Declare
 ```go
 // User has and belongs to many languages, use `user_languages` as join table
 type User struct {
@@ -37,6 +38,23 @@ type Language struct {
   gorm.Model
   Name string
   Users []*User `gorm:"many2many:user_languages;"`
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading languages
+func GetAllUsers(db *gorm.DB) ([]User, error) {
+	var users []User
+	err := db.Model(&User{}).Preload("Languages").Find(&users).Error
+	return users, err
+}
+
+// Retrieve language list with edger loading users
+func GetAllLanguages(db *gorm.DB) ([]Language, error) {
+	var languages []Language
+	err := db.Model(&Language{}).Preload("Users").Find(&languages).Error
+	return languages, err
 }
 ```
 
