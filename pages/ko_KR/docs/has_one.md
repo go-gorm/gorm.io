@@ -9,6 +9,7 @@ layout: page
 
 예를들어, 만약 어떤 어플리케이션이 users 와 credit cards를 가지고 있고, 각 유저는 오직 하나의 credit card만을 가질 수 있을 때, 연관성은 다음과 같이 설명됩니다.
 
+### Declare
 ```go
 // 유저는 한개의 신용카드를 가지고 있고, CreditCardID는 foreign key 입니다.
 type User struct {
@@ -20,6 +21,16 @@ type CreditCard struct {
   gorm.Model
   Number string
   UserID uint
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading credit card
+func GetAll(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("CreditCard").Find(&users).Error
+    return users, err
 }
 ```
 
@@ -37,7 +48,7 @@ type CreditCard struct {
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // UserName을 foreign key로 사용하세요.
+  // use UserName as foreign key
 }
 
 type CreditCard struct {
