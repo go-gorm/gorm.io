@@ -9,6 +9,7 @@ layout: страница
 
 Например, если ваше приложение включает пользователей и кредитные карты, и каждый пользователь может иметь много кредитных карт.
 
+### Declare
 ```go
 // User имеет много CreditCards, UserID это внешний ключ
 type User struct {
@@ -20,6 +21,16 @@ type CreditCard struct {
   gorm.Model
   Number string
   UserID uint
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading credit cards
+func GetAll(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("CreditCards").Find(&users).Error
+    return users, err
 }
 ```
 
