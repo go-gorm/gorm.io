@@ -9,6 +9,7 @@ layout: page
 
 例如，您的应用包含 user 和 credit card 模型，且每个 user 只能有一张 credit card。
 
+### Declare
 ```go
 // User 有一张 CreditCard，UserID 是外键
 type User struct {
@@ -20,6 +21,16 @@ type CreditCard struct {
   gorm.Model
   Number string
   UserID uint
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading credit card
+func GetAll(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("CreditCard").Find(&users).Error
+    return users, err
 }
 ```
 
@@ -37,7 +48,7 @@ type CreditCard struct {
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // 使用 UserName 作为外键
+  // use UserName as foreign key
 }
 
 type CreditCard struct {
