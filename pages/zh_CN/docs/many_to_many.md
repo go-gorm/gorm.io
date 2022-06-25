@@ -26,6 +26,7 @@ type Language struct {
 
 ## 反向引用
 
+### Declare
 ```go
 // User 拥有并属于多种 language，`user_languages` 是连接表
 type User struct {
@@ -37,6 +38,23 @@ type Language struct {
   gorm.Model
   Name string
   Users []*User `gorm:"many2many:user_languages;"`
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading languages
+func GetAllUsers(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("Languages").Find(&users).Error
+    return users, err
+}
+
+// Retrieve language list with edger loading users
+func GetAllLanguages(db *gorm.DB) ([]Language, error) {
+    var languages []Language
+    err := db.Model(&Language{}).Preload("Users").Find(&languages).Error
+    return languages, err
 }
 ```
 
@@ -55,7 +73,7 @@ type Language struct {
   Name string
 }
 
-// 连接表：user_languages
+// Join Table: user_languages
 //   foreign key: user_id, reference: users.id
 //   foreign key: language_id, reference: languages.id
 ```
@@ -75,7 +93,7 @@ type Profile struct {
     UserRefer uint `gorm:"index:,unique"`
 }
 
-// 会创建连接表：user_profiles
+// Which creates join table: user_profiles
 //   foreign key: user_refer_id, reference: users.refer
 //   foreign key: profile_refer, reference: profiles.user_refer
 ```
@@ -94,7 +112,7 @@ type User struct {
     Friends []*User `gorm:"many2many:user_friends"`
 }
 
-// 会创建连接表：user_friends
+// Which creates join table: user_friends
 //   foreign key: user_id, reference: users.id
 //   foreign key: friend_id, reference: users.id
 ```
@@ -138,8 +156,8 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// 修改 Person 的 Addresses 字段的连接表为 PersonAddress
-// PersonAddress 必须定义好所需的外键，否则会报错
+// Change model Person's field Addresses' join table to PersonAddress
+// PersonAddress must defined all required foreign keys or it will raise error
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
@@ -186,18 +204,18 @@ type Blog struct {
   SharedTags []Tag `gorm:"many2many:shared_blog_tags;ForeignKey:id;References:id"`
 }
 
-// 连接表：blog_tags
+// Join Table: blog_tags
 //   foreign key: blog_id, reference: blogs.id
 //   foreign key: blog_locale, reference: blogs.locale
 //   foreign key: tag_id, reference: tags.id
 //   foreign key: tag_locale, reference: tags.locale
 
-// 连接表：locale_blog_tags
+// Join Table: locale_blog_tags
 //   foreign key: blog_id, reference: blogs.id
 //   foreign key: blog_locale, reference: blogs.locale
 //   foreign key: tag_id, reference: tags.id
 
-// 连接表：shared_blog_tags
+// Join Table: shared_blog_tags
 //   foreign key: blog_id, reference: blogs.id
 //   foreign key: tag_id, reference: tags.id
 ```
