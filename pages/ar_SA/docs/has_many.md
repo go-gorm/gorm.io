@@ -9,6 +9,7 @@ A `has many` association sets up a one-to-many connection with another model, un
 
 For example, if your application includes users and credit card, and each user can have many credit cards.
 
+### Declare
 ```go
 type User struct {
   gorm. Model
@@ -19,6 +20,16 @@ type CreditCard struct {
   gorm. Model
   Number string
   UserID uint
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading credit cards
+func GetAll(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("CreditCards").Find(&users).Error
+    return users, err
 }
 ```
 
@@ -32,14 +43,14 @@ To use another field as foreign key, you can customize it with a `foreignKey` ta
 
 ```go
 type User struct {
-  gorm. Model
-  CreditCards []CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+  gorm.Model
+  CreditCards []CreditCard `gorm:"foreignKey:UserRefer"`
 }
 
 type CreditCard struct {
-  gorm. Model
-  Number string
-  UserID uint
+  gorm.Model
+  Number    string
+  UserRefer uint
 }
 ```
 
@@ -53,14 +64,15 @@ You are able to change it with tag `references`, e.g:
 
 ```go
 type User struct {
-  gorm. Model
-  CreditCards []CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+  gorm.Model
+  MemberNumber string
+  CreditCards  []CreditCard `gorm:"foreignKey:UserNumber;references:MemberNumber"`
 }
 
 type CreditCard struct {
-  gorm. Model
-  Number string
-  UserID uint
+  gorm.Model
+  Number     string
+  UserNumber string
 }
 ```
 
@@ -103,7 +115,7 @@ type Toy struct {
   OwnerType string
 }
 
-db. Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
+db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `dogs` (`name`) VALUES ("dog1")
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
 ```
@@ -120,14 +132,10 @@ GORM allows eager loading has many associations with `Preload`, refer [Preloadin
 
 ```go
 type User struct {
-  gorm. Model
-  CreditCards []CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
-}
-
-type CreditCard struct {
-  gorm. Model
-  Number string
-  UserID uint
+  gorm.Model
+  Name      string
+  ManagerID *uint
+  Team      []User `gorm:"foreignkey:ManagerID"`
 }
 ```
 
@@ -137,12 +145,12 @@ You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will 
 
 ```go
 type User struct {
-  gorm. Model
+  gorm.Model
   CreditCards []CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
 }
 
 type CreditCard struct {
-  gorm. Model
+  gorm.Model
   Number string
   UserID uint
 }
