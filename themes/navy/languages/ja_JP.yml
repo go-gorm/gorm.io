@@ -2,6 +2,7 @@
 menu:
   home: <i class="fa fa-home"></i>Home
   docs: <i class="fa fa-book"></i>ドキュメント
+  gen: <i class="fa fa-tools"></i>Gen
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
   community: <i class="fab fa-slack"></i>コミュニティ
@@ -69,3 +70,21 @@ sidebar:
     community: コミュニティ
     contribute: 貢献する
     translate: 現在のサイトを翻訳する
+  gen:
+    getting_started: Getting Started
+    overview: 概要
+    dao_generator: Dao Generator
+    create: レコードの作成
+    update: レコードの更新
+    query: レコードの取得
+    delete: レコードの削除
+    associations: アソシエーション
+    type_safe_sql: Type-Safe Compiled SQL
+    dynamic_sql: 動的SQL
+    database_to_structs: Database To Structs
+    fields: Fields
+    methods: Methods
+    advanced_topics: Advanced Topics
+    gorm_clause: GORM Clause
+    transaction: トランザクション
+    plugins: GORMプラグイン

@@ -23,9 +23,20 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-## Hooks/CallbacksでのContext
+## Context timeout
 
-現在の `Statement` から `Context` にアクセスすることが可能です。例：
+timeoutを設定したcontextを `db.WithContext` に渡すことで、時間がかかるクエリのタイムアウト時間を設定する事ができます。例：
+
+```go
+ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+defer cancel()
+
+db.WithContext(ctx).Find(&users)
+```
+
+## Hooks/Callbacks内でのcontextの使用
+
+`Statement` から `Context` にアクセスすることが可能です。例：
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -37,7 +48,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 
 ## Chi Middlewareの例
 
-継続セッションはAPIリクエストの処理に役立ちます。たとえば、ミドルウェア内でのタイムアウト設定をしたContextを使って、`*gorm.DB`を設定できます。 そして、その `*gorm.DB` を使ってリクエストの処理を行います。
+継続セッションはAPIリクエストの処理に役立ちます。例えば、ミドルウェア内でのタイムアウト設定をしたContextを使って、`*gorm.DB`を設定できます。 そして、その `*gorm.DB` を使ってリクエストの処理を行います。
 
 Chi ミドルウェアの例を以下に示します。
 
@@ -73,7 +84,7 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 ```
 
 {% note %}
-**注** `Context`を`WithContext`で設定するのはゴルーチンセーフです。 詳細は[Session](session.html)を参照してください。
+**NOTE** `Context`を`WithContext`で設定するのはゴルーチンセーフです。 詳細は[Session](session.html)を参照してください。
 {% endnote %}
 
 ## Logger

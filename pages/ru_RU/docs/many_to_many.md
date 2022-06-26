@@ -26,6 +26,7 @@ type Language struct {
 
 ## Обратная ссылка
 
+### Declare
 ```go
 // Пользователь имеет и принадлежит ко многим языкам, используется `user_languages` как таблица связей
 type User struct {
@@ -37,6 +38,23 @@ type Language struct {
   gorm.Model
   Name string
   Users []*User `gorm:"many2many:user_languages;"`
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading languages
+func GetAllUsers(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("Languages").Find(&users).Error
+    return users, err
+}
+
+// Retrieve language list with edger loading users
+func GetAllLanguages(db *gorm.DB) ([]Language, error) {
+    var languages []Language
+    err := db.Model(&Language{}).Preload("Users").Find(&languages).Error
+    return languages, err
 }
 ```
 
@@ -55,9 +73,9 @@ type Language struct {
   Name string
 }
 
-// Таблица связей: user_languages
-//   внешний ключ: user_id, ссылается на: users.id
-//   внешний ключ: language_id, ссылается на: languages.id
+// Join Table: user_languages
+//   foreign key: user_id, reference: users.id
+//   foreign key: language_id, reference: languages.id
 ```
 
 Чтобы перезаписать их, вы можете использовать тэг `foreignKey`, `references`, `joinForeignKey`, `joinReferences`, необязательно использовать их вместе, вы можете просто использовать один из них, чтобы перезаписать внешние ключи
@@ -94,9 +112,9 @@ type User struct {
     Friends []*User `gorm:"many2many:user_friends"`
 }
 
-// Который создает таблицу связей: user_friends
-//   внешний ключ: user_id, ссылается на: users.id
-//   внешний ключ: friend_id, ссылается на: users.id
+// Which creates join table: user_friends
+//   foreign key: user_id, reference: users.id
+//   foreign key: friend_id, reference: users.id
 ```
 
 ## Нетерпеливая загрузка

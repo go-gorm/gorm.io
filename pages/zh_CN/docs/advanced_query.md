@@ -84,7 +84,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 GORM 允许您在 `Table` 方法中通过 FROM 子句使用子查询，例如：
 
 ```go
-db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
 subQuery1 := db.Model(&User{}).Select("name")
@@ -201,7 +201,7 @@ Get first matched record or create a new one with given conditions (only works w
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
-// result.RowsAffected // => 0
+// result.RowsAffected // => 1
 
 // Found user with `name` = `jinzhu`
 result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)

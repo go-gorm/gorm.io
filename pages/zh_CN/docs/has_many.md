@@ -9,6 +9,7 @@ layout: page
 
 例如，您的应用包含 user 和 credit card 模型，且每个 user 可以有多张 credit card。
 
+### Declare
 ```go
 // User 有多张 CreditCard，UserID 是外键
 type User struct {
@@ -20,6 +21,16 @@ type CreditCard struct {
   gorm.Model
   Number string
   UserID uint
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading credit cards
+func GetAll(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("CreditCards").Find(&users).Error
+    return users, err
 }
 ```
 
@@ -105,7 +116,7 @@ type Toy struct {
   OwnerType string
 }
 
-db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
+db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `dogs` (`name`) VALUES ("dog1")
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
 ```

@@ -9,6 +9,7 @@ layout: page
 
 例えば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを複数持つことができる場合は以下のようになります。
 
+### Declare
 ```go
 // User は複数の CreditCards を持ちます。UserID は外部キーとなります。
 type User struct {
@@ -20,6 +21,16 @@ type CreditCard struct {
   gorm.Model
   Number string
   UserID uint
+}
+```
+
+### Retrieve
+```go
+// Retrieve user list with edger loading credit cards
+func GetAll(db *gorm.DB) ([]User, error) {
+    var users []User
+    err := db.Model(&User{}).Preload("CreditCards").Find(&users).Error
+    return users, err
 }
 ```
 

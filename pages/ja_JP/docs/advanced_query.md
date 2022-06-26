@@ -84,7 +84,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 GORMでは、`Table`を用いることで、FROM句でサブクエリを使用することができます。例:
 
 ```go
-db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18}).Find(&User{})
+db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
 subQuery1 := db.Model(&User{}).Select("name")
@@ -194,14 +194,14 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
+最初に一致するレコードを取得するか、または指定された条件で新しいレコードを作成します (構造体、マップ条件のみ使用可能です)。 `RowsAffected` は作成/更新されたレコード数を返します。
 
 ```go
 // User not found, create a new record with give conditions
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
-// result.RowsAffected // => 0
+// result.RowsAffected // => 1
 
 // Found user with `name` = `jinzhu`
 result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
