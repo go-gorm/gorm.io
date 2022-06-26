@@ -162,5 +162,5 @@ type User struct {
 ```
 
 {% note %}
-**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
+**注意** GORMでは、複数のタイムトラッキング用のフィールドを定義することや、UNIX(ナノ/ミリ)秒でタイムトラッキングすることが可能です。詳細については [Models](models.html#time_tracking) をチェックしてください。
 {% endnote %}
