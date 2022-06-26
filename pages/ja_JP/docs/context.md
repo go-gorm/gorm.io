@@ -34,9 +34,9 @@ defer cancel()
 db.WithContext(ctx).Find(&users)
 ```
 
-## Context in Hooks/Callbacks
+## Hooks/Callbacks内でのcontextの使用
 
-You could access the `Context` object from current `Statement`, for example:
+`Statement` から `Context` にアクセスすることが可能です。例：
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -46,11 +46,11 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Chi Middleware Example
+## Chi Middlewareの例
 
-Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
+継続セッションはAPIリクエストの処理に役立ちます。例えば、ミドルウェア内でのタイムアウト設定をしたContextを使って、`*gorm.DB`を設定できます。 そして、その `*gorm.DB` を使ってリクエストの処理を行います。
 
-Following is a Chi middleware example:
+Chi ミドルウェアの例を以下に示します。
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {
@@ -84,9 +84,9 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 ```
 
 {% note %}
-**NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**NOTE** `Context`を`WithContext`で設定するのはゴルーチンセーフです。 詳細は[Session](session.html)を参照してください。
 {% endnote %}
 
 ## Logger
 
-Logger accepts `Context` too, you can use it for log tracking, refer [Logger](logger.html) for details
+Loggerも `Context` もに対応しており、ログのトラッキングに使用することができます。詳細については [Logger](logger.html) を参照してください。
