@@ -25,7 +25,7 @@ tx.Model(&user).Update("role", "admin")
 
 ## Context timeout
 
-You could passing in a context with a timeout to `db.WithContext` to set timeout for long running queries, for example:
+timeoutを設定したcontextを `db.WithContext` に渡すことで、時間がかかるクエリのタイムアウト時間を設定する事ができます。例：
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
