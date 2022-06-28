@@ -5,7 +5,7 @@ layout: strona
 
 ## <span id="smart_select">Inteligentne wyciąganie pól</span>
 
-GORM allows select specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM pozwala na wybranie określonych pól z [`Select`](query.html), jeśli często używasz tego w swojej aplikacji, może chcesz zdefiniować mniejszą strukturę dla użycia API, która może automatycznie wybierać określone pola, na przykład:
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // setki pól
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// Wybrać `id`, `name` awtomatycznie gdy pytamy
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**UWAGA** ` QueryFields ` wybierze według nazwy wszystkich pól dla bieżącego modelu
 {% endnote %}
 
 ```go
