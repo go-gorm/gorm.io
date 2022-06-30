@@ -22,11 +22,11 @@ After a `Chain method`, `Finisher Method`, GORM returns an initialized `*gorm.DB
 ```go
 queryDB := DB.Where("name = ?", "jinzhu")
 
-queryDB.First(&user)
-// SELECT * FROM users WHERE name = "jinzhu"
+queryDB.Where("age > ?", 10).First(&user)
+// SELECT * FROM users WHERE name = "jinzhu" AND age > 10
 
-queryDB.Where("name = ?", "jinzhu2").First(&user2)
-// SELECT * FROM users WHERE name = "jinzhu" AND name = "jinzhu2"
+queryDB.Where("age > ?", 20).First(&user2)
+// SELECT * FROM users WHERE name = "jinzhu" AND age > 10 AND age > 20
 ```
 
 In order to reuse a initialized `*gorm.DB` instance, you can use a `New Session Method` to create a shareable `*gorm.DB`, e.g:
@@ -34,11 +34,11 @@ In order to reuse a initialized `*gorm.DB` instance, you can use a `New Session 
 ```go
 queryDB := DB.Where("name = ?", "jinzhu").Session(&gorm.Session{})
 
-queryDB.First(&user)
-// SELECT * FROM users WHERE name = "jinzhu"
+queryDB.Where("age > ?", 10).First(&user)
+// SELECT * FROM users WHERE name = "jinzhu" AND age > 10
 
-queryDB.Where("name = ?", "jinzhu2").First(&user2)
-// SELECT * FROM users WHERE name = "jinzhu2"
+queryDB.Where("age > ?", 20).First(&user2)
+// SELECT * FROM users WHERE name = "jinzhu" AND age > 20
 ```
 
 ## Chain Method
