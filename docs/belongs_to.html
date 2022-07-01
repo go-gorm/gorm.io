@@ -54,8 +54,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="Belongs ToA belongs to association sets up a one-to-one connection with another model, such that each instance of the declaring model “belongs to” one instance of the other model. For example, if your">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-06-30T10:48:38.487Z">
-<meta property="article:modified_time" content="2022-06-30T10:48:38.487Z">
+<meta property="article:published_time" content="2022-07-01T15:30:52.305Z">
+<meta property="article:modified_time" content="2022-07-01T15:30:52.305Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -149,6 +149,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>You are able to change it with tag <code>references</code>, e.g:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  gorm.Model</span><br><span class="line">  Name      <span class="type">string</span></span><br><span class="line">  CompanyID <span class="type">string</span></span><br><span class="line">  Company   Company <span class="string">`gorm:"references:Code"`</span> <span class="comment">// use Code as references</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Company <span class="keyword">struct</span> {</span><br><span class="line">  ID   <span class="type">int</span></span><br><span class="line">  Code <span class="type">string</span></span><br><span class="line">  Name <span class="type">string</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
+<blockquote class="note warn"><p><strong>NOTE</strong> GORM usually guess the relationship as <code>has one</code> if override foreign key name already exists in owner’s type, we need to specify <code>references</code> in the <code>belongs to</code> relationship.</p>
+</blockquote>
+
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  gorm.Model</span><br><span class="line">  Name      <span class="type">string</span></span><br><span class="line">  CompanyID <span class="type">string</span></span><br><span class="line">  Company   Company <span class="string">`gorm:"references:CompanyID"`</span> <span class="comment">// use Company.CompanyID as references</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Company <span class="keyword">struct</span> {</span><br><span class="line">  CompanyID   <span class="type">int</span></span><br><span class="line">  Code        <span class="type">string</span></span><br><span class="line">  Name        <span class="type">string</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
 <h2 id="CRUD-with-Belongs-To" class="article-heading"><a href="#CRUD-with-Belongs-To" class="headerlink" title="CRUD with Belongs To"></a>CRUD with Belongs To<a class="article-anchor" href="#CRUD-with-Belongs-To" aria-hidden="true"></a></h2><p>Please checkout <a href="associations.html#Association-Mode">Association Mode</a> for working with belongs to relations</p>
 <h2 id="Eager-Loading" class="article-heading"><a href="#Eager-Loading" class="headerlink" title="Eager Loading"></a>Eager Loading<a class="article-anchor" href="#Eager-Loading" aria-hidden="true"></a></h2><p>GORM allows eager loading belongs to associations with <code>Preload</code> or <code>Joins</code>, refer <a href="preload.html">Preloading (Eager loading)</a> for details</p>
 <h2 id="FOREIGN-KEY-Constraints" class="article-heading"><a href="#FOREIGN-KEY-Constraints" class="headerlink" title="FOREIGN KEY Constraints"></a>FOREIGN KEY Constraints<a class="article-anchor" href="#FOREIGN-KEY-Constraints" aria-hidden="true"></a></h2><p>You can setup <code>OnUpdate</code>, <code>OnDelete</code> constraints with tag <code>constraint</code>, it will be created when migrating with GORM, for example:</p>
@@ -165,7 +170,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-06-30T10:48:38.487Z" itemprop="dateModified">Last updated: 2022-06-30</time>
+                <time class="article-footer-updated" datetime="2022-07-01T15:30:52.305Z" itemprop="dateModified">Last updated: 2022-07-01</time>
 <a href="sql_builder.html" class="article-footer-prev" title="Raw SQL & SQL Builder"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="has_one.html" class="article-footer-next" title="Has One"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
