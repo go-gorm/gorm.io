@@ -72,17 +72,36 @@ type Company struct {
 }
 ```
 
+{% note warn %}
+**NOTE** GORM usually guess the relationship as `has one` if override foreign key name already exists in owner's type, we need to specify `references` in the `belongs to` relationship.
+{% endnote %}
+
+```go
+type User struct {
+  gorm.Model
+  Name      string
+  CompanyID string
+  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID as references
+}
+
+type Company struct {
+  CompanyID   int
+  Code        string
+  Name        string
+}
+```
+
 ## Belongs to 的 CRUD
 
-点击 [关联模式](associations.html#Association-Mode) 链接获取 belongs to 相关的用法
+Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
 
 ## 预加载
 
-GORM允许通过使用`Preload`或者`Joins`来主动加载实体的关联关系，具体内容请参考，[预加载（主动加载）](preload.html)
+GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
 
 ## 外键约束
 
-你可以通过`OnUpdate`, `OnDelete`配置标签来增加关联关系的级联操作，如下面的例子，通过GORM可以完成用户和公司的级联更新和级联删除操作：
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {
