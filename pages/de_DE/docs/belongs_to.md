@@ -72,6 +72,25 @@ type Company struct {
 }
 ```
 
+{% note warn %}
+**NOTE** GORM usually guess the relationship as `has one` if override foreign key name already exists in owner's type, we need to specify `references` in the `belongs to` relationship.
+{% endnote %}
+
+```go
+type User struct {
+  gorm.Model
+  Name      string
+  CompanyID string
+  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID as references
+}
+
+type Company struct {
+  CompanyID   int
+  Code        string
+  Name        string
+}
+```
+
 ## CRUD mit zugehörigkeit
 
 Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
