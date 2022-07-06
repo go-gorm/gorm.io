@@ -35,6 +35,7 @@ layout: page
 * [gorm-newrelic-telemetry-plugin - Sebuah plugin yang memungkinkan telemetri oleh NewRelic Go Agent untuk GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
 * [Driver sqlite Pure-Go](https://github.com/glebarez/sqlite)
 * [Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
+* [gorm-cache - GORM query cache plugin](https://github.com/liyuan1125/gorm-cache)
 
 ## <span id="contribute">Kontirbusi ke halamain ini</span>
 
