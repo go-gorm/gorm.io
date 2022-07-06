@@ -54,8 +54,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="Has Onehas one は、別のモデルと一対一となる関連を設定します。関連するモデルによって、セマンティクス（と因果関係）は多少異なります。 このアソシエーションは、モデルの各インスタンスが別のモデルの1つのインスタンスを含んでいるか、または所有していることを示します。 例えば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを1枚しか持つことができないとします。 De">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2022-07-06T02:06:47.924Z">
-<meta property="article:modified_time" content="2022-07-06T02:06:47.924Z">
+<meta property="article:published_time" content="2022-07-06T03:01:28.137Z">
+<meta property="article:modified_time" content="2022-07-06T03:01:28.137Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -138,7 +138,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>例えば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを1枚しか持つことができないとします。</p>
 <h3 id="Declare" class="article-heading"><a href="#Declare" class="headerlink" title="Declare"></a>Declare<a class="article-anchor" href="#Declare" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Userは1つだけCreditCardを持ちます。CreditCardIDは外部キーです。</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  gorm.Model</span><br><span class="line">  CreditCard CreditCard</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> CreditCard <span class="keyword">struct</span> {</span><br><span class="line">  gorm.Model</span><br><span class="line">  Number <span class="type">string</span></span><br><span class="line">  UserID <span class="type">uint</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Retrieve" class="article-heading"><a href="#Retrieve" class="headerlink" title="Retrieve"></a>Retrieve<a class="article-anchor" href="#Retrieve" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Retrieve user list with edger loading credit card</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetAll</span><span class="params">(db *gorm.DB)</span></span> ([]User, <span class="type">error</span>) {</span><br><span class="line">    <span class="keyword">var</span> users []User</span><br><span class="line">    err := db.Model(&amp;User{}).Preload(<span class="string">"CreditCard"</span>).Find(&amp;users).Error</span><br><span class="line">    <span class="keyword">return</span> users, err</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="Retrieve" class="article-heading"><a href="#Retrieve" class="headerlink" title="Retrieve"></a>Retrieve<a class="article-anchor" href="#Retrieve" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Retrieve user list with eager loading credit card</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetAll</span><span class="params">(db *gorm.DB)</span></span> ([]User, <span class="type">error</span>) {</span><br><span class="line">    <span class="keyword">var</span> users []User</span><br><span class="line">    err := db.Model(&amp;User{}).Preload(<span class="string">"CreditCard"</span>).Find(&amp;users).Error</span><br><span class="line">    <span class="keyword">return</span> users, err</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="外部キーのデフォルト設定を上書きする" class="article-heading"><a href="#外部キーのデフォルト設定を上書きする" class="headerlink" title="外部キーのデフォルト設定を上書きする"></a>外部キーのデフォルト設定を上書きする<a class="article-anchor" href="#外部キーのデフォルト設定を上書きする" aria-hidden="true"></a></h2><p><code>has one</code>を定義する場合、外部キーフィールドも存在する必要があります。所有側のモデルは、この属するモデルの主キーをこのフィールドへ保存します。</p>
 <p>そのフィールドの名前は通常、 <code>has one</code>を持つモデルの型名に<code>primary key</code>を足したものとして作成されます。上記の例では <code>UserID</code>です。</p>
@@ -176,7 +176,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-07-06T02:06:47.924Z" itemprop="dateModified">最終更新: 2022-07-06</time>
+                <time class="article-footer-updated" datetime="2022-07-06T03:01:28.137Z" itemprop="dateModified">最終更新: 2022-07-06</time>
 <a href="belongs_to.html" class="article-footer-prev" title="Belongs To"><i class="fa fa-chevron-left"></i><span>前へ</span></a><a href="has_many.html" class="article-footer-next" title="Has Many"><span>次へ</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
