@@ -394,7 +394,7 @@ db.Joins("Company").Find(&users)
 Join with conditions
 
 ```go
-db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
+db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 

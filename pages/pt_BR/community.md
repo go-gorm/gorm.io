@@ -35,6 +35,7 @@ layout: page
 * [gorm-newrelic-telemetry-plugin - Um plugin que permite a telemetria de NewRelic Go Agent para GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
 * [Driver para SQLite em Go](https://github.com/glebarez/sqlite)
 * [Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
+* [gorm-cache - GORM query cache plugin](https://github.com/liyuan1125/gorm-cache)
 
 ## <span id="contribute">Contribua para esta página</span>
 

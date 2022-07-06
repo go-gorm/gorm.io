@@ -72,17 +72,36 @@ type Company struct {
 }
 ```
 
+{% note warn %}
+**NOTE** GORM usually guess the relationship as `has one` if override foreign key name already exists in owner's type, we need to specify `references` in the `belongs to` relationship.
+{% endnote %}
+
+```go
+type User struct {
+  gorm.Model
+  Name      string
+  CompanyID string
+  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID as references
+}
+
+type Company struct {
+  CompanyID   int
+  Code        string
+  Name        string
+}
+```
+
 ## CRUD с Belongs To
 
-Пожалуйста, ознакомьтесь с [Режим связи](associations.html#Association-Mode) для работы с отношениями один к одному
+Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
 
 ## Нетерпеливая загрузка
 
-GORM позволяет использовать нетерпеливую загрузку для отношений belongs to с `Preload` или `Joins`, подробнее смотрите [Предзагрузка (Нетерпеливая загрузка)](preload.html).
+GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
 
 ## Ограничения внешних ключей
 
-Вы можете установить ограничения `OnUpdate`, `OnDelete` с помощью тега `constraint`. Они будут созданы при миграции с помощью GORM, например:
+You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
 
 ```go
 type User struct {

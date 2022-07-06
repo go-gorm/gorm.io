@@ -5,18 +5,18 @@ layout: page
 
 ## Ask
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[Jak zadać dobre pytanie?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
-* Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
+* Problemy z Github - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
 
-## Chat
+## Chatuj
 
 * Gitter - [https://gitter.im/jinzhu/gorm](https://gitter.im/jinzhu/gorm)
 
-## Links
+## Odnośniki
 
-* An admin system based on GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
+* System administratora oparty na GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
 * Go-admin is a middle background framework based on Gorm  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
@@ -35,7 +35,8 @@ layout: page
 * [gorm-newrelic-telemetry-plugin - A plugin to allow telemetry by NewRelic Go Agent for GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
 * [Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
 * [Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
+* [gorm-cache - GORM query cache plugin](https://github.com/liyuan1125/gorm-cache)
 
-## <span id="contribute">Contribute to this page</span>
+## <span id="contribute">Współtwórz tę stronę</span>
 
-Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) to add your awesome links
+Proszę edytować [tę stronę](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md), aby dodać swoje niesamowite linki
