@@ -98,17 +98,16 @@
         }
 
         .sponsor_item {
-          margin: 5px !important;
+          padding: 15px 8px;
+          margin: 0 !important;
           a, img {
             width: 140px;
           }
         }
         .become-sponsor {
-          padding: 0.5em 0.8em;
-          font-size: 0.68em;
-        }
-        svg {
-          width: 800 !important;
+          padding: 8px 12px;
+          width: auto !important;
+          font-size: 0.9em;
         }
       }
 
@@ -122,7 +121,7 @@
     }
 
     h1 {
-      margin: 0.6em 0 !important;
+      margin: 1.2em 0 0.9em !important;
       font-size: 1.2em !important;
       color: #609AD1 !important;
       i {
@@ -160,11 +159,21 @@
 
     .sponsor_item {
       display: inline-block;
-      margin: 15px 15px;
+      margin: 0 10px;
+      padding: 10px 5px;
       a, img {
         width: 180px;
         display: inline-block;
         vertical-align: middle;
+      }
+      &:hover {
+        background: #aec8c6;
+        border-radius: 0.5em;
+        a {
+          font-weight: 800;
+          color: #ff300e !important;
+          border-color: #ff300e !important;
+        }
       }
     }
     .become-sponsor {
@@ -172,6 +181,7 @@
       font-weight: 700;
       color: #fb7d00;
       padding: 0.6em 1em;
+      width: auto !important;
       border-radius: 2em;
       border: 1px solid #fb7d00;
     }
@@ -207,12 +217,8 @@
         width: 100%;
       }
 
-      object {
-        width: 100%;
-      }
-
       h1 {
-        margin: 1em 0 0.8em;
+        margin: 1.2em 0 0.9em;
         font-size: 1.8em;
         color: white;
         font-weight: 700;
