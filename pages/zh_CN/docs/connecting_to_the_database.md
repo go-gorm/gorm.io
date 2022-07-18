@@ -44,12 +44,13 @@ GORM 允许通过 `DriverName` 选项自定义 MySQL 驱动，例如：
 ```go
 import (
   _ "example.com/my_mysql_driver"
+  "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
 db, err := gorm.Open(mysql.New(mysql.Config{
   DriverName: "my_mysql_driver",
-  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // Data Source Name，参考 https://github.com/go-sql-driver/mysql#dsn-data-source-name
+  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name, refer https://github.com/go-sql-driver/mysql#dsn-data-source-name
 }), &gorm.Config{})
 ```
 
