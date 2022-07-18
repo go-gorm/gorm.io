@@ -44,6 +44,7 @@ GORM `DriverName` seçeneği ile MySQL sürücüsünü özelleştirmeye imkan ta
 ```go
 import (
   _ "example.com/my_mysql_driver"
+  "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
