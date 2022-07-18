@@ -42,6 +42,7 @@ GORM allows customize the MySQL driver with the `DriverName` option, for example
 ```go
 import (
   _ "example.com/my_mysql_driver"
+  "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
