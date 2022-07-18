@@ -44,6 +44,7 @@ GROM mengijinkann mengubah(custom) MSQL Driver degan ` DriverName`  pilihan seba
 ```go
 import (
   _ "example.com/my_mysql_driver"
+  "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
