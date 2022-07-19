@@ -44,6 +44,7 @@ GORM позволяет настроить драйвер MySQL, использ�
 ```go
 import (
   _ "example.com/my_mysql_driver"
+  "gorm.io/driver/mysql"
   "gorm.io/gorm"
 )
 
