@@ -143,26 +143,10 @@ db.Unscoped().Delete(&order)
 
 ### Флаги удаления
 
-Использование формата unix в секундах как флаг удаления
-
-```go
-import "gorm.io/plugin/soft_delete"
-
-type User struct {
-  ID        uint
-  Name      string
-  DeletedAt soft_delete.DeletedAt
-}
-
-// Запрос
-SELECT * FROM users WHERE deleted_at = 0;
-
-// Удаление
-UPDATE users SET deleted_at = /* текущее время в unix секундах */ WHERE ID = 1;
-```
+By default, `gorm.Model` uses `*time.Time` as the value for the `DeletedAt` field, and it provides other data formats support with plugin `gorm.io/plugin/soft_delete`
 
 {% note warn %}
-**ИНФОРМАЦИЯ** при использовании уникального поля с мягким удалением, вы сначала должны создать составной индекс с помощью поля, использующего unix-время в секундах, на основе `DeletedAt`, например:
+**INFO** when creating unique composite index for the DeletedAt field, you must use other data format like unix second/flag with plugin `gorm.io/plugin/soft_delete`'s help, e.g:
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -175,7 +159,44 @@ type User struct {
 ```
 {% endnote %}
 
-Использование `1` / `0` в качестве флага удаления
+#### Unix Second
+
+Use unix second as delete flag
+
+```go
+import "gorm.io/plugin/soft_delete"
+
+type User struct {
+  ID        uint
+  Name      string
+  DeletedAt soft_delete.DeletedAt
+}
+
+// Query
+SELECT * FROM users WHERE deleted_at = 0;
+
+// Delete
+UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
+```
+
+You can also specify to use `milli` or `nano` seconds as the value, for example:
+
+```go
+type User struct {
+  ID    uint
+  Name  string
+  DeletedAt soft_delete.DeletedAt `gorm:"softDelete:milli"`
+  // DeletedAt soft_delete.DeletedAt `gorm:"softDelete:nano"`
+}
+
+// Query
+SELECT * FROM users WHERE deleted_at = 0;
+
+// Delete
+UPDATE users SET deleted_at = /* current unix milli second or nano second */ WHERE ID = 1;
+```
+
+#### Use `1` / `0` AS Delete Flag
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -186,9 +207,30 @@ type User struct {
   IsDel soft_delete.DeletedAt `gorm:"softDelete:flag"`
 }
 
-// Запрос
+// Query
 SELECT * FROM users WHERE is_del = 0;
 
-// Удаление
+// Delete
 UPDATE users SET is_del = 1 WHERE ID = 1;
+```
+
+#### Mixed Mode
+
+Mixed mode can use `0`, `1` or unix seconds to mark data as deleted or not, and save the deleted time at the same time.
+
+```go
+type User struct {
+  ID        uint
+  Name      string
+  DeletedAt time.Time
+  IsDel     soft_delete.DeletedAt `gorm:"softDelete:flag,DeletedAtField:DeletedAt"` // use `1` `0`
+  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:,DeletedAtField:DeletedAt"` // use `unix second`
+  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:nano,DeletedAtField:DeletedAt"` // use `unix nano second`
+}
+
+// Query
+SELECT * FROM users WHERE is_del = 0;
+
+// Delete
+UPDATE users SET is_del = 1, deleted_at = /* current unix second */ WHERE ID = 1;
 ```
