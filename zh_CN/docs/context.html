@@ -47,15 +47,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORM 通过 WithContext 方法提供了 Context 支持 单会话模式单会话模式通常被用于执行单次操作 db.WithContext(ctx).Find(&amp;users)  持续会话模式持续会话模式通常被用于执行一系列操作，例如： tx :&#x3D; db.WithContext(ctx)tx.First(&amp;user, 1)tx.Model(&amp;user).Update(">
+  <meta name="description" content="GORM 通过 WithContext 方法提供了 Context 支持 单会话模式单会话模式通常被用于执行单次操作 db.WithContext(ctx).Find(&amp;users)  持续会话模式Continuous session mode is usually used when you want to perform a group of operations, for examp">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Context">
 <meta property="og:url" content="http://gorm.io/zh_CN/docs/context.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORM 通过 WithContext 方法提供了 Context 支持 单会话模式单会话模式通常被用于执行单次操作 db.WithContext(ctx).Find(&amp;users)  持续会话模式持续会话模式通常被用于执行一系列操作，例如： tx :&#x3D; db.WithContext(ctx)tx.First(&amp;user, 1)tx.Model(&amp;user).Update(">
+<meta property="og:description" content="GORM 通过 WithContext 方法提供了 Context 支持 单会话模式单会话模式通常被用于执行单次操作 db.WithContext(ctx).Find(&amp;users)  持续会话模式Continuous session mode is usually used when you want to perform a group of operations, for examp">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-07-25T03:36:39.094Z">
-<meta property="article:modified_time" content="2022-07-25T03:36:39.094Z">
+<meta property="article:published_time" content="2022-07-25T06:55:57.431Z">
+<meta property="article:modified_time" content="2022-07-25T06:55:57.431Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -138,20 +138,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <h2 id="单会话模式" class="article-heading"><a href="#单会话模式" class="headerlink" title="单会话模式"></a>单会话模式<a class="article-anchor" href="#单会话模式" aria-hidden="true"></a></h2><p>单会话模式通常被用于执行单次操作</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.WithContext(ctx).Find(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="持续会话模式" class="article-heading"><a href="#持续会话模式" class="headerlink" title="持续会话模式"></a>持续会话模式<a class="article-anchor" href="#持续会话模式" aria-hidden="true"></a></h2><p>持续会话模式通常被用于执行一系列操作，例如：</p>
+<h2 id="持续会话模式" class="article-heading"><a href="#持续会话模式" class="headerlink" title="持续会话模式"></a>持续会话模式<a class="article-anchor" href="#持续会话模式" aria-hidden="true"></a></h2><p>Continuous session mode is usually used when you want to perform a group of operations, for example:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">tx := db.WithContext(ctx)</span><br><span class="line">tx.First(&amp;user, <span class="number">1</span>)</span><br><span class="line">tx.Model(&amp;user).Update(<span class="string">"role"</span>, <span class="string">"admin"</span>)</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Context-timeout" class="article-heading"><a href="#Context-timeout" class="headerlink" title="Context timeout"></a>Context timeout<a class="article-anchor" href="#Context-timeout" aria-hidden="true"></a></h2><p>You could passing in a context with a timeout to <code>db.WithContext</code> to set timeout for long running queries, for example:</p>
+<h2 id="Context-timeout" class="article-heading"><a href="#Context-timeout" class="headerlink" title="Context timeout"></a>Context timeout<a class="article-anchor" href="#Context-timeout" aria-hidden="true"></a></h2><p>You can pass in a context with a timeout to <code>db.WithContext</code> to set timeout for long running queries, for example:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">ctx, cancel := context.WithTimeout(context.Background(), <span class="number">2</span>*time.Second)</span><br><span class="line"><span class="keyword">defer</span> cancel()</span><br><span class="line"></span><br><span class="line">db.WithContext(ctx).Find(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Context-in-Hooks-x2F-Callbacks" class="article-heading"><a href="#Context-in-Hooks-x2F-Callbacks" class="headerlink" title="Context in Hooks/Callbacks"></a>Context in Hooks/Callbacks<a class="article-anchor" href="#Context-in-Hooks-x2F-Callbacks" aria-hidden="true"></a></h2><p>You could access the <code>Context</code> object from current <code>Statement</code>, for example:</p>
+<h2 id="Context-in-Hooks-x2F-Callbacks" class="article-heading"><a href="#Context-in-Hooks-x2F-Callbacks" class="headerlink" title="Context in Hooks/Callbacks"></a>Context in Hooks/Callbacks<a class="article-anchor" href="#Context-in-Hooks-x2F-Callbacks" aria-hidden="true"></a></h2><p>You can access the <code>Context</code> object from the current <code>Statement</code>, for example:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *User)</span></span> BeforeCreate(tx *gorm.DB) (err <span class="type">error</span>) {</span><br><span class="line">  ctx := tx.Statement.Context</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Chi-Middleware-Example" class="article-heading"><a href="#Chi-Middleware-Example" class="headerlink" title="Chi Middleware Example"></a>Chi Middleware Example<a class="article-anchor" href="#Chi-Middleware-Example" aria-hidden="true"></a></h2><p>Continuous session mode which might be helpful when handling API requests, for example, you can set up <code>*gorm.DB</code> with Timeout Context in middlewares, and then use the <code>*gorm.DB</code> when processing all requests</p>
 <p>Following is a Chi middleware example:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SetDBMiddleware</span><span class="params">(next http.Handler)</span></span> http.Handler {</span><br><span class="line">  <span class="keyword">return</span> http.HandlerFunc(<span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> {</span><br><span class="line">    timeoutContext, _ := context.WithTimeout(context.Background(), time.Second)</span><br><span class="line">    ctx := context.WithValue(r.Context(), <span class="string">"DB"</span>, db.WithContext(timeoutContext))</span><br><span class="line">    next.ServeHTTP(w, r.WithContext(ctx))</span><br><span class="line">  })</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">r := chi.NewRouter()</span><br><span class="line">r.Use(SetDBMiddleware)</span><br><span class="line"></span><br><span class="line">r.Get(<span class="string">"/"</span>, <span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> {</span><br><span class="line">  db, ok := ctx.Value(<span class="string">"DB"</span>).(*gorm.DB)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> users []User</span><br><span class="line">  db.Find(&amp;users)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// lots of db operations</span></span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">r.Get(<span class="string">"/user"</span>, <span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> {</span><br><span class="line">  db, ok := ctx.Value(<span class="string">"DB"</span>).(*gorm.DB)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> user User</span><br><span class="line">  db.First(&amp;user)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// lots of db operations</span></span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
 
-<blockquote class="note undefined"><p><strong>NOTE</strong> Set <code>Context</code> with <code>WithContext</code> is goroutine-safe, refer <a href="session.html">Session</a> for details</p>
+<blockquote class="note undefined"><p><strong>NOTE</strong> Setting <code>Context</code> with <code>WithContext</code> is goroutine-safe, refer <a href="session.html">Session</a> for details</p>
 </blockquote>
 
 <h2 id="Logger" class="article-heading"><a href="#Logger" class="headerlink" title="Logger"></a>Logger<a class="article-anchor" href="#Logger" aria-hidden="true"></a></h2><p>Logger accepts <code>Context</code> too, you can use it for log tracking, refer <a href="logger.html">Logger</a> for details</p>
@@ -167,7 +167,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-07-25T03:36:39.094Z" itemprop="dateModified">最后更新于 2022-07-25</time>
+                <time class="article-footer-updated" datetime="2022-07-25T06:55:57.431Z" itemprop="dateModified">最后更新于 2022-07-25</time>
 <a href="preload.html" class="article-footer-prev" title="预加载"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="error_handling.html" class="article-footer-next" title="错误处理"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
