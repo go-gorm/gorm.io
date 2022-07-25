@@ -15,7 +15,7 @@ db.WithContext(ctx).Find(&users)
 
 ## 持续会话模式
 
-持续会话模式通常被用于执行一系列操作，例如：
+Continuous session mode is usually used when you want to perform a group of operations, for example:
 
 ```go
 tx := db.WithContext(ctx)
@@ -25,7 +25,7 @@ tx.Model(&user).Update("role", "admin")
 
 ## Context timeout
 
-You could passing in a context with a timeout to `db.WithContext` to set timeout for long running queries, for example:
+You can pass in a context with a timeout to `db.WithContext` to set timeout for long running queries, for example:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -36,7 +36,7 @@ db.WithContext(ctx).Find(&users)
 
 ## Context in Hooks/Callbacks
 
-You could access the `Context` object from current `Statement`, for example:
+You can access the `Context` object from the current `Statement`, for example:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -84,7 +84,7 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 ```
 
 {% note %}
-**NOTE** Set `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**NOTE** Setting `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
 {% endnote %}
 
 ## Logger
