@@ -1,26 +1,26 @@
 ---
-title: GORM Guides
+title: Guia do GORM
 layout: page
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+A fantastica ORM para Golang que tem como objetivo ser amigável ao desenvolvedor.
 
-## Overview
+## Visão Geral
 
-* Full-Featured ORM
-* Associations (Has One, Has Many, Belongs To, Many To Many, Polymorphism, Single-table inheritance)
-* Hooks (Before/After Create/Save/Update/Delete/Find)
-* Eager loading with `Preload`, `Joins`
+* ORM Completa
+* Associações (Possui um, Possui Muitos, Pertence a, Muitos para Muitos, Polimorfismo, Herança de Tabela Única)
+* Hooks (Antes ou Depois de Criar/Salvar/Atualizar/Deletar/Buscar)
+* Eager loading com `Preload`, `Joins`
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
 * Context, Prepared Statement Mode, DryRun Mode
 * Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * Composite Primary Key, Indexes, Constraints
-* Auto Migrations
+* Migrações Automáticas
 * Logger
 * Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
 * Every feature comes with tests
-* Developer Friendly
+* Amigável ao Desenvolvedor
 
 ## Install
 
