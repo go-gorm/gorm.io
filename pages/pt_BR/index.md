@@ -1,5 +1,5 @@
 ---
-layout: índice
+layout: index
 description: A fantástica biblioteca ORM para Golang, projetada para ser amigável para desenvolvedores.
 subtitle: A fantástica biblioteca ORM para Golang
 comments: falso
