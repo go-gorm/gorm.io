@@ -15,26 +15,50 @@ layout: page
  }
 </style>
 
-## GORM <iframe src="https://stats.gorm.io/go-gorm/gorm/latest-report/report.html#views" mark="crwd-mark"></iframe>
+## GORM
 
-## Gen <iframe src="https://stats.gorm.io/go-gorm/gen/latest-report/report.html#views" mark="crwd-mark"></iframe>
+<iframe src="https://stats.gorm.io/go-gorm/gorm/latest-report/report.html#views"></iframe>
 
-## GORM.IO <iframe src="https://stats.gorm.io/go-gorm/gorm.io/latest-report/report.html#views" mark="crwd-mark"></iframe>
+## Gen
 
-## Tempat Bermain <iframe src="https://stats.gorm.io/go-gorm/playground/latest-report/report.html#views" mark="crwd-mark"></iframe>
+<iframe src="https://stats.gorm.io/go-gorm/gen/latest-report/report.html#views"></iframe>
 
-## Petunjuk <iframe src="https://stats.gorm.io/go-gorm/hints/latest-report/report.html#views" mark="crwd-mark"></iframe>
+## GORM.IO
 
-## Tipe Data <iframe src="https://stats.gorm.io/go-gorm/datatypes/latest-report/report.html#views" mark="crwd-mark"></iframe>
+<iframe src="https://stats.gorm.io/go-gorm/gorm.io/latest-report/report.html#views"></iframe>
 
-## DBResolver <iframe src="https://stats.gorm.io/go-gorm/dbresolver/latest-report/report.html#views" mark="crwd-mark"></iframe>
+## Tempat Bermain
 
-## Sqlite <iframe src="https://stats.gorm.io/go-gorm/sqlite/latest-report/report.html#views" mark="crwd-mark"></iframe>
+<iframe src="https://stats.gorm.io/go-gorm/playground/latest-report/report.html#views"></iframe>
 
-## MySQL <iframe src="https://stats.gorm.io/go-gorm/mysql/latest-report/report.html#views" mark="crwd-mark"></iframe>
+## Petunjuk
 
-## PostgreSQL <iframe src="https://stats.gorm.io/go-gorm/postgres/latest-report/report.html#views" mark="crwd-mark"></iframe>
+<iframe src="https://stats.gorm.io/go-gorm/hints/latest-report/report.html#views"></iframe>
 
-## SQLServer <iframe src="https://stats.gorm.io/go-gorm/gen/latest-report/report.html#views" mark="crwd-mark"></iframe>0
+## Tipe Data
 
-## Clickhouse <iframe src="https://stats.gorm.io/go-gorm/gen/latest-report/report.html#views" mark="crwd-mark"></iframe>1
+<iframe src="https://stats.gorm.io/go-gorm/datatypes/latest-report/report.html#views"></iframe>
+
+## DBResolver
+
+<iframe src="https://stats.gorm.io/go-gorm/dbresolver/latest-report/report.html#views"></iframe>
+
+## Sqlite
+
+<iframe src="https://stats.gorm.io/go-gorm/sqlite/latest-report/report.html#views"></iframe>
+
+## MySQL
+
+<iframe src="https://stats.gorm.io/go-gorm/mysql/latest-report/report.html#views"></iframe>
+
+## PostgreSQL
+
+<iframe src="https://stats.gorm.io/go-gorm/postgres/latest-report/report.html#views"></iframe>
+
+## SQLServer
+
+<iframe src="https://stats.gorm.io/go-gorm/gen/latest-report/report.html#views"></iframe>0
+
+## Clickhouse
+
+<iframe src="https://stats.gorm.io/go-gorm/gen/latest-report/report.html#views"></iframe>1
