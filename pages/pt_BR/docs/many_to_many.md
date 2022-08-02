@@ -1,16 +1,17 @@
 ---
-title: Many To Many
+title: Muitos Para Muitos
 layout: page
 ---
 
-## Many To Many
+## Muitos Para Muitos
 
-Many to Many add a join table between two models.
+Muitos para muitos adiciona uma tabela de união (tabela pivot) entre dois models.
 
-For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified language.
+Por exemplo, se sua aplicação inclui usuarios e linguagens, e um usuário pode falar várias linguagens, e uma linguagem pode ser falada por vários usuarios.
 
 ```go
-// User has and belongs to many languages, `user_languages` is the join table
+// User possui e pertence a várias linguagens, `user_languages` é a tabela de união (tabela pivot)
+
 type User struct {
   gorm.Model
   Languages []Language `gorm:"many2many:user_languages;"`
@@ -22,13 +23,14 @@ type Language struct {
 }
 ```
 
-When using GORM `AutoMigrate` to create a table for `User`, GORM will create the join table automatically
+Ao utilizar o `AutoMigrate` do GORM para criar a tabela para o model `User`, o GORM vair criar a tabela pivot automaticamente
 
-## Back-Reference
+## Referência
 
 ### Declare
 ```go
-// User has and belongs to many languages, use `user_languages` as join table
+// User possui e pertence a muitas linguagens,  use `user_languages` como tabela de união (tabela pivot)
+
 type User struct {
   gorm.Model
   Languages []*Language `gorm:"many2many:user_languages;"`
@@ -58,9 +60,9 @@ func GetAllLanguages(db *gorm.DB) ([]Language, error) {
 }
 ```
 
-## Override Foreign Key
+## Sobrescrevendo Chaves Estrangeiras
 
-For a `many2many` relationship, the join table owns the foreign key which references two models, for example:
+Para uma relação `de muitos2many`, a tabela de união é dona da chave estrangeira que faz referência a dois models, por exemplo:
 
 ```go
 type User struct {
@@ -73,12 +75,12 @@ type Language struct {
   Name string
 }
 
-// Join Table: user_languages
-//   foreign key: user_id, reference: users.id
-//   foreign key: language_id, reference: languages.id
+// Tabela de união(Pivot): user_languages
+//   Chave estrangeira: user_id, referencia: users.id
+//   Chave estrangeira: language_id, referencia: languages.id
 ```
 
-To override them, you can use tag `foreignKey`, `references`, `joinForeignKey`, `joinReferences`, not necessary to use them together, you can just use one of them to override some foreign keys/references
+Para sobrescrever, você pode usar a tag `foreignKey`, `references`, `joinForeignKey`, `joinReferences`, não é necessário usá-las juntas, você pode apenas usar uma delas para sobrescrever algumas chaves/referências estrangeiras
 
 ```go
 type User struct {
@@ -93,18 +95,18 @@ type Profile struct {
     UserRefer uint `gorm:"index:,unique"`
 }
 
-// Which creates join table: user_profiles
-//   foreign key: user_refer_id, reference: users.refer
-//   foreign key: profile_refer, reference: profiles.user_refer
+// Cria a tabela: user_profiles
+//   Chave estrangeira: user_refer_id, referencia: users.refer
+//   Chave estrangeira: profile_refer, referencia: profiles.user_refer
 ```
 
 {% note warn %}
-**NOTE:** Some databases only allow create database foreign keys that reference on a field having unique index, so you need to specify the `unique index` tag if you are creating database foreign keys when migrating
+**NOTA:** Alguns bancos de dados só permitem criar chaves estrangeiras de banco de dados que referenciam um campo com índice exclusivo, então você precisa especificar a tag de `unique index` se você estiver criando chaves estrangeiras de banco de dados quando migrar
 {% endnote %}
 
-## Self-Referential Many2Many
+## Muitos para Muitos Auto-Referenciáveis
 
-Self-referencing many2many relationship
+Auto-referenciando relacionamentos muitos para muitos
 
 ```go
 type User struct {
