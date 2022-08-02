@@ -27,7 +27,7 @@ Ao utilizar o `AutoMigrate` do GORM para criar a tabela para o model `User`, o G
 
 ## Referência
 
-### Declare
+### Declação
 ```go
 // User possui e pertence a muitas linguagens,  use `user_languages` como tabela de união (tabela pivot)
 
@@ -43,9 +43,9 @@ type Language struct {
 }
 ```
 
-### Retrieve
+### Recuperando
 ```go
-// Retrieve user list with edger loading languages
+// Recupera a lista de usuários com idiomas utilizando edger loading
 func GetAllUsers(db *gorm.DB) ([]User, error) {
     var users []User
     err := db.Model(&User{}).Preload("Languages").Find(&users).Error
@@ -114,25 +114,25 @@ type User struct {
     Friends []*User `gorm:"many2many:user_friends"`
 }
 
-// Which creates join table: user_friends
-//   foreign key: user_id, reference: users.id
-//   foreign key: friend_id, reference: users.id
+// Cria a tabela: user_friends
+//   Chave estrangeira: user_id, referencia: users.id
+//   Chave estrangeira: friend_id, referencia: users.id
 ```
 
 ## Eager Loading
 
-GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
+O GORM permite eager loading para associações de muitos para muitos, isso com `Preload`, cheque [Preloading (Eager loading)](preload.html) para mais detalhes
 
-## CRUD with Many2Many
+## CRUD de muitos para muitos
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with many2many relations
+Por favor cheque [Modo de associação](associations.html#Association-Mode) para trabalhar com relacionamentos de muitos para muitos
 
-## Customize JoinTable
+## Customizando União de Tabelas
 
-`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can setup it with `SetupJoinTable`, for example:
+`JoinTable` pode ser um modelo completo, isso tendo `Soft Delete`,`Hooks` suporta e mais campos, você pode configurá-lo com `SetupJoinTable`, por exemplo:
 
 {% note warn %}
-**NOTE:** Customized join table's foreign keys required to be composited primary keys or composited unique index
+**NOTA:** A personalização de chaves estangeiras da tabela de união, requer chaves primárias compostas ou índice único composto
 {% endnote %}
 
 ```go
@@ -158,14 +158,14 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// Change model Person's field Addresses' join table to PersonAddress
-// PersonAddress must defined all required foreign keys or it will raise error
+// Altera o campo Addresses do modelo pessoa ' join table to PersonAddress
+// O PersonAddress deve ser defenido para todas as chaves estrangeiras requeridas ou lançará um erro
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
-## FOREIGN KEY Constraints
+## Restrições de CHAVES ESTRANGEIRAS
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+Você pode configurar `OnUpdate`, `OnDelete` restrições com a tag `OnDelete`, ela será criada quando realizar as migrates com o GORM, por exemplo:
 
 ```go
 type User struct {
@@ -181,13 +181,13 @@ type Language struct {
 // CREATE TABLE `user_speaks` (`user_id` integer,`language_code` text,PRIMARY KEY (`user_id`,`language_code`),CONSTRAINT `fk_user_speaks_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE SET NULL ON UPDATE CASCADE,CONSTRAINT `fk_user_speaks_language` FOREIGN KEY (`language_code`) REFERENCES `languages`(`code`) ON DELETE SET NULL ON UPDATE CASCADE);
 ```
 
-You are also allowed to delete selected many2many relations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+Também é permitido deletar relacionamentos de muitos para muitos, isso utilizando a tag `Select` quando deletando, dê uma olhada em [Deletando Com Select](associations.html#delete_with_select) para mais detalhes
 
-## Composite Foreign Keys
+## Chaves Estrangeiras Compostas
 
-If you are using [Composite Primary Keys](composite_primary_key.html) for your models, GORM will enable composite foreign keys by default
+Se você estiver utilizando [Chaves Primárias Compostas](composite_primary_key.html) para seus models, o GORM habilitará chaves estrangeiras compostas por padrão
 
-You are allowed to override the default foreign keys, to specify multiple foreign keys, just separate those keys' name by commas, for example:
+Você pode substituir as chaves estrangeiras padrão, para especificar várias chaves estrangeiras, apenas separe essas chaves pelo nome por vírgulas, por exemplo:
 
 ```go
 type Tag struct {
@@ -222,4 +222,4 @@ type Blog struct {
 //   foreign key: tag_id, reference: tags.id
 ```
 
-Also check out [Composite Primary Keys](composite_primary_key.html)
+Veja também [Chaves Primárias Compostas](composite_primary_key.html)
