@@ -34,7 +34,7 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 
 ## Joins 预加载
 
-`Preload` 在一个单独查询中加载关联数据。而 `Join Preload` 会使用 inner join 加载关联数据，例如：
+`Preload` 在一个单独查询中加载关联数据。而 `Join Preload` 会使用 left join 加载关联数据，例如：
 
 ```go
 db.Joins("Company").Joins("Manager").Joins("Account").First(&user, 1)
