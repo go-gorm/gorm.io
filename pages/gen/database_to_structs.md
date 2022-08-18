@@ -17,6 +17,7 @@ g.GenerateModelAs("people", "People")
 g.GenerateModel("people", gen.FieldIgnore("address"), gen.FieldType("id", "int64"))
 
 // generate all tables, ex: g.ApplyBasic(g.GenerateAllTable()...)
+// WithModelNameStrategy, you can filter unnecessary tables through this configuration
 g.GenerateAllTable()
 ```
 
@@ -69,6 +70,7 @@ g := gen.NewGenerator(gen.Config{
 WithTableNameStrategy(ns func(tableName string) (targetTableName string))
 
 // WithModelNameStrategy specify model struct name naming strategy, only work when syncing table from db
+// If an empty string is returned, the table will be ignored
 WithModelNameStrategy(ns func(tableName string) (modelName string))
 
 // WithFileNameStrategy specify file name naming strategy, only work when syncing table from db
