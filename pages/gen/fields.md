@@ -85,7 +85,59 @@ id.LeftShift(3)
 stream call expression
 
 ```golang
+// ((`user`.`age`+1)*2)/3
+u.Age.Add(1).Mul(2).Div(3),
+```
 
+###### string field expression
+
+```golang
+name := field.NewStirng("user", "name")
+
+// `user`.`name` = "modi"
+name.Eq("modi")
+
+// `user`.`name` LIKE %modi%
+name.Like("%modi%")
+
+// `user`.`name` REGEXP .*
+name.Regexp(".*")
+
+// `user`.`name` FIND_IN_SET(`name`,"modi,jinzhu,zhangqiang")
+name.FindInSet("modi,jinzhu,zhangqiang")
+
+// `uesr`.`name` CONCAT("[",name,"]")
+name.Concat("[", "]")
+```
+
+###### time field expression
+
+```golang
+birth := field.NewStirng("user", "birth")
+
+// `user`.`birth` = ? (now)
+birth.Eq(time.Now())
+
+// DATE_ADD(`user`.`birth`, INTERVAL ? MICROSECOND)
+birth.Add(time.Duration(time.Hour).Microseconds())
+
+// DATE_FORMAT(`user`.`birth`, "%W %M %Y")
+birth.DateFormat("%W %M %Y")
+```
+
+###### bool field expression
+
+```golang
+active := field.NewBool("user", "active")
+
+// `user`.`active` = TRUE
+active.Is(true)
+
+// NOT `user`.`active`
+active.Not()
+
+// `user`.`active` AND TRUE
+active.And(true)
 ```
 
 #### Column Compare
