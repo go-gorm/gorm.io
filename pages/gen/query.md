@@ -10,7 +10,7 @@ layout: page
 Generated code provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 // Get the first record ordered by primary key
 user, err := u.WithContext(ctx).First()
@@ -24,6 +24,9 @@ user, err := u.WithContext(ctx).Take()
 user, err := u.WithContext(ctx).Last()
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
+// select by write db
+user, err := u.WithContext(ctx).WriteDB().Last()
+
 // check error ErrRecordNotFound
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
@@ -31,7 +34,7 @@ errors.Is(err, gorm.ErrRecordNotFound)
 ##### Retrieving objects with primary key
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 user, err := u.WithContext(ctx).Where(u.ID.Eq(10)).First()
 // SELECT * FROM users WHERE id = 10;
@@ -50,7 +53,7 @@ user, err := u.WithContext(ctx).Where(u.ID.Eq("1b74413f-f3b8-409f-ac47-e8c062e34
 ##### Retrieving all objects
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 // Get all records
 users, err := u.WithContext(ctx).Find()
@@ -62,7 +65,7 @@ users, err := u.WithContext(ctx).Find()
 ###### String Conditions
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 // Get first matched record
 user, err := u.WithContext(ctx).Where(u.Name.Eq("modi")).First()
@@ -96,7 +99,7 @@ users, err := u.WithContext(ctx).Where(u.Birthday.Between(lastWeek, today)).Find
 ###### Inline Condition
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 // Get by primary key if it were a non-integer type
 user, err := u.WithContext(ctx).Where(u.ID.Eq("string_primary_key")).First()
@@ -115,7 +118,7 @@ users, err := u.WithContext(ctx).Where(u.Name.Neq("modi"), u.Age.Gt(17)).Find()
 Build NOT conditions, works similar to `Where`
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 user, err := u.WithContext(ctx).Not(u.Name.Eq("modi")).First()
 // SELECT * FROM users WHERE NOT name = "modi" ORDER BY id LIMIT 1;
@@ -132,7 +135,7 @@ user, err := u.WithContext(ctx).Not(u.ID.In(1,2,3)).First()
 ###### Or Conditions
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 users, err := u.WithContext(ctx).Where(u.Role.Eq("admin")).Or(u.Role.Eq("super_admin")).Find()
 // SELECT * FROM users WHERE role = 'admin' OR role = 'super_admin';
@@ -143,7 +146,7 @@ users, err := u.WithContext(ctx).Where(u.Role.Eq("admin")).Or(u.Role.Eq("super_a
 Easier to write complicated SQL query with Group Conditions
 
 ```go
-p := query.Use(db).Pizza
+p := query.Pizza
 pd := p.WithContext(ctx)
 
 pizzas, err := pd.Where(
@@ -161,7 +164,7 @@ pizzas, err := pd.Where(
 `Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 users, err := u.WithContext(ctx).Select(u.Name, u.Age).Find()
 // SELECT name, age FROM users;
@@ -173,7 +176,7 @@ u.WithContext(ctx).Select(u.Age.Avg()).Rows()
 ###### Tuple Query
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 users, err := u.WithContext(ctx).Where(u.WithContext(ctx).Columns(u.ID, u.Name).In(field.Values([][]interface{}{{1, "modi"}, {2, "zhangqiang"}}))).Find()
 // SELECT * FROM `users` WHERE (`id`, `name`) IN ((1,'humodi'),(2,'tom'));
@@ -182,7 +185,7 @@ users, err := u.WithContext(ctx).Where(u.WithContext(ctx).Columns(u.ID, u.Name).
 ###### JSON Query
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 users, err := u.WithContext(ctx).Where(gen.Cond(datatypes.JSONQuery("attributes").HasKey("role"))...).Find()
 // SELECT * FROM `users` WHERE JSON_EXTRACT(`attributes`,'$.role') IS NOT NULL;
@@ -193,7 +196,7 @@ users, err := u.WithContext(ctx).Where(gen.Cond(datatypes.JSONQuery("attributes"
 Specify order when retrieving records from the database
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 users, err := u.WithContext(ctx).Order(u.Age.Desc(), u.Name).Find()
 // SELECT * FROM users ORDER BY age DESC, name;
@@ -206,7 +209,7 @@ users, err := u.WithContext(ctx).Order(u.Age.Desc()).Order(u.Name).Find()
 Get field by string
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 orderCol, ok := u.GetFieldByName(orderColStr) // maybe orderColStr == "id"
 if !ok {
@@ -227,7 +230,7 @@ users, err := u.WithContext(ctx).Order(orderCol.Desc()).Find()
 `Offset` specify the number of records to skip before starting to return the records
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 urers, err := u.WithContext(ctx).Limit(3).Find()
 // SELECT * FROM users LIMIT 3;
@@ -250,7 +253,7 @@ users, err := u.WithContext(ctx).Offset(10).Offset(-1).Find()
 ###### Group By & Having
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 var users []struct {
     Name  string
@@ -270,7 +273,7 @@ for rows.Next() {
   ...
 }
 
-o := query.Use(db).Order
+o := query.Order
 
 rows, err := o.WithContext(ctx).Select(o.CreateAt.Date().As("date"), o.Amount.Sum().As("total")).Group(o.CreateAt.Date()).Having(u.Amount.Sum().Gt(100)).Rows()
 for rows.Next() {
@@ -290,7 +293,7 @@ o.WithContext(ctx).Select(o.CreateAt.Date().As("date"), o.WithContext(ctx).Amoun
 Selecting distinct values from the model
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 users, err := u.WithContext(ctx).Distinct(u.Name, u.Age).Order(u.Name, u.Age.Desc()).Find()
 ```
@@ -302,7 +305,7 @@ users, err := u.WithContext(ctx).Distinct(u.Name, u.Age).Order(u.Name, u.Age.Des
 Specify Joins conditions
 
 ```go
-q := query.Use(db)
+q := query
 u := q.User
 e := q.Email
 c := q.CreditCard
@@ -348,8 +351,8 @@ users := u.WithContext(ctx).Join(e, e.UserID.EqCol(u.id), e.Email.Eq("modi@examp
 A subquery can be nested within a query, GEN can generate subquery when using a `Dao` object as param
 
 ```go
-o := query.Use(db).Order
-u := query.Use(db).User
+o := query.Order
+u := query.User
 
 orders, err := o.WithContext(ctx).Where(o.WithContext(ctx).Columns(o.Amount).Gt(o.WithContext(ctx).Select(o.Amount.Avg())).Find()
 // SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
@@ -370,8 +373,8 @@ u.WithContext(ctx).Exists(subQuery1).Not(u.WithContext(ctx).Exists(subQuery2)).F
 GORM allows you using subquery in FROM clause with method `Table`, for example:
 
 ```go
-u := query.Use(db).User
-p := query.Use(db).Pet
+u := query.User
+p := query.Pet
 
 users, err := gen.Table(u.WithContext(ctx).Select(u.Name, u.Age).As("u")).Where(u.Age.Eq(18)).Find()
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18

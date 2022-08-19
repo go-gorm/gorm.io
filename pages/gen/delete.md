@@ -8,7 +8,7 @@ layout: page
 ##### Delete record
 
 ```go
-e := query.Use(db).Email
+e := query.Email
 
 // Email's ID is `10`
 e.WithContext(ctx).Where(e.ID.Eq(10)).Delete()
@@ -38,7 +38,7 @@ u.WithContext(ctx).Where(u.ID.In(1,2,3)).Delete()
 The specified value has no primary value, GEN will perform a batch delete, it will delete all matched records
 
 ```go
-e := query.Use(db).Email
+e := query.Email
 
 e.WithContext(ctx).Where(e.Name.Like("%modi%")).Delete()
 // DELETE from emails where email LIKE "%modi%";
@@ -93,7 +93,7 @@ o.WithContext(ctx).Unscoped().Where(o.ID.Eq(10)).Delete()
 Remove the relationship between source & arguments if exists, only delete the reference, won’t delete those objects from DB.
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 u.Languages.Model(&user).Delete(&languageZH, &languageEN)
 
@@ -105,7 +105,7 @@ u.Languages.Model(&user).Delete([]*Language{&languageZH, &languageEN}...)
 You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 // delete user's account when deleting user
 u.Select(u.Account).Delete(&user)

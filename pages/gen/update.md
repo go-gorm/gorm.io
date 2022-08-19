@@ -10,7 +10,7 @@ layout: page
 When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, for example:
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 // Update with conditions
 u.WithContext(ctx).Where(u.Activate.Is(true)).Update(u.Name, "hello")
@@ -31,7 +31,7 @@ u.WithContext(ctx).Where(u.Activate.Is(true)).UpdateSimple(u.Age.Zero())
 `Updates` supports update with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 // Update attributes with `map`
 u.WithContext(ctx).Where(u.ID.Eq(111)).Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
@@ -56,7 +56,7 @@ u.WithContext(ctx).Where(u.Activate.Is(true)).UpdateSimple(u.Age.Value(17), u.Nu
 If you want to update selected fields or ignore some fields when updating, you can use `Select`, `Omit`
 
 ```go
-u := query.Use(db).User
+u := query.User
 
 // Select with Map
 // User's ID is `111`:
@@ -77,8 +77,8 @@ err                 // error
 Update a table by using SubQuery
 
 ```go
-u := query.Use(db).User
-c := query.Use(db).Company
+u := query.User
+c := query.Company
 
 u.WithContext(ctx).Update(u.CompanyName, c.Select(c.Name).Where(c.ID.EqCol(u.CompanyID)))
 // UPDATE "users" SET "company_name" = (SELECT name FROM companies WHERE companies.id = users.company_id);
@@ -91,8 +91,8 @@ u.WithContext(ctx).Where(u.Name.Eq("modi")).Update(u.CompanyName, c.Select(c.Nam
 Update multiple columns by using SubQuery (for MySQL):
 
 ```go
-u := query.Use(db).User
-c := query.Use(db).Company
+u := query.User
+c := query.Company
 
 ua := u.As("u")
 ca := u.As("c")
