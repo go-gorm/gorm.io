@@ -1,6 +1,6 @@
 ---
 title: Gelişmiş Sorgu
-layout: sayfa
+layout: page
 ---
 
 ## <span id="smart_select">Akıllı Alan Seçimi</span>
