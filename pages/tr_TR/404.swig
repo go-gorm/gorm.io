@@ -1,15 +1,15 @@
 ---
 layout: raw
-description: The fantastic ORM library for Golang, aims to be developer friendly.
-subtitle: The fantastic ORM library for Golang
+description: geliştirici dostu olmayı hedefleyen, Golang için fantastik bir ORM kütüphanesi.
+subtitle: Golang için Fantastik ORM Kütüphanesi
 comments: false
 ---
 
 <div class="container page-not-found">
   <h1>404</h1>
-  <p>File not found</p>
+  <p>Dosya bulunamadı</p>
 
   <p>
-    The site configured at this address does not contain the requested file.
+    Bu adreste yapılandırılan site, istenen dosyayı içermiyor.
   </p>
 <div>
