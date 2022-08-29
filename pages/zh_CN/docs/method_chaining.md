@@ -11,7 +11,7 @@ db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 
 GORM 中有三种类型的方法： `链式方法`、`Finisher 方法`、`新建会话方法`
 
-After a `Chain method`, `Finisher Method`, GORM returns an initialized `*gorm.DB` instance, which is NOT safe to reuse anymore, or new generated SQL might be polluted by the previous conditions, for example:
+在 `链式方法`, `Finisher 方法`, GORM 返回一个初始化的 `*gorm. B` 实例，不能安全地重复使用，或新生成的 SQL 可能会被先前的条件污染，例如：
 
 ```go
 queryDB := DB.Where("name = ?", "jinzhu")
