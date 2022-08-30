@@ -1,5 +1,0 @@
----
-title: Plugins
-layout: page
----
-
