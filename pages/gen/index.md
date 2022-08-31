@@ -87,3 +87,5 @@ Generate Mode:
 - `gen.WithoutContext` generate code without `WithContext` constraint
 - `gen.WithDefaultQuery` generate code with a default global variable `Q` as a singleton
 - `gen.WithQueryInterface` generate code with exported interface object
+
+Best Practice: [gendemo](https://github.com/go-gorm/gendemo)
