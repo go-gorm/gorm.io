@@ -22,6 +22,8 @@ layout: page
 
 * 在 SQLite 数据库来验证和测试 Golang 中的 GORM 的文章 - </a>[oking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)</0>
 
+* [Strongly typed JSON/JSONB fields in GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
+
 ## 视频
 
 * Gorm 快速入门GORM- [piexlmax](https://github.com/piexlmax) - [GORM V2 快速入门](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
