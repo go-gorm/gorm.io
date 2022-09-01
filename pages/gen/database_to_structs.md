@@ -123,7 +123,7 @@ func (u *User)IsEmpty()bool{
 }
 user := User{}
 // add custom method to generated model struct
-g.GenerateModel("people", gen.MethodAppend(user.IsEmpty))
+g.GenerateModel("people", gen.WithMethod(user.IsEmpty))
 // also you can input a struct,will bind all method
-g.GenerateModel("people", gen.MethodAppend(user))
+g.GenerateModel("people", gen.WithMethod(user))
 ```
