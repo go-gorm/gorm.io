@@ -45,14 +45,14 @@ type Language struct {
 
 ### Recuperando
 ```go
-// Recupera a lista de usuários com idiomas utilizando edger loading
+// Retrieve user list with eager loading languages
 func GetAllUsers(db *gorm.DB) ([]User, error) {
     var users []User
     err := db.Model(&User{}).Preload("Languages").Find(&users).Error
     return users, err
 }
 
-// Retrieve language list with edger loading users
+// Retrieve language list with eager loading users
 func GetAllLanguages(db *gorm.DB) ([]Language, error) {
     var languages []Language
     err := db.Model(&Language{}).Preload("Users").Find(&languages).Error
