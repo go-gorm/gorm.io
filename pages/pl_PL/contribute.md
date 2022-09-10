@@ -14,7 +14,7 @@ layout: strona
 
 ## Dokumentacja i artykuły
 
-* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
+* Ulepsz dokumentację GORM tworząc nową zawartość, poprawiając istniejący materiał [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### Tłumacz tą stronę
 
@@ -29,7 +29,7 @@ Aby przetłumaczyć GORM na swój język, musisz wysłać prośbę w [Github iss
 
 ## Dotacje
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+Twoja życzliwość i hojność są bardzo docenione, bardzo dziękujęmy wszystkim naszym sponsorom!
 
 * Github Sponsors (Platinum, Gold Sponsors etc)
 
