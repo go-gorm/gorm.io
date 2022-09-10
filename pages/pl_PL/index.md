@@ -14,8 +14,8 @@ comments: false
 * <i class="fa fa-rocket" aria-hidden="true"></i> Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * <i class="fa fa-rocket" aria-hidden="true"></i> SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * <i class="fa fa-rocket" aria-hidden="true"></i> Composite Primary Key, Indexes, Constraints
-* <i class="fa fa-rocket" aria-hidden="true"></i> Auto Migrations
+* <i class="fa fa-rocket" aria-hidden="true"></i> Automatyczne migracje
 * <i class="fa fa-rocket" aria-hidden="true"></i> Logger
 * <i class="fa fa-rocket" aria-hidden="true"></i> Extendable, flexible plugin API: Database Resolver (multiple databases, read/write splitting) / Prometheus...
-* <i class="fa fa-rocket" aria-hidden="true"></i> Every feature comes with tests
-* <i class="fa fa-rocket" aria-hidden="true"></i> Developer Friendly
+* <i class="fa fa-rocket" aria-hidden="true"></i> Każda funkcja jest dodawana wraz z testami
+* <i class="fa fa-rocket" aria-hidden="true"></i> Przyjazny deweloperom
