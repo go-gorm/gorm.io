@@ -66,9 +66,9 @@ db.Clauses(clause.Locking{
 
 Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
 
-## SubQuery
+## Podzapytania
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+Podzapytanie może być zagnieżdzone w zapytaniu, GORM może generować pozapytania poczas używania obiektu `*gorm.DB` jako parametru
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
