@@ -57,6 +57,14 @@ agent-base@6:
   dependencies:
     debug "4"
 
+align-text@^0.1.1, align-text@^0.1.3:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/align-text/-/align-text-0.1.4.tgz#0cd90a561093f35d0a99256c22b7069433fad117"
+  dependencies:
+    kind-of "^3.0.2"
+    longest "^1.0.1"
+    repeat-string "^1.5.2"
+
 amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.npmjs.org/amdefine/-/amdefine-1.0.1.tgz"
@@ -166,6 +174,13 @@ camelcase@^1.0.2:
   version "1.2.1"
   resolved "https://registry.npmjs.org/camelcase/-/camelcase-1.2.1.tgz"
 
+center-align@^0.1.1:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/center-align/-/center-align-0.1.3.tgz#aa0d32629b6ee972200411cbd4461c907bc2b7ad"
+  dependencies:
+    align-text "^0.1.3"
+    lazy-cache "^1.0.3"
+
 chalk@^4.0.0, chalk@^4.0.2:
   version "4.1.2"
   resolved "https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz"
@@ -208,6 +223,14 @@ chokidar@^3.0.0:
     readdirp "~3.6.0"
   optionalDependencies:
     fsevents "~2.3.2"
+
+cliui@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/cliui/-/cliui-2.1.0.tgz#4b475760ff80264c762c3a1719032e91c7fea0d1"
+  dependencies:
+    center-align "^0.1.1"
+    right-align "^0.1.1"
+    wordwrap "0.0.2"
 
 color-convert@^2.0.1:
   version "2.0.1"
@@ -671,12 +694,12 @@ hexo-renderer-stylus@^2.0.0:
     nib "^1.1.2"
     stylus "^0.54.8"
 
-hexo-renderer-swig@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.npmjs.org/hexo-renderer-swig/-/hexo-renderer-swig-1.1.0.tgz"
+hexo-renderer-swig@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/hexo-renderer-swig/-/hexo-renderer-swig-2.0.0.tgz#b2e9a1dc7978d96a1af1b69de068b8d132a7d4d9"
   dependencies:
-    swig "^1.4.2"
     swig-extras "0.0.1"
+    swig-templates "^2.0.0"
 
 hexo-server@^3.0.0:
   version "3.0.0"
@@ -813,6 +836,10 @@ is-binary-path@~2.1.0:
   dependencies:
     binary-extensions "^2.0.0"
 
+is-buffer@^1.1.5:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
+
 is-core-module@^2.8.1:
   version "2.9.0"
   resolved "https://registry.npmjs.org/is-core-module/-/is-core-module-2.9.0.tgz"
@@ -912,6 +939,16 @@ jsonparse@^1.2.0:
   version "1.3.1"
   resolved "https://registry.npmjs.org/jsonparse/-/jsonparse-1.3.1.tgz"
 
+kind-of@^3.0.2:
+  version "3.2.2"
+  resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-3.2.2.tgz#31ea21a734bab9bbb0f32466d893aea51e4a3c64"
+  dependencies:
+    is-buffer "^1.1.5"
+
+lazy-cache@^1.0.3:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/lazy-cache/-/lazy-cache-1.0.4.tgz#a1d78fc3a50474cb80845d3b3b6e1da49a446e8e"
+
 levn@~0.3.0:
   version "0.3.0"
   resolved "https://registry.npmjs.org/levn/-/levn-0.3.0.tgz"
@@ -922,6 +959,10 @@ levn@~0.3.0:
 lodash@^4.17.21:
   version "4.17.21"
   resolved "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
+
+longest@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
 
 lower-case@^2.0.2:
   version "2.0.2"
@@ -1213,6 +1254,10 @@ readdirp@~3.6.0:
   dependencies:
     picomatch "^2.2.1"
 
+repeat-string@^1.5.2:
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/repeat-string/-/repeat-string-1.6.1.tgz#8dcae470e1c88abc2d600fff4a776286da75e637"
+
 resolve-url@^0.2.1:
   version "0.2.1"
   resolved "https://registry.npmjs.org/resolve-url/-/resolve-url-0.2.1.tgz"
@@ -1228,6 +1273,12 @@ resolve@^1.11.0, resolve@^1.22.0:
 rfdc@^1.1.4:
   version "1.3.0"
   resolved "https://registry.npmjs.org/rfdc/-/rfdc-1.3.0.tgz"
+
+right-align@^0.1.1:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/right-align/-/right-align-0.1.3.tgz#61339b722fe6a3515689210d24e14c96148613ef"
+  dependencies:
+    align-text "^0.1.1"
 
 safe-buffer@5.1.2:
   version "5.1.2"
@@ -1310,12 +1361,6 @@ source-map-url@^0.4.0:
   version "0.4.1"
   resolved "https://registry.npmjs.org/source-map-url/-/source-map-url-0.4.1.tgz"
 
-source-map@0.1.34:
-  version "0.1.34"
-  resolved "https://registry.npmjs.org/source-map/-/source-map-0.1.34.tgz"
-  dependencies:
-    amdefine ">=0.0.4"
-
 source-map@0.1.x:
   version "0.1.43"
   resolved "https://registry.npmjs.org/source-map/-/source-map-0.1.43.tgz"
@@ -1329,6 +1374,10 @@ source-map@^0.6.1, source-map@~0.6.1:
 source-map@^0.7.3:
   version "0.7.3"
   resolved "https://registry.npmjs.org/source-map/-/source-map-0.7.3.tgz"
+
+source-map@~0.5.1:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
 
 sprintf-js@^1.0.3:
   version "1.1.2"
@@ -1394,12 +1443,12 @@ swig-extras@0.0.1:
   dependencies:
     markdown "~0.5.0"
 
-swig@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.npmjs.org/swig/-/swig-1.4.2.tgz"
+swig-templates@^2.0.0:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/swig-templates/-/swig-templates-2.0.3.tgz#6b4c43b462175df2a8da857a2043379ec6ea6fd0"
   dependencies:
     optimist "~0.6"
-    uglify-js "~2.4"
+    uglify-js "2.6.0"
 
 symbol-tree@^3.2.4:
   version "3.2.4"
@@ -1459,14 +1508,14 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-uglify-js@~2.4:
-  version "2.4.24"
-  resolved "https://registry.npmjs.org/uglify-js/-/uglify-js-2.4.24.tgz"
+uglify-js@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-2.6.0.tgz#25eaa1cc3550e39410ceefafd1cfbb6b6d15f001"
   dependencies:
     async "~0.2.6"
-    source-map "0.1.34"
+    source-map "~0.5.1"
     uglify-to-browserify "~1.0.0"
-    yargs "~3.5.4"
+    yargs "~3.10.0"
 
 uglify-to-browserify@~1.0.0:
   version "1.0.2"
@@ -1582,11 +1631,11 @@ xmlchars@^2.2.0:
   version "2.2.0"
   resolved "https://registry.npmjs.org/xmlchars/-/xmlchars-2.2.0.tgz"
 
-yargs@~3.5.4:
-  version "3.5.4"
-  resolved "https://registry.npmjs.org/yargs/-/yargs-3.5.4.tgz"
+yargs@~3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/yargs/-/yargs-3.10.0.tgz#f7ee7bd857dd7c1d2d38c0e74efbd681d1431fd1"
   dependencies:
     camelcase "^1.0.2"
+    cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
-    wordwrap "0.0.2"
