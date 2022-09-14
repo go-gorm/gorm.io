@@ -47,15 +47,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORM is a fantastic ORM library for Golang, aims to be developer friendly.">
+  <meta name="description" content="Field Expression   Field Type Detail Type Create Function Supported Query Method    generic field NewField IsNull&#x2F;IsNotNull&#x2F;Count&#x2F;Eq&#x2F;Neq&#x2F;Gt&#x2F;Gte&#x2F;Lt&#x2F;Lte&#x2F;Like">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Fields">
 <meta property="og:url" content="http://gorm.io/gen/fields.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORM is a fantastic ORM library for Golang, aims to be developer friendly.">
+<meta property="og:description" content="Field Expression   Field Type Detail Type Create Function Supported Query Method    generic field NewField IsNull&#x2F;IsNotNull&#x2F;Count&#x2F;Eq&#x2F;Neq&#x2F;Gt&#x2F;Gte&#x2F;Lt&#x2F;Lte&#x2F;Like">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-09-11T00:18:47.623Z">
-<meta property="article:modified_time" content="2022-09-11T00:18:47.623Z">
+<meta property="article:published_time" content="2022-09-14T09:01:07.770Z">
+<meta property="article:modified_time" content="2022-09-14T09:01:07.770Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -134,13 +134,84 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                
+                <html><head></head><body><h3 id="Field-Expression" class="article-heading"><a href="#Field-Expression" class="headerlink" title="Field Expression"></a>Field Expression<a class="article-anchor" href="#Field-Expression" aria-hidden="true"></a></h3><table>
+<thead>
+<tr>
+<th>Field Type</th>
+<th>Detail Type</th>
+<th>Create Function</th>
+<th>Supported Query Method</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>generic</td>
+<td>field</td>
+<td>NewField</td>
+<td>IsNull/IsNotNull/Count/Eq/Neq/Gt/Gte/Lt/Lte/Like/Value/Sum/IfNull</td>
+</tr>
+<tr>
+<td>int</td>
+<td>int/int8/…/int64</td>
+<td>NewInt/NewInt8/…/NewInt64</td>
+<td>Eq/Neq/Gt/Gte/Lt/Lte/In/NotIn/Between/NotBetween/Like/NotLike/Add/Sub/Mul/Div/Mod/FloorDiv/RightShift/LeftShift/BitXor/BitAnd/BitOr/BitFlip/Value/Zero/Sum/IfNull</td>
+</tr>
+<tr>
+<td>uint</td>
+<td>uint/uint8/…/uint64</td>
+<td>NewUint/NewUint8/…/NewUint64</td>
+<td>same with int</td>
+</tr>
+<tr>
+<td>float</td>
+<td>float32/float64</td>
+<td>NewFloat32/NewFloat64</td>
+<td>Eq/Neq/Gt/Gte/Lt/Lte/In/NotIn/Between/NotBetween/Like/NotLike/Add/Sub/Mul/Div/FloorDiv/Floor/Value/Zero/Sum/IfNull</td>
+</tr>
+<tr>
+<td>string</td>
+<td>string/[]byte</td>
+<td>NewString/NewBytes</td>
+<td>Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Like/NotLike/Regexp/NotRegxp/FindInSet/FindInSetWith/Value/Zero/IfNull</td>
+</tr>
+<tr>
+<td>bool</td>
+<td>bool</td>
+<td>NewBool</td>
+<td>Not/Is/And/Or/Xor/BitXor/BitAnd/BitOr/Value/Zero</td>
+</tr>
+<tr>
+<td>time</td>
+<td>time.Time</td>
+<td>NewTime</td>
+<td>Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Add/Sub/Date/DateDiff/DateFormat/Now/CurDate/CurTime/DayName/MonthName/Month/Day/Hour/Minute/Second/MicroSecond/DayOfWeek/DayOfMonth/FromDays/FromUnixtime/Value/Zero/Sum/IfNull</td>
+</tr>
+</tbody></table>
+<h4 id="Create-Field" class="article-heading"><a href="#Create-Field" class="headerlink" title="Create Field"></a>Create Field<a class="article-anchor" href="#Create-Field" aria-hidden="true"></a></h4><p>Actually, you’re not supposed to create a new field variable, cause it will be accomplished in generated code.</p>
+<p>Create field examples:</p>
+<figure class="highlight golang"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"gorm.io/gen/field"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// create a new generic field map to `generic_a`</span></span><br><span class="line">a := field.NewField(<span class="string">"table_name"</span>, <span class="string">"generic_a"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// create a field map to `id`</span></span><br><span class="line">id := field.NewInt(<span class="string">"user"</span>, <span class="string">"id"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// create a field map to `address`</span></span><br><span class="line">address := field.NewString(<span class="string">"user"</span>, <span class="string">"address"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// create a field map to `create_time`</span></span><br><span class="line">createTime := field.NewTime(<span class="string">"user"</span>, <span class="string">"create_time"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="Expression" class="article-heading"><a href="#Expression" class="headerlink" title="Expression"></a>Expression<a class="article-anchor" href="#Expression" aria-hidden="true"></a></h4><p>Every field expression has methods suitable for it’s type in database as shown in above table. And it can be used like a stream.</p>
+<h5 id="general-field-expression" class="article-heading"><a href="#general-field-expression" class="headerlink" title="general field expression"></a>general field expression<a class="article-anchor" href="#general-field-expression" aria-hidden="true"></a></h5><figure class="highlight golang"><table><tbody><tr><td class="code"><pre><span class="line">id := field.NewInt(<span class="string">"user"</span>, <span class="string">"id"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`id` IS NULL</span></span><br><span class="line">id.IsNull()</span><br><span class="line"><span class="comment">// `user`.`id` IS NOT NULL</span></span><br><span class="line">id.IsNotNull()</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`id` DESC</span></span><br><span class="line">id.Desc()</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`id` AS `user_id`</span></span><br><span class="line">id.As(<span class="string">"user_id"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h6 id="int-field-expression" class="article-heading"><a href="#int-field-expression" class="headerlink" title="int field expression"></a>int field expression<a class="article-anchor" href="#int-field-expression" aria-hidden="true"></a></h6><figure class="highlight golang"><table><tbody><tr><td class="code"><pre><span class="line">id := field.NewInt(<span class="string">"user"</span>, <span class="string">"id"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`id` = 123</span></span><br><span class="line">id.Eq(<span class="number">123</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`id` &gt;= 123</span></span><br><span class="line">id.Gte(<span class="number">123</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// COUNT(`user`.`id`)</span></span><br><span class="line">id.Count()</span><br><span class="line"></span><br><span class="line"><span class="comment">// SUM(`user`.`id`)</span></span><br><span class="line">id.Sum()</span><br><span class="line"></span><br><span class="line"><span class="comment">// SUM(`user`.`id`) &gt; 123</span></span><br><span class="line">id.Sum().Gt(<span class="number">123</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`id` &lt;&lt;&lt; 3</span></span><br><span class="line">id.LeftShift(<span class="number">3</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>stream call expression</p>
+<figure class="highlight golang"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// ((`user`.`age`+1)*2)/3</span></span><br><span class="line">u.Age.Add(<span class="number">1</span>).Mul(<span class="number">2</span>).Div(<span class="number">3</span>),</span><br></pre></td></tr></tbody></table></figure>
+
+<h6 id="string-field-expression" class="article-heading"><a href="#string-field-expression" class="headerlink" title="string field expression"></a>string field expression<a class="article-anchor" href="#string-field-expression" aria-hidden="true"></a></h6><figure class="highlight golang"><table><tbody><tr><td class="code"><pre><span class="line">name := field.NewStirng(<span class="string">"user"</span>, <span class="string">"name"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`name` = "modi"</span></span><br><span class="line">name.Eq(<span class="string">"modi"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`name` LIKE %modi%</span></span><br><span class="line">name.Like(<span class="string">"%modi%"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`name` REGEXP .*</span></span><br><span class="line">name.Regexp(<span class="string">".*"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`name` FIND_IN_SET(`name`,"modi,jinzhu,zhangqiang")</span></span><br><span class="line">name.FindInSet(<span class="string">"modi,jinzhu,zhangqiang"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `uesr`.`name` CONCAT("[",name,"]")</span></span><br><span class="line">name.Concat(<span class="string">"["</span>, <span class="string">"]"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h6 id="time-field-expression" class="article-heading"><a href="#time-field-expression" class="headerlink" title="time field expression"></a>time field expression<a class="article-anchor" href="#time-field-expression" aria-hidden="true"></a></h6><figure class="highlight golang"><table><tbody><tr><td class="code"><pre><span class="line">birth := field.NewStirng(<span class="string">"user"</span>, <span class="string">"birth"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`birth` = ? (now)</span></span><br><span class="line">birth.Eq(time.Now())</span><br><span class="line"></span><br><span class="line"><span class="comment">// DATE_ADD(`user`.`birth`, INTERVAL ? MICROSECOND)</span></span><br><span class="line">birth.Add(time.Duration(time.Hour).Microseconds())</span><br><span class="line"></span><br><span class="line"><span class="comment">// DATE_FORMAT(`user`.`birth`, "%W %M %Y")</span></span><br><span class="line">birth.DateFormat(<span class="string">"%W %M %Y"</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h6 id="bool-field-expression" class="article-heading"><a href="#bool-field-expression" class="headerlink" title="bool field expression"></a>bool field expression<a class="article-anchor" href="#bool-field-expression" aria-hidden="true"></a></h6><figure class="highlight golang"><table><tbody><tr><td class="code"><pre><span class="line">active := field.NewBool(<span class="string">"user"</span>, <span class="string">"active"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`active` = TRUE</span></span><br><span class="line">active.Is(<span class="literal">true</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// NOT `user`.`active`</span></span><br><span class="line">active.Not()</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`active` AND TRUE</span></span><br><span class="line">active.And(<span class="literal">true</span>)</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="Column-Compare" class="article-heading"><a href="#Column-Compare" class="headerlink" title="Column Compare"></a>Column Compare<a class="article-anchor" href="#Column-Compare" aria-hidden="true"></a></h4><figure class="highlight golang"><table><tbody><tr><td class="code"><pre><span class="line">id := field.NewInt(<span class="string">"user"</span>, <span class="string">"id"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// `user`.`id` = `another`.`id`</span></span><br><span class="line">id.EqCol(anotherID)</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
               </div>
 
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-09-11T00:18:47.623Z" itemprop="dateModified">Last updated: 2022-09-11</time>
+                <time class="article-footer-updated" datetime="2022-09-14T09:01:07.770Z" itemprop="dateModified">Last updated: 2022-09-14</time>
 <a href="database_to_structs.html" class="article-footer-prev" title="Overview"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="methods.html" class="article-footer-next" title="Methods"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -244,7 +315,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">Contents</strong>
-              
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Field-Expression"><span class="toc-text">Field Expression</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Create-Field"><span class="toc-text">Create Field</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Expression"><span class="toc-text">Expression</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#general-field-expression"><span class="toc-text">general field expression</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#int-field-expression"><span class="toc-text">int field expression</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#string-field-expression"><span class="toc-text">string field expression</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#time-field-expression"><span class="toc-text">time field expression</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#bool-field-expression"><span class="toc-text">bool field expression</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Column-Compare"><span class="toc-text">Column Compare</span></a></li></ol></li></ol>
 
               
                 <a href="https://github.com/go-gorm/gorm.io/edit/master/pages/gen/fields.md" target="_blank" id="article-improve">
