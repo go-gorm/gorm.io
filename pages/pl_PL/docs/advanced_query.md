@@ -66,9 +66,9 @@ db.Clauses(clause.Locking{
 
 Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
 
-## SubQuery
+## Podzapytania
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+Podzapytanie może być zagnieżdzone w zapytaniu, GORM może generować pozapytania poczas używania obiektu `*gorm.DB` jako parametru
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -107,7 +107,7 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## IN with multiple columns
+## IN z wieloma kolumnami
 
 Selecting IN with multiple columns
 
@@ -265,9 +265,9 @@ db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 
 Refer [Optimizer Hints/Index/Comment](hints.html) for more details
 
-## Iteration
+## Iteracja
 
-GORM supports iterating through Rows
+GORM wspiera iteracje po wierszach
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -379,7 +379,7 @@ Checkout [Scopes](scopes.html) for details
 
 ## <span id="count">Count</span>
 
-Get matched records count
+Zwraca ilość znalezionych rekordów
 
 ```go
 var count int64

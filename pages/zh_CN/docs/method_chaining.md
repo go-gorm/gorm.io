@@ -11,7 +11,7 @@ db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 
 GORM 中有三种类型的方法： `链式方法`、`Finisher 方法`、`新建会话方法`
 
-After a `Chain method`, `Finisher Method`, GORM returns an initialized `*gorm.DB` instance, which is NOT safe to reuse anymore, or new generated SQL might be polluted by the previous conditions, for example:
+在 `链式方法`, `Finisher 方法`, GORM 返回一个初始化的 `*gorm.DB` 实例，不能安全地重复使用，或新生成的 SQL 可能会被先前的条件污染，例如：
 
 ```go
 queryDB := DB.Where("name = ?", "jinzhu")
@@ -23,7 +23,7 @@ queryDB.Where("age > ?", 20).First(&user2)
 // SELECT * FROM users WHERE name = "jinzhu" AND age > 10 AND age > 20
 ```
 
-In order to reuse a initialized `*gorm.DB` instance, you can use a `New Session Method` to create a shareable `*gorm.DB`, e.g:
+为了重新使用初始化的 `*gorm.DB` 实例, 您可以使用 `新建会话方法` 创建一个可共享的 `*gorm.DB`, 例如:
 
 ```go
 queryDB := DB.Where("name = ?", "jinzhu").Session(&gorm.Session{})
@@ -37,29 +37,29 @@ queryDB.Where("age > ?", 20).First(&user2)
 
 ## 链式方法
 
-Chain methods are methods to modify or add `Clauses` to current `Statement`, like:
+链式方法是将 `Clauses` 修改或添加到当前 `Statement` 的方法，例如：
 
 `Where`, `Select`, `Omit`, `Joins`, `Scopes`, `Preload`, `Raw` (`Raw` can't be used with other chainable methods to build SQL)...
 
-Here is [the full lists](https://github.com/go-gorm/gorm/blob/master/chainable_api.go), also check out the [SQL Builder](sql_builder.html) for more details about `Clauses`.
+这是 [完整方法列表](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)，也可以查看 [SQL 构建器](sql_builder.html) 获取更多关于 `Clauses` 的信息
 
 ## <span id="finisher_method">Finisher 方法</span>
 
-Finishers are immediate methods that execute registered callbacks, which will generate and execute SQL, like those methods:
+Finishers 是会立即执行注册回调的方法，然后生成并执行 SQL，比如这些方法：
 
 `Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`...
 
-Check out [the full lists](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) here.
+查看[完整方法列表](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)
 
-## <span id="goroutine_safe">New Session Method</span>
+## <span id="goroutine_safe">新建会话方法</span>
 
-GORM defined `Session`, `WithContext`, `Debug` methods as `New Session Method`, refer [Session](session.html) for more details.
+GORM 定义了 `Session`、`WithContext`、`Debug` 方法做为 `新建会话方法`，查看[会话](session.html) 获取详情.
 
-After a `Chain method`, `Finisher Method`, GORM returns an initialized `*gorm.DB` instance, which is NOT safe to reuse anymore, you should use a `New Session Method` to mark the `*gorm.DB` as shareable.
+在 `链式方法`, `Finisher 方法`之后, GORM 返回一个初始化的 `*gorm. B` 实例，不能安全地再使用 您应该使用 `新建会话方法` 标记 `*gorm.DB` 为可共享。
 
-Let's explain it with examples:
+让我们用实例来解释它：
 
-Example 1:
+示例 1：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -82,7 +82,7 @@ db.Find(&users)
 // SELECT * FROM users;
 ```
 
-(Bad) Example 2:
+(错误的) 示例2：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -104,7 +104,7 @@ tx.Where("age = ?", 28).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 28;
 ```
 
-Example 3:
+示例 3：
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})

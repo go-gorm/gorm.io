@@ -3,7 +3,7 @@ title: GORM Community
 layout: page
 ---
 
-## Ask
+## Pytania
 
 **[Jak zadać dobre pytanie?](https://stackoverflow.com/help/how-to-ask)**
 
@@ -22,7 +22,9 @@ layout: page
 
 * Article that validate GORM as ORM to Golang with CRUD implementation with SQLite database on tests - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
 
-## Videos
+* [Strongly typed JSON/JSONB fields in GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
+
+## Filmy
 
 * Gorm quick start tutorial by [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
 

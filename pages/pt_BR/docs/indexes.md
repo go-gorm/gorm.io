@@ -48,7 +48,7 @@ type User struct {
 Usar o mesmo nome de índice para dois campos irá criar índices compostos, por exemplo:
 
 ```go
-// create composite index `idx_member` with columns `name`, `number`
+// Cria índice composto `idx_member` com colunas `name`, `number`
 type User struct {
     Name   string `gorm:"index:idx_member"`
     Number string `gorm:"index:idx_member"`
@@ -81,11 +81,11 @@ type User struct {
 // ordem das colunas: number, name
 ```
 
-### Shared composite indexes
+### Índices Compostos Compartilhados
 
-If you are creating shared composite indexes with an embedding struct, you can't specify the index name, as embedding the struct more than once results in the duplicated index name in db.
+Se você estiver criando índices compostos compartilhados com uma estrutura de incorporação, você não poderá especificar o nome do índice. como incorporar o struct mais de uma vez resulta no nome do índice duplicado no banco de dados.
 
-In this case, you can use index tag `composite`, it means the id of the composite index. All fields which have the same composite id of the struct are put together to the same index, just like the original rule. But the improvement is it lets the most derived/embedding struct generates the name of index by NamingStrategy. For example:
+Nesse caso, você pode usar a tag de índice `composite`, isso significa o id do índice composto. Todos os campos com a mesma identificação composta da construção são agrupados no mesmo índice, tal como a regra original. Mas a melhoria permite que a construção mais derivada/incorporada gere o nome do índice pela NamingStrategy. Por exemplo:
 
 ```go
 type Foo struct {
@@ -94,7 +94,7 @@ type Foo struct {
 }
 ```
 
-If the table Foo is created, the name of composite index will be `idx_foo_myname`.
+Se a tabela Foo é criada, o nome do índice composto será `idx_foo_myname`.
 
 ```go
 type Bar0 struct {
@@ -106,13 +106,13 @@ type Bar1 struct {
 }
 ```
 
-Respectively, the name of composite index is `idx_bar0_myname` and `idx_bar1_myname`.
+Espectivamente, o nome do índice composto é `idx_bar0_myname` e `idx_bar1_myname`.
 
-`composite` only works if not specify the name of index.
+`composite` só funciona se não especificar o nome do índice.
 
 ## Múltiplos índices
 
-A field accepts multiple `index`, `uniqueIndex` tags that will create multiple indexes on a field
+Um campo aceita múltiplas tags `index`, `uniqueIndex` que irão criar vários índices em um campo
 
 ```go
 type UserIndex struct {

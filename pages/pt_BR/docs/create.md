@@ -1,39 +1,39 @@
 ---
-title: Criar
+title: Criação
 layout: page
 ---
 
-## Create Record
+## Criação de Registros
 
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // pass pointer of data to Create
+result := db.Create(&user) //  Passa o ponteiro dos dados para o Create
 
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+user.ID             // Retorna a chave primária dos dados inseridos
+result.Error        // Retorna erro
+result.RowsAffected // Retorna a contagem de registros criados
 ```
 
-## Create Record With Selected Fields
+## Criar registro com campos selecionados
 
-Create a record and assign a value to the fields specified.
+Crie um registro e atribua um valor aos campos especificados.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and ignore the values for fields passed to omit.
+Criar um registro e ignorar os valores dos campos passados para omitir.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 
-## <span id="batch_insert">Batch Insert</span>
+## <span id="batch_insert">Inserção em Lote</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+Para inserir eficientemente um grande número de registros, passe o slice de dados para o método `Create`. GORM irá gerar uma única instrução SQL para inserir todos os dados e fará o backfill com os valores de chave primárias, hooks serão invocados também.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -44,7 +44,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+Você pode especificar o tamanho do lote ao criar com `CreateInBatches`, por exemplo:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -53,10 +53,10 @@ var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 db.CreateInBatches(users, 100)
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+Inserção em lote também é suportada quando se usa [Upsert](#upsert) e [Criar com Associações](#create_with_associations)
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**NOTA** Ao inicializar o GORM com a opção `CreateBatchSize`, todo `INSERT`vai respeitar essa opção quando criando registros e associações
 {% endnote %}
 
 ```go
@@ -73,7 +73,7 @@ db.Create(&users)
 // INSERT INTO pets xxx (15 batches)
 ```
 
-## Create Hooks
+## Criando Hooks
 
 GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 

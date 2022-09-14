@@ -90,7 +90,7 @@ db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 
 When using transaction, DBResolver will keep using the transaction and won't switch to sources/replicas based on configuration
 
-But you can specify which DB to use before starting a transaction, for example:
+But you can specifies which DB to use before starting a transaction, for example:
 
 ```go
 // Start transaction based on default replicas db

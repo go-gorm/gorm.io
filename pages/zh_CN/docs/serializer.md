@@ -1,11 +1,11 @@
 ---
-title: Serializer
-layout: page
+title: 序列化
+layout: 页面
 ---
 
-Serializer is an extensible interface that allows to customize how to serialize and deserialize data with databasae.
+Serializer 是一个可扩展的接口，允许自定义如何使用数据库对数据进行序列化和反序列化
 
-GORM provides some default serializers: `json`, `gob`, `unixtime`, here is a quick example of how to use it.
+GORM 提供了一些默认的序列化器：json、gob、unixtime，这里有一个如何使用它的快速示例
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
     Roles       Roles                  `gorm:"serializer:json"`
     Contracts   map[string]interface{} `gorm:"serializer:json"`
     JobInfo     Job                    `gorm:"type:bytes;serializer:gob"`
-    CreatedTime int64                  `gorm:"serializer:unixtime;type:time"` // store int as datetime into database
+    CreatedTime int64                  `gorm:"serializer:unixtime;type:time"` // 将 int 作为日期时间存储到数据库中
 }
 
 type Roles []string
@@ -23,45 +23,11 @@ type Job struct {
     Location string
     IsIntern bool
 }
-
-createdAt := time.Date(2020, 1, 1, 0, 8, 0, 0, time.UTC)
-data := User{
-  Name:        []byte("jinzhu"),
-  Roles:       []string{"admin", "owner"},
-  Contracts:   map[string]interface{}{"name": "jinzhu", "age": 10},
-  CreatedTime: createdAt.Unix(),
-  JobInfo: Job{
-    Title:    "Developer",
-    Location: "NY",
-    IsIntern: false,
-  },
-}
-
-DB.Create(&data)
-// INSERT INTO `users` (`name`,`roles`,`contracts`,`job_info`,`created_time`) VALUES
-//   ("\"amluemh1\"","[\"admin\",\"owner\"]","{\"age\":10,\"name\":\"jinzhu\"}",<gob binary>,"2020-01-01 00:08:00")
-
-var result User
-DB.First(&result, "id = ?", data.ID)
-// result => User{
-//   Name:        []byte("jinzhu"),
-//   Roles:       []string{"admin", "owner"},
-//   Contracts:   map[string]interface{}{"name": "jinzhu", "age": 10},
-//   CreatedTime: createdAt.Unix(),
-//   JobInfo: Job{
-//     Title:    "Developer",
-//     Location: "NY",
-//     IsIntern: false,
-//   },
-// }
-
-DB.Where(User{Name: []byte("jinzhu")}).Take(&result)
-// SELECT * FROM `users` WHERE `users`.`name` = "\"amluemh1\"
 ```
 
-## Register Serializer
+## 注册序列号器
 
-A Serializer needs to implement how to serialize and deserialize data, so it requires to implement the the following interface
+一个Serializer需要实现如何对数据进行序列化和反序列化，所以需要实现如下接口
 
 ```go
 import "gorm.io/gorm/schema"
@@ -76,14 +42,14 @@ type SerializerValuerInterface interface {
 }
 ```
 
-For example, the default `JSONSerializer` is implemented like:
+例如，默认 JSONSerializer 的实现如下：
 
 ```go
-// JSONSerializer json serializer
+// JSONSerializer json序列化器
 type JSONSerializer struct {
 }
 
-// Scan implements serializer interface
+// 实现 Scan 方法
 func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value, dbValue interface{}) (err error) {
     fieldValue := reflect.New(field.FieldType)
 
@@ -105,19 +71,19 @@ func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value,
     return
 }
 
-// Value implements serializer interface
+// 实现 Value 方法
 func (JSONSerializer) Value(ctx context.Context, field *Field, dst reflect.Value, fieldValue interface{}) (interface{}, error) {
     return json.Marshal(fieldValue)
 }
 ```
 
-And registered with the following code:
+并使用以下代码注册：
 
 ```go
 schema.RegisterSerializer("json", JSONSerializer{})
 ```
 
-After registering a serializer, you can use it with the `serializer` tag, for example:
+注册序列化器后，您可以将其与 `serializer` 标签一起使用，例如：
 
 ```go
 type User struct {
@@ -125,7 +91,7 @@ type User struct {
 }
 ```
 
-## Customized Serializer Type
+## 自定义序列化器类型
 
 You can use a registered serializer with tags, you are also allowed to create a customized struct that implements the above `SerializerInterface` and use it as a field type directly, for example:
 
