@@ -3,35 +3,8 @@ title: Gen Dynamic SQL
 layout: page
 ---
 
-### DIY method
-
-#### Method interface
-
-The DIY method needs to be defined through the interface. In the method, the specific SQL query logic is described in the way of comments. Simple WHERE queries can be wrapped in `where()`. When using complex queries, you need to write complete SQL. You can directly wrap them in `sql()` or write SQL directly. If there are some comments on the method, just add a blank line comment in the middle.
-
-```go
-type Method interface {
-    // where("name=@name and age=@age")
-    SimpleFindByNameAndAge(name string, age int) (gen.T, error)
-
-    // FindUserToMap query by id and return id->instance
-    // 
-    // sql(select * from users where id=@id)
-    FindUserToMap(id int) (gen.M, error)
-    
-    // InsertValue insert into users (name,age) values (@name,@age)
-    InsertValue(age int, name string) error
-}
-```
-Method input parameters and return values support basic types (`int`, `string`, `bool`...), struct and placeholders (`gen.T`/`gen.M`/`gen.RowsAffected`), and types support pointers and arrays. The return value is at most a value and an error.
-
-Usage(complete case on [Quick start](#quick-start)):
-```go
-// implement model.Method on table "user" and "comany"
-g.ApplyInterface(func(method model.Method) {}, model.User{}, g.GenerateModel("company"))
-```
-
 ##### Syntax of template
+Method input parameters and return values support basic types (`int`, `string`, `bool`...), struct and placeholders (`gen.T`/`gen.M`/`gen.RowsAffected`), and types support pointers and arrays. The return value is at most a value and an error.
 
 ###### placeholder
 
@@ -42,17 +15,19 @@ g.ApplyInterface(func(method model.Method) {}, model.User{}, g.GenerateModel("co
 - `@@<columnName>` represents column's name or table's name
 - `@<name>` represents normal query variable
 
-###### template
+######  template
 
-Logical operations must be wrapped in `{{}}`,and end must used `{{end}}`, All templates support nesting
+Dynamic template logical operations must be wrapped in `{{}}`,and end must used `{{end}}`, All templates support nesting
 
-- `if`/`else if`/`else` the condition accept a bool parameter or operation expression which conforms to Golang syntax.
-- `where` The `where` clause will be inserted only if the child elements return something. The key word  `and` or `or`  in front of clause will be removed. And `and` will be added automatically when there is no junction keyword between query condition clause.
-- `Set` The  `set` clause will be inserted only if the child elements return something. The `,` in front of columns array will be removed.And `,` will be added automatically when there is no junction keyword between query coulmns.
-- `for` The  `for` clause traverses an array according to golang syntax and inserts its contents into SQL,supports array of struct.
-- `...` Coming soon
+- `if` clause
+- `where` clause
+- `set` clause
+- `for` clause
+- `...` coming soon
 
 ###### `If` clause
+
+The `if` clause support `if`/`else if`/`else`,the condition accept a bool parameter or operation expression which conforms to Golang syntax.
 
 ```
 {{if cond1}}
@@ -67,33 +42,31 @@ Logical operations must be wrapped in `{{}}`,and end must used `{{end}}`, All te
 Use case in raw SQL:
 
 ```go
-// select * from users where 
+// select * from users where
 //  {{if name !=""}} 
-//      name=@name
+//      username=@name and
 //  {{end}}
-methond(name string) (gen.T,error)
+//  role="admin"
+Method(name string) (gen.T,error)
 ```
 
-Use case in raw SQL template:
+Use case in SQL with complex logic:
 
-```
-select * from @@table where
-{{if age>60}}
-    status="older"
-{{else if age>30}}
-    status="middle-ager"
-{{else if age>18}}
-    status="younger"
-{{else}}
-    {{if sex=="male"}}
-        status="boys"
-    {{else}}
-        status="girls"
-    {{end}}
-{{end}}
+```go
+// select * from users  
+//  {{if user != nil}}
+//      {{if user.ID > 0}}
+//          where  id=@user.ID
+//      {{else if user.Name != ""}}
+//          where username=@user.Name
+//      {{end}}
+//  {{end}}
+Method(user *gen.T) (gen.T, error)
 ```
 
 ###### `Where` clause
+
+The `where` clause will be inserted only if the child elements return something. The key word  `and` or `or`  on both sides of clause will be removed.
 
 ```
 {{where}}
@@ -104,24 +77,32 @@ select * from @@table where
 Use case in raw SQL
 
 ```go
-// select * from 
+// select * from @@table
 //  {{where}}
 //      id=@id
 //  {{end}}
-methond(id int) error
+Method(id int) gen.T
 ```
 
-Use case in raw SQL template
+Use case in SQL with complex logic:
 
+```go
+// select * from @@table
+//  {{where}}
+//      {{if !start.IsZero()}}
+//          created_time > start
+//      {{end}}
+//      {{if !end.IsZero()}}
+//         and created_time < end
+//      {{end}} 
+//  {{end}}
+Method(start,end time.Time) ([]gen.T, error)
 ```
-select * from @@table 
-{{where}}
-    {{if cond}} id=@id, {{end}}
-    {{if name != ""}} @@key=@value, {{end}}
-{{end}}
-```
+
 
 ###### `Set` clause
+
+The `Set` clause is used to dynamically update data,it will be inserted only if the child elements return something. The `,` on both sides of columns array will be removed.
 
 ```
 {{set}}
@@ -137,20 +118,25 @@ Use case in raw SQL
 //      name=@name
 //  {{end}}
 // where id=@id
-methond(name string,id int) error
+method(name string,id int) error
 ```
 
-Use case in raw SQL template
+Use case in SQL with complex logic:
 
-```
-update @@table 
-{{set}}
-    {{if name!=""}} name=@name {{end}}
-    {{if age>0}} age=@age {{end}}
-{{end}}
-where id=@id
+```go
+// update @@table 
+//  {{set}}
+//      {{if user.Name != ""}} username=@user.Name, {{end}}
+//      {{if user.Age > 0}} age=@user.Age, {{end}}
+//      {{if user.Age >= 18}} is_adult=1 {{else}} is_adult=0 {{end}}
+//  {{end}}
+// where id=@id
+method(user gen.T,id int) (gen.RowsAffected, error)
+
 ```
 ###### `For` clause
+
+The  `for` clause traverses an array according to golang syntax and inserts its contents into SQL,supports array of struct.
 
 ```
 {{for _,name:=range names}}
@@ -161,23 +147,27 @@ where id=@id
 Use case in raw SQL:
 
 ```go
-// select * from users where id>0 
-//  {{for _,name:=range names}} 
-//      and name=@name
+//select * from @@table
+//{{where}}
+//	{{for _,name:=range names}}
+//		name like concat("%",@name,"%") or
+//	{{end}}
+//{{end}}
+Method(names []string) ([]gen.T, error) 
+```
+
+Use case in SQL with complex logic:
+
+```go
+// select * from @@table 
+// {{where}}
+//      {{for _,user:=range user}} 
+//          {{if user.Name !="" && user.Age >0}}
+//              (username = @user.Name AND age=@user.Age) OR
+//          {{end}}
+//      {{end}}
 //  {{end}}
-methond(names []string) (gen.T,error) 
-```
-
-Use case in raw SQL template:
-
-```
-select * from @@table where
-  {{for index,name:=range names}}
-     {{if index >0}} 
-        OR
-     {{end}}
-     name=@name
-  {{end}}
+Method(users []model.User) ([]gen.T, error) 
 ```
 
 ##### Method interface example
