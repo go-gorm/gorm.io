@@ -19,13 +19,13 @@ Method input parameters and return values support basic types (`int`, `string`, 
 
 Dynamic template logical operations must be wrapped in `{{}}`,and end must used `{{end}}`, All templates support nesting
 
-- `if` clause
-- `where` clause
-- `set` clause
-- `for` clause
-- `...` coming soon
+- `if` Clause
+- `where` Clause
+- `set` Clause
+- `for` Clause
+- `...` Coming soon
 
-###### `If` clause
+###### `if` Clause
 
 The `if` clause support `if`/`else if`/`else`,the condition accept a bool parameter or operation expression which conforms to Golang syntax.
 
@@ -64,7 +64,7 @@ Use case in SQL with complex logic:
 Method(user *gen.T) (gen.T, error)
 ```
 
-###### `Where` clause
+###### `where` Clause
 
 The `where` clause will be inserted only if the child elements return something. The key word  `and` or `or`  on both sides of clause will be removed.
 
@@ -100,9 +100,9 @@ Method(start,end time.Time) ([]gen.T, error)
 ```
 
 
-###### `Set` clause
+###### `set` Clause
 
-The `Set` clause is used to dynamically update data,it will be inserted only if the child elements return something. The `,` on both sides of columns array will be removed.
+The `set` clause is used to dynamically update data,it will be inserted only if the child elements return something. The `,` on both sides of columns array will be removed.
 
 ```
 {{set}}
@@ -134,9 +134,9 @@ Use case in SQL with complex logic:
 method(user gen.T,id int) (gen.RowsAffected, error)
 
 ```
-###### `For` clause
+###### `for` Clause
 
-The  `for` clause traverses an array according to golang syntax and inserts its contents into SQL,supports array of struct.
+The `for` clause traverses an array according to golang syntax and inserts its contents into SQL,supports array of struct.
 
 ```
 {{for _,name:=range names}}
