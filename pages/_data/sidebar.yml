@@ -69,4 +69,4 @@ gen:
   advanced_topics:
     gorm_clause: clause.html
     transaction: transaction.html
-    plugins: plugins.html
+    plugins: /docs/write_plugins.html
