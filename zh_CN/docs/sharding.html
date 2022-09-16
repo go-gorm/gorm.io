@@ -54,8 +54,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="Sharding 是一个高性能的 Gorm 分表中间件。它基于 Conn 层做 SQL 拦截、AST 解析、分表路由、自增主键填充，带来的额外开销极小。对开发者友好、透明，使用上与普通 SQL、Gorm 查询无差别，只需要额外注意一下分表键条件。 为您提供高性能的数据库访问。 https:&#x2F;&#x2F;github.com&#x2F;go-gorm&#x2F;sharding 功能特点 非侵入式设计， 加载插件，指定配置，既可">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-09-16T13:52:52.999Z">
-<meta property="article:modified_time" content="2022-09-16T13:52:52.999Z">
+<meta property="article:published_time" content="2022-09-16T13:54:14.408Z">
+<meta property="article:modified_time" content="2022-09-16T13:54:14.408Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -78,7 +78,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <a href="/zh_CN/" id="logo">GORM</a>
     </h1>
     <nav id="main-nav">
-      <a href="/zh_CN/docs/" class="main-nav-link"><i class="fa fa-book"></i>文档</a><a href="/zh_CN/community.html" class="main-nav-link"><i class="fab fa-slack"></i>社区</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/zh_CN/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>贡献</a>
+      <a href="/zh_CN/docs/" class="main-nav-link"><i class="fa fa-book"></i>文档</a><a href="/zh_CN/community.html" class="main-nav-link"><i class="fab fa-slack"></i>社区</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/zh_CN/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>贡献</a><a href="/zh_CN/gen/" class="main-nav-link"><i class="fa fa-tools"></i>Gen</a>
       <div id="search-input-wrap">
         <div id="search-input-icon">
           <i class="fa fa-search"></i>
@@ -161,7 +161,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-09-16T13:52:52.999Z" itemprop="dateModified">最后更新于 2022-09-16</time>
+                <time class="article-footer-updated" datetime="2022-09-16T13:54:14.408Z" itemprop="dateModified">最后更新于 2022-09-16</time>
 <a href="dbresolver.html" class="article-footer-prev" title="Database Resolver"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="serializer.html" class="article-footer-next" title="Serializer"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -318,7 +318,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <li class="mobile-nav-item">
         <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>主页</a>
       </li>
-      <a href="/zh_CN/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>文档</a><a href="/zh_CN/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>社区</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/zh_CN/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>贡献</a>
+      <a href="/zh_CN/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>文档</a><a href="/zh_CN/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>社区</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/zh_CN/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>贡献</a><a href="/zh_CN/gen/" class="mobile-nav-link"><i class="fa fa-tools"></i>Gen</a>
     </ul>
     
       <strong class="mobile-nav-title">入门指南</strong><a href="index.html" class="mobile-nav-link">概述</a><a href="models.html" class="mobile-nav-link">声明模型</a><a href="connecting_to_the_database.html" class="mobile-nav-link">连接到数据库</a><strong class="mobile-nav-title">CRUD 接口</strong><a href="create.html" class="mobile-nav-link">创建</a><a href="query.html" class="mobile-nav-link">查询</a><a href="advanced_query.html" class="mobile-nav-link">高级查询</a><a href="update.html" class="mobile-nav-link">更新</a><a href="delete.html" class="mobile-nav-link">删除</a><a href="sql_builder.html" class="mobile-nav-link">原生 SQL 和 SQL 生成器</a><strong class="mobile-nav-title">关联</strong><a href="belongs_to.html" class="mobile-nav-link">Belongs To</a><a href="has_one.html" class="mobile-nav-link">Has One</a><a href="has_many.html" class="mobile-nav-link">Has Many</a><a href="many_to_many.html" class="mobile-nav-link">Many To Many</a><a href="associations.html" class="mobile-nav-link">关联模式</a><a href="preload.html" class="mobile-nav-link">预加载</a><strong class="mobile-nav-title">教程</strong><a href="context.html" class="mobile-nav-link">Context</a><a href="error_handling.html" class="mobile-nav-link">错误处理</a><a href="method_chaining.html" class="mobile-nav-link">链式操作</a><a href="session.html" class="mobile-nav-link">Session</a><a href="hooks.html" class="mobile-nav-link">钩子</a><a href="transactions.html" class="mobile-nav-link">事务</a><a href="migration.html" class="mobile-nav-link">迁移</a><a href="logger.html" class="mobile-nav-link">Logger</a><a href="generic_interface.html" class="mobile-nav-link">通用数据库接口</a><a href="performance.html" class="mobile-nav-link">性能</a><a href="data_types.html" class="mobile-nav-link">自定义数据类型</a><a href="scopes.html" class="mobile-nav-link">Scope</a><a href="conventions.html" class="mobile-nav-link">约定</a><a href="settings.html" class="mobile-nav-link">设置</a><strong class="mobile-nav-title">高级主题</strong><a href="dbresolver.html" class="mobile-nav-link">Database Resolver</a><a href="sharding.html" class="mobile-nav-link current">Sharding</a><a href="serializer.html" class="mobile-nav-link">Serializer</a><a href="prometheus.html" class="mobile-nav-link">Prometheus</a><a href="hints.html" class="mobile-nav-link">提示</a><a href="indexes.html" class="mobile-nav-link">索引</a><a href="constraints.html" class="mobile-nav-link">约束</a><a href="composite_primary_key.html" class="mobile-nav-link">复合主键</a><a href="security.html" class="mobile-nav-link">安全</a><a href="gorm_config.html" class="mobile-nav-link">GORM 配置</a><a href="write_plugins.html" class="mobile-nav-link">编写插件</a><a href="write_driver.html" class="mobile-nav-link">编写驱动</a><a href="changelog.html" class="mobile-nav-link">更新日志</a><a href="/community.html" class="mobile-nav-link">社区</a><a href="/contribute.html" class="mobile-nav-link">贡献</a><a href="/contribute.html#Translate-this-site" class="mobile-nav-link">翻译当前页面</a>
