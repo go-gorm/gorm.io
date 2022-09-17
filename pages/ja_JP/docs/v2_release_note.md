@@ -24,7 +24,7 @@ GORM2.0はスクラッチから書き直しているため、互換性のないA
 
 ## How To Upgrade
 
-* GORMの開発は [github.com/go-gorm](https://github.com/go-gorm) に移行し、インポートパスが `gorm.io/gorm` に変わりました。以前のプロジェクトは `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/) を利用できます。
+* GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and its import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm` [GORM V1 Document](https://v1.gorm.io/)
 * データベースドライバーは、以下のような別々のプロジェクトに分割されています。 [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite) インポートパスも `gorm.io/driver/sqlite` に変更されました。
 
 ### Install
