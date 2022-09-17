@@ -81,11 +81,11 @@ type User struct {
 // column order: number, name
 ```
 
-### Shared composite indexes
+### 共享复合索引
 
-If you are creating shared composite indexes with an embedding struct, you can't specify the index name, as embedding the struct more than once results in the duplicated index name in db.
+如果您正在创建带有嵌入结构的共享复合索引，您不能指定索引名称。 作为嵌入结构不止一次会导致重复的索引名称在 db。
 
-In this case, you can use index tag `composite`, it means the id of the composite index. All fields which have the same composite id of the struct are put together to the same index, just like the original rule. But the improvement is it lets the most derived/embedding struct generates the name of index by NamingStrategy. For example:
+在这种情况下，您可以使用索引标签 `composite`, 它意味着复合索引的id。 所有具有相同结构复合id的字段都与原始规则一样，被合并到相同的索引中。 但改进使得最受影响/嵌入结构能够通过命名策略生成索引名称。 例如:
 
 ```go
 type Foo struct {
@@ -94,7 +94,7 @@ type Foo struct {
 }
 ```
 
-If the table Foo is created, the name of composite index will be `idx_foo_myname`.
+如果表Foo被创建，复合索引的名称将是 `idx_foo_myname`。
 
 ```go
 type Bar0 struct {
@@ -106,13 +106,13 @@ type Bar1 struct {
 }
 ```
 
-Respectively, the name of composite index is `idx_bar0_myname` and `idx_bar1_myname`.
+复合索引的名称分别是 `idx_bar0_myname` 和 `idx_bar1_myname`。
 
-`composite` only works if not specify the name of index.
+`复合` 只能在指定索引名称时使用。
 
 ## 多索引
 
-A field accepts multiple `index`, `uniqueIndex` tags that will create multiple indexes on a field
+一个字段接受多个 `index`、`uniqueIndex` 标签，这会在一个字段上创建多个索引
 
 ```go
 type UserIndex struct {
