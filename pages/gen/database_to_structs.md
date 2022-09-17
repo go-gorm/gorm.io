@@ -109,21 +109,3 @@ dataMap := map[string]func(detailType string) (dataType string){
 
 g.WithDataTypeMap(dataMap)
 ```
-
-##### Generate model bind custom method
-```Go
-type User struct{
-	ID int32
-}
-func (u *User)IsEmpty()bool{
-    if m == nil {
-    return true
-    }
-    return m.ID == 0
-}
-user := User{}
-// add custom method to generated model struct
-g.GenerateModel("people", gen.WithMethod(user.IsEmpty))
-// also you can input a struct,will bind all method
-g.GenerateModel("people", gen.WithMethod(user))
-```
