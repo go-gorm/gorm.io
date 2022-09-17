@@ -1,6 +1,6 @@
 # Gorm Offical Site
 
-This website is for [GORM](https://github.com/go-gorm/gorm), you can access its content at [http://gorm.io](http://gorm.io)
+This website is for [GORM](https://github.com/go-gorm/gorm), you can access its content at [https://gorm.io](https://gorm.io)
 
 ![build](https://github.com/go-gorm/gorm.io/workflows/build/badge.svg)
 
@@ -20,7 +20,7 @@ To translate GORM in your language, you will need to post a request in the [Gith
 
 ## Developing this Site
 
-This site is built with [hexo](http://hexo.io)
+This site is built with [hexo](https://hexo.io)
 
 ```
 $ npm install
