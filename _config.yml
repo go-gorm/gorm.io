@@ -14,7 +14,7 @@ source_dir: pages
 skip_render: [driver/**, plugin/**, datatypes.html, gorm.html, hints.html, gen.html, sharding.html]
 
 # URL
-url: http://gorm.io
+url: https://gorm.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
