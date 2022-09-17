@@ -55,7 +55,7 @@ queryDB.Where("age > ?", 20).First(&user2)
 
 GORM 定义了 `Session`、`WithContext`、`Debug` 方法做为 `新建会话方法`，查看[会话](session.html) 获取详情.
 
-在 `链式方法`, `Finisher 方法`之后, GORM 返回一个初始化的 `*gorm. B` 实例，不能安全地再使用 您应该使用 `新建会话方法` 标记 `*gorm.DB` 为可共享。
+在 `链式方法`, `Finisher 方法`之后, GORM 返回一个初始化的 `*gorm.DB` 实例，不能安全地再使用。您应该使用 `新建会话方法` 来标记 `*gorm.DB` 为可共享。
 
 让我们用实例来解释它：
 
