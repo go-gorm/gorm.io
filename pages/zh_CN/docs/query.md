@@ -64,7 +64,7 @@ db.First(&Language{})
 // SELECT * FROM `languages` ORDER BY `languages`.`code` LIMIT 1
 ```
 
-### 用主键检索
+### 根据主键检索
 
 如果主键是数字类型，您可以使用 [内联条件](#inline_conditions) 来检索对象。 传入字符串参数时，需要特别注意 SQL 注入问题，查看 [安全](security.html) 获取详情.
 
@@ -86,7 +86,7 @@ db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-When the destination object has a primary value, the primary key will be used to build the condition, for example:
+当目标对象有一个主要值时，将使用主键构建条件，例如：
 
 ```go
 var user = User{ID: 10}
@@ -160,7 +160,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**NOTE** 当使用struct查询时，GORM只对非零字段进行查询，也就是说如果你的字段的值是`0`，`''`，`false`或其他[零值](https://tour.golang.org/basics/12)，它将不会被用来建立查询条件，例如：
 {% endnote %}
 
 ```go
@@ -168,18 +168,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
+如果想要包含零值查询条件，你可以使用 map，其会包含所有 key-value 的查询条件，例如：
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-For more details, see [Specify Struct search fields](#specify_search_fields).
+查看 [指定结构体查询字段](#specify_search_fields) 获取详情.
 
 ### <span id="specify_search_fields">指定结构体查询字段</span>
 
-When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
+当使用 struct 进行查询时，你可以通过向 `Where()` 传入 struct 来指定查询条件的字段、值、表名，例如：
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -191,7 +191,7 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 
 ### <span id="inline_conditions">内联条件</span>
 
-Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
+查询条件也可以被内联到 `First` 和 `Find` 之类的方法中，其用法类似于 `Where`。
 
 ```go
 // Get by primary key if it were a non-integer type
@@ -216,7 +216,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 
 ### Not 条件
 
-Build NOT conditions, works similar to `Where`
+建立NOT条件，类似于`Where`。
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -250,11 +250,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
+想要更复杂的 SQL 查询， 请查看 [高级查询中的组条件](advanced_query.html#group_conditions)。
 
 ## 选择特定字段
 
-`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
+`Select` 允许您指定从数据库中检索哪些字段， 默认情况下，GORM 会检索所有字段。
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -267,11 +267,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-Also check out [Smart Select Fields](advanced_query.html#smart_select)
+也可以查看[智能选择字段](advanced_query.html#smart_select)。
 
-## Order
+## 排序
 
-Specify order when retrieving records from the database
+从数据库中检索记录时指定顺序。
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -289,7 +289,7 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit`指定要检索的最大记录数。 `Offset`指定在开始返回记录前要跳过的记录数。
 
 ```go
 db.Limit(3).Find(&users)
@@ -312,7 +312,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
+查看 [Pagination](scopes.html#pagination) 学习如何写一个分页器
 
 ## Group By & Having
 
@@ -350,17 +350,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+从model中选择特定的值
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
+`Distinct` 也可以配合 [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) 使用
 
 ## Joins
 
-Specify Joins conditions
+指定join条件
 
 ```go
 type result struct {
@@ -384,25 +384,25 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ### Joins 预加载
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+您可以使用 `Joins` 实现单条 SQL 急加载关联记录，例如：
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Join with conditions
+带条件的 Join
 
 ```go
 db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
-For more details, please refer to [Preloading (Eager Loading)](preload.html).
+更多细节请参阅 [预加载 (Eager Loading)](preload.html)。
 
-### Joins a Derived Table
+### Joins 一个衍生表
 
-You can also use `Joins` to join a derived table.
+你也可以使用`Joins`来关联一个衍生表
 
 ```go
 type User struct {
@@ -423,7 +423,7 @@ db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Sc
 
 ## <span id="scan">Scan</span>
 
-Scanning results into a struct works similarly to the way we use `Find`
+Scan 结果至 struct，用法与 `Find` 类似
 
 ```go
 type Result struct {
