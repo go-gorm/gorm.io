@@ -54,8 +54,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="GORM 允许通过 index、uniqueIndex 标签创建索引，这些索引将在使用 GORM 进行AutoMigrate 或 Createtable  时创建 索引标签GORM 可以接受很多索引设置，例如class、type、where、comment、expression、sort、collate、option 下面的示例演示了如何使用它： type User struct &amp;#123;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-09-17T23:30:17.175Z">
-<meta property="article:modified_time" content="2022-09-17T23:30:17.175Z">
+<meta property="article:published_time" content="2022-09-22T10:45:44.577Z">
+<meta property="article:modified_time" content="2022-09-22T10:45:44.577Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -149,16 +149,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>您可以使用 <code>priority</code> 指定顺序，默认优先级值是 <code>10</code>，如果优先级值相同，则顺序取决于模型结构体字段的顺序</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`gorm:"index:idx_member"`</span></span><br><span class="line">    Number <span class="type">string</span> <span class="string">`gorm:"index:idx_member"`</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// column order: name, number</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`gorm:"index:idx_member,priority:2"`</span></span><br><span class="line">    Number <span class="type">string</span> <span class="string">`gorm:"index:idx_member,priority:1"`</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// column order: number, name</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`gorm:"index:idx_member,priority:12"`</span></span><br><span class="line">    Number <span class="type">string</span> <span class="string">`gorm:"index:idx_member"`</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// column order: number, name</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Shared-composite-indexes" class="article-heading"><a href="#Shared-composite-indexes" class="headerlink" title="Shared composite indexes"></a>Shared composite indexes<a class="article-anchor" href="#Shared-composite-indexes" aria-hidden="true"></a></h3><p>If you are creating shared composite indexes with an embedding struct, you can’t specify the index name, as embedding the struct more than once results in the duplicated index name in db.</p>
-<p>In this case, you can use index tag <code>composite</code>, it means the id of the composite index. All fields which have the same composite id of the struct are put together to the same index, just like the original rule. But the improvement is it lets the most derived/embedding struct generates the name of index by NamingStrategy. For example:</p>
+<h3 id="共享复合索引" class="article-heading"><a href="#共享复合索引" class="headerlink" title="共享复合索引"></a>共享复合索引<a class="article-anchor" href="#共享复合索引" aria-hidden="true"></a></h3><p>如果您正在创建带有嵌入结构的共享复合索引，您不能指定索引名称。 作为嵌入结构不止一次会导致重复的索引名称在 db。</p>
+<p>在这种情况下，您可以使用索引标签 <code>composite</code>, 它意味着复合索引的id。 所有具有相同结构复合id的字段都与原始规则一样，被合并到相同的索引中。 但改进使得最受影响/嵌入结构能够通过命名策略生成索引名称。 例如:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Foo <span class="keyword">struct</span> {</span><br><span class="line">  IndexA <span class="type">int</span> <span class="string">`gorm:"index:,unique,composite:myname"`</span></span><br><span class="line">  IndexB <span class="type">int</span> <span class="string">`gorm:"index:,unique,composite:myname"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>If the table Foo is created, the name of composite index will be <code>idx_foo_myname</code>.</p>
+<p>如果表Foo被创建，复合索引的名称将是 <code>idx_foo_myname</code>。</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Bar0 <span class="keyword">struct</span> {</span><br><span class="line">  Foo</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Bar1 <span class="keyword">struct</span> {</span><br><span class="line">  Foo</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>Respectively, the name of composite index is <code>idx_bar0_myname</code> and <code>idx_bar1_myname</code>.</p>
-<p><code>composite</code> only works if not specify the name of index.</p>
-<h2 id="多索引" class="article-heading"><a href="#多索引" class="headerlink" title="多索引"></a>多索引<a class="article-anchor" href="#多索引" aria-hidden="true"></a></h2><p>A field accepts multiple <code>index</code>, <code>uniqueIndex</code> tags that will create multiple indexes on a field</p>
+<p>复合索引的名称分别是 <code>idx_bar0_myname</code> 和 <code>idx_bar1_myname</code>。</p>
+<p><code>复合</code> 只能在指定索引名称时使用。</p>
+<h2 id="多索引" class="article-heading"><a href="#多索引" class="headerlink" title="多索引"></a>多索引<a class="article-anchor" href="#多索引" aria-hidden="true"></a></h2><p>一个字段接受多个 <code>index</code>、<code>uniqueIndex</code> 标签，这会在一个字段上创建多个索引</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> UserIndex <span class="keyword">struct</span> {</span><br><span class="line">    OID          <span class="type">int64</span>  <span class="string">`gorm:"index:idx_id;index:idx_oid,unique"`</span></span><br><span class="line">    MemberNumber <span class="type">string</span> <span class="string">`gorm:"index:idx_id"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 </body></html>
               </div>
@@ -172,7 +172,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-09-17T23:30:17.175Z" itemprop="dateModified">最后更新于 2022-09-17</time>
+                <time class="article-footer-updated" datetime="2022-09-22T10:45:44.577Z" itemprop="dateModified">最后更新于 2022-09-22</time>
 <a href="hints.html" class="article-footer-prev" title="提示"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="constraints.html" class="article-footer-next" title="约束"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -276,7 +276,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">内容</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E6%A0%87%E7%AD%BE"><span class="toc-text">索引标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95"><span class="toc-text">唯一索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E5%90%88%E7%B4%A2%E5%BC%95"><span class="toc-text">复合索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-text">字段优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shared-composite-indexes"><span class="toc-text">Shared composite indexes</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%B4%A2%E5%BC%95"><span class="toc-text">多索引</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B4%A2%E5%BC%95%E6%A0%87%E7%AD%BE"><span class="toc-text">索引标签</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95"><span class="toc-text">唯一索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%8D%E5%90%88%E7%B4%A2%E5%BC%95"><span class="toc-text">复合索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-text">字段优先级</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%A4%8D%E5%90%88%E7%B4%A2%E5%BC%95"><span class="toc-text">共享复合索引</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%B4%A2%E5%BC%95"><span class="toc-text">多索引</span></a></li></ol>
 
               
                 <a href="https://translate.gorm.io/project/go-gorm/zh-CN" target="_blank" id="article-improve">
