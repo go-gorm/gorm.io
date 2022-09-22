@@ -24,7 +24,7 @@ GORM 2.0은 처음부터 다시 만들어졌으며, 일부 호환되지 않는 A
 
 ## 업그레이드 방법
 
-* GORM의 개발은 [github.com/go-gorm](https://github.com/go-gorm)로 이동되었으며, import path는 `gorm.io/gorm`로 변경되었습니다. 이전의 프로젝트는 `github.com/jinzhu/gorm` [GORM V1 Document](http://v1.gorm.io/)에서 계속 사용할 수 있습니다.
+* GORM's developments moved to [github.com/go-gorm](https://github.com/go-gorm), and its import path changed to `gorm.io/gorm`, for previous projects, you can keep using `github.com/jinzhu/gorm` [GORM V1 Document](https://v1.gorm.io/)
 * 데이터베이스 드라이버가 각각의 프로젝트로 분리되었습니다 (예: [github.com/go-gorm/sqlite](https://github.com/go-gorm/sqlite)) 그리고 import path 또한 `gorm.io/driver/sqlite`로 변경되었습니다.
 
 ### 설치하기

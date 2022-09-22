@@ -31,11 +31,11 @@ layout: page
 
 <iframe src="https://stats.gorm.io/go-gorm/playground/latest-report/report.html#views"></iframe>
 
-## Hints
+## Suggerimenti
 
 <iframe src="https://stats.gorm.io/go-gorm/hints/latest-report/report.html#views"></iframe>
 
-## Datatypes
+## Tipi Di Dati
 
 <iframe src="https://stats.gorm.io/go-gorm/datatypes/latest-report/report.html#views"></iframe>
 
@@ -43,7 +43,7 @@ layout: page
 
 <iframe src="https://stats.gorm.io/go-gorm/dbresolver/latest-report/report.html#views"></iframe>
 
-## Sqlite
+## SQLite
 
 <iframe src="https://stats.gorm.io/go-gorm/sqlite/latest-report/report.html#views"></iframe>
 

@@ -9,9 +9,9 @@ GORM 允许进行链式操作，所以您可以像这样写代码：
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 ```
 
-GORM 中有三种类型的方法： `链式方法`、`Finisher 方法`、`新建会话方法`
+GORM 中有三种类型的方法： `链式方法`、`终结方法`、`新建会话方法`
 
-在 `链式方法`, `Finisher 方法`, GORM 返回一个初始化的 `*gorm.DB` 实例，不能安全地重复使用，或新生成的 SQL 可能会被先前的条件污染，例如：
+在 `链式方法`, `终结方法`之后, GORM 返回一个初始化的 `*gorm.DB` 实例，实例不能安全地重复使用，并且新生成的 SQL 可能会被先前的条件污染，例如：
 
 ```go
 queryDB := DB.Where("name = ?", "jinzhu")
@@ -43,9 +43,9 @@ queryDB.Where("age > ?", 20).First(&user2)
 
 这是 [完整方法列表](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)，也可以查看 [SQL 构建器](sql_builder.html) 获取更多关于 `Clauses` 的信息
 
-## <span id="finisher_method">Finisher 方法</span>
+## <span id="finisher_method">终结方法</span>
 
-Finishers 是会立即执行注册回调的方法，然后生成并执行 SQL，比如这些方法：
+终结（方法） 是会立即执行注册回调的方法，然后生成并执行 SQL，比如这些方法：
 
 `Create`, `First`, `Find`, `Take`, `Save`, `Update`, `Delete`, `Scan`, `Row`, `Rows`...
 
@@ -55,7 +55,7 @@ Finishers 是会立即执行注册回调的方法，然后生成并执行 SQL，
 
 GORM 定义了 `Session`、`WithContext`、`Debug` 方法做为 `新建会话方法`，查看[会话](session.html) 获取详情.
 
-在 `链式方法`, `Finisher 方法`之后, GORM 返回一个初始化的 `*gorm. B` 实例，不能安全地再使用 您应该使用 `新建会话方法` 标记 `*gorm.DB` 为可共享。
+在 `链式方法`, `Finisher 方法`之后, GORM 返回一个初始化的 `*gorm.DB` 实例，不能安全地再使用。您应该使用 `新建会话方法` 来标记 `*gorm.DB` 为可共享。
 
 让我们用实例来解释它：
 
