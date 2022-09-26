@@ -1,6 +1,6 @@
 ---
 title: Ricerca Avanzata
-layout: pagina
+layout: page
 ---
 
 ## <span id="smart_select">Facile Selezione dei Campi</span>
