@@ -25,9 +25,9 @@ type User struct {
 
 ## Convenciones
 
-GORM prefiere convenciones sobre configuración, por defecto, GORM usa `ID` como clave primaria, pluralizar el nombre de la estructura a `snake_cases` como nombre de la tabla, `snake_case` como nombre de columna y usa `CreatedAt`, `ActualizadoAt` para rastrear el tiempo de creación/actualización
+GORM prefers convention over configuration. By default, GORM uses `ID` as primary key, pluralizes struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
 
-Si sigues las convenciones adoptadas por GORM, necesitarás escribir muy poca configuración/código, Si la convención no cumple con sus requerimientos, [GORM le permite configurarlos](conventions.html)
+If you follow the conventions adopted by GORM, you'll need to write very little configuration/code. If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
 
 ## gorm.Model
 
@@ -49,7 +49,7 @@ Puedes insertarlo en tu estructura para incluir esos campos, consulta [Estructur
 
 ### <span id="field_permission">Field-Level Permission</span>
 
-Exported fields have all permission when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
+Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
 
 {% note warn %}
 **NOTE** ignored fields won't be created when using GORM Migrator to create table
