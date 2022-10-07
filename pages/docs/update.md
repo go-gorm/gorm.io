@@ -18,7 +18,7 @@ db.Save(&user)
 
 ## Update single column
 
-When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details
+When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details.
 When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
 
 ```go
@@ -37,7 +37,7 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 
 ## Updates multiple columns
 
-`Updates` supports update with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
+`Updates` supports updating with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
 
 ```go
 // Update attributes with `struct`, will only update non-zero fields
@@ -50,7 +50,7 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 ```
 
 {% note warn %}
-**NOTE** When update with struct, GORM will only update non-zero fields, you might want to use `map` to update attributes or use `Select` to specify fields to update
+**NOTE** When updating with struct, GORM will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update
 {% endnote %}
 
 ## Update Selected Fields
@@ -79,7 +79,7 @@ db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admi
 
 ## Update Hooks
 
-GORM allows hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`, those methods will be called when updating a record, refer [Hooks](hooks.html) for details
+GORM allows the hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`. Those methods will be called when updating a record, refer [Hooks](hooks.html) for details
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -92,7 +92,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 
 ## Batch Updates
 
-If we haven't specified a record having primary key value with `Model`, GORM will perform a batch updates
+If we haven't specified a record having a primary key value with `Model`, GORM will perform a batch update
 
 ```go
 // Update with struct
@@ -140,7 +140,7 @@ result.Error        // returns updating error
 
 ### <span id="update_from_sql_expr">Update with SQL Expression</span>
 
-GORM allows updates column with SQL expression, e.g:
+GORM allows updating a column with a SQL expression, e.g:
 
 ```go
 // product's ID is `3`
@@ -157,7 +157,7 @@ db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity > 1;
 ```
 
-And GORM also allows update with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
+And GORM also allows updating with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
 
 ```go
 // Create from customized data type
@@ -212,7 +212,7 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 
 ### Returning Data From Modified Rows
 
-Return changed data, only works for database support Returning, for example:
+Returning changed data only works for databases which support Returning, for example:
 
 ```go
 // return all columns
@@ -229,9 +229,9 @@ DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"
 
 ### Check Field has changed?
 
-GORM provides `Changed` method could be used in **Before Update Hooks**, it will return the field changed or not
+GORM provides the `Changed` method which could be used in **Before Update Hooks**, it will return whether the field has changed or not.
 
-The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the updating value from `Update` / `Updates` equals the model value, will return true if it is changed and not omitted
+The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the updating value from `Update` / `Updates` equals the model value. It will return true if it is changed and not omitted
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -270,7 +270,7 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 
 ### Change Updating Values
 
-To change updating values in Before Hooks, you should use `SetColumn` unless it is a full updates with `Save`, for example:
+To change updating values in Before Hooks, you should use `SetColumn` unless it is a full update with `Save`, for example:
 
 ```go
 func (user *User) BeforeSave(tx *gorm.DB) (err error) {
