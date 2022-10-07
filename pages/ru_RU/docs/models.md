@@ -25,9 +25,9 @@ type User struct {
 
 ## Преобразования
 
-По умолчанию, GORM использует в качестве первичного ключа `ID`, преобразует имя структуры в `snake_cases` в качестве имени таблицы, `snake_case` в качестве имени столбца и использует `CreatedAt`, `UpdatedAt` для отслеживания времени создания/обновления
+GORM prefers convention over configuration. By default, GORM uses `ID` as primary key, pluralizes struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
 
-Если вы следуете правилам, принятым GORM, вам нужно написать очень мало конфигурации/кода, Если правила не соответствует вашим требованиям, [GORM позволяет настроить их](conventions.html)
+If you follow the conventions adopted by GORM, you'll need to write very little configuration/code. If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
 
 ## gorm.Model
 
@@ -49,7 +49,7 @@ type Model struct {
 
 ### <span id="field_permission">Разрешение для каждого поля</span>
 
-Экспортированные поля имеют все разрешения при выполнении CRUD с помощью GORM, но GORM позволяет изменять права на уровне поля при помощи тега, так что вы можете указать, что поле доступно для чтения, записи, создания, обновления или игнорирования
+Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
 
 {% note warn %}
 Игнорируемые поля не будут созданы при использовании GORM Migrator для создания таблицы
