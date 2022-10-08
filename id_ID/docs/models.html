@@ -54,8 +54,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="Deklarasi ModelModel adalah struct biasa dengan type basic Go, pointer&#x2F;aliasnya type custom yang mengimplementasikan interface Scanner dan Valuer Contoh: type User struct &amp;#123;  ID           uin">
 <meta property="og:locale" content="id_ID">
-<meta property="article:published_time" content="2022-10-08T02:37:33.812Z">
-<meta property="article:modified_time" content="2022-10-08T02:37:33.812Z">
+<meta property="article:published_time" content="2022-10-08T03:09:33.726Z">
+<meta property="article:modified_time" content="2022-10-08T03:09:33.726Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -138,8 +138,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>Contoh:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID           <span class="type">uint</span></span><br><span class="line">  Name         <span class="type">string</span></span><br><span class="line">  Email        *<span class="type">string</span></span><br><span class="line">  Age          <span class="type">uint8</span></span><br><span class="line">  Birthday     *time.Time</span><br><span class="line">  MemberNumber sql.NullString</span><br><span class="line">  ActivatedAt  sql.NullTime</span><br><span class="line">  CreatedAt    time.Time</span><br><span class="line">  UpdatedAt    time.Time</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Konvensi" class="article-heading"><a href="#Konvensi" class="headerlink" title="Konvensi"></a>Konvensi<a class="article-anchor" href="#Konvensi" aria-hidden="true"></a></h2><p>GORM lebih memilih konvensi daripada konfigurasi, secara default, GORM menggunakan <code>ID</code> sebagai <em>primary key</em>, menjamak nama struct menjadi <code>snake_cases</code> sebagai nama tabel, <code>snake_case</code> sebagai nama kolom, dan menggunakan <code>CreatedAt</code>, <code>UpdatedAt</code> untuk melacak waktu pembuatan/pembaruan</p>
-<p>Jika Anda mengikuti konvensi yang diadopsi oleh GORM, Anda hanya perlu menulis sedikit konfigurasi/kode, Jika konvensi tidak sesuai dengan kebutuhan Anda, <a href="conventions.html">GORM memungkinkan Anda untuk mengonfigurasinya</a></p>
+<h2 id="Konvensi" class="article-heading"><a href="#Konvensi" class="headerlink" title="Konvensi"></a>Konvensi<a class="article-anchor" href="#Konvensi" aria-hidden="true"></a></h2><p>GORM prefers convention over configuration. By default, GORM uses <code>ID</code> as primary key, pluralizes struct name to <code>snake_cases</code> as table name, <code>snake_case</code> as column name, and uses <code>CreatedAt</code>, <code>UpdatedAt</code> to track creating/updating time</p>
+<p>If you follow the conventions adopted by GORM, you’ll need to write very little configuration/code. If convention doesn’t match your requirements, <a href="conventions.html">GORM allows you to configure them</a></p>
 <h2 id="gorm-Model" class="article-heading"><a href="#gorm-Model" class="headerlink" title="gorm.Model"></a>gorm.Model<a class="article-anchor" href="#gorm-Model" aria-hidden="true"></a></h2><p>GORM mendefinisikan struct <code>gorm.Model</code>, yang mencakup <em>field</em> <code>ID</code>, <code>CreatedAt</code>, <code>UpdatedAt</code>, ``DeletedAt&lt; /kode&gt;</p><p></p>
 <pre><code class="go">// definisi gorm.Model
 type Model struct {
@@ -151,7 +151,7 @@ type Model struct {
 ``</code></pre><code class="go">
 
 <p>Anda dapat menyematkannya ke dalam struct Anda untuk menyertakan <em>field</em> tersebut, lihat <a href="#embedded_struct">Embedded Struct</a></p>
-<h2 id="Advanced" class="article-heading"><a href="#Advanced" class="headerlink" title="Advanced"></a>Advanced<a class="article-anchor" href="#Advanced" aria-hidden="true"></a></h2><h3 id="Field-Level-Permission" class="article-heading"><a href="#Field-Level-Permission" class="headerlink" title="Field-Level Permission"></a><span id="field_permission">Field-Level Permission</span><a class="article-anchor" href="#Field-Level-Permission" aria-hidden="true"></a></h3><p><em>Field</em> yang diekspor memiliki semua izin saat melakukan CRUD dengan GORM, dan GORM memungkinkan Anda mengubah izin tingkat <em>field</em> dengan tag, sehingga Anda dapat membuat <em>field</em> menjadi <em>read-only</em>, <em>write-only</em>, <em>create-only</em>, <em>update-only</em> atau <em>ignored</em></p>
+<h2 id="Advanced" class="article-heading"><a href="#Advanced" class="headerlink" title="Advanced"></a>Advanced<a class="article-anchor" href="#Advanced" aria-hidden="true"></a></h2><h3 id="Field-Level-Permission" class="article-heading"><a href="#Field-Level-Permission" class="headerlink" title="Field-Level Permission"></a><span id="field_permission">Field-Level Permission</span><a class="article-anchor" href="#Field-Level-Permission" aria-hidden="true"></a></h3><p>Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored</p>
 {% note warn %}
 **CATATAN** *field* yang diabaikan tidak akan dibuat saat menggunakan GORM Migrator untuk membuat tabel
 {% endnote %}
@@ -287,7 +287,7 @@ type Model struct {
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-10-08T02:37:33.812Z" itemprop="dateModified">Terakhir diubah: 2022-10-08</time>
+                <time class="article-footer-updated" datetime="2022-10-08T03:09:33.726Z" itemprop="dateModified">Terakhir diubah: 2022-10-08</time>
 <a href="index.html" class="article-footer-prev" title="Pratinjau"><i class="fa fa-chevron-left"></i><span>Sebelumnya</span></a><a href="connecting_to_the_database.html" class="article-footer-next" title="Menghubungkan ke Database"><span>Selanjutnya</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
