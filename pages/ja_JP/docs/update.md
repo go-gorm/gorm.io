@@ -18,7 +18,7 @@ db.Save(&user)
 
 ## 単一のカラムを更新する
 
-`Update`メソッドで単一のカラムを更新する際には、何らかの条件を持っていないと、`ErrMissingWhereClause`エラーが発生します。詳細については、[Block Global Updates](#block_global_updates) をチェックしてください。`Model`メソッドを使用し、その実体が主キーに値するフィールドを持つ場合、条件として実体が持つ主キーが指定されます。
+When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details. When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
 
 ```go
 // Update with conditions
@@ -36,7 +36,7 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 
 ## 複数のカラムを更新する
 
-`Updates`は`構造体`もしくは`map[string]interface{}`での更新に対応しています。`構造体`での更新時のみ、ゼロ値のフィールド以外を更新します。
+`Updates` supports updating with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
 
 ```go
 // Update attributes with `struct`, will only update non-zero fields
@@ -49,7 +49,7 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 ```
 
 {% note warn %}
-**注** 構造体を使用して更新を行う場合、GORMは非ゼロ値のフィールドのみ更新します。ゼロ値のフィールドも更新対象に含める場合は、更新に`map`を使用するか、 `Select` で更新するフィールドを指定してください。
+**NOTE** When updating with struct, GORM will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update
 {% endnote %}
 
 ## 選択したフィールドを更新する
@@ -78,7 +78,7 @@ db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admi
 
 ## 更新時のHook
 
-GORMは `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`などのhook処理を定義できます。これらのメソッドはレコードを更新する際に呼び出されます。 詳細は[Hooks](hooks.html)を参照してください。
+GORM allows the hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`. Those methods will be called when updating a record, refer [Hooks](hooks.html) for details
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -91,7 +91,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 
 ## 一括更新
 
-`Model`で主キーを指定していない場合、GORMは一括更新を行います。
+If we haven't specified a record having a primary key value with `Model`, GORM will perform a batch update
 
 ```go
 // Update with struct
@@ -139,7 +139,7 @@ result.Error        // returns updating error
 
 ### <span id="update_from_sql_expr">SQL式で更新する</span>
 
-GORMはSQL式でカラムを更新することができます。例:
+GORM allows updating a column with a SQL expression, e.g:
 
 ```go
 // product's ID is `3`
@@ -156,7 +156,7 @@ db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity > 1;
 ```
 
-また、[Customized Data Types](data_types.html#gorm_valuer_interface)に記載されているSQL Expression/Context Valuerを使用しての更新も行うことができます。例：
+And GORM also allows updating with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
 
 ```go
 // Create from customized data type
@@ -211,7 +211,7 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 
 ### 変更されたレコードのデータを返却する
 
-Returningをサポートしているデータベースであれば、変更されたデータを取得することができます。例：
+Returning changed data only works for databases which support Returning, for example:
 
 ```go
 // すべてのカラムを返却する
@@ -228,9 +228,9 @@ DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"
 
 ### フィールドが変更されたかチェックする
 
-GORMには **Before Update Hooks** で使用できる `Changed` メソッドをがあります。これはフィールドが変更されたかどうかを返却します。
+GORM provides the `Changed` method which could be used in **Before Update Hooks**, it will return whether the field has changed or not.
 
-`Changed` は `Update`, `Updates` メソッド実行時のみ機能します。また、 `Update` / `Updates` に渡す値とモデルの値が比較可能である場合のみ更新をチェックし、値が変更されていて かつ 更新対象から除外されていなければ true を返却します。
+The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the updating value from `Update` / `Updates` equals the model value. It will return true if it is changed and not omitted
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -269,7 +269,7 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 
 ### 更新値の変更
 
-`Save` による全フィールドの更新でなければ、`SetColumn` を使用して Before Hooks 内で更新値を変更することができます。例：
+To change updating values in Before Hooks, you should use `SetColumn` unless it is a full update with `Save`, for example:
 
 ```go
 func (user *User) BeforeSave(tx *gorm.DB) (err error) {
