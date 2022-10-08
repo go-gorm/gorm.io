@@ -25,9 +25,9 @@ type User struct {
 
 ## Konvensi
 
-GORM lebih memilih konvensi daripada konfigurasi, secara default, GORM menggunakan `ID` sebagai *primary key*, menjamak nama struct menjadi `snake_cases` sebagai nama tabel, `snake_case` sebagai nama kolom, dan menggunakan `CreatedAt`, `UpdatedAt` untuk melacak waktu pembuatan/pembaruan
+GORM prefers convention over configuration. By default, GORM uses `ID` as primary key, pluralizes struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
 
-Jika Anda mengikuti konvensi yang diadopsi oleh GORM, Anda hanya perlu menulis sedikit konfigurasi/kode, Jika konvensi tidak sesuai dengan kebutuhan Anda, [GORM memungkinkan Anda untuk mengonfigurasinya](conventions.html)
+If you follow the conventions adopted by GORM, you'll need to write very little configuration/code. If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
 
 ## gorm.Model
 
@@ -48,7 +48,7 @@ Anda dapat menyematkannya ke dalam struct Anda untuk menyertakan *field* tersebu
 
 ### <span id="field_permission">Field-Level Permission</span>
 
-*Field* yang diekspor memiliki semua izin saat melakukan CRUD dengan GORM, dan GORM memungkinkan Anda mengubah izin tingkat *field* dengan tag, sehingga Anda dapat membuat *field* menjadi *read-only*, *write-only*, *create-only*, *update-only* atau *ignored*
+Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
 
 {% note warn %}
 **CATATAN** *field* yang diabaikan tidak akan dibuat saat menggunakan GORM Migrator untuk membuat tabel
