@@ -3,7 +3,7 @@ title: Connecting to a Database
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server
+GORM officially supports databases MySQL, PostgreSQL, SQLite, SQL Server
 
 ## MySQL
 
@@ -26,7 +26,7 @@ To handle `time.Time` correctly, you need to include `parseTime` as a parameter.
 To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
 {% endnote %}
 
-MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
+MySQL Driver provides [few advanced configurations](https://github.com/go-gorm/mysql) can be used during initialization, for example:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -41,7 +41,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### Customize Driver
 
-GORM allows to customize the MySQL driver with the `DriverName` option, for example:
+GORM allows customize the MySQL driver with the `DriverName` option, for example:
 
 ```go
 import (
@@ -97,7 +97,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Customize Driver
 
-GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
+GORM allows customize the PostgreSQL driver with the `DriverName` option, for example:
 
 ```go
 import (
