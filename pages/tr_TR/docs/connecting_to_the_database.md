@@ -3,7 +3,7 @@ title: Bir Veritabanına Bağlanma
 layout: sayfa
 ---
 
-GORM resmi olarak MySQL, PostgreSQL, SQLite, SQL Server veritabanlarını destekler
+GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server
 
 ## MySQL
 
@@ -24,7 +24,7 @@ func main() {
 **NOT:** `time.Time`'ı düzgün biçimde kullanabilmek için `parseTime` parametresini eklemelisiniz. ([daha fazla parametre](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 kodunu tam olarak desteklemek için `charset=utf8`'i `charset=utf8mb4` olarak değiştirmelisiniz. Detaylı açıklamalar için [bu makaleye](https://mathiasbynens.be/notes/mysql-utf8mb4) bakın
 {% endnote %}
 
-MySQL Sürücüsü başlatma sırasında kullanılabilecek [bazı ileri konfigürasyonlar](https://github.com/go-gorm/mysql) sağlar. Örneğin:
+MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -39,7 +39,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### Sürücüyü Özelleştirme
 
-GORM `DriverName` seçeneği ile MySQL sürücüsünü özelleştirmeye imkan tanır. Örneğin:
+GORM allows to customize the MySQL driver with the `DriverName` option, for example:
 
 ```go
 import (
@@ -95,7 +95,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Sürücüyü Özelleştirme
 
-GORM `DriverName` seçeneği ile PostgreSQL sürücüsünü özelleştirmeye imkan tanır. Örneğin:
+GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
 
 ```go
 import (
