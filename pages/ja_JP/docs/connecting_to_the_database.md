@@ -3,7 +3,7 @@ title: データベースに接続する
 layout: page
 ---
 
-GORMは公式にMySQL、PostgreSQL、SQLite、SQL Server をサポートしています
+GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server
 
 ## MySQL
 
@@ -24,7 +24,7 @@ func main() {
 **注** `time.Time` を正しく処理するには、パラメータとして `parseTime` を含める必要があります。 ([その他のパラメータ](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 エンコーディングを完全にサポートするには、 `charset=utf8` を `charset=utf8mb4` に変更する必要があります。 詳細な説明は [この記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
 {% endnote %}
 
-MySQLドライバは、 [初期化時の詳細な設定](https://github.com/go-gorm/mysql) をいくつか提供しています。
+MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -39,7 +39,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### ドライバをカスタマイズする
 
-GORMでは、 `DriverName` オプションを使用してMySQLドライバをカスタマイズできます。
+GORM allows to customize the MySQL driver with the `DriverName` option, for example:
 
 ```go
 import (
@@ -95,7 +95,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### ドライバーのカスタマイズ
 
-GORMでは、 `DriverName` オプションを使用してPostgreSQLドライバをカスタマイズできます。例:
+GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
 
 ```go
 import (
