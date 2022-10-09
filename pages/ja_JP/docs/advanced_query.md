@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">便利なフィールドの選択</span>
 
-GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORMでは [`Select`](query.html) で選択するフィールド指定することができます。アプリケーションでこれを頻繁に使用する場合は、特定のフィールドを自動的に選択できる、用途に適した構造体を定義するとよいでしょう。例:
 
 ```go
 type User struct {
@@ -81,7 +81,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From句でのサブクエリ</span>
 
-GORM allows you using subquery in FROM clause with the method `Table`, for example:
+GORMでは、`Table`を用いることで、FROM句でサブクエリを使用することができます。例:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
@@ -132,7 +132,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 ## 取得結果をマップに代入
 
-GORM allows scanning results to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORMでは取得結果を `map[string]interface{}`や `[]map[string]interface{}` に代入することができます。その際 `Model` や `Table` の指定を忘れないでください。例：
 
 ```go
 result := map[string]interface{}{}
@@ -160,7 +160,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-Initialize struct with more attributes if record not found, those `Attrs` won't be used to build the SQL query
+レコードが見つからない場合のみ、struct を指定した属性で初期化できます。これらの `Attrs（属性）` はSQLクエリの生成には使用されません。
 
 ```go
 // Userが見つからないため、取得条件とAttrsで指定された属性で構造体を初期化
