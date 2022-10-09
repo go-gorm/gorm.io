@@ -73,7 +73,7 @@ sidebar:
   gen:
     getting_started: Getting Started
     overview: 概要
-    dao_generator: Dao Generator
+    dao: DAO
     create: レコードの作成
     update: レコードの更新
     query: レコードの取得
