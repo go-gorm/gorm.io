@@ -24,7 +24,7 @@ func main() {
 **注** `time.Time` を正しく処理するには、パラメータとして `parseTime` を含める必要があります。 ([その他のパラメータ](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 エンコーディングを完全にサポートするには、 `charset=utf8` を `charset=utf8mb4` に変更する必要があります。 詳細な説明は [この記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
 {% endnote %}
 
-MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
+MySQLドライバは、 初期化時に指定できる[詳細な設定](https://github.com/go-gorm/mysql) を提供しています。
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -39,7 +39,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### ドライバをカスタマイズする
 
-GORM allows to customize the MySQL driver with the `DriverName` option, for example:
+GORMでは、 `DriverName` オプションを使用してMySQLドライバをカスタマイズできます。
 
 ```go
 import (
@@ -95,7 +95,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### ドライバーのカスタマイズ
 
-GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
+GORMでは、 `DriverName` オプションを使用してPostgreSQLドライバをカスタマイズできます。例:
 
 ```go
 import (
