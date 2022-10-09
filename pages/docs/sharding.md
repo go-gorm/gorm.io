@@ -28,7 +28,7 @@ import (
 )
 
 dsn := "postgres://localhost:5432/sharding-db?sslmode=disable"
-db, err := gorm.Open(postgres.New(postgres.Config{DSN: dsn}))
+db, _ := gorm.Open(postgres.New(postgres.Config{DSN: dsn}))
 
 db.Use(sharding.Register(sharding.Config{
     ShardingKey:         "user_id",
