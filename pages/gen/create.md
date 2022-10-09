@@ -1,11 +1,9 @@
 ---
-title: Gen Create
+title: Create
 layout: page
 ---
 
-#### Create
-
-##### Create record
+## Create record
 
 ```go
 // u refer to query.user
@@ -17,7 +15,7 @@ err := u.WithContext(ctx).Create(&user) // pass pointer of data to Create
 err // returns error
 ```
 
-##### Create record with selected fields
+## Create record with selected fields
 
 Create a record and assign a value to the fields specified.
 
@@ -35,7 +33,7 @@ u.WithContext(ctx).Omit(u.Name, u.Age).Create(&user)
 // INSERT INTO `users` (`Address`, `Birthday`) VALUES ("2021-08-17 20:54:12.000", 18)
 ```
 
-##### Batch Insert
+## Batch Insert
 
 To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values.
 

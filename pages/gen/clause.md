@@ -3,7 +3,7 @@ title: Clause
 layout: page
 ---
 
-#### Upsert
+## Upsert
 
 ```go
 u := query.User
@@ -15,7 +15,7 @@ u.Save(&mode)
 u.Clauses(clause.OnConflict{UpdateAll: true}).Create(value).Error
 ```
 
-#### Hints
+## Hints
 
 Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
 
@@ -41,4 +41,3 @@ users, err := u.WithContext(ctx).Clauses(hints.UseIndex("idx_user_name")).Find()
 users, err := u.WithContext(ctx).Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find()
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
-

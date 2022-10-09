@@ -3,8 +3,7 @@ title: Database To Structs
 layout: page
 ---
 
-
-#### Generate Model
+## Generate Model
 
 ```go
 // generate a model struct map to table `people` in database
@@ -21,7 +20,7 @@ g.GenerateModel("people", gen.FieldIgnore("address"), gen.FieldType("id", "int64
 g.GenerateAllTable()
 ```
 
-##### Field Generate **Options**
+## Field Generate **Options**
 
 ```go
 FieldNew           // create new field
@@ -47,7 +46,7 @@ FieldRelate        // specify relationship with other tables
 FieldRelateModel   // specify relationship with exist models
 ```
 
-##### Generate Model Config
+## Generate Model Config
 ```go
 g := gen.NewGenerator(gen.Config{
         //if you want the nullable field generation property to be pointer type, set FieldNullable true

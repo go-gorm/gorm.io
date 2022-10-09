@@ -1,11 +1,12 @@
 ---
-title: Dao Generator
+title: DAO
 layout: page
 ---
 
-#### Dao Generator
+Gen can be used to generate 100% type-safe Data Access API without using `interface{}`
 
-##### Generator 
+## Generator
+
 ```go
 // generate code
 func main() {
@@ -54,7 +55,7 @@ func main() {
 
 ```
 
-##### Generate dao method
+## Generate dao method
 
 methods of user dao as an example
 
@@ -118,7 +119,7 @@ type IUserDo interface {
     Returning(value interface{}, columns ...string) IUserDo
     UnderlyingDB() *gorm.DB
     schema.Tabler
-    
+
     FindByNameAndAge(name string, age int) (result *model.User, err error)
     FindBySimpleName() (result []*model.User, err error)
     FindByIDOrName(cond1 bool, id int, col string, name string) (result *model.User, err error)
@@ -129,11 +130,11 @@ type IUserDo interface {
 
 ```
 
-##### Init Dao 
+## Init Dao
 
 Initialize global singleton mode.
-```go
 
+```go
 func init() {
     mysql.Init()
     dal.SetDefault(mysql.DB(context.Background()))
@@ -150,15 +151,17 @@ func init() {
     Q = dal.Use(mysql.DB(context.Background()))
 }
 ```
-##### Use Dao
+
+## Use Dao
+
 ```go
 func Query(ctx context.Context) {
     var err error
     var user *model.User
     var users []*model.User
-    
+
     u, ud := dal.User, dal.User.WithContext(ctx)
-    
+
     /*--------------Basic query-------------*/
     user, err = ud.Take()
     //query by write db
@@ -166,24 +169,24 @@ func Query(ctx context.Context) {
     // SELECT * FROM `users` WHERE `users`.`deleted_at` IS NULL LIMIT 1
     util.CatchErr("take 1 item fail", err)
     log.Printf("query 1 item: %+v", user)
-    
+
     user, err = ud.Where(u.ID.Gt(100), u.Name.Like("%T%")).Take()
     // SELECT * FROM `users` WHERE `users`.`id` > 100 AND `users`.`name` LIKE '%T%' AND `users`.`deleted_at` IS NULL LIMIT 1
     util.CatchErr("query with conditions fail", err)
     log.Printf("query conditions got: %+v", user)
-    
+
     user, err = ud.Where(ud.Columns(u.ID).In(ud.Select(u.ID.Min()))).First()
     // SELECT * FROM `users` WHERE `users`.`id` IN (SELECT MIN(`users`.`id`) FROM `users` WHERE `users`.`deleted_at` IS NULL) AND `users`.`deleted_at` IS NULL
     // ORDER BY `users`.`id` LIMIT 1
     util.CatchErr("subquery 1 fail", err)
     log.Printf("subquery 1 got item: %+v", user)
-    
+
     user, err = ud.Where(ud.Columns(u.ID).Eq(ud.Select(u.ID.Max()))).First()
     // SELECT * FROM `users` WHERE `users`.`id` = (SELECT MAX(`users`.`id`) FROM `users` WHERE `users`.`deleted_at` IS NULL) AND `users`.`deleted_at` IS NULL
     // ORDER BY `users`.`id` LIMIT 1
     util.CatchErr("subquery 2 fail", err)
     log.Printf("subquery 2 got item: %+v", user)
-    
+
     users, err = ud.Distinct(u.Name).Find()
     // SELECT DISTINCT `users`.`name` FROM `users` WHERE `users`.`deleted_at` IS NULL
     // users, err = u.Select(u.Name).Distinct().Find()
@@ -191,13 +194,13 @@ func Query(ctx context.Context) {
     // users, err = u.Distinct(u.ID, u.Name.As("n")).Find()
     util.CatchErr("select distinct fail", err)
     log.Printf("select distinct got: %d", len(users))
-    
+
     /*--------------Diy query-------------*/
     user, err = ud.FindByNameAndAge("tom", 29)
     // SELECT * FROM `users` WHERE name='tom' and age=29 AND `users`.`deleted_at` IS NULL
     util.CatchErr("FindByNameAndAge fail", err)
     log.Printf("FindByNameAndAge: %+v", user)
-    
+
     users, err = ud.FindBySimpleName()
     // select id,name,age from users where age>18
     util.CatchErr("FindBySimpleName fail", err)
@@ -209,4 +212,3 @@ func Query(ctx context.Context) {
     log.Printf("FirstOrCreate got: %+v", user)
 }
 ```
-

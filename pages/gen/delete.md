@@ -1,11 +1,9 @@
 ---
-title: Gen Delete
+title: Delete
 layout: page
 ---
 
-#### Delete
-
-##### Delete record
+## Delete record
 
 ```go
 e := query.Email
@@ -24,7 +22,7 @@ result.RowsAffected // affect rows number
 err                 // error
 ```
 
-##### Delete with primary key
+## Delete with primary key
 
 GEN allows to delete objects using primary key(s) with inline condition, it works with numbers.
 
@@ -33,7 +31,7 @@ u.WithContext(ctx).Where(u.ID.In(1,2,3)).Delete()
 // DELETE FROM users WHERE id IN (1,2,3);
 ```
 
-##### Batch Delete
+## Batch Delete
 
 The specified value has no primary value, GEN will perform a batch delete, it will delete all matched records
 
@@ -44,7 +42,7 @@ e.WithContext(ctx).Where(e.Name.Like("%modi%")).Delete()
 // DELETE from emails where email LIKE "%modi%";
 ```
 
-##### Soft Delete
+## Soft Delete
 
 If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
 
@@ -70,7 +68,7 @@ type User struct {
 }
 ```
 
-##### Find soft deleted records
+## Find soft deleted records
 
 You can find soft deleted records with `Unscoped`
 
@@ -79,7 +77,7 @@ users, err := db.WithContext(ctx).Unscoped().Where(u.Age.Eq(20)).Find()
 // SELECT * FROM users WHERE age = 20;
 ```
 
-##### Delete permanently
+## Delete permanently
 
 You can delete matched records permanently with `Unscoped`
 
@@ -88,7 +86,7 @@ o.WithContext(ctx).Unscoped().Where(o.ID.Eq(10)).Delete()
 // DELETE FROM orders WHERE id=10;
 ```
 
-###### Delete Associations
+### Delete Associations
 
 Remove the relationship between source & arguments if exists, only delete the reference, won’t delete those objects from DB.
 
@@ -100,7 +98,7 @@ u.Languages.Model(&user).Delete(&languageZH, &languageEN)
 u.Languages.Model(&user).Delete([]*Language{&languageZH, &languageEN}...)
 ```
 
-###### Delete with Select
+### Delete with Select
 
 You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
 

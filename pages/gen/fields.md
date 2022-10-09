@@ -3,7 +3,7 @@ title: Fields
 layout: page
 ---
 
-### Field Expression
+## Field Expression
 
 | Field Type | Detail Type           | Create Function               | Supported Query Method                                       |
 | ---------- | --------------------- | ------------------------------ | ------------------------------------------------------------ |
@@ -15,7 +15,7 @@ layout: page
 | bool       | bool                  | NewBool                        | Not/Is/And/Or/Xor/BitXor/BitAnd/BitOr/Value/Zero |
 | time       | time.Time             | NewTime                        | Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Add/Sub/Date/DateDiff/DateFormat/Now/CurDate/CurTime/DayName/MonthName/Month/Day/Hour/Minute/Second/MicroSecond/DayOfWeek/DayOfMonth/FromDays/FromUnixtime/Value/Zero/Sum/IfNull |
 
-#### Create Field
+### Create Field
 
 Actually, you're not supposed to create a new field variable, cause it will be accomplished in generated code.
 
@@ -37,11 +37,11 @@ address := field.NewString("user", "address")
 createTime := field.NewTime("user", "create_time")
 ```
 
-#### Expression
+### Expression
 
 Every field expression has methods suitable for it's type in database as shown in above table. And it can be used like a stream.
 
-##### general field expression
+#### general field expression
 
 ```golang
 id := field.NewInt("user", "id")
@@ -58,7 +58,7 @@ id.Desc()
 id.As("user_id")
 ```
 
-###### int field expression
+#### int field expression
 
 ```golang
 id := field.NewInt("user", "id")
@@ -89,7 +89,7 @@ stream call expression
 u.Age.Add(1).Mul(2).Div(3),
 ```
 
-###### string field expression
+#### string field expression
 
 ```golang
 name := field.NewStirng("user", "name")
@@ -110,7 +110,7 @@ name.FindInSet("modi,jinzhu,zhangqiang")
 name.Concat("[", "]")
 ```
 
-###### time field expression
+#### time field expression
 
 ```golang
 birth := field.NewStirng("user", "birth")
@@ -125,7 +125,7 @@ birth.Add(time.Duration(time.Hour).Microseconds())
 birth.DateFormat("%W %M %Y")
 ```
 
-###### bool field expression
+#### bool field expression
 
 ```golang
 active := field.NewBool("user", "active")
@@ -140,7 +140,7 @@ active.Not()
 active.And(true)
 ```
 
-#### Column Compare
+### Column Compare
 
 ```golang
 id := field.NewInt("user", "id")

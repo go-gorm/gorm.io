@@ -80,7 +80,7 @@ sidebar:
   gen:
     getting_started: Getting Started
     overview: Overview
-    dao_generator: Dao Generator
+    dao: DAO
     create: Create
     update: Update
     query: Query

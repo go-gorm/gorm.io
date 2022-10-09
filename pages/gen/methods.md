@@ -3,10 +3,7 @@ title: Methods
 layout: page
 ---
 
-#### Methods
-
-
-##### Generate model bind custom method
+## Generate model bind custom method
 ```Go
 //package test_model
 
@@ -38,7 +35,7 @@ g.GenerateModel("user", gen.WithMethod(m))
 ```
 
 
-##### Gen bind result
+## Gen bind result
 
 Add custom method to generated model struct,e.g.
 

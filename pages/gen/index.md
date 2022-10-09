@@ -10,7 +10,7 @@ layout: page
 ## Overview
 
 - Idiomatic Go Code
-- 100% Type-safe API without `interface{}`
+- 100% Type-safe DAO API without `interface{}`
 - Reusable and Safe API with hand-optimized SQL
 - Database To Golang Struct follows GORM conventions
 - GORM under the hood, supports all DBMS, features that GORM supports
@@ -22,6 +22,10 @@ go get -u gorm.io/gen
 ```
 
 ## Quick start
+
+It is quite straightforward to use `gen` for your application, here is how it works:
+
+**1. Write the configuration in golang**
 
 ```go
 package main
@@ -53,7 +57,11 @@ func main() {
 }
 ```
 
-Use the generated code in your project
+**2. Generate Code**
+
+`go run main.go`
+
+**3. Use the generated code in your project**
 
 ```go
 import "your_project/query"
@@ -66,5 +74,3 @@ func main() {
     users, err := query.User.FilterWithNameAndRole("modi", "admin")
 }
 ```
-
-More examples: [gendemo](https://github.com/go-gorm/gendemo)

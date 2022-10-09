@@ -52,7 +52,7 @@ docs:
 gen:
   getting_started:
     overview: index.html
-  dao_generator:
+  dao:
     overview: dao.html
     create: create.html
     update: update.html
@@ -69,4 +69,3 @@ gen:
   advanced_topics:
     gorm_clause: clause.html
     transaction: transaction.html
-    plugins: /docs/write_plugins.html
