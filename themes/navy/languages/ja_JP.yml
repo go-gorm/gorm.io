@@ -74,6 +74,7 @@ sidebar:
     getting_started: Getting Started
     overview: 概要
     dao: DAO
+    configuration: Configuration
     create: レコードの作成
     update: レコードの更新
     query: レコードの取得
