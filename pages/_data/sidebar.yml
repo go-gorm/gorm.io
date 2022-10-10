@@ -53,7 +53,7 @@ gen:
   getting_started:
     overview: index.html
   dao:
-    overview: dao.html
+    configuration: dao.html
     create: create.html
     update: update.html
     query: query.html

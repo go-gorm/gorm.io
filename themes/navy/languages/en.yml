@@ -81,6 +81,7 @@ sidebar:
     getting_started: Getting Started
     overview: Overview
     dao: DAO
+    configuration: Configuration
     create: Create
     update: Update
     query: Query
