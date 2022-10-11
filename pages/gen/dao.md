@@ -1,5 +1,5 @@
 ---
-title: DAO Configuration
+title: DAO Generator
 layout: page
 ---
 
@@ -109,74 +109,74 @@ Sample of the generated DAO query interface
 
 ```go
 type IUserDo interface {
-    // Create
-    Create(values ...*model.User) error
-    CreateInBatches(values []*model.User, batchSize int) error
-    Save(values ...*model.User) error
+  // Create
+  Create(values ...*model.User) error
+  CreateInBatches(values []*model.User, batchSize int) error
+  Save(values ...*model.User) error
 
-    // Query
-    Clauses(conds ...clause.Expression) IUserDo
-    As(alias string) gen.Dao
-    Columns(cols ...field.Expr) gen.Columns
-    Not(conds ...gen.Condition) IUserDo
-    Or(conds ...gen.Condition) IUserDo
-    Select(conds ...field.Expr) IUserDo
-    Where(conds ...gen.Condition) IUserDo
-    Order(conds ...field.Expr) IUserDo
-    Distinct(cols ...field.Expr) IUserDo
-    Omit(cols ...field.Expr) IUserDo
-    Join(table schema.Tabler, on ...field.Expr) IUserDo
-    LeftJoin(table schema.Tabler, on ...field.Expr) IUserDo
-    RightJoin(table schema.Tabler, on ...field.Expr) IUserDo
-    Group(cols ...field.Expr) IUserDo
-    Having(conds ...gen.Condition) IUserDo
-    Limit(limit int) IUserDo
-    Offset(offset int) IUserDo
-    Scopes(funcs ...func(gen.Dao) gen.Dao) IUserDo
-    Unscoped() IUserDo
-    First() (*model.User, error)
-    Take() (*model.User, error)
-    Last() (*model.User, error)
-    Find() ([]*model.User, error)
-    FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.User, err error)
-    FindInBatches(result *[]*model.User, batchSize int, fc func(tx gen.Dao, batch int) error) error
-    Pluck(column field.Expr, dest interface{}) error
-    Attrs(attrs ...field.AssignExpr) IUserDo
-    Assign(attrs ...field.AssignExpr) IUserDo
-    Joins(fields ...field.RelationField) IUserDo
-    Preload(fields ...field.RelationField) IUserDo
+  // Query
+  Clauses(conds ...clause.Expression) IUserDo
+  As(alias string) gen.Dao
+  Columns(cols ...field.Expr) gen.Columns
+  Not(conds ...gen.Condition) IUserDo
+  Or(conds ...gen.Condition) IUserDo
+  Select(conds ...field.Expr) IUserDo
+  Where(conds ...gen.Condition) IUserDo
+  Order(conds ...field.Expr) IUserDo
+  Distinct(cols ...field.Expr) IUserDo
+  Omit(cols ...field.Expr) IUserDo
+  Join(table schema.Tabler, on ...field.Expr) IUserDo
+  LeftJoin(table schema.Tabler, on ...field.Expr) IUserDo
+  RightJoin(table schema.Tabler, on ...field.Expr) IUserDo
+  Group(cols ...field.Expr) IUserDo
+  Having(conds ...gen.Condition) IUserDo
+  Limit(limit int) IUserDo
+  Offset(offset int) IUserDo
+  Scopes(funcs ...func(gen.Dao) gen.Dao) IUserDo
+  Unscoped() IUserDo
+  Pluck(column field.Expr, dest interface{}) error
+  Attrs(attrs ...field.AssignExpr) IUserDo
+  Assign(attrs ...field.AssignExpr) IUserDo
+  Joins(fields ...field.RelationField) IUserDo
+  Preload(fields ...field.RelationField) IUserDo
 
-    Count() (count int64, err error)
-    FirstOrInit() (*model.User, error)
-    FirstOrCreate() (*model.User, error)
-    FindByPage(offset int, limit int) (result []*model.User, count int64, err error)
-    ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
-    Scan(result interface{}) (err error)
-    Returning(value interface{}, columns ...string) IUserDo
+  Count() (count int64, err error)
+  FirstOrInit() (*model.User, error)
+  FirstOrCreate() (*model.User, error)
+  Returning(value interface{}, columns ...string) IUserDo
 
-    // Update
-    Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
-    UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
-    Updates(value interface{}) (info gen.ResultInfo, err error)
-    UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
-    UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
-    UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
-    UpdateFrom(q gen.SubQuery) gen.Dao
+  First() (*model.User, error)
+  Take() (*model.User, error)
+  Last() (*model.User, error)
+  Find() ([]*model.User, error)
+  FindInBatch(batchSize int, fc func(tx gen.Dao, batch int) error) (results []*model.User, err error)
+  FindInBatches(result *[]*model.User, batchSize int, fc func(tx gen.Dao, batch int) error) error
+  FindByPage(offset int, limit int) (result []*model.User, count int64, err error)
+  ScanByPage(result interface{}, offset int, limit int) (count int64, err error)
+  Scan(result interface{}) (err error)
 
-    // Delete
-    Delete(...*model.User) (info gen.ResultInfo, err error)
+  // Update
+  Update(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+  UpdateSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+  Updates(value interface{}) (info gen.ResultInfo, err error)
+  UpdateColumn(column field.Expr, value interface{}) (info gen.ResultInfo, err error)
+  UpdateColumnSimple(columns ...field.AssignExpr) (info gen.ResultInfo, err error)
+  UpdateColumns(value interface{}) (info gen.ResultInfo, err error)
+  UpdateFrom(q gen.SubQuery) gen.Dao
 
-    // Common
-    Debug() IUserDo
-    WithContext(ctx context.Context) IUserDo
-    WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+  // Delete
+  Delete(...*model.User) (info gen.ResultInfo, err error)
 
-    ReplaceDB(db *gorm.DB)
-    ReadDB() IUserDo
-    WriteDB() IUserDo
-    UnderlyingDB() *gorm.DB
-    gen.SubQuery
-    schema.Tabler
+  // Common
+  Debug() IUserDo
+  WithContext(ctx context.Context) IUserDo
+  WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+
+  ReadDB() IUserDo
+  WriteDB() IUserDo
+
+  ReplaceDB(db *gorm.DB)
+  UnderlyingDB() *gorm.DB
 }
 ```
 
