@@ -11,7 +11,7 @@ layout: страница
 
 ### Declare
 ```go
-// User имеет одну CreditCard, CreditCardID это внешний ключ
+// User has one CreditCard, UserID is the foreign key
 type User struct {
   gorm.Model
   CreditCard CreditCard
