@@ -11,7 +11,7 @@ layout: page
 
 ### Declare
 ```go
-// User 有一张 CreditCard，UserID 是外键
+// User has one CreditCard, UserID is the foreign key
 type User struct {
   gorm.Model
   CreditCard CreditCard
