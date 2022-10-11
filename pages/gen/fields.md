@@ -21,7 +21,7 @@ Actually, you're not supposed to create a new field variable, cause it will be a
 
 Create field examples:
 
-```golang
+```go
 import "gorm.io/gen/field"
 
 // create a new generic field map to `generic_a`
@@ -43,7 +43,7 @@ Every field expression has methods suitable for it's type in database as shown i
 
 #### general field expression
 
-```golang
+```go
 id := field.NewInt("user", "id")
 
 // `user`.`id` IS NULL
@@ -60,7 +60,7 @@ id.As("user_id")
 
 #### int field expression
 
-```golang
+```go
 id := field.NewInt("user", "id")
 
 // `user`.`id` = 123
@@ -84,14 +84,14 @@ id.LeftShift(3)
 
 stream call expression
 
-```golang
+```go
 // ((`user`.`age`+1)*2)/3
 u.Age.Add(1).Mul(2).Div(3),
 ```
 
 #### string field expression
 
-```golang
+```go
 name := field.NewStirng("user", "name")
 
 // `user`.`name` = "modi"
@@ -112,7 +112,7 @@ name.Concat("[", "]")
 
 #### time field expression
 
-```golang
+```go
 birth := field.NewStirng("user", "birth")
 
 // `user`.`birth` = ? (now)
@@ -127,7 +127,7 @@ birth.DateFormat("%W %M %Y")
 
 #### bool field expression
 
-```golang
+```go
 active := field.NewBool("user", "active")
 
 // `user`.`active` = TRUE
@@ -142,7 +142,7 @@ active.And(true)
 
 ### Column Compare
 
-```golang
+```go
 id := field.NewInt("user", "id")
 
 // `user`.`id` = `another`.`id`

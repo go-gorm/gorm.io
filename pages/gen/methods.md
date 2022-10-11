@@ -4,8 +4,9 @@ layout: page
 ---
 
 ## Generate model bind custom method
+
 ```Go
-//package test_model
+// package test_model
 
 type CommonMethod struct {
     ID   int32
@@ -25,7 +26,7 @@ func (m *CommonMethod) GetName() string {
     return *m.Name
 }
 
-//package main
+// package main
 
 m:=test_model.CommonMethod{}
 // add custom method to generated model struct
@@ -33,7 +34,6 @@ g.GenerateModel("people", gen.WithMethod(m.IsEmpty))
 // also you can input a struct,will bind all method
 g.GenerateModel("user", gen.WithMethod(m))
 ```
-
 
 ## Gen bind result
 
@@ -82,7 +82,8 @@ func (m *Person) IsEmpty() bool {
 
 ```
 
-Input a struct, bind all custom method to generated model struct,e.g.
+Input a struct, bind all custom method to generated model struct, e.g.
+
 ```go
 
 package model
@@ -128,5 +129,4 @@ func (m *User) GetName() string {
 	}
 	return *m.Name
 }
-
 ```

@@ -1,5 +1,5 @@
 ---
-title: DAO Generator
+title: DAO Overview
 layout: page
 ---
 
@@ -174,9 +174,6 @@ type IUserDo interface {
 
   ReadDB() IUserDo
   WriteDB() IUserDo
-
-  ReplaceDB(db *gorm.DB)
-  UnderlyingDB() *gorm.DB
 }
 ```
 
@@ -223,3 +220,4 @@ For more usage details, please checkout
 * [Query](./query.html)
 * [Delete](./delete.html)
 * [Associations](./associations.html)
+* [Transaction](./transaction.html)

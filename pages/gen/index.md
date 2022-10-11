@@ -9,9 +9,8 @@ layout: page
 
 ## Overview
 
-- Idiomatic Go Code
-- 100% Type-safe DAO API without `interface{}`
-- Reusable and Safe API with hand-optimized SQL
+- Idiomatic & Reusable API with Dynamic Raw SQL
+- 100% Type-safe Common & Basic DAO API without `interface{}`
 - Database To Golang Struct follows GORM conventions
 - GORM under the hood, supports all DBMS, features that GORM supports
 
@@ -32,8 +31,9 @@ package main
 
 import "gorm.io/gen"
 
+// Dynamic SQL
 type Querier interface {
-    // SELECT * FROM @@table WHERE name = @name AND role = @role
+    // SELECT * FROM @@table WHERE name = @name{{if role !=""}} AND role = @role{{end}}
     FilterWithNameAndRole(name, role string) ([]gen.T, error)
 }
 
@@ -46,10 +46,10 @@ func main() {
     // gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
     g.UseDB(gormdb) // reuse your gorm db
 
-    // Generate basic type-safe API for struct `model.User` following conventions
+    // Generate basic type-safe DAO API for struct `model.User` following conventions
     g.ApplyBasic(model.User{})
 
-    // Generate Type Safe API with hand-optimized SQL defined on Querier interface for `model.User` and `model.Company`
+    // Generate Type Safe API with Dynamic SQL defined on Querier interface for `model.User` and `model.Company`
     g.ApplyInterface(func(Querier){}, model.User{}, model.Company{})
 
     // Generate the code
@@ -67,10 +67,10 @@ func main() {
 import "your_project/query"
 
 func main() {
-    // Basic API
+    // Basic DAO API
     user, err := query.User.Where(u.Name.Eq("modi")).First()
 
-    // Hand-optimized SQL API
+    // Dynamic SQL API
     users, err := query.User.FilterWithNameAndRole("modi", "admin")
 }
 ```
