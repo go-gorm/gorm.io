@@ -74,14 +74,13 @@ sidebar:
     getting_started: Getting Started
     overview: Overview
     dao: DAO
-    generator: Generator
     create: Create
-    update: Update
     query: Query
+    update: Update
     delete: Delete
     associations: Associations
-    type_safe_sql: Type-Safe Compiled SQL
     dynamic_sql: Dynamic SQL
+    annotation: Annotation
     database_to_structs: Database To Structs
     fields: Fields
     methods: Methods
