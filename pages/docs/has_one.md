@@ -11,7 +11,7 @@ For example, if your application includes users and credit cards, and each user 
 
 ### Declare
 ```go
-// User has one CreditCard, CreditCardID is the foreign key
+// User has one CreditCard, UserID is the foreign key
 type User struct {
   gorm.Model
   CreditCard CreditCard
