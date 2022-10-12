@@ -74,14 +74,13 @@ sidebar:
     getting_started: Getting Started
     overview: 概要
     dao: DAO
-    generator: Generator
     create: レコードの作成
-    update: レコードの更新
     query: レコードの取得
+    update: レコードの更新
     delete: レコードの削除
     associations: アソシエーション
-    type_safe_sql: Type-Safe Compiled SQL
     dynamic_sql: 動的SQL
+    annotation: Annotation
     database_to_structs: Database To Structs
     fields: Fields
     methods: Methods
