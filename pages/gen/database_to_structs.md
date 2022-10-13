@@ -69,7 +69,7 @@ g := gen.NewGenerator(gen.Config{
 ```
 
 ```go
-//WithDbNameOpts set get database name function
+// WithDbNameOpts set get database name function
 WithDbNameOpts(opts ...model.SchemaNameOpt)
 
 // WithTableNameStrategy specify table name naming strategy, only work when syncing table from db
@@ -91,7 +91,7 @@ WithDataTypeMap(newMap map[string]func(detailType string) (dataType string))
 // WithNewTagNameStrategy specify new tag naming strategy
 WithNewTagNameStrategy(ns func(columnName string) (tagContent string))
 
-//WithImportPkgPath specify import package path
+// WithImportPkgPath specify import package path
 WithImportPkgPath(paths ...string)
 ```
 
