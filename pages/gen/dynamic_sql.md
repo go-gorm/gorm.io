@@ -3,7 +3,7 @@ title: Dynamic SQL
 layout: page
 ---
 
-`Gen` allows generate fully-type-safe idiomatic Go code from Raw SQL, it uses annotations on interfaces, those interfaces could be applied to multiple models during code generation.
+Gen allows generate fully-type-safe idiomatic Go code from Raw SQL, it uses annotations on interfaces, those interfaces could be applied to multiple models during code generation.
 
 Not only your tuned SQL queries but also SQL snippets are allowed to be shared and reused, let's take an example:
 

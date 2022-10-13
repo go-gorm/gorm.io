@@ -3,301 +3,265 @@ title: Annotation Syntax
 layout: page
 ---
 
-## Syntax of template
-Method input parameters and return values support basic types (`int`, `string`, `bool`...), struct and placeholders (`gen.T`/`gen.M`/`gen.RowsAffected`), and types support pointers and arrays. The return value is at most a value and an error.
+Annotations are comments at interface's methods, Gen will parse them and generate the query API for the applied structs.
 
-### placeholder
+Gen provies some conventions for dynamic conditionally SQL support, let us introduce them from three aspects:
 
-- `gen.T` represents specified `struct` or `table`
-- `gen.M` represents `map[string]interface`
-- `gen.RowsAffected` represents SQL executed `rowsAffected` (type:int64)
-- `@@table`  represents table's name (if method's parameter doesn't contains variable `table`, GEN will generate `table` from model struct)
-- `@@<columnName>` represents column's name or table's name
-- `@<name>` represents normal query variable
+* Returning Results
+* Template Placeholder
+* Template Expression
 
-###  template
+## Returning Results
 
-Dynamic template logical operations must be wrapped in `{{}}`,and end must used `{{end}}`, All templates support nesting
+Gen allows to configure returning result type, it supports following four basic types for now
 
-- `if` Clause
-- `where` Clause
-- `set` Clause
-- `for` Clause
-- `...` Coming soon
+| Option           | Description                                               |
+| ---              | ---                                                       |
+| gen.T            | returns struct                                            |
+| gen.M            | returns map                                               |
+| gen.RowsAffected | returns rowsAffected returned from database (type: int64) |
+| error            | returns error if any                                      |
 
-### `if` Clause
+e.g:
 
-The `if` clause support `if`/`else if`/`else`,the condition accept a bool parameter or operation expression which conforms to Golang syntax.
+```go
+type Querier interface {
+  // SELECT * FROM @@table WHERE id=@id
+  GetByID(id int) (gen.T, error) // returns data as struct and error
+
+  // SELECT * FROM @@table WHERE id=@id
+  GetByID(id int) gen.T // returns data as struct
+
+  // SELECT * FROM @@table WHERE id=@id
+  GetByID(id int) (gen.M, error) // returns data as map and error
+
+   // INSERT INTO @@table (name, age) VALUES (@name, @age)
+  InsertValue(name string, age int) (gen.RowsAffected, error) // returns affected rows count and error
+}
+```
+
+These basic types can be combined with other symbols like `*`, `[]`, for example:
+
+```go
+type Querier interface {
+  // SELECT * FROM @@table WHERE id=@id
+  GetByID(id int) (*gen.T, error) // returns data as pointer and error
+
+  // SELECT * FROM @@table WHERE id=@id
+  GetByID(id int) (*[]gen.T, error) // returns data as pointer of slice and error
+
+  // SELECT * FROM @@table WHERE id=@id
+  GetByID(id int) ([]*gen.T, error) // returns data as slice of pointer and error
+
+  // SELECT * FROM @@table WHERE id=@id
+  GetByID(id int) ([]gen.M, error) // returns data as slice of map and error
+}
+```
+
+## Template Placeholder
+
+Gen provides few placeholders to generate dynamic & safe SQL
+
+| Option     | Description                                    |
+| ---        | ---                                            |
+| `@@table`  | escaped & quoted table name                    |
+| `@@<name>` | escaped & quoted table/column name from params |
+| `@<name>`  | SQL query params from params                   |
+
+e.g:
+
+```go
+type Filter interface {
+  // SELECT * FROM @@table WHERE @@column=@id
+  FilterWithColumn(column string, value string) (gen.T, error)
+}
+
+// Apply the `Filter` interface to `User`, `Company`
+g.ApplyInterface(func(Filter) {}, model.User{}, model.Company{})
+```
+
+After generate the code, you can use it like this in your application.
+
+```go
+import "your_project/query"
+
+func main() {
+  user, err := query.User.FilterWithColumn("name", "jinzhu")
+  // similar like db.Exec("SELECT * FROM `users` WHERE `name` = ?", "jinzhu")
+
+  company, err := query.Company.FilterWithColumn("name", "tiktok")
+  // similar like db.Exec("SELECT * FROM `companies` WHERE `name` = ?", "tiktok")
+}
+```
+
+## Template Expression
+
+Gen provides expressions support for dynamic conditional SQL, currently support following expressions:
+
+* `if/else`
+* `where`
+* `set`
+* `for`
+
+### `if/else`
+
+The `if/else` expression accept golang syntax as condition, it can be written like:
 
 ```
 {{if cond1}}
-    // do something here
+  // do something here
 {{else if cond2}}
-    // do something here
+  // do something here
 {{else}}
-    // do something here
+  // do something here
 {{end}}
 ```
 
-Use case in raw SQL:
+For example:
 
 ```go
-// select * from users where
-//  {{if name !=""}} 
-//      username=@name and
-//  {{end}}
-//  role="admin"
-Method(name string) (gen.T,error)
+type Querier interface {
+  // SELECT * FROM users WHERE
+  //  {{if name !=""}}
+  //      username=@name AND
+  //  {{end}}
+  //  role="admin"
+  QueryWith(name string) (gen.T,error)
+}
 ```
 
-Use case in SQL with complex logic:
+A more complicated case:
 
 ```go
-// select * from users  
-//  {{if user != nil}}
-//      {{if user.ID > 0}}
-//          where  id=@user.ID
-//      {{else if user.Name != ""}}
-//          where username=@user.Name
-//      {{end}}
-//  {{end}}
-Method(user *gen.T) (gen.T, error)
+type Querier interface {
+  // SELECT * FROM users
+  //  {{if user != nil}}
+  //      {{if user.ID > 0}}
+  //          WHERE id=@user.ID
+  //      {{else if user.Name != ""}}
+  //          WHERE username=@user.Name
+  //      {{end}}
+  //  {{end}}
+  QueryWith(user *gen.T) (gen.T, error)
+}
 ```
 
-### `where` Clause
+### `where`
 
-The `where` clause will be inserted only if the child elements return something. The key word  `and` or `or`  on both sides of clause will be removed.
-
-```
-{{where}}
-    // do something here
-{{end}}
-```
-
-Use case in raw SQL
+The `where` expression make you write the `WHERE` clause for the SQL query easier, let take a simple case as example:
 
 ```go
-// select * from @@table
-//  {{where}}
-//      id=@id
-//  {{end}}
-Method(id int) gen.T
+type Querier interface {
+  // SELECT * FROM @@table
+  //  {{where}}
+  //      id=@id
+  //  {{end}}
+  Query(id int) gen.T
+}
 ```
 
-Use case in SQL with complex logic:
+If you are using above tempalte to generate the query code, you can use it like:
 
 ```go
-// select * from @@table
-//  {{where}}
-//      {{if !start.IsZero()}}
-//          created_time > start
-//      {{end}}
-//      {{if !end.IsZero()}}
-//         and created_time < end
-//      {{end}} 
-//  {{end}}
-Method(start,end time.Time) ([]gen.T, error)
+query.User.Query(10)
+// SELECT * FROM users WHERE id=10
 ```
 
-
-### `set` Clause
-
-The `set` clause is used to dynamically update data,it will be inserted only if the child elements return something. The `,` on both sides of columns array will be removed.
-
-```
-{{set}}
-    // sepecify update expression here
-{{end}}
-```
-
-Use case in raw SQL
+Here is another complicated case, in this case, you will learn the `WHERE` clause only be inserted if there are any children expression matched and it can smartly trim uncessary `and`, `or`, `xor`, `,` inside the `where` clause.
 
 ```go
-// update users 
+type Querier interface {
+  // SELECT * FROM @@table
+  //  {{where}}
+  //    {{if !start.IsZero()}}
+  //      created_time > @start
+  //    {{end}}
+  //    {{if !end.IsZero()}}
+  //      AND created_time < @end
+  //    {{end}}
+  //  {{end}}
+  FilterWithTime(start,end time.Time) ([]gen.T, error)
+}
+```
+
+The generated code can be used like:
+
+```go
+var (
+  since = time.Date(2022, 10, 1, 0, 0, 0, 0, time.UTC)
+  end   = time.Date(2022, 10, 10, 0, 0, 0, 0, time.UTC)
+  zero  = time.Time{}
+)
+
+query.User.FilterWithTime(since, end)
+// SELECT * FROM users WHERE created_time > "2022-10-01" AND created_time < "2022-10-10"
+
+query.User.FilterWithTime(since, zero)
+// SELECT * FROM users WHERE created_time > "2022-10-01"
+
+query.User.FilterWithTime(zero, end)
+// SELECT * FROM users WHERE created_time < "2022-10-10"
+
+query.User.FilterWithTime(zero, zero)
+// SELECT * FROM users
+```
+
+### `set`
+
+The `set` expression used to generate the `SET` clause for the SQL query, it will trim uncessary `,` smartly, for example:
+
+```go
+// UPDATE @@table
 //  {{set}}
-//      name=@name
+//    {{if user.Name != ""}} username=@user.Name, {{end}}
+//    {{if user.Age > 0}} age=@user.Age, {{end}}
+//    {{if user.Age >= 18}} is_adult=1 {{else}} is_adult=0 {{end}}
 //  {{end}}
-// where id=@id
-method(name string,id int) error
+// WHERE id=@id
+Update(user gen.T, id int) (gen.RowsAffected, error)
 ```
 
-Use case in SQL with complex logic:
+The generated code can be used like:
 
 ```go
-// update @@table 
-//  {{set}}
-//      {{if user.Name != ""}} username=@user.Name, {{end}}
-//      {{if user.Age > 0}} age=@user.Age, {{end}}
-//      {{if user.Age >= 18}} is_adult=1 {{else}} is_adult=0 {{end}}
-//  {{end}}
-// where id=@id
-method(user gen.T,id int) (gen.RowsAffected, error)
+query.User.Update(User{Name: "jinzhu", Age: 18}, 10)
+// UPDATE users SET username="jinzhu", age=18, is_adult=1 WHERE id=10
 
-```
-### `for` Clause
+query.User.Update(User{Name: "jinzhu", Age: 0}, 10)
+// UPDATE users SET username="jinzhu", is_adult=0 WHERE id=10
 
-The `for` clause traverses an array according to golang syntax and inserts its contents into SQL,supports array of struct.
-
-```
-{{for _,name:=range names}}
-    // do something here
-{{end}}
+query.User.Update(User{Age: 0}, 10)
+// UPDATE users SET is_adult=0 WHERE id=10
 ```
 
-Use case in raw SQL:
+### `for`
+
+The `for` expression iterates over a slice to generate the SQL, let's take an example:
 
 ```go
-//select * from @@table
-//{{where}}
-//	{{for _,name:=range names}}
-//		name like concat("%",@name,"%") or
-//	{{end}}
-//{{end}}
-Method(names []string) ([]gen.T, error) 
-```
-
-Use case in SQL with complex logic:
-
-```go
-// select * from @@table 
+// SELECT * FROM @@table
 // {{where}}
-//      {{for _,user:=range user}} 
-//          {{if user.Name !="" && user.Age >0}}
-//              (username = @user.Name AND age=@user.Age) OR
-//          {{end}}
-//      {{end}}
-//  {{end}}
-Method(users []model.User) ([]gen.T, error) 
+//   {{for _,user:=range user}}
+//     {{if user.Name !="" && user.Age >0}}
+//       (username = @user.Name AND age=@user.Age AND role LIKE concat("%",@user.Role,"%")) OR
+//     {{end}}
+//   {{end}}
+// {{end}}
+Filter(users []gen.T) ([]gen.T, error)
 ```
 
-## Method interface example
+Usage:
 
 ```go
-type Method interface {
-    // Where("name=@name and age=@age")
-    SimpleFindByNameAndAge(name string, age int) (gen.T, error)
-    
-    // select * from users where id=@id
-    FindUserToMap(id int) (gen.M, error)
-    
-    // sql(insert into @@table (name,age) values (@name,@age) )
-    InsertValue(age int, name string) error
-    
-    // select name from @@table where id=@id
-    FindNameByID(id int) string
-    
-    // select * from @@table
-    //  {{where}}
-    //      id>0
-    //      {{if cond}}id=@id {{end}}
-    //      {{if key!="" && value != ""}} or @@key=@value{{end}}
-    //  {{end}}
-    FindByIDOrCustom(cond bool, id int, key, value string) ([]gen.T, error)
-    
-    // update @@table
-    //  {{set}}
-    //      update_time=now()
-    //      {{if name != ""}}
-    //          name=@name
-    //      {{end}}
-    //  {{end}}
-    //  {{where}}
-    //      id=@id
-    //  {{end}}
-    UpdateName(name string, id int) (gen.RowsAffected,error)
-
-    // select * from @@table
-    //  {{where}}
-    //      {{for _,user:=range users}}
-    //          {{if user.Age >18}
-    //              OR name=@user.Name 
-    //         {{end}}
-    //      {{end}}
-    //  {{end}}
-    FindByOrList(users []gen.T) ([]gen.T, error)
-}
+query.User.Filter([]User{
+        {Name: "jinzhu", Age: 18, Role: "admin"},
+        {Name: "zhangqiang", Age: 18, Role: "admin"},
+        {Name: "modi", Age: 18, Role: "admin"},
+        {Name: "songyuan", Age: 18, Role: "admin"},
+})
+// SELECT * FROM users WHERE
+//   (username = "jinzhu" AND age=18 AND role LIKE concat("%","admin","%")) OR
+//   (username = "zhangqiang" AND age=18 AND role LIKE concat("%","admin","%"))
+//   (username = "modi" AND age=18 AND role LIKE concat("%","admin","%")) OR
+//   (username = "songyuan" AND age=18 AND role LIKE concat("%","admin","%"))
 ```
-
-#### Unit Test
-
-Unit test file will be generated if `WithUnitTest` is set, which will generate unit test for general query function.
-
-Unit test for DIY method need diy testcase, which should place in the same package with test file.
-
-A testcase contains input and expectation result, input should match the method arguments, expectation should match method return values, which will be asserted **Equal** in test.
-
-```go
-package query
-
-type Input struct {
-  Args []interface{}
-}
-
-type Expectation struct {
-  Ret []interface{}
-}
-
-type TestCase struct {
-  Input
-  Expectation
-}
-
-/* Table student */
-
-var StudentFindByIdTestCase = []TestCase {
-  {
-    Input{[]interface{}{1}},
-    Expectation{[]interface{}{nil, nil}},
-  },
-}
-```
-
-Corresponding test
-
-```go
-//FindById select * from @@table where id = @id
-func (s studentDo) FindById(id int64) (result *model.Student, err error) {
-    ///
-}
-
-func Test_student_FindById(t *testing.T) {
-    student := newStudent(db)
-    do := student.WithContext(context.Background()).Debug()
-
-    for i, tt := range StudentFindByIdTestCase {
-        t.Run("FindById_"+strconv.Itoa(i), func(t *testing.T) {
-            res1, res2 := do.FindById(tt.Input.Args[0].(int64))
-            assert(t, "FindById", res1, tt.Expectation.Ret[0])
-            assert(t, "FindById", res2, tt.Expectation.Ret[1])
-        })
-    }
-}
-```
-
-#### Smart select fields
-
-GEN allows select specific fields with `Select`, if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
-
-```go
-type User struct {
-  ID     uint
-  Name   string
-  Age    int
-  Gender string
-  // hundreds of fields
-}
-
-type APIUser struct {
-  ID   uint
-  Name string
-}
-
-type Method interface{
-    // select * from user
-    FindSome() ([]APIUser, error)
-}
-
-apiusers, err := u.WithContext(ctx).Limit(10).FindSome()
-// SELECT `id`, `name` FROM `users` LIMIT 10
-```
-

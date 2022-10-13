@@ -3,7 +3,7 @@ title: DAO Overview
 layout: page
 ---
 
-`Gen` follows the `Configuration As Code` practice to generate the DAO interface, here is the introduction to the configuration.
+Gen follows the `Configuration As Code` practice to generate the DAO interface, here is the introduction to the configuration.
 
 ## Configuration
 
