@@ -82,9 +82,8 @@ sidebar:
     dynamic_sql: Dynamic SQL
     annotation: Annotation
     database_to_structs: Database To Structs
-    fields: Fields
-    methods: Methods
-    advanced_topics: Advanced Topics
+    field_expressions: Field Expressions
+    tutorials: Tutorials
     gorm_clause: GORM Clause
     transaction: Transaction
     plugins: GORM Plugins
