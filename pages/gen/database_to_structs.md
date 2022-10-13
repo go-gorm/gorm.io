@@ -3,6 +3,8 @@ title: Database To Structs
 layout: page
 ---
 
+## Quick Start
+
 Gen supports generate structs from databases following GORM conventions, it can be used like:
 
 ```go
@@ -17,6 +19,73 @@ g.GenerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64"
 
 // Generate structs from all tables of current database
 g.GenerateAllTable()
+```
+
+## Methods Template
+
+When generating structs from databae, you can also generate methods with a template for them by the way, for example:
+
+```Go
+type CommonMethod struct {
+    ID   int32
+    Name *string
+}
+
+func (m *CommonMethod) IsEmpty() bool {
+    if m == nil {
+        return true
+    }
+    return m.ID == 0
+}
+
+func (m *CommonMethod) GetName() string {
+    if m == nil || m.Name == nil {
+        return ""
+    }
+    return *m.Name
+}
+
+// Add IsEmpty method to the generated `People` struct
+g.GenerateModel("people", gen.WithMethod(CommonMethod{}.IsEmpty))
+
+// Add all methods defined on `CommonMethod` to the generated `User` struct
+g.GenerateModel("user", gen.WithMethod(CommonMethod))
+```
+
+The generated code would looks like:
+
+```go
+// Generated Person struct
+type Person struct {
+  // ...
+}
+
+func (m *Person) IsEmpty() bool {
+  if m == nil {
+    return true
+  }
+  return m.ID == 0
+}
+
+
+// Generated User struct
+type User struct {
+  // ...
+}
+
+func (m *User) IsEmpty() bool {
+  if m == nil {
+    return true
+  }
+  return m.ID == 0
+}
+
+func (m *User) GetName() string {
+  if m == nil || m.Name == nil {
+    return ""
+  }
+  return *m.Name
+}
 ```
 
 ## Field Options
@@ -49,7 +118,7 @@ FieldRelateModel   // specify relationship with exist models
 
 ## Global Generating Options
 
-Gen has some default options could be setup in the `gen.Config`, here is the sample:
+Gen has some global options could be setup in the `gen.Config`, here is the list:
 
 ```go
 g := gen.NewGenerator(gen.Config{
@@ -95,13 +164,15 @@ WithNewTagNameStrategy(ns func(columnName string) (tagContent string))
 WithImportPkgPath(paths ...string)
 ```
 
-eg. **Data Mapping**
+### Data Mapping
 
-Specify data mapping relationship to be whatever you want.
+Specify datatype mapping between field type and db column type.
 
 ```go
 dataMap := map[string]func(detailType string) (dataType string){
-  "int": func(detailType string) (dataType string) { return "int64" },
+  "int": func(detailType string) (dataType string) {
+      return "int64"
+  },
   // bool mapping
   "tinyint": func(detailType string) (dataType string) {
     if strings.HasPrefix(detailType, "tinyint(1)") {

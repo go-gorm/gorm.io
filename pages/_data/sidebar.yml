@@ -65,7 +65,6 @@ gen:
     associations: associations.html
   database_to_structs:
     overview: database_to_structs.html
-    fields: fields.html
-    methods_template: methods.html
-  advanced_topics:
+  tutorials:
+    field_expressions: fields.html
     gorm_clause: clause.html
