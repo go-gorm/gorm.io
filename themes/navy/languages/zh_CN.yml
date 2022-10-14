@@ -82,7 +82,6 @@ sidebar:
     dynamic_sql: 动态 SQL
     annotation: 注解
     database_to_structs: Database To Structs
-    field_expressions: 字段表达式
     tutorials: 教程
     gorm_clause: GORM Clause
     transaction: 事务
