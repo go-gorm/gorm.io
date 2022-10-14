@@ -15,7 +15,7 @@ db.WithContext(ctx).Find(&users)
 
 ## 持续会话模式
 
-Continuous session mode is usually used when you want to perform a group of operations, for example:
+持续会话模式通常被用于执行一系列操作，例如：
 
 ```go
 tx := db.WithContext(ctx)
@@ -23,9 +23,9 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-## Context timeout
+## Context 超时
 
-You can pass in a context with a timeout to `db.WithContext` to set timeout for long running queries, for example:
+对于长 Sql 查询，你可以传入一个带超时的 context 给 `db.WithContext` 来设置超时时间，例如：
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -34,9 +34,9 @@ defer cancel()
 db.WithContext(ctx).Find(&users)
 ```
 
-## Context in Hooks/Callbacks
+## Hooks/Callbacks 中的 Context
 
-You can access the `Context` object from the current `Statement`, for example:
+您可以从当前 `Statement`中访问 `Context` 对象，例如︰
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -46,11 +46,11 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Chi Middleware Example
+## Chi 中间件示例
 
-Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
+在处理 API 请求时持续会话模式会比较有用。例如，您可以在中间件中为 `*gorm.DB` 设置超时 Context，然后使用 `*gorm.DB` 处理所有请求
 
-Following is a Chi middleware example:
+下面是一个 Chi 中间件的示例：
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {
@@ -70,7 +70,7 @@ r.Get("/", func(w http.ResponseWriter, r *http.Request) {
   var users []User
   db.Find(&users)
 
-  // lots of db operations
+  // 你的其他 DB 操作...
 })
 
 r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -79,14 +79,14 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
   var user User
   db.First(&user)
 
-  // lots of db operations
+  // 你的其他 DB 操作...
 })
 ```
 
 {% note %}
-**NOTE** Setting `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**注意** 通过 `WithContext` 设置的 `Context` 是线程安全的，参考[会话](session.html)获取详情
 {% endnote %}
 
 ## Logger
 
-Logger accepts `Context` too, you can use it for log tracking, refer [Logger](logger.html) for details
+Logger 也可以支持 `Context`，可用于日志追踪，查看 [Logger](logger.html) 获取详情
