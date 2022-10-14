@@ -15,7 +15,7 @@ db.WithContext(ctx).Find(&users)
 
 ## 継続セッション
 
-Continuous session mode is usually used when you want to perform a group of operations, for example:
+継続セッションは、通常、一連の操作を実行するときに使用されます。例:
 
 ```go
 tx := db.WithContext(ctx)
@@ -25,7 +25,7 @@ tx.Model(&user).Update("role", "admin")
 
 ## Context timeout
 
-You can pass in a context with a timeout to `db.WithContext` to set timeout for long running queries, for example:
+timeoutを設定したcontextを `db.WithContext` に渡すことで、時間がかかるクエリのタイムアウト時間を設定する事ができます。例：
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -36,7 +36,7 @@ db.WithContext(ctx).Find(&users)
 
 ## Hooks/Callbacks内でのcontextの使用
 
-You can access the `Context` object from the current `Statement`, for example:
+`Statement` から `Context` にアクセスすることが可能です。例：
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -84,7 +84,7 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 ```
 
 {% note %}
-**NOTE** Setting `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**注** `WithContext`で`Context`を設定するのはゴルーチンセーフの処理です。 詳細は[Session](session.html)を参照してください。
 {% endnote %}
 
 ## Logger

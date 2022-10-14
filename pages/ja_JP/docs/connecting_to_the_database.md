@@ -24,7 +24,7 @@ func main() {
 **注** `time.Time` を正しく処理するには、パラメータとして `parseTime` を含める必要があります。 ([その他のパラメータ](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 エンコーディングを完全にサポートするには、 `charset=utf8` を `charset=utf8mb4` に変更する必要があります。 詳細な説明は [この記事](https://mathiasbynens.be/notes/mysql-utf8mb4) を参照してください。
 {% endnote %}
 
-MySQLドライバは、 [初期化時の詳細な設定](https://github.com/go-gorm/mysql) をいくつか提供しています。
+MySQLドライバは、 初期化時に指定できる[詳細な設定](https://github.com/go-gorm/mysql) を提供しています。
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{

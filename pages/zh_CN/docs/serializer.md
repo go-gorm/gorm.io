@@ -93,7 +93,7 @@ type User struct {
 
 ## 自定义序列化器类型
 
-You can use a registered serializer with tags, you are also allowed to create a customized struct that implements the above `SerializerInterface` and use it as a field type directly, for example:
+你可以通过标签使用已注册的序列化器，你也可以自定义 struct，实现上述的 `SerializerInterface` 接口，随后便可以直接将其作为字段类型使用，例如：
 
 ```go
 type EncryptedString string

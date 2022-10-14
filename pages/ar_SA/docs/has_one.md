@@ -11,13 +11,14 @@ For example, if your application includes users and credit cards, and each user 
 
 ### Declare
 ```go
+// User has one CreditCard, UserID is the foreign key
 type User struct {
-  gorm. Model
-  CreditCard CreditCard `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+  gorm.Model
+  CreditCard CreditCard
 }
 
 type CreditCard struct {
-  gorm. Model
+  gorm.Model
   Number string
   UserID uint
 }

@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Smart Select Fields</span>
 
-GORM은 [`Select`](query.html) 를 사용하여 특정 필드를 선택할 수 있습니다. 응용 프로그램에서 이 필드를 자주 사용하는 경우 다음과 같이 특정 필드를 자동으로 선택할 수 있는 API 사용을 위한 작은 구조를 정의할 수 있습니다.
+GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
 
 ```go
 type User struct {
@@ -81,7 +81,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From SubQuery</span>
 
-GORM은 FROM 절의 서브쿼리를 `Table` 메서드와 함께 사용할 수 있습니다. 예시:
+GORM allows you using subquery in FROM clause with the method `Table`, for example:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
@@ -132,7 +132,7 @@ Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more de
 
 ## Find To Map
 
-GORM allows scan result to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORM allows scanning results to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
 
 ```go
 result := map[string]interface{}{}
@@ -160,7 +160,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-initialize struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+Initialize struct with more attributes if record not found, those `Attrs` won't be used to build the SQL query
 
 ```go
 // User not found, initialize it with give conditions and Attrs

@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Bidang Pilih Pintar</span>
 
-GORM mengijinkan memilih bidang tertentu dengan [`Pilih`](query.html), jika Anda sering menggunakan ini dalam aplikasi Anda, mungkin Anda ingin mendefinisikan struktur yang lebih simpel untuk penggunaan API yang dapat memilih bidang tertentu secara otomatis, misalnya:
+GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
 
 ```go
 type User struct {
@@ -79,7 +79,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">Dari Sub-Kueri</span>
 
-GORM memungkinkan Anda menggunakan sub-kueri dalam klausa FROM dengan metode `Table`, misalnya:
+GORM allows you using subquery in FROM clause with the method `Table`, for example:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
@@ -130,7 +130,7 @@ Lihat ke [SQL mentahan dan pembuat SQL](sql_builder.html) untuk detail lebih lan
 
 ## Pencarian ke Map
 
-GORM memungkinkan hasil pindaian ke `map[string]interface{}` atau `[]map[string]interface{}`, jangan lup untuk menentukan `Model` atau `Table`, misalnya:
+GORM allows scanning results to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
 
 ```go
 result := map[string]interface{}{}
@@ -158,7 +158,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-inisialisasi struct dengan lebih banyak atribut jika catatan tidak ditemukan, `Attrs` tersebut tidak akan digunakan untuk membuat kueri SQL
+Initialize struct with more attributes if record not found, those `Attrs` won't be used to build the SQL query
 
 ```go
 // Pengguna tidak ditemukan, menginisiasi dengan kondisi yang diberikan

@@ -5,7 +5,7 @@ layout: страница
 
 ## <span id="smart_select">Умный выбор полей</span>
 
-GORM позволяет выбрать конкретные поля при помощи [`Select`](query.html). Если вы часто используете это в вашем приложении, возможно вы захотите определить меньшую структуру для использования с API, который может выбирать конкретные поля автоматически, например:
+GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
 
 ```go
 type User struct {
@@ -81,7 +81,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">Из SubQuery (под запроса)</span>
 
-GORM позволяет использовать подзапрос в FROM с методом `Table`, например:
+GORM allows you using subquery in FROM clause with the method `Table`, for example:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
@@ -132,7 +132,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 ## Find с картами
 
-GORM позволяет отображать результаты сканирования в `map[string]interface{}` или `[]map[string]interface{}`, не забудьте указать `Model` или `Table`, как в примере ниже:
+GORM allows scanning results to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
 
 ```go
 result := map[string]interface{}{}
@@ -160,7 +160,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-инициализировать структуру с дополнительными параметрами. Если запись не найдена, эти `Attrs` не будут использованы в построении запроса SQL
+Initialize struct with more attributes if record not found, those `Attrs` won't be used to build the SQL query
 
 ```go
 // Пользователь не найден, инициализировать структуру с указанными параметрами и атрибутами Attrs

@@ -20,9 +20,9 @@ layout: page
 
 * Go-admin 是一个基于 GORM 的中后台框架  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
-* 在 SQLite 数据库来验证和测试 Golang 中的 GORM 的文章 - </a>[oking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)</0>
+* 验证 GORM 在 SQLite 中 CRUD 实现的文章 - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
 
-* [Strongly typed JSON/JSONB fields in GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
+* [GORM 中的强类型 JSON/JSONB 字段](https://www.terminateandstayresident.com/2022-07-13/orm-json)
 
 ## 视频
 
@@ -35,9 +35,9 @@ layout: page
 * [zapgorm - Uber 的 Zap 日志驱动程序，适用版本gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber 的 Zap 日志驱动程序，适用版本gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 * [gorm-newrelic-telemetry-plugin - 在 GORM 使用 NewRelic Go Agent 来进行跟踪事务，跟踪数据库调用等](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
-* [Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
-* [Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
-* [gorm-cache - GORM query cache plugin](https://github.com/liyuan1125/gorm-cache)
+* [纯 Go sqlite 驱动](https://github.com/glebarez/sqlite)
+* [关联用户的角色和权限](https://github.com/Permify/permify-gorm)
+* [gorm-cache - GORM 查询缓存插件](https://github.com/liyuan1125/gorm-cache)
 
 ## <span id="contribute">完善本页面</span>
 

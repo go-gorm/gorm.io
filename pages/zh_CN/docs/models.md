@@ -25,9 +25,9 @@ type User struct {
 
 ## 约定
 
-GORM 倾向于约定优于配置 By default, GORM uses `ID` as primary key, pluralizes struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+GORM 倾向于约定优于配置 默认情况下，GORM 使用 `ID` 作为主键，使用结构体名的 `蛇形复数` 作为表名，字段名的 `蛇形` 作为列名，并使用 `CreatedAt`、`UpdatedAt` 字段追踪创建、更新时间
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code. If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+如果您遵循 GORM 的约定，您就可以少写的配置、代码。 如果约定不符合您的实际要求，[GORM 允许你配置它们](conventions.html)
 
 ## gorm.Model
 
@@ -49,7 +49,7 @@ type Model struct {
 
 ### <span id="field_permission">字段级权限控制</span>
 
-Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
+可导出的字段在使用 GORM 进行 CRUD 时拥有全部的权限，此外，GORM 允许您用标签控制字段级别的权限。这样您就可以让一个字段的权限是只读、只写、只创建、只更新或者被忽略
 
 {% note warn %}
 **注意：** 使用 GORM Migrator 创建表时，不会创建被忽略的字段
@@ -57,16 +57,16 @@ Exported fields have all permissions when doing CRUD with GORM, and GORM allows 
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured)
-  Name string `gorm:"->;<-:create"` // allow read and create
-  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`            // ignore this field when write and read with struct
-  Name string `gorm:"-:all"`        // ignore this field when write, read and migrate with struct
-  Name string `gorm:"-:migration"`  // ignore this field when migrate with struct
+  Name string `gorm:"<-:create"` // 允许读和创建
+  Name string `gorm:"<-:update"` // 允许读和更新
+  Name string `gorm:"<-"`        // 允许读和写（创建和更新）
+  Name string `gorm:"<-:false"`  // 允许读，禁止写
+  Name string `gorm:"->"`        // 只读（除非有自定义配置，否则禁止写）
+  Name string `gorm:"->;<-:create"` // 允许读和写
+  Name string `gorm:"->:false;<-:create"` // 仅创建（禁止从 db 读）
+  Name string `gorm:"-"`  // 通过 struct 读写会忽略该字段
+  Name string `gorm:"-:all"`        // 通过 struct 读写、迁移会忽略该字段
+  Name string `gorm:"-:migration"`  // 通过 struct 迁移会忽略该字段
 }
 ```
 
@@ -160,22 +160,22 @@ type Blog struct {
 | primaryKey             | 将列定义为主键                                                                                                                                                                                                                                    |
 | unique                 | 将列定义为唯一键                                                                                                                                                                                                                                   |
 | default                | 定义列的默认值                                                                                                                                                                                                                                    |
-| precision              | specifies column precision                                                                                                                                                                                                                 |
-| scale                  | specifies column scale                                                                                                                                                                                                                     |
-| not null               | specifies column as NOT NULL                                                                                                                                                                                                               |
-| autoIncrement          | specifies column auto incrementable                                                                                                                                                                                                        |
-| autoIncrementIncrement | auto increment step, controls the interval between successive column values                                                                                                                                                                |
-| embedded               | embed the field                                                                                                                                                                                                                            |
-| embeddedPrefix         | column name prefix for embedded fields                                                                                                                                                                                                     |
-| autoCreateTime         | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                                      |
-| autoUpdateTime         | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                            |
-| index                  | create index with options, use same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                                                                                          |
-| uniqueIndex            | same as `index`, but create uniqued index                                                                                                                                                                                                  |
-| check                  | creates check constraint, eg: `check:age > 13`, refer [Constraints](constraints.html)                                                                                                                                                   |
-| <-                     | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no write permission, `<-` create and update permission                                                                  |
-| ->                     | set field's read permission, `->:false` no read permission                                                                                                                                                                              |
-| -                      | ignore this field, `-` no read/write permission, `-:migration` no migrate permission, `-:all` no read/write/migrate permission                                                                                                             |
-| comment                | add comment for field when migration                                                                                                                                                                                                       |
+| precision              | 指定列的精度                                                                                                                                                                                                                                     |
+| scale                  | 指定列大小                                                                                                                                                                                                                                      |
+| not null               | 指定列为 NOT NULL                                                                                                                                                                                                                              |
+| autoIncrement          | 指定列为自动增长                                                                                                                                                                                                                                   |
+| autoIncrementIncrement | 自动步长，控制连续记录之间的间隔                                                                                                                                                                                                                           |
+| embedded               | 嵌套字段                                                                                                                                                                                                                                       |
+| embeddedPrefix         | 嵌入字段的列名前缀                                                                                                                                                                                                                                  |
+| autoCreateTime         | 创建时追踪当前时间，对于 `int` 字段，它会追踪时间戳秒数，您可以使用 `nano`/`milli` 来追踪纳秒、毫秒时间戳，例如：`autoCreateTime:nano`                                                                                                                                                  |
+| autoUpdateTime         | 创建/更新时追踪当前时间，对于 `int` 字段，它会追踪时间戳秒数，您可以使用 `nano`/`milli` 来追踪纳秒、毫秒时间戳，例如：`autoUpdateTime:milli`                                                                                                                                              |
+| index                  | 根据参数创建索引，多个字段使用相同的名称则创建复合索引，查看 [索引](indexes.html) 获取详情                                                                                                                                                                                     |
+| uniqueIndex            | 与 `index` 相同，但创建的是唯一索引                                                                                                                                                                                                                     |
+| check                  | 创建检查约束，例如 `check:age > 13`，查看 [约束](constraints.html) 获取详情                                                                                                                                                                               |
+| <-                     | 设置字段写入的权限， `<-:create` 只创建、`<-:update` 只更新、`<-:false` 无写入权限、`<-` 创建和更新权限                                                                                                                                                       |
+| ->                     | 设置字段读的权限，`->:false` 无读权限                                                                                                                                                                                                                |
+| -                      | 忽略该字段，`-` 表示无读写，`-:migration` 表示无迁移权限，`-:all` 表示无读写迁移权限                                                                                                                                                                                    |
+| comment                | 迁移时为字段添加注释                                                                                                                                                                                                                                 |
 
 ### 关联标签
 

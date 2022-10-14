@@ -3,7 +3,7 @@ title: Connecting to a Database
 layout: page
 ---
 
-GORM sendiri secara resmi mendukung database MYSQL, PostgreSQL, SQLLite, SQL Server
+GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server
 
 ## MySQL
 
@@ -24,7 +24,7 @@ func main() {
 CATATAN , untuk menangani  `time.Time` correctly, you need to include `parseTime` sebagai parameter ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) untuk sepenuhnya mendukung penulisan (pengkodean) UTF-8 kamu perlu mengubah  `charset=utf8` to `charset=utf8mb4`. lihat [artikel ini ](https://mathiasbynens.be/notes/mysql-utf8mb4) unutk penjelasan lebih rinci
 {% endnote %}
 
-MYSQL Driver menyediakan [ beberapa konfigurasi](https://github.com/go-gorm/mysql) bisa di gunakan sebagai inialisasi, sebagai contoh
+MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -39,7 +39,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### Customize Driver
 
-GROM mengijinkann mengubah(custom) MSQL Driver degan ` DriverName`  pilihan sebagi berikut
+GORM allows to customize the MySQL driver with the `DriverName` option, for example:
 
 ```go
 import (
@@ -95,7 +95,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Customize Driver
 
-GORM memungkinkan mengubah driver PostgresSql dengan`DirName`  pilihan, sebagai contoh
+GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
 
 ```go
 import (

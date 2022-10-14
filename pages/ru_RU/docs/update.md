@@ -18,7 +18,7 @@ db.Save(&user)
 
 ## Обновление одного столбца
 
-При обновлении одного столбца с `Обновить`, он должен иметь какие-либо условия или может вызвать ошибку `ErrsingWhereClause`, смотрите [Block Global Updates](#block_global_updates) для деталей. При использовании метода `Model` и его значение имеют первичное значение и первичный ключ будет использоваться для построения условия, например:
+When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details. When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
 
 ```go
 // Update с условиями
@@ -36,7 +36,7 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 
 ## Обновление нескольких столбцов
 
-`Updates` поддерживают обновление с помощью `структур` или `map[string]interface{}`, при обновлении со `структурой` по умолчанию будет обновлять только не-нулевые поля
+`Updates` supports updating with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
 
 ```go
 // Обновление атрибутами `структуры`, будут обновляться только не нулевые поля
@@ -49,7 +49,7 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 ```
 
 {% note warn %}
-**ПРИМЕЧАНИЕ** При обновлении со структурой, GORM будет обновлять только ненулевые поля, вы можете использовать `карту` для обновления атрибутов или с помощью `Select` для указания полей для обновления
+**NOTE** When updating with struct, GORM will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update
 {% endnote %}
 
 ## Обновить выбранные поля
@@ -78,7 +78,7 @@ db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admi
 
 ## Хуки Update
 
-GORM позволяет использовать хуки `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`, эти методы будут вызваны при обновлении записи, смотрите [Хуки](hooks.html) для подробностей
+GORM allows the hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`. Those methods will be called when updating a record, refer [Hooks](hooks.html) for details
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -91,7 +91,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 
 ## Updates пакетами
 
-Если мы не указали запись, имеющую значение первичного ключа, с помощью `Model`, GORM будет выполнять пакетное обновление
+If we haven't specified a record having a primary key value with `Model`, GORM will perform a batch update
 
 ```go
 // Update с помощью структуры
@@ -139,7 +139,7 @@ result.Error        // возвращает ошибку при обновлен
 
 ### <span id="update_from_sql_expr">Обновление с помощью SQL выражения</span>
 
-GORM позволяет обновлять столбец с выражением SQL, например:
+GORM allows updating a column with a SQL expression, e.g:
 
 ```go
 // product's ID = `3`
@@ -156,7 +156,7 @@ db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity > 1;
 ```
 
-Также GORM позволяет обновлять данные с помощью SQL выражения/Context Valuer с [настраиваемыми типами данных](data_types.html#gorm_valuer_interface), например:
+And GORM also allows updating with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
 
 ```go
 // Создание с помощью собственных типов данных
@@ -211,7 +211,7 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 
 ### Возврат данных из измененных строк
 
-Возврат измененных данных работает только для поддерживаемых баз данных, например:
+Returning changed data only works for databases which support Returning, for example:
 
 ```go
 // возвращает все столбцы
@@ -228,9 +228,9 @@ DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"
 
 ### Проверка, изменилось ли поле?
 
-GORM предоставляет метод `Changed`, который может быть использован в **Before Update Hooks** при обновлении для проверки полей, которые будут обновлены или не обновлены
+GORM provides the `Changed` method which could be used in **Before Update Hooks**, it will return whether the field has changed or not.
 
-Метод `Changed` работает только с методами `Update`, `Updates`, и он только проверяет, соответствует ли значение обновления из `Update` / `Updates` значению модели, вернет true, если оно было изменено, а не пропущено
+The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the updating value from `Update` / `Updates` equals the model value. It will return true if it is changed and not omitted
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -269,7 +269,7 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 
 ### Изменение обновляемых данных
 
-Чтобы изменить обновляемые значения в хуках Before, вы должны использовать `SetColumn`, если это не полные обновления с `Save`, например:
+To change updating values in Before Hooks, you should use `SetColumn` unless it is a full update with `Save`, for example:
 
 ```go
 func (user *User) BeforeSave(tx *gorm.DB) (err error) {

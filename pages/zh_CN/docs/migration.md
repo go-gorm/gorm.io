@@ -113,13 +113,13 @@ type User struct {
   Name string
 }
 
-// Add name field
+// 添加 name 字段
 db.Migrator().AddColumn(&User{}, "Name")
-// Drop name field
+// 删除 name 字段
 db.Migrator().DropColumn(&User{}, "Name")
-// Alter name field
+// 修改 name 字段
 db.Migrator().AlterColumn(&User{}, "Name")
-// Check column exists
+// 检查 name 字段是否存在
 db.Migrator().HasColumn(&User{}, "Name")
 
 type User struct {
@@ -127,11 +127,11 @@ type User struct {
   NewName string
 }
 
-// Rename column to new name
+// 字段重命名
 db.Migrator().RenameColumn(&User{}, "Name", "NewName")
 db.Migrator().RenameColumn(&User{}, "name", "new_name")
 
-// ColumnTypes
+// 字段类型
 db.Migrator().ColumnTypes(&User{}) ([]gorm.ColumnType, error)
 
 type ColumnType interface {

@@ -160,7 +160,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-レコードが見つからない場合のみ、struct をより多くの属性で初期化できます。これらの `Attrs（属性）` はSQLクエリの生成には使用されません。
+レコードが見つからない場合のみ、struct を指定した属性で初期化できます。これらの `Attrs（属性）` はSQLクエリの生成には使用されません。
 
 ```go
 // Userが見つからないため、取得条件とAttrsで指定された属性で構造体を初期化

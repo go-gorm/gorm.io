@@ -71,20 +71,19 @@ sidebar:
     contribute: 贡献
     translate: 翻译当前页面
   gen:
-    getting_started: Getting Started
-    overview: Overview
-    dao_generator: Dao Generator
-    create: Create
-    update: Update
-    query: Query
-    delete: Delete
-    associations: Associations
-    type_safe_sql: Type-Safe Compiled SQL
-    dynamic_sql: Dynamic SQL
+    getting_started: 开始使用
+    overview: 概览
+    dao: DAO
+    create: 创建
+    query: 查询
+    update: 更新
+    delete: 删除
+    associations: 关联
+    dynamic_sql: 动态 SQL
+    annotation: 注解
     database_to_structs: Database To Structs
-    fields: Fields
-    methods: Methods
-    advanced_topics: Advanced Topics
+    field_expressions: 字段表达式
+    tutorials: 教程
     gorm_clause: GORM Clause
-    transaction: Transaction
-    plugins: GORM Plugins
+    transaction: 事务
+    plugins: GORM 插件
