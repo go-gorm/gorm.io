@@ -81,7 +81,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From 子查询</span>
 
-GORM allows you using subquery in FROM clause with the method `Table`, for example:
+GORM 允许您在 `Table` 方法中通过 FROM 子句使用子查询，例如：
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
@@ -194,16 +194,16 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
+获取匹配的第一条记录或者根据给定条件创建一条新纪录（仅 struct, map 条件有效），`RowsAffected` 返回创建、更新的记录数
 
 ```go
-// User not found, create a new record with give conditions
+// 未找到 User，根据给定条件创建一条新纪录
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 // result.RowsAffected // => 1
 
-// Found user with `name` = `jinzhu`
+// 找到 `name` = `jinzhu` 的 User
 result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 // result.RowsAffected // => 0
