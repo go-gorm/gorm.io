@@ -25,9 +25,9 @@ type User struct {
 
 ## 约定
 
-GORM 倾向于约定优于配置 By default, GORM uses `ID` as primary key, pluralizes struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+GORM 倾向于约定优于配置 默认情况下，GORM 使用 `ID` 作为主键，使用结构体名的 `蛇形复数` 作为表名，字段名的 `蛇形` 作为列名，并使用 `CreatedAt`、`UpdatedAt` 字段追踪创建、更新时间
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code. If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+如果您遵循 GORM 的约定，您就可以少写的配置、代码。 如果约定不符合您的实际要求，[GORM 允许你配置它们](conventions.html)
 
 ## gorm.Model
 
@@ -49,7 +49,7 @@ type Model struct {
 
 ### <span id="field_permission">字段级权限控制</span>
 
-Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
+可导出的字段在使用 GORM 进行 CRUD 时拥有全部的权限，此外，GORM 允许您用标签控制字段级别的权限。这样您就可以让一个字段的权限是只读、只写、只创建、只更新或者被忽略
 
 {% note warn %}
 **注意：** 使用 GORM Migrator 创建表时，不会创建被忽略的字段
@@ -57,16 +57,16 @@ Exported fields have all permissions when doing CRUD with GORM, and GORM allows 
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured)
-  Name string `gorm:"->;<-:create"` // allow read and create
-  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`            // ignore this field when write and read with struct
-  Name string `gorm:"-:all"`        // ignore this field when write, read and migrate with struct
-  Name string `gorm:"-:migration"`  // ignore this field when migrate with struct
+  Name string `gorm:"<-:create"` // 允许读和创建
+  Name string `gorm:"<-:update"` // 允许读和更新
+  Name string `gorm:"<-"`        // 允许读和写（创建和更新）
+  Name string `gorm:"<-:false"`  // 允许读，禁止写
+  Name string `gorm:"->"`        // 只读（除非有自定义配置，否则禁止写）
+  Name string `gorm:"->;<-:create"` // 允许读和写
+  Name string `gorm:"->:false;<-:create"` // 仅创建（禁止从 db 读）
+  Name string `gorm:"-"`  // 通过 struct 读写会忽略该字段
+  Name string `gorm:"-:all"`        // 通过 struct 读写、迁移会忽略该字段
+  Name string `gorm:"-:migration"`  // 通过 struct 迁移会忽略该字段
 }
 ```
 
