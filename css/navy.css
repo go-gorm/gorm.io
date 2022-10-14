@@ -855,6 +855,9 @@ a.article-title:hover {
   max-width: 100%;
   border: 1px solid #e3e3e3;
 }
+.article-content table thead tr {
+  background: #e1e1e1;
+}
 .article-content table th {
   font-weight: bold;
 }
