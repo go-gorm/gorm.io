@@ -20,7 +20,7 @@ layout: page
 
 * Go-admin 是一个基于 GORM 的中后台框架  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
-* 在 SQLite 数据库来验证和测试 Golang 中的 GORM 的文章 - </a>[oking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)</0>
+* 验证 GORM 在 SQLite 中 CRUD 实现的文章 - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
 
 * [GORM 中的强类型 JSON/JSONB 字段](https://www.terminateandstayresident.com/2022-07-13/orm-json)
 
