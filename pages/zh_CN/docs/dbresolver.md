@@ -93,19 +93,19 @@ db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 但您可以在事务开始之前指定使用哪个数据库，例如：
 
 ```go
-// Start transaction based on default replicas db
+// 通过默认 replicas db 开始事务
 tx := DB.Clauses(dbresolver.Read).Begin()
 
-// Start transaction based on default sources db
+// 通过默认 sources db 开始事务
 tx := DB.Clauses(dbresolver.Write).Begin()
 
-// Start transaction based on `secondary`'s sources
+// 通过 `secondary` 的 sources db 开始事务
 tx := DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).Begin()
 ```
 
 ## 负载均衡
 
-GORM supports load balancing sources/replicas based on policy, the policy should be a struct implements following interface:
+GORM 支持基于策略的 sources/replicas 负载均衡，自定义策略应该是一个实现了以下接口的 struct：
 
 ```go
 type Policy interface {
@@ -113,7 +113,7 @@ type Policy interface {
 }
 ```
 
-Currently only the `RandomPolicy` implemented and it is the default option if no other policy specified.
+当前只实现了一个 `RandomPolicy` 策略，如果没有指定其它策略，它就是默认策略。
 
 ## 连接池
 
