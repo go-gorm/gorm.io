@@ -143,10 +143,10 @@ db.Unscoped().Delete(&order)
 
 ### Delete Flag
 
-默认情况下，`gorm.Model` 使用 `*time.Time` 作为 `DeletedAt` 字段的值，通过 `gorm.io/plugin/soft_delete` 插件还支持其它数据格式。
+默认情况下，`gorm.Model` 使用 `*time.Time` 作为 `DeletedAt` 字段的值。此外，通过 `gorm.io/plugin/soft_delete` 插件还支持其它数据格式。
 
 {% note warn %}
-**INFO** when creating unique composite index for the DeletedAt field, you must use other data format like unix second/flag with plugin `gorm.io/plugin/soft_delete`'s help, e.g:
+**提示** 当使用 DeletedAt 字段创建唯一复合索引时，你必须通过 `gorm.io/plugin/soft_delete` 等插件将字段定义为时间戳之类的数据格式，例如：
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -159,9 +159,9 @@ type User struct {
 ```
 {% endnote %}
 
-#### Unix Second
+#### Unix 时间戳
 
-Use unix second as delete flag
+将 unix 秒级时间戳作为 delete flag
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -172,14 +172,14 @@ type User struct {
   DeletedAt soft_delete.DeletedAt
 }
 
-// Query
+// 查询
 SELECT * FROM users WHERE deleted_at = 0;
 
-// Delete
-UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
+// 删除
+UPDATE users SET deleted_at = /* 当前时间戳 */ WHERE ID = 1;
 ```
 
-You can also specify to use `milli` or `nano` seconds as the value, for example:
+你还可以指定 `milli`、`nano` 使用毫秒、纳秒作为值，例如：
 
 ```go
 type User struct {
@@ -189,14 +189,14 @@ type User struct {
   // DeletedAt soft_delete.DeletedAt `gorm:"softDelete:nano"`
 }
 
-// Query
+// 查询
 SELECT * FROM users WHERE deleted_at = 0;
 
-// Delete
-UPDATE users SET deleted_at = /* current unix milli second or nano second */ WHERE ID = 1;
+// 删除
+UPDATE users SET deleted_at = /* 当前毫秒、纳秒时间戳 */ WHERE ID = 1;
 ```
 
-#### Use `1` / `0` AS Delete Flag
+#### 使用 `1` / `0` 作为 Delete Flag
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -207,30 +207,30 @@ type User struct {
   IsDel soft_delete.DeletedAt `gorm:"softDelete:flag"`
 }
 
-// Query
+// 查询
 SELECT * FROM users WHERE is_del = 0;
 
-// Delete
+// 删除
 UPDATE users SET is_del = 1 WHERE ID = 1;
 ```
 
-#### Mixed Mode
+#### 混合模式
 
-Mixed mode can use `0`, `1` or unix seconds to mark data as deleted or not, and save the deleted time at the same time.
+混合模式可以使用 `0`, `1` 或 unix 秒来标识数据是否已被删除，并同时保存删除的时间。
 
 ```go
 type User struct {
   ID        uint
   Name      string
   DeletedAt time.Time
-  IsDel     soft_delete.DeletedAt `gorm:"softDelete:flag,DeletedAtField:DeletedAt"` // use `1` `0`
-  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:,DeletedAtField:DeletedAt"` // use `unix second`
-  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:nano,DeletedAtField:DeletedAt"` // use `unix nano second`
+  IsDel     soft_delete.DeletedAt `gorm:"softDelete:flag,DeletedAtField:DeletedAt"` // 使用 `1` `0` 标识
+  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:,DeletedAtField:DeletedAt"` // 使用 `unix second` 标识
+  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:nano,DeletedAtField:DeletedAt"` // 使用 `unix nano second` 标识
 }
 
-// Query
+// 查询
 SELECT * FROM users WHERE is_del = 0;
 
-// Delete
+// 删除
 UPDATE users SET is_del = 1, deleted_at = /* current unix second */ WHERE ID = 1;
 ```
