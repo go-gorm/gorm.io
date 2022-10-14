@@ -81,7 +81,7 @@ type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID as references
+  Company   Company `gorm:"references:CompanyID"` // 使用 Company.CompanyID 作为引用
 }
 
 type Company struct {
@@ -93,15 +93,15 @@ type Company struct {
 
 ## Belongs to 的 CRUD
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+查看 [关联模式](associations.html#Association-Mode) 获取 belongs to 相关的用法
 
 ## 预加载
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM 可以通过 `Preload`、`Joins` 预加载 belongs to 关联的记录，查看 [预加载](preload.html) 获取详情
 
 ## 外键约束
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+你可以通过 `constraint` 标签配置 `OnUpdate`、`OnDelete` 实现外键约束，在使用 GORM 进行迁移时它会被创建，例如：
 
 ```go
 type User struct {
