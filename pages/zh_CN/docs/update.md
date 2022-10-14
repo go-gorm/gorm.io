@@ -49,7 +49,7 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 ```
 
 {% note warn %}
-**NOTE** When updating with struct, GORM will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update
+**注意** 当使用 struct 进行更新时，GORM 只会更新非零值的字段。 你可以使用 `map` 更新字段，或者使用 `Select` 指定要更新的字段
 {% endnote %}
 
 ## 更新选定字段
@@ -78,7 +78,7 @@ db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admi
 
 ## 更新 Hook
 
-GORM allows the hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`. Those methods will be called when updating a record, refer [Hooks](hooks.html) for details
+GORM 支持的 hook 点包括：`BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`. 更新记录时将调用这些方法，查看 [Hooks](hooks.html) 获取详细信息
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -91,7 +91,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 
 ## 批量更新
 
-If we haven't specified a record having a primary key value with `Model`, GORM will perform a batch update
+如果您尚未通过 `Model` 指定记录的主键，则 GORM 会执行批量更新
 
 ```go
 // 根据 struct 更新
@@ -139,7 +139,7 @@ result.Error        // 更新的错误
 
 ### <span id="update_from_sql_expr">使用 SQL 表达式更新</span>
 
-GORM allows updating a column with a SQL expression, e.g:
+GORM 允许使用 SQL 表达式更新列，例如：
 
 ```go
 // product 的 ID 是 `3`
@@ -156,7 +156,7 @@ db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity > 1;
 ```
 
-And GORM also allows updating with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
+并且 GORM 也允许使用 SQL 表达式、[自定义数据类型](data_types.html#gorm_valuer_interface)的 Context Valuer 来更新，例如：
 
 ```go
 // 根据自定义数据类型创建
@@ -211,7 +211,7 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 
 ### 返回修改行的数据
 
-Returning changed data only works for databases which support Returning, for example:
+返回被修改的数据，仅适用于支持 Returning 的数据库，例如：
 
 ```go
 // 返回所有列
@@ -228,9 +228,9 @@ DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"
 
 ### 检查字段是否有变更？
 
-GORM provides the `Changed` method which could be used in **Before Update Hooks**, it will return whether the field has changed or not.
+GORM 提供了 `Changed` 方法，它可以被用在 **Before Update Hook** 里，它会返回字段是否有变更的布尔值.
 
-The `Changed` method only works with methods `Update`, `Updates`, and it only checks if the updating value from `Update` / `Updates` equals the model value. It will return true if it is changed and not omitted
+`Changed` 方法只能与 `Update`、`Updates` 方法一起使用，并且它只是检查 Model 对象字段的值与 `Update`、`Updates` 的值是否相等。 如果值有变更，且字段没有被忽略，则返回 true.
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -269,7 +269,7 @@ db.Model(&User{ID: 1, Name: "jinzhu"}).Select("Admin").Updates(User{Name: "jinzh
 
 ### 在 Update 时修改值
 
-To change updating values in Before Hooks, you should use `SetColumn` unless it is a full update with `Save`, for example:
+若要在 Before 钩子中改变要更新的值，如果它是一个完整的更新，可以使用 `Save`；否则，应该使用 `SetColumn` ，例如：
 
 ```go
 func (user *User) BeforeSave(tx *gorm.DB) (err error) {
