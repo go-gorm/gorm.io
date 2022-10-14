@@ -3,7 +3,7 @@ title: 连接到数据库
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server
+GORM 官方支持的数据库类型有： MySQL, PostgreSQL, SQlite, SQL Server
 
 ## MySQL
 
@@ -24,7 +24,7 @@ func main() {
 **注意：**想要正确的处理 `time.Time` ，您需要带上 `parseTime` 参数， ([更多参数](https://github.com/go-sql-driver/mysql#parameters)) 要支持完整的 UTF-8 编码，您需要将 `charset=utf8` 更改为 `charset=utf8mb4` 查看 [此文章](https://mathiasbynens.be/notes/mysql-utf8mb4) 获取详情
 {% endnote %}
 
-MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
+MySQL 驱动程序提供了 [一些高级配置](https://github.com/go-gorm/mysql) 可以在初始化过程中使用，例如：
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -39,7 +39,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### 自定义驱动
 
-GORM allows to customize the MySQL driver with the `DriverName` option, for example:
+GORM 允许通过 `DriverName` 选项自定义 MySQL 驱动，例如：
 
 ```go
 import (
@@ -50,7 +50,7 @@ import (
 
 db, err := gorm.Open(mysql.New(mysql.Config{
   DriverName: "my_mysql_driver",
-  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name, refer https://github.com/go-sql-driver/mysql#dsn-data-source-name
+  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name, 详情参考：https://github.com/go-sql-driver/mysql#dsn-data-source-name
 }), &gorm.Config{})
 ```
 
@@ -95,7 +95,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### 自定义驱动
 
-GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
+GORM 允许通过 `DriverName` 选项自定义 PostgreSQL 驱动，例如：
 
 ```go
 import (
@@ -130,8 +130,8 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 
 ```go
 import (
-  "gorm.io/driver/sqlite" // Sqlite driver based on GGO
-  // "github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
+  "gorm.io/driver/sqlite" // 基于 GGO 的 Sqlite 驱动
+  // "github.com/glebarez/sqlite" // 纯 Go 实现的 SQLite 驱动, 详情参考： https://github.com/glebarez/sqlite
   "gorm.io/gorm"
 )
 
