@@ -9,7 +9,7 @@ layout: page
 
 例如，您的应用包含 user 和 credit card 模型，且每个 user 可以有多张 credit card。
 
-### Declare
+### 声明
 ```go
 // User 有多张 CreditCard，UserID 是外键
 type User struct {
@@ -24,9 +24,9 @@ type CreditCard struct {
 }
 ```
 
-### Retrieve
+### 检索
 ```go
-// Retrieve user list with eager loading credit cards
+// 检索用户列表并预加载信用卡
 func GetAll(db *gorm.DB) ([]User, error) {
     var users []User
     err := db.Model(&User{}).Preload("CreditCards").Find(&users).Error
