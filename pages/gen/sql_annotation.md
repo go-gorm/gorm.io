@@ -27,13 +27,13 @@ e.g:
 ```go
 type Querier interface {
   // SELECT * FROM @@table WHERE id=@id
-  GetByID(id int) (gen.T, error) // returns data as struct and error
+  GetByID(id int) (gen.T, error) // returns struct and error
 
   // SELECT * FROM @@table WHERE id=@id
   GetByID(id int) gen.T // returns data as struct
 
   // SELECT * FROM @@table WHERE id=@id
-  GetByID(id int) (gen.M, error) // returns data as map and error
+  GetByID(id int) (gen.M, error) // returns map and error
 
    // INSERT INTO @@table (name, age) VALUES (@name, @age)
   InsertValue(name string, age int) (gen.RowsAffected, error) // returns affected rows count and error
@@ -60,9 +60,9 @@ type Querier interface {
 
 ## Template Placeholder
 
-Gen provides few placeholders to generate dynamic & safe SQL
+Gen provides some placeholders to generate dynamic & safe SQL
 
-| Option     | Description                                    |
+| Name       | Description                                    |
 | ---        | ---                                            |
 | `@@table`  | escaped & quoted table name                    |
 | `@@<name>` | escaped & quoted table/column name from params |
@@ -96,7 +96,7 @@ func main() {
 
 ## Template Expression
 
-Gen provides expressions support for dynamic conditional SQL, currently support following expressions:
+Gen provides powerful expressions support for dynamic conditional SQL, currently support following expressions:
 
 * `if/else`
 * `where`
@@ -105,7 +105,7 @@ Gen provides expressions support for dynamic conditional SQL, currently support 
 
 ### `if/else`
 
-The `if/else` expression accept golang syntax as condition, it can be written like:
+The `if/else` expression allows to use golang syntax as condition, it can be written like:
 
 ```
 {{if cond1}}
@@ -146,6 +146,13 @@ type Querier interface {
 }
 ```
 
+How it can be used:
+
+```go
+query.User.QueryWith(&User{Name: "zhangqiang"})
+// SELECT * FROM users WHERE username="zhangqiang"
+```
+
 ### `where`
 
 The `where` expression make you write the `WHERE` clause for the SQL query easier, let take a simple case as example:
@@ -160,14 +167,14 @@ type Querier interface {
 }
 ```
 
-If you are using above tempalte to generate the query code, you can use it like:
+With the generated code, you can use it like:
 
 ```go
 query.User.Query(10)
 // SELECT * FROM users WHERE id=10
 ```
 
-Here is another complicated case, in this case, you will learn the `WHERE` clause only be inserted if there are any children expression matched and it can smartly trim uncessary `and`, `or`, `xor`, `,` inside the `where` clause.
+Here is another complicated case, in this case, you will learn the `WHERE` clause only be inserted if there are any children expressions matched and it can smartly trim uncessary `and`, `or`, `xor`, `,` inside the `where` clause.
 
 ```go
 type Querier interface {
@@ -180,7 +187,7 @@ type Querier interface {
   //      AND created_time < @end
   //    {{end}}
   //  {{end}}
-  FilterWithTime(start,end time.Time) ([]gen.T, error)
+  FilterWithTime(start, end time.Time) ([]gen.T, error)
 }
 ```
 
@@ -194,21 +201,21 @@ var (
 )
 
 query.User.FilterWithTime(since, end)
-// SELECT * FROM users WHERE created_time > "2022-10-01" AND created_time < "2022-10-10"
+// SELECT * FROM `users` WHERE created_time > "2022-10-01" AND created_time < "2022-10-10"
 
 query.User.FilterWithTime(since, zero)
-// SELECT * FROM users WHERE created_time > "2022-10-01"
+// SELECT * FROM `users` WHERE created_time > "2022-10-01"
 
 query.User.FilterWithTime(zero, end)
-// SELECT * FROM users WHERE created_time < "2022-10-10"
+// SELECT * FROM `users` WHERE created_time < "2022-10-10"
 
 query.User.FilterWithTime(zero, zero)
-// SELECT * FROM users
+// SELECT * FROM `users`
 ```
 
 ### `set`
 
-The `set` expression used to generate the `SET` clause for the SQL query, it will trim uncessary `,` smartly, for example:
+The `set` expression used to generate the `SET` clause for the SQL query, it will trim uncessary `,` automatically, for example:
 
 ```go
 // UPDATE @@table
@@ -236,7 +243,7 @@ query.User.Update(User{Age: 0}, 10)
 
 ### `for`
 
-The `for` expression iterates over a slice to generate the SQL, let's take an example:
+The `for` expression iterates over a slice to generate the SQL, let's explain by example
 
 ```go
 // SELECT * FROM @@table

@@ -1,5 +1,5 @@
 ---
-title: Query
+title: Gen Query
 layout: page
 ---
 
@@ -29,7 +29,7 @@ user, err := u.WithContext(ctx).WriteDB().Last()
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
-##### Retrieving objects with primary key
+### Retrieving objects with primary key
 
 ```go
 u := query.User
@@ -60,7 +60,21 @@ users, err := u.WithContext(ctx).Find()
 
 ## Conditions
 
-### String Conditions
+### Field Query Interfaces
+
+Gen generates type-safe interfaces each field, you can use them to generate SQL expressions
+
+| Field Type  | Supported  Interface                                      |
+| ----------  | ------------------------------------------------------------ |
+| generic     | IsNull/IsNotNull/Count/Eq/Neq/Gt/Gte/Lt/Lte/Like/Value/Sum/IfNull |
+| int         | Eq/Neq/Gt/Gte/Lt/Lte/In/NotIn/Between/NotBetween/Like/NotLike/Add/Sub/Mul/Div/Mod/FloorDiv/RightShift/LeftShift/BitXor/BitAnd/BitOr/BitFlip/Value/Zero/Sum/IfNull |
+| uint        | same with int                                                |
+| float       | Eq/Neq/Gt/Gte/Lt/Lte/In/NotIn/Between/NotBetween/Like/NotLike/Add/Sub/Mul/Div/FloorDiv/Floor/Value/Zero/Sum/IfNull |
+| string      | Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Like/NotLike/Regexp/NotRegxp/FindInSet/FindInSetWith/Value/Zero/IfNull |
+| bool        | Not/Is/And/Or/Xor/BitXor/BitAnd/BitOr/Value/Zero |
+| time        | Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Add/Sub/Date/DateDiff/DateFormat/Now/CurDate/CurTime/DayName/MonthName/Month/Day/Hour/Minute/Second/MicroSecond/DayOfWeek/DayOfMonth/FromDays/FromUnixtime/Value/Zero/Sum/IfNull |
+
+Here are some usage examples:
 
 ```go
 u := query.User
@@ -92,23 +106,6 @@ users, err := u.WithContext(ctx).Where(u.Birthday.Gt(birthTime).Find()
 // BETWEEN
 users, err := u.WithContext(ctx).Where(u.Birthday.Between(lastWeek, today)).Find()
 // SELECT * FROM users WHERE birthday BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
-```
-
-### Inline Condition
-
-```go
-u := query.User
-
-// Get by primary key if it were a non-integer type
-user, err := u.WithContext(ctx).Where(u.ID.Eq("string_primary_key")).First()
-// SELECT * FROM users WHERE id = 'string_primary_key';
-
-// Plain SQL
-users, err := u.WithContext(ctx).Where(u.Name.Eq("modi")).Find()
-// SELECT * FROM users WHERE name = "modi";
-
-users, err := u.WithContext(ctx).Where(u.Name.Neq("modi"), u.Age.Gt(17)).Find()
-// SELECT * FROM users WHERE name <> "modi" AND age > 17;
 ```
 
 ### Not Conditions
@@ -342,6 +339,102 @@ err := u.WithContext(ctx).Select(u.Name, e.Email).LeftJoin(e, e.UserID.EqCol(u.I
 
 // multiple joins with parameter
 users := u.WithContext(ctx).Join(e, e.UserID.EqCol(u.id), e.Email.Eq("modi@example.org")).Join(c, c.UserID.EqCol(u.ID)).Where(c.Number.Eq("411111111111")).Find()
+```
+
+### New Field Expiression
+
+Sometimes you may need to create a dynamic field for dynamically SQL generation
+
+| Field Type| Create Function                |
+| ----------| ------------------------------ |
+| generic   | NewField                       |
+| int       | NewInt/NewInt8/.../NewInt64    |
+| uint      | NewUint/NewUint8/.../NewUint64 |
+| float     | NewFloat32/NewFloat64          |
+| string    | NewString/NewBytes             |
+| bool      | NewBool                        |
+| time      | NewTime                        |
+
+Usage example:
+
+#### Generic Fields
+
+```go
+import "gorm.io/gen/field"
+
+// create a new generic field map to `generic_a`
+f := field.NewField("table_name", "generic")
+// `table_name`.`generic` IS NULL
+f.IsNull()
+
+// compare fields
+id := field.NewField("user", "id")
+anotherID := field.NewField("another", "id")
+// `user`.`id` = `another`.`id`
+id.EqCol(anotherID)
+```
+
+#### `int/uint/float` Fields
+
+```go
+// int field
+f := field.NewInt("user", "id")
+// `user`.`id` = 123
+f.Eq(123)
+// `user`.`id` DESC
+f.Desc()
+// `user`.`id` AS `user_id`
+f.As("user_id")
+// COUNT(`user`.`id`)
+f.Count()
+// SUM(`user`.`id`)
+f.Sum()
+// SUM(`user`.`id`) > 123
+f.Sum().Gt(123)
+// ((`user`.`id`+1)*2)/3
+f.Add(1).Mul(2).Div(3),
+// `user`.`id` <<< 3
+f.LeftShift(3)
+```
+
+#### String Fields
+
+```go
+name := field.NewStirng("user", "name")
+// `user`.`name` = "modi"
+name.Eq("modi")
+// `user`.`name` LIKE %modi%
+name.Like("%modi%")
+// `user`.`name` REGEXP .*
+name.Regexp(".*")
+// `user`.`name` FIND_IN_SET(`name`,"modi,jinzhu,zhangqiang")
+name.FindInSet("modi,jinzhu,zhangqiang")
+// `uesr`.`name` CONCAT("[",name,"]")
+name.Concat("[", "]")
+```
+
+#### Time Fields
+
+```go
+birth := field.NewStirng("user", "birth")
+// `user`.`birth` = ? (now)
+birth.Eq(time.Now())
+// DATE_ADD(`user`.`birth`, INTERVAL ? MICROSECOND)
+birth.Add(time.Duration(time.Hour).Microseconds())
+// DATE_FORMAT(`user`.`birth`, "%W %M %Y")
+birth.DateFormat("%W %M %Y")
+```
+
+#### Bool Fields
+
+```go
+active := field.NewBool("user", "active")
+// `user`.`active` = TRUE
+active.Is(true)
+// NOT `user`.`active`
+active.Not()
+// `user`.`active` AND TRUE
+active.And(true)
 ```
 
 ## SubQuery

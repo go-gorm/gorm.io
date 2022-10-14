@@ -1,9 +1,9 @@
 ---
-title: Transaction
+title: Gen Transaction
 layout: page
 ---
 
-To perform a set of operations within a transaction, the general flow is as below.
+The process of using transaction functions is as follows
 
 ```go
 q := query.Use(db)
@@ -34,8 +34,8 @@ q.Transaction(func(tx *query.Query) error {
     return errors.New("rollback user2") // Rollback user2
   })
 
-  tx.Transaction(func(tx2 *query.Query) error {
-    tx2.User.WithContext(ctx).Create(&user3)
+  tx.Transaction(func(tx3 *query.Query) error {
+    tx3.User.WithContext(ctx).Create(&user3)
     return nil
   })
 

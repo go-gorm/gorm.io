@@ -66,5 +66,4 @@ gen:
   database_to_structs:
     overview: database_to_structs.html
   tutorials:
-    field_expressions: fields.html
     gorm_clause: clause.html

@@ -1,5 +1,5 @@
 ---
-title: Update
+title: Gen Update
 layout: page
 ---
 

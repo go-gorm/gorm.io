@@ -9,10 +9,10 @@ layout: page
 
 ## Overview
 
-- Idiomatic & Reusable API with Dynamic Raw SQL
-- 100% Type-safe Common & Basic DAO API without `interface{}`
-- Database To Golang Struct follows GORM conventions
-- GORM under the hood, supports all DBMS, features that GORM supports
+- Idiomatic & Reusable API from Dynamic Raw SQL
+- 100% Type-safe DAO API without `interface{}`
+- Database To Struct follows GORM conventions
+- GORM under the hood, supports all features, plugins, DBMS that GORM supports
 
 ## Install
 
@@ -33,27 +33,27 @@ import "gorm.io/gen"
 
 // Dynamic SQL
 type Querier interface {
-    // SELECT * FROM @@table WHERE name = @name{{if role !=""}} AND role = @role{{end}}
-    FilterWithNameAndRole(name, role string) ([]gen.T, error)
+  // SELECT * FROM @@table WHERE name = @name{{if role !=""}} AND role = @role{{end}}
+  FilterWithNameAndRole(name, role string) ([]gen.T, error)
 }
 
 func main() {
-    g := gen.NewGenerator(gen.Config{
-        OutPath: "../query",
-        Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
-    })
+  g := gen.NewGenerator(gen.Config{
+    OutPath: "../query",
+    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
+  })
 
-    // gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
-    g.UseDB(gormdb) // reuse your gorm db
+  // gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
+  g.UseDB(gormdb) // reuse your gorm db
 
-    // Generate basic type-safe DAO API for struct `model.User` following conventions
-    g.ApplyBasic(model.User{})
+  // Generate basic type-safe DAO API for struct `model.User` following conventions
+  g.ApplyBasic(model.User{})
 
-    // Generate Type Safe API with Dynamic SQL defined on Querier interface for `model.User` and `model.Company`
-    g.ApplyInterface(func(Querier){}, model.User{}, model.Company{})
+  // Generate Type Safe API with Dynamic SQL defined on Querier interface for `model.User` and `model.Company`
+  g.ApplyInterface(func(Querier){}, model.User{}, model.Company{})
 
-    // Generate the code
-    g.Execute()
+  // Generate the code
+  g.Execute()
 }
 ```
 
@@ -67,10 +67,10 @@ func main() {
 import "your_project/query"
 
 func main() {
-    // Basic DAO API
-    user, err := query.User.Where(u.Name.Eq("modi")).First()
+  // Basic DAO API
+  user, err := query.User.Where(u.Name.Eq("modi")).First()
 
-    // Dynamic SQL API
-    users, err := query.User.FilterWithNameAndRole("modi", "admin")
+  // Dynamic SQL API
+  users, err := query.User.FilterWithNameAndRole("modi", "admin")
 }
 ```

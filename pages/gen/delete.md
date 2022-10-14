@@ -1,9 +1,11 @@
 ---
-title: Delete
+title: Gen Delete
 layout: page
 ---
 
 ## Delete record
+
+When deleting a record, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, for example:
 
 ```go
 e := query.Email

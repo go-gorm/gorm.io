@@ -12,9 +12,9 @@ Not only your tuned SQL queries but also SQL snippets are allowed to be shared a
 ```go
 type Querier interface {
   // SELECT * FROM @@table WHERE id=@id
-  GetByID(id int) (gen.T, error) // GetByID query data by id and return it as struct
+  GetByID(id int) (gen.T, error) // GetByID query data by id and return it as *struct*
 
-  // GetUsersByRole query data by roles and return it as slice of pointer
+  // GetUsersByRole query data by roles and return it as *slice of pointer*
   //   (The below blank line is required to comment for the generated method)
   //
   // SELECT * FROM @@table WHERE role IN @rolesName
@@ -52,7 +52,7 @@ func main() {
 
 ## Code Snippets
 
-Code Snippets usually used with the [DAO interface](./dao.html)
+Code Snippets are usually used with the [DAO interface](./dao.html) together
 
 ```go
 type Querier interface {
