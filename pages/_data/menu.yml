@@ -1,5 +1,5 @@
 docs: /docs/
+gen: /gen/
 community: /community.html
 api: https://pkg.go.dev/gorm.io/gorm
 contribute: /contribute.html
-gen: /gen/

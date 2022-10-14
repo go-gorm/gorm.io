@@ -1,9 +1,13 @@
 ---
-title: Clause
+title: Clauses
 layout: page
 ---
 
-#### Upsert
+Gen also support GORM Clauses, their use is similar to Gorm.
+
+## Upsert
+
+Gen provides compatible Upsert support for different databases [like GORM](../docs/create.html#upsert)
 
 ```go
 u := query.User
@@ -15,9 +19,9 @@ u.Save(&mode)
 u.Clauses(clause.OnConflict{UpdateAll: true}).Create(value).Error
 ```
 
-#### Hints
+## Hints
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
+Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with [gorm.io/hints](../docs/hints.html), e.g:
 
 ```go
 import "gorm.io/hints"
@@ -41,4 +45,3 @@ users, err := u.WithContext(ctx).Clauses(hints.UseIndex("idx_user_name")).Find()
 users, err := u.WithContext(ctx).Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find()
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
-

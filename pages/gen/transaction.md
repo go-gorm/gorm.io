@@ -1,11 +1,9 @@
 ---
-title: Transaction
+title: Gen Transaction
 layout: page
 ---
 
-##### Transaction
-
-To perform a set of operations within a transaction, the general flow is as below.
+The process of using transaction functions is as follows
 
 ```go
 q := query.Use(db)
@@ -21,7 +19,7 @@ q.Transaction(func(tx *query.Query) error {
 })
 ```
 
-###### Nested Transactions
+## Nested Transactions
 
 GEN supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
 
@@ -36,8 +34,8 @@ q.Transaction(func(tx *query.Query) error {
     return errors.New("rollback user2") // Rollback user2
   })
 
-  tx.Transaction(func(tx2 *query.Query) error {
-    tx2.User.WithContext(ctx).Create(&user3)
+  tx.Transaction(func(tx3 *query.Query) error {
+    tx3.User.WithContext(ctx).Create(&user3)
     return nil
   })
 
@@ -47,7 +45,7 @@ q.Transaction(func(tx *query.Query) error {
 // Commit user1, user3
 ```
 
-###### Transactions by manual
+## Transactions by manual
 
 ```go
 q := query.Use(db)
@@ -88,7 +86,7 @@ func doSomething(ctx context.Context, users ...*model.User) (err error) {
 }
 ```
 
-###### SavePoint/RollbackTo
+## SavePoint/RollbackTo
 
 GEN provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
 

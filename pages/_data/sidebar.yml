@@ -52,21 +52,18 @@ docs:
 gen:
   getting_started:
     overview: index.html
-  dao_generator:
+  dynamic_sql:
+    overview: dynamic_sql.html
+    annotation: sql_annotation.html
+  dao:
     overview: dao.html
     create: create.html
-    update: update.html
     query: query.html
+    update: update.html
     delete: delete.html
+    transaction: transaction.html
     associations: associations.html
-  type_safe_sql:
-    overview: type_safe_sql.html
-    dynamic_sql: dynamic_sql.html
   database_to_structs:
     overview: database_to_structs.html
-    fields: fields.html
-    methods: methods.html
-  advanced_topics:
+  tutorials:
     gorm_clause: clause.html
-    transaction: transaction.html
-    plugins: /docs/write_plugins.html

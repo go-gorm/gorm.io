@@ -1,14 +1,12 @@
 ---
-title: Gen Associations
+title: Associations
 layout: page
 ---
-
-#### Association
 
 GEN will auto-save associations as GORM do. The relationships (BelongsTo/HasOne/HasMany/Many2Many) reuse GORM's tag.
 This feature only support exist model for now.
 
-##### Relation
+## Relation
 
 There are 4 kind of relationship.
 
@@ -21,7 +19,7 @@ const (
 )
 ```
 
-###### Relate to exist model
+### Relate to exist model
 
 ```go
 package model
@@ -58,7 +56,7 @@ type creditCard struct{
 }
 ```
 
-###### Relate to table in database
+### Relate to table in database
 
 The association have to be speified by `gen.FieldRelate`
 
@@ -110,7 +108,7 @@ customer := g.GenerateModel("customers", gen.FieldRelateModel(field.HasMany, "Cr
 g.ApplyBasic(custormer)
 ```
 
-###### Relate Config
+### Relate Config
 
 ```go
 type RelateConfig struct {
@@ -126,9 +124,9 @@ type RelateConfig struct {
 }
 ```
 
-##### Operation
+## Operation
 
-###### Skip Auto Create/Update
+### Skip Auto Create/Update
 
 ```go
 user := model.User{
@@ -162,7 +160,7 @@ u.WithContext(ctx).Omit(field.AssociationFields).Create(&user)
 
 Method `Field` will join a serious field name with ''.", for example: `u.BillingAddress.Field("Address1", "Street")` equals to `BillingAddress.Address1.Street`
 
-###### Find Associations
+### Find Associations
 
 Find matched associations
 
@@ -181,7 +179,7 @@ u := q.User
 languages, err = u.Languages.Where(q.Language.Name.In([]string{"ZH","EN"})).Model(&user).Find()
 ```
 
-###### Append Associations
+### Append Associations
 
 Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
 
@@ -195,7 +193,7 @@ u.Languages.Model(&user).Append(&Language{Name: "DE"})
 u.CreditCards.Model(&user).Append(&CreditCard{Number: "411111111111"})
 ```
 
-###### Replace Associations
+### Replace Associations
 
 Replace current associations with new ones
 
@@ -203,7 +201,7 @@ Replace current associations with new ones
 u.Languages.Model(&user).Replace(&languageZH, &languageEN)
 ```
 
-###### Delete Associations
+### Delete Associations
 
 Remove the relationship between source & arguments if exists, only delete the reference, won’t delete those objects from DB.
 
@@ -215,7 +213,7 @@ u.Languages.Model(&user).Delete(&languageZH, &languageEN)
 u.Languages.Model(&user).Delete([]*Language{&languageZH, &languageEN}...)
 ```
 
-###### Clear Associations
+### Clear Associations
 
 Remove all reference between source & association, won’t delete those associations
 
@@ -223,7 +221,7 @@ Remove all reference between source & association, won’t delete those associat
 u.Languages.Model(&user).Clear()
 ```
 
-###### Count Associations
+### Count Associations
 
 Return the count of current associations
 
@@ -231,7 +229,7 @@ Return the count of current associations
 u.Languages.Model(&user).Count()
 ```
 
-###### Delete with Select
+### Delete with Select
 
 You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
 
@@ -248,11 +246,11 @@ db.Select(u.Orders.Field(), u.CreditCards.Field()).Delete(&user)
 db.Select(field.AssociationFields).Delete(&user)
 ```
 
-##### Preloading
+## Preloading
 
 This feature only support exist model for now.
 
-###### Preload
+### Preload
 
 GEN allows eager loading relations in other SQL with `Preload`, for example:
 
@@ -285,7 +283,7 @@ users, err := u.WithContext(ctx).Preload(u.Orders).Preload(u.Profile).Preload(u.
 // SELECT * FROM roles WHERE id IN (4,5,6); // belongs to
 ```
 
-###### Preload All
+### Preload All
 
 `clause.Associations` can work with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
 
@@ -308,7 +306,7 @@ users, err := u.WithContext(ctx).Preload(field.Associations).Find()
 users, err := u.WithContext(ctx).Preload(u.Orders.OrderItems.Product).Find()
 ```
 
-###### Preload with select
+### Preload with select
 
 Specify selected columns with method `Select`. Foregin key must be selected.
 
@@ -333,7 +331,7 @@ users, err := u.WithContext(ctx).Where(c.ID.Eq(1)).Preload(u.CreditCards.Select(
 // SELECT * FROM `customers` WHERE `customers`.`id` = 1 AND `customers`.`deleted_at` IS NULL LIMIT 1
 ```
 
-###### Preload with conditions
+### Preload with conditions
 
 GEN allows Preload associations with conditions, it works similar to Inline Conditions.
 
@@ -368,7 +366,7 @@ user, err := u.WithContext(ctx).Where(u.ID.Eq(1)).Preload(u.Orders.Offset(100).L
 // SELECT * FROM `users` WHERE `users`.`id` = 1 LIMIT 1
 ```
 
-###### Nested Preloading
+### Nested Preloading
 
 GEN supports nested preloading, for example:
 

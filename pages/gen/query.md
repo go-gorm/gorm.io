@@ -3,9 +3,7 @@ title: Gen Query
 layout: page
 ---
 
-#### Query
-
-##### Retrieving a single object
+## Retrieving a single object
 
 Generated code provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
 
@@ -31,7 +29,7 @@ user, err := u.WithContext(ctx).WriteDB().Last()
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
-##### Retrieving objects with primary key
+### Retrieving objects with primary key
 
 ```go
 u := query.User
@@ -50,7 +48,7 @@ user, err := u.WithContext(ctx).Where(u.ID.Eq("1b74413f-f3b8-409f-ac47-e8c062e34
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-##### Retrieving all objects
+## Retrieving all objects
 
 ```go
 u := query.User
@@ -60,9 +58,23 @@ users, err := u.WithContext(ctx).Find()
 // SELECT * FROM users;
 ```
 
-##### Conditions
+## Conditions
 
-###### String Conditions
+### Field Query Interfaces
+
+Gen generates type-safe interfaces each field, you can use them to generate SQL expressions
+
+| Field Type  | Supported  Interface                                      |
+| ----------  | ------------------------------------------------------------ |
+| generic     | IsNull/IsNotNull/Count/Eq/Neq/Gt/Gte/Lt/Lte/Like/Value/Sum/IfNull |
+| int         | Eq/Neq/Gt/Gte/Lt/Lte/In/NotIn/Between/NotBetween/Like/NotLike/Add/Sub/Mul/Div/Mod/FloorDiv/RightShift/LeftShift/BitXor/BitAnd/BitOr/BitFlip/Value/Zero/Sum/IfNull |
+| uint        | same with int                                                |
+| float       | Eq/Neq/Gt/Gte/Lt/Lte/In/NotIn/Between/NotBetween/Like/NotLike/Add/Sub/Mul/Div/FloorDiv/Floor/Value/Zero/Sum/IfNull |
+| string      | Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Like/NotLike/Regexp/NotRegxp/FindInSet/FindInSetWith/Value/Zero/IfNull |
+| bool        | Not/Is/And/Or/Xor/BitXor/BitAnd/BitOr/Value/Zero |
+| time        | Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Add/Sub/Date/DateDiff/DateFormat/Now/CurDate/CurTime/DayName/MonthName/Month/Day/Hour/Minute/Second/MicroSecond/DayOfWeek/DayOfMonth/FromDays/FromUnixtime/Value/Zero/Sum/IfNull |
+
+Here are some usage examples:
 
 ```go
 u := query.User
@@ -96,24 +108,7 @@ users, err := u.WithContext(ctx).Where(u.Birthday.Between(lastWeek, today)).Find
 // SELECT * FROM users WHERE birthday BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-###### Inline Condition
-
-```go
-u := query.User
-
-// Get by primary key if it were a non-integer type
-user, err := u.WithContext(ctx).Where(u.ID.Eq("string_primary_key")).First()
-// SELECT * FROM users WHERE id = 'string_primary_key';
-
-// Plain SQL
-users, err := u.WithContext(ctx).Where(u.Name.Eq("modi")).Find()
-// SELECT * FROM users WHERE name = "modi";
-
-users, err := u.WithContext(ctx).Where(u.Name.Neq("modi"), u.Age.Gt(17)).Find()
-// SELECT * FROM users WHERE name <> "modi" AND age > 17;
-```
-
-###### Not Conditions
+### Not Conditions
 
 Build NOT conditions, works similar to `Where`
 
@@ -132,7 +127,7 @@ user, err := u.WithContext(ctx).Not(u.ID.In(1,2,3)).First()
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-###### Or Conditions
+### Or Conditions
 
 ```go
 u := query.User
@@ -141,7 +136,7 @@ users, err := u.WithContext(ctx).Where(u.Role.Eq("admin")).Or(u.Role.Eq("super_a
 // SELECT * FROM users WHERE role = 'admin' OR role = 'super_admin';
 ```
 
-###### Group Conditions
+### Group Conditions
 
 Easier to write complicated SQL query with Group Conditions
 
@@ -159,7 +154,7 @@ pizzas, err := pd.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-###### Selecting Specific Fields
+### Selecting Specific Fields
 
 `Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
 
@@ -173,7 +168,7 @@ u.WithContext(ctx).Select(u.Age.Avg()).Rows()
 // SELECT Avg(age) FROM users;
 ```
 
-###### Tuple Query
+### Tuple Query
 
 ```go
 u := query.User
@@ -182,7 +177,7 @@ users, err := u.WithContext(ctx).Where(u.WithContext(ctx).Columns(u.ID, u.Name).
 // SELECT * FROM `users` WHERE (`id`, `name`) IN ((1,'humodi'),(2,'tom'));
 ```
 
-###### JSON Query
+### JSON Query
 
 ```go
 u := query.User
@@ -191,7 +186,7 @@ users, err := u.WithContext(ctx).Where(gen.Cond(datatypes.JSONQuery("attributes"
 // SELECT * FROM `users` WHERE JSON_EXTRACT(`attributes`,'$.role') IS NOT NULL;
 ```
 
-###### Order
+### Order
 
 Specify order when retrieving records from the database
 
@@ -224,7 +219,7 @@ users, err := u.WithContext(ctx).Order(orderCol.Desc()).Find()
 // SELECT * FROM users ORDER BY age DESC;
 ```
 
-###### Limit & Offset
+### Limit & Offset
 
 `Limit` specify the max number of records to retrieve
 `Offset` specify the number of records to skip before starting to return the records
@@ -250,7 +245,7 @@ users, err := u.WithContext(ctx).Offset(10).Offset(-1).Find()
 // SELECT * FROM users;
 ```
 
-###### Group By & Having
+### Group By & Having
 
 ```go
 u := query.User
@@ -288,7 +283,7 @@ var results []struct {
 o.WithContext(ctx).Select(o.CreateAt.Date().As("date"), o.WithContext(ctx).Amount.Sum().As("total")).Group(o.CreateAt.Date()).Having(u.Amount.Sum().Gt(100)).Scan(&results)
 ```
 
-###### Distinct
+### Distinct
 
 Selecting distinct values from the model
 
@@ -300,7 +295,7 @@ users, err := u.WithContext(ctx).Distinct(u.Name, u.Age).Order(u.Name, u.Age.Des
 
 `Distinct` works with `Pluck` and `Count` too
 
-###### Joins
+### Joins
 
 Specify Joins conditions
 
@@ -346,7 +341,103 @@ err := u.WithContext(ctx).Select(u.Name, e.Email).LeftJoin(e, e.UserID.EqCol(u.I
 users := u.WithContext(ctx).Join(e, e.UserID.EqCol(u.id), e.Email.Eq("modi@example.org")).Join(c, c.UserID.EqCol(u.ID)).Where(c.Number.Eq("411111111111")).Find()
 ```
 
-##### SubQuery
+### New Field Expiression
+
+Sometimes you may need to create a dynamic field for dynamically SQL generation
+
+| Field Type| Create Function                |
+| ----------| ------------------------------ |
+| generic   | NewField                       |
+| int       | NewInt/NewInt8/.../NewInt64    |
+| uint      | NewUint/NewUint8/.../NewUint64 |
+| float     | NewFloat32/NewFloat64          |
+| string    | NewString/NewBytes             |
+| bool      | NewBool                        |
+| time      | NewTime                        |
+
+Usage example:
+
+#### Generic Fields
+
+```go
+import "gorm.io/gen/field"
+
+// create a new generic field map to `generic_a`
+f := field.NewField("table_name", "generic")
+// `table_name`.`generic` IS NULL
+f.IsNull()
+
+// compare fields
+id := field.NewField("user", "id")
+anotherID := field.NewField("another", "id")
+// `user`.`id` = `another`.`id`
+id.EqCol(anotherID)
+```
+
+#### `int/uint/float` Fields
+
+```go
+// int field
+f := field.NewInt("user", "id")
+// `user`.`id` = 123
+f.Eq(123)
+// `user`.`id` DESC
+f.Desc()
+// `user`.`id` AS `user_id`
+f.As("user_id")
+// COUNT(`user`.`id`)
+f.Count()
+// SUM(`user`.`id`)
+f.Sum()
+// SUM(`user`.`id`) > 123
+f.Sum().Gt(123)
+// ((`user`.`id`+1)*2)/3
+f.Add(1).Mul(2).Div(3),
+// `user`.`id` <<< 3
+f.LeftShift(3)
+```
+
+#### String Fields
+
+```go
+name := field.NewStirng("user", "name")
+// `user`.`name` = "modi"
+name.Eq("modi")
+// `user`.`name` LIKE %modi%
+name.Like("%modi%")
+// `user`.`name` REGEXP .*
+name.Regexp(".*")
+// `user`.`name` FIND_IN_SET(`name`,"modi,jinzhu,zhangqiang")
+name.FindInSet("modi,jinzhu,zhangqiang")
+// `uesr`.`name` CONCAT("[",name,"]")
+name.Concat("[", "]")
+```
+
+#### Time Fields
+
+```go
+birth := field.NewStirng("user", "birth")
+// `user`.`birth` = ? (now)
+birth.Eq(time.Now())
+// DATE_ADD(`user`.`birth`, INTERVAL ? MICROSECOND)
+birth.Add(time.Duration(time.Hour).Microseconds())
+// DATE_FORMAT(`user`.`birth`, "%W %M %Y")
+birth.DateFormat("%W %M %Y")
+```
+
+#### Bool Fields
+
+```go
+active := field.NewBool("user", "active")
+// `user`.`active` = TRUE
+active.Is(true)
+// NOT `user`.`active`
+active.Not()
+// `user`.`active` AND TRUE
+active.And(true)
+```
+
+## SubQuery
 
 A subquery can be nested within a query, GEN can generate subquery when using a `Dao` object as param
 
@@ -368,7 +459,7 @@ u.WithContext(ctx).Exists(subQuery1).Not(u.WithContext(ctx).Exists(subQuery2)).F
 // SELECT * FROM `users` WHERE EXISTS (SELECT `orders`.`id` FROM `orders` WHERE `orders`.`user_id` = `users`.`id` AND `orders`.`amount` > 100 AND `orders`.`deleted_at` IS NULL) AND NOT EXISTS (SELECT `orders`.`id` FROM `orders` WHERE `orders`.`user_id` = `users`.`id` AND `orders`.`amount` > 200 AND `orders`.`deleted_at` IS NULL) AND `users`.`deleted_at` IS NULL
 ```
 
-###### From SubQuery
+### From SubQuery
 
 GORM allows you using subquery in FROM clause with method `Table`, for example:
 

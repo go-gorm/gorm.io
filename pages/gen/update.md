@@ -3,9 +3,7 @@ title: Gen Update
 layout: page
 ---
 
-#### Update
-
-##### Update single column
+## Update single column
 
 When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, for example:
 
@@ -26,7 +24,7 @@ u.WithContext(ctx).Where(u.Activate.Is(true)).UpdateSimple(u.Age.Zero())
 // UPDATE users SET age=0, updated_at='2013-11-17 21:34:10' WHERE active=true;
 ```
 
-##### Updates multiple columns
+## Updates multiple columns
 
 `Updates` supports update with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
 
@@ -51,7 +49,7 @@ u.WithContext(ctx).Where(u.Activate.Is(true)).UpdateSimple(u.Age.Value(17), u.Nu
 
 > **NOTE** When update with struct, GEN will only update non-zero fields, you might want to use `map` to update attributes or use `Select` to specify fields to update
 
-##### Update selected fields
+## Update selected fields
 
 If you want to update selected fields or ignore some fields when updating, you can use `Select`, `Omit`
 
@@ -72,7 +70,7 @@ result.RowsAffected // affect rows number
 err                 // error
 ```
 
-###### Update from SubQuery
+## Update from SubQuery
 
 Update a table by using SubQuery
 
@@ -86,7 +84,7 @@ u.WithContext(ctx).Update(u.CompanyName, c.Select(c.Name).Where(c.ID.EqCol(u.Com
 u.WithContext(ctx).Where(u.Name.Eq("modi")).Update(u.CompanyName, c.Select(c.Name).Where(c.ID.EqCol(u.CompanyID)))
 ```
 
-###### Update multiple columns from SubQuery
+## Update multiple columns from SubQuery
 
 Update multiple columns by using SubQuery (for MySQL):
 
@@ -104,9 +102,9 @@ UpdateSimple(
   ua.Phone.SetCol(ca.Phone),
 )
 // UPDATE `users` AS `u`,(
-//   SELECT `company`.`id`,`company`.`address`,`company`.`phone` 
+//   SELECT `company`.`id`,`company`.`address`,`company`.`phone`
 //   FROM `company` WHERE `company`.`id` > 100 AND `company`.`deleted_at` IS NULL
-// ) AS `c` 
+// ) AS `c`
 // SET `u`.`address`=`c`.`address`,`c`.`phone`=`c`.`phone`,`updated_at`='2021-11-11 11:11:11.111'
 // WHERE `u`.`company_id` = `c`.`id`
 ```
