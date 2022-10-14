@@ -36,7 +36,7 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 
 ## 更新多列
 
-`Updates` supports updating with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
+`Updates` 方法支持 `struct` 和 `map[string]interface{}` 参数。当使用 `struct` 更新时，默认情况下，GORM 只会更新非零值的字段
 
 ```go
 // 根据 `struct` 更新属性，只会更新非零值的字段
