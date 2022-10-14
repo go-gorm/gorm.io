@@ -9,9 +9,9 @@ layout: page
 
 例如，您的应用包含 user 和 credit card 模型，且每个 user 只能有一张 credit card。
 
-### Declare
+### 声明
 ```go
-// User has one CreditCard, UserID is the foreign key
+// User 有一张 CreditCard，UserID 是外键
 type User struct {
   gorm.Model
   CreditCard CreditCard
@@ -24,9 +24,9 @@ type CreditCard struct {
 }
 ```
 
-### Retrieve
+### 检索
 ```go
-// Retrieve user list with eager loading credit card
+// 检索用户列表并预加载信用卡
 func GetAll(db *gorm.DB) ([]User, error) {
     var users []User
     err := db.Model(&User{}).Preload("CreditCard").Find(&users).Error
@@ -47,8 +47,7 @@ func GetAll(db *gorm.DB) ([]User, error) {
 ```go
 type User struct {
   gorm.Model
-  CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // use UserName as foreign key
+  CreditCard CreditCard `gorm:"foreignKey:UserName"` // 使用 UserName 作为外键
 }
 
 type CreditCard struct {
