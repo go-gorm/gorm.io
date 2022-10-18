@@ -38,6 +38,7 @@ layout: page
 * [Driver sqlite Pure-Go](https://github.com/glebarez/sqlite)
 * [Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
 * [gorm-cache - GORM query cache plugin](https://github.com/liyuan1125/gorm-cache)
+* [deepgorm - Nested map filtering](https://github.com/survivorbat/gorm-deep-filtering)
 
 ## <span id="contribute">Kontirbusi ke halamain ini</span>
 
