@@ -1,21 +1,20 @@
 ---
-title: GenTool
+title: Gen Tool
 layout: page
 ---
 
-Install GEN as a binary tool
+Gen Tool is a single binary without dependencies can be used to generate structs from database
 
-## install
+## Install
 
 ```shell
- go install gorm.io/gen/tools/gentool@latest
+go install gorm.io/gen/tools/gentool@latest
 ```
 
-## usage
+## Usage
 
 ```shell
-
- gentool -h  
+ gentool -h
 
  Usage of gentool:
   -db string
@@ -44,79 +43,66 @@ Install GEN as a binary tool
         detect integer field's unsigned type, adjust generated data type
 
 ```
-#### c
-default "" Is path for gen.yml Replace the command line with a configuration file The command line is the highest priority
 
+#### c
+
+Configuration file name, default value "", command line options have higher priority than configuration file.
 
 #### db
 
-default:mysql
-
-input mysql or postgres or sqlite or sqlserver.
-
-consult : https://gorm.io/docs/connecting_to_the_database.html
+Specify dirver dialector, default value "mysql", refer: https://gorm.io/docs/connecting_to_the_database.html
 
 #### dsn
 
-You can use all gorm's dsn.
-
-consult : https://gorm.io/docs/connecting_to_the_database.html
+DSN that used to connect database, refer: https://gorm.io/docs/connecting_to_the_database.html
 
 #### fieldNullable
 
-generate with pointer when field is nullable
+Generate with pointer when field is nullable
 
 #### fieldWithIndexTag
 
-generate field with gorm index tag
+Generate field with gorm index tag
 
 #### fieldWithTypeTag
 
-generate field with gorm column type tag
+Generate field with gorm column type tag
 
 #### modelPkgName
 
-defalut table name.
-
-generated model code's package name.
+Generated model code's package name.
 
 #### outFile
 
-query code file name, default: gen.go
+Genrated query code file name, default: gen.go
 
 #### outPath
 
-specify a directory for output (default "./dao/query")
+Specify a directory for output (default "./dao/query")
 
 #### tables
 
-Value : enter the required data table or leave it blank.
+Specify tables want to genrated from, default all tables.
 
 eg :
 
-​       --tables="orders" #orders table
-
-​       --tables="orders,users" #orders table and users table
-
-​       --tables=""          # All data tables in the database.
+    --tables="orders"       # generate from `orders`
+    
+    --tables="orders,users" # generate from `orders` and `users`
+    
+    --tables=""             # generate from all tables
 
 Generate some tables code.
 
 #### withUnitTest
 
-Value : False / True
-
-Generate unit test.
+Generate unit test, default value `false`, options: `false` / `true`
 
 #### fieldSignable
 
-Value : False / True
+Use signable datatype as field type, default value `false`, options: `false` / `true`
 
-detect integer field's unsigned type, adjust generated data type
-
-
-
-### example
+### Example
 
 ```shell
 gentool -dsn "user:pwd@tcp(localhost:3306)/database?charset=utf8mb4&parseTime=True&loc=Local" -tables "orders,doctor"
