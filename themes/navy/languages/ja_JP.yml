@@ -82,6 +82,7 @@ sidebar:
     dynamic_sql: 動的SQL
     annotation: Annotation
     database_to_structs: Database To Structs
+    gentool: Gen Tool
     tutorials: Tutorials
     gorm_clause: GORM Clause
     transaction: トランザクション
