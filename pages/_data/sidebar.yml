@@ -65,5 +65,6 @@ gen:
     associations: associations.html
   database_to_structs:
     overview: database_to_structs.html
+    gentool: gen_tool.html
   tutorials:
     gorm_clause: clause.html
