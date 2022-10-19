@@ -38,6 +38,7 @@ layout: page
 * [纯 Go sqlite 驱动](https://github.com/glebarez/sqlite)
 * [关联用户的角色和权限](https://github.com/Permify/permify-gorm)
 * [gorm-cache - GORM 查询缓存插件](https://github.com/liyuan1125/gorm-cache)
+* [deepgorm - Nested map filtering](https://github.com/survivorbat/gorm-deep-filtering)
 
 ## <span id="contribute">完善本页面</span>
 
