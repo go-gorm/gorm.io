@@ -2,7 +2,7 @@
 <html lang="ko_KR">
 <head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
-  <title>GenTool | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <title>Gen Tool | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Canonical links -->
@@ -47,15 +47,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="Install GEN as a binary tool installgo install gorm.io&#x2F;gen&#x2F;tools&#x2F;gentool@latest  usagegentool -h  Usage of gentool: -db string       input mysql or postgres or sqlite or sqlserver. consult[https:&#x2F;&#x2F;gor">
+  <meta name="description" content="Gen Tool is a single binary without dependencies can be used to generate structs from database Installgo install gorm.io&#x2F;gen&#x2F;tools&#x2F;gentool@latest  Usagegentool -hUsage of gentool: -db string       inp">
 <meta property="og:type" content="website">
-<meta property="og:title" content="GenTool">
+<meta property="og:title" content="Gen Tool">
 <meta property="og:url" content="https://gorm.io/ko_KR/gen/gen_tool.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="Install GEN as a binary tool installgo install gorm.io&#x2F;gen&#x2F;tools&#x2F;gentool@latest  usagegentool -h  Usage of gentool: -db string       input mysql or postgres or sqlite or sqlserver. consult[https:&#x2F;&#x2F;gor">
+<meta property="og:description" content="Gen Tool is a single binary without dependencies can be used to generate structs from database Installgo install gorm.io&#x2F;gen&#x2F;tools&#x2F;gentool@latest  Usagegentool -hUsage of gentool: -db string       inp">
 <meta property="og:locale" content="ko_KR">
-<meta property="article:published_time" content="2022-10-19T03:54:24.169Z">
-<meta property="article:modified_time" content="2022-10-19T03:54:24.169Z">
+<meta property="article:published_time" content="2022-10-19T06:48:49.305Z">
+<meta property="article:modified_time" content="2022-10-19T06:48:49.305Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -128,46 +128,45 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <div class="article">
             <div class="inner">
               <header class="article-header">
-                <h1 class="article-title" itemprop="name">GenTool</h1>
+                <h1 class="article-title" itemprop="name">Gen Tool</h1>
                 
                 <a target="_blank" rel="noopener" href="https://translate.gorm.io/project/go-gorm/ko" class="article-edit-link" title="페이지 수정"><i class="fa fa-pencil"></i></a>
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>Install GEN as a binary tool</p>
-<h2 id="install" class="article-heading"><a href="#install" class="headerlink" title="install"></a>install<a class="article-anchor" href="#install" aria-hidden="true"></a></h2><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">go install gorm.io/gen/tools/gentool@latest</span><br></pre></td></tr></tbody></table></figure>
+                <html><head></head><body><p>Gen Tool is a single binary without dependencies can be used to generate structs from database</p>
+<h2 id="Install" class="article-heading"><a href="#Install" class="headerlink" title="Install"></a>Install<a class="article-anchor" href="#Install" aria-hidden="true"></a></h2><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">go install gorm.io/gen/tools/gentool@latest</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="usage" class="article-heading"><a href="#usage" class="headerlink" title="usage"></a>usage<a class="article-anchor" href="#usage" aria-hidden="true"></a></h2><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line"></span><br><span class="line">gentool -h  </span><br><span class="line"></span><br><span class="line">Usage of gentool:</span><br><span class="line"> -db string</span><br><span class="line">       input mysql or postgres or sqlite or sqlserver. consult[https://gorm.io/docs/connecting_to_the_database.html] (default "mysql")</span><br><span class="line"> -dsn string</span><br><span class="line">       consult[https://gorm.io/docs/connecting_to_the_database.html]</span><br><span class="line"> -fieldNullable</span><br><span class="line">       generate with pointer when field is nullable</span><br><span class="line"> -fieldWithIndexTag</span><br><span class="line">       generate field with gorm index tag</span><br><span class="line"> -fieldWithTypeTag</span><br><span class="line">       generate field with gorm column type tag</span><br><span class="line"> -modelPkgName string</span><br><span class="line">       generated model code's package name</span><br><span class="line"> -outFile string</span><br><span class="line">       query code file name, default: gen.go</span><br><span class="line"> -outPath string</span><br><span class="line">       specify a directory for output (default "./dao/query")</span><br><span class="line"> -tables string</span><br><span class="line">       enter the required data table or leave it blank</span><br><span class="line"> -onlyModel</span><br><span class="line">       only generate models (without query file)</span><br><span class="line"> -withUnitTest</span><br><span class="line">       generate unit test for query code</span><br><span class="line"> -fieldSignable</span><br><span class="line">       detect integer field's unsigned type, adjust generated data type</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
-<h4 id="c" class="article-heading"><a href="#c" class="headerlink" title="c"></a>c<a class="article-anchor" href="#c" aria-hidden="true"></a></h4><p>default “” Is path for gen.yml Replace the command line with a configuration file The command line is the highest priority</p>
-<h4 id="db" class="article-heading"><a href="#db" class="headerlink" title="db"></a>db<a class="article-anchor" href="#db" aria-hidden="true"></a></h4><p>default:mysql</p>
-<p>input mysql or postgres or sqlite or sqlserver.</p>
-<p>consult : <a href="https://gorm.io/docs/connecting_to_the_database.html">https://gorm.io/docs/connecting_to_the_database.html</a></p>
-<h4 id="dsn" class="article-heading"><a href="#dsn" class="headerlink" title="dsn"></a>dsn<a class="article-anchor" href="#dsn" aria-hidden="true"></a></h4><p>You can use all gorm’s dsn.</p>
-<p>consult : <a href="https://gorm.io/docs/connecting_to_the_database.html">https://gorm.io/docs/connecting_to_the_database.html</a></p>
-<h4 id="fieldNullable" class="article-heading"><a href="#fieldNullable" class="headerlink" title="fieldNullable"></a>fieldNullable<a class="article-anchor" href="#fieldNullable" aria-hidden="true"></a></h4><p>generate with pointer when field is nullable</p>
-<h4 id="fieldWithIndexTag" class="article-heading"><a href="#fieldWithIndexTag" class="headerlink" title="fieldWithIndexTag"></a>fieldWithIndexTag<a class="article-anchor" href="#fieldWithIndexTag" aria-hidden="true"></a></h4><p>generate field with gorm index tag</p>
-<h4 id="fieldWithTypeTag" class="article-heading"><a href="#fieldWithTypeTag" class="headerlink" title="fieldWithTypeTag"></a>fieldWithTypeTag<a class="article-anchor" href="#fieldWithTypeTag" aria-hidden="true"></a></h4><p>generate field with gorm column type tag</p>
-<h4 id="modelPkgName" class="article-heading"><a href="#modelPkgName" class="headerlink" title="modelPkgName"></a>modelPkgName<a class="article-anchor" href="#modelPkgName" aria-hidden="true"></a></h4><p>defalut table name.</p>
-<p>generated model code’s package name.</p>
-<h4 id="outFile" class="article-heading"><a href="#outFile" class="headerlink" title="outFile"></a>outFile<a class="article-anchor" href="#outFile" aria-hidden="true"></a></h4><p>query code file name, default: gen.go</p>
-<h4 id="outPath" class="article-heading"><a href="#outPath" class="headerlink" title="outPath"></a>outPath<a class="article-anchor" href="#outPath" aria-hidden="true"></a></h4><p>specify a directory for output (default “./dao/query”)</p>
-<h4 id="tables" class="article-heading"><a href="#tables" class="headerlink" title="tables"></a>tables<a class="article-anchor" href="#tables" aria-hidden="true"></a></h4><p>Value : enter the required data table or leave it blank.</p>
+<h2 id="Usage" class="article-heading"><a href="#Usage" class="headerlink" title="Usage"></a>Usage<a class="article-anchor" href="#Usage" aria-hidden="true"></a></h2><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gentool -h</span><br><span class="line"></span><br><span class="line">Usage of gentool:</span><br><span class="line"> -db string</span><br><span class="line">       input mysql or postgres or sqlite or sqlserver. consult[https://gorm.io/docs/connecting_to_the_database.html] (default "mysql")</span><br><span class="line"> -dsn string</span><br><span class="line">       consult[https://gorm.io/docs/connecting_to_the_database.html]</span><br><span class="line"> -fieldNullable</span><br><span class="line">       generate with pointer when field is nullable</span><br><span class="line"> -fieldWithIndexTag</span><br><span class="line">       generate field with gorm index tag</span><br><span class="line"> -fieldWithTypeTag</span><br><span class="line">       generate field with gorm column type tag</span><br><span class="line"> -modelPkgName string</span><br><span class="line">       generated model code's package name</span><br><span class="line"> -outFile string</span><br><span class="line">       query code file name, default: gen.go</span><br><span class="line"> -outPath string</span><br><span class="line">       specify a directory for output (default "./dao/query")</span><br><span class="line"> -tables string</span><br><span class="line">       enter the required data table or leave it blank</span><br><span class="line"> -onlyModel</span><br><span class="line">       only generate models (without query file)</span><br><span class="line"> -withUnitTest</span><br><span class="line">       generate unit test for query code</span><br><span class="line"> -fieldSignable</span><br><span class="line">       detect integer field's unsigned type, adjust generated data type</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="c" class="article-heading"><a href="#c" class="headerlink" title="c"></a>c<a class="article-anchor" href="#c" aria-hidden="true"></a></h4><p>Configuration file name, default value “”, command line options have higher priority than configuration file.</p>
+<h4 id="db" class="article-heading"><a href="#db" class="headerlink" title="db"></a>db<a class="article-anchor" href="#db" aria-hidden="true"></a></h4><p>Specify dirver dialector, default value “mysql”, refer: <a href="https://gorm.io/docs/connecting_to_the_database.html">https://gorm.io/docs/connecting_to_the_database.html</a></p>
+<h4 id="dsn" class="article-heading"><a href="#dsn" class="headerlink" title="dsn"></a>dsn<a class="article-anchor" href="#dsn" aria-hidden="true"></a></h4><p>DSN that used to connect database, refer: <a href="https://gorm.io/docs/connecting_to_the_database.html">https://gorm.io/docs/connecting_to_the_database.html</a></p>
+<h4 id="fieldNullable" class="article-heading"><a href="#fieldNullable" class="headerlink" title="fieldNullable"></a>fieldNullable<a class="article-anchor" href="#fieldNullable" aria-hidden="true"></a></h4><p>Generate with pointer when field is nullable</p>
+<h4 id="fieldWithIndexTag" class="article-heading"><a href="#fieldWithIndexTag" class="headerlink" title="fieldWithIndexTag"></a>fieldWithIndexTag<a class="article-anchor" href="#fieldWithIndexTag" aria-hidden="true"></a></h4><p>Generate field with gorm index tag</p>
+<h4 id="fieldWithTypeTag" class="article-heading"><a href="#fieldWithTypeTag" class="headerlink" title="fieldWithTypeTag"></a>fieldWithTypeTag<a class="article-anchor" href="#fieldWithTypeTag" aria-hidden="true"></a></h4><p>Generate field with gorm column type tag</p>
+<h4 id="modelPkgName" class="article-heading"><a href="#modelPkgName" class="headerlink" title="modelPkgName"></a>modelPkgName<a class="article-anchor" href="#modelPkgName" aria-hidden="true"></a></h4><p>Generated model code’s package name.</p>
+<h4 id="outFile" class="article-heading"><a href="#outFile" class="headerlink" title="outFile"></a>outFile<a class="article-anchor" href="#outFile" aria-hidden="true"></a></h4><p>Genrated query code file name, default: gen.go</p>
+<h4 id="outPath" class="article-heading"><a href="#outPath" class="headerlink" title="outPath"></a>outPath<a class="article-anchor" href="#outPath" aria-hidden="true"></a></h4><p>Specify a directory for output (default “./dao/query”)</p>
+<h4 id="tables" class="article-heading"><a href="#tables" class="headerlink" title="tables"></a>tables<a class="article-anchor" href="#tables" aria-hidden="true"></a></h4><p>Specify tables want to genrated from, default all tables.</p>
 <p>eg :</p>
-<p>​       –tables=”orders” #orders table</p>
-<p>​       –tables=”orders,users” #orders table and users table</p>
-<p>​       –tables=””          # All data tables in the database.</p>
+<pre><code>--tables="orders"       # generate from `orders`
+
+--tables="orders,users" # generate from `orders` and `users`
+
+--tables=""             # generate from all tables
+</code></pre>
 <p>Generate some tables code.</p>
-<h4 id="withUnitTest" class="article-heading"><a href="#withUnitTest" class="headerlink" title="withUnitTest"></a>withUnitTest<a class="article-anchor" href="#withUnitTest" aria-hidden="true"></a></h4><p>Value : False / True</p>
-<p>Generate unit test.</p>
-<h4 id="fieldSignable" class="article-heading"><a href="#fieldSignable" class="headerlink" title="fieldSignable"></a>fieldSignable<a class="article-anchor" href="#fieldSignable" aria-hidden="true"></a></h4><p>Value : False / True</p>
-<p>detect integer field’s unsigned type, adjust generated data type</p>
-<h3 id="example" class="article-heading"><a href="#example" class="headerlink" title="example"></a>example<a class="article-anchor" href="#example" aria-hidden="true"></a></h3><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gentool -dsn "user:pwd@tcp(localhost:3306)/database?charset=utf8mb4&amp;parseTime=True&amp;loc=Local" -tables "orders,doctor"</span><br></pre></td></tr></tbody></table></figure></body></html>
+<h4 id="withUnitTest" class="article-heading"><a href="#withUnitTest" class="headerlink" title="withUnitTest"></a>withUnitTest<a class="article-anchor" href="#withUnitTest" aria-hidden="true"></a></h4><p>Generate unit test, default value <code>false</code>, options: <code>false</code> / <code>true</code></p>
+<h4 id="fieldSignable" class="article-heading"><a href="#fieldSignable" class="headerlink" title="fieldSignable"></a>fieldSignable<a class="article-anchor" href="#fieldSignable" aria-hidden="true"></a></h4><p>Use signable datatype as field type, default value <code>false</code>, options: <code>false</code> / <code>true</code></p>
+<h3 id="Example" class="article-heading"><a href="#Example" class="headerlink" title="Example"></a>Example<a class="article-anchor" href="#Example" aria-hidden="true"></a></h3><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gentool -dsn "user:pwd@tcp(localhost:3306)/database?charset=utf8mb4&amp;parseTime=True&amp;loc=Local" -tables "orders,doctor"</span><br></pre></td></tr></tbody></table></figure>
+</body></html>
               </div>
 
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-10-19T03:54:24.169Z" itemprop="dateModified">마지막 수정: 2022-10-19</time>
+                <time class="article-footer-updated" datetime="2022-10-19T06:48:49.305Z" itemprop="dateModified">마지막 수정: 2022-10-19</time>
 <a href="database_to_structs.html" class="article-footer-prev" title="Overview"><i class="fa fa-chevron-left"></i><span>이전</span></a><a href="clause.html" class="article-footer-next" title="GORM Clause"><span>다음</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -271,7 +270,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">내용</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#install"><span class="toc-text">install</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#usage"><span class="toc-text">usage</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#c"><span class="toc-text">c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#db"><span class="toc-text">db</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dsn"><span class="toc-text">dsn</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldNullable"><span class="toc-text">fieldNullable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldWithIndexTag"><span class="toc-text">fieldWithIndexTag</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldWithTypeTag"><span class="toc-text">fieldWithTypeTag</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#modelPkgName"><span class="toc-text">modelPkgName</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#outFile"><span class="toc-text">outFile</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#outPath"><span class="toc-text">outPath</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tables"><span class="toc-text">tables</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#withUnitTest"><span class="toc-text">withUnitTest</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldSignable"><span class="toc-text">fieldSignable</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#example"><span class="toc-text">example</span></a></li></ol></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Install"><span class="toc-text">Install</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Usage"><span class="toc-text">Usage</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#c"><span class="toc-text">c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#db"><span class="toc-text">db</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dsn"><span class="toc-text">dsn</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldNullable"><span class="toc-text">fieldNullable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldWithIndexTag"><span class="toc-text">fieldWithIndexTag</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldWithTypeTag"><span class="toc-text">fieldWithTypeTag</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#modelPkgName"><span class="toc-text">modelPkgName</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#outFile"><span class="toc-text">outFile</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#outPath"><span class="toc-text">outPath</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tables"><span class="toc-text">tables</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#withUnitTest"><span class="toc-text">withUnitTest</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldSignable"><span class="toc-text">fieldSignable</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example"><span class="toc-text">Example</span></a></li></ol></li></ol>
 
               
                 <a href="https://translate.gorm.io/project/go-gorm/ko" target="_blank" id="article-improve">
