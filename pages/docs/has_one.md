@@ -68,7 +68,7 @@ You are able to change it with tag `references`, e.g:
 type User struct {
   gorm.Model
   Name       string     `gorm:"index"`
-  CreditCard CreditCard `gorm:"foreignkey:UserName;references:name"`
+  CreditCard CreditCard `gorm:"foreignKey:UserName;references:name"`
 }
 
 type CreditCard struct {
