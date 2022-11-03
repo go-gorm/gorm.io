@@ -3,9 +3,9 @@ title: Gen Update
 layout: page
 ---
 
-## Update single column
+## 更新单列
 
-When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, for example:
+当使用`Update`命令更新单独某一列的时候，必须存在`Where`条件，否则程序会抛出` ErrMissingWhereClause `异常，比如：
 
 ```go
 u := query.User
@@ -24,22 +24,22 @@ u.WithContext(ctx).Where(u.Activate.Is(true)).UpdateSimple(u.Age.Zero())
 // UPDATE users SET age=0, updated_at='2013-11-17 21:34:10' WHERE active=true;
 ```
 
-## Updates multiple columns
+## 更新多列
 
-`Updates` supports update with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
+`Updates` 方法支持使用 `struct` 和 `map[string]interface{}` 作为参数。默认情况下，当使用 `struct` 作为参数进行更新时，GORM 只会更新非零值的字段。
 
 ```go
 u := query.User
 
-// Update attributes with `map`
+// 使用 `map` 更新字段
 u.WithContext(ctx).Where(u.ID.Eq(111)).Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update attributes with `struct`
+// 使用 `struct` 更新字段
 u.WithContext(ctx).Where(u.ID.Eq(111)).Updates(model.User{Name: "hello", Age: 18, Active: false})
 // UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update with expression
+// 使用表达式更新
 u.WithContext(ctx).Where(u.ID.Eq(111)).UpdateSimple(u.Age.Add(1), u.Number.Add(1))
 // UPDATE users SET age=age+1,number=number+1, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
@@ -47,11 +47,11 @@ u.WithContext(ctx).Where(u.Activate.Is(true)).UpdateSimple(u.Age.Value(17), u.Nu
 // UPDATE users SET age=17, number=0, birthday=NULL, updated_at='2013-11-17 21:34:10' WHERE active=true;
 ```
 
-> **NOTE** When update with struct, GEN will only update non-zero fields, you might want to use `map` to update attributes or use `Select` to specify fields to update
+> **注意** 当通过 struct 更新时，GORM 只会更新非零字段。 如果想确保指定字段被更新，你应该使用 `Select` 更新选定字段，或使用 `map` 来完成更新操作。
 
-## Update selected fields
+## 更新选定字段
 
-If you want to update selected fields or ignore some fields when updating, you can use `Select`, `Omit`
+如果您想要在更新时选定、忽略某些字段，您可以使用 `Select`、`Omit`
 
 ```go
 u := query.User
