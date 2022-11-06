@@ -1,5 +1,5 @@
 ---
-title: Gen Create
+title: 创建Gen
 layout: page
 ---
 
