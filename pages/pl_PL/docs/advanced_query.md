@@ -5,7 +5,7 @@ layout: strona
 
 ## <span id="smart_select">Inteligentne wyciąganie pól</span>
 
-GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM pozwala na wybranie określonych pól używając kwerendy [`Select`](query.html). Jeśli często używasz jej w swojej aplikacji, być może warto zdefiniować mniejszą strukturę dla API, co pozwala na automatyczne wybieranie niektórych pól, na przykład:
 
 ```go
 type User struct {
@@ -36,16 +36,16 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // używając tej opcji
 
-// Session Mode
+// Tryb sesji
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## Blokady (FOR UPDATE)
 
-GORM supports different types of locks, for example:
+GORM wspiera różne typy blokad, na przykład:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -64,7 +64,7 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+Należy odwołać się do [Raw SQL nad SQL Builder](sql_builder.html), aby pozyskać więcej informacji
 
 ## Podzapytania
 
@@ -116,7 +116,7 @@ db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"ji
 // SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
 ```
 
-## Named Argument
+## Nazwane argumenty
 
 GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
 
