@@ -19,24 +19,24 @@ import (
 )
 
 func main() {
-  // Initialize the generator with configuration
+  // 通过配置初始化生成器
   g := gen.NewGenerator(gen.Config{
-     OutPath: "../dal", // output directory, default value is ./query
+     OutPath: "../dal", // 输出目录，默认是 ./query
      Mode:    gen.WithDefaultQuery | gen.WithQueryInterface,
      FieldNullable: true,
   })
 
-  // Initialize a *gorm.DB instance
+  // 初始化一个 *gorm.DB 对象
   db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-  // Use the above `*gorm.DB` instance to initialize the generator,
-  // which is required to generate structs from db when using `GenerateModel/GenerateModelAs`
+  // 用上面的`*gorm.DB` 对象初始化generator对象,
+  // 通过调用generator的 `GenerateModel/GenerateModelAs`方法可以根据数据库表来生成struct结构体。
   g.UseDB(db)
 
-  // Generate default DAO interface for those specified structs
+  // 为指定的struct生成默认的DAO层
   g.ApplyBasic(model.Customer{}, model.CreditCard{}, model.Bank{}, model.Passport{})
 
-  // Generate default DAO interface for those generated structs from database
+  // 为从数据库生成的structs生成DAO层代码
   companyGenerator := g.GenerateModelAs("company", "MyCompany"),
   g.ApplyBasic(
     g.GenerateModel("users"),
@@ -47,21 +47,21 @@ func main() {
     ),
   )
 
-  // Execute the generator
+  // 执行
   g.Execute()
 }
 ```
 
-Run the above program, it will generate codes into directory `../dal`, you can import the `dal` package in your application and use its interface to query data
+运行上述代码会在目录`../dal`中生成相应的DAO层代码，你可以在你的程序中导入`dal`并使用他们来查询数据
 
 ## gen.Config
 
 ```go
 type Config struct {
-    OutPath      string // query code path
-    OutFile      string // query code file name, default: gen.go
-    ModelPkgPath string // generated model code's package name
-    WithUnitTest bool   // generate unit test for query code
+    OutPath      string // 查询类代码的输出路径
+    OutFile      string // 代码输出文件名，默认: gen.go
+    ModelPkgPath string // 生成的 model 包名
+    WithUnitTest bool   // 是否为生成的查询类代码生成单元测试
 
     FieldNullable     bool // generate pointer when field is nullable
     FieldCoverable    bool // generate pointer when field has default value, to fix problem zero value cannot be assign: https://gorm.io/docs/create.html#Default-Values
@@ -73,30 +73,30 @@ type Config struct {
 }
 ```
 
-### Output Options
+### 输出配置项
 
-| Option Name  | Description                                                           |
-| ------------ | --------------------------------------------------------------------- |
-| OutPath      | Output destination folder for the generator, default value: `./query` |
-| OutFile      | Query code file name, default value: `gen.go`                         |
-| ModelPkgPath | Generated DAO package's package name, default value: `model`          |
-| WithUnitTest | Generate unit tests for the DAO package, default value: `false`       |
+| 配置           | 说明                         |
+| ------------ | -------------------------- |
+| OutPath      | 生成的查询类代码的输出路径，默认`./query`  |
+| OutFile      | 生成的文件名，默认`gen.go`          |
+| ModelPkgPath | 生成DAO代码的包名，默认是：`model`     |
+| WithUnitTest | 是否为DAO包生成单元测试代码，默认：`false` |
 
-### Generate Struct Options
+### 生成结构体的配置项
 
-| Option Name       | Description                                                                                                                                                                                                                |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| FieldNullable     | Generate pointer as field's type if column is nullable in database                                                                                                                                                         |
-| FieldCoverable    | Generate pointer as field's type if column has default value in database, to avoid zero-value issue, e.g: https://gorm.io/docs/create.html#Default-Values                                                                  |
-| FieldSignable     | Use signable type as field's type based on column's data type in database                                                                                                                                                  |
-| FieldWithIndexTag | Generate with `gorm index` tag                                                                                                                            | , for example: `gorm:"index:idx_name"`, default value: `false` |
-| FieldWithTypeTag  | Generate with `gorm type` tag, for example: `gorm:"type:varchar(12)"`, default value: `false`                                                                                                                              |
+| 配置                | 说明                                                                                            |
+| ----------------- | --------------------------------------------------------------------------------------------- |
+| FieldNullable     | 数据库中的字段可为空，则生成struct字段为指针类型                                                                   |
+| FieldCoverable    | 如果数据库中字段有默认值，则生成指针类型的字段，以避免零值（zero-value）问题，见：https://gorm.io/docs/create.html#Default-Values |
+| FieldSignable     | Use signable type as field's type based on column's data type in database                     |
+| FieldWithIndexTag | 为结构体生成`gorm index` tag，如`gorm:"index:idx_name"`，默认：`false`                                    |
+| FieldWithTypeTag  | 为结构体生成`gorm type` tag，如：`gorm:"type:varchar(12)"`，默认：`false`                                  |
 
-Refer [Database To Structs](./database_to_structs.html) for more options
+参考 [数据库到结构](./database_to_structs.html) 更多选项
 
-### Generator Modes
+### 生成器模式
 
-| Tag Name               | Description                                                                                                                                                                                        |
+| 标签名                    | 说明                                                                                                                                                                                                 |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | gen.WithDefaultQuery   | Generate global variable `Q` as DAO interface, then you can query data like: `dal.Q.User.First()`                                                                                                  |
 | gen.WithQueryInterface | Generate query api interface instead of struct, usually used for mock testing                                                                                                                      |
