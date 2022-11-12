@@ -1,13 +1,13 @@
 ---
-title: DAO Overview
-layout: page
+title: DAO层概览
+layout: 页面
 ---
 
-Gen follows the `Configuration As Code` practice to generate the DAO interface, here is the introduction to the configuration.
+Gen遵循`配置即代码`的实践原则来生成DAO层代码，下面是「配置」讲解
 
-## Configuration
+## 配置
 
-You need to write the configuration as a runnable golang program, usually, the program will be organized in a sub-directory of your application.
+你的配置文件需要被撰写成一个可运行的golang程序，通常来说，配置文件应该放在你程序中的一个子目录中。
 
 ```go
 // configuration.go
