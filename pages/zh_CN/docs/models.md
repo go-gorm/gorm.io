@@ -27,7 +27,7 @@ type User struct {
 
 GORM 倾向于约定优于配置 默认情况下，GORM 使用 `ID` 作为主键，使用结构体名的 `蛇形复数` 作为表名，字段名的 `蛇形` 作为列名，并使用 `CreatedAt`、`UpdatedAt` 字段追踪创建、更新时间
 
-如果您遵循 GORM 的约定，您就可以少写的配置、代码。 如果约定不符合您的实际要求，[GORM 允许你配置它们](conventions.html)
+如果您遵循 GORM 的约定，您就可以少写配置、代码。 如果约定不符合您的实际要求，[GORM 允许你配置它们](conventions.html)
 
 ## gorm.Model
 
