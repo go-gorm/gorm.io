@@ -96,16 +96,16 @@ type Config struct {
 
 ### 生成器模式
 
-| 标签名                    | 说明                                                                                                                                                                                                 |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| gen.WithDefaultQuery   | Generate global variable `Q` as DAO interface, then you can query data like: `dal.Q.User.First()`                                                                                                  |
-| gen.WithQueryInterface | Generate query api interface instead of struct, usually used for mock testing                                                                                                                      |
-| gen.WithoutContext     | Generate code without context constrain, then you can query data without passing context like: `dal.User.First()`, or you have to query with the context, e.g: `dal.User.WithContext(ctx).First()` |
+| 标签名                    | 说明                                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------ |
+| gen.WithDefaultQuery   | 是否生成全局变量`Q`作为DAO接口，如果开启，你可以通过这样的方式查询数据`dal.Q.User.First()`                                                   |
+| gen.WithQueryInterface | 生成查询API代码，而不是struct结构体。通常用来MOCK测试                                                                            |
+| gen.WithoutContext     | 生成无需传入context参数的代码。如果无需传入context，则代码调用方式如：`dal.User.First()`，否则，调用方式要像这样：`dal.User.WithContext(ctx).First()` |
 
 
 ### DAO Interface
 
-Sample of the generated DAO query interface
+DAO查询样例
 
 ```go
 type IUserDo interface {
@@ -177,9 +177,9 @@ type IUserDo interface {
 }
 ```
 
-## Usage Example
+## 用例
 
-* Use the global variable `Q` if `gen.WithDefaultQuery` is enabled
+* 如果`gen.WithDefaultQuery`配置开启，则可使用全局变量`Q`
 
 ```go
 import "your_project/dal"
@@ -195,7 +195,7 @@ func main() {
 }
 ```
 
-* Initialize DAO query interface
+* 初始化DAO查询接口
 
 ```go
 import "your_project/dal"
@@ -213,7 +213,7 @@ func main() {
 }
 ```
 
-For more usage details, please checkout
+更多使用详情：
 
 * [Create](./create.html)
 * [Update](./update.html)
