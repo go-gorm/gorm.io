@@ -143,6 +143,17 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 // SELECT * FROM users WHERE created_at BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
+{% note warn %}
+If the object's primary key has been set, then condition query wouldn't cover the value of primary key but use it as a 'and' condition. For example:
+```go
+var user = User{ID: 10}
+db.Where("id = ?", 20}.First(&user)
+// SELECT * FROM users WHERE id = 10 and id = 20 ORDER BY id ASC LIMIT 1
+```
+This query would give `record not found` Error. So set the primary key attribute such as `id` to nil before you want to use the variable such as `user` to get new value from database.
+{% endnote %}
+
+
 ### Struct & Map 条件
 
 ```go
@@ -160,7 +171,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** 当使用struct查询时，GORM只对非零字段进行查询，也就是说如果你的字段的值是`0`，`''`，`false`或其他[零值](https://tour.golang.org/basics/12)，它将不会被用来建立查询条件，例如：
+**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
 {% endnote %}
 
 ```go
@@ -168,18 +179,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-如果想要包含零值查询条件，你可以使用 map，其会包含所有 key-value 的查询条件，例如：
+To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-查看 [指定结构体查询字段](#specify_search_fields) 获取详情.
+For more details, see [Specify Struct search fields](#specify_search_fields).
 
 ### <span id="specify_search_fields">指定结构体查询字段</span>
 
-当使用 struct 进行查询时，你可以通过向 `Where()` 传入 struct 来指定查询条件的字段、值、表名，例如：
+When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -191,7 +202,7 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 
 ### <span id="inline_conditions">内联条件</span>
 
-查询条件也可以被内联到 `First` 和 `Find` 之类的方法中，其用法类似于 `Where`。
+Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
 
 ```go
 // Get by primary key if it were a non-integer type
@@ -216,7 +227,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 
 ### Not 条件
 
-建立NOT条件，类似于`Where`。
+Build NOT conditions, works similar to `Where`
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -250,11 +261,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-想要更复杂的 SQL 查询， 请查看 [高级查询中的组条件](advanced_query.html#group_conditions)。
+For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
 
 ## 选择特定字段
 
-`Select` 允许您指定从数据库中检索哪些字段， 默认情况下，GORM 会检索所有字段。
+`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -267,11 +278,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-也可以查看[智能选择字段](advanced_query.html#smart_select)。
+Also check out [Smart Select Fields](advanced_query.html#smart_select)
 
 ## 排序
 
-从数据库中检索记录时指定顺序。
+Specify order when retrieving records from the database
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -289,7 +300,7 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit`指定要检索的最大记录数。 `Offset`指定在开始返回记录前要跳过的记录数。
+`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
 
 ```go
 db.Limit(3).Find(&users)
@@ -312,7 +323,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-查看 [Pagination](scopes.html#pagination) 学习如何写一个分页器
+Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
 
 ## Group By & Having
 
@@ -350,17 +361,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-从model中选择特定的值
+Selecting distinct values from the model
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` 也可以配合 [`Pluck`](advanced_query.html#pluck), [`Count`](advanced_query.html#count) 使用
+`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
 
 ## Joins
 
-指定join条件
+Specify Joins conditions
 
 ```go
 type result struct {
@@ -384,25 +395,25 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ### Joins 预加载
 
-您可以使用 `Joins` 实现单条 SQL 急加载关联记录，例如：
+You can use `Joins` eager loading associations with a single SQL, for example:
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-带条件的 Join
+Join with conditions
 
 ```go
 db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
-更多细节请参阅 [预加载 (Eager Loading)](preload.html)。
+For more details, please refer to [Preloading (Eager Loading)](preload.html).
 
 ### Joins 一个衍生表
 
-你也可以使用`Joins`来关联一个衍生表
+You can also use `Joins` to join a derived table.
 
 ```go
 type User struct {
@@ -423,7 +434,7 @@ db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Sc
 
 ## <span id="scan">Scan</span>
 
-Scan 结果至 struct，用法与 `Find` 类似
+Scanning results into a struct works similarly to the way we use `Find`
 
 ```go
 type Result struct {

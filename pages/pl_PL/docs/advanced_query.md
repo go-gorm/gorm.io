@@ -5,7 +5,7 @@ layout: strona
 
 ## <span id="smart_select">Inteligentne wyciąganie pól</span>
 
-GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM pozwala na wybranie określonych pól używając kwerendy [`Select`](query.html). Jeśli często używasz jej w swojej aplikacji, być może warto zdefiniować mniejszą strukturę dla API, co pozwala na automatyczne wybieranie niektórych pól, na przykład:
 
 ```go
 type User struct {
@@ -36,16 +36,16 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // używając tej opcji
 
-// Session Mode
+// Tryb sesji
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## Blokady (FOR UPDATE)
 
-GORM supports different types of locks, for example:
+GORM wspiera różne typy blokad, na przykład:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -64,7 +64,7 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+Należy odwołać się do [Raw SQL nad SQL Builder](sql_builder.html), aby pozyskać więcej informacji
 
 ## Podzapytania
 
@@ -109,16 +109,16 @@ db.Where(
 
 ## IN z wieloma kolumnami
 
-Selecting IN with multiple columns
+Używanie IN z wieloma kolumnami
 
 ```go
 db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"jinzhu2", 19, "user"}}).Find(&users)
 // SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
 ```
 
-## Named Argument
+## Nazwane argumenty
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM wspiera nazwane argumenty używając [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) lub </code>map[string]interface{}{}</code>, na przykład:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -128,7 +128,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+Należy odwołać się do [Raw SQL nad SQL Builder](sql_builder.html#named_argument), aby pozyskać więcej informacji
 
 ## Find To Map
 
@@ -337,14 +337,14 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Requesting more than one column, use `Scan` or `Find` like this:
+// Chcemy więcej niż jedną kolumnę, możemy użyć Scan oraz Find
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
 ## Scopes
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+`Scopes` pozwala na ustalanie często używanych kwerend, których możemy używać wykonując metody
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -366,13 +366,13 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+// Znajdż wszystkie zamówienia opłacone za pomocą karty kredytowej o wartości większej niż 1000
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+// Znajdż wszystkie zamówienia opłacone metodą za pobraniem o wartości większej niż 1000
 
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+// Znajdź wszystkie zamówienia opłacone o wartości większej niż 1000
 ```
 
 Checkout [Scopes](scopes.html) for details
