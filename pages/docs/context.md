@@ -3,7 +3,7 @@ title: Context
 layout: page
 ---
 
-GORM provides Context support, you can use it with method `WithContext`
+GORM provides [Context](https://go.dev/blog/context-and-structs) support, you can use it with method `WithContext`
 
 ## Single Session Mode
 
