@@ -36,11 +36,11 @@ func GetAll(db *gorm.DB) ([]User, error) {
 
 ## 외부키 오버라이딩
 
-`has many` 관계를 정의하기위해서는 외부키가 반드시 존재해야합니다. The default foreign key's name is the owner's type name plus the name of its primary key field
+`has many` 관계를 정의하기위해서는 외부키가 반드시 존재해야합니다. 별도의 설정이 없다면, 외부 키의 이름은 소유자의 타입 이름과 primary key 이름의 조합이 됩니다.
 
-For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
+예를들어, `User` 에 속한 모델을 정의하기위해서는 외부키의 이름이 `UserID`가 되어야합니다.
 
-To use another field as foreign key, you can customize it with a `foreignKey` tag, e.g:
+다른 필드를 외부 키로 사용하고자 한다면, `foreignKey` 태그를 활용해 변경할 수 있습니다. 아래는 그 예시입니다.
 
 ```go
 type User struct {
@@ -55,13 +55,13 @@ type CreditCard struct {
 }
 ```
 
-## Override References
+## 참조 오버라이딩
 
-GORM usually uses the owner's primary key as the foreign key's value, for the above example, it is the `User`'s `ID`,
+GORM은 주로 소유자의 primary key를 외부키로 사용합니다. 위 예시에서는 `User`의 `ID`입니다.
 
-When you assign credit cards to a user, GORM will save the user's `ID` into credit cards' `UserID` field.
+유저에게 크레딧 카드를 할당하고자 한다면, GORM은 유저의 `ID`를 크레딧 카드의 `UserID` 필드에 저장합니다.
 
-You are able to change it with tag `references`, e.g:
+`references` 태그를 활용해 참조될 이름을 바꿀 수 있습니다. 아래는 그 예시입니다.
 
 ```go
 type User struct {
@@ -77,9 +77,9 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
+## 다형성 연관관계
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key value into the polymorphic field
+GORM은 `has one`과 `has many`에서 다형성 연관관계를 지원합니다. 소속된 엔티티의 테이블 명은 다형성 타입 필드에 저장되며, primary key 값은 다형성 필드에 저장됩니다.
 
 ```go
 type Dog struct {
@@ -100,7 +100,7 @@ db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs"), ("toy2","1","dogs")
 ```
 
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
+다형성 타입의 값을 `polymorphicValue` 태그를 활용해 변경할 수 있습니다. 아래는 그 예시입니다.
 
 ```go
 type Dog struct {
@@ -121,15 +121,15 @@ db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
 ```
 
-## CRUD with Has Many
+## Has Many 연관관계를 활용한 CRUD
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with has many relations
+has many 관계를 활용하려면 [연관관계 모드](associations.html#Association-Mode)를 참고해주세요.
 
-## Eager Loading
+## 즉시 로딩
 
-GORM allows eager loading has many associations with `Preload`, refer [Preloading (Eager loading)](preload.html) for details
+GORM은 `Preload`를 활용하여 has many 연관관계의 즉시로딩을 지원합니다. 자세한 내용은 [미리 로딩 (즉시 로딩)](preload.html)을 참고해주세요.
 
-## Self-Referential Has Many
+## 자기 참조 Has Many
 
 ```go
 type User struct {
@@ -140,9 +140,9 @@ type User struct {
 }
 ```
 
-## FOREIGN KEY Constraints
+## 외부 키 제약
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+`constraint` 태그를 활용해, `OnUpdate`, `OnDelete`와 같은 제약을 설정할 수 있습니다. 이런 제약들은 GORM 마이그레이션을 할 때 생성됩니다. 아래는 그 예시입니다.
 
 ```go
 type User struct {
@@ -157,4 +157,4 @@ type CreditCard struct {
 }
 ```
 
-You are also allowed to delete selected has many associations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+또한 Has many 연관관계는 `Select`를 활용해 선택적으로 삭제될 수 있습니다. 삭제에 관한 자세한 정보는 [Select로 삭제하기](associations.html#delete_with_select)를 참고해주세요.
