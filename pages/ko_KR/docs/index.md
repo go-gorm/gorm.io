@@ -1,5 +1,5 @@
 ---
-title: GORM Guide
+title: GORM 가이드
 layout: page
 ---
 
@@ -12,7 +12,7 @@ layout: page
 * Hooks (Before/After Create/Save/Update/Delete/Find)
 * `Preload`, `Joins`를 통한 데이터 가져오기
 * Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
-* Context, Prepared Statement Mode, DryRun Mode
+* Context, Prepared Statement 모드, DryRun 모드
 * Batch Insert, FindInBatches, Find/Create with Map, CRUD with SQL Expr and Context Valuer
 * SQL Builder, Upsert, Locking, Optimizer/Index/Comment Hints, Named Argument, SubQuery
 * Composite Primary Key, Indexes, Constraints
