@@ -3,19 +3,19 @@ title: Hooks
 layout: page
 ---
 
-## Object Life Cycle
+## 객체 수명 주기
 
-Hooks are functions that are called before or after creation/querying/updating/deletion.
+Hook은 생성/조회/수정/삭제 이전 혹은 이후에 호출되는 함수입니다.
 
-If you have defined specified methods for a model, it will be called automatically when creating, updating, querying, deleting, and if any callback returns an error, GORM will stop future operations and rollback current transaction.
+만약 어떤 모델에 대해 특정 함수를 정의했다면, 그 함수는 생성, 수정, 조회, 삭제 시에 자동적으로 호출됩니다. 또한 어떤 콜백이 에러를 반환한다면, GORM은 이후에 수행될 작업들을 멈추고 해당 트랜잭션을 롤백합니다.
 
-The type of hook methods should be `func(*gorm.DB) error`
+훅 메서드의 타입은 `func(*gorm.DB) error`입니다.
 
 ## Hooks
 
-### Creating an object
+### 객체 생성
 
-Available hooks for creating
+생성 시에 활용할 수 있는 Hook
 
 ```go
 // begin transaction
@@ -29,7 +29,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-Code Example:
+코드 예제:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -50,7 +50,7 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 ```
 
 {% note warn %}
-**NOTE** Save/Delete operations in GORM are running in transactions by default, so changes made in that transaction are not visible until it is committed, if you return any error in your hooks, the change will be rollbacked
+**NOTE** GORM에서 저장/삭제 작업은 기본적으로 트랜잭션 모드에서 실행되므로, 트랜잭션 안에서 발생한 변경사항 들은 커밋 이전에는 반영되지 않습니다. Hook에서 에러를 리턴한다면 변경사항은 모두 롤백됩니다.
 {% endnote %}
 
 ```go
@@ -62,9 +62,9 @@ func (u *User) AfterCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Updating an object
+### 객체 수정
 
-Available hooks for updating
+수정 시에 활용할 수 있는 Hook
 
 ```go
 // begin transaction
@@ -78,7 +78,7 @@ AfterSave
 // commit or rollback transaction
 ```
 
-Code Example:
+코드 예제:
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
@@ -97,9 +97,9 @@ func (u *User) AfterUpdate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Deleting an object
+### 객체 삭제
 
-Available hooks for deleting
+삭제 시에 활용할 수 있는 Hook
 
 ```go
 // begin transaction
@@ -109,7 +109,7 @@ AfterDelete
 // commit or rollback transaction
 ```
 
-Code Example:
+코드 예제:
 
 ```go
 // Updating data in same transaction
@@ -121,9 +121,9 @@ func (u *User) AfterDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-### Querying an object
+### 객체 조회
 
-Available hooks for querying
+조회 시에 활용할 수 있는 Hook
 
 ```go
 // load data from database
@@ -131,7 +131,7 @@ Available hooks for querying
 AfterFind
 ```
 
-Code Example:
+코드 예제:
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -142,7 +142,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 }
 ```
 
-## Modify current operation
+## 현재 작업 수정
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
