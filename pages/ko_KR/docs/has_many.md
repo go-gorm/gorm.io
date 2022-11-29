@@ -5,11 +5,11 @@ layout: page
 
 ## Has Many
 
-A `has many` association sets up a one-to-many connection with another model, unlike `has one`, the owner could have zero or many instances of models.
+`has many` 연관관계는 다른 모델과의 일 대 다 연결을 맺습니다. `has one`과는 달리, 소유자는 0개, 혹은 다수의 모델 인스턴스를 가질 수 있습니다.
 
 For example, if your application includes users and credit card, and each user can have many credit cards.
 
-### Declare
+### 선언
 ```go
 // User has many CreditCards, UserID is the foreign key
 type User struct {
@@ -24,7 +24,7 @@ type CreditCard struct {
 }
 ```
 
-### Retrieve
+### 조회
 ```go
 // Retrieve user list with eager loading credit cards
 func GetAll(db *gorm.DB) ([]User, error) {
@@ -34,9 +34,9 @@ func GetAll(db *gorm.DB) ([]User, error) {
 }
 ```
 
-## Override Foreign Key
+## 외부키 오버라이딩
 
-To define a `has many` relationship, a foreign key must exist. The default foreign key's name is the owner's type name plus the name of its primary key field
+`has many` 관계를 정의하기위해서는 외부키가 반드시 존재해야합니다. The default foreign key's name is the owner's type name plus the name of its primary key field
 
 For example, to define a model that belongs to `User`, the foreign key should be `UserID`.
 
