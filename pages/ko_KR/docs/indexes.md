@@ -1,15 +1,15 @@
 ---
-title: Database Indexes
+title: 데이터베이스 인덱스
 layout: page
 ---
 
-GORM allows create database index with tag `index`, `uniqueIndex`, those indexes will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORM은 데이터베이스 인덱스를 생성을 지원합니다. `uniqueIndex`, `index` 태그를 활용할 수 있습니다. 이렇게 정의된 인덱스들은 [GORM 자동 마이그레이션 및 테이블 생성](migration.html)이 수행될 때 적용됩니다.
 
-## Index Tag
+## 인덱스 태그
 
-GORM accepts lots of index settings, like `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`, `option`
+GORM은 `class`, `type`, `where`, `comment`, `expression`, `sort`, `collate`, `option`과 같은 많은 인덱스 설정을 허용합니다.
 
-Check the following example for how to use it
+사용 방법은 아래 예시를 참고해주세요.
 
 ```go
 type User struct {
@@ -32,9 +32,9 @@ type User struct {
 }
 ```
 
-### uniqueIndex
+### 유니크 인덱스
 
-tag `uniqueIndex` works similar like `index`, it equals to `index:,unique`
+`uniqueIndex` 태그는 `index` 태그와 거의 비슷하게 동작하며, `index:,unique`와 같은 의미로 사용됩니다.
 
 ```go
 type User struct {
@@ -43,9 +43,9 @@ type User struct {
 }
 ```
 
-## Composite Indexes
+## 복합 인덱스
 
-Use same index name for two fields will creates composite indexes, for example:
+두개의 필드에 같은 인덱스 이름을 사용하면 복합 인덱스가 생성됩니다. 아래는 그 예시입니다.
 
 ```go
 // create composite index `idx_member` with columns `name`, `number`
@@ -55,11 +55,11 @@ type User struct {
 }
 ```
 
-### Fields Priority
+### 필드 우선순위
 
-The column order of a composite index has an impact on its performance so it must be chosen carefully
+복합 인덱스의 컬럼 순서는 성능에 영향을 끼치므로 조심스럽게 정의되어야합니다.
 
-You can specify the order with the `priority` option, the default priority value is `10`, if priority value is the same, the order will be based on model struct's field index
+`priority` 옵션의 순서를 정의할 수 있습니다. 디폴트 우선순위 값은 `10`이며, 우선순위의 값이 같다면, 순서는 모델 구조의 필드 인덱스를 기준으로 결정됩니다.
 
 ```go
 type User struct {
@@ -81,11 +81,11 @@ type User struct {
 // column order: number, name
 ```
 
-### Shared composite indexes
+### 공유 복합 인덱스
 
-If you are creating shared composite indexes with an embedding struct, you can't specify the index name, as embedding the struct more than once results in the duplicated index name in db.
+구조체 임베딩을 여러번 수행한다면 데이터베이스 상에서 인덱스 이름의 중복이 발생할 수 있기 때문에, 구조체 임베딩을 통한 공유 복합키를 생성할 때는 인덱스 이름을 할당할 수 없습니다.
 
-In this case, you can use index tag `composite`, it means the id of the composite index. All fields which have the same composite id of the struct are put together to the same index, just like the original rule. But the improvement is it lets the most derived/embedding struct generates the name of index by NamingStrategy. For example:
+이러한 상황에는, 복합 인덱스의 id를 의미하는 `composite` 인덱스 태그를 활용할 수 있습니다. All fields which have the same composite id of the struct are put together to the same index, just like the original rule. But the improvement is it lets the most derived/embedding struct generates the name of index by NamingStrategy. For example:
 
 ```go
 type Foo struct {
