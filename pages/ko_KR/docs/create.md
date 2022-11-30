@@ -274,13 +274,14 @@ db.Clauses(clause.OnConflict{
 }).Create(&users)
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET "name"="excluded"."name"; SQL Server
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
-// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age); MySQL
 
 // Update all columns, except primary keys, to new value on conflict
 db.Clauses(clause.OnConflict{
   UpdateAll: true,
 }).Create(&users)
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age", ...;
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL
 ```
 
 또한 [고급 쿼리 문서](advanced_query.html)에서 ` FirstOrInit `, ` FirstOrCreate `에 대하여 확인하십시오.
