@@ -349,6 +349,7 @@ Scopes allow you to re-use commonly used logic, the shared logic needs to be def
 // SELECT * FROM users WHERE `id` > 10
 users, err := q.User.WithContext(ctx).Scopes(func(dao gen.Dao) gen.Dao {
     return dao.Where(q.User.ID.Gt(10))
+    // return dao.Where(field.NewInt64("", "id").Eq(1))
 }).Find()
 ```
 
