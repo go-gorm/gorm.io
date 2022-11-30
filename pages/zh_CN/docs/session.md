@@ -109,7 +109,7 @@ tx2.First(&user)
 
 ## 初始化
 
-创建一个新的初始化的 DB，这个 DB 不再是方法链、协程安全，查看 [方法链](method_chaining.html) 获取详情
+Create a new initialized DB, which is not Method Chain/Goroutine Safe anymore, refer [Method Chaining](method_chaining.html)
 
 ```go
 tx := db.Session(&gorm.Session{Initialized: true})
