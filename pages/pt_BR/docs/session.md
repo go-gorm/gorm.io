@@ -109,7 +109,7 @@ tx2.First(&user)
 
 ## Initialized
 
-Create a new initialized DB, which is not Method Chain/Gortoutine Safe anymore, refer [Method Chaining](method_chaining.html)
+Create a new initialized DB, which is not Method Chain/Goroutine Safe anymore, refer [Method Chaining](method_chaining.html)
 
 ```go
 tx := db.Session(&gorm.Session{Initialized: true})
