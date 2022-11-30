@@ -3,9 +3,9 @@ title: 预加载
 layout: page
 ---
 
-## 预加载
+## 预加载示例
 
-GORM 允许在 `Preload` 的其它 SQL 中直接加载关系，例如：
+GORM允许使用 `Preload`通过多个SQL中来直接加载关系, 例如：
 
 ```go
 type User struct {
@@ -76,7 +76,7 @@ db.Preload(clause.Associations).Find(&users)
 db.Preload("Orders.OrderItems.Product").Preload(clause.Associations).Find(&users)
 ```
 
-## 带条件的预加载
+## 条件预加载
 
 GORM 允许带条件的 Preload 关联，类似于[内联条件](query.html#inline_conditions)
 
