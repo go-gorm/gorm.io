@@ -2,7 +2,7 @@
 <html lang="ko_KR">
 <head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
-  <title>Database Indexes | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <title>데이터베이스 인덱스 | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Canonical links -->
@@ -47,15 +47,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORM allows create database index with tag index, uniqueIndex, those indexes will be created when AutoMigrate or CreateTable with GORM Index TagGORM accepts lots of index settings, like class, type, w">
+  <meta name="description" content="GORM은 데이터베이스 인덱스를 생성을 지원합니다. uniqueIndex, index 태그를 활용할 수 있습니다. 이렇게 정의된 인덱스들은 GORM 자동 마이그레이션 및 테이블 생성이 수행될 때 적용됩니다. 인덱스 태그GORM은 class, type, where, comment, expression, sort, collate, option과 같은 많은 인덱">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Database Indexes">
+<meta property="og:title" content="데이터베이스 인덱스">
 <meta property="og:url" content="https://gorm.io/ko_KR/docs/indexes.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORM allows create database index with tag index, uniqueIndex, those indexes will be created when AutoMigrate or CreateTable with GORM Index TagGORM accepts lots of index settings, like class, type, w">
+<meta property="og:description" content="GORM은 데이터베이스 인덱스를 생성을 지원합니다. uniqueIndex, index 태그를 활용할 수 있습니다. 이렇게 정의된 인덱스들은 GORM 자동 마이그레이션 및 테이블 생성이 수행될 때 적용됩니다. 인덱스 태그GORM은 class, type, where, comment, expression, sort, collate, option과 같은 많은 인덱">
 <meta property="og:locale" content="ko_KR">
-<meta property="article:published_time" content="2022-12-04T03:07:26.546Z">
-<meta property="article:modified_time" content="2022-12-04T03:07:26.546Z">
+<meta property="article:published_time" content="2022-12-04T06:09:31.421Z">
+<meta property="article:modified_time" content="2022-12-04T06:09:31.421Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -128,29 +128,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <div class="article">
             <div class="inner">
               <header class="article-header">
-                <h1 class="article-title" itemprop="name">Database Indexes</h1>
+                <h1 class="article-title" itemprop="name">데이터베이스 인덱스</h1>
                 
                 <a target="_blank" rel="noopener" href="https://translate.gorm.io/project/go-gorm/ko" class="article-edit-link" title="페이지 수정"><i class="fa fa-pencil"></i></a>
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>GORM allows create database index with tag <code>index</code>, <code>uniqueIndex</code>, those indexes will be created when <a href="migration.html">AutoMigrate or CreateTable with GORM</a></p>
-<h2 id="Index-Tag" class="article-heading"><a href="#Index-Tag" class="headerlink" title="Index Tag"></a>Index Tag<a class="article-anchor" href="#Index-Tag" aria-hidden="true"></a></h2><p>GORM accepts lots of index settings, like <code>class</code>, <code>type</code>, <code>where</code>, <code>comment</code>, <code>expression</code>, <code>sort</code>, <code>collate</code>, <code>option</code></p>
-<p>Check the following example for how to use it</p>
+                <html><head></head><body><p>GORM은 데이터베이스 인덱스를 생성을 지원합니다. <code>uniqueIndex</code>, <code>index</code> 태그를 활용할 수 있습니다. 이렇게 정의된 인덱스들은 <a href="migration.html">GORM 자동 마이그레이션 및 테이블 생성</a>이 수행될 때 적용됩니다.</p>
+<h2 id="인덱스-태그" class="article-heading"><a href="#인덱스-태그" class="headerlink" title="인덱스 태그"></a>인덱스 태그<a class="article-anchor" href="#인덱스-태그" aria-hidden="true"></a></h2><p>GORM은 <code>class</code>, <code>type</code>, <code>where</code>, <code>comment</code>, <code>expression</code>, <code>sort</code>, <code>collate</code>, <code>option</code>과 같은 많은 인덱스 설정을 허용합니다.</p>
+<p>사용 방법은 아래 예시를 참고해주세요.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`gorm:"index"`</span></span><br><span class="line">    Name2 <span class="type">string</span> <span class="string">`gorm:"index:idx_name,unique"`</span></span><br><span class="line">    Name3 <span class="type">string</span> <span class="string">`gorm:"index:,sort:desc,collate:utf8,type:btree,length:10,where:name3 != 'jinzhu'"`</span></span><br><span class="line">    Name4 <span class="type">string</span> <span class="string">`gorm:"uniqueIndex"`</span></span><br><span class="line">    Age   <span class="type">int64</span>  <span class="string">`gorm:"index:,class:FULLTEXT,comment:hello \\, world,where:age &gt; 10"`</span></span><br><span class="line">    Age2  <span class="type">int64</span>  <span class="string">`gorm:"index:,expression:ABS(age)"`</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// MySQL option</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name <span class="type">string</span> <span class="string">`gorm:"index:,class:FULLTEXT,option:WITH PARSER ngram INVISIBLE"`</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// PostgreSQL option</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name <span class="type">string</span> <span class="string">`gorm:"index:,option:CONCURRENTLY"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="uniqueIndex" class="article-heading"><a href="#uniqueIndex" class="headerlink" title="uniqueIndex"></a>uniqueIndex<a class="article-anchor" href="#uniqueIndex" aria-hidden="true"></a></h3><p>tag <code>uniqueIndex</code> works similar like <code>index</code>, it equals to <code>index:,unique</code></p>
+<h3 id="유니크-인덱스" class="article-heading"><a href="#유니크-인덱스" class="headerlink" title="유니크 인덱스"></a>유니크 인덱스<a class="article-anchor" href="#유니크-인덱스" aria-hidden="true"></a></h3><p><code>uniqueIndex</code> 태그는 <code>index</code> 태그와 거의 비슷하게 동작하며, <code>index:,unique</code>와 같은 의미로 사용됩니다.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name1 <span class="type">string</span> <span class="string">`gorm:"uniqueIndex"`</span></span><br><span class="line">    Name2 <span class="type">string</span> <span class="string">`gorm:"uniqueIndex:idx_name,sort:desc"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Composite-Indexes" class="article-heading"><a href="#Composite-Indexes" class="headerlink" title="Composite Indexes"></a>Composite Indexes<a class="article-anchor" href="#Composite-Indexes" aria-hidden="true"></a></h2><p>Use same index name for two fields will creates composite indexes, for example:</p>
+<h2 id="복합-인덱스" class="article-heading"><a href="#복합-인덱스" class="headerlink" title="복합 인덱스"></a>복합 인덱스<a class="article-anchor" href="#복합-인덱스" aria-hidden="true"></a></h2><p>두개의 필드에 같은 인덱스 이름을 사용하면 복합 인덱스가 생성됩니다. 아래는 그 예시입니다.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// create composite index `idx_member` with columns `name`, `number`</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`gorm:"index:idx_member"`</span></span><br><span class="line">    Number <span class="type">string</span> <span class="string">`gorm:"index:idx_member"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Fields-Priority" class="article-heading"><a href="#Fields-Priority" class="headerlink" title="Fields Priority"></a>Fields Priority<a class="article-anchor" href="#Fields-Priority" aria-hidden="true"></a></h3><p>The column order of a composite index has an impact on its performance so it must be chosen carefully</p>
-<p>You can specify the order with the <code>priority</code> option, the default priority value is <code>10</code>, if priority value is the same, the order will be based on model struct’s field index</p>
+<h3 id="필드-우선순위" class="article-heading"><a href="#필드-우선순위" class="headerlink" title="필드 우선순위"></a>필드 우선순위<a class="article-anchor" href="#필드-우선순위" aria-hidden="true"></a></h3><p>복합 인덱스의 컬럼 순서는 성능에 영향을 끼치므로 조심스럽게 정의되어야합니다.</p>
+<p><code>priority</code> 옵션의 순서를 정의할 수 있습니다. 디폴트 우선순위 값은 <code>10</code>이며, 우선순위의 값이 같다면, 순서는 모델 구조의 필드 인덱스를 기준으로 결정됩니다.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`gorm:"index:idx_member"`</span></span><br><span class="line">    Number <span class="type">string</span> <span class="string">`gorm:"index:idx_member"`</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// column order: name, number</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`gorm:"index:idx_member,priority:2"`</span></span><br><span class="line">    Number <span class="type">string</span> <span class="string">`gorm:"index:idx_member,priority:1"`</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// column order: number, name</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`gorm:"index:idx_member,priority:12"`</span></span><br><span class="line">    Number <span class="type">string</span> <span class="string">`gorm:"index:idx_member"`</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// column order: number, name</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Shared-composite-indexes" class="article-heading"><a href="#Shared-composite-indexes" class="headerlink" title="Shared composite indexes"></a>Shared composite indexes<a class="article-anchor" href="#Shared-composite-indexes" aria-hidden="true"></a></h3><p>If you are creating shared composite indexes with an embedding struct, you can’t specify the index name, as embedding the struct more than once results in the duplicated index name in db.</p>
-<p>In this case, you can use index tag <code>composite</code>, it means the id of the composite index. All fields which have the same composite id of the struct are put together to the same index, just like the original rule. But the improvement is it lets the most derived/embedding struct generates the name of index by NamingStrategy. For example:</p>
+<h3 id="공유-복합-인덱스" class="article-heading"><a href="#공유-복합-인덱스" class="headerlink" title="공유 복합 인덱스"></a>공유 복합 인덱스<a class="article-anchor" href="#공유-복합-인덱스" aria-hidden="true"></a></h3><p>구조체 임베딩을 여러번 수행한다면 데이터베이스 상에서 인덱스 이름의 중복이 발생할 수 있기 때문에, 구조체 임베딩을 통한 공유 복합키를 생성할 때는 인덱스 이름을 할당할 수 없습니다.</p>
+<p>이러한 상황에는, 복합 인덱스의 id를 의미하는 <code>composite</code> 인덱스 태그를 활용할 수 있습니다. All fields which have the same composite id of the struct are put together to the same index, just like the original rule. But the improvement is it lets the most derived/embedding struct generates the name of index by NamingStrategy. For example:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Foo <span class="keyword">struct</span> {</span><br><span class="line">  IndexA <span class="type">int</span> <span class="string">`gorm:"index:,unique,composite:myname"`</span></span><br><span class="line">  IndexB <span class="type">int</span> <span class="string">`gorm:"index:,unique,composite:myname"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>If the table Foo is created, the name of composite index will be <code>idx_foo_myname</code>.</p>
@@ -172,7 +172,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2022-12-04T03:07:26.546Z" itemprop="dateModified">마지막 수정: 2022-12-04</time>
+                <time class="article-footer-updated" datetime="2022-12-04T06:09:31.421Z" itemprop="dateModified">마지막 수정: 2022-12-04</time>
 <a href="hints.html" class="article-footer-prev" title="Hints"><i class="fa fa-chevron-left"></i><span>이전</span></a><a href="constraints.html" class="article-footer-next" title="Constraints"><span>다음</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -276,7 +276,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">내용</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Index-Tag"><span class="toc-text">Index Tag</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#uniqueIndex"><span class="toc-text">uniqueIndex</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Composite-Indexes"><span class="toc-text">Composite Indexes</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fields-Priority"><span class="toc-text">Fields Priority</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Shared-composite-indexes"><span class="toc-text">Shared composite indexes</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multiple-indexes"><span class="toc-text">Multiple indexes</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%EC%9D%B8%EB%8D%B1%EC%8A%A4-%ED%83%9C%EA%B7%B8"><span class="toc-text">인덱스 태그</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%EC%9C%A0%EB%8B%88%ED%81%AC-%EC%9D%B8%EB%8D%B1%EC%8A%A4"><span class="toc-text">유니크 인덱스</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%EB%B3%B5%ED%95%A9-%EC%9D%B8%EB%8D%B1%EC%8A%A4"><span class="toc-text">복합 인덱스</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%ED%95%84%EB%93%9C-%EC%9A%B0%EC%84%A0%EC%88%9C%EC%9C%84"><span class="toc-text">필드 우선순위</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%EA%B3%B5%EC%9C%A0-%EB%B3%B5%ED%95%A9-%EC%9D%B8%EB%8D%B1%EC%8A%A4"><span class="toc-text">공유 복합 인덱스</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Multiple-indexes"><span class="toc-text">Multiple indexes</span></a></li></ol>
 
               
                 <a href="https://translate.gorm.io/project/go-gorm/ko" target="_blank" id="article-improve">
