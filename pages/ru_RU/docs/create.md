@@ -249,10 +249,10 @@ GORM обеспечивает поддержку Upsert для различны�
 ```go
 import "gorm.io/gorm/clause"
 
-// Ничего не делать при конфликтах
+// Do nothing on conflict
 db.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Обновить столбцы до значения по умолчанию при конфликте `id`
+// Update columns to default value on `id` conflict
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -260,27 +260,28 @@ db.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// Использовать выражение SQL
+// Use SQL expression
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"count": gorm.Expr("GREATEST(count, VALUES(count))")}),
 }).Create(&users)
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `count`=GREATEST(count, VALUES(count));
 
-// Обновить столбцы до нового значения при конфликте `id`
+// Update columns to new value on `id` conflict
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
 }).Create(&users)
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET "name"="excluded"."name"; SQL Server
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
-// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age=VALUES(age); MySQL
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age); MySQL
 
-// Обновить все столбцы, кроме первичных ключей, до нового значения при конфликте
+// Update all columns, except primary keys, to new value on conflict
 db.Clauses(clause.OnConflict{
   UpdateAll: true,
 }).Create(&users)
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age", ...;
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL
 ```
 
 Смотрите также `FirstOrInit`, `FirstOrCreate` в [Расширенные запросы](advanced_query.html)
