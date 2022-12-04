@@ -14,6 +14,7 @@ You need to write the configuration as a runnable golang program, usually, the p
 package main
 
 import (
+  "gorm.io/gen"
   "gorm.io/gorm"
   "gorm.io/driver/sqlite"
 )
