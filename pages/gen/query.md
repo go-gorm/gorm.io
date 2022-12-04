@@ -341,20 +341,6 @@ err := u.WithContext(ctx).Select(u.Name, e.Email).LeftJoin(e, e.UserID.EqCol(u.I
 users := u.WithContext(ctx).Join(e, e.UserID.EqCol(u.id), e.Email.Eq("modi@example.org")).Join(c, c.UserID.EqCol(u.ID)).Where(c.Number.Eq("411111111111")).Find()
 ```
 
-### Scopes
-
-Scopes allow you to re-use commonly used logic, the shared logic needs to be defined as type `func(dao gen.Dao) gen.Dao`, for example:
-
-```go
-// SELECT * FROM users WHERE `id` > 10
-users, err := q.User.WithContext(ctx).Scopes(func(dao gen.Dao) gen.Dao {
-    return dao.Where(q.User.ID.Gt(10))
-    // return dao.Where(field.NewInt64("", "id").Eq(1))
-}).Find()
-```
-
-More details, please follow [https://gorm.io/docs/scopes.html](https://gorm.io/docs/scopes.html)
-
 ### New Field Expiression
 
 Sometimes you may need to create a dynamic field for dynamically SQL generation
