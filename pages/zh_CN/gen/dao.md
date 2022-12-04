@@ -14,29 +14,30 @@ Gen遵循`配置即代码`的实践原则来生成DAO层代码，下面是「配
 package main
 
 import (
+  "gorm.io/gen"
   "gorm.io/gorm"
   "gorm.io/driver/sqlite"
 )
 
 func main() {
-  // 通过配置初始化生成器
+  // Initialize the generator with configuration
   g := gen.NewGenerator(gen.Config{
-     OutPath: "../dal", // 输出目录，默认是 ./query
+     OutPath: "../dal", // output directory, default value is ./query
      Mode:    gen.WithDefaultQuery | gen.WithQueryInterface,
      FieldNullable: true,
   })
 
-  // 初始化一个 *gorm.DB 对象
+  // Initialize a *gorm.DB instance
   db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
-  // 用上面的`*gorm.DB` 对象初始化generator对象,
-  // 通过调用generator的 `GenerateModel/GenerateModelAs`方法可以根据数据库表来生成struct结构体。
+  // Use the above `*gorm.DB` instance to initialize the generator,
+  // which is required to generate structs from db when using `GenerateModel/GenerateModelAs`
   g.UseDB(db)
 
-  // 为指定的struct生成默认的DAO层
+  // Generate default DAO interface for those specified structs
   g.ApplyBasic(model.Customer{}, model.CreditCard{}, model.Bank{}, model.Passport{})
 
-  // 为从数据库生成的structs生成DAO层代码
+  // Generate default DAO interface for those generated structs from database
   companyGenerator := g.GenerateModelAs("company", "MyCompany"),
   g.ApplyBasic(
     g.GenerateModel("users"),
@@ -47,7 +48,7 @@ func main() {
     ),
   )
 
-  // 执行
+  // Execute the generator
   g.Execute()
 }
 ```
