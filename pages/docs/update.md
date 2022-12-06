@@ -71,10 +71,10 @@ db.Model(&user).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 
 // Select all fields (select all fields include zero value fields)
-db.Model(&user).Select("*").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
+db.Model(&user).Select("*").Updates(User{Name: "jinzhu", Role: "admin", Age: 0})
 
 // Select all fields but omit Role (select all fields include zero value fields)
-db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
+db.Model(&user).Select("*").Omit("Role").Updates(User{Name: "jinzhu", Role: "admin", Age: 0})
 ```
 
 ## Update Hooks
