@@ -74,3 +74,33 @@ u.WithContext(ctx).Create(&users)
 // INSERT INTO users xxx (5 batches)
 ```
 
+## Upsert / On Conflict
+
+Gen provides compatible Upsert support for different databases
+
+```go
+import "gorm.io/gorm/clause"
+
+// Do nothing on conflict
+err := query.User.WithContext(ctx).Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
+
+// Update columns to default value on `id` conflict
+err := query.User.WithContext(ctx).Clauses(clause.OnConflict{
+  Columns:   []clause.Column{{Name: "id"}},
+  DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
+}).Create(&users)
+// MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
+
+err := query.User.WithContext(ctx).Clauses(clause.OnConflict{Columns: []string{"Name", "Age"}}).Create(&user).Error
+// MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET "name"="excluded"."name"; SQL Server
+// INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age); MySQL
+
+// Update all columns, except primary keys, to new value on conflict
+err := query.User.WithContext(ctx).Clauses(clause.OnConflict{
+  UpdateAll: true,
+}).Create(&users)
+// INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age", ...;
+// INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL
+```
