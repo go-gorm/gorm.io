@@ -1,9 +1,9 @@
 ---
-title: Advanced Query
+title: Erweiterte Abfrage
 layout: page
 ---
 
-## <span id="smart_select">Smart Select Fields</span>
+## <span id="smart_select">Intelligente Feldauswahl</span>
 
 GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
 
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // hunderte weitere Felder
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// Wähle `id`, `name` bei Abfragen automatisch aus
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**Beachte**, dass der `QueryFields` Modus wird alle Feldnamen des aktuellen Models berücksichtigen
 {% endnote %}
 
 ```go
@@ -36,16 +36,16 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // mit dieser Option
 
-// Session Mode
+// Session Modus
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## Locking (für Updates)
 
-GORM supports different types of locks, for example:
+GORM unterstützt verschiedene Locks. Beispielsweise:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -64,7 +64,7 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+Siehe [Raw SQL und SQL Builder](sql_builder.html) für weitere Informationen
 
 ## SubQuery
 
