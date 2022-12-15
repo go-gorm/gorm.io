@@ -128,7 +128,7 @@ Please checkout [Association Mode](associations.html#Association-Mode) for worki
 
 ## Customize JoinTable
 
-`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can setup it with `SetupJoinTable`, for example:
+`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can set it up with `SetupJoinTable`, for example:
 
 {% note warn %}
 **NOTE:**
