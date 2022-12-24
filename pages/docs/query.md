@@ -147,7 +147,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 If the object's primary key has been set, then condition query wouldn't cover the value of primary key but use it as a 'and' condition. For example:
 ```go
 var user = User{ID: 10}
-db.Where("id = ?", 20}.First(&user)
+db.Where("id = ?", 20).First(&user)
 // SELECT * FROM users WHERE id = 10 and id = 20 ORDER BY id ASC LIMIT 1
 ```
 This query would give `record not found` Error. So set the primary key attribute such as `id` to nil before you want to use the variable such as `user` to get new value from database.
