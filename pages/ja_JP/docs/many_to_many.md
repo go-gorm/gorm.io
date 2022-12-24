@@ -127,7 +127,7 @@ many2many リレーションを使った処理の詳細については [Associat
 
 ## 結合テーブルをカスタマイズする
 
-`Join Table`（結合テーブル）は、`Soft Delete`、`Hooks`などをサポートしたり、外部キー以外のフィールドを持つようなフル機能のモデルとして定義できます。これの設定には `SetupJoinTable` を使用します。例：
+`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can set it up with `SetupJoinTable`, for example:
 
 {% note warn %}
 **注意：** 結合テーブルをカスタマイズする場合、結合テーブルの外部キーを複合主キーにする、あるいは外部キーに複合ユニークインデックスを貼る必要があります。
