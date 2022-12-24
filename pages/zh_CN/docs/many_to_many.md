@@ -127,7 +127,7 @@ GORM 可以通过 `Preload` 预加载 has many 关联的记录，查看 [预加�
 
 ## 自定义连接表
 
-`连接表` 可以是一个全功能的模型，支持 `Soft Delete`、`钩子`、更多的字段，就跟其它模型一样。您可以通过 `SetupJoinTable` 指定它，例如：
+`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can set it up with `SetupJoinTable`, for example:
 
 {% note warn %}
 **注意：** 自定义连接表要求外键是复合主键或复合唯一索引
