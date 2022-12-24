@@ -1,9 +1,9 @@
 ---
-title: Advanced Query
+title: Erweiterte Abfrage
 layout: page
 ---
 
-## <span id="smart_select">Smart Select Fields</span>
+## <span id="smart_select">Intelligente Feldauswahl</span>
 
 GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
 
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // hunderte weitere Felder
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automatically when querying
+// Wähle `id`, `name` bei Abfragen automatisch aus
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**Beachte**, dass der `QueryFields` Modus wird alle Feldnamen des aktuellen Models berücksichtigen
 {% endnote %}
 
 ```go
@@ -36,16 +36,16 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // mit dieser Option
 
-// Session Mode
+// Session Modus
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## Locking (für Updates)
 
-GORM supports different types of locks, for example:
+GORM unterstützt verschiedene Locks. Beispielsweise:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -64,11 +64,11 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+Siehe [Raw SQL und SQL Builder](sql_builder.html) für weitere Informationen
 
 ## SubQuery
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+Eine Unterabfrage kann innerhalb einer Abfrage verschachtelt werden, GORM kann Unterabfrage erzeugen, wenn ein `*gorm.DB` Objekt als Parameter verwendet wird
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
@@ -81,7 +81,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From SubQuery</span>
 
-GORM allows you using subquery in FROM clause with the method `Table`, for example:
+GORM ermöglicht die Nutzung von Unterabfragen in FROM Blöcken mit der `Table` Methode:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
@@ -93,9 +93,9 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
 
-## <span id="group_conditions">Group Conditions</span>
+## <span id="group_conditions">Gruppierungsbedingungen</span>
 
-Easier to write complicated SQL query with Group Conditions
+Gruppierungsbedingungen erleichtern das Schreiben komplexer SQL Abfragen
 
 ```go
 db.Where(
@@ -107,18 +107,18 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## IN with multiple columns
+## IN mit mehreren Spalten
 
-Selecting IN with multiple columns
+Auswahl von IN mit mehreren Spalten
 
 ```go
 db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"jinzhu2", 19, "user"}}).Find(&users)
 // SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
 ```
 
-## Named Argument
+## Benannte Argumente
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM unterstützt benannte Argumente mit [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) oder `map[string]interface{}{}`
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -130,7 +130,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
 
-## Find To Map
+## Ergebnisse in Maps speichern
 
 GORM allows scanning results to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
 

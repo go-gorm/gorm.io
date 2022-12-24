@@ -57,23 +57,23 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 Если вы хотите обновить выбранные или игнорировать некоторые поля при обновлении, вы можете использовать `Select`, `Omit`
 
 ```go
-// Select с картой
-// User's ID = `111`:
+// Select with Map
+// User's ID is `111`:
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello' WHERE id=111;
 
 db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Select со структурой (выберите поля с нулевыми значениями)
+// Select with Struct (select zero value fields)
 db.Model(&user).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 
-// Select всех полей (выбор всех полей включая нулевые поля)
-db.Model(&user).Select("*").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
+// Select all fields (select all fields include zero value fields)
+db.Model(&user).Select("*").Updates(User{Name: "jinzhu", Role: "admin", Age: 0})
 
-// Select всех полей, но пропустить(Omit) Role (выбор всех полей включая нулевые поля)
-db.Model(&user).Select("*").Omit("Role").Update(User{Name: "jinzhu", Role: "admin", Age: 0})
+// Select all fields but omit Role (select all fields include zero value fields)
+db.Model(&user).Select("*").Omit("Role").Updates(User{Name: "jinzhu", Role: "admin", Age: 0})
 ```
 
 ## Хуки Update

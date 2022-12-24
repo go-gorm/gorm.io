@@ -129,7 +129,7 @@ Por favor cheque [Modo de associação](associations.html#Association-Mode) para
 
 ## Customizando União de Tabelas
 
-`JoinTable` pode ser um modelo completo, isso tendo `Soft Delete`,`Hooks` suporta e mais campos, você pode configurá-lo com `SetupJoinTable`, por exemplo:
+`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can set it up with `SetupJoinTable`, for example:
 
 {% note warn %}
 **NOTA:** A personalização de chaves estangeiras da tabela de união, requer chaves primárias compostas ou índice único composto
