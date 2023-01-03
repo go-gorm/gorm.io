@@ -115,7 +115,7 @@ type Toy struct {
   OwnerType string
 }
 
-db.Create(&Dog{Name: "dog1", Toy: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
+db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `dogs` (`name`) VALUES ("dog1")
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
 ```
