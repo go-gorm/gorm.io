@@ -18,7 +18,7 @@ db.Save(&user)
 
 ## 更新单个列
 
-When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details. When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
+当使用 `Update` 更新单列时，需要有一些条件，否则将会引起错误 `ErrMissingWhereClause` ，查看 [阻止全局更新](#block_global_updates) 了解详情。 当使用 `Model` 方法，并且值中有主键值时，主键将会被用于构建条件，例如：
 
 ```go
 // 条件更新
