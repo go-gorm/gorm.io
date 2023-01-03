@@ -261,11 +261,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-想要更多复杂的 SQL 查询， 请参考 [Group Conditions in Advanced Query](advanced_query.html#group_conditions) 。
+想要更多复杂的 SQL 查询， 请参考 [高级查询中的条件组](advanced_query.html#group_conditions) 。
 
 ## 选择特定字段
 
-`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
+`Select` 允许您指定从数据库中取出哪些字段， 此外， GORM 默认选择所有的字段。
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -278,11 +278,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-Also check out [Smart Select Fields](advanced_query.html#smart_select)
+您也可以查看 [智能选择字段](advanced_query.html#smart_select)
 
 ## 排序
 
-Specify order when retrieving records from the database
+从数据库中检索记录时指定顺序
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -300,7 +300,7 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit` 指定要检索的最大记录数。 `Offset` 指定在开始返回记录前要跳过的记录数。
 
 ```go
 db.Limit(3).Find(&users)
@@ -323,7 +323,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
+参考 [分页](scopes.html#pagination) ，了解如何写一个分页器
 
 ## Group By & Having
 
@@ -361,17 +361,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+从 model 中选择去重后的值
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
+`Distinct` 也可以配合 [`Pluck`](advanced_query.html#pluck) 和 [`Count`](advanced_query.html#count) 使用
 
 ## Joins
 
-Specify Joins conditions
+指定连接条件
 
 ```go
 type result struct {
@@ -395,25 +395,25 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ### Joins 预加载
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+您可以使用 `Joins` 实现单条 SQL 预加载关联记录，例如：
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Join with conditions
+带条件的连接
 
 ```go
 db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
-For more details, please refer to [Preloading (Eager Loading)](preload.html).
+更多细节请参阅 [预加载 (Eager Loading)](preload.html) 。
 
 ### Joins 一个衍生表
 
-You can also use `Joins` to join a derived table.
+你也可以使用 `Joins` 来连接一个衍生表
 
 ```go
 type User struct {
@@ -434,7 +434,7 @@ db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Sc
 
 ## <span id="scan">Scan</span>
 
-Scanning results into a struct works similarly to the way we use `Find`
+将结果 Scan 至一个 struct 和我们使用 `Find` 的方式相似
 
 ```go
 type Result struct {
