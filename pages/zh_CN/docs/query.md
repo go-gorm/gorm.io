@@ -144,13 +144,13 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 ```
 
 {% note warn %}
-如果对象设置了主键，条件查询将不会覆盖主键的值，而是用And连接条件。 例如：
+如果对象设置了主键，条件查询将不会覆盖主键的值，而是用 And 连接条件。 例如：
 ```go
 var user = User{ID: 10}
 db.Where("id = ?", 20).First(&user)
 // SELECT * FROM users WHERE id = 10 and id = 20 ORDER BY id ASC LIMIT 1
 ```
-这个查询将会给出`record not found`错误 So set the primary key attribute such as `id` to nil before you want to use the variable such as `user` to get new value from database.
+这个查询将会给出`record not found`错误 所以，在你想要使用例如 `user` 这样的变量从数据库中获取新值前，需要将例如 `id` 这样的主键设置为nil。
 {% endnote %}
 
 
@@ -171,7 +171,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**注意** 当使用 struct 进行查询时，GORM 只会使用非零值字段进行查询。这意味着如果您的字段值为 `0`、`''`、`false` 或其他 [零值](https://tour.golang.org/basics/12)，该字段不会被用于构建查询条件，例如：
 {% endnote %}
 
 ```go
@@ -179,18 +179,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
+如果想要在查询条件中包含零值，你可以使用 map ，其会包含所有的键值对查询条件，例如：
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-For more details, see [Specify Struct search fields](#specify_search_fields).
+了解更多的细节，请阅读 [Specify Struct search fields](#specify_search_fields) 。
 
 ### <span id="specify_search_fields">指定结构体查询字段</span>
 
-When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
+当使用 struct 进行查询时，你可以从 struct 中指定特定的值作为查询条件中相关联的字段名或是 dbname 来传递给 `Where()` ，例如：
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -202,7 +202,7 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 
 ### <span id="inline_conditions">内联条件</span>
 
-Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
+查询条件可以用和 `Where` 类似的方式被内联到像 `First` 和 `Find` 这样的方法中
 
 ```go
 // Get by primary key if it were a non-integer type
@@ -227,7 +227,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 
 ### Not 条件
 
-Build NOT conditions, works similar to `Where`
+构建 NOT 条件，用法与 `Where` 类似
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -261,7 +261,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
+想要更多复杂的 SQL 查询， 请参考 [Group Conditions in Advanced Query](advanced_query.html#group_conditions) 。
 
 ## 选择特定字段
 
