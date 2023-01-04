@@ -90,7 +90,7 @@ db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-When the destination object has a primary value, the primary key will be used to build the condition, for example:
+当目标对象有一个主键值时，将使用主键构建查询条件，例如：
 
 ```go
 var user = User{ID: 10}
