@@ -32,7 +32,11 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 만약 `ErrRecordNotFound` 에러를 피하고 싶다면, `Find` 메서드를 `db.Limit(1).Find(&user)` 이렇게 사용하실 수 있습니다. `Find` 메서드는 구조체와 슬라이스를 전부 지원합니다.
 {% endnote %}
 
-`First` 와 `Last` 메서드는 각각 기본키 정렬 기준으로 첫번째와 마지막 레코드를 조회합니다. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
+{% note warn %}
+Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is not performant and nondeterministic
+{% endnote %}
+
+The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
 
 ```go
 var user User
