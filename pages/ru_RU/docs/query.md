@@ -32,7 +32,11 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 Если вы не хотите проверять наличие ошибки `ErrRecordNotFound`, вы можете использовать метод `Find` следующим образом `db.Limit(1).Find(&user)`, метод `Find` принимает такие типы данных как структура, так и слайс.
 {% endnote %}
 
-Методы `First` и `Last` найдут первую и последнюю запись (соответственно) по порядку первичного ключа. Они работают только тогда, когда указатель на целевую структуру передается методам в качестве аргумента или когда модель указана с помощью `db.Model()`. Кроме того, если первичный ключ не определен для соответствующей модели, то модель будет упорядочена по первому полю. Например:
+{% note warn %}
+Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is not performant and nondeterministic
+{% endnote %}
+
+The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
 
 ```go
 var user User
@@ -66,7 +70,7 @@ db.First(&Language{})
 
 ### Получение объектов по первичному ключу
 
-Объекты могут быть получены с помощью первичного ключа, используя [Inline Conditions](#inline_conditions) , если первичный ключ является числом. При работе со строками нужно проявлять особую осторожность, чтобы избежать инъекции SQL; подробности см. в разделе [ Безопасность ](security.html).
+Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
 
 ```go
 db.First(&user, 10)
@@ -79,7 +83,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-Если первичный ключ - строка (например, uuid), то запрос будет записан следующим образом:
+If the primary key is a string (for example, like a uuid), the query will be written as follows:
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")

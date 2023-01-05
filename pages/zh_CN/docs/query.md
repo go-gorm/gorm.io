@@ -32,7 +32,11 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 如果你想避免`ErrRecordNotFound`错误，你可以使用`Find`，比如`db.Limit(1).Find(&user)`，`Find`方法可以接受struct和slice的数据。
 {% endnote %}
 
-`First` 和 `Last` 会根据主键排序，分别查询第一条和最后一条记录。 只有在目标 struct 是指针或者通过 `db.Model()` 指定 model 时，该方法才有效。 此外，如果相关 model 没有定义主键，那么将按 model 的第一个字段进行排序。 例如:
+{% note warn %}
+Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is not performant and nondeterministic
+{% endnote %}
+
+The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
 
 ```go
 var user User
@@ -66,7 +70,7 @@ db.First(&Language{})
 
 ### 根据主键检索
 
-如果主键是数字类型，您可以使用 [内联条件](#inline_conditions) 来检索对象。 传入字符串参数时，需要特别注意 SQL 注入问题，查看 [安全](security.html) 获取详情.
+Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
 
 ```go
 db.First(&user, 10)
@@ -79,14 +83,14 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-如果主键是字符串（例如像 uuid），查询将被写成这样：
+If the primary key is a string (for example, like a uuid), the query will be written as follows:
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-当目标对象有一个主要值时，将使用主键构建条件，例如：
+当目标对象有一个主键值时，将使用主键构建查询条件，例如：
 
 ```go
 var user = User{ID: 10}
@@ -144,13 +148,13 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 ```
 
 {% note warn %}
-如果对象设置了主键，条件查询将不会覆盖主键的值，而是用 And 连接条件。 例如：
+If the object's primary key has been set, then condition query wouldn't cover the value of primary key but use it as a 'and' condition. For example:
 ```go
 var user = User{ID: 10}
 db.Where("id = ?", 20).First(&user)
 // SELECT * FROM users WHERE id = 10 and id = 20 ORDER BY id ASC LIMIT 1
 ```
-这个查询将会给出`record not found`错误 所以，在你想要使用例如 `user` 这样的变量从数据库中获取新值前，需要将例如 `id` 这样的主键设置为nil。
+This query would give `record not found` Error. So set the primary key attribute such as `id` to nil before you want to use the variable such as `user` to get new value from database.
 {% endnote %}
 
 
@@ -171,7 +175,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**注意** 当使用 struct 进行查询时，GORM 只会使用非零值字段进行查询。这意味着如果您的字段值为 `0`、`''`、`false` 或其他 [零值](https://tour.golang.org/basics/12)，该字段不会被用于构建查询条件，例如：
+**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
 {% endnote %}
 
 ```go
@@ -179,18 +183,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-如果想要在查询条件中包含零值，你可以使用 map ，其会包含所有的键值对查询条件，例如：
+To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-了解更多的细节，请阅读 [Specify Struct search fields](#specify_search_fields) 。
+For more details, see [Specify Struct search fields](#specify_search_fields).
 
 ### <span id="specify_search_fields">指定结构体查询字段</span>
 
-当使用 struct 进行查询时，你可以从 struct 中指定特定的值作为查询条件中相关联的字段名或是 dbname 来传递给 `Where()` ，例如：
+When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -202,7 +206,7 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 
 ### <span id="inline_conditions">内联条件</span>
 
-查询条件可以用和 `Where` 类似的方式被内联到像 `First` 和 `Find` 这样的方法中
+Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
 
 ```go
 // Get by primary key if it were a non-integer type
@@ -227,7 +231,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 
 ### Not 条件
 
-构建 NOT 条件，用法与 `Where` 类似
+Build NOT conditions, works similar to `Where`
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
@@ -261,11 +265,11 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-想要更多复杂的 SQL 查询， 请参考 [高级查询中的条件组](advanced_query.html#group_conditions) 。
+For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
 
 ## 选择特定字段
 
-`Select` 允许您指定从数据库中取出哪些字段， 此外， GORM 默认选择所有的字段。
+`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -278,11 +282,11 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-您也可以查看 [智能选择字段](advanced_query.html#smart_select)
+Also check out [Smart Select Fields](advanced_query.html#smart_select)
 
 ## 排序
 
-从数据库中检索记录时指定顺序
+Specify order when retrieving records from the database
 
 ```go
 db.Order("age desc, name").Find(&users)
@@ -300,7 +304,7 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit` 指定要检索的最大记录数。 `Offset` 指定在开始返回记录前要跳过的记录数。
+`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
 
 ```go
 db.Limit(3).Find(&users)
@@ -323,7 +327,7 @@ db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users; (users2)
 ```
 
-参考 [分页](scopes.html#pagination) ，了解如何写一个分页器
+Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
 
 ## Group By & Having
 
@@ -361,17 +365,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-从 model 中选择去重后的值
+Selecting distinct values from the model
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` 也可以配合 [`Pluck`](advanced_query.html#pluck) 和 [`Count`](advanced_query.html#count) 使用
+`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
 
 ## Joins
 
-指定连接条件
+Specify Joins conditions
 
 ```go
 type result struct {
@@ -395,25 +399,25 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ### Joins 预加载
 
-您可以使用 `Joins` 实现单条 SQL 预加载关联记录，例如：
+You can use `Joins` eager loading associations with a single SQL, for example:
 
 ```go
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-带条件的连接
+Join with conditions
 
 ```go
 db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
-更多细节请参阅 [预加载 (Eager Loading)](preload.html) 。
+For more details, please refer to [Preloading (Eager Loading)](preload.html).
 
 ### Joins 一个衍生表
 
-你也可以使用 `Joins` 来连接一个衍生表
+You can also use `Joins` to join a derived table.
 
 ```go
 type User struct {
@@ -434,7 +438,7 @@ db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Sc
 
 ## <span id="scan">Scan</span>
 
-将结果 Scan 至一个 struct 和我们使用 `Find` 的方式相似
+Scanning results into a struct works similarly to the way we use `Find`
 
 ```go
 type Result struct {

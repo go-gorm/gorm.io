@@ -32,7 +32,11 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 `ErrRecordNotFound` エラーを避けたい場合は、`db.Limit(1).Find(&user)`のように、`Find` を 使用することができます。`Find` メソッドは struct と slice のどちらも受け取ることができます。
 {% endnote %}
 
-`First` と `Last` メソッドは、プライマリキーによって順序づけられているそれぞれ最初と最後のレコードを見つけます。 これら2つのメソッドは、対象のstructのポインタをメソッドの引数に渡す、もしくは`db.Model()`を使用してモデルを指定した場合のみ動作します。 また、関連するモデルにプライマリキーが定義されていない場合、モデルの最初のフィールドで順序付けされることになります。 例：
+{% note warn %}
+Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is not performant and nondeterministic
+{% endnote %}
+
+The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
 
 ```go
 var user User
@@ -66,7 +70,7 @@ db.First(&Language{})
 
 ### プライマリキーでオブジェクトを取得する
 
-主キーが数値の場合は、 [Inline Conditions](#inline_conditions) を使用することで、主キーでオブジェクトを取得できます。 文字列を扱う場合、SQLインジェクションを避けるために十分な注意が必要です。詳細については、 [Security](security.html) セクションを参照してください。
+Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
 
 ```go
 db.First(&user, 10)
@@ -79,7 +83,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-プライマリキーが (例えば、uuid のような) 文字列の場合、クエリは以下のようになります。
+If the primary key is a string (for example, like a uuid), the query will be written as follows:
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
