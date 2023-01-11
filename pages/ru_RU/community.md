@@ -24,6 +24,8 @@ layout: страница
 
 * [Strongly typed JSON/JSONB fields in GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
 
+* [Using GORM concurrently is not safe](https://zhuanlan.zhihu.com/p/556065676)
+
 ## Видео
 
 * Gorm quick start tutorial by [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
