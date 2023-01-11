@@ -24,6 +24,8 @@ layout: page
 
 * [GORM 中的强类型 JSON/JSONB 字段](https://www.terminateandstayresident.com/2022-07-13/orm-json)
 
+* [Using GORM concurrently is not safe](https://zhuanlan.zhihu.com/p/556065676)
+
 ## 视频
 
 * Gorm 快速入门GORM- [piexlmax](https://github.com/piexlmax) - [GORM V2 快速入门](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
