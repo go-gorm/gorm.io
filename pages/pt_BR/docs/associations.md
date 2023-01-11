@@ -3,7 +3,7 @@ title: Associações
 layout: page
 ---
 
-## Auto Create/Update
+## Criar/Atualizar Automaticamente
 
 GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
 
