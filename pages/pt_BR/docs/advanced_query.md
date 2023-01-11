@@ -81,7 +81,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">Consulta a partir de uma subconsulta</span>
 
-GORM allows you using subquery in FROM clause with the method `Table`, for example:
+O GORM permite que você use uma subconsulta na cláusula FROM com o método `Table`, por exemplo:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
@@ -130,9 +130,9 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 Consulte [Raw SQL e SQL Builder](sql_builder.html#named_argument) para mais detalhes
 
-## Find To Map
+## Mapear resultado de consulta
 
-GORM allows scanning results to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+O GORM mapear o resultado de uma consulta para `map[string]interface{}` ou `[]map[string]interface{}`, não esqueça de definir o `Model` ou `Table`, por exemplo:
 
 ```go
 result := map[string]interface{}{}
@@ -144,7 +144,7 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+Obtenha o primeiro registro correspondente ou inicialize uma nova instância com determinadas condições (funciona apenas com struct ou com condições usando map)
 
 ```go
 // User not found, initialize it with give conditions
@@ -160,7 +160,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-Initialize struct with more attributes if record not found, those `Attrs` won't be used to build the SQL query
+Inicializar struct com mais atributos se o registro não for encontrado, os `Attrs` não serão usados para criar uma consulta SQL
 
 ```go
 // User not found, initialize it with give conditions and Attrs
@@ -179,7 +179,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+`Assign` atribue a struct independente se o registro foi localizado ou não, esses atributos não serão usados para criar uma consulta SQL e os dados finais não serão gravados no banco de dados
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
