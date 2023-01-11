@@ -147,15 +147,15 @@ db.Table("users").Find(&results)
 Obtenha o primeiro registro correspondente ou inicialize uma nova instância com determinadas condições (funciona apenas com struct ou com condições usando map)
 
 ```go
-// User not found, initialize it with give conditions
+// Usuário não encontrado, inicialize o objeto com os seguintes dados
 db.FirstOrInit(&user, User{Name: "non_existing"})
 // user -> User{Name: "non_existing"}
 
-// Found user with `name` = `jinzhu`
+// Pesquisa um usuário com `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-// Found user with `name` = `jinzhu`
+// Usuário encontrado com `name` = `jinzhu`
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
@@ -163,17 +163,17 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 Inicializar struct com mais atributos se o registro não for encontrado, os `Attrs` não serão usados para criar uma consulta SQL
 
 ```go
-// User not found, initialize it with give conditions and Attrs
+// Usuário não encontrado, inicialize o objeto com os dados
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// User not found, initialize it with give conditions and Attrs
+// Usuário não encontrado, inicialize o objeto com os dados
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// Usuário encontrado com `name` = `jinzhu`, os atributos serão ignorados
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
@@ -182,11 +182,11 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 `Assign` atribue a struct independente se o registro foi localizado ou não, esses atributos não serão usados para criar uma consulta SQL e os dados finais não serão gravados no banco de dados
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// Usuário não encontrado, inicialize o objeto com os dados e preencha os atributos
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // user -> User{Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// Usuário encontrado com `name` = `jinzhu`, altere o objeto preenchendo os atributos
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 20}
@@ -194,55 +194,55 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
+Seja o primeiro registro correspondente ou crie um novo com determinadas condições (só funciona com estrutura, condições de mapa), `RowsAffected` retornou contagem de registros criados/atualizados
 
 ```go
-// User not found, create a new record with give conditions
+// Usuário não encontrado, crie um novo registro com os dados
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 // result.RowsAffected // => 1
 
-// Found user with `name` = `jinzhu`
+// Usuário encontrado com `name` = `jinzhu`
 result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 // result.RowsAffected // => 0
 ```
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+Cria struct com mais atributos se o registro não for localizado, esses `Attrs` não serão usados para construir uma consulta SQL
 
 ```go
-// User not found, create it with give conditions and Attrs
+// Usuário não encontrado, crie um novo registro com os dados
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, attributes will be ignored
+// Usuário encontrado com `name` = `jinzhu`, os atributos serão ignorados
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+`Assign` atribue ao registro independente se for encontrado ou não e grava de volta no banco de dados.
 
 ```go
-// User not found, initialize it with give conditions and Assign attributes
+// Usuário não encontrado, inicialize o objeto com os dados e preencha os atributos
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Found user with `name` = `jinzhu`, update it with Assign attributes
+// Usuário encontrado com `name` = `jinzhu`, altere o objeto com os atributos
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // UPDATE users SET age=20 WHERE id = 111;
 // user -> User{ID: 111, Name: "jinzhu", Age: 20}
 ```
 
-## Optimizer/Index Hints
+## Sugestões de Otimizer/Índice
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
+Dicas de otimização permitem controlar o otimizador de consultas para escolher um determinado plano de execução de consultas, GORM suporta-o com `gorm.io/hints`, por exemplo:
 
 ```go
 import "gorm.io/hints"
@@ -251,7 +251,7 @@ db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allow passing index hints to the database in case the query planner gets confused.
+Dicas de índice permitem a aprovação de dicas de índice para o banco de dados caso o planejador de consultas fique confuso.
 
 ```go
 import "gorm.io/hints"
@@ -263,11 +263,11 @@ db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-Refer [Optimizer Hints/Index/Comment](hints.html) for more details
+Consulte [Dicas otimizador/Index/Comentário](hints.html) para obter mais detalhes
 
-## Iteration
+## Iteração
 
-GORM supports iterating through Rows
+GORM suporta iteração através de Linhas
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -275,41 +275,41 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows is a method of `gorm.DB`, it can be used to scan a row into a struct
+  // ScanRows é um método do `gorm.DB`, ele pode ser usado para mapear o resultado para uma struct
   db.ScanRows(rows, &user)
 
-  // do something
+  // faça alguma coisa
 }
 ```
 
 ## FindInBatches
 
-Query and process records in batch
+Consultar e processar registros em lote
 
 ```go
-// batch size 100
+// lote com tamanho 100
 result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // batch processing found records
+    // processando os registros encontrados em lotes
   }
 
   tx.Save(&results)
 
-  tx.RowsAffected // number of records in this batch
+  tx.RowsAffected // número de registros no lote
 
-  batch // Batch 1, 2, 3
+  batch // Lote 1, 2, 3
 
-  // returns error will stop future batches
+  // se retornar algum erro os próximos lotes são interrompidos
   return nil
 })
 
-result.Error // returned error
-result.RowsAffected // processed records count in all batches
+result.Error // erro retornado
+result.RowsAffected // total de registros processados em todos lotes
 ```
 
-## Query Hooks
+## Hooks de consulta
 
-GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
+GORM permite que hooks `AfterFind` para uma consulta, será chamado quando consultar um registro, consulte [Hooks](hooks.html) para obter detalhes
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -322,7 +322,7 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
+Consultar uma coluna única do banco de dados e mapear em um slice, se você quiser consultar múltiplas colunas, use `Select` com [`Scan`](query.html#scan) em vez disso
 
 ```go
 var ages []int64
@@ -337,49 +337,49 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Requesting more than one column, use `Scan` or `Find` like this:
+// Precisa de mais de uma coluna, use `Scan` ou `Find` como abaixo:
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
-## Scopes
+## Escopos
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+`Scopes` permite que você especifique consultas comumente usadas que podem ser referenciadas como chamadas de método
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
   return db.Where("amount > ?", 1000)
 }
 
-func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
+func PaidWithCreditCard(db *gorm. B) *gorm.DB {
   return db.Where("pay_mode_sign = ?", "C")
 }
 
-func PaidWithCod(db *gorm.DB) *gorm.DB {
+func PaidWithCod(db *gorm. B) *gorm.DB {
   return db.Where("pay_mode_sign = ?", "C")
 }
 
-func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
+func OrderStatus(status []string) func (db *gorm. B) *gorm.DB {
   return func (db *gorm.DB) *gorm.DB {
-    return db.Where("status IN (?)", status)
+    return db. aqui("status IN (?)", status)
   }
 }
 
-db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
-// Find all credit card orders and amount greater than 1000
+db.Scopes(AmountGreaterThan1000, PaidWithCreditCard). ind(&orders
+// Encontrar todas as ordens de cartão de crédito e valor maior que 1000
 
-db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
-// Find all COD orders and amount greater than 1000
+db.Scopes(AmountGreaterThan1000, PaidWithCod). ind(&orders)
+// Encontrar todas as ordens de COD e quantidade superior a 1000
 
-db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Find all paid, shipped orders that amount greater than 1000
+db. copes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
+// Encontrar todas as ordens pagas e enviadas com valor superior a 1000
 ```
 
-Checkout [Scopes](scopes.html) for details
+Confira [Scopes](scopes.html) para detalhes
 
 ## <span id="count">Count</span>
 
-Get matched records count
+Obter quantidade de registros correspondentes
 
 ```go
 var count int64
@@ -392,7 +392,7 @@ db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 db.Table("deleted_users").Count(&count)
 // SELECT count(1) FROM deleted_users;
 
-// Count with Distinct
+// Count com Distinct
 db.Model(&User{}).Distinct("name").Count(&count)
 // SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
