@@ -5,7 +5,7 @@ layout: page
 
 ## Criar/Atualizar Automaticamente
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORM salvará associações automaticamente e sua referência usando [Upsert](create.html#upsert) quando criar ou atualizar um registro.
 
 ```go
 user := User{
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+Se você quiser atualizar os dados das associações, você deve usar o modo `FullSaveAssociations`:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
