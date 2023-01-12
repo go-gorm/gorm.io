@@ -24,7 +24,7 @@ layout: page
 
 * [GORM 中的强类型 JSON/JSONB 字段](https://www.terminateandstayresident.com/2022-07-13/orm-json)
 
-* [Using GORM concurrently is not safe](https://zhuanlan.zhihu.com/p/556065676)
+* [GORM不并发安全](https://zhuanlan.zhihu.com/p/556065676)
 
 ## 视频
 
