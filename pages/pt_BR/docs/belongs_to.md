@@ -1,16 +1,16 @@
 ---
-title: Belongs To
+title: Associação "pertente a" (belongs to)
 layout: page
 ---
 
-## Belongs To
+## Associação "pertente a" (belongs to)
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Uma associação `belongs to` cria uma conexão um-para-um com outro model, que cada instância do model de declaração "pertença" a uma instância do outro modelo.
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company, the following types represent that relationship. Notice here that, on the `User` object, there is both a `CompanyID` as well as a `Company`. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
+Por exemplo, se seu aplicativo inclui users e companies, e cada user pode ser atribuído a exatamente uma company, os seguintes tipos representam esse relacionamento. Observe aqui que, no objeto</code>User`, há uma <code>CompanyID` e também uma `Company`. Por padrão, o `CompanyID` é implicitamente usado para criar uma relação de chave estrangeira entre as tabelas `User` e `Company` , e assim deve ser incluído no componente `User` para preencher a estrutura interna da `Company`.
 
 ```go
-// `User` belongs to `Company`, `CompanyID` is the foreign key
+// `User` pertence a `Company`, `CompanyID` é a chave estrangeira
 type User struct {
   gorm.Model
   Name      string
@@ -24,15 +24,15 @@ type Company struct {
 }
 ```
 
-Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
+Consulte o [Eager Loading](belongs_to.html#Eager-Loading) para detalhes sobre como preencher a estrutura interna.
 
-## Override Foreign Key
+## Sobrescrever Chave Externa
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Para definir um relacionamento "pertence a" (belongs to), a chave estrangeira deve existir, a chave estrangeira padrão usa o tipo do campo mais seu nome de campo primário.
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+Para o exemplo acima, para definir o model `User` que pertence à `Company`, a chave estrangeira deve ser `CompanyID` por convenção
 
-GORM provides a way to customize the foreign key, for example:
+GORM fornece uma maneira de personalizar a chave estrangeira, por exemplo:
 
 ```go
 type User struct {
@@ -40,7 +40,7 @@ type User struct {
   Name         string
   CompanyRefer int
   Company      Company `gorm:"foreignKey:CompanyRefer"`
-  // use CompanyRefer as foreign key
+  // use CompanyRefer como chave estrangeira
 }
 
 type Company struct {
@@ -49,20 +49,20 @@ type Company struct {
 }
 ```
 
-## Override References
+## Sobrepor referências
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+Para um relacionamento "pertence a" (belongs to), GORM geralmente usa o campo da chave primária como o valor da chave estrangeira, para o exemplo acima, é o campo `ID` do `Company`.
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+Quando você vincular um user a uma Company, GORM salvará o `ID` da Company no campo `Company`.
 
-You are able to change it with tag `references`, e.g:
+Você é capaz de alterá-lo com a tag `references`, por exemplo:
 
 ```go
 type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // use Code as references
+  Company   Company `gorm:"references:Code"` // use Code como referência
 }
 
 type Company struct {
@@ -73,7 +73,7 @@ type Company struct {
 ```
 
 {% note warn %}
-**NOTE** GORM usually guess the relationship as `has one` if override foreign key name already exists in owner's type, we need to specify `references` in the `belongs to` relationship.
+**OBSERVE** GORM geralmente considera o relacionamento como `has one` se o nome da chave estrangeira já existe no type de origem, precisamos especificar `references` no relacionamento `belongs to`.
 {% endnote %}
 
 ```go
@@ -81,7 +81,7 @@ type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID as references
+  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID como referência
 }
 
 type Company struct {
@@ -91,17 +91,17 @@ type Company struct {
 }
 ```
 
-## CRUD with Belongs To
+## CRUD com "pertence a" (Belongs To)
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Consulte [Modo de Associação](associations.html#Association-Mode) para trabalhar com relacionamentos "pertence a" (Belongs to)
 
 ## Eager Loading
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM permite que o Eager Loading em relacionamentos "pertence a" (Belongs to) com `Preload` ou `Joins`, consulte [Pré-carregamento (Eager Loading)](preload.html) para detalhes
 
-## FOREIGN KEY Constraints
+## Restrições (constraints) de chaves estrangeiras
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+Você pode configurar as restrições (constraints) `OnUpdate`, `OnDelete` com a tag `OnDelete`, ela será criada quando realizar as migrates com o GORM, por exemplo:
 
 ```go
 type User struct {
