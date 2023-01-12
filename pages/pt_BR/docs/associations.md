@@ -210,7 +210,7 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 
 ## <span id="delete_with_select">Excluir com alguma consulta</span>
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+Você tem permissão para excluir registros a partir de uma consulta em relacionamentos one/has many/many to many relações com `Select` quando excluir registros, por exemplo:
 
 ```go
 // delete user's account when deleting user
