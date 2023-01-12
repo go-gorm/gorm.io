@@ -213,44 +213,44 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 Você tem permissão para excluir registros a partir de uma consulta em relacionamentos one/has many/many to many relações com `Select` quando excluir registros, por exemplo:
 
 ```go
-// delete user's account when deleting user
+// Exclui o Account quando o user for excluído
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// Exclui os relacionamentos Orders, CreditCards quando o user for excluído
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// Exclui os relacionamentos do user has one/many/many to many quando o user for excluído
 db.Select(clause.Associations).Delete(&user)
 
-// delete each user's account when deleting users
+// Exclui cada Account quando os users são excluídos
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
+**OBSERVE:** As associações só serão excluídas se a chave primária do registro a ser excluído não for zero, GORM usará essas chaves primárias como condições para excluir as associações selecionadas
 
 ```go
-// DOESN'T WORK
+// NÃO FUNCIONA
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// will delete all user with name `jinzhu`, but those user's account won't be deleted
+// excluirá todos users com nome `jinzhu`, mas o Account desses users não serão excluídos
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
+// excluirá o user com name = `jinzhu` e id = `1`, e o Account do user `1` será excluído
 
 db.Select("Account").Delete(&User{ID: 1})
-// will delete the user with id = `1`, and user `1`'s account will be deleted
+// excluirá o user com id = `1`, e o Accounto do user `1` será excluído
 ```
 {% endnote %}
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">Tags de associação</span>
 
-| Tag              | Description                                                                                        |
-| ---------------- | -------------------------------------------------------------------------------------------------- |
-| foreignKey       | Specifies column name of the current model that is used as a foreign key to the join table         |
-| references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
-| polymorphic      | Specifies polymorphic type such as model name                                                      |
-| polymorphicValue | Specifies polymorphic value, default table name                                                    |
-| many2many        | Specifies join table name                                                                          |
-| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
-| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table                 |
-| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`                                                   |
+| Tag              | Descrição                                                                                                      |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- |
+| foreignKey       | Especifica o nome da coluna do model atual que é usado como uma chave estrangeira para a tabela de junção      |
+| references       | Especifica o nome da coluna da tabela de referência que é mapeada para a chave estrangeira da tabela de junção |
+| polymorphic      | Especifica o tipo polimórfico como o nome do model                                                             |
+| polymorphicValue | Especifica o valor polimórfico, nome da tabela padrão                                                          |
+| many2many        | Especifica nome da tabela de junção                                                                            |
+| joinForeignKey   | Especifica o nome da coluna que é chave estrangeira na tabela de junção que será mapeada para a tabela atual   |
+| joinReferences   | Especifica o nome da coluna estrangeira da tabela de junção que mapeia para a tabela de referência             |
+| constraint       | Restrição do relacionamento, ex.: `OnUpdate`,`OnDelete`                                                        |
