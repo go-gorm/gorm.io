@@ -27,16 +27,18 @@ import (
 db, err := gorm.Open(mysql.Open("db1_dsn"), &gorm.Config{})
 
 db.Use(dbresolver.Register(dbresolver.Config{
-  // `db2` 作为 sources，`db3`、`db4` 作为 replicas
+  // use `db2` as sources, `db3`, `db4` as replicas
   Sources:  []gorm.Dialector{mysql.Open("db2_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db3_dsn"), mysql.Open("db4_dsn")},
-  // sources/replicas 负载均衡策略
+  // sources/replicas load balancing policy
   Policy: dbresolver.RandomPolicy{},
+  // print sources/replicas mode in logger
+  ResolverModeReplica: true,
 }).Register(dbresolver.Config{
-  // `db1` 作为 sources（DB 的默认连接），对于 `User`、`Address` 使用 `db5` 作为 replicas
+  // use `db1` as sources (DB's default connection), `db5` as replicas for `User`, `Address`
   Replicas: []gorm.Dialector{mysql.Open("db5_dsn")},
 }, &User{}, &Address{}).Register(dbresolver.Config{
-  // `db6`、`db7` 作为 sources，对于 `orders`、`Product` 使用 `db8` 作为 replicas
+  // use `db6`, `db7` as sources, `db8` as replicas for `orders`, `Product`
   Sources:  []gorm.Dialector{mysql.Open("db6_dsn"), mysql.Open("db7_dsn")},
   Replicas: []gorm.Dialector{mysql.Open("db8_dsn")},
 }, "orders", &Product{}, "secondary"))

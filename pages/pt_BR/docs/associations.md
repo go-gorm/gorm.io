@@ -3,9 +3,9 @@ title: Associações
 layout: page
 ---
 
-## Auto Create/Update
+## Criar/Atualizar Automaticamente
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORM salvará associações automaticamente e sua referência usando [Upsert](create.html#upsert) quando criar ou atualizar um registro.
 
 ```go
 user := User{
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+Se você quiser atualizar os dados das associações, você deve usar o modo `FullSaveAssociations`:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -45,9 +45,9 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // ...
 ```
 
-## Skip Auto Create/Update
+## Evitar Criação/Atualização Automática
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+Para evitar o salvamento automático ao criar/atualizar, você pode usar `Select` ou `Omit`, por exemplo:
 
 ```go
 user := User{
@@ -68,27 +68,27 @@ db.Select("Name").Create(&user)
 // INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
 
 db.Omit("BillingAddress").Create(&user)
-// Skip create BillingAddress when creating a user
+// Não cria BillingAddress quando cria um usuário
 
 db.Omit(clause.Associations).Create(&user)
-// Skip all associations when creating a user
+// Não cria todas associações quando cria um usuário
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**OBSERVE:** Para relacionamentos muitos-para-muitos, GORM irá criar/atualizar automaticamente as associações antes de criar as referências da tabela de junção, se você quiser pular a criação/atualização automática das associações, poderia pular assim:
 
 ```go
 db.Omit("Languages.*").Create(&user)
 ```
 
-The following code will skip the creation of the association and its references
+O código a seguir pulará a criação da associação e suas referências
 
 ```go
 db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
-## Select/Omit Association fields
+## Selecionar/Omitir campos de Associação
 
 ```go
 user := User{
@@ -97,36 +97,36 @@ user := User{
   ShippingAddress: Address{Address1: "Shipping Address - Address 1", Address2: "addr2"},
 }
 
-// Create user and his BillingAddress, ShippingAddress
-// When creating the BillingAddress only use its address1, address2 fields and omit others
+// Cria o usuário e seu BillingAddress, ShippingAddress
+// Quando criar o  BillingAddress usa apenas os campos address1, address2 e omite os outros
 db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
 
 db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 ```
 
-## Association Mode
+## Modo de Associação
 
-Association Mode contains some commonly used helper methods to handle relationships
+O modo de associação contém alguns métodos de ajuda comumente usados para lidar com relacionamento
 
 ```go
-// Start Association Mode
+// Inicia o modo de associação
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// `user` é o model de origem, ele deve conter uma chave primária
+// `Languages` é o nome do campo de um relacionamento
+// Se os requisitos acima forem atendidos, o modo de associação deve ser iniciado, caso contrário um erro é retornado
 db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Consultar associações
 
-Find matched associations
+Encontrar associações correspondentes
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-Find associations with conditions
+Encontrar associações com as condições
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
@@ -135,9 +135,9 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Acrescentar associações
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+Acrescentar novas associações para `many to many`, `has many`, substituir a associação atual para `has one`, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -147,9 +147,9 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### Substituir associações
 
-Replace current associations with new ones
+Substituir associações atuais por novas
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -157,100 +157,100 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Excluir associações
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+Remova a relação entre a origem & argumentos se existir, exclua apenas a referência, não excluirá esses objetos do banco de dados.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Limpar associações
 
-Remove all reference between source & association, won't delete those associations
+Remover toda referência entre a origem & associação, não excluirá as associações
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Contar associações
 
-Return the count of current associations
+Retornar o total de associações atuais
 
 ```go
 db.Model(&user).Association("Languages").Count()
 
-// Count with conditions
+// Contar as associações baseadas nas condições
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Batch Data
+### Lote de dados
 
-Association Mode supports batch data, e.g:
+Modo de associação suporta dados em lote, por exemplo:
 
 ```go
-// Find all roles for all users
+// Consultar todas roles de todos usuários
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all user's team
+// Excluir o usuário A de todos Teams
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get distinct count of all users' teams
+// Consulta o total de usuários únicos de todos os Team
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
+// Para fazesr `Append`, `Replace` com lote de dados, a quantidade de argumentos precisa ser igual a quantidade de dados ou será retornado um erro
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// e.g: nós temos 3 usuários acrescente o userA ao time user1, userB ao user2, userA, userB e userC ao user3
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// Redefina o time user1 com o userA，redefina o time user2 com o userB, o time user3 com o userA, userB e userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">Excluir com alguma consulta</span>
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+Você tem permissão para excluir registros a partir de uma consulta em relacionamentos one/has many/many to many relações com `Select` quando excluir registros, por exemplo:
 
 ```go
-// delete user's account when deleting user
+// Exclui o Account quando o user for excluído
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// Exclui os relacionamentos Orders, CreditCards quando o user for excluído
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// Exclui os relacionamentos do user has one/many/many to many quando o user for excluído
 db.Select(clause.Associations).Delete(&user)
 
-// delete each user's account when deleting users
+// Exclui cada Account quando os users são excluídos
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
+**OBSERVE:** As associações só serão excluídas se a chave primária do registro a ser excluído não for zero, GORM usará essas chaves primárias como condições para excluir as associações selecionadas
 
 ```go
-// DOESN'T WORK
+// NÃO FUNCIONA
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// will delete all user with name `jinzhu`, but those user's account won't be deleted
+// excluirá todos users com nome `jinzhu`, mas o Account desses users não serão excluídos
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
+// excluirá o user com name = `jinzhu` e id = `1`, e o Account do user `1` será excluído
 
 db.Select("Account").Delete(&User{ID: 1})
-// will delete the user with id = `1`, and user `1`'s account will be deleted
+// excluirá o user com id = `1`, e o Accounto do user `1` será excluído
 ```
 {% endnote %}
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">Tags de associação</span>
 
-| Tag              | Description                                                                                        |
-| ---------------- | -------------------------------------------------------------------------------------------------- |
-| foreignKey       | Specifies column name of the current model that is used as a foreign key to the join table         |
-| references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
-| polymorphic      | Specifies polymorphic type such as model name                                                      |
-| polymorphicValue | Specifies polymorphic value, default table name                                                    |
-| many2many        | Specifies join table name                                                                          |
-| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
-| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table                 |
-| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`                                                   |
+| Tag              | Descrição                                                                                                      |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- |
+| foreignKey       | Especifica o nome da coluna do model atual que é usado como uma chave estrangeira para a tabela de junção      |
+| references       | Especifica o nome da coluna da tabela de referência que é mapeada para a chave estrangeira da tabela de junção |
+| polymorphic      | Especifica o tipo polimórfico como o nome do model                                                             |
+| polymorphicValue | Especifica o valor polimórfico, nome da tabela padrão                                                          |
+| many2many        | Especifica nome da tabela de junção                                                                            |
+| joinForeignKey   | Especifica o nome da coluna que é chave estrangeira na tabela de junção que será mapeada para a tabela atual   |
+| joinReferences   | Especifica o nome da coluna estrangeira da tabela de junção que mapeia para a tabela de referência             |
+| constraint       | Restrição do relacionamento, ex.: `OnUpdate`,`OnDelete`                                                        |
