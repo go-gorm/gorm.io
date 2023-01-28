@@ -23,7 +23,7 @@ g.GenerateAllTable()
 
 ## Methods Template
 
-When generating structs from databae, you can also generate methods with a template for them by the way, for example:
+When generating structs from database, you can also generate methods with a template for them by the way, for example:
 
 ```Go
 type CommonMethod struct {
@@ -86,6 +86,42 @@ func (m *User) GetName() string {
   }
   return *m.Name
 }
+```
+### DIY TableName
+
+When generating structs from database, you can also diy table name for them by the way, for example:
+
+```Go
+type CommonMethod struct {
+    ID   int32
+    Name *string
+}
+
+// TableName 
+func (m *CommonMethod) TableName() strng {
+    if env.IsTest() {
+        return "t_@@table"
+    }
+    return "@@table"
+}
+
+// TableName table name with gorm NamingStrategy
+func (m *CommonMethod) TableName(namer schema.Namer) string {
+    if namer == nil {
+        return "@@table"
+    }
+    return namer.TableName("@@table")
+}
+
+// DIY TableName method for the generated `User` struct
+g.GenerateModel("user", gen.WithMethod(CommonMethod{}.TableName))
+
+// DIY TableName method for the generated all struct
+conf.WithOpts(gen.WithMethod(CommonMethod{}.TableName))
+
+// Set Default DIY TableName method for the generated all struct
+conf.WithOpts(gen.WithMethod(gen.DefaultMethodTableWithNamer))
+
 ```
 
 ## Field Options
