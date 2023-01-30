@@ -98,15 +98,12 @@ type CommonMethod struct {
 }
 
 // TableName 
-func (m *CommonMethod) TableName() strng {
-    if env.IsTest() {
-        return "t_@@table"
-    }
+func (m CommonMethod) TableName() strng {
     return "@@table"
 }
 
 // TableName table name with gorm NamingStrategy
-func (m *CommonMethod) TableName(namer schema.Namer) string {
+func (m CommonMethod) TableName(namer schema.Namer) string {
     if namer == nil {
         return "@@table"
     }
