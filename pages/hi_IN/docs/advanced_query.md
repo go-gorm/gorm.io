@@ -22,12 +22,13 @@ type APIUser struct {
 }
 
 // Select `id`, `name` automatically when querying
+// / query करते समय `id`, `name` स्वचालित रूप से Select  करता 
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** `QueryFields` mode will select by all fields' name for current model
+**NOTE** `QueryFields` mode वर्तमान के लिए सभी फ़ील्ड्स के नाम से Select करेगा
 {% endnote %}
 
 ```go
@@ -36,16 +37,18 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+//db वह सभी fild ढूंढता है जो अंदर है(user) 
+// नीचे  की तरह
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // इस विकल्प के साथ
 
 // Session Mode
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking (FOR UPDATE)
+## Locking (FOR UPDATE) //लॉकिंग (UPDATE के लिए)
 
-GORM supports different types of locks, for example:
+उदाहरण के लिए GORM विभिन्न प्रकार के locks का समर्थन करता है
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
@@ -64,24 +67,25 @@ db.Clauses(clause.Locking{
 // SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Refer [Raw SQL and SQL Builder](sql_builder.html) for more detail
+अधिक विवरण के लिए [Raw SQL and SQL Builder](sql_builder.html) देखें
 
-## SubQuery
+## SubQuery //सबक्वेरी
 
-A subquery can be nested within a query, GORM can generate subquery when using a `*gorm.DB` object as param
+एक subquery को एक query के भीतर nested किया जा सकता है, param के रूप में `*gorm.DB` ऑब्जेक्ट का उपयोग करते समय GORM सबक्वेरी उत्पन्न कर सकता है
 
 ```go
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 // SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
+// चुनें * "orders" से जहां amount > ("orders" से AVG(amount) चुनें);
 
 subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
 db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery).Find(&results)
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
-### <span id="from_subquery">From SubQuery</span>
+### <span id="from_subquery">From SubQuery //सबक्वेरी से</span>
 
-GORM allows you using subquery in FROM clause with the method `Table`, for example:
+GORM आपको `Table` विधि के साथ FROM खंड में subquery का उपयोग करने की अनुमति देता है, उदाहरण के लिए:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
@@ -93,9 +97,9 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
 
-## <span id="group_conditions">Group Conditions</span>
+## <span id="group_conditions">Group Conditions //समूह की शर्तें</span>
 
-Easier to write complicated SQL query with Group Conditions
+समूह शर्तों ( Group Conditions ) के साथ जटिल SQL query लिखना आसान
 
 ```go
 db.Where(
@@ -107,18 +111,18 @@ db.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-## IN with multiple columns
+## IN with multiple columns //IN कई कॉलम के साथ
 
-Selecting IN with multiple columns
+एकाधिक कॉलम के साथ IN का चयन करना
 
 ```go
 db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"jinzhu2", 19, "user"}}).Find(&users)
 // SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
 ```
 
-## Named Argument
+## Named Argument // नामांकित तर्क
 
-GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, for example:
+GORM नामित तर्कों का समर्थन करता है [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) या `map[ string]इंटरफ़ेस{}{}`, उदाहरण के लिए:
 
 ```go
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
@@ -128,11 +132,11 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Check out [Raw SQL and SQL Builder](sql_builder.html#named_argument) for more detail
+अधिक विवरण के लिए [रॉ SQL और SQL बिल्डर](sql_builder.html#named_argument) देखें
 
-## Find To Map
+## Find To Map //मानचित्र में खोजें
 
-GORM allows scanning results to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORM परिणामों को `map[string]interface{}` या `[]map[string]interface{}` में स्कैन करने की अनुमति देता है, `Model` निर्दिष्ट करना न भूलें > या `तालिका`, उदाहरण के लिए:
 
 ```go
 result := map[string]interface{}{}
@@ -144,7 +148,7 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-Get first matched record or initialize a new instance with given conditions (only works with struct or map conditions)
+पहले मिलान किए गए रिकॉर्ड प्राप्त करें या दी गई शर्तों के साथ एक नया उदाहरण आरंभ करें (only works with struct or map conditions)
 
 ```go
 // User not found, initialize it with give conditions
@@ -160,7 +164,7 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-Initialize struct with more attributes if record not found, those `Attrs` won't be used to build the SQL query
+यदि रिकॉर्ड नहीं मिला तो अधिक विशेषताओं के साथ संरचना प्रारंभ करें, उन `Attrs` का उपयोग SQL query बनाने के लिए नहीं किया जाएगा
 
 ```go
 // User not found, initialize it with give conditions and Attrs
@@ -179,7 +183,7 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+`Assign` संरचना को विशेषताएँ मिले या न मिले, उन विशेषताओं का उपयोग SQL query बनाने के लिए नहीं किया जाएगा और अंतिम डेटा डेटाबेस में सहेजा नहीं जाएगा
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -194,10 +198,9 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
+पहले मिलान किए गए रिकॉर्ड प्राप्त करें या दी गई शर्तों के साथ एक नया बनाएं (only works with struct, map conditions), `RowsAffected` `` निर्मित/अपडेट किए गए रिकॉर्ड की संख्या लौटाता है</p>
 
-```go
-// User not found, create a new record with give conditions
+<pre><code class="go">// User not found, create a new record with give conditions
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
@@ -207,9 +210,9 @@ result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 // result.RowsAffected // => 0
-```
+``</pre>
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+यदि रिकॉर्ड नहीं मिला तो अधिक विशेषताओं के साथ संरचना बनाएं, उन `Attrs` का उपयोग SQL query बनाने के लिए नहीं किया जाएगा
 
 ```go
 // User not found, create it with give conditions and Attrs
@@ -224,7 +227,7 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+रिकॉर्ड के लिए विशेषताएँ `Assign` चाहे वह मिले या नहीं और उन्हें डेटाबेस में वापस सहेजें (save)।
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -242,7 +245,7 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## Optimizer/Index Hints
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with `gorm.io/hints`, e.g:
+Optimizer संकेत query Optimizer को एक certain query execution योजना चुनने के लिए नियंत्रित करने की अनुमति देते हैं, GORM इसे `gorm.io/hints` के साथ समर्थन करता है, उदा:
 
 ```go
 import "gorm.io/hints"
@@ -251,7 +254,7 @@ db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allow passing index hints to the database in case the query planner gets confused.
+Query planner के भ्रमित होने की स्थिति में इंडेक्स संकेत डेटाबेस को इंडेक्स संकेत पास करने की अनुमति देते हैं।
 
 ```go
 import "gorm.io/hints"
@@ -263,11 +266,15 @@ db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&Use
 // SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
 ```
 
-Refer [Optimizer Hints/Index/Comment](hints.html) for more details
+अधिक विवरण के लिए [Optimizer Hints/Index/Comment](hints.html) देखें</p> 
+
+
 
 ## Iteration
 
-GORM supports iterating through Rows
+GORM Rows के माध्यम से पुनरावृति(iterating) का समर्थन करता है
+
+
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -282,34 +289,44 @@ for rows.Next() {
 }
 ```
 
+
+
+
 ## FindInBatches
 
-Query and process records in batch
+batch में Query और process रिकॉर्ड
+
+
 
 ```go
 // batch size 100
 result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // batch processing found records
+    // बैच प्रोसेसिंग में रिकॉर्ड मिले
   }
 
   tx.Save(&results)
 
-  tx.RowsAffected // number of records in this batch
+  tx.RowsAffected // इस batch में रिकॉर्ड की संख्या
 
   batch // Batch 1, 2, 3
 
-  // returns error will stop future batches
+  // रिटर्न err भविष्य के बैचों को रोक देगा
   return nil
 })
 
 result.Error // returned error
-result.RowsAffected // processed records count in all batches
+result.RowsAffected // संसाधित रिकॉर्ड सभी बैचों(batch ) में गिने जाते हैं
 ```
+
+
+
 
 ## Query Hooks
 
-GORM allows hooks `AfterFind` for a query, it will be called when querying a record, refer [Hooks](hooks.html) for details
+GORM एक प्रश्न के लिए हुक`AfterFind` की अनुमति देता है, रिकॉर्ड की क्वेरी करते समय इसे कॉल किया जाएगा, विवरण के लिए [हुक](hooks.html) देखें
+
+
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
@@ -320,9 +337,14 @@ func (u *User) AfterFind(tx *gorm.DB) (err error) {
 }
 ```
 
+
+
+
 ## <span id="pluck">Pluck</span>
 
-Query single column from database and scan into a slice, if you want to query multiple columns, use `Select` with [`Scan`](query.html#scan) instead
+डेटाबेस से एकल कॉलम को क्वेरी करें और एक स्लाइस में स्कैन करें, यदि आप कई कॉलमों को query करना चाहते हैं, तो [`Scan`के साथ `Select` का उपयोग करें।](query.html#scan) इसके बजाय
+
+
 
 ```go
 var ages []int64
@@ -342,9 +364,14 @@ db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
+
+
+
 ## Scopes
 
-`Scopes` allows you to specify commonly-used queries which can be referenced as method calls
+`Scopes` आपको आमतौर पर उपयोग की जाने वाली queries निर्दिष्ट करने की अनुमति देता है जिसे विधि कॉल(method calls) के रूप में संदर्भित(referenced) किया जा सकता है
+
+
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
@@ -367,6 +394,7 @@ func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
 
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
 // Find all credit card orders and amount greater than 1000
+// सभी क्रेडिट कार्ड ऑर्डर और 1000 से अधिक राशि का पता लगाएं
 
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
 // Find all COD orders and amount greater than 1000
@@ -375,20 +403,18 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Find all paid, shipped orders that amount greater than 1000
 ```
 
-Checkout [Scopes](scopes.html) for details
+
+विवरण के लिए [Scopes](scopes.html) चेकआउट करें
+
+
 
 ## <span id="count">Count</span>
 
-Get matched records count
+मिलान किए गए रिकॉर्ड की संख्या प्राप्त करें
+
+
 
 ```go
-var count int64
-db.Model(&User{}).Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Count(&count)
-// SELECT count(1) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
-
-db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
-// SELECT count(1) FROM users WHERE name = 'jinzhu'; (count)
-
 db.Table("deleted_users").Count(&count)
 // SELECT count(1) FROM deleted_users;
 
