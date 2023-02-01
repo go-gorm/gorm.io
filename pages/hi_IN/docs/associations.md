@@ -1,11 +1,11 @@
 ---
-title: Associations
-layout: page
+title: Associations //संघों
+layout: page //पृष्ठ
 ---
 
-## Auto Create/Update
+## Auto Create/Update //ऑटो बनाएं/अपडेट करें
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+रिकॉर्ड बनाते/अपडेट(creating/updating) करते समय GORM [Upsert](create.html#upsert) का उपयोग करके एसोसिएशन(associations) और उसके संदर्भ को अपने आप सहेज लेगा।
 
 ```go
 user := User{
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+अगर आप एसोसिएशन के डेटा को अपडेट करना चाहते हैं, तो आपको `FullSaveAssociations` मोड का इस्तेमाल करना चाहिए:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -45,9 +45,9 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // ...
 ```
 
-## Skip Auto Create/Update
+## Skip Auto Create/Update // ऑटो क्रिएट/अपडेट छोड़ें
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+बनाते/अपडेट(creating/updating) करते समय ऑटो सेव को छोड़ने के लिए, आप `Select` या `Omit` का उपयोग कर सकते हैं, उदाहरण के लिए:
 
 ```go
 user := User{
@@ -69,26 +69,28 @@ db.Select("Name").Create(&user)
 
 db.Omit("BillingAddress").Create(&user)
 // Skip create BillingAddress when creating a user
+// उपयोगकर्ता बनाते समय बिलिंग एड्रेस बनाना छोड़ें
 
 db.Omit(clause.Associations).Create(&user)
 // Skip all associations when creating a user
+// उपयोगकर्ता बनाते समय सभी संघों को छोड़ दें
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**नोट:**कई से कई associations के लिए, GORM सम्मिलित तालिका संदर्भ बनाने से पहले associations को अपसेट करेगा, यदि आप associations के अप्सर्टिंग को छोड़ना चाहते हैं, तो आप इसे इस तरह छोड़ सकते हैं:
 
 ```go
 db.Omit("Languages.*").Create(&user)
 ```
 
-The following code will skip the creation of the association and its references
+निम्नलिखित कोड एसोसिएशन (association) और उसके संदर्भों(references) के निर्माण को छोड़ देगा
 
 ```go
 db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
-## Select/Omit Association fields
+## Select/Omit Association fields // एसोसिएशन फ़ील्ड का चयन करें/छोड़ दें
 
 ```go
 user := User{
@@ -99,6 +101,8 @@ user := User{
 
 // Create user and his BillingAddress, ShippingAddress
 // When creating the BillingAddress only use its address1, address2 fields and omit others
+// उपयोगकर्ता और उसका बिलिंग पता, शिपिंग पता बनाएँ
+// बिलिंग पता बनाते समय केवल इसके पते1, पते2 फ़ील्ड का उपयोग करें और अन्य को छोड़ दें
 db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
 
 db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
@@ -106,7 +110,7 @@ db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 
 ## Association Mode
 
-Association Mode contains some commonly used helper methods to handle relationships
+Association मोड में रिश्तों को संभालने के लिए आमतौर पर इस्तेमाल की जाने वाली कुछ सहायक विधियाँ(helper methods) होती हैं
 
 ```go
 // Start Association Mode
@@ -115,12 +119,15 @@ db.Model(&user).Association("Languages")
 // `user` is the source model, it must contains primary key
 // `Languages` is a relationship's field name
 // If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// `उपयोगकर्ता` स्रोत मॉडल है, इसमें प्राथमिक कुंजी होनी चाहिए
+// `Languages` एक रिश्ते का फील्ड नाम है
+// यदि उपरोक्त दो आवश्यकताएं मेल खाती हैं, तो एसोसिएशनमोड को सफलतापूर्वक शुरू किया जाना चाहिए, या त्रुटि वापस आनी चाहिए
 db.Model(&user).Association("Languages").Error
 ```
 
 ### Find Associations
 
-Find matched associations
+(Find matched associations) मिलान किए गए संघों को खोजें
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
