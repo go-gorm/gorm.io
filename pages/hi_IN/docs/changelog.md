@@ -1,17 +1,17 @@
 ---
-title: Change Log
-layout: page
+title: Change Log //लॉग बदलें
+layout: पृष्ठ
 ---
 
 ## v2.0 - 2020.08
 
-GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+जीओआरएम 2.0 स्क्रैच से एक पुनर्लेखन(rewrite) है, यह कुछ असंगत-एपीआई (incompatible-API) परिवर्तन और कई सुधार पेश करता है
 
-* Performance Improvements
-* Modularity
-* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
-* Nested Transaction/SavePoint/RollbackTo SavePoint supports
-* Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
+* Performance Improvements // कार्य में सुधार
+* Modularity //प्रतिरूपकता
+* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches का समर्थन करता है
+* Nested Transaction/SavePoint/RollbackTo SavePoint का समर्थन करता है
+* Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery का सुधार
 * Full self-reference relationships supports, Join Table improvements, Association Mode for batch data
 * Multiple fields support for tracking create/update time, which adds support for UNIX (milli/nano) seconds
 * Field permissions support: read-only, write-only, create-only, update-only, ignored
