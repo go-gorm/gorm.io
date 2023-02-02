@@ -226,9 +226,11 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 
 ```go
 // delete user's account when deleting user
+// उपयोगकर्ता को हटाते समय उपयोगकर्ता का खाता हटाएं
 db.Select("Account").Delete(&user)
 
 // delete user's Orders, CreditCards relations when deleting user
+// उपयोगकर्ता को हटाते समय उपयोगकर्ता के आदेश, क्रेडिट कार्ड संबंध हटाएं
 db.Select("Orders", "CreditCards").Delete(&user)
 
 // delete user's has one/many/many2many relations when deleting user
@@ -239,7 +241,7 @@ db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
+**ध्यान दें:** Associations को केवल तभी हटाया जाएगा जब हटाए जाने वाले रिकॉर्ड की प्राथमिक कुंजी(primary key) शून्य नहीं होगी, GORM selected associations को हटाने के लिए शर्तों के रूप में उन प्राथमिक कुंजियों(primary keys) का उपयोग करेगा
 
 ```go
 // DOESN'T WORK
@@ -254,15 +256,15 @@ db.Select("Account").Delete(&User{ID: 1})
 ```
 {% endnote %}
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">Association Tags // एसोसिएशन टैग</span>
 
-| Tag              | Description                                                                                        |
-| ---------------- | -------------------------------------------------------------------------------------------------- |
-| foreignKey       | Specifies column name of the current model that is used as a foreign key to the join table         |
-| references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
-| polymorphic      | Specifies polymorphic type such as model name                                                      |
-| polymorphicValue | Specifies polymorphic value, default table name                                                    |
-| many2many        | Specifies join table name                                                                          |
-| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
-| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table                 |
-| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`                                                   |
+| टैग                    | विवरण                                                                                                                      |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| foreignKey             | वर्तमान मॉडल का column name Specifies करता है जिसका उपयोग तालिका में शामिल होने के लिए foreign key के रूप में किया जाता है |
+| references             | Reference की table के column नाम को Specifies करता है जिसे सम्मिलित table की foreign key से मैप किया जाता है               |
+| polymorphic // बहुरूपी | मॉडल नाम जैसे बहुरूपी (polymorphic type)प्रकार निर्दिष्ट(Specifies) करता है                                                |
+| polymorphicValue       | (polymorphic value) बहुरूपी मान, डिफ़ॉल्ट तालिका(table) नाम निर्दिष्ट(Specifies) करता है                                   |
+| many2many              | ज्वाइन टेबल नाम निर्दिष्ट(Specifies) करता है                                                                               |
+| joinForeignKey         | ज्वाइन टेबल का foreign key कॉलम नाम निर्दिष्ट करता है जो वर्तमान टेबल में मैप करता है                                      |
+| joinReferences         | ज्वाइन टेबल का foreign key कॉलम नाम निर्दिष्ट करता है जो reference की table में मैप करता है                                |
+| constraint             | संबंध बाधा, उदा: `OnUpdate`,`OnDelete`                                                                                     |
