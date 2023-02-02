@@ -166,24 +166,24 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 
 ### Delete Associations // संघों को हटाएं
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+स्रोत(source) और तर्क (मौजूद हैं, तो केवल reference हटाएं, उन objects को DB से नहीं हटाएंगे।
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Clear Associations // स्पष्ट संघ
 
-Remove all reference between source & association, won't delete those associations
+Source और association के बीच सभी reference निकालें, उन associations को नहीं हटाएंगे
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Count Associations //संघों की गणना करें
 
-Return the count of current associations
+वर्तमान associations की गिनती लौटाएँ
 
 ```go
 db.Model(&user).Association("Languages").Count()
@@ -193,31 +193,36 @@ codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Batch Data
+### Batch Data // बैच डेटा
 
-Association Mode supports batch data, e.g:
+एसोसिएशन मोड बैच डेटा का समर्थन करता है, जैसे:
 
 ```go
-// Find all roles for all users
+// Find all roles for all users //सभी उपयोगकर्ताओं के लिए सभी भूमिकाएँ खोजें
 db.Model(&users).Association("Role").Find(&roles)
 
 // Delete User A from all user's team
+//उपयोगकर्ता ए को सभी उपयोगकर्ता की टीम से हटाएं
 db.Model(&users).Association("Team").Delete(&userA)
 
 // Get distinct count of all users' teams
+// सभी उपयोगकर्ताओं की टीमों की अलग-अलग गिनती प्राप्त करें
 db.Model(&users).Association("Team").Count()
 
 // For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
+// बैच डेटा के साथ `संलग्न`, `बदलें` के लिए, तर्कों की लंबाई डेटा की लंबाई के बराबर होनी चाहिए अन्यथा यह एक त्रुटि लौटाएगा
 var users = []User{user1, user2, user3}
 // e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+// उदाहरण: हमारे पास 3 उपयोगकर्ता हैं, userA को user1 की टीम में जोड़ें, userB को user2 की टीम में जोड़ें, userA, userB और userC को user3 की टीम में जोड़ें
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
 // Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+// user1 की टीम को userA पर रीसेट करें, user2 की टीम को userB पर रीसेट करें, user3 की टीम को userA, userB और userC पर रीसेट करें
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">सेलेक्ट के साथ डिलीट करें</span>
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+रिकॉर्ड हटाते समय आपको `Select` के साथ Selected has one/ many2many संबंध हटाने की अनुमति है, उदाहरण के लिए:
 
 ```go
 // delete user's account when deleting user
