@@ -133,7 +133,7 @@ db.Model(&user).Association("Languages").Error
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-Find associations with conditions
+Find associations with conditions // शर्तों के साथ जुड़ाव खोजें
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
@@ -142,9 +142,9 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Append Associations //संघों को जोड़ें
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+`अनेक से अनेक(many to many)` के लिए नए संबंध जोड़ें, `has many<code>`, `has one` के लिए वर्तमान संबंध बदलें, `belongs to`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -154,9 +154,9 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### Replace Associations // संघों को बदलें
 
-Replace current associations with new ones
+मौजूदा associations को नए के साथ बदलें
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -164,7 +164,7 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Delete Associations // संघों को हटाएं
 
 Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
 
