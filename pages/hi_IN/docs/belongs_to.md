@@ -101,7 +101,7 @@ type Company struct {
 
 ## FOREIGN KEY Constraints
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+आप टैग `constraint` के साथ `OnUpdate`, `OnDelete` कंस्ट्रेंट सेट कर सकते हैं, इसे GORM के साथ माइग्रेट करते समय बनाया जाएगा, उदाहरण के लिए:</code>
 
 ```go
 type User struct {
