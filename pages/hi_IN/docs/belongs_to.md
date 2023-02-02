@@ -1,13 +1,13 @@
 ---
-title: Belongs To
-layout: page
+title: "Belongs To //\nसे संबंधित"
+layout: पृष्ठ
 ---
 
-## Belongs To
+## Belongs To // से संबंधित
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+`belongs to` एसोसिएशन दूसरे मॉडल के साथ एक-से-एक कनेक्शन स्थापित करता है, जैसे कि declare मॉडल का प्रत्येक उदाहरण दूसरे मॉडल के एक उदाहरण से "belongs to" होता है।
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company, the following types represent that relationship. Notice here that, on the `User` object, there is both a `CompanyID` as well as a `Company`. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
+उदाहरण के लिए, यदि आपके एप्लिकेशन में उपयोगकर्ता और कंपनियां शामिल हैं, और प्रत्येक उपयोगकर्ता को ठीक एक कंपनी को सौंपा जा सकता है, तो निम्न प्रकार उस संबंध का प्रतिनिधित्व करते हैं। यहाँ ध्यान दें कि, `उपयोगकर्ता` ऑब्जेक्ट पर, `CompanyID` के साथ-साथ `Company` दोनों होते हैं। डिफ़ॉल्ट रूप से, `CompanyID` का उपयोग `उपयोगकर्ता `और `कंपनी` तालिकाओं के बीच एक विदेशी कुंजी संबंध बनाने के लिए किया जाता है, और इस प्रकार कंपनी की आंतरिक संरचना( inner struct) को भरने के लिए `उपयोगकर्ता ` struct में शामिल किया जाना चाहिए।
 
 ```go
 // `User` belongs to `Company`, `CompanyID` is the foreign key
@@ -24,15 +24,15 @@ type Company struct {
 }
 ```
 
-Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
+आंतरिक संरचना(inner struct) को पॉप्युलेट(populating) करने के विवरण के लिए [इजर लोडिंग(Eager Loading)](belongs_to.html#Eager-Loading) का संदर्भ लें।
 
 ## Override Foreign Key
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+संबंध से संबंधित परिभाषित करने के लिए, विदेशी कुंजी(foreign key) मौजूद होनी चाहिए, डिफ़ॉल्ट विदेशी कुंजी स्वामी के प्रकार के नाम और उसके प्राथमिक फ़ील्ड नाम का उपयोग करती है।
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+उपरोक्त उदाहरण के लिए, `उपयोगकर्ता` मॉडल को परिभाषित करने के लिए जो कि `कंपनी` से संबंधित है, विदेशी कुंजी (foreign key)`CompanyID` होनी चाहिए
 
-GORM provides a way to customize the foreign key, for example:
+GORM विदेशी कुंजी( foreign key) को अनुकूलित करने का एक तरीका प्रदान करता है, उदाहरण के लिए:
 
 ```go
 type User struct {
@@ -51,11 +51,11 @@ type Company struct {
 
 ## Override References
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+संबंध से संबंधित होने के लिए, GORM आमतौर पर मालिक के प्राथमिक क्षेत्र(primary field) को विदेशी कुंजी(foreign key) के मान के रूप में उपयोग करता है, उपरोक्त उदाहरण के लिए, यह `कंपनी` का फ़ील्ड `आईडी` है।
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+जब आप किसी उपयोगकर्ता को किसी कंपनी को असाइन करते हैं, तो GORM कंपनी की `ID` को उपयोगकर्ता के `CompanyID` फ़ील्ड में सहेज(save) देगा।
 
-You are able to change it with tag `references`, e.g:
+आप इसे `references` टैग से बदल सकते हैं, जैसे:
 
 ```go
 type User struct {
@@ -73,7 +73,7 @@ type Company struct {
 ```
 
 {% note warn %}
-**NOTE** GORM usually guess the relationship as `has one` if override foreign key name already exists in owner's type, we need to specify `references` in the `belongs to` relationship.
+**ध्यान दें** GORM आमतौर पर संबंध का अनुमान लगाता है क्योंकि `has one` यदि ओवरराइड विदेशी कुंजी नाम पहले से ही स्वामी के प्रकार में मौजूद है, तो हमें `references` को निर्दिष्ट करने की आवश्यकता है `belongs to` संबंध है।
 {% endnote %}
 
 ```go
@@ -93,11 +93,11 @@ type Company struct {
 
 ## CRUD with Belongs To
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+रिलेशन्स के साथ काम करने के लिए कृपया [एसोसिएशन मोड](associations.html#Association-Mode) चेकआउट करें
 
 ## Eager Loading
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+जीओआरएम उत्सुक लोडिंग की अनुमति देता है `प्रीलोड` या `जॉइन` के साथ संबंधित है, विवरण के लिए [प्रीलोडिंग (Eager loading)](preload.html) देखें
 
 ## FOREIGN KEY Constraints
 
