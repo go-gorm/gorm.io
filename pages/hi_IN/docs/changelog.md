@@ -30,10 +30,10 @@ layout: पृष्ठ
 
 ब्रेकिंग परिवर्तन:
 
-* `gorm.Open` returns `*gorm.DB` instead of `gorm.DB`
-* Updating will only update changed fields
-* Soft Delete's will only check `deleted_at IS NULL`
-* New ToDBName logic Common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` was converted to lowercase, so `HTTP`'s db name is `http`, but not `h_t_t_p`, but for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it to `sku`
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
-* `mssql` dialect has been renamed to `github.com/jinzhu/gorm/dialects/mssql`
-* `Hstore` has been moved to package `github.com/jinzhu/gorm/dialects/postgres`
+* `gorm.Open` रिटर्न `*gorm.DB` के बजाय `gorm.DB`
+* Updat करने से केवल परिवर्तित क्षेत्र ही update होंगे
+* सॉफ्ट डिलीट केवल `deleted_at IS NULL` की जांच करेगा
+* नया ToDBName तर्क [golint](https://github.com/golang/lint/blob/master/lint.go#L702) से सामान्य आद्याक्षर जैसे `HTTP`, `URI ` को लोअरकेस में बदल दिया गया था, इसलिए `HTTP` का db नाम `http` है, लेकिन `h_t_t_p` नहीं, बल्कि कुछ अन्य इनिशियलिज़्म के लिए सूची, जैसे `SKU`, इसका db नाम `s_k_u` था, इस परिवर्तन ने इसे `sku` पर नियत कर दिया
+* Error `RecordNotFound` का नाम बदलकर `ErrRecordNotFound` कर दिया गया है
+* `mssql` बोली का नाम बदलकर `github.com/jizhu/gorm/dialects/mssql` कर दिया गया है
+* `Hstore` को पैकेज `github.com/jizhu/gorm/dialects/postgres` में ले जाया गया है
