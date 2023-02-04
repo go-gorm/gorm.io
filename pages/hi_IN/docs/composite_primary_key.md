@@ -1,9 +1,9 @@
 ---
-title: Composite Primary Key
-layout: page
+title: समग्र प्राथमिक कुंजी//Composite Primary Key
+layout: पृष्ठ
 ---
 
-Set multiple fields as primary key creates composite primary key, for example:
+Multiple फ़ील्ड सेट करें क्योंकि primary key, composite primary key बनाती है, उदाहरण के लिए:
 
 ```go
 type Product struct {
@@ -14,11 +14,10 @@ type Product struct {
 }
 ```
 
-**Note** integer `PrioritizedPrimaryField` enables `AutoIncrement` by default, to disable it, you need to turn off `autoIncrement` for the int fields:
+**ध्यान दें** पूर्णांक `PrioritizedPrimaryField` डिफ़ॉल्ट रूप से `AutoIncrement` को सक्षम करता है, इसे अक्षम करने के लिए, आपको ``autoIncrement< को बंद करना होगा / कोड> int fields के लिए:</p>
 
-```go
-type Product struct {
+<pre><code class="go">type Product struct {
   CategoryID uint64 `gorm:"primaryKey;autoIncrement:false"`
   TypeID     uint64 `gorm:"primaryKey;autoIncrement:false"`
 }
-```
+``</pre>
