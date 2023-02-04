@@ -1,9 +1,9 @@
 ---
-title: Connecting to a Database
-layout: page
+title: एक डेटाबेस से जुड़ना //Connecting to a Database
+layout: पृष्ठ
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server
+GORM आधिकारिक तौर पर डेटाबेस MySQL, PostgreSQL, SQLite, SQL सर्वर का supports करता है
 
 ## MySQL
 
@@ -21,25 +21,27 @@ func main() {
 ```
 
 {% note warn %}
-**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+**ध्यान दें:** `time.Time` को सही तरीके से हैंडल करने के लिए, आपको `parseTime` को एक पैरामीटर के रूप में शामिल करना होगा। ([अधिक पैरामीटर](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 एन्कोडिंग का पूर्ण समर्थन करने के लिए, आपको `charset=utf8` को `charset=utf8mb4` में बदलना होगा। विस्तृत व्याख्या के लिए [यह लेख](https://mathiasbynens.be/notes/mysql-utf8mb4) देखें
 {% endnote %}
 
-MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
+MySQL ड्राइवर [कुछ advanced कॉन्फ़िगरेशन](https://github.com/go-gorm/mysql) प्रदान करता है, जिसका उपयोग initialization के दौरान किया जा सकता है, उदाहरण के लिए:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
-  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name
-  DefaultStringSize: 256, // default size for string fields
-  DisableDatetimePrecision: true, // disable datetime precision, which not supported before MySQL 5.6
-  DontSupportRenameIndex: true, // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
-  DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-  SkipInitializeWithVersion: false, // auto configure based on currently MySQL version
+  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name //डेटा स्रोत का नाम
+  DefaultStringSize: 256, // default size for string fields //स्ट्रिंग फ़ील्ड के लिए डिफ़ॉल्ट आकार
+  DisableDatetimePrecision: true, // disable datetime precision, which not supported before MySQL 5.6 /डेटाटाइम परिशुद्धता अक्षम करें, जो MySQL 5.6 से पहले समर्थित नहीं है
+  DontSupportRenameIndex: true, // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB //
+निर्दिष्ट का नाम बदलने पर बनाएँ, MySQL 5.7, MariaDB से पहले संगति का नाम परिवर्तन नहीं होता है
+  DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB 
+// // `परिवर्तन` जब स्तंभ का नाम बदलें, नाम बदलें कॉलम MySQL 8, MariaDB से पहले समर्थित नहीं है
+  SkipInitializeWithVersion: false, // auto configure based on currently MySQL version //वर्तमान में MySQL संस्करण के आधार पर ऑटो कॉन्फ़िगर करें
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### ड्राइवर को अनुकूलित करें //Customize Driver
 
-GORM allows to customize the MySQL driver with the `DriverName` option, for example:
+GORM MySQL ड्राइवर को `DriverName` विकल्प के साथ अनुकूलित करने की अनुमति देता है, उदाहरण के लिए:
 
 ```go
 import (
@@ -54,9 +56,9 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Existing database connection
+### Existing database connection //मौजूदा डेटाबेस कनेक्शन
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM किसी मौजूदा डेटाबेस कनेक्शन के साथ `*gorm.DB` प्रारंभ करने की अनुमति देता है
 
 ```go
 import (
@@ -83,7 +85,7 @@ dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=dis
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+हम [pgx](https://github.com/jackc/pgx) का उपयोग पोस्टग्रेज के डेटाबेस/एसक्यूएल ड्राइवर के रूप में कर रहे हैं, यह इसे निष्क्रिय करने के लिए डिफ़ॉल्ट रूप से तैयार स्टेटमेंट कैश को सक्षम करता है:
 
 ```go
 // https://github.com/go-gorm/postgres
@@ -95,7 +97,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Customize Driver
 
-GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
+GORM उदाहरण के लिए, `DriverName` विकल्प के साथ PostgreSQL ड्राइवर को अनुकूलित करने की अनुमति देता है:
 
 ```go
 import (
@@ -111,7 +113,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Existing database connection
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM किसी मौजूदा डेटाबेस कनेक्शन के साथ `*gorm.DB` प्रारंभ करने की अनुमति देता है
 
 ```go
 import (
@@ -140,7 +142,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
 {% note warn %}
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**ध्यान दें:** आप फ़ाइल के पथ के बजाय `file::memory:?cache=shared` का भी उपयोग कर सकते हैं। यह SQLite को सिस्टम मेमोरी में अस्थायी डेटाबेस का उपयोग करने के लिए कहेगा। (इसके लिए [SQLite डॉक्स](https://www.sqlite.org/inmemorydb.html) देखें)
 {% endnote %}
 
 ## SQL Server
@@ -190,25 +192,26 @@ func main() {
 
 ## Connection Pool
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM कनेक्शन पूल बनाए रखने के लिए [डेटाबेस/sql](https://pkg.go.dev/database/sql) का उपयोग कर रहा है
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+// SetMaxIdleConns निष्क्रिय कनेक्शन पूल में अधिकतम संख्या में कनेक्शन सेट करता है।
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns डेटाबेस के लिए अधिकतम खुले कनेक्शन(open connections) सेट करता है।
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+
+// SetConnMaxLifetime एक कनेक्शन के पुन: उपयोग किए जा सकने वाले अधिकतम समय को सेट करता है।
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+विवरण के लिए [जेनेरिक इंटरफ़ेस](generic_interface.html) देखें
 
 ## Unsupported Databases
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+कुछ डेटाबेस `mysql` या `postgres` dialect के साथ संगत हो सकते हैं, जिस स्थिति में आप उन डेटाबेस के लिए केवल dialect का उपयोग कर सकते हैं।
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+दूसरों के लिए, [आपको ड्राइवर बनाने के लिए प्रोत्साहित किया जाता है, pull request का स्वागत है!](write_driver.html)
