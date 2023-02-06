@@ -1,13 +1,13 @@
 ---
 title: Context
-layout: page
+layout: पृष्ठ
 ---
 
-GORM provides Context support, you can use it with method `WithContext`
+GORM कॉन्टेक्स्ट सपोर्ट प्रदान करता है, आप इसे `WithContext` method के साथ उपयोग कर सकते हैं
 
 ## Single Session Mode
 
-Single session mode usually used when you want to perform a single operation
+सिंगल सेशन मोड आमतौर पर तब उपयोग किया जाता है जब आप एक ही ऑपरेशन करना चाहते हैं
 
 ```go
 db.WithContext(ctx).Find(&users)
@@ -15,7 +15,7 @@ db.WithContext(ctx).Find(&users)
 
 ## Continuous session mode
 
-Continuous session mode is usually used when you want to perform a group of operations, for example:
+Continuous session मोड का उपयोग आमतौर पर तब किया जाता है जब आप operations का एक समूह perform करना चाहते हैं, उदाहरण के लिए:
 
 ```go
 tx := db.WithContext(ctx)
@@ -25,7 +25,7 @@ tx.Model(&user).Update("role", "admin")
 
 ## Context timeout
 
-You can pass in a context with a timeout to `db.WithContext` to set timeout for long running queries, for example:
+लंबे समय तक चलने वाले प्रश्नों(queries) के लिए टाइमआउट सेट करने के लिए आप `db.WithContext` के टाइमआउट के साथ संदर्भ(context) में पास कर सकते हैं, उदाहरण के लिए:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -36,7 +36,7 @@ db.WithContext(ctx).Find(&users)
 
 ## Context in Hooks/Callbacks
 
-You can access the `Context` object from the current `Statement`, for example:
+आप `Context` ऑब्जेक्ट को वर्तमान `स्टेटमेंट` से एक्सेस कर सकते हैं, उदाहरण के लिए:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -48,12 +48,11 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 
 ## Chi Middleware Example
 
-Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
+Continuous session मोड जो API अनुरोधों(requests) को संभालने में सहायक हो सकता है, उदाहरण के लिए, आप मिडलवेयर में टाइमआउट संदर्भ के साथ `*gorm.DB` सेटअप कर सकते हैं और फिर `*gorm.DB</code का उपयोग कर सकते हैं। > सभी अनुरोधों को संसाधित करते समय</p>
 
-Following is a Chi middleware example:
+<p spaces-before="0">Following is a Chi middleware example:</p>
 
-```go
-func SetDBMiddleware(next http.Handler) http.Handler {
+<pre><code class="go">func SetDBMiddleware(next http.Handler) http.Handler {
   return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     timeoutContext, _ := context.WithTimeout(context.Background(), time.Second)
     ctx := context.WithValue(r.Context(), "DB", db.WithContext(timeoutContext))
@@ -81,12 +80,12 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 
   // lots of db operations
 })
-```
+`</pre>
 
 {% note %}
-**NOTE** Setting `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**ध्यान दें** `Context` को `WithContext` के साथ सेट करना गोरूटीन-सुरक्षित है, [Session देखें ](session.html) विवरण के लिए
 {% endnote %}
 
 ## Logger
 
-Logger accepts `Context` too, you can use it for log tracking, refer [Logger](logger.html) for details
+Logger `Context` भी स्वीकार करता है, आप इसे लॉग ट्रैकिंग के लिए उपयोग कर सकते हैं, विवरण के लिए [Logger](logger.html) देखें
