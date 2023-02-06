@@ -23,7 +23,7 @@ type UserIndex struct {
 
 ## Foreign Key Constraint
 
-GORM will creates foreign keys constraints for associations, you can disable this feature during initialization:
+GORM associations के लिए foreign keys constraints का निर्माण करेगा, आप initialization के दौरान इस सुविधा को disable कर सकते हैं:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -31,7 +31,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-GORM allows you setup FOREIGN KEY constraints's `OnDelete`, `OnUpdate` option with tag `constraint`, for example:
+GORM आपको `constraint` टैग के साथ FOREIGN KEY Constraints के `OnDelete`, `OnUpdate` विकल्प सेट करने की अनुमति देता है, उदाहरण के लिए:
 
 ```go
 type User struct {
