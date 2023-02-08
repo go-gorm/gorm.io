@@ -126,7 +126,7 @@ GORM allows insert data with SQL expression, there are two ways to achieve this 
 // Create from map
 db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
-  "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
+  "Location": gorm.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`location`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
