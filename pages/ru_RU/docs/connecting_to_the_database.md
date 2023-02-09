@@ -3,7 +3,7 @@ title: Подключение к базе данных
 layout: страница
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server
+GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
 
 ## MySQL
 
@@ -156,6 +156,51 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
+## TiDB
+
+TiDB is compatible with MySQL protocol. You can follow the [MySQL](#mysql) part to create a connection to TiDB.
+
+There are some points noteworthy for TiDB:
+
+- You can use `gorm:"primaryKey;default:auto_random()"` tag to use [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) feature for TiDB.
+- TiDB doesn't support the foreign key feature yet so far. You can see the TiDB document [MySQL Compatibility](https://docs.pingcap.com/tidb/stable/mysql-compatibility) for more information.
+- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
+
+```go
+import (
+  "fmt"
+  "gorm.io/driver/mysql"
+  "gorm.io/gorm"
+)
+
+type Product struct {
+  ID    uint `gorm:"primaryKey;default:auto_random()"`
+  Code  string
+  Price uint
+}
+
+func main() {
+  db, err := gorm.Open(mysql.Open("root:@tcp(127.0.0.1:4000)/test"), &gorm.Config{})
+  if err != nil {
+    panic("failed to connect database")
+  }
+
+  db.AutoMigrate(&Product{})
+
+  insertProduct := &Product{Code: "D42", Price: 100}
+
+  db.Create(insertProduct)
+  fmt.Printf("insert ID: %d, Code: %s, Prict: %d\n",
+    insertProduct.ID, insertProduct.Code, insertProduct.Price)
+
+  readProduct := &Product{}
+  db.First(&readProduct, "code = ?", "D42") // find product with code D42
+
+  fmt.Printf("read ID: %d, Code: %s, Prict: %d\n",
+    readProduct.ID, readProduct.Code, readProduct.Price)
+}
+```
+
 ## Clickhouse
 
 https://github.com/go-gorm/clickhouse
@@ -181,34 +226,34 @@ func main() {
   // Select
   db.Find(&user, "id = ?", 10)
 
-  // Insert партиями
+  // Batch Insert
   var users = []User{user1, user2, user3}
   db.Create(&users)
   // ...
 }
 ```
 
-## Пул соединений
+## Connection Pool
 
-GORM использует [database/sql](https://pkg.go.dev/database/sql) для поддержания пула соединений
+GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns устанавливает максимальное количество соединений в пуле незанятых соединений.
+// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns устанавливает максимальное количество открытых подключений к базе данных.
+// SetMaxOpenConns sets the maximum number of open connections to the database.
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime устанавливает максимальное количество времени, в течение которого соединение может быть повторно использовано.
+// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Смотрите подробнее в [Generic Interface](generic_interface.html)
+Refer [Generic Interface](generic_interface.html) for details
 
-## Неподдерживаемые базы данных
+## Unsupported Databases
 
-Некоторые базы данных могут быть совместимы с диалектами `mysql` или `postgres`, в этом случае можно просто использовать диалект для этих баз данных.
+Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
-Для других баз данных, [вам предлагается сделать драйвер самостоятельно, pull request приветствуется!](write_driver.html)
+For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
