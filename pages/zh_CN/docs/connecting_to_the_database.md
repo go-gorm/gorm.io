@@ -3,7 +3,7 @@ title: 连接到数据库
 layout: page
 ---
 
-GORM 官方支持的数据库类型有： MySQL, PostgreSQL, SQlite, SQL Server
+GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
 
 ## MySQL
 
@@ -156,6 +156,51 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
+## TiDB
+
+TiDB is compatible with MySQL protocol. You can follow the [MySQL](#mysql) part to create a connection to TiDB.
+
+There are some points noteworthy for TiDB:
+
+- You can use `gorm:"primaryKey;default:auto_random()"` tag to use [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) feature for TiDB.
+- TiDB doesn't support the foreign key feature yet so far. You can see the TiDB document [MySQL Compatibility](https://docs.pingcap.com/tidb/stable/mysql-compatibility) for more information.
+- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
+
+```go
+import (
+  "fmt"
+  "gorm.io/driver/mysql"
+  "gorm.io/gorm"
+)
+
+type Product struct {
+  ID    uint `gorm:"primaryKey;default:auto_random()"`
+  Code  string
+  Price uint
+}
+
+func main() {
+  db, err := gorm.Open(mysql.Open("root:@tcp(127.0.0.1:4000)/test"), &gorm.Config{})
+  if err != nil {
+    panic("failed to connect database")
+  }
+
+  db.AutoMigrate(&Product{})
+
+  insertProduct := &Product{Code: "D42", Price: 100}
+
+  db.Create(insertProduct)
+  fmt.Printf("insert ID: %d, Code: %s, Prict: %d\n",
+    insertProduct.ID, insertProduct.Code, insertProduct.Price)
+
+  readProduct := &Product{}
+  db.First(&readProduct, "code = ?", "D42") // find product with code D42
+
+  fmt.Printf("read ID: %d, Code: %s, Prict: %d\n",
+    readProduct.ID, readProduct.Code, readProduct.Price)
+}
+```
+
 ## Clickhouse
 
 https://github.com/go-gorm/clickhouse
@@ -175,40 +220,40 @@ func main() {
   // Set table options
   db.Set("gorm:table_options", "ENGINE=Distributed(cluster, default, hits)").AutoMigrate(&User{})
 
-  // 插入
+  // Insert
   db.Create(&user)
 
-  // 查询
+  // Select
   db.Find(&user, "id = ?", 10)
 
-  // 批量插入
+  // Batch Insert
   var users = []User{user1, user2, user3}
   db.Create(&users)
   // ...
 }
 ```
 
-## 连接池
+## Connection Pool
 
-GORM 使用 [database/sql](https://pkg.go.dev/database/sql) 维护连接池
+GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns 设置空闲连接池中连接的最大数量
+// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns 设置打开数据库连接的最大数量。
+// SetMaxOpenConns sets the maximum number of open connections to the database.
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime 设置了连接可复用的最大时间。
+// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-查看 [通用接口](generic_interface.html) 获取详情。
+Refer [Generic Interface](generic_interface.html) for details
 
-## 不支持的数据库
+## Unsupported Databases
 
-有些数据库可能兼容 `mysql`、`postgres` 的方言，在这种情况下，你可以直接使用这些数据库的方言。
+Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
-对于其它不支持的数据，[我们鼓励且欢迎大家伙开发更多数据库类型的驱动！](write_driver.html)
+For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
