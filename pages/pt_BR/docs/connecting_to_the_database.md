@@ -3,7 +3,7 @@ title: Conectando ao banco de dados
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
+GORM suporta oficialmente os bancos de dados MySQL, PostgreSQL, SQLite, SQL Server
 
 ## MySQL
 
@@ -158,13 +158,13 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## TiDB
 
-TiDB is compatible with MySQL protocol. You can follow the [MySQL](#mysql) part to create a connection to TiDB.
+TiDB é compatível com o protocolo MySQL. Você pode seguir a parte [MySQL](#mysql) para criar uma conexão com TiDB.
 
-There are some points noteworthy for TiDB:
+Há alguns pontos dignos de nota para o TiDB:
 
-- You can use `gorm:"primaryKey;default:auto_random()"` tag to use [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) feature for TiDB.
-- TiDB doesn't support the foreign key feature yet so far. You can see the TiDB document [MySQL Compatibility](https://docs.pingcap.com/tidb/stable/mysql-compatibility) for more information.
-- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
+- Você pode usar a tag `gorm:"primaryKey;default:auto_random()"` para usar o recurso [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) para TiDB.
+- O TiDB ainda não suporta o recurso de chave estrangeira. Você pode ver o documento do TiDB [Compatibilidade do MySQL](https://docs.pingcap.com/tidb/stable/mysql-compatibility) para obter mais informações.
+- TiDB suporta [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) desde a versão `v6.2.0`, observe a versão do TiDB quando usar este recurso.
 
 ```go
 import (
@@ -233,7 +233,7 @@ func main() {
 }
 ```
 
-## Connection Pool
+## Conjunto de Conexão
 
 GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
 
@@ -252,8 +252,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Refer [Generic Interface](generic_interface.html) for details
 
-## Unsupported Databases
+## Bancos de dados não suportados
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Alguns bancos de dados podem ser compatíveis com o dialeto do `mysql` ou `postgres`, nesse caso seria possível usar o dialeto para essas bases de dados.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+Para outros, [você é encorajado a fazer um driver, seu pull request será bem vindo!](write_driver.html)
