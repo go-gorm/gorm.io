@@ -9,18 +9,10 @@ de_DE:
   name: Deutsch
   disqus_lang: de
   crowdin: de
-es_ES:
-  name: Español
-  disqus_lang: es
-  crowdin: es-ES
 id_ID:
   name: bahasa Indonesia
   disqus_lang: id
   crowdin: id
-it_IT:
-  name: Italiano
-  disqus_lang: it
-  crowdin: it
 ja_JP:
   name: 日本語
   disqus_lang: jp
@@ -29,11 +21,23 @@ ru_RU:
   name: Русский
   disqus_lang: ru
   crowdin: ru
-fr_FR:
-  name: French
-  disqus_lang: fr
-  crowdin: fr
 ko_KR:
   name: 한국어
   disqus_lang: ko
   crowdin: ko
+hi_IN:
+  name:  हिन्दी
+  disqus_lang: hi
+  crowdin: hi
+fr_FR:
+  name: French
+  disqus_lang: fr
+  crowdin: fr
+it_IT:
+  name: Italiano
+  disqus_lang: it
+  crowdin: it
+es_ES:
+  name: Español
+  disqus_lang: es
+  crowdin: es-ES
