@@ -1,0 +1,89 @@
+---
+menu:
+  home: <i class="fa fa-home"></i>Home
+  docs: <i class="fa fa-book"></i>Docs
+  gen: <i class="fa fa-tools"></i>Gen
+  api: <i class="fa fa-cogs"></i>API
+  github: <i class="fa fa-github"></i>Github
+  community: <i class="fab fa-slack"></i>Community
+  contribute: <i class="fa fa-rocket"></i>Contribute
+  search: Search documents...
+index:
+  get_started: Get started
+page:
+  contents: Contents
+  back_to_top: Back to Top
+  improve: Improve this page
+  prev: Prev
+  next: Next
+  last_updated: "Last updated: %s"
+sidebar:
+  docs:
+    getting_started: Getting Started
+    overview: Overview
+    declaring_models: Declaring Models
+    conventions: Conventions
+    connecting_to_the_database: Connecting to Database
+    crud_interface: CRUD Interface
+    create: Create
+    query: Query
+    advanced_query: Advanced Query
+    update: Update
+    delete: Delete
+    raw_sql_and_builder: Raw SQL & SQL Builder
+    batch: Batch Processing
+    associations: Associations
+    belongs_to: Belongs To
+    has_one: Has One
+    has_many: Has Many
+    many_to_many: Many To Many
+    association_mode: Association Mode
+    preload: Preloading (Eager Loading)
+    tutorials: Tutorials
+    context: Context
+    error_handling: Error Handling
+    method_chaining: Method Chaining
+    session: Session
+    hooks: Hooks
+    transactions: Transactions
+    migration: Migration
+    logger: Logger
+    generic_interface: Generic Database Interface
+    performance: Performance
+    data_types: Customize Data Types
+    scopes: Scopes
+    settings: Settings
+    advanced_topics: Advanced Topics
+    dbresolver: Database Resolver
+    serializer: Serializer
+    sharding: Sharding
+    prometheus: Prometheus
+    hints: Hints
+    indexes: Indexes
+    constraints: Constraints
+    composite_primary_key: Composite Primary Key
+    security: Security
+    gorm_config: GORM Config
+    write_plugins: Write Plugins
+    write_driver: Write Driver
+    change_log: ChangeLog
+    community: Community
+    contribute: Contribute
+    translate: Translate current site
+  gen:
+    getting_started: Getting Started
+    overview: Overview
+    dao: DAO
+    create: Create
+    query: Query
+    update: Update
+    delete: Delete
+    associations: Associations
+    dynamic_sql: Dynamic SQL
+    annotation: Annotation
+    database_to_structs: Database To Structs
+    gentool: Gen Tool
+    tutorials: Tutorials
+    gorm_clause: GORM Clause
+    transaction: Transaction
+    plugins: GORM Plugins
