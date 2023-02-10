@@ -233,9 +233,9 @@ func main() {
 }
 ```
 
-## Connection Pool
+## 连接池
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM 使用 [database/sql](https://pkg.go.dev/database/sql) 来维护连接池
 
 ```go
 sqlDB, err := db.DB()
@@ -250,7 +250,7 @@ sqlDB.SetMaxOpenConns(100)
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+查看 [通用接口](generic_interface.html) 获取详情。
 
 ## Unsupported Databases
 
