@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="hi_IN">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>Associations //संघों | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://gorm.io/hi_IN/docs/associations.html">
+  <!-- Alternative links -->
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
+  <!-- Open Graph -->
+  <meta name="description" content="Auto Create&#x2F;Update &#x2F;&#x2F;ऑटो बनाएं&#x2F;अपडेट करेंरिकॉर्ड बनाते&#x2F;अपडेट(creating&#x2F;updating) करते समय GORM Upsert का उपयोग करके एसोसिएशन(associations) और उसके संदर्भ को अपने आप सहेज ल">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Associations &#x2F;&#x2F;संघों">
+<meta property="og:url" content="https://gorm.io/hi_IN/docs/associations.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="Auto Create&#x2F;Update &#x2F;&#x2F;ऑटो बनाएं&#x2F;अपडेट करेंरिकॉर्ड बनाते&#x2F;अपडेट(creating&#x2F;updating) करते समय GORM Upsert का उपयोग करके एसोसिएशन(associations) और उसके संदर्भ को अपने आप सहेज ल">
+<meta property="og:locale" content="hi_IN">
+<meta property="article:published_time" content="2023-02-10T02:45:16.768Z">
+<meta property="article:modified_time" content="2023-02-10T02:45:16.768Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/hi_IN/" id="logo">GORM</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/hi_IN/docs/" class="main-nav-link"><i class="fa fa-book"></i>Docs</a><a href="/hi_IN/gen/" class="main-nav-link"><i class="fa fa-tools"></i>Gen</a><a href="/hi_IN/community.html" class="main-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/hi_IN/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Search documents...">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>हिन्दी</span></label>
+      <select id="lang-select" data-canonical="docs/associations.html">
+        
+          <option value="en">English</option>
+        
+          <option value="zh_CN">简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="ja_JP">日本語</option>
+        
+          <option value="ru_RU">Русский</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+          <option value="hi_IN" selected>हिन्दी</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="es_ES">Español</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">Associations //संघों</h1>
+                
+                <a target="_blank" rel="noopener" href="https://translate.gorm.io/project/go-gorm/hi" class="article-edit-link" title="Improve this page"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><h2 id="Auto-Create-x2F-Update-x2F-x2F-ऑटो-बनाएं-x2F-अपडेट-करें" class="article-heading"><a href="#Auto-Create-x2F-Update-x2F-x2F-ऑटो-बनाएं-x2F-अपडेट-करें" class="headerlink" title="Auto Create/Update //ऑटो बनाएं/अपडेट करें"></a>Auto Create/Update //ऑटो बनाएं/अपडेट करें<a class="article-anchor" href="#Auto-Create-x2F-Update-x2F-x2F-ऑटो-बनाएं-x2F-अपडेट-करें" aria-hidden="true"></a></h2><p>रिकॉर्ड बनाते/अपडेट(creating/updating) करते समय GORM <a href="create.html#upsert">Upsert</a> का उपयोग करके एसोसिएशन(associations) और उसके संदर्भ को अपने आप सहेज लेगा।</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">user := User{</span><br><span class="line">  Name:            <span class="string">"jinzhu"</span>,</span><br><span class="line">  BillingAddress:  Address{Address1: <span class="string">"Billing Address - Address 1"</span>},</span><br><span class="line">  ShippingAddress: Address{Address1: <span class="string">"Shipping Address - Address 1"</span>},</span><br><span class="line">  Emails:          []Email{</span><br><span class="line">    {Email: <span class="string">"jinzhu@example.com"</span>},</span><br><span class="line">    {Email: <span class="string">"jinzhu-2@example.com"</span>},</span><br><span class="line">  },</span><br><span class="line">  Languages:       []Language{</span><br><span class="line">    {Name: <span class="string">"ZH"</span>},</span><br><span class="line">    {Name: <span class="string">"EN"</span>},</span><br><span class="line">  },</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Create(&amp;user)</span><br><span class="line"><span class="comment">// BEGIN TRANSACTION;</span></span><br><span class="line"><span class="comment">// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;</span></span><br><span class="line"><span class="comment">// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);</span></span><br><span class="line"><span class="comment">// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;</span></span><br><span class="line"><span class="comment">// INSERT INTO "languages" ("name") VALUES ('ZH'), ('EN') ON DUPLICATE KEY DO NOTHING;</span></span><br><span class="line"><span class="comment">// INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1), (111, 2) ON DUPLICATE KEY DO NOTHING;</span></span><br><span class="line"><span class="comment">// COMMIT;</span></span><br><span class="line"></span><br><span class="line">db.Save(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>अगर आप एसोसिएशन के डेटा को अपडेट करना चाहते हैं, तो आपको <code>FullSaveAssociations</code> मोड का इस्तेमाल करना चाहिए:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Session(&amp;gorm.Session{FullSaveAssociations: <span class="literal">true</span>}).Updates(&amp;user)</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="comment">// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY SET address1=VALUES(address1);</span></span><br><span class="line"><span class="comment">// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);</span></span><br><span class="line"><span class="comment">// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY SET email=VALUES(email);</span></span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Skip-Auto-Create-x2F-Update-x2F-x2F-ऑटो-क्रिएट-x2F-अपडेट-छोड़ें" class="article-heading"><a href="#Skip-Auto-Create-x2F-Update-x2F-x2F-ऑटो-क्रिएट-x2F-अपडेट-छोड़ें" class="headerlink" title="Skip Auto Create/Update // ऑटो क्रिएट/अपडेट छोड़ें"></a>Skip Auto Create/Update // ऑटो क्रिएट/अपडेट छोड़ें<a class="article-anchor" href="#Skip-Auto-Create-x2F-Update-x2F-x2F-ऑटो-क्रिएट-x2F-अपडेट-छोड़ें" aria-hidden="true"></a></h2><p>बनाते/अपडेट(creating/updating) करते समय ऑटो सेव को छोड़ने के लिए, आप <code>Select</code> या <code>Omit</code> का उपयोग कर सकते हैं, उदाहरण के लिए:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">user := User{</span><br><span class="line">  Name:            <span class="string">"jinzhu"</span>,</span><br><span class="line">  BillingAddress:  Address{Address1: <span class="string">"Billing Address - Address 1"</span>},</span><br><span class="line">  ShippingAddress: Address{Address1: <span class="string">"Shipping Address - Address 1"</span>},</span><br><span class="line">  Emails:          []Email{</span><br><span class="line">    {Email: <span class="string">"jinzhu@example.com"</span>},</span><br><span class="line">    {Email: <span class="string">"jinzhu-2@example.com"</span>},</span><br><span class="line">  },</span><br><span class="line">  Languages:       []Language{</span><br><span class="line">    {Name: <span class="string">"ZH"</span>},</span><br><span class="line">    {Name: <span class="string">"EN"</span>},</span><br><span class="line">  },</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Select(<span class="string">"Name"</span>).Create(&amp;user)</span><br><span class="line"><span class="comment">// INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);</span></span><br><span class="line"></span><br><span class="line">db.Omit(<span class="string">"BillingAddress"</span>).Create(&amp;user)</span><br><span class="line"><span class="comment">// Skip create BillingAddress when creating a user</span></span><br><span class="line"><span class="comment">// उपयोगकर्ता बनाते समय बिलिंग एड्रेस बनाना छोड़ें</span></span><br><span class="line"></span><br><span class="line">db.Omit(clause.Associations).Create(&amp;user)</span><br><span class="line"><span class="comment">// Skip all associations when creating a user</span></span><br><span class="line"><span class="comment">// उपयोगकर्ता बनाते समय सभी संघों को छोड़ दें</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note warn"><p>**नोट:**कई से कई associations के लिए, GORM सम्मिलित तालिका संदर्भ बनाने से पहले associations को अपसेट करेगा, यदि आप associations के अप्सर्टिंग को छोड़ना चाहते हैं, तो आप इसे इस तरह छोड़ सकते हैं:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Omit(<span class="string">"Languages.*"</span>).Create(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>निम्नलिखित कोड एसोसिएशन (association) और उसके संदर्भों(references) के निर्माण को छोड़ देगा</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Omit(<span class="string">"Languages"</span>).Create(&amp;user)</span><br></pre></td></tr></tbody></table></figure></blockquote>
+
+<h2 id="Select-x2F-Omit-Association-fields-x2F-x2F-एसोसिएशन-फ़ील्ड-का-चयन-करें-x2F-छोड़-दें" class="article-heading"><a href="#Select-x2F-Omit-Association-fields-x2F-x2F-एसोसिएशन-फ़ील्ड-का-चयन-करें-x2F-छोड़-दें" class="headerlink" title="Select/Omit Association fields // एसोसिएशन फ़ील्ड का चयन करें/छोड़ दें"></a>Select/Omit Association fields // एसोसिएशन फ़ील्ड का चयन करें/छोड़ दें<a class="article-anchor" href="#Select-x2F-Omit-Association-fields-x2F-x2F-एसोसिएशन-फ़ील्ड-का-चयन-करें-x2F-छोड़-दें" aria-hidden="true"></a></h2><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">user := User{</span><br><span class="line">  Name:            <span class="string">"jinzhu"</span>,</span><br><span class="line">  BillingAddress:  Address{Address1: <span class="string">"Billing Address - Address 1"</span>, Address2: <span class="string">"addr2"</span>},</span><br><span class="line">  ShippingAddress: Address{Address1: <span class="string">"Shipping Address - Address 1"</span>, Address2: <span class="string">"addr2"</span>},</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create user and his BillingAddress, ShippingAddress</span></span><br><span class="line"><span class="comment">// When creating the BillingAddress only use its address1, address2 fields and omit others</span></span><br><span class="line"><span class="comment">// उपयोगकर्ता और उसका बिलिंग पता, शिपिंग पता बनाएँ</span></span><br><span class="line"><span class="comment">// बिलिंग पता बनाते समय केवल इसके पते1, पते2 फ़ील्ड का उपयोग करें और अन्य को छोड़ दें</span></span><br><span class="line">db.Select(<span class="string">"BillingAddress.Address1"</span>, <span class="string">"BillingAddress.Address2"</span>).Create(&amp;user)</span><br><span class="line"></span><br><span class="line">db.Omit(<span class="string">"BillingAddress.Address2"</span>, <span class="string">"BillingAddress.CreatedAt"</span>).Create(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Association-Mode" class="article-heading"><a href="#Association-Mode" class="headerlink" title="Association Mode"></a>Association Mode<a class="article-anchor" href="#Association-Mode" aria-hidden="true"></a></h2><p>Association मोड में रिश्तों को संभालने के लिए आमतौर पर इस्तेमाल की जाने वाली कुछ सहायक विधियाँ(helper methods) होती हैं</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Start Association Mode</span></span><br><span class="line"><span class="keyword">var</span> user User</span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>)</span><br><span class="line"><span class="comment">// `user` is the source model, it must contains primary key</span></span><br><span class="line"><span class="comment">// `Languages` is a relationship's field name</span></span><br><span class="line"><span class="comment">// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error</span></span><br><span class="line"><span class="comment">// `उपयोगकर्ता` स्रोत मॉडल है, इसमें प्राथमिक कुंजी होनी चाहिए</span></span><br><span class="line"><span class="comment">// `Languages` एक रिश्ते का फील्ड नाम है</span></span><br><span class="line"><span class="comment">// यदि उपरोक्त दो आवश्यकताएं मेल खाती हैं, तो एसोसिएशनमोड को सफलतापूर्वक शुरू किया जाना चाहिए, या त्रुटि वापस आनी चाहिए</span></span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Error</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Find-Associations" class="article-heading"><a href="#Find-Associations" class="headerlink" title="Find Associations"></a>Find Associations<a class="article-anchor" href="#Find-Associations" aria-hidden="true"></a></h3><p>(Find matched associations) मिलान किए गए संघों को खोजें</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Find(&amp;languages)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>Find associations with conditions // शर्तों के साथ जुड़ाव खोजें</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">codes := []<span class="type">string</span>{<span class="string">"zh-CN"</span>, <span class="string">"en-US"</span>, <span class="string">"ja-JP"</span>}</span><br><span class="line">db.Model(&amp;user).Where(<span class="string">"code IN ?"</span>, codes).Association(<span class="string">"Languages"</span>).Find(&amp;languages)</span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Where(<span class="string">"code IN ?"</span>, codes).Order(<span class="string">"code desc"</span>).Association(<span class="string">"Languages"</span>).Find(&amp;languages)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Append-Associations-x2F-x2F-संघों-को-जोड़ें" class="article-heading"><a href="#Append-Associations-x2F-x2F-संघों-को-जोड़ें" class="headerlink" title="Append Associations //संघों को जोड़ें"></a>Append Associations //संघों को जोड़ें<a class="article-anchor" href="#Append-Associations-x2F-x2F-संघों-को-जोड़ें" aria-hidden="true"></a></h3><p><code>अनेक से अनेक(many to many)</code> के लिए नए संबंध जोड़ें, <code>has many&lt;code&gt;</code>, <code>has one</code> के लिए वर्तमान संबंध बदलें, <code>belongs to</code></p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Append([]Language{languageZH, languageEN})</span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Append(&amp;Language{Name: <span class="string">"DE"</span>})</span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"CreditCard"</span>).Append(&amp;CreditCard{Number: <span class="string">"411111111111"</span>})</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Replace-Associations-x2F-x2F-संघों-को-बदलें" class="article-heading"><a href="#Replace-Associations-x2F-x2F-संघों-को-बदलें" class="headerlink" title="Replace Associations // संघों को बदलें"></a>Replace Associations // संघों को बदलें<a class="article-anchor" href="#Replace-Associations-x2F-x2F-संघों-को-बदलें" aria-hidden="true"></a></h3><p>मौजूदा associations को नए के साथ बदलें</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Replace([]Language{languageZH, languageEN})</span><br><span class="line"></span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Replace(Language{Name: <span class="string">"DE"</span>}, languageEN)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Delete-Associations-x2F-x2F-संघों-को-हटाएं" class="article-heading"><a href="#Delete-Associations-x2F-x2F-संघों-को-हटाएं" class="headerlink" title="Delete Associations // संघों को हटाएं"></a>Delete Associations // संघों को हटाएं<a class="article-anchor" href="#Delete-Associations-x2F-x2F-संघों-को-हटाएं" aria-hidden="true"></a></h3><p>स्रोत(source) और तर्क (मौजूद हैं, तो केवल reference हटाएं, उन objects को DB से नहीं हटाएंगे।</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Delete([]Language{languageZH, languageEN})</span><br><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Delete(languageZH, languageEN)</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Clear-Associations-x2F-x2F-स्पष्ट-संघ" class="article-heading"><a href="#Clear-Associations-x2F-x2F-स्पष्ट-संघ" class="headerlink" title="Clear Associations // स्पष्ट संघ"></a>Clear Associations // स्पष्ट संघ<a class="article-anchor" href="#Clear-Associations-x2F-x2F-स्पष्ट-संघ" aria-hidden="true"></a></h3><p>Source और association के बीच सभी reference निकालें, उन associations को नहीं हटाएंगे</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Clear()</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Count-Associations-x2F-x2F-संघों-की-गणना-करें" class="article-heading"><a href="#Count-Associations-x2F-x2F-संघों-की-गणना-करें" class="headerlink" title="Count Associations //संघों की गणना करें"></a>Count Associations //संघों की गणना करें<a class="article-anchor" href="#Count-Associations-x2F-x2F-संघों-की-गणना-करें" aria-hidden="true"></a></h3><p>वर्तमान associations की गिनती लौटाएँ</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;user).Association(<span class="string">"Languages"</span>).Count()</span><br><span class="line"></span><br><span class="line"><span class="comment">// Count with conditions</span></span><br><span class="line">codes := []<span class="type">string</span>{<span class="string">"zh-CN"</span>, <span class="string">"en-US"</span>, <span class="string">"ja-JP"</span>}</span><br><span class="line">db.Model(&amp;user).Where(<span class="string">"code IN ?"</span>, codes).Association(<span class="string">"Languages"</span>).Count()</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Batch-Data-x2F-x2F-बैच-डेटा" class="article-heading"><a href="#Batch-Data-x2F-x2F-बैच-डेटा" class="headerlink" title="Batch Data // बैच डेटा"></a>Batch Data // बैच डेटा<a class="article-anchor" href="#Batch-Data-x2F-x2F-बैच-डेटा" aria-hidden="true"></a></h3><p>एसोसिएशन मोड बैच डेटा का समर्थन करता है, जैसे:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Find all roles for all users //सभी उपयोगकर्ताओं के लिए सभी भूमिकाएँ खोजें</span></span><br><span class="line">db.Model(&amp;users).Association(<span class="string">"Role"</span>).Find(&amp;roles)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Delete User A from all user's team</span></span><br><span class="line"><span class="comment">//उपयोगकर्ता ए को सभी उपयोगकर्ता की टीम से हटाएं</span></span><br><span class="line">db.Model(&amp;users).Association(<span class="string">"Team"</span>).Delete(&amp;userA)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Get distinct count of all users' teams</span></span><br><span class="line"><span class="comment">// सभी उपयोगकर्ताओं की टीमों की अलग-अलग गिनती प्राप्त करें</span></span><br><span class="line">db.Model(&amp;users).Association(<span class="string">"Team"</span>).Count()</span><br><span class="line"></span><br><span class="line"><span class="comment">// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error</span></span><br><span class="line"><span class="comment">// बैच डेटा के साथ `संलग्न`, `बदलें` के लिए, तर्कों की लंबाई डेटा की लंबाई के बराबर होनी चाहिए अन्यथा यह एक त्रुटि लौटाएगा</span></span><br><span class="line"><span class="keyword">var</span> users = []User{user1, user2, user3}</span><br><span class="line"><span class="comment">// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team</span></span><br><span class="line"><span class="comment">// उदाहरण: हमारे पास 3 उपयोगकर्ता हैं, userA को user1 की टीम में जोड़ें, userB को user2 की टीम में जोड़ें, userA, userB और userC को user3 की टीम में जोड़ें</span></span><br><span class="line">db.Model(&amp;users).Association(<span class="string">"Team"</span>).Append(&amp;userA, &amp;userB, &amp;[]User{userA, userB, userC})</span><br><span class="line"><span class="comment">// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC</span></span><br><span class="line"><span class="comment">// user1 की टीम को userA पर रीसेट करें, user2 की टीम को userB पर रीसेट करें, user3 की टीम को userA, userB और userC पर रीसेट करें</span></span><br><span class="line">db.Model(&amp;users).Association(<span class="string">"Team"</span>).Replace(&amp;userA, &amp;userB, &amp;[]User{userA, userB, userC})</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="सेलेक्ट-के-साथ-डिलीट-करें" class="article-heading"><a href="#सेलेक्ट-के-साथ-डिलीट-करें" class="headerlink" title="सेलेक्ट के साथ डिलीट करें"></a><span id="delete_with_select">सेलेक्ट के साथ डिलीट करें</span><a class="article-anchor" href="#सेलेक्ट-के-साथ-डिलीट-करें" aria-hidden="true"></a></h2><p>रिकॉर्ड हटाते समय आपको <code>Select</code> के साथ Selected has one/ many2many संबंध हटाने की अनुमति है, उदाहरण के लिए:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// delete user's account when deleting user</span></span><br><span class="line"><span class="comment">// उपयोगकर्ता को हटाते समय उपयोगकर्ता का खाता हटाएं</span></span><br><span class="line">db.Select(<span class="string">"Account"</span>).Delete(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete user's Orders, CreditCards relations when deleting user</span></span><br><span class="line"><span class="comment">// उपयोगकर्ता को हटाते समय उपयोगकर्ता के आदेश, क्रेडिट कार्ड संबंध हटाएं</span></span><br><span class="line">db.Select(<span class="string">"Orders"</span>, <span class="string">"CreditCards"</span>).Delete(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete user's has one/many/many2many relations when deleting user</span></span><br><span class="line">db.Select(clause.Associations).Delete(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete each user's account when deleting users</span></span><br><span class="line">db.Select(<span class="string">"Account"</span>).Delete(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note warn"><p><strong>ध्यान दें:</strong> Associations को केवल तभी हटाया जाएगा जब हटाए जाने वाले रिकॉर्ड की प्राथमिक कुंजी(primary key) शून्य नहीं होगी, GORM selected associations को हटाने के लिए शर्तों के रूप में उन प्राथमिक कुंजियों(primary keys) का उपयोग करेगा</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// DOESN'T WORK</span></span><br><span class="line">db.Select(<span class="string">"Account"</span>).Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Delete(&amp;User{})</span><br><span class="line"><span class="comment">// will delete all user with name `jinzhu`, but those user's account won't be deleted</span></span><br><span class="line"></span><br><span class="line">db.Select(<span class="string">"Account"</span>).Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Delete(&amp;User{ID: <span class="number">1</span>})</span><br><span class="line"><span class="comment">// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted</span></span><br><span class="line"></span><br><span class="line">db.Select(<span class="string">"Account"</span>).Delete(&amp;User{ID: <span class="number">1</span>})</span><br><span class="line"><span class="comment">// will delete the user with id = `1`, and user `1`'s account will be deleted</span></span><br></pre></td></tr></tbody></table></figure></blockquote>
+
+<h2 id="Association-Tags-x2F-x2F-एसोसिएशन-टैग" class="article-heading"><a href="#Association-Tags-x2F-x2F-एसोसिएशन-टैग" class="headerlink" title="Association Tags // एसोसिएशन टैग"></a><span id="tags">Association Tags // एसोसिएशन टैग</span><a class="article-anchor" href="#Association-Tags-x2F-x2F-एसोसिएशन-टैग" aria-hidden="true"></a></h2><table>
+<thead>
+<tr>
+<th>टैग</th>
+<th>विवरण</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>foreignKey</td>
+<td>वर्तमान मॉडल का column name Specifies करता है जिसका उपयोग तालिका में शामिल होने के लिए foreign key के रूप में किया जाता है</td>
+</tr>
+<tr>
+<td>references</td>
+<td>Reference की table के column नाम को Specifies करता है जिसे सम्मिलित table की foreign key से मैप किया जाता है</td>
+</tr>
+<tr>
+<td>polymorphic // बहुरूपी</td>
+<td>मॉडल नाम जैसे बहुरूपी (polymorphic type)प्रकार निर्दिष्ट(Specifies) करता है</td>
+</tr>
+<tr>
+<td>polymorphicValue</td>
+<td>(polymorphic value) बहुरूपी मान, डिफ़ॉल्ट तालिका(table) नाम निर्दिष्ट(Specifies) करता है</td>
+</tr>
+<tr>
+<td>many2many</td>
+<td>ज्वाइन टेबल नाम निर्दिष्ट(Specifies) करता है</td>
+</tr>
+<tr>
+<td>joinForeignKey</td>
+<td>ज्वाइन टेबल का foreign key कॉलम नाम निर्दिष्ट करता है जो वर्तमान टेबल में मैप करता है</td>
+</tr>
+<tr>
+<td>joinReferences</td>
+<td>ज्वाइन टेबल का foreign key कॉलम नाम निर्दिष्ट करता है जो reference की table में मैप करता है</td>
+</tr>
+<tr>
+<td>constraint</td>
+<td>संबंध बाधा, उदा: <code>OnUpdate</code>,<code>OnDelete</code></td>
+</tr>
+</tbody></table>
+</body></html>
+              </div>
+
+              
+              <div>
+                <a href="v2_release_note.html" target="_blank">
+                  <img alt="GitHub tag (latest SemVer)" src="https://img.shields.io/github/v/tag/go-gorm/gorm?label=Latest GORM Release&color=red&&style=for-the-badge&logo=go&logoColor=red">
+                </a>
+              </div>
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2023-02-10T02:45:16.768Z" itemprop="dateModified">Last updated: २०२३-०२-१०</time>
+<a href="many_to_many.html" class="article-footer-prev" title="Many To Many"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="preload.html" class="article-footer-next" title="Preloading (Eager Loading)"><span>Next</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <div class="sponsor_item" title="Help to deliver a better GORM!">
+        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+      </div>
+    </div>
+
+    <div class="sponsors">
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <div class="sponsor_item">
+        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener" title="hubuc">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://www.bytebase.com/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20220715" target="_blank" rel="sponsored noopener" title="bytebase">
+          <img src="/sponsors-imgs/bytebase.png" alt="bytebase">
+        </a>
+      </div>
+
+      <div class="sponsor_item" title="Help to deliver a better GORM!">
+        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <h1>Platinum Sponsors</h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <div class="sponsor_item" title="Help to deliver a better GORM!">
+        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+      </div>
+    </div>
+
+    <div class="sponsors">
+      <h1>Gold Sponsors</h1>
+      <div class="sponsor_item">
+        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener" title="hubuc">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://www.bytebase.com/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20220715" target="_blank" rel="sponsored noopener" title="bytebase">
+          <img src="/sponsors-imgs/bytebase.png" alt="bytebase">
+        </a>
+      </div>
+
+      <div class="sponsor_item" title="Help to deliver a better GORM!">
+        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              <!--  -->
+<!-- <section id="comments"> -->
+<!-- <div id="disqus_thread"></div> -->
+<!-- </sction> -->
+
+<!-- <script> -->
+<!-- var disqus_config = function () { -->
+<!-- this.page.url = 'https://gorm.io/hi_IN/docs/associations.html'; -->
+<!-- this.page.identifier = 'https://gorm.io/hi_IN/docs/associations.html'; -->
+<!-- this.language = 'hi'; -->
+<!-- }; -->
+
+<!-- (function() { // DON'T EDIT BELOW THIS LINE -->
+<!-- var d = document, s = d.createElement('script'); -->
+<!-- s.src = 'https://gormv2.disqus.com/embed.js'; -->
+<!-- s.setAttribute('data-timestamp', +new Date()); -->
+<!-- (d.head || d.body).appendChild(s); -->
+<!-- })(); -->
+<!-- </script> -->
+<!--  -->
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">Contents</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Auto-Create-x2F-Update-x2F-x2F-%E0%A4%91%E0%A4%9F%E0%A5%8B-%E0%A4%AC%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-x2F-%E0%A4%85%E0%A4%AA%E0%A4%A1%E0%A5%87%E0%A4%9F-%E0%A4%95%E0%A4%B0%E0%A5%87%E0%A4%82"><span class="toc-text">Auto Create&#x2F;Update &#x2F;&#x2F;ऑटो बनाएं&#x2F;अपडेट करें</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Skip-Auto-Create-x2F-Update-x2F-x2F-%E0%A4%91%E0%A4%9F%E0%A5%8B-%E0%A4%95%E0%A5%8D%E0%A4%B0%E0%A4%BF%E0%A4%8F%E0%A4%9F-x2F-%E0%A4%85%E0%A4%AA%E0%A4%A1%E0%A5%87%E0%A4%9F-%E0%A4%9B%E0%A5%8B%E0%A4%A1%E0%A4%BC%E0%A5%87%E0%A4%82"><span class="toc-text">Skip Auto Create&#x2F;Update &#x2F;&#x2F; ऑटो क्रिएट&#x2F;अपडेट छोड़ें</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Select-x2F-Omit-Association-fields-x2F-x2F-%E0%A4%8F%E0%A4%B8%E0%A5%8B%E0%A4%B8%E0%A4%BF%E0%A4%8F%E0%A4%B6%E0%A4%A8-%E0%A4%AB%E0%A4%BC%E0%A5%80%E0%A4%B2%E0%A5%8D%E0%A4%A1-%E0%A4%95%E0%A4%BE-%E0%A4%9A%E0%A4%AF%E0%A4%A8-%E0%A4%95%E0%A4%B0%E0%A5%87%E0%A4%82-x2F-%E0%A4%9B%E0%A5%8B%E0%A4%A1%E0%A4%BC-%E0%A4%A6%E0%A5%87%E0%A4%82"><span class="toc-text">Select&#x2F;Omit Association fields &#x2F;&#x2F; एसोसिएशन फ़ील्ड का चयन करें&#x2F;छोड़ दें</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Association-Mode"><span class="toc-text">Association Mode</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Find-Associations"><span class="toc-text">Find Associations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Append-Associations-x2F-x2F-%E0%A4%B8%E0%A4%82%E0%A4%98%E0%A5%8B%E0%A4%82-%E0%A4%95%E0%A5%8B-%E0%A4%9C%E0%A5%8B%E0%A4%A1%E0%A4%BC%E0%A5%87%E0%A4%82"><span class="toc-text">Append Associations &#x2F;&#x2F;संघों को जोड़ें</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Replace-Associations-x2F-x2F-%E0%A4%B8%E0%A4%82%E0%A4%98%E0%A5%8B%E0%A4%82-%E0%A4%95%E0%A5%8B-%E0%A4%AC%E0%A4%A6%E0%A4%B2%E0%A5%87%E0%A4%82"><span class="toc-text">Replace Associations &#x2F;&#x2F; संघों को बदलें</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Delete-Associations-x2F-x2F-%E0%A4%B8%E0%A4%82%E0%A4%98%E0%A5%8B%E0%A4%82-%E0%A4%95%E0%A5%8B-%E0%A4%B9%E0%A4%9F%E0%A4%BE%E0%A4%8F%E0%A4%82"><span class="toc-text">Delete Associations &#x2F;&#x2F; संघों को हटाएं</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Clear-Associations-x2F-x2F-%E0%A4%B8%E0%A5%8D%E0%A4%AA%E0%A4%B7%E0%A5%8D%E0%A4%9F-%E0%A4%B8%E0%A4%82%E0%A4%98"><span class="toc-text">Clear Associations &#x2F;&#x2F; स्पष्ट संघ</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Count-Associations-x2F-x2F-%E0%A4%B8%E0%A4%82%E0%A4%98%E0%A5%8B%E0%A4%82-%E0%A4%95%E0%A5%80-%E0%A4%97%E0%A4%A3%E0%A4%A8%E0%A4%BE-%E0%A4%95%E0%A4%B0%E0%A5%87%E0%A4%82"><span class="toc-text">Count Associations &#x2F;&#x2F;संघों की गणना करें</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Batch-Data-x2F-x2F-%E0%A4%AC%E0%A5%88%E0%A4%9A-%E0%A4%A1%E0%A5%87%E0%A4%9F%E0%A4%BE"><span class="toc-text">Batch Data &#x2F;&#x2F; बैच डेटा</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E0%A4%B8%E0%A5%87%E0%A4%B2%E0%A5%87%E0%A4%95%E0%A5%8D%E0%A4%9F-%E0%A4%95%E0%A5%87-%E0%A4%B8%E0%A4%BE%E0%A4%A5-%E0%A4%A1%E0%A4%BF%E0%A4%B2%E0%A5%80%E0%A4%9F-%E0%A4%95%E0%A4%B0%E0%A5%87%E0%A4%82"><span class="toc-text">सेलेक्ट के साथ डिलीट करें</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Association-Tags-x2F-x2F-%E0%A4%8F%E0%A4%B8%E0%A5%8B%E0%A4%B8%E0%A4%BF%E0%A4%8F%E0%A4%B6%E0%A4%A8-%E0%A4%9F%E0%A5%88%E0%A4%97"><span class="toc-text">Association Tags &#x2F;&#x2F; एसोसिएशन टैग</span></a></li></ol>
+
+              
+                <a href="https://translate.gorm.io/project/go-gorm/hi" target="_blank" id="article-improve">
+                  Improve this page
+                </a>
+              
+              <a href="#" id="article-toc-top">Back to Top</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">Overview</a><a href="models.html" class="sidebar-link">Declaring Models</a><a href="connecting_to_the_database.html" class="sidebar-link">Connecting to Database</a><strong class="sidebar-title">CRUD Interface</strong><a href="create.html" class="sidebar-link">Create</a><a href="query.html" class="sidebar-link">Query</a><a href="advanced_query.html" class="sidebar-link">Advanced Query</a><a href="update.html" class="sidebar-link">Update</a><a href="delete.html" class="sidebar-link">Delete</a><a href="sql_builder.html" class="sidebar-link">Raw SQL & SQL Builder</a><strong class="sidebar-title">Associations</strong><a href="belongs_to.html" class="sidebar-link">Belongs To</a><a href="has_one.html" class="sidebar-link">Has One</a><a href="has_many.html" class="sidebar-link">Has Many</a><a href="many_to_many.html" class="sidebar-link">Many To Many</a><a href="associations.html" class="sidebar-link current">Association Mode</a><a href="preload.html" class="sidebar-link">Preloading (Eager Loading)</a><strong class="sidebar-title">Tutorials</strong><a href="context.html" class="sidebar-link">Context</a><a href="error_handling.html" class="sidebar-link">Error Handling</a><a href="method_chaining.html" class="sidebar-link">Method Chaining</a><a href="session.html" class="sidebar-link">Session</a><a href="hooks.html" class="sidebar-link">Hooks</a><a href="transactions.html" class="sidebar-link">Transactions</a><a href="migration.html" class="sidebar-link">Migration</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">Generic Database Interface</a><a href="performance.html" class="sidebar-link">Performance</a><a href="data_types.html" class="sidebar-link">Customize Data Types</a><a href="scopes.html" class="sidebar-link">Scopes</a><a href="conventions.html" class="sidebar-link">Conventions</a><a href="settings.html" class="sidebar-link">Settings</a><strong class="sidebar-title">Advanced Topics</strong><a href="dbresolver.html" class="sidebar-link">Database Resolver</a><a href="sharding.html" class="sidebar-link">Sharding</a><a href="serializer.html" class="sidebar-link">Serializer</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">Hints</a><a href="indexes.html" class="sidebar-link">Indexes</a><a href="constraints.html" class="sidebar-link">Constraints</a><a href="composite_primary_key.html" class="sidebar-link">Composite Primary Key</a><a href="security.html" class="sidebar-link">Security</a><a href="gorm_config.html" class="sidebar-link">GORM Config</a><a href="write_plugins.html" class="sidebar-link">Write Plugins</a><a href="write_driver.html" class="sidebar-link">Write Driver</a><a href="changelog.html" class="sidebar-link">ChangeLog</a><a href="/community.html" class="sidebar-link">Community</a><a href="/contribute.html" class="sidebar-link">Contribute</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">Translate current site</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2023 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://www.qiniu.com/" target="_blank">七牛云</a> 对 CDN 的赞助，<a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>Home</a>
+      </li>
+      <a href="/hi_IN/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>Docs</a><a href="/hi_IN/gen/" class="mobile-nav-link"><i class="fa fa-tools"></i>Gen</a><a href="/hi_IN/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/hi_IN/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+    </ul>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>हिन्दी</span></span>
+    <select id="mobile-lang-select" data-canonical="docs/associations.html">
+      
+        <option value="en">English</option>
+      
+        <option value="zh_CN">简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="ja_JP">日本語</option>
+      
+        <option value="ru_RU">Русский</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+        <option value="hi_IN" selected>हिन्दी</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="es_ES">Español</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>

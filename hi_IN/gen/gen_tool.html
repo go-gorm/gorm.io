@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="hi_IN">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>Gen Tool | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://gorm.io/hi_IN/gen/gen_tool.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="https://gorm.io/gen/gen_tool.html">
+    
+      <link rel="alternative" hreflang="zh_CN" href="https://gorm.io/zh_CN/gen/gen_tool.html">
+    
+      <link rel="alternative" hreflang="de_DE" href="https://gorm.io/de_DE/gen/gen_tool.html">
+    
+      <link rel="alternative" hreflang="id_ID" href="https://gorm.io/id_ID/gen/gen_tool.html">
+    
+      <link rel="alternative" hreflang="ja_JP" href="https://gorm.io/ja_JP/gen/gen_tool.html">
+    
+      <link rel="alternative" hreflang="ru_RU" href="https://gorm.io/ru_RU/gen/gen_tool.html">
+    
+      <link rel="alternative" hreflang="ko_KR" href="https://gorm.io/ko_KR/gen/gen_tool.html">
+    
+      <link rel="alternative" hreflang="hi_IN" href="https://gorm.io/hi_IN/gen/gen_tool.html">
+    
+      <link rel="alternative" hreflang="fr_FR" href="https://gorm.io/fr_FR/gen/gen_tool.html">
+    
+      <link rel="alternative" hreflang="it_IT" href="https://gorm.io/it_IT/gen/gen_tool.html">
+    
+      <link rel="alternative" hreflang="es_ES" href="https://gorm.io/es_ES/gen/gen_tool.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
+  <!-- Open Graph -->
+  <meta name="description" content="Gen Tool is a single binary without dependencies can be used to generate structs from database Installgo install gorm.io&#x2F;gen&#x2F;tools&#x2F;gentool@latest  Usagegentool -hUsage of gentool: -c string       conf">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Gen Tool">
+<meta property="og:url" content="https://gorm.io/hi_IN/gen/gen_tool.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="Gen Tool is a single binary without dependencies can be used to generate structs from database Installgo install gorm.io&#x2F;gen&#x2F;tools&#x2F;gentool@latest  Usagegentool -hUsage of gentool: -c string       conf">
+<meta property="og:locale" content="hi_IN">
+<meta property="article:published_time" content="2023-02-10T02:45:16.768Z">
+<meta property="article:modified_time" content="2023-02-10T02:45:16.768Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/hi_IN/" id="logo">GORM</a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/hi_IN/docs/" class="main-nav-link"><i class="fa fa-book"></i>Docs</a><a href="/hi_IN/gen/" class="main-nav-link"><i class="fa fa-tools"></i>Gen</a><a href="/hi_IN/community.html" class="main-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/hi_IN/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Search documents...">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>हिन्दी</span></label>
+      <select id="lang-select" data-canonical="">
+        
+          <option value="en">English</option>
+        
+          <option value="zh_CN">简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="ja_JP">日本語</option>
+        
+          <option value="ru_RU">Русский</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+          <option value="hi_IN" selected>हिन्दी</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="es_ES">Español</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">Gen Tool</h1>
+                
+                <a target="_blank" rel="noopener" href="https://translate.gorm.io/project/go-gorm/hi" class="article-edit-link" title="Improve this page"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><p>Gen Tool is a single binary without dependencies can be used to generate structs from database</p>
+<h2 id="Install" class="article-heading"><a href="#Install" class="headerlink" title="Install"></a>Install<a class="article-anchor" href="#Install" aria-hidden="true"></a></h2><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">go install gorm.io/gen/tools/gentool@latest</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Usage" class="article-heading"><a href="#Usage" class="headerlink" title="Usage"></a>Usage<a class="article-anchor" href="#Usage" aria-hidden="true"></a></h2><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gentool -h</span><br><span class="line"></span><br><span class="line">Usage of gentool:</span><br><span class="line"> -c string</span><br><span class="line">       config file path </span><br><span class="line"> -db string</span><br><span class="line">       input mysql or postgres or sqlite or sqlserver. consult[https://gorm.io/docs/connecting_to_the_database.html] (default "mysql")</span><br><span class="line"> -dsn string</span><br><span class="line">       consult[https://gorm.io/docs/connecting_to_the_database.html]</span><br><span class="line"> -fieldNullable</span><br><span class="line">       generate with pointer when field is nullable</span><br><span class="line"> -fieldWithIndexTag</span><br><span class="line">       generate field with gorm index tag</span><br><span class="line"> -fieldWithTypeTag</span><br><span class="line">       generate field with gorm column type tag</span><br><span class="line"> -modelPkgName string</span><br><span class="line">       generated model code's package name</span><br><span class="line"> -outFile string</span><br><span class="line">       query code file name, default: gen.go</span><br><span class="line"> -outPath string</span><br><span class="line">       specify a directory for output (default "./dao/query")</span><br><span class="line"> -tables string</span><br><span class="line">       enter the required data table or leave it blank</span><br><span class="line"> -onlyModel</span><br><span class="line">       only generate models (without query file)</span><br><span class="line"> -withUnitTest</span><br><span class="line">       generate unit test for query code</span><br><span class="line"> -fieldSignable</span><br><span class="line">       detect integer field's unsigned type, adjust generated data type</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="c" class="article-heading"><a href="#c" class="headerlink" title="c"></a>c<a class="article-anchor" href="#c" aria-hidden="true"></a></h4><p>Configuration file name, default value “”, command line options have higher priority than configuration file.</p>
+<h4 id="db" class="article-heading"><a href="#db" class="headerlink" title="db"></a>db<a class="article-anchor" href="#db" aria-hidden="true"></a></h4><p>Specify dirver dialector, default value “mysql”, refer: <a href="https://gorm.io/docs/connecting_to_the_database.html">https://gorm.io/docs/connecting_to_the_database.html</a></p>
+<h4 id="dsn" class="article-heading"><a href="#dsn" class="headerlink" title="dsn"></a>dsn<a class="article-anchor" href="#dsn" aria-hidden="true"></a></h4><p>DSN that used to connect database, refer: <a href="https://gorm.io/docs/connecting_to_the_database.html">https://gorm.io/docs/connecting_to_the_database.html</a></p>
+<h4 id="fieldNullable" class="article-heading"><a href="#fieldNullable" class="headerlink" title="fieldNullable"></a>fieldNullable<a class="article-anchor" href="#fieldNullable" aria-hidden="true"></a></h4><p>Generate with pointer when field is nullable</p>
+<h4 id="fieldWithIndexTag" class="article-heading"><a href="#fieldWithIndexTag" class="headerlink" title="fieldWithIndexTag"></a>fieldWithIndexTag<a class="article-anchor" href="#fieldWithIndexTag" aria-hidden="true"></a></h4><p>Generate field with gorm index tag</p>
+<h4 id="fieldWithTypeTag" class="article-heading"><a href="#fieldWithTypeTag" class="headerlink" title="fieldWithTypeTag"></a>fieldWithTypeTag<a class="article-anchor" href="#fieldWithTypeTag" aria-hidden="true"></a></h4><p>Generate field with gorm column type tag</p>
+<h4 id="modelPkgName" class="article-heading"><a href="#modelPkgName" class="headerlink" title="modelPkgName"></a>modelPkgName<a class="article-anchor" href="#modelPkgName" aria-hidden="true"></a></h4><p>Generated model code’s package name.</p>
+<h4 id="outFile" class="article-heading"><a href="#outFile" class="headerlink" title="outFile"></a>outFile<a class="article-anchor" href="#outFile" aria-hidden="true"></a></h4><p>Genrated query code file name, default: gen.go</p>
+<h4 id="outPath" class="article-heading"><a href="#outPath" class="headerlink" title="outPath"></a>outPath<a class="article-anchor" href="#outPath" aria-hidden="true"></a></h4><p>Specify a directory for output (default “./dao/query”)</p>
+<h4 id="tables" class="article-heading"><a href="#tables" class="headerlink" title="tables"></a>tables<a class="article-anchor" href="#tables" aria-hidden="true"></a></h4><p>Specify tables want to genrated from, default all tables.</p>
+<p>eg :</p>
+<pre><code>--tables="orders"       # generate from `orders`
+
+--tables="orders,users" # generate from `orders` and `users`
+
+--tables=""             # generate from all tables
+</code></pre>
+<p>Generate some tables code.</p>
+<h4 id="withUnitTest" class="article-heading"><a href="#withUnitTest" class="headerlink" title="withUnitTest"></a>withUnitTest<a class="article-anchor" href="#withUnitTest" aria-hidden="true"></a></h4><p>Generate unit test, default value <code>false</code>, options: <code>false</code> / <code>true</code></p>
+<h4 id="fieldSignable" class="article-heading"><a href="#fieldSignable" class="headerlink" title="fieldSignable"></a>fieldSignable<a class="article-anchor" href="#fieldSignable" aria-hidden="true"></a></h4><p>Use signable datatype as field type, default value <code>false</code>, options: <code>false</code> / <code>true</code></p>
+<h3 id="Example" class="article-heading"><a href="#Example" class="headerlink" title="Example"></a>Example<a class="article-anchor" href="#Example" aria-hidden="true"></a></h3><figure class="highlight shell"><table><tbody><tr><td class="code"><pre><span class="line">gentool -dsn "user:pwd@tcp(localhost:3306)/database?charset=utf8mb4&amp;parseTime=True&amp;loc=Local" -tables "orders,doctor"</span><br><span class="line"></span><br><span class="line">gentool -c "./gen.tool"</span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight yaml"><table><tbody><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"0.1"</span></span><br><span class="line"><span class="attr">database:</span></span><br><span class="line">  <span class="comment"># consult[https://gorm.io/docs/connecting_to_the_database.html]"</span></span><br><span class="line">  <span class="attr">dsn :</span> <span class="string">"username:password@tcp(address:port)/db?charset=utf8mb4&amp;parseTime=true&amp;loc=Local"</span></span><br><span class="line">  <span class="comment"># input mysql or postgres or sqlite or sqlserver. consult[https://gorm.io/docs/connecting_to_the_database.html]</span></span><br><span class="line">  <span class="attr">db  :</span> <span class="string">"mysql"</span></span><br><span class="line">  <span class="comment"># enter the required data table or leave it blank.You can input : orders,users,goods</span></span><br><span class="line">  <span class="attr">tables  :</span> <span class="string">"user"</span></span><br><span class="line">  <span class="comment"># specify a directory for output</span></span><br><span class="line">  <span class="attr">outPath :</span>  <span class="string">"./dao/query"</span></span><br><span class="line">  <span class="comment"># query code file name, default: gen.go</span></span><br><span class="line">  <span class="attr">outFile :</span>  <span class="string">""</span></span><br><span class="line">  <span class="comment"># generate unit test for query code</span></span><br><span class="line">  <span class="attr">withUnitTest  :</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># generated model code's package name</span></span><br><span class="line">  <span class="attr">modelPkgName  :</span> <span class="string">""</span></span><br><span class="line">  <span class="comment"># generate with pointer when field is nullable</span></span><br><span class="line">  <span class="attr">fieldNullable :</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># generate field with gorm index tag</span></span><br><span class="line">  <span class="attr">fieldWithIndexTag :</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># generate field with gorm column type tag</span></span><br><span class="line">  <span class="attr">fieldWithTypeTag  :</span> <span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+</body></html>
+              </div>
+
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2023-02-10T02:45:16.768Z" itemprop="dateModified">Last updated: २०२३-०२-१०</time>
+<a href="database_to_structs.html" class="article-footer-prev" title="Overview"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="clause.html" class="article-footer-next" title="GORM Clause"><span>Next</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <div class="sponsor_item" title="Help to deliver a better GORM!">
+        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+      </div>
+    </div>
+
+    <div class="sponsors">
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <div class="sponsor_item">
+        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener" title="hubuc">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://www.bytebase.com/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20220715" target="_blank" rel="sponsored noopener" title="bytebase">
+          <img src="/sponsors-imgs/bytebase.png" alt="bytebase">
+        </a>
+      </div>
+
+      <div class="sponsor_item" title="Help to deliver a better GORM!">
+        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors">
+      <h1>Platinum Sponsors</h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <div class="sponsor_item" title="Help to deliver a better GORM!">
+        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+      </div>
+    </div>
+
+    <div class="sponsors">
+      <h1>Gold Sponsors</h1>
+      <div class="sponsor_item">
+        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener" title="hubuc">
+          <img src="/sponsors-imgs/hubuc.svg" alt="hubuc">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://www.bytebase.com/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20220715" target="_blank" rel="sponsored noopener" title="bytebase">
+          <img src="/sponsors-imgs/bytebase.png" alt="bytebase">
+        </a>
+      </div>
+
+      <div class="sponsor_item" title="Help to deliver a better GORM!">
+        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              <!--  -->
+<!-- <section id="comments"> -->
+<!-- <div id="disqus_thread"></div> -->
+<!-- </sction> -->
+
+<!-- <script> -->
+<!-- var disqus_config = function () { -->
+<!-- this.page.url = 'https://gorm.io/hi_IN/gen/gen_tool.html'; -->
+<!-- this.page.identifier = 'https://gorm.io/hi_IN/gen/gen_tool.html'; -->
+<!-- this.language = 'hi'; -->
+<!-- }; -->
+
+<!-- (function() { // DON'T EDIT BELOW THIS LINE -->
+<!-- var d = document, s = d.createElement('script'); -->
+<!-- s.src = 'https://gormv2.disqus.com/embed.js'; -->
+<!-- s.setAttribute('data-timestamp', +new Date()); -->
+<!-- (d.head || d.body).appendChild(s); -->
+<!-- })(); -->
+<!-- </script> -->
+<!--  -->
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">Contents</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Install"><span class="toc-text">Install</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Usage"><span class="toc-text">Usage</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#c"><span class="toc-text">c</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#db"><span class="toc-text">db</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#dsn"><span class="toc-text">dsn</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldNullable"><span class="toc-text">fieldNullable</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldWithIndexTag"><span class="toc-text">fieldWithIndexTag</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldWithTypeTag"><span class="toc-text">fieldWithTypeTag</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#modelPkgName"><span class="toc-text">modelPkgName</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#outFile"><span class="toc-text">outFile</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#outPath"><span class="toc-text">outPath</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#tables"><span class="toc-text">tables</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#withUnitTest"><span class="toc-text">withUnitTest</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#fieldSignable"><span class="toc-text">fieldSignable</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example"><span class="toc-text">Example</span></a></li></ol></li></ol>
+
+              
+                <a href="https://translate.gorm.io/project/go-gorm/hi" target="_blank" id="article-improve">
+                  Improve this page
+                </a>
+              
+              <a href="#" id="article-toc-top">Back to Top</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link">Overview</a><strong class="sidebar-title">Dynamic SQL</strong><a href="dynamic_sql.html" class="sidebar-link">Overview</a><a href="sql_annotation.html" class="sidebar-link">Annotation</a><strong class="sidebar-title">DAO</strong><a href="dao.html" class="sidebar-link">Overview</a><a href="create.html" class="sidebar-link">Create</a><a href="query.html" class="sidebar-link">Query</a><a href="update.html" class="sidebar-link">Update</a><a href="delete.html" class="sidebar-link">Delete</a><a href="transaction.html" class="sidebar-link">Transaction</a><a href="associations.html" class="sidebar-link">Associations</a><strong class="sidebar-title">Database To Structs</strong><a href="database_to_structs.html" class="sidebar-link">Overview</a><a href="gen_tool.html" class="sidebar-link current">Gen Tool</a><strong class="sidebar-title">Tutorials</strong><a href="clause.html" class="sidebar-link">GORM Clause</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2023 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://www.qiniu.com/" target="_blank">七牛云</a> 对 CDN 的赞助，<a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fa fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fa fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>Home</a>
+      </li>
+      <a href="/hi_IN/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>Docs</a><a href="/hi_IN/gen/" class="mobile-nav-link"><i class="fa fa-tools"></i>Gen</a><a href="/hi_IN/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/hi_IN/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+    </ul>
+    
+      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link">Overview</a><strong class="mobile-nav-title">Dynamic SQL</strong><a href="dynamic_sql.html" class="mobile-nav-link">Overview</a><a href="sql_annotation.html" class="mobile-nav-link">Annotation</a><strong class="mobile-nav-title">DAO</strong><a href="dao.html" class="mobile-nav-link">Overview</a><a href="create.html" class="mobile-nav-link">Create</a><a href="query.html" class="mobile-nav-link">Query</a><a href="update.html" class="mobile-nav-link">Update</a><a href="delete.html" class="mobile-nav-link">Delete</a><a href="transaction.html" class="mobile-nav-link">Transaction</a><a href="associations.html" class="mobile-nav-link">Associations</a><strong class="mobile-nav-title">Database To Structs</strong><a href="database_to_structs.html" class="mobile-nav-link">Overview</a><a href="gen_tool.html" class="mobile-nav-link current">Gen Tool</a><strong class="mobile-nav-title">Tutorials</strong><a href="clause.html" class="mobile-nav-link">GORM Clause</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>हिन्दी</span></span>
+    <select id="mobile-lang-select" data-canonical="">
+      
+        <option value="en">English</option>
+      
+        <option value="zh_CN">简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="ja_JP">日本語</option>
+      
+        <option value="ru_RU">Русский</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+        <option value="hi_IN" selected>हिन्दी</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="es_ES">Español</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>
