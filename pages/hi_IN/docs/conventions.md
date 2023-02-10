@@ -1,40 +1,40 @@
 ---
 title: Conventions
-layout: page
+layout: पृष्ठ
 ---
 
 ## `ID` as Primary Key
 
-GORM uses the field with the name `ID` as the table's primary key by default.
+GORM डिफ़ॉल्ट रूप से table की primary key के रूप में `ID` नाम के फ़ील्ड का उपयोग करता है।
 
 ```go
 type User struct {
-  ID   string // field named `ID` will be used as a primary field by default
-  Name string
+ ID string // field named `ID` will be used as a primary field by default
+ Name string
 }
 ```
 
-You can set other fields as primary key with tag `primaryKey`
+`primaryKey` टैग के साथ आप अन्य फ़ील्ड को primary key के रूप में सेट कर सकते हैं
 
 ```go
 // Set field `UUID` as primary field
 type Animal struct {
-  ID     int64
-  UUID   string `gorm:"primaryKey"`
-  Name   string
-  Age    int64
+ ID int64
+ UUID string `gorm:"primaryKey"`
+ Name string
+ Age int64
 }
 ```
 
-Also check out [Composite Primary Key](composite_primary_key.html)
+[Composite Primary Key](composite_primary_key.html) भी देखें
 
 ## Pluralized Table Name
 
-GORM pluralizes struct name to `snake_cases` as table name, for struct `User`, its table name is `users` by convention
+GORM table के नाम के रूप में `snake_cases` के रूप में संरचना नाम का pluralizes करता है, संरचना `User` के लिए, परंपरा के अनुसार इसका table नाम `users` है
 
 ### TableName
 
-You can change the default table name by implementing the `Tabler` interface, for example:
+आप `Tabler` इंटरफ़ेस लागू करके डिफ़ॉल्ट table नाम बदल सकते हैं, उदाहरण के लिए:
 
 ```go
 type Tabler interface {
@@ -43,16 +43,17 @@ type Tabler interface {
 
 // TableName overrides the table name used by User to `profiles`
 func (User) TableName() string {
-  return "profiles"
+  return "profiles"
 }
 ```
 
 {% note warn %}
-**NOTE** `TableName` doesn't allow dynamic name, its result will be cached for future, to use dynamic name, you can use `Scopes`, for example:
-{% endnote %}
+**ध्यान दें** `TableName` dynamic नाम की अनुमति नहीं देता है, इसका परिणाम भविष्य के लिए कैश(cached) किया जाएगा, dynamic नाम का उपयोग करने के लिए, आप `Scopes </कोड>, उदाहरण के लिए:
+</p>
 
-```go
-func UserTable(user User) func (tx *gorm.DB) *gorm.DB {
+<p spaces-before="0">{% endnote %}</p>
+
+<pre><code class="go">func UserTable(user User) func (tx *gorm.DB) *gorm.DB {
   return func (tx *gorm.DB) *gorm.DB {
     if user.Admin {
       return tx.Table("admin_users")
@@ -63,11 +64,11 @@ func UserTable(user User) func (tx *gorm.DB) *gorm.DB {
 }
 
 db.Scopes(UserTable(user)).Create(&user)
-```
+`</pre>
 
 ### Temporarily specify a name
 
-Temporarily specify table name with `Table` method, for example:
+`Table` विधि के साथ table का नाम Temporarily रूप से specify करें, उदाहरण के लिए:
 
 ```go
 // Create table `deleted_users` with struct User's fields
@@ -82,32 +83,32 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 // DELETE FROM deleted_users WHERE name = 'jinzhu';
 ```
 
-Check out [From SubQuery](advanced_query.html#from_subquery) for how to use SubQuery in FROM clause
+FROM clause में SubQuery का उपयोग कैसे करें, इसके लिए [SubQuery से](advanced_query.html#from_subquery) देखें
 
 ### <span id="naming_strategy">NamingStrategy</span>
 
-GORM allows users change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html#naming_strategy) for details
+GORM users को डिफॉल्ट `NamingStrategy` को ओवरराइड करके डिफॉल्ट नेमिंग कन्वेंशन को बदलने की अनुमति देता है, जिसका उपयोग `TableName`, `ColumnName`, `JoinTableName` बनाने के लिए किया जाता है। code>, `RelationshipFKName`, `CheckerName`, `IndexName`, [GORM Config](gorm_config.html#naming_strategy) देखें जानकारी के लिए
 
 ## Column Name
 
-Column db name uses the field's name's `snake_case` by convention.
+कॉलम db name convention द्वारा फ़ील्ड के नाम `snake_case` का उपयोग करता है।
 
 ```go
 type User struct {
-  ID        uint      // column name is `id`
-  Name      string    // column name is `name`
-  Birthday  time.Time // column name is `birthday`
-  CreatedAt time.Time // column name is `created_at`
+ ID uint // column name is `id`
+ Name string // column name is `name`
+ Birthday time.Time // column name is `birthday`
+ CreatedAt time.Time // column name is `created_at`
 }
 ```
 
-You can override the column name with tag `column` or use [`NamingStrategy`](#naming_strategy)
+आप `column` टैग के साथ कॉलम नाम को ओवरराइड कर सकते हैं या [`NamingStrategy`](#naming_strategy) का उपयोग कर सकते हैं
 
 ```go
 type Animal struct {
-  AnimalID int64     `gorm:"column:beast_id"`         // set name to `beast_id`
-  Birthday time.Time `gorm:"column:day_of_the_beast"` // set name to `day_of_the_beast`
-  Age      int64     `gorm:"column:age_of_the_beast"` // set name to `age_of_the_beast`
+ AnimalID int64 `gorm:"column:beast_id"` // set name to `beast_id`
+ Birthday time.Time `gorm:"column:day_of_the_beast"` // set name to `day_of_the_beast`
+ Age int64 `gorm:"column:age_of_the_beast"` // set name to `age_of_the_beast`
 }
 ```
 
@@ -115,7 +116,7 @@ type Animal struct {
 
 ### CreatedAt
 
-For models having `CreatedAt` field, the field will be set to the current time when the record is first created if its value is zero
+`CreatedAt` फ़ील्ड वाले मॉडल के लिए, फ़ील्ड को वर्तमान समय पर सेट किया जाएगा जब रिकॉर्ड पहली बार बनाया जाता है यदि इसका मान शून्य है
 
 ```go
 db.Create(&user) // set `CreatedAt` to current time
@@ -127,7 +128,7 @@ db.Create(&user2) // user2's `CreatedAt` won't be changed
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
-You can disable the timestamp tracking by setting `autoCreateTime` tag to `false`, for example:
+आप `autoCreateTime` टैग को `false` पर सेट करके टाइमस्टैम्प ट्रैकिंग disable कर सकते हैं, उदाहरण के लिए:
 
 ```go
 type User struct {
@@ -137,7 +138,7 @@ type User struct {
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
+`UpdatedAt` फ़ील्ड वाले मॉडल के लिए, फ़ील्ड को वर्तमान समय पर सेट किया जाएगा जब रिकॉर्ड अपडेट किया जाता है या बनाया जाता है यदि इसका मान शून्य है
 
 ```go
 db.Save(&user) // set `UpdatedAt` to current time
@@ -153,7 +154,7 @@ user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
 db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
 ```
 
-You can disable the timestamp tracking by setting `autoUpdateTime` tag to `false`, for example:
+आप `autoUpdateTime` टैग को `false` पर सेट करके टाइमस्टैम्प ट्रैकिंग को disable कर सकते हैं, उदाहरण के लिए:
 
 ```go
 type User struct {
@@ -162,5 +163,5 @@ type User struct {
 ```
 
 {% note %}
-**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
+**ध्यान दें** GORM multiple समय ट्रैकिंग फ़ील्ड का समर्थन करता है और UNIX (नैनो/मिली) सेकंड के साथ ट्रैक करता है, चेकआउट [Models](models.html#time_tracking) अधिक जानकारी के लिए
 {% endnote %}

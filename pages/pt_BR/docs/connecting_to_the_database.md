@@ -3,7 +3,7 @@ title: Conectando ao banco de dados
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server
+GORM suporta oficialmente os bancos de dados MySQL, PostgreSQL, SQLite, SQL Server
 
 ## MySQL
 
@@ -156,6 +156,51 @@ dsn := "sqlserver://gorm:LoremIpsum86@localhost:9930?database=gorm"
 db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 ```
 
+## TiDB
+
+TiDB é compatível com o protocolo MySQL. Você pode seguir a parte [MySQL](#mysql) para criar uma conexão com TiDB.
+
+Há alguns pontos dignos de nota para o TiDB:
+
+- Você pode usar a tag `gorm:"primaryKey;default:auto_random()"` para usar o recurso [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) para TiDB.
+- O TiDB ainda não suporta o recurso de chave estrangeira. Você pode ver o documento do TiDB [Compatibilidade do MySQL](https://docs.pingcap.com/tidb/stable/mysql-compatibility) para obter mais informações.
+- TiDB suporta [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) desde a versão `v6.2.0`, observe a versão do TiDB quando usar este recurso.
+
+```go
+import (
+  "fmt"
+  "gorm.io/driver/mysql"
+  "gorm.io/gorm"
+)
+
+type Product struct {
+  ID    uint `gorm:"primaryKey;default:auto_random()"`
+  Code  string
+  Price uint
+}
+
+func main() {
+  db, err := gorm.Open(mysql.Open("root:@tcp(127.0.0.1:4000)/test"), &gorm.Config{})
+  if err != nil {
+    panic("failed to connect database")
+  }
+
+  db.AutoMigrate(&Product{})
+
+  insertProduct := &Product{Code: "D42", Price: 100}
+
+  db.Create(insertProduct)
+  fmt.Printf("insert ID: %d, Code: %s, Prict: %d\n",
+    insertProduct.ID, insertProduct.Code, insertProduct.Price)
+
+  readProduct := &Product{}
+  db.First(&readProduct, "code = ?", "D42") // find product with code D42
+
+  fmt.Printf("read ID: %d, Code: %s, Prict: %d\n",
+    readProduct.ID, readProduct.Code, readProduct.Price)
+}
+```
+
 ## Clickhouse
 
 https://github.com/go-gorm/clickhouse
@@ -188,7 +233,7 @@ func main() {
 }
 ```
 
-## Connection Pool
+## Conjunto de Conexão
 
 GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
 
@@ -207,8 +252,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Refer [Generic Interface](generic_interface.html) for details
 
-## Unsupported Databases
+## Bancos de dados não suportados
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Alguns bancos de dados podem ser compatíveis com o dialeto do `mysql` ou `postgres`, nesse caso seria possível usar o dialeto para essas bases de dados.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+Para outros, [você é encorajado a fazer um driver, seu pull request será bem vindo!](write_driver.html)

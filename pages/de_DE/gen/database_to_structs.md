@@ -23,7 +23,7 @@ g.GenerateAllTable()
 
 ## Methods Template
 
-When generating structs from databae, you can also generate methods with a template for them by the way, for example:
+When generating structs from database, you can also generate methods with a template for them by the way, for example:
 
 ```Go
 type CommonMethod struct {
@@ -52,7 +52,7 @@ g.GenerateModel("people", gen.WithMethod(CommonMethod{}.IsEmpty))
 g.GenerateModel("user", gen.WithMethod(CommonMethod))
 ```
 
-The generated code would looks like:
+The generated code would look like this:
 
 ```go
 // Generated Person struct
@@ -87,46 +87,79 @@ func (m *User) GetName() string {
   return *m.Name
 }
 ```
+### DIY TableName
+
+When generating structs from database, you can also diy table name for them by the way, for example:
+
+```Go
+type CommonMethod struct {
+    ID   int32
+    Name *string
+}
+
+// TableName 
+func (m CommonMethod) TableName() strng {
+    return "@@table"
+}
+
+// TableName table name with gorm NamingStrategy
+func (m CommonMethod) TableName(namer schema.Namer) string {
+    if namer == nil {
+        return "@@table"
+    }
+    return namer.TableName("@@table")
+}
+
+// DIY TableName method for the generated `User` struct
+g.GenerateModel("user", gen.WithMethod(CommonMethod{}.TableName))
+
+// DIY TableName method for the generated all struct
+conf.WithOpts(gen.WithMethod(CommonMethod{}.TableName))
+
+// Set Default DIY TableName method for the generated all struct
+conf.WithOpts(gen.WithMethod(gen.DefaultMethodTableWithNamer))
+
+```
 
 ## Field Options
 
 Following are options that can be used during `GenerateModel`/`GenerateModelAs`
 
 ```go
-FieldNew           // create new field
+FieldNew           // create new a field
 FieldIgnore        // ignore field
 FieldIgnoreReg     // ignore field (match with regexp)
-FieldRename        // rename field in struct
+FieldRename        // rename field in the struct
 FieldComment       // specify field comment in generated struct
-FieldType          // specify field type
+FieldType          // specify the field type
 FieldTypeReg       // specify field type (match with regexp)
 FieldGenType       // specify field gen type
 FieldGenTypeReg    // specify field gen type (match with regexp)
 FieldTag           // specify gorm and json tag
 FieldJSONTag       // specify json tag
-FieldJSONTagWithNS // specify new tag with name strategy
+FieldJSONTagWithNS // specify json tag with name strategy
 FieldGORMTag       // specify gorm tag
 FieldNewTag        // append new tag
-FieldNewTagWithNS  // specify new tag with name strategy
+FieldNewTagWithNS  // specify the new tag with name strategy
 FieldTrimPrefix    // trim column prefix
 FieldTrimSuffix    // trim column suffix
-FieldAddPrefix     // add prefix to struct field's name
-FieldAddSuffix     // add suffix to struct field's name
+FieldAddPrefix     // add the prefix to struct field's name
+FieldAddSuffix     // add the suffix to struct field's name
 FieldRelate        // specify relationship with other tables
-FieldRelateModel   // specify relationship with exist models
+FieldRelateModel   // specify the relationship with existing models
 ```
 
 ## Global Generating Options
 
-Gen has some global options could be setup in the `gen.Config`, here is the list:
+Gen has some global options that could be setup in the `gen.Config`, here is the list:
 
 ```go
 g := gen.NewGenerator(gen.Config{
   // if you want the nullable field generation property to be pointer type, set FieldNullable true
   FieldNullable: true,
-  // if you want to assign field which has default value in `Create` API, set FieldCoverable true, reference: https://gorm.io/docs/create.html#Default-Values
+  // if you want to assign field which has a default value in the `Create` API, set FieldCoverable true, reference: https://gorm.io/docs/create.html#Default-Values
   FieldCoverable: true,
-  // if you want generate field with unsigned integer type, set FieldSignable true
+  // if you want to generate field with unsigned integer type, set FieldSignable true
   FieldSignable: true,
   // if you want to generate index tags from database, set FieldWithIndexTag true
   FieldWithIndexTag: true,
@@ -162,6 +195,9 @@ WithNewTagNameStrategy(ns func(columnName string) (tagContent string))
 
 // WithImportPkgPath specify import package path
 WithImportPkgPath(paths ...string)
+
+// WithOpts specify global model options
+WithOpts(opts ...ModelOpt)
 ```
 
 ### Data Mapping

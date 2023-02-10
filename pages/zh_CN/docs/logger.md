@@ -3,7 +3,7 @@ title: Logger
 layout: page
 ---
 
-## Logger
+## 日志
 
 Gorm 有一个 [默认 logger 实现](https://github.com/go-gorm/gorm/blob/master/logger/logger.go)，默认情况下，它会打印慢 SQL 和错误
 

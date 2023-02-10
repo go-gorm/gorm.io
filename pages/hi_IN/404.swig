@@ -1,7 +1,7 @@
 ---
 layout: raw
-description: The fantastic ORM library for Golang, aims to be developer friendly.
-subtitle: The fantastic ORM library for Golang
+विवरण: Golang के लिए शानदार ORM लाइब्रेरी का उद्देश्य डेवलपर के friendly होना है।
+उपशीर्षक: Golang के लिए शानदार ORM लाइब्रेरी
 comments: false
 ---
 
@@ -10,6 +10,6 @@ comments: false
   <p>File not found</p>
 
   <p>
-    The site configured at this address does not contain the requested file.
+    इस पते पर कॉन्फ़िगर की गई साइट(site) में requested file नहीं है।
   </p>
 <div>
