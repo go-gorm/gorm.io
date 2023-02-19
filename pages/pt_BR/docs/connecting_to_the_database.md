@@ -21,10 +21,10 @@ func main() {
 ```
 
 {% note warn %}
-**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+**NOTA:** Para manipular `time.Time` corretamente, você precisa incluir `parseTime` como parâmetro. ([mais parâmetros](https://github.com/go-sql-driver/mysql#parameters)) Para suportar totalmente a codificação UTF-8, você precisa alterar o `charset=utf8` para `charset=utf8mb4`. Veja [este artigo](https://mathiasbynens.be/notes/mysql-utf8mb4) para uma explicação mais detalhada
 {% endnote %}
 
-MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
+O MySQL Driver fornece [algumas configurações avançadas](https://github.com/go-gorm/mysql) que podem ser utilizadas durante a inicialização, por exemplo:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
