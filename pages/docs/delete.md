@@ -57,6 +57,30 @@ db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
+To efficiently delete large number of records, pass a slice with primary keys to the `Delete` method.
+
+```go
+var users = []User{{ID: 1}, {ID: 2}, {ID: 3}}
+db.Delete(&users)
+// DELETE FROM users WHERE id IN (1,2,3);
+
+db.Delete(&users, "name LIKE ?", "%jinzhu%")
+// DELETE FROM users WHERE name LIKE "%jinzhu%" AND id IN (1,2,3); 
+```
+
+{% note warn %}
+**NOTE** If the value/slice has no primary value. GROM will delete all records.
+
+```go
+db.Delete(&User{})
+// DELETE FROM users;
+
+var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
+db.Delete(&users)
+// DELETE FROM users;
+```
+{% endnote %}
+
 ### Block Global Delete
 
 If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
