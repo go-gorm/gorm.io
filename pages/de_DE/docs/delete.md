@@ -57,6 +57,16 @@ db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
+## <span id="Delete Multiple Records">Batch Delete</span>
+
+The Multiple value will get deleted with matching user ID 
+```go
+var users []User // For Ex. containing 3 Users with their IDs 1,2 and 3.
+db.Delete(&users)
+// DELETE from user where WHERE id IN (1,2,3)";
+```
+
+
 ### Block Global Delete
 
 If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
