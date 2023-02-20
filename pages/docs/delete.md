@@ -56,6 +56,23 @@ db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
 db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
+## <span id="delete_multiple_records">Delete Multiple Records</span>
+
+Deleting the multiple recored by passing slice
+
+```go
+If slice is passed with primary key then it will delete all the records of that slice with those primary keys 
+
+var users []User // For Ex. containing 3 Users with their IDs 1,2 and 3.
+db.Delete(&users)
+// DELETE from user where WHERE id IN (1,2,3);
+
+If slice has no primary key the it will perform batch deleting for the matching filed in the slice.
+
+var users = []User{{Name: "jinzhu.1"}, {Name: "jinzhu.2"}, {Name: "jinzhu.3"}}
+db.Delete(&users)
+// DELETE from user where WHERE name IN (jinzhu.1,jinzhu.2,jinzhu.3);
+```
 
 ### Block Global Delete
 
