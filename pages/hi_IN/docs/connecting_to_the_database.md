@@ -3,7 +3,7 @@ title: एक डेटाबेस से जुड़ना //Connecting to a 
 layout: पृष्ठ
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
+GORM आधिकारिक तौर पर MySQL, PostgreSQL, SQLite, SQL Server और TiDB डेटाबेस का supports करता है
 
 ## MySQL
 
@@ -237,25 +237,25 @@ func main() {
 
 ## Connection Pool
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM कनेक्शन पूल बनाए रखने के लिए [डेटाबेस/sql](https://pkg.go.dev/database/sql) का उपयोग कर रहा है
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+//SetMaxIdleConns idle कनेक्शन पूल में अधिकतम संख्या में कनेक्शन सेट करता है।
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
-sqlDB.SetMaxOpenConns(100)
+//SetMaxOpenConns डेटाबेस के लिए खुले कनेक्शन की अधिकतम संख्या सेट करता है।
+sqlDB.SetMaxOpenConns(100
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime एक कनेक्शन के पुन: उपयोग किए जा सकने वाले अधिकतम समय को सेट करता है।
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+विवरण के लिए [जेनेरिक इंटरफ़ेस](generic_interface.html) देखें
 
 ## Unsupported Databases
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+कुछ डेटाबेस `mysql` या `postgres` dialect के साथ compatible हो सकते हैं, जिस स्थिति में आप उन डेटाबेस के लिए केवल dialect का उपयोग कर सकते हैं।
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+दूसरों के लिए, [आपको ड्राइवर बनाने के लिए प्रोत्साहित(encouraged) किया जाता है, pull request का स्वागत है!](write_driver.html)
