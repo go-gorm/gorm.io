@@ -6,10 +6,10 @@ comments: false
 ---
 
 <div class="container page-not-found">
-  <h1>404</h1>
-  <p>File not found</p>
+  <h1>۴۰۴</h1>
+  <p>چیزی پیدا نشد</p>
 
   <p>
-    The site configured at this address does not contain the requested file.
+    صفحه مورد نظر شما پیدا نشد.
   </p>
 <div>
