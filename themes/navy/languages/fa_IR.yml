@@ -1,26 +1,26 @@
 ---
 menu:
-  home: <i class="fa fa-home"></i>Home
-  docs: <i class="fa fa-book"></i>Docs
+  home: <i class="fa fa-home"></i> صفحه اصلی
+  docs: <i class="fa fa-book"></i> مستندات
   gen: <i class="fa fa-tools"></i>Gen
-  api: <i class="fa fa-cogs"></i>API
+  api: <i class="fa fa-cogs"></i> API
   github: <i class="fa fa-github"></i>Github
-  community: <i class="fab fa-slack"></i>Community
-  contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  community: <i class="fab fa-slack"></i> انجمن
+  contribute: <i class="fa fa-rocket"></i> مشارکت
+  search: جستجو در مستندات...
 index:
-  get_started: Get started
+  get_started: شروع
 page:
-  contents: Contents
-  back_to_top: Back to Top
-  improve: Improve this page
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  contents: فهرست
+  back_to_top: بازگشت به بالا
+  improve: بهبود این صفحه
+  prev: قبلی
+  next: بعدی
+  last_updated: "آخرین بروزرسانی: %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
+    getting_started: شروع
+    overview: مرور کلی
     declaring_models: Declaring Models
     conventions: Conventions
     connecting_to_the_database: Connecting to Database
