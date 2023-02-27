@@ -1,7 +1,7 @@
 ---
 layout: index
-description: The fantastic ORM library for Golang aims to be developer friendly.
-subtitle: The fantastic ORM library for Golang
+description: Gorm یک ORM کاربردی است که برای زبان برنامه نویسی Go توسعه داده شده است.
+subtitle: یک ORM فوق‌العاده برای زبان برنامه نویسی Go
 comments: false
 ---
 
