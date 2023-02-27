@@ -1,5 +1,5 @@
 ---
-title: GORM Community
+title: جامعه GORM
 layout: page
 ---
 
@@ -10,11 +10,11 @@ layout: page
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
 * Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
 
-## Chat
+## چت
 
 * Gitter - [https://gitter.im/jinzhu/gorm](https://gitter.im/jinzhu/gorm)
 
-## Links
+## لینک های کاربردی
 
 * An admin system based on GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
@@ -26,7 +26,7 @@ layout: page
 
 * [Using GORM concurrently is not safe](https://zhuanlan.zhihu.com/p/556065676)
 
-## Videos
+## ویدیوها
 
 * Gorm quick start tutorial by [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
 
@@ -42,6 +42,6 @@ layout: page
 * [gorm-cache - GORM query cache plugin](https://github.com/liyuan1125/gorm-cache)
 * [deepgorm - Nested map filtering](https://github.com/survivorbat/gorm-deep-filtering)
 
-## <span id="contribute">Contribute to this page</span>
+## <span id="contribute">مشارکت در بهبود این صفحه</span>
 
-Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) to add your awesome links
+می توانید با ویرایش [این صفحه](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) لینک های کاربردی خود رابه این صفحه اضافه کنید
