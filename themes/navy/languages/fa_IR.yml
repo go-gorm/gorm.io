@@ -22,12 +22,12 @@ sidebar:
     getting_started: شروع
     overview: مرور کلی
     declaring_models: Declaring Models
-    conventions: Conventions
-    connecting_to_the_database: Connecting to Database
+    conventions: قراردادها
+    connecting_to_the_database: اتصال به پایگاه داده
     crud_interface: CRUD Interface
     create: Create
     query: Query
-    advanced_query: Advanced Query
+    advanced_query: Query های پیچیده
     update: Update
     delete: Delete
     raw_sql_and_builder: Raw SQL & SQL Builder
@@ -39,7 +39,7 @@ sidebar:
     many_to_many: Many To Many
     association_mode: Association Mode
     preload: Preloading (Eager Loading)
-    tutorials: Tutorials
+    tutorials: آموزش ها
     context: Context
     error_handling: Error Handling
     method_chaining: Method Chaining
@@ -62,14 +62,14 @@ sidebar:
     indexes: Indexes
     constraints: Constraints
     composite_primary_key: Composite Primary Key
-    security: Security
+    security: امنیت
     gorm_config: GORM Config
     write_plugins: Write Plugins
     write_driver: Write Driver
     change_log: ChangeLog
     community: Community
-    contribute: Contribute
-    translate: Translate current site
+    contribute: مشارکت
+    translate: ترجمه این صفحه
   gen:
     getting_started: Getting Started
     overview: Overview
