@@ -139,7 +139,7 @@ Por favor cheque [Modo de associação](associations.html#Association-Mode) para
 type Person struct {
   ID        int
   Name      string
-  Addresses []Address `gorm:"many2many:person_addresses;"`
+  Addresses []Address `gorm:"many2many:person_address;"`
 }
 
 type Address struct {

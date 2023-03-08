@@ -1,6 +1,6 @@
 ---
-title: Create
-layout: page
+title: Create(बनाएं)
+layout: पृष्ठ
 ---
 
 ## Create Record
@@ -10,9 +10,9 @@ user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
 result := db.Create(&user) // pass pointer of data to Create
 
-user.ID             // returns inserted data's primary key
+user.ID             // inserted  डेटा की  primary key लौटाता है
 result.Error        // returns error
-result.RowsAffected // returns inserted records count
+result.RowsAffected // रिटर्न सम्मिलित रिकॉर्ड गिनती
 ```
 
 ## Create Record With Selected Fields

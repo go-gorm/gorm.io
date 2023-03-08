@@ -3,7 +3,7 @@ title: एक डेटाबेस से जुड़ना //Connecting to a 
 layout: पृष्ठ
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
+GORM आधिकारिक तौर पर MySQL, PostgreSQL, SQLite, SQL Server और TiDB डेटाबेस का supports करता है
 
 ## MySQL
 
@@ -20,7 +20,7 @@ func main() {
 }
 ```
 
-{% note warn %}
+foreign key
 **ध्यान दें:** `time.Time` को सही तरीके से हैंडल करने के लिए, आपको `parseTime` को एक पैरामीटर के रूप में शामिल करना होगा। ([अधिक पैरामीटर](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 एन्कोडिंग का पूर्ण समर्थन करने के लिए, आपको `charset=utf8` को `charset=utf8mb4` में बदलना होगा। विस्तृत व्याख्या के लिए [यह लेख](https://mathiasbynens.be/notes/mysql-utf8mb4) देखें
 {% endnote %}
 
@@ -143,7 +143,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 
 {% note warn %}
 **ध्यान दें:** आप फ़ाइल के पथ के बजाय `file::memory:?cache=shared` का भी उपयोग कर सकते हैं। यह SQLite को सिस्टम मेमोरी में अस्थायी डेटाबेस का उपयोग करने के लिए कहेगा। (इसके लिए [SQLite डॉक्स](https://www.sqlite.org/inmemorydb.html) देखें)
-{% endnote %}
+{% note warn %}
 
 ## SQL Server
 
@@ -160,13 +160,13 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## TiDB
 
-TiDB is compatible with MySQL protocol. You can follow the [MySQL](#mysql) part to create a connection to TiDB.
+TiDB MySQL प्रोटोकॉल के साथ compatible है। TiDB से कनेक्शन बनाने के लिए आप [MySQL भाग का अनुसरण कर सकते](#mysql) हैं
 
-There are some points noteworthy for TiDB:
+TiDB के लिए कुछ उल्लेखनीय बिंदु हैं:
 
-- You can use `gorm:"primaryKey;default:auto_random()"` tag to use [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) feature for TiDB.
-- TiDB doesn't support the foreign key feature yet so far. You can see the TiDB document [MySQL Compatibility](https://docs.pingcap.com/tidb/stable/mysql-compatibility) for more information.
-- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
+- आप TiDB के लिए [AUTO_RANDOM `सुविधा` का उपयोग करने के लिए `gorm:"primaryKey;default:auto_random()"` टैग का उपयोग कर सकते](https://docs.pingcap.com/tidb/stable/auto-random) हैं.
+- TiDB अभी तक विदेशी foreign key का समर्थन नहीं करता है अधिक जानकारी के लिए आप TiDB दस्तावेज़ [MySQL Compatibility](https://docs.pingcap.com/tidb/stable/mysql-compatibility) देख सकते हैं।
+- TiDB समर्थित [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) से `v6.2.0`, जब आप इस सुविधा का उपयोग करते हैं तो कृपया TiDB के version पर ध्यान दें।
 
 ```go
 import (
@@ -237,25 +237,25 @@ func main() {
 
 ## Connection Pool
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM कनेक्शन पूल बनाए रखने के लिए [डेटाबेस/sql](https://pkg.go.dev/database/sql) का उपयोग कर रहा है
 
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
+//SetMaxIdleConns idle कनेक्शन पूल में अधिकतम संख्या में कनेक्शन सेट करता है।
 sqlDB.SetMaxIdleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
-sqlDB.SetMaxOpenConns(100)
+//SetMaxOpenConns डेटाबेस के लिए खुले कनेक्शन की अधिकतम संख्या सेट करता है।
+sqlDB.SetMaxOpenConns(100
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime एक कनेक्शन के पुन: उपयोग किए जा सकने वाले अधिकतम समय को सेट करता है।
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+विवरण के लिए [जेनेरिक इंटरफ़ेस](generic_interface.html) देखें
 
 ## Unsupported Databases
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+कुछ डेटाबेस `mysql` या `postgres` dialect के साथ compatible हो सकते हैं, जिस स्थिति में आप उन डेटाबेस के लिए केवल dialect का उपयोग कर सकते हैं।
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+दूसरों के लिए, [आपको ड्राइवर बनाने के लिए प्रोत्साहित(encouraged) किया जाता है, pull request का स्वागत है!](write_driver.html)

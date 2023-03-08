@@ -1,0 +1,89 @@
+---
+menu:
+  home: <i class="fa fa-home"></i> صفحه اصلی
+  docs: <i class="fa fa-book"></i> مستندات
+  gen: <i class="fa fa-tools"></i>Gen
+  api: <i class="fa fa-cogs"></i> API
+  github: <i class="fa fa-github"></i>Github
+  community: <i class="fab fa-slack"></i> انجمن
+  contribute: <i class="fa fa-rocket"></i> مشارکت
+  search: جستجو در مستندات...
+index:
+  get_started: شروع
+page:
+  contents: فهرست
+  back_to_top: بازگشت به بالا
+  improve: بهبود این صفحه
+  prev: قبلی
+  next: بعدی
+  last_updated: "آخرین بروزرسانی: %s"
+sidebar:
+  docs:
+    getting_started: شروع
+    overview: مرور کلی
+    declaring_models: Declaring Models
+    conventions: قراردادها
+    connecting_to_the_database: اتصال به پایگاه داده
+    crud_interface: CRUD Interface
+    create: Create
+    query: Query
+    advanced_query: Query های پیچیده
+    update: Update
+    delete: Delete
+    raw_sql_and_builder: Raw SQL & SQL Builder
+    batch: Batch Processing
+    associations: Associations
+    belongs_to: Belongs To
+    has_one: Has One
+    has_many: Has Many
+    many_to_many: Many To Many
+    association_mode: Association Mode
+    preload: Preloading (Eager Loading)
+    tutorials: آموزش ها
+    context: Context
+    error_handling: Error Handling
+    method_chaining: Method Chaining
+    session: Session
+    hooks: Hooks
+    transactions: Transactions
+    migration: Migration
+    logger: Logger
+    generic_interface: Generic Database Interface
+    performance: Performance
+    data_types: Customize Data Types
+    scopes: Scopes
+    settings: Settings
+    advanced_topics: Advanced Topics
+    dbresolver: Database Resolver
+    serializer: Serializer
+    sharding: Sharding
+    prometheus: Prometheus
+    hints: Hints
+    indexes: Indexes
+    constraints: Constraints
+    composite_primary_key: Composite Primary Key
+    security: امنیت
+    gorm_config: GORM Config
+    write_plugins: Write Plugins
+    write_driver: Write Driver
+    change_log: ChangeLog
+    community: Community
+    contribute: مشارکت
+    translate: ترجمه این صفحه
+  gen:
+    getting_started: Getting Started
+    overview: Overview
+    dao: DAO
+    create: Create
+    query: Query
+    update: Update
+    delete: Delete
+    associations: Associations
+    dynamic_sql: Dynamic SQL
+    annotation: Annotation
+    database_to_structs: Database To Structs
+    gentool: Gen Tool
+    tutorials: Tutorials
+    gorm_clause: GORM Clause
+    transaction: Transaction
+    plugins: GORM Plugins
