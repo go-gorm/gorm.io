@@ -68,19 +68,6 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 // DELETE FROM users WHERE name LIKE "%jinzhu%" AND id IN (1,2,3); 
 ```
 
-{% note warn %}
-**NOTE** If the value/slice has no primary value. GROM will delete all records.
-
-```go
-db.Delete(&User{})
-// DELETE FROM users;
-
-var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
-db.Delete(&users)
-// DELETE FROM users;
-```
-{% endnote %}
-
 ### Block Global Delete
 
 If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
@@ -89,6 +76,8 @@ You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mod
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
+
+db.Delete(&[]User{{Name: "jinzhu1"}, {Name: "jinzhu2"}}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
 // DELETE FROM `users` WHERE 1=1
