@@ -164,7 +164,7 @@ TiDBには注目すべきポイントがいくつかあります:
 
 - `gorm:"primaryKey;default:auto_random()"` タグを使用して、TiDB の [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) 機能を使用できます。
 - TiDBは`v6.2.0`から [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) をサポートしています, この機能を使用する場合は、TiDBのバージョンに注意してください。
-- TiDB supported [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key) from `v6.6.0`, please notice the version of TiDB when you use this feature.
+- TiDBは`v6.6.0`から [`SAVEPOINT`](https://docs.pingcap.com/tidb/dev/foreign-key) をサポートしています, この機能を使用する場合は、TiDBのバージョンに注意してください。
 
 ```go
 import (
@@ -194,7 +194,7 @@ func main() {
     insertProduct.ID, insertProduct.Code, insertProduct.Price)
 
   readProduct := &Product{}
-  db.First(&readProduct, "code = ?", "D42") // find product with code D42
+  db.First(&readProduct, "code = ?", "D42") // コード D42 のある製品を検索する
 
   fmt.Printf("read ID: %d, Code: %s, Prict: %d\n",
     readProduct.ID, readProduct.Code, readProduct.Price)
@@ -233,9 +233,9 @@ func main() {
 }
 ```
 
-## Connection Pool
+## コネクションプール
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORMは [database/sql](https://pkg.go.dev/database/sql) を使用してコネクションプールを維持しています。
 
 ```go
 sqlDB, err := db.DB()
@@ -252,8 +252,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Refer [Generic Interface](generic_interface.html) for details
 
-## Unsupported Databases
+## サポートされていないデータベース
 
 Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+それ以外の場合、 [ドライバーを作ることをお勧めします。プルリクエストを歓迎しています！](write_driver.html)
