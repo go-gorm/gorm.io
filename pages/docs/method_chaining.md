@@ -99,7 +99,7 @@ tx.Where("age = ?", 18).Find(&users)
 
 // bad case
 tx.Where("age = ?", 28).Find(&users)
-// `tx.Where("age = ?", 28)` also use the above `*gorm.Statement`, and keep adding conditions to it
+// `tx.Where("age = ?", 18)` also use the above `*gorm.Statement`, and keep adding conditions to it
 // So the following generated SQL is polluted by the previous conditions:
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 28;
 ```
