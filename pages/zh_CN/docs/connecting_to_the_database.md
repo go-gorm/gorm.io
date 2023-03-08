@@ -163,8 +163,8 @@ TiDB 兼容 MySQL 协议。 因此你可以按照 [MySQL](#mysql)  一节来创�
 在使用 TiDB 时有一些值得注意的内容：
 
 - 您可以在结构体中使用 `gorm:"primaryKey;default:auto_random()"` 标签从而调用 TiDB 的 [`AUTO_RANDOM`](https://docs.pingcap.com/zh/tidb/stable/auto-random)  功能。
-- 迄今为止，TiDB 暂不支持外键特性。 您可以查看 TiDB 文档 [与 MySQL 兼容性对比](https://docs.pingcap.com/zh/tidb/stable/mysql-compatibility) 来获取更多信息。
-- TiDB 从 `v6.2.0` 版本开始支持 [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) 特性。因此，在使用此功能时请留意 TiDB 版本。
+- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
+- TiDB supported [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key) from `v6.6.0`, please notice the version of TiDB when you use this feature.
 
 ```go
 import (
