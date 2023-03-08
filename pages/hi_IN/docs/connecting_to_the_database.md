@@ -165,8 +165,8 @@ TiDB MySQL प्रोटोकॉल के साथ compatible है। TiD
 TiDB के लिए कुछ उल्लेखनीय बिंदु हैं:
 
 - आप TiDB के लिए [AUTO_RANDOM `सुविधा` का उपयोग करने के लिए `gorm:"primaryKey;default:auto_random()"` टैग का उपयोग कर सकते](https://docs.pingcap.com/tidb/stable/auto-random) हैं.
-- TiDB अभी तक विदेशी foreign key का समर्थन नहीं करता है अधिक जानकारी के लिए आप TiDB दस्तावेज़ [MySQL Compatibility](https://docs.pingcap.com/tidb/stable/mysql-compatibility) देख सकते हैं।
-- TiDB समर्थित [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) से `v6.2.0`, जब आप इस सुविधा का उपयोग करते हैं तो कृपया TiDB के version पर ध्यान दें।
+- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
+- TiDB supported [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key) from `v6.6.0`, please notice the version of TiDB when you use this feature.
 
 ```go
 import (
