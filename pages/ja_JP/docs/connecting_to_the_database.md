@@ -3,7 +3,7 @@ title: データベースに接続する
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
+GORMは公式にMySQL、PostgreSQL、SQLite、SQL Server をサポートしています
 
 ## MySQL
 
@@ -130,8 +130,8 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 
 ```go
 import (
-  "gorm.io/driver/sqlite" // Sqlite driver based on GGO
-  // "github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
+  "gorm.io/driver/sqlite" // GGOをベースにしたSQLiteドライバ
+  // "github.com/glebarez/sqlite" // 純粋なgoのSQLiteドライバ, 詳細は https://github.com/glebarez/sqliteで確認してください
   "gorm.io/gorm"
 )
 
@@ -158,12 +158,12 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## TiDB
 
-TiDB is compatible with MySQL protocol. You can follow the [MySQL](#mysql) part to create a connection to TiDB.
+TiDBはMySQLプロトコルと互換性があります。 [MySQL](#mysql) の部分に従って、TiDB への接続を作成できます。
 
-There are some points noteworthy for TiDB:
+TiDBには注目すべきポイントがいくつかあります:
 
-- You can use `gorm:"primaryKey;default:auto_random()"` tag to use [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) feature for TiDB.
-- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
+- `gorm:"primaryKey;default:auto_random()"` タグを使用して、TiDB の [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) 機能を使用できます。
+- TiDBは`v6.2.0`から [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) をサポートしています, この機能を使用する場合は、TiDBのバージョンに注意してください。
 - TiDB supported [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key) from `v6.6.0`, please notice the version of TiDB when you use this feature.
 
 ```go
