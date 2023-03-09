@@ -211,10 +211,10 @@ type User struct {
 }
 ```
 
-Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+फिर [शून्य-मान के लिए डेटाबेस में डालने पर डिफ़ॉल्ट मान *का उपयोग* किया जाएगा ](https://tour.golang.org/basics/12) फ़ील्ड्स
 
 {% note warn %}
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**ध्यान दें** कोई भी शून्य मान जैसे `0`, `''`, `false` नहीं होगा डिफ़ॉल्ट मान परिभाषित उन फ़ील्ड के लिए डेटाबेस में save किया गया है, आप इससे बचने के लिए पॉइंटर प्रकार या स्कैनर/वैल्यूअर(Scanner/Valuer) का उपयोग करना चाहेंगे, उदाहरण के लिए:
 {% endnote %}
 
 ```go
@@ -227,7 +227,7 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+**ध्यान दें** यदि आप डिफ़ॉल्ट मान परिभाषा को छोड़ना चाहते हैं, तो आपको `डिफ़ॉल्ट` टैग डेटाबेस में डिफ़ॉल्ट या वर्चुअल/जेनरेट (virtual/generated) किए गए मान वाले फ़ील्ड के लिए सेटअप करना होगा माइग्रेट करते समय, आप `डिफ़ॉल्ट:(-)` का उपयोग कर सकते हैं, उदाहरण के लिए:
 {% endnote %}
 
 ```go
@@ -240,11 +240,11 @@ type User struct {
 }
 ```
 
-When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+वर्चुअल/जेनरेट(virtual/generated) किए गए मान का उपयोग करते समय, आपको इसकी बनाने/अपडेट (creating/updating) करने की अनुमति को अक्षम(disable) करने की आवश्यकता हो सकती है, [Field-Level Permission](models.html#field_permission) देखें
 
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORM provides compatible Upsert support for different databases
+GORM विभिन्न डेटाबेस के लिए compatible Upsert support प्रदान करता है
 
 ```go
 import "gorm.io/gorm/clause"
@@ -284,6 +284,6 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+[Advanced Query](advanced_query.html) पर `FirstOrInit`, `FirstOrCreate` भी चेकआउट करें
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+अधिक विवरण के लिए [Raw SQL and SQL Builder](sql_builder.html) चेकआउट करें
