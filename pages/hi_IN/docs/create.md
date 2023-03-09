@@ -44,7 +44,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+`CreateInBatches` के साथ बनाते समय आप बैच size specify कर सकते हैं, उदा
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -53,10 +53,10 @@ var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 db.CreateInBatches(users, 100)
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+[Upsert](#upsert) और [Create with Associations](#create_with_associations) का उपयोग करते समय Batch Insert भी support है
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**ध्यान दें** GORM को `CreateBatchSize` विकल्प के साथ प्रारंभ करें, सभी `INSERT` रिकॉर्ड और& associations बनाते समय इस विकल्प का सम्मान करेंगे
 {% endnote %}
 
 ```go
@@ -75,7 +75,7 @@ db.Create(&users)
 
 ## Create Hooks
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORM user defined हुक को `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` के लिए लागू करने की अनुमति देता है।  रिकॉर्ड create करते समय इन hook method को कॉल किया जाएगा, जीवनचक्र पर विवरण के लिए [Hooks](hooks.html) देखें
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -88,7 +88,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+अगर आप `Hooks` methods को छोड़ना चाहते हैं, तो आप `SkipHooks` session मोड का उपयोग कर सकते हैं, उदाहरण के लिए:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -100,7 +100,7 @@ DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 
 ## Create From Map
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORM `map[string]interface{}` और `[]map[string]interface{}{}` से create का समर्थन करता है, e.g:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
@@ -115,12 +115,12 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**ध्यान दें** map से बनाते समय, हुक नहीं लगाए जाएंगे, associations save नहीं करा जाएगा और प्राथमिक कुंजी मान वापस नहीं भरे जाएंगे
 {% endnote %}
 
 ## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
 
-GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+GORM SQL अभिव्यक्ति के साथ डेटा सम्मिलित करने की अनुमति देता है, इस लक्ष्य को प्राप्त करने के दो तरीके हैं, `map[string]interface{}` या [Customized Data Types](data_types.html#gorm_valuer_interface), उदाहरण के लिए:
 
 ```go
 // Create from map
@@ -167,7 +167,7 @@ db.Create(&User{
 
 ### <span id="create_with_associations">Create With Associations</span>
 
-When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
+Associations के साथ कुछ डेटा बनाते समय, यदि इसके associations का मूल्य शून्य-मान नहीं है, तो उन associations को upserted करे जाएगा, और इसके `Hooks` methods को लागू किया जाएगा।
 
 ```go
 type CreditCard struct {
@@ -190,7 +190,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`, for example:
+आप `Select`, `Omit` के साथ saving associations को छोड़ सकते हैं, उदाहरण के लिए:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -201,7 +201,7 @@ db.Omit(clause.Associations).Create(&user)
 
 ### <span id="default_values">Default Values</span>
 
-You can define default values for fields with tag `default`, for example:
+आप `default` टैग वाले फ़ील्ड के लिए डिफ़ॉल्ट मान कर सकते हैं, उदाहरण के लिए:
 
 ```go
 type User struct {
