@@ -15,16 +15,16 @@ result.Error        // returns error
 result.RowsAffected // रिटर्न सम्मिलित रिकॉर्ड गिनती
 ```
 
-## Create Record With Selected Fields
+## Selected फ़ील्ड्स के साथ रिकॉर्ड Create करे ।
 
-Create a record and assign a value to the fields specified.
+एक रिकॉर्ड Create और specified फ़ील्ड के लिए एक मान assign करें।
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and ignore the values for fields passed to omit.
+एक रिकॉर्ड Create और omit के लिए passed किए गए फ़ील्ड के मानों को ignore करें।
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +33,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Batch Insert</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+कुशलतापूर्वक बड़ी संख्या में रिकॉर्ड insert करने के लिए, एक slice को `Create` method में पास करें। GORM सभी डेटा डालने और primary key मानों को backfill करने के लिए एक single SQL स्टेटमेंट generate करेगा, hook methods को भी invoked किया जाएगा।
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
