@@ -16,6 +16,20 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
+`Save` is a combination function. If save value does not contain primary key, it will execute `Create`, otherwise it will execute `Update` (with all fields).
+
+```go
+db.Save(&User{Name: "jinzhu", Age: 100})
+// INSERT INTO `users` (`name`,`age`,`birthday`,`update_at`) VALUES ("jinzhu",100,"0000-00-00 00:00:00","0000-00-00 00:00:00")
+
+db.Save(&User{ID: 1, Name: "jinzhu", Age: 100})
+// UPDATE `users` SET `name`="jinzhu",`age`=100,`birthday`="0000-00-00 00:00:00",`update_at`="0000-00-00 00:00:00" WHERE `id` = 1
+```
+
+{% note warn %}
+**NOTE** Don't use `Save` with `Model`, it's an **Undefined Behavior**.
+{% endnote %}
+
 ## 単一のカラムを更新する
 
 When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details. When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
@@ -54,7 +68,7 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 
 ## 選択したフィールドを更新する
 
-選択したフィールドのみ更新する場合、または更新するフィールドを除外する場合は、 `Select`, `Omit` を使用できます
+If you want to update selected fields or ignore some fields when updating, you can use `Select`, `Omit`
 
 ```go
 // Select with Map
@@ -105,9 +119,9 @@ db.Table("users").Where("id IN ?", []int{10, 11}).Updates(map[string]interface{}
 
 ### <span id="block_global_updates">Global Updatesを防ぐ</span>
 
-条件なしで一括更新を実行しようとした場合、デフォルトの設定ではGORMは更新処理を実行せず、 `ErrMissingWhereClause` エラーを返します。
+If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error by default
 
-条件を指定する、SQLをそのまま実行する、あるいは `AllowGlobalUpdate` モードを有効にする必要があります。例:
+You have to use some conditions or use raw SQL or enable the `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Model(&User{}).Update("name", "jinzhu").Error // gorm.ErrMissingWhereClause
@@ -124,7 +138,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name",
 
 ### 更新されたレコード数をカウントする
 
-更新されたレコードの行数を取得することができます。
+Get the number of rows affected by a update
 
 ```go
 // Get updated records count with `RowsAffected`
@@ -180,7 +194,7 @@ db.Model(&User{ID: 1}).Updates(User{
 
 ### サブクエリでの更新
 
-サブクエリを使用してテーブルを更新することができます。
+Update a table by using SubQuery
 
 ```go
 db.Model(&user).Update("company_name", db.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
@@ -193,7 +207,7 @@ db.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{
 
 ### Hooksやタイムトラッキングなしでの更新
 
-`Hooks` メソッドの実行を回避したい場合や、更新時間をトラッキングしたくない場合、 `Update`、 `Updates`と似た、`UpdateColumn`、 `UpdateColumns` を使用することができます。
+If you want to skip `Hooks` methods and don't track the update time when updating, you can use `UpdateColumn`, `UpdateColumns`, it works like `Update`, `Updates`
 
 ```go
 // Update single column
@@ -214,13 +228,13 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 Returning changed data only works for databases which support Returning, for example:
 
 ```go
-// すべてのカラムを返却する
+// return all columns
 var users []User
 DB.Model(&users).Clauses(clause.Returning{}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
 // UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// 指定のカラムのみ返却する
+// return specified columns
 DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
 // UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
@@ -235,19 +249,19 @@ The `Changed` method only works with methods `Update`, `Updates`, and it only ch
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
   // if Role changed
-  if tx.Statement.Changed("Role") {
+    if tx.Statement.Changed("Role") {
     return errors.New("role not allowed to change")
-  }
+    }
 
   if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
     tx.Statement.SetColumn("Age", 18)
   }
 
   // if any fields changed
-  if tx.Statement.Changed() {
-    tx.Statement.SetColumn("RefreshedAt", time.Now())
-  }
-  return nil
+    if tx.Statement.Changed() {
+        tx.Statement.SetColumn("RefreshedAt", time.Now())
+    }
+    return nil
 }
 
 db.Model(&User{ID: 1, Name: "jinzhu"}).Updates(map[string]interface{"name": "jinzhu2"})

@@ -3,7 +3,7 @@ title: データベースに接続する
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
+GORMは公式にMySQL、PostgreSQL、SQLite、SQL Server をサポートしています
 
 ## MySQL
 
@@ -130,8 +130,8 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 
 ```go
 import (
-  "gorm.io/driver/sqlite" // Sqlite driver based on GGO
-  // "github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
+  "gorm.io/driver/sqlite" // GGOをベースにしたSQLiteドライバ
+  // "github.com/glebarez/sqlite" // 純粋なgoのSQLiteドライバ, 詳細は https://github.com/glebarez/sqliteで確認してください
   "gorm.io/gorm"
 )
 
@@ -158,13 +158,13 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## TiDB
 
-TiDB is compatible with MySQL protocol. You can follow the [MySQL](#mysql) part to create a connection to TiDB.
+TiDBはMySQLプロトコルと互換性があります。 [MySQL](#mysql) の部分に従って、TiDB への接続を作成できます。
 
-There are some points noteworthy for TiDB:
+TiDBには注目すべきポイントがいくつかあります:
 
-- You can use `gorm:"primaryKey;default:auto_random()"` tag to use [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) feature for TiDB.
-- TiDB doesn't support the foreign key feature yet so far. You can see the TiDB document [MySQL Compatibility](https://docs.pingcap.com/tidb/stable/mysql-compatibility) for more information.
-- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
+- `gorm:"primaryKey;default:auto_random()"` タグを使用して、TiDB の [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) 機能を使用できます。
+- TiDBは`v6.2.0`から [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) をサポートしています, この機能を使用する場合は、TiDBのバージョンに注意してください。
+- TiDBは`v6.6.0`から [`SAVEPOINT`](https://docs.pingcap.com/tidb/dev/foreign-key) をサポートしています, この機能を使用する場合は、TiDBのバージョンに注意してください。
 
 ```go
 import (
@@ -194,7 +194,7 @@ func main() {
     insertProduct.ID, insertProduct.Code, insertProduct.Price)
 
   readProduct := &Product{}
-  db.First(&readProduct, "code = ?", "D42") // find product with code D42
+  db.First(&readProduct, "code = ?", "D42") // コード D42 のある製品を検索する
 
   fmt.Printf("read ID: %d, Code: %s, Prict: %d\n",
     readProduct.ID, readProduct.Code, readProduct.Price)
@@ -233,9 +233,9 @@ func main() {
 }
 ```
 
-## Connection Pool
+## コネクションプール
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORMは [database/sql](https://pkg.go.dev/database/sql) を使用してコネクションプールを維持しています。
 
 ```go
 sqlDB, err := db.DB()
@@ -252,8 +252,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 Refer [Generic Interface](generic_interface.html) for details
 
-## Unsupported Databases
+## サポートされていないデータベース
 
 Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+それ以外の場合、 [ドライバーを作ることをお勧めします。プルリクエストを歓迎しています！](write_driver.html)

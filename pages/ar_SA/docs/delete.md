@@ -57,6 +57,17 @@ db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
+To efficiently delete large number of records, pass a slice with primary keys to the `Delete` method.
+
+```go
+var users = []User{{ID: 1}, {ID: 2}, {ID: 3}}
+db.Delete(&users)
+// DELETE FROM users WHERE id IN (1,2,3);
+
+db.Delete(&users, "name LIKE ?", "%jinzhu%")
+// DELETE FROM users WHERE name LIKE "%jinzhu%" AND id IN (1,2,3); 
+```
+
 ### Block Global Delete
 
 If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
@@ -65,6 +76,8 @@ You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mod
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
+
+db.Delete(&[]User{{Name: "jinzhu1"}, {Name: "jinzhu2"}}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
 // DELETE FROM `users` WHERE 1=1

@@ -57,14 +57,27 @@ db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
+To efficiently delete large number of records, pass a slice with primary keys to the `Delete` method.
+
+```go
+var users = []User{{ID: 1}, {ID: 2}, {ID: 3}}
+db.Delete(&users)
+// DELETE FROM users WHERE id IN (1,2,3);
+
+db.Delete(&users, "name LIKE ?", "%jinzhu%")
+// DELETE FROM users WHERE name LIKE "%jinzhu%" AND id IN (1,2,3); 
+```
+
 ### Global Deleteを防ぐ
 
-何も条件を指定せずに一括削除を行った場合、GORMは削除処理を実行せず、`ErrMissingWhereClause`エラーを返します。
+If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
 
-条件を指定する、SQLをそのまま実行する、あるいは `AllowGlobalUpdate` モードを有効にする必要があります。例:
+You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
+
+db.Delete(&[]User{{Name: "jinzhu1"}, {Name: "jinzhu2"}}).Error // gorm.ErrMissingWhereClause
 
 db.Where("1 = 1").Delete(&User{})
 // DELETE FROM `users` WHERE 1=1
@@ -78,16 +91,16 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 ### 削除されたレコードのデータを返却する
 
-Returningをサポートしているデータベースであれば、削除されたデータを取得することができます。例：
+Return deleted data, only works for database support Returning, for example:
 
 ```go
-// すべてのカラムを返却する
+// return all columns
 var users []User
 DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// 指定のカラムのみ返却する
+// return specified columns
 DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
@@ -95,25 +108,25 @@ DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "sal
 
 ## 論理削除
 
-(`gorm.Model`にも含まれている) `gorm.DeletedAt` フィールドがモデルに含まれている場合、そのモデルは自動的に論理削除されるようになります。
+If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
 
-`Delete` メソッドを実行した際、レコードはデータベースから物理削除されません。代わりに、`DeletedAt` フィールドに現在の時刻が設定され、そのレコードは通常のクエリ系のメソッドでは検索できなくなります。
+When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
 
 ```go
-// userのIDは`111`
+// user's ID is `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// 一括削除
+// Batch Delete
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// 論理削除されたレコードは取得処理時に無視されます
+// Soft deleted records will be ignored when querying
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-モデルに `gorm.Model` を含めたくない場合は、以下のようにすることで論理削除機能を有効にできます。
+If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
 
 ```go
 type User struct {
@@ -125,7 +138,7 @@ type User struct {
 
 ### 論理削除されたレコードを取得する
 
-`Unscoped`を用いることで、論理削除されたレコードを取得することができます。
+You can find soft deleted records with `Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
@@ -134,7 +147,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ### 完全な削除（物理削除）
 
-`Unscoped`を用いることで、レコードを物理削除できます。
+You can delete matched records permanently with `Unscoped`
 
 ```go
 db.Unscoped().Delete(&order)

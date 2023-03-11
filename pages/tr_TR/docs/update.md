@@ -16,20 +16,34 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
+`Save` is a combination function. If save value does not contain primary key, it will execute `Create`, otherwise it will execute `Update` (with all fields).
+
+```go
+db.Save(&User{Name: "jinzhu", Age: 100})
+// INSERT INTO `users` (`name`,`age`,`birthday`,`update_at`) VALUES ("jinzhu",100,"0000-00-00 00:00:00","0000-00-00 00:00:00")
+
+db.Save(&User{ID: 1, Name: "jinzhu", Age: 100})
+// UPDATE `users` SET `name`="jinzhu",`age`=100,`birthday`="0000-00-00 00:00:00",`update_at`="0000-00-00 00:00:00" WHERE `id` = 1
+```
+
+{% note warn %}
+**NOTE** Don't use `Save` with `Model`, it's an **Undefined Behavior**.
+{% endnote %}
+
 ## Tek bir kolonu güncelle
 
 When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details. When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
 
 ```go
-// Koşullar ile güncelleme
+// Update with conditions
 db.Model(&User{}).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE active=true;
 
-// Kullanıcı ID'si `111`:
+// User's ID is `111`:
 db.Model(&user).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Koşullar ve model değeri ile güncelleme
+// Update with conditions and model value
 db.Model(&user).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
 ```

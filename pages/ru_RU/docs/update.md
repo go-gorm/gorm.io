@@ -16,12 +16,26 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
+`Save` is a combination function. If save value does not contain primary key, it will execute `Create`, otherwise it will execute `Update` (with all fields).
+
+```go
+db.Save(&User{Name: "jinzhu", Age: 100})
+// INSERT INTO `users` (`name`,`age`,`birthday`,`update_at`) VALUES ("jinzhu",100,"0000-00-00 00:00:00","0000-00-00 00:00:00")
+
+db.Save(&User{ID: 1, Name: "jinzhu", Age: 100})
+// UPDATE `users` SET `name`="jinzhu",`age`=100,`birthday`="0000-00-00 00:00:00",`update_at`="0000-00-00 00:00:00" WHERE `id` = 1
+```
+
+{% note warn %}
+**NOTE** Don't use `Save` with `Model`, it's an **Undefined Behavior**.
+{% endnote %}
+
 ## Обновление одного столбца
 
 When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details. When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
 
 ```go
-// Update с условиями
+// Update with conditions
 db.Model(&User{}).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE active=true;
 
@@ -29,7 +43,7 @@ db.Model(&User{}).Where("active = ?", true).Update("name", "hello")
 db.Model(&user).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update с условиями и значением Model
+// Update with conditions and model value
 db.Model(&user).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
 ```
@@ -39,11 +53,11 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 `Updates` supports updating with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
 
 ```go
-// Обновление атрибутами `структуры`, будут обновляться только не нулевые поля
+// Update attributes with `struct`, will only update non-zero fields
 db.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
 // UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 
-// Обновление атрибутов с помощью `карты`
+// Update attributes with `map`
 db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
@@ -54,7 +68,7 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 
 ## Обновить выбранные поля
 
-Если вы хотите обновить выбранные или игнорировать некоторые поля при обновлении, вы можете использовать `Select`, `Omit`
+If you want to update selected fields or ignore some fields when updating, you can use `Select`, `Omit`
 
 ```go
 // Select with Map
@@ -94,20 +108,20 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 If we haven't specified a record having a primary key value with `Model`, GORM will perform a batch update
 
 ```go
-// Update с помощью структуры
+// Update with struct
 db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE role = 'admin';
 
-// Update с помощью карты
+// Update with map
 db.Table("users").Where("id IN ?", []int{10, 11}).Updates(map[string]interface{}{"name": "hello", "age": 18})
 // UPDATE users SET name='hello', age=18 WHERE id IN (10, 11);
 ```
 
 ### <span id="block_global_updates">Глобальные блокировки при Updates</span>
 
-Если вы выполните пакетное обновление без каких-либо условий, GORM НЕ выполнит его и вернет ошибку `ErrMissingWhereClause`
+If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error by default
 
-Вы должны использовать некоторые условия или использовать чистый SQL или включить режим `AllowGlobalUpdate`, например:
+You have to use some conditions or use raw SQL or enable the `AllowGlobalUpdate` mode, for example:
 
 ```go
 db.Model(&User{}).Update("name", "jinzhu").Error // gorm.ErrMissingWhereClause
@@ -124,15 +138,15 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Model(&User{}).Update("name",
 
 ### Количество обновленных записей
 
-Получение количества измененных строк
+Get the number of rows affected by a update
 
 ```go
-// Получение количество обновленных записей с помощью `RowsAffected`
+// Get updated records count with `RowsAffected`
 result := db.Model(User{}).Where("role = ?", "admin").Updates(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE role = 'admin';
 
-result.RowsAffected // возвращает количество обновленных записей
-result.Error        // возвращает ошибку при обновлении
+result.RowsAffected // returns updated records count
+result.Error        // returns updating error
 ```
 
 ## Расширенный Update
@@ -142,7 +156,7 @@ result.Error        // возвращает ошибку при обновлен
 GORM allows updating a column with a SQL expression, e.g:
 
 ```go
-// product's ID = `3`
+// product's ID is `3`
 db.Model(&product).Update("price", gorm.Expr("price * ? + ?", 2, 100))
 // UPDATE "products" SET "price" = price * 2 + 100, "updated_at" = '2013-11-17 21:34:10' WHERE "id" = 3;
 
@@ -159,7 +173,7 @@ db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 And GORM also allows updating with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
 
 ```go
-// Создание с помощью собственных типов данных
+// Create from customized data type
 type Location struct {
     X, Y int
 }
@@ -180,7 +194,7 @@ db.Model(&User{ID: 1}).Updates(User{
 
 ### Update с помощью вложенного запроса
 
-Обновление таблицы с помощью вложенного запроса
+Update a table by using SubQuery
 
 ```go
 db.Model(&user).Update("company_name", db.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
@@ -193,18 +207,18 @@ db.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{
 
 ### Без использования хуков/отслеживания времени
 
-Если вы хотите пропустить методы `Хуков`  и не отслеживать время обновления при обновлении, вы можете использовать `UpdateColumn`, `UpdateColumns` - это работает как и `Update`, `Updates`
+If you want to skip `Hooks` methods and don't track the update time when updating, you can use `UpdateColumn`, `UpdateColumns`, it works like `Update`, `Updates`
 
 ```go
-// Обновить одну колонку
+// Update single column
 db.Model(&user).UpdateColumn("name", "hello")
 // UPDATE users SET name='hello' WHERE id = 111;
 
-// Обновить несколько колонок
+// Update multiple columns
 db.Model(&user).UpdateColumns(User{Name: "hello", Age: 18})
 // UPDATE users SET name='hello', age=18 WHERE id = 111;
 
-// Обновить выбранные колонки
+// Update selected columns
 db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 // UPDATE users SET name='hello', age=0 WHERE id = 111;
 ```
@@ -214,13 +228,13 @@ db.Model(&user).Select("name", "age").UpdateColumns(User{Name: "hello", Age: 0})
 Returning changed data only works for databases which support Returning, for example:
 
 ```go
-// возвращает все столбцы
+// return all columns
 var users []User
 DB.Model(&users).Clauses(clause.Returning{}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
 // UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// возвращает указанные столбцы
+// return specified columns
 DB.Model(&users).Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Update("salary", gorm.Expr("salary * ?", 2))
 // UPDATE `users` SET `salary`=salary * 2,`updated_at`="2021-10-28 17:37:23.19" WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
