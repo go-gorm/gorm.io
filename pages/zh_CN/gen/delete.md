@@ -5,26 +5,26 @@ layout: page
 
 ## 删除记录
 
-When deleting a record, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, for example:
+当删除一条记录时，需要满足一些条件否则程序会抛出`ErrMissingWhereClause`异常，例如：
 
 ```go
 e := query.Email
 
-// Email's ID is `10`
+// Email 的 ID 是 10
 e.WithContext(ctx).Where(e.ID.Eq(10)).Delete()
 // DELETE from emails where id = 10;
 
-// Delete with additional conditions
+// 有附加条件的删除
 e.WithContext(ctx).Where(e.ID.Eq(10), e.Name.Eq("modi")).Delete()
 // DELETE from emails where id = 10 AND name = "modi";
 
 result, err := e.WithContext(ctx).Where(e.ID.Eq(10), e.Name.Eq("modi")).Delete()
 
-result.RowsAffected // affect rows number
-err                 // error
+result.RowsAffected // 受影响的行
+err                 // 错误
 ```
 
-## Delete with primary key
+## 通过主键删除
 
 GEN allows to delete objects using primary key(s) with inline condition, it works with numbers.
 
