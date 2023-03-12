@@ -3,7 +3,7 @@ title: Gen Delete
 layout: page
 ---
 
-## Delete record
+## 删除记录
 
 When deleting a record, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, for example:
 
