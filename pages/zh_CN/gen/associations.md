@@ -3,11 +3,11 @@ title: Associations
 layout: page
 ---
 
-GEN will auto-save associations as GORM do. The relationships (BelongsTo/HasOne/HasMany/Many2Many) reuse GORM's tag. This feature only support exist model for now.
+GEN 支持像 GORM 一样的处理关联的方式。 关系(属于To/HasOne/HasMany2Many) 重新使用GORM的标签。 此功能目前只存在支持模式。
 
 ## Relation
 
-There are 4 kind of relationship.
+Gen 支持四种关联方式。
 
 ```go
 const (
