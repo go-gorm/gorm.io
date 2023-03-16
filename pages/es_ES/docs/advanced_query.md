@@ -1,29 +1,29 @@
 ---
-title: Advanced Query
+title: Consulta avanzada
 layout: página
 ---
 
 ## <span id="smart_select">Campos de selección inteligentes</span>
 
-GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM permite seleccionar campos específicos con [`Select`](query.html), si usas esto a menudo en tu aplicación, tal vez quieras definir una estructura más pequeña para el uso del API que pueda seleccionar automáticamente campos específicos, por ejemplo:
 
 ```go
-type User struct {
+type Usuario struct {
   ID     uint
-  Name   string
-  Age    int
-  Gender string
-  // hundreds of fields
+  Nombre   string
+  Edad    int
+  Genero string
+  // cientosde campos
 }
 
-type APIUser struct {
+type APIUsuario struct {
   ID   uint
-  Name string
+  Nombre string
 }
 
-// Select `id`, `name` automatically when querying
-db.Model(&User{}).Limit(10).Find(&APIUser{})
-// SELECT `id`, `name` FROM `users` LIMIT 10
+// Select `id`, `nombre` automáticamente cuando consulta
+db.Model(&Usuario {}).Limit(10).Find(&APIUsuario {})
+// SELECT `id`, `nombre` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
