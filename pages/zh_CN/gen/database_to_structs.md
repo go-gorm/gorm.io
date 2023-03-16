@@ -149,7 +149,7 @@ FieldRelate        // specify relationship with other tables
 FieldRelateModel   // specify the relationship with existing models
 ```
 
-## Global Generating Options
+## 全局生成选项
 
 Gen 有一些全局选项可以在 `gen.Config`中设置：
 
