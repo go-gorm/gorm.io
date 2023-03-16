@@ -1,5 +1,5 @@
 ---
-title: GORM Stats
+title: ORM Estadísticas
 layout: page
 ---
 
@@ -27,7 +27,7 @@ layout: page
 
 <iframe src="https://stats.gorm.io/go-gorm/gorm.io/latest-report/report.html#views"></iframe>
 
-## Playground
+## Patio de juegos
 
 <iframe src="https://stats.gorm.io/go-gorm/playground/latest-report/report.html#views"></iframe>
 
@@ -35,7 +35,7 @@ layout: page
 
 <iframe src="https://stats.gorm.io/go-gorm/hints/latest-report/report.html#views"></iframe>
 
-## Datatypes
+## Tipo de Datos
 
 <iframe src="https://stats.gorm.io/go-gorm/datatypes/latest-report/report.html#views"></iframe>
 
