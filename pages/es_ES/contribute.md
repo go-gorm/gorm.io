@@ -1,37 +1,37 @@
 ---
-title: Contribute to GORM
+title: Contribuye a GORM
 layout: page
 ---
 
-**You can help to deliver a better GORM! there are many things that you can do:**
+**¡Puedes ayudar a entregar un mejor GORM! hay muchas cosas que puedes hacer:**
 
-## Help others to know GORM
+## Ayuda a otros a conocer GORM
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forget to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
+* Comparte GORM con el mundo por canales sociales, o simplemente cuenta a la gente que pueda estar interesada
+* Ayuda a los recién llegados a resolver preguntas en <a ref="https://stackoverflow.com/questions/tagged/go-gorm">Stack Overflow</a>, [Github Problemas](https://github.com/go-gorm/gorm/issues) y [Salas de Chat](/community.html#Chat)
+* Escribe tutoriales, graba vídeos, etc... (no olvides añadirlos a [la lista](/community.html))
+* Ayuda a promover GORM en GitHub [](https://github.com/go-gorm/gorm/stargazers) dándole una estrella y [viendo](https://github.com/go-gorm/gorm/watchers) el repositorio [GORM](https://github.com/go-gorm/gorm)
 
-## Documentation and Writing
+## Documentación y redacción
 
-* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
+* Mejorar la documentación de GORM escribiendo nuevo contenido, corrigiendo material existente [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
-### Translate this site
+### Traduciendo este sitio
 
-You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
+Puedes traducir este sitio actual con [https://translate.gorm.io](https://translate.gorm.io)
 
-To translate GORM in your language you need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
+Para traducir GORM en tu idioma, necesitas publicar una solicitud en [Github issues](https://github.com/go-gorm/gorm.io/issues) para que sea añadida a [https://translate. orm.io](https://translate.gorm.io).
 
-## Program
+## Programando
 
-* Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
-* Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))
+* Crear un pull request en [GitHub](https://github.com/go-gorm/gorm) para solucionar problemas, nuevas características
+* Crear plugins de código abierto para GORM (no olvides añadirlos a [la lista](/community.html#Open-Sources))
 
-## Donations
+## Donaciones
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+¡Tu amabilidad y generosidad son muy apreciadas, muchas gracias a todos nuestros patrocinadores!
 
-* Github Sponsors (Platinum, Gold Sponsors etc)
+* Patrocinadores de Github (platino, patrocinadores de oro, etc.)
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
