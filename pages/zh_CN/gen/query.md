@@ -3,9 +3,9 @@ title: Gen Query
 layout: page
 ---
 
-## Retrieving a single object
+## 检索单个对象
 
-Generated code provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
+GORM 提供了 `First`、`Take`、`Last` 方法，以便从数据库中检索单个对象。当查询数据库时它添加了 `LIMIT 1` 条件，且没有找到记录时，它会返回 `ErrRecordNotFound` 错误
 
 ```go
 u := query.User
@@ -29,7 +29,7 @@ user, err := u.WithContext(ctx).WriteDB().Last()
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
-### Retrieving objects with primary key
+### 根据主键检索
 
 ```go
 u := query.User
@@ -41,14 +41,14 @@ users, err := u.WithContext(ctx).Where(u.ID.In(1,2,3)).Find()
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If the primary key is a string (for example, like a uuid), the query will be written as follows:
+如果主键是字符串(例如像uuid)，查询将被写成如下：
 
 ```go
 user, err := u.WithContext(ctx).Where(u.ID.Eq("1b74413f-f3b8-409f-ac47-e8c062e3472a")).First()
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-## Retrieving all objects
+## 检索全部对象
 
 ```go
 u := query.User
@@ -58,11 +58,11 @@ users, err := u.WithContext(ctx).Find()
 // SELECT * FROM users;
 ```
 
-## Conditions
+## 条件
 
-### Field Query Interfaces
+### 字段查询接口
 
-Gen generates type-safe interfaces each field, you can use them to generate SQL expressions
+Gen 生成每个字段的安全类型接口，您可以使用它们生成SQL表达式
 
 | Field Type | Supported  Interface                                                                                                                                                                                                              |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -74,7 +74,7 @@ Gen generates type-safe interfaces each field, you can use them to generate SQL 
 | bool       | Not/Is/And/Or/Xor/BitXor/BitAnd/BitOr/Value/Zero                                                                                                                                                                                  |
 | time       | Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Add/Sub/Date/DateDiff/DateFormat/Now/CurDate/CurTime/DayName/MonthName/Month/Day/Hour/Minute/Second/MicroSecond/DayOfWeek/DayOfMonth/FromDays/FromUnixtime/Value/Zero/Sum/IfNull |
 
-Here are some usage examples:
+以下是一些用法示例：
 
 ```go
 u := query.User
@@ -108,9 +108,9 @@ users, err := u.WithContext(ctx).Where(u.Birthday.Between(lastWeek, today)).Find
 // SELECT * FROM users WHERE birthday BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Not Conditions
+### Not 条件
 
-Build NOT conditions, works similar to `Where`
+构建 NOT 条件，用法与 `Where` 类似
 
 ```go
 u := query.User
