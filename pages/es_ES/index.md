@@ -5,7 +5,7 @@ subtitle: The fantastic ORM library for Golang
 comments: false
 ---
 
-* <i class="fa fa-rocket" aria-hidden="true"></i> Full-Featured ORM
+* <i class="fa fa-rocket" aria-hidden="true"></i> ORM con todas las funciones
 * <i class="fa fa-rocket" aria-hidden="true"></i> Associations (has one, has many, belongs to, many to many, polymorphism, single-table inheritance)
 * <i class="fa fa-rocket" aria-hidden="true"></i> Hooks (before/after create/save/update/delete/find)
 * <i class="fa fa-rocket" aria-hidden="true"></i> Eager loading with Preload, Joins
