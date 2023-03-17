@@ -5,9 +5,9 @@ layout: page
 
 ## Pertenecer a
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Un `pertenece a` establece una conexión de uno a uno con otro modelo, de tal manera que cada instancia del modelo declarante "pertenece" a una instancia del otro modelo.
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company, the following types represent that relationship. Notice here that, on the `User` object, there is both a `CompanyID` as well as a `Company`. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
+Por ejemplo, si su aplicación incluye usuarios y empresas, y cada usuario puede ser asignado a una empresa exactamente, los siguientes tipos representan esa relación. Ten en cuenta que en el objeto `User` hay tanto un `CompanyID` como una `Company`. Por defecto, el `CompanyID` se utiliza implícitamente para crear una relación de clave foránea entre las tablas `User` y `Company`, y por lo tanto debe incluirse en la estructura `User` con el fin de llenar el struct `Company`.
 
 ```go
 // `User` belongs to `Company`, `CompanyID` is the foreign key
@@ -24,15 +24,15 @@ type Company struct {
 }
 ```
 
-Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
+Consulte [Carga diligente](belongs_to.html#Eager-Loading) para obtener detalles sobre cómo llenar la estructura interior.
 
-## Override Foreign Key
+## Sobrescritura de Clave Foránea
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Para definir una relación de pertenencia, la clave foránea debe existir, la clave foránea por defecto utiliza el nombre del tipo del propietario más el nombre del campo principal.
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+Para el ejemplo anterior, para definir el modelo `User` que pertenece a `Company`, la clave foránea debe ser `CompanyID` por convención
 
-GORM provides a way to customize the foreign key, for example:
+GORM proporciona una manera de personalizar la clave foránea, por ejemplo:
 
 ```go
 type User struct {
@@ -49,13 +49,13 @@ type Company struct {
 }
 ```
 
-## Override References
+## Sobrescritura de Referencias
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+Para una relación perteneciente, GORM usualmente usa el campo primario del propietario como el valor de la clave foránea, para el ejemplo anterior, es el campo `ID` de `Company`.
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+Al asignar un usuario a una empresa, GORM guardará el `ID` de la empresa en el campo `CompanyID` del usuario.
 
-You are able to change it with tag `references`, e.g:
+Puedes cambiarlo con la etiqueta `references`, por ejemplo:
 
 ```go
 type User struct {
@@ -73,7 +73,7 @@ type Company struct {
 ```
 
 {% note warn %}
-**NOTE** GORM usually guess the relationship as `has one` if override foreign key name already exists in owner's type, we need to specify `references` in the `belongs to` relationship.
+**NOTA** GORM generalmente asume la relación como `tiene una` si el nombre de clave foránea ya existe en el tipo del propietario, necesitamos especificar `references` en la relación `pertenece a`.
 {% endnote %}
 
 ```go
@@ -91,17 +91,17 @@ type Company struct {
 }
 ```
 
-## CRUD with Belongs To
+## CRUD con Pertenece a
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Por favor, compruebe que [el modo de asociación](associations.html#Association-Mode) para trabajar con relaciones pertenece a
 
-## Eager Loading
+## Carga diligente
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM permite la carga diligente con asociaciones pertenece a usando `precarga` o `Uniones`, consulte [precarga (carga diligente)](preload.html) para más detalles
 
-## FOREIGN KEY Constraints
+## Restricciones de Clave Foránea
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+Puede configurar `OnUpdate`, `OnDelete` restricciones con la etiqueta `constraint`, se creará al migrar con GORM, por ejemplo:
 
 ```go
 type User struct {
