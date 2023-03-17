@@ -75,20 +75,20 @@ db.Omit(clause.Associations).Create(&user)
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**NOTA:** Para las asociaciones many2many, GORM actualizará las asociaciones antes de crear las referencias de la tabla de unión, si quieres omitir el upseting de las asociaciones, puedes saltarla:
 
 ```go
 db.Omit("Languages.*").Create(&user)
 ```
 
-The following code will skip the creation of the association and its references
+El siguiente código omitirá la creación de la asociación y sus referencias
 
 ```go
 db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
-## Select/Omit Association fields
+## Seleccionar/Omitir campos de asociación
 
 ```go
 user := User{
@@ -104,9 +104,9 @@ db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
 db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 ```
 
-## Association Mode
+## Modo de asociación
 
-Association Mode contains some commonly used helper methods to handle relationships
+El modo de asociación contiene algunos métodos de ayuda comúnmente utilizados para manejar relaciones
 
 ```go
 // Start Association Mode
@@ -118,15 +118,15 @@ db.Model(&user).Association("Languages")
 db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Buscar asociaciones
 
-Find matched associations
+Buscar asociaciones coincidentes
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-Find associations with conditions
+Buscar asociaciones con condiciones
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
@@ -135,9 +135,9 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Añadir asociaciones
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+Añadir nuevas asociaciones para `muchas a muchas`, `tiene muchas`, reemplazar asociación actual para `tiene un`, `pertenece a`
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -147,9 +147,9 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### Reemplazar asociaciones
 
-Replace current associations with new ones
+Reemplazar asociaciones actuales por nuevas
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -157,26 +157,26 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Eliminar Asociaciones
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+Eliminar la relación entre la fuente & argumentos si existe, solo eliminar la referencia, no eliminará esos objetos de la DB.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clear Associations
+### Limpiar asociaciones
 
-Remove all reference between source & association, won't delete those associations
+Eliminar toda referencia entre la fuente & asociación, no eliminará esas asociaciones
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Contar Asociaciones
 
-Return the count of current associations
+Devolver el recuento de asociaciones actuales
 
 ```go
 db.Model(&user).Association("Languages").Count()
@@ -186,9 +186,9 @@ codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Batch Data
+### Datos de Lote
 
-Association Mode supports batch data, e.g:
+El modo de asociación soporta datos por lotes, por ejemplo:
 
 ```go
 // Find all roles for all users
@@ -208,9 +208,9 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">Eliminar con Seleccionar</span>
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+Puede eliminar los registros seleccionados tiene una/tiene muchas/muchos a muchos relaciones con `Select` al eliminar registros, por ejemplo:
 
 ```go
 // delete user's account when deleting user
@@ -227,7 +227,7 @@ db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
+**NOTA:** Las asociaciones solo se eliminarán si la clave principal de los registros de eliminación no es cero, GORM utilizará esas claves primarias como condiciones para eliminar las asociaciones seleccionadas
 
 ```go
 // DOESN'T WORK
@@ -242,15 +242,15 @@ db.Select("Account").Delete(&User{ID: 1})
 ```
 {% endnote %}
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">Etiquetas de asociación</span>
 
-| Tag              | Description                                                                                        |
-| ---------------- | -------------------------------------------------------------------------------------------------- |
-| foreignKey       | Specifies column name of the current model that is used as a foreign key to the join table         |
-| references       | Specifies column name of the reference's table that is mapped to the foreign key of the join table |
-| polymorphic      | Specifies polymorphic type such as model name                                                      |
-| polymorphicValue | Specifies polymorphic value, default table name                                                    |
-| many2many        | Specifies join table name                                                                          |
-| joinForeignKey   | Specifies foreign key column name of join table that maps to the current table                     |
-| joinReferences   | Specifies foreign key column name of join table that maps to the reference's table                 |
-| constraint       | Relations constraint, e.g: `OnUpdate`,`OnDelete`                                                   |
+| Etiqueta         | Descripción                                                                                                    |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- |
+| foreignKey       | Especifica el nombre de la columna del modelo actual que se utiliza como clave foránea para la tabla de unión  |
+| references       | Especifica el nombre de la columna de la tabla de referencia que se asigna a la clave foránea de la tabla join |
+| polymorphic      | Especifica el tipo polimórfico como el nombre del modelo                                                       |
+| polymorphicValue | Especifica el valor polimórfico, nombre de tabla por defecto                                                   |
+| many2many        | Especifica el nombre de la tabla de unión                                                                      |
+| joinForeignKey   | Especifica el nombre de columna de clave foránea de la tabla de unión que mapea a la tabla actual              |
+| joinForeignKey   | Especifica el nombre de columna de clave foránea de la tabla de unión que mapea a la tabla de referencia       |
+| constraint       | Restricción de relaciones, por ejemplo: `OnUpdate`,`OnDelete`                                                  |
