@@ -3,9 +3,9 @@ title: Gen Query
 layout: page
 ---
 
-## Retrieving a single object
+## 检索单个对象
 
-Generated code provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
+GORM 提供了 `First`、`Take`、`Last` 方法，以便从数据库中检索单个对象。当查询数据库时它添加了 `LIMIT 1` 条件，且没有找到记录时，它会返回 `ErrRecordNotFound` 错误
 
 ```go
 u := query.User
@@ -29,7 +29,7 @@ user, err := u.WithContext(ctx).WriteDB().Last()
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
 
-### Retrieving objects with primary key
+### 根据主键检索
 
 ```go
 u := query.User
@@ -41,14 +41,14 @@ users, err := u.WithContext(ctx).Where(u.ID.In(1,2,3)).Find()
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If the primary key is a string (for example, like a uuid), the query will be written as follows:
+如果主键是字符串(例如像uuid)，查询将被写成如下：
 
 ```go
 user, err := u.WithContext(ctx).Where(u.ID.Eq("1b74413f-f3b8-409f-ac47-e8c062e3472a")).First()
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-## Retrieving all objects
+## 检索全部对象
 
 ```go
 u := query.User
@@ -58,11 +58,11 @@ users, err := u.WithContext(ctx).Find()
 // SELECT * FROM users;
 ```
 
-## Conditions
+## 条件
 
-### Field Query Interfaces
+### 字段查询接口
 
-Gen generates type-safe interfaces each field, you can use them to generate SQL expressions
+Gen 生成每个字段的安全类型接口，您可以使用它们生成SQL表达式
 
 | Field Type | Supported  Interface                                                                                                                                                                                                              |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -74,7 +74,7 @@ Gen generates type-safe interfaces each field, you can use them to generate SQL 
 | bool       | Not/Is/And/Or/Xor/BitXor/BitAnd/BitOr/Value/Zero                                                                                                                                                                                  |
 | time       | Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Add/Sub/Date/DateDiff/DateFormat/Now/CurDate/CurTime/DayName/MonthName/Month/Day/Hour/Minute/Second/MicroSecond/DayOfWeek/DayOfMonth/FromDays/FromUnixtime/Value/Zero/Sum/IfNull |
 
-Here are some usage examples:
+以下是一些用法示例：
 
 ```go
 u := query.User
@@ -108,9 +108,9 @@ users, err := u.WithContext(ctx).Where(u.Birthday.Between(lastWeek, today)).Find
 // SELECT * FROM users WHERE birthday BETWEEN '2000-01-01 00:00:00' AND '2000-01-08 00:00:00';
 ```
 
-### Not Conditions
+### Not 条件
 
-Build NOT conditions, works similar to `Where`
+构建 NOT 条件，用法与 `Where` 类似
 
 ```go
 u := query.User
@@ -127,7 +127,7 @@ user, err := u.WithContext(ctx).Not(u.ID.In(1,2,3)).First()
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
 
-### Or Conditions
+### Or 条件
 
 ```go
 u := query.User
@@ -136,9 +136,9 @@ users, err := u.WithContext(ctx).Where(u.Role.Eq("admin")).Or(u.Role.Eq("super_a
 // SELECT * FROM users WHERE role = 'admin' OR role = 'super_admin';
 ```
 
-### Group Conditions
+### Group 条件
 
-Easier to write complicated SQL query with Group Conditions
+使用 Group 条件可以更轻松的编写复杂 SQL 查询
 
 ```go
 p := query.Pizza
@@ -154,9 +154,9 @@ pizzas, err := pd.Where(
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
-### Selecting Specific Fields
+### 查询特定字段
 
-`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
+`Select` 允许您指定从数据库中取出哪些字段， 默认情况下，GORM 会检索所有字段。
 
 ```go
 u := query.User
@@ -168,7 +168,7 @@ u.WithContext(ctx).Select(u.Age.Avg()).Rows()
 // SELECT Avg(age) FROM users;
 ```
 
-### Tuple Query
+### 多字段IN
 
 ```go
 u := query.User
@@ -177,7 +177,7 @@ users, err := u.WithContext(ctx).Where(u.WithContext(ctx).Columns(u.ID, u.Name).
 // SELECT * FROM `users` WHERE (`id`, `name`) IN ((1,'humodi'),(2,'tom'));
 ```
 
-### JSON Query
+### JSON 查询
 
 ```go
 u := query.User
@@ -188,7 +188,7 @@ users, err := u.WithContext(ctx).Where(gen.Cond(datatypes.JSONQuery("attributes"
 
 ### Order
 
-Specify order when retrieving records from the database
+指定从数据库检索记录时的排序方式
 
 ```go
 u := query.User
@@ -201,7 +201,7 @@ users, err := u.WithContext(ctx).Order(u.Age.Desc()).Order(u.Name).Find()
 // SELECT * FROM users ORDER BY age DESC, name;
 ```
 
-Get field by string
+按字符串获取字段
 
 ```go
 u := query.User
@@ -221,7 +221,7 @@ users, err := u.WithContext(ctx).Order(orderCol.Desc()).Find()
 
 ### Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit` 指定要检索的最大记录数。 `Offset` 指定在开始返回记录前要跳过的记录数。
 
 ```go
 u := query.User
@@ -284,7 +284,7 @@ o.WithContext(ctx).Select(o.CreateAt.Date().As("date"), o.WithContext(ctx).Amoun
 
 ### Distinct
 
-Selecting distinct values from the model
+从表中选择去重后的值
 
 ```go
 u := query.User
@@ -296,7 +296,7 @@ users, err := u.WithContext(ctx).Distinct(u.Name, u.Age).Order(u.Name, u.Age.Des
 
 ### Joins
 
-Specify Joins conditions
+指定 Join 条件
 
 ```go
 q := query
@@ -340,9 +340,9 @@ err := u.WithContext(ctx).Select(u.Name, e.Email).LeftJoin(e, e.UserID.EqCol(u.I
 users := u.WithContext(ctx).Join(e, e.UserID.EqCol(u.id), e.Email.Eq("modi@example.org")).Join(c, c.UserID.EqCol(u.ID)).Where(c.Number.Eq("411111111111")).Find()
 ```
 
-### New Field Expiression
+### 新建字段
 
-Sometimes you may need to create a dynamic field for dynamically SQL generation
+有时您可能需要为动态的 SQL 生成创建一个动态字段
 
 | Field Type | Create Function                |
 | ---------- | ------------------------------ |
@@ -354,7 +354,7 @@ Sometimes you may need to create a dynamic field for dynamically SQL generation
 | bool       | NewBool                        |
 | time       | NewTime                        |
 
-Usage example:
+用法示例：
 
 #### Generic Fields
 
@@ -436,9 +436,9 @@ active.Not()
 active.And(true)
 ```
 
-## SubQuery
+## 子查询
 
-A subquery can be nested within a query, GEN can generate subquery when using a `Dao` object as param
+子查询可以嵌套在查询中，GEN 可以在使用 `Dao` 对象作为参数时生成子查询
 
 ```go
 o := query.Order
@@ -458,9 +458,9 @@ u.WithContext(ctx).Exists(subQuery1).Not(u.WithContext(ctx).Exists(subQuery2)).F
 // SELECT * FROM `users` WHERE EXISTS (SELECT `orders`.`id` FROM `orders` WHERE `orders`.`user_id` = `users`.`id` AND `orders`.`amount` > 100 AND `orders`.`deleted_at` IS NULL) AND NOT EXISTS (SELECT `orders`.`id` FROM `orders` WHERE `orders`.`user_id` = `users`.`id` AND `orders`.`amount` > 200 AND `orders`.`deleted_at` IS NULL) AND `users`.`deleted_at` IS NULL
 ```
 
-### From SubQuery
+### From 子查询
 
-GORM allows you using subquery in FROM clause with method `Table`, for example:
+GORM 允许您在 `Table` 方法中使用子查询作为表查询，例如：
 
 ```go
 u := query.User

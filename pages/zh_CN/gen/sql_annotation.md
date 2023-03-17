@@ -3,17 +3,17 @@ title: Annotation Syntax
 layout: page
 ---
 
-Annotations are comments at interface's methods, Gen will parse them and generate the query API for the applied structs.
+在接口的方法上的注释，Gen将解析它们并为应用的结构生成查询 API。
 
-Gen provies some conventions for dynamic conditionally SQL support, let us introduce them from three aspects:
+Gen 提供一些有条件的 SQL 动态支持，让我们从三个方面介绍它们：
 
-* Returning Results
-* Template Placeholder
-* Template Expression
+* 返回结果
+* 模板占位符
+* 模板表达式
 
-## Returning Results
+## 返回结果
 
-Gen allows to configure returning result type, it supports following four basic types for now
+Gen 允许配置返回的结果类型，它支持以下四种基本类型。
 
 | Option           | Description                                               |
 | ---------------- | --------------------------------------------------------- |
@@ -40,7 +40,7 @@ type Querier interface {
 }
 ```
 
-These basic types can be combined with other symbols like `*`, `[]`, for example:
+这些基本类型可以与其他符号，例如 `* <code>[]`</code>, 例如:
 
 ```go
 type Querier interface {
@@ -58,9 +58,9 @@ type Querier interface {
 }
 ```
 
-## Template Placeholder
+## 模板占位符
 
-Gen provides some placeholders to generate dynamic & safe SQL
+Gen 提供了一些占位符来生成动态且安全的 SQL
 
 | Name             | Description                                    |
 | ---------------- | ---------------------------------------------- |
@@ -80,7 +80,7 @@ type Filter interface {
 g.ApplyInterface(func(Filter) {}, model.User{}, model.Company{})
 ```
 
-After generate the code, you can use it like this in your application.
+生成代码后，您可以在应用程序中直接使用。
 
 ```go
 import "your_project/query"
@@ -94,9 +94,9 @@ func main() {
 }
 ```
 
-## Template Expression
+## 模板表达式
 
-Gen provides powerful expressions support for dynamic conditional SQL, currently support following expressions:
+Gen 提供强大的表达式支持动态条件SQL，目前支持以下表达式：
 
 * `if/else`
 * `where`
@@ -117,7 +117,7 @@ The `if/else` expression allows to use golang syntax as condition, it can be wri
 {{end}}
 ```
 
-For example:
+例如：
 
 ```go
 type Querier interface {
@@ -130,7 +130,7 @@ type Querier interface {
 }
 ```
 
-A more complicated case:
+一个更复杂的案例：
 
 ```go
 type Querier interface {
@@ -146,7 +146,7 @@ type Querier interface {
 }
 ```
 
-How it can be used:
+如何使用它：
 
 ```go
 query.User.QueryWith(&User{Name: "zhangqiang"})
@@ -167,7 +167,7 @@ type Querier interface {
 }
 ```
 
-With the generated code, you can use it like:
+使用生成的代码，您可以使用它：
 
 ```go
 query.User.Query(10)

@@ -34,7 +34,7 @@ sidebar:
     batch: Procesamiento de Lote
     associations: Asociaciones
     belongs_to: Pertenece a
-    has_one: Tiene un
+    has_one: Tiene uno
     has_many: Tiene muchos
     many_to_many: Muchos a muchos
     association_mode: Tipos de asociación

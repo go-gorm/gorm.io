@@ -14,7 +14,7 @@ type Product struct {
 }
 ```
 
-**Note** integer `PrioritizedPrimaryField` enables `AutoIncrement` by default, to disable it, you need to turn off `autoIncrement` for the int fields:
+**Nota** entero `PrioritizedPrimaryField` habilita `AutoIncrement` por defecto, para deshabilitarlo, necesita desactivar `autoIncremento` para los campos int:
 
 ```go
 type Product struct {

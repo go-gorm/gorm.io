@@ -1,9 +1,9 @@
 ---
-title: Connecting to a Database
+title: Conectarse a una base de datos
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
+GORM soporta oficialmente las bases de datos MySQL, PostgreSQL, SQLite, SQL Server y TiDB
 
 ## MySQL
 
@@ -21,10 +21,10 @@ func main() {
 ```
 
 {% note warn %}
-**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+**NOTA:** Para manejar `time.Time` correctamente, necesita incluir `parseTime` como parámetro. ([más parámetros](https://github.com/go-sql-driver/mysql#parameters)) Para soportar completamente la codificación UTF-8, necesita cambiar `charset=utf8` a `charset=utf8mb4`. Ver [este artículo](https://mathiasbynens.be/notes/mysql-utf8mb4) para una explicación detallada
 {% endnote %}
 
-MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
+El controlador MySQL proporciona [algunas configuraciones avanzadas](https://github.com/go-gorm/mysql) que pueden ser usadas durante la inicialización, por ejemplo:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -37,9 +37,9 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### Driver Personalizado
 
-GORM allows to customize the MySQL driver with the `DriverName` option, for example:
+GORM permite personalizar el controlador MySQL con la opción `DriverName`, por ejemplo:
 
 ```go
 import (
@@ -54,9 +54,9 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Existing database connection
+### Conexión a la base de datos existente
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM permite inicializar `*gorm.DB` con una conexión de base de datos existente
 
 ```go
 import (
@@ -83,7 +83,7 @@ dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=dis
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+Estamos usando [pgx](https://github.com/jackc/pgx) como controlador de base de datos/sql de postgres, la caché de declaración se habilita por defecto, para deshabilitarla:
 
 ```go
 // https://github.com/go-gorm/postgres
@@ -93,9 +93,9 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### Driver Personalizado
 
-GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
+GORM permite personalizar el controlador de PostgreSQL con la opción `DriverName`, por ejemplo:
 
 ```go
 import (
@@ -109,9 +109,9 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 })
 ```
 
-### Existing database connection
+### Conexión de base de datos existente
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM permite inicializar `*gorm.DB` con una conexión de base de datos existente
 
 ```go
 import (
@@ -140,7 +140,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
 {% note warn %}
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**NOTA:** También puedes usar `archivo::memory:?cache=shared` en lugar de una ruta a un archivo. Esto le dirá a SQLite que utilice una base de datos temporal en la memoria del sistema. (Ver [docs SQLite](https://www.sqlite.org/inmemorydb.html) para esto)
 {% endnote %}
 
 ## SQL Server
@@ -158,13 +158,13 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## TiDB
 
-TiDB is compatible with MySQL protocol. You can follow the [MySQL](#mysql) part to create a connection to TiDB.
+TiDB es compatible con el protocolo MySQL. Puedes seguir la parte de [MySQL](#mysql) para crear una conexión a TiDB.
 
-There are some points noteworthy for TiDB:
+Hay algunos puntos destacables para TiDB:
 
-- You can use `gorm:"primaryKey;default:auto_random()"` tag to use [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) feature for TiDB.
-- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
-- TiDB supported [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key) from `v6.6.0`, please notice the version of TiDB when you use this feature.
+- Puedes usar la etiqueta `gorm:"primaryKey;default:auto_random()"` para usar [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) función para TiDB.
+- TiDB soportó [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) de `v6.2.0`, por favor tenga en cuenta la versión de TiDB cuando utilice esta función.
+- TiDB soportó [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key) de `v6.6.0`, por favor note la versión de TiDB cuando utilice esta función.
 
 ```go
 import (
@@ -233,9 +233,9 @@ func main() {
 }
 ```
 
-## Connection Pool
+## Pool de Conexión
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM usando [database/sql](https://pkg.go.dev/database/sql) para mantener el pool de conexiones
 
 ```go
 sqlDB, err := db.DB()
@@ -250,10 +250,10 @@ sqlDB.SetMaxOpenConns(100)
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+Consulte [Interfaz Genérica](generic_interface.html) para más detalles
 
-## Unsupported Databases
+## Bases de datos no soportadas
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+Algunas bases de datos pueden ser compatibles con el dialecto de `mysql` o de `postgres `, en cuyo caso podría usar el dialect para esas bases de datos.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+¡Para otros, [se te anima a hacer un driver, pull request son bienvenida!](write_driver.html)

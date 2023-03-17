@@ -3,9 +3,9 @@ title: 创建Gen
 layout: page
 ---
 
-## Create record
+## 创建
 
-You can insert a record using the type-safe `Create` method, which only accepts pointer of current model when creating data
+您可以使用安全类型 `创建` 方法插入记录，该方法只能在创建数据时接受当前模型的指针。
 
 ```go
 // u refer to query.user
@@ -17,9 +17,9 @@ err := u.WithContext(ctx).Create(&user) // pass pointer of data to Create
 err // returns error
 ```
 
-## Create record with selected fields
+## 用选定字段的来创建
 
-You can use `Select` when creating data, it will only insert those selected fields
+您可以在创建数据时使用 `Select` ，指定插入的字段
 
 ```go
 u := query.User
@@ -27,7 +27,7 @@ u.WithContext(ctx).Select(u.Name, u.Age).Create(&user)
 // INSERT INTO `users` (`name`,`age`) VALUES ("modi", 18)
 ```
 
-ignore fields with `Omit`
+忽略字段使用 `Omit`
 
 ```go
 u := query.User
@@ -35,9 +35,9 @@ u.WithContext(ctx).Omit(u.Name, u.Age).Create(&user)
 // INSERT INTO `users` (`address`, `birthday`) VALUES ("2021-08-17 20:54:12.000", 18)
 ```
 
-## Batch Insert
+## 批量插入
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values.
+更高效地插入大量记录，可以将一个 slice 传递给 `Create` 方法。 将切片数据传递给 Create 方法，GORM 将生成单个 SQL 语句来插入所有数据，并回填主键的值。
 
 ```go
 var users = []*model.User{{Name: "modi"}, {Name: "zhangqiang"}, {Name: "songyuan"}}
@@ -48,7 +48,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+使用 `CreateInBatches` 创建时，你还可以指定创建的数量，例如：
 
 ```go
 var users = []*User{{Name: "modi_1"}, ...., {Name: "modi_10000"}}
@@ -76,7 +76,7 @@ u.WithContext(ctx).Create(&users)
 
 ## Upsert / On Conflict
 
-Gen provides compatible Upsert support for different databases
+Gen 为不同数据库提供兼容的 Upsert 支持
 
 ```go
 import "gorm.io/gorm/clause"

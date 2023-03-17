@@ -70,9 +70,9 @@ result.RowsAffected // affect rows number
 err                 // error
 ```
 
-## Update from SubQuery
+## 根据子查询进行更新
 
-Update a table by using SubQuery
+使用子查询更新单个字段
 
 ```go
 u := query.User
@@ -84,9 +84,9 @@ u.WithContext(ctx).Update(u.CompanyName, c.Select(c.Name).Where(c.ID.EqCol(u.Com
 u.WithContext(ctx).Where(u.Name.Eq("modi")).Update(u.CompanyName, c.Select(c.Name).Where(c.ID.EqCol(u.CompanyID)))
 ```
 
-## Update multiple columns from SubQuery
+## 根据子查询更新多个字段
 
-Update multiple columns by using SubQuery (for MySQL):
+使用 SubQuery (MySQL) 更新多字段：
 
 ```go
 u := query.User

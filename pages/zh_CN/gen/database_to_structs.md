@@ -5,7 +5,7 @@ layout: page
 
 ## Quick Start
 
-Gen supports generate structs from databases following GORM conventions, it can be used like:
+Gen 支持所有GORM Driver从数据库生成结构, 使用示例:
 
 ```go
 // Generate struct `User` based on table `users`
@@ -21,9 +21,9 @@ g.GenerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64"
 g.GenerateAllTable()
 ```
 
-## Methods Template
+## 模板方法
 
-When generating structs from database, you can also generate methods with a template for them by the way, for example:
+当从数据库生成结构时，您也可以通过面的方式，给生成的model添加模板方法，例如：
 
 ```Go
 type CommonMethod struct {
@@ -87,9 +87,9 @@ func (m *User) GetName() string {
   return *m.Name
 }
 ```
-### DIY TableName
+### 自定义表名称
 
-When generating structs from database, you can also diy table name for them by the way, for example:
+当从数据库生成结构时，您也可以通过实现自己的TableName方法，例如：
 
 ```Go
 type CommonMethod struct {
@@ -149,9 +149,9 @@ FieldRelate        // specify relationship with other tables
 FieldRelateModel   // specify the relationship with existing models
 ```
 
-## Global Generating Options
+## 全局生成选项
 
-Gen has some global options that could be setup in the `gen.Config`, here is the list:
+Gen 有一些全局选项可以在 `gen.Config`中设置：
 
 ```go
 g := gen.NewGenerator(gen.Config{
@@ -200,9 +200,9 @@ WithImportPkgPath(paths ...string)
 WithOpts(opts ...ModelOpt)
 ```
 
-### Data Mapping
+### 数据类型映射
 
-Specify datatype mapping between field type and db column type.
+指定model属性类型和 db 字段类型之间的映射关系。
 
 ```go
 dataMap := map[string]func(detailType string) (dataType string){

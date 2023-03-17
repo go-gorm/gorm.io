@@ -3,7 +3,7 @@ title: Gen Transaction
 layout: page
 ---
 
-The process of using transaction functions is as follows
+使用事务：
 
 ```go
 q := query.Use(db)
@@ -19,9 +19,9 @@ q.Transaction(func(tx *query.Query) error {
 })
 ```
 
-## Nested Transactions
+## 嵌套事务
 
-GEN supports nested transactions, you can rollback a subset of operations performed within the scope of a larger transaction, for example:
+GORM 支持嵌套事务，您可以回滚较大事务内执行的一部分操作，例如：
 
 ```go
 q := query.Use(db)
@@ -45,27 +45,25 @@ q.Transaction(func(tx *query.Query) error {
 // Commit user1, user3
 ```
 
-## Transactions by manual
+## 手动事务
 
 ```go
-q := query.Use(db)
+// 开始事务
+tx := db.Begin()
 
-// begin a transaction
-tx := q.Begin()
-
-// do some database operations in the transaction (use 'tx' from this point, not 'db')
-tx.User.WithContext(ctx).Create(...)
+// 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
+tx.Create(...)
 
 // ...
 
-// rollback the transaction in case of error
+// 遇到错误时回滚事务
 tx.Rollback()
 
-// Or commit the transaction
+// 否则，提交事务
 tx.Commit()
 ```
 
-For example:
+例如:
 
 ```go
 q := query.Use(db)
@@ -88,7 +86,7 @@ func doSomething(ctx context.Context, users ...*model.User) (err error) {
 
 ## SavePoint/RollbackTo
 
-GEN provides `SavePoint`, `RollbackTo` to save points and roll back to a savepoint, for example:
+GORM 提供了 `SavePoint`、`Rollbackto` 方法，来提供保存点以及回滚至保存点功能，例如：
 
 ```go
 tx := q.Begin()

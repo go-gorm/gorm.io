@@ -3,11 +3,11 @@ title: Clauses
 layout: page
 ---
 
-Gen also support GORM Clauses, their use is similar to Gorm.
+Gen也支持GORM Clauses，其使用类似于Gorm。
 
 ## Upsert
 
-Gen provides compatible Upsert support for different databases [like GORM](../docs/create.html#upsert)
+Gen 为不同数据库提供兼容的 Upsert 支持 [就像GORM](../docs/create.html#upsert)
 
 ```go
 u := query.User
@@ -21,7 +21,7 @@ u.Clauses(clause.OnConflict{UpdateAll: true}).Create(value).Error
 
 ## Hints
 
-Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with [gorm.io/hints](../docs/hints.html), e.g:
+优化器提示用于控制查询优化器选择某个查询执行计划，Gen 通过 [gorm.io/hints](../docs/hints.html) 提供支持，例如：
 
 ```go
 import "gorm.io/hints"
@@ -32,7 +32,7 @@ users, err := u.WithContext(ctx).Clauses(hints.New("MAX_EXECUTION_TIME(10000)"))
 // SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Index hints allow passing index hints to the database in case the query planner gets confused.
+Index hints允许指定查询使用的索引
 
 ```go
 import "gorm.io/hints"
