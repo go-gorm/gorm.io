@@ -3,7 +3,7 @@ title: Gen Tool
 layout: page
 ---
 
-Gen Tool is a single binary without dependencies can be used to generate structs from database
+Gen Tool 是一个没有依赖关系的二进制文件，可以用来从数据库生成结构
 
 ## Install
 
@@ -48,43 +48,43 @@ go install gorm.io/gen/tools/gentool@latest
 
 #### c
 
-Configuration file name, default value "", command line options have higher priority than configuration file.
+配置文件名、默认值 ""、命令行选项的优先级高于配置文件。
 
 #### db
 
-Specify dirver dialector, default value "mysql", refer: https://gorm.io/docs/connecting_to_the_database.html
+指定Driver，默认值“mysql”，referer：https://gorm.io/docs/connecting_to_the_database.html
 
 #### dsn
 
-DSN that used to connect database, refer: https://gorm.io/docs/connecting_to_the_database.html
+用于连接数据库的DSN reference: https://gorm.io/docs/connecting_to_the_database.html
 
 #### fieldNullable
 
-Generate with pointer when field is nullable
+当字段允许空时用指针生成
 
 #### fieldWithIndexTag
 
-Generate field with gorm index tag
+生成带有gorm index 标签的字段
 
 #### fieldWithTypeTag
 
-Generate field with gorm column type tag
+生成带有gorm type标签的字段
 
 #### modelPkgName
 
-Generated model code's package name.
+生成模型代码包名称。
 
 #### outFile
 
-Genrated query code file name, default: gen.go
+Genrated 查询代码文件名称，默认值：gen.go
 
 #### outPath
 
-Specify a directory for output (default "./dao/query")
+指定输出目录(默认 "./dao/query")
 
 #### tables
 
-Specify tables want to genrated from, default all tables.
+指定要生成的表名称，默认所有表。
 
 eg :
 
@@ -98,7 +98,7 @@ Generate some tables code.
 
 #### withUnitTest
 
-Generate unit test, default value `false`, options: `false` / `true`
+生成单元测试，默认值 `fals`, 选项: `false` / `true`
 
 #### fieldSignable
 
