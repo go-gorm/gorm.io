@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // cientos de campos
+  // hundreds of fields
 }
 
 type APIUser struct {
@@ -21,7 +21,7 @@ type APIUser struct {
   Name string
 }
 
-// Select `id`, `name` automáticamente cuando consulta
+// Select `id`, `name` automatically when querying
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
@@ -36,9 +36,9 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // con esta opción
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
 
-// Modo de sesión
+// Session Mode
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
@@ -51,13 +51,13 @@ GORM soporta diferentes tipos de bloqueos, por ejemplo:
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SELECT * FROM `users` FOR UPDATE
 
-db. lauses(clause.Locking{
-  Fuerza: "SHARE",
-  Tabla: cláusula.Table{Name: clause.CurrentTable},
-}). ind(&users)
+db.Clauses(clause.Locking{
+  Strength: "SHARE",
+  Table: clause.Table{Name: clause.CurrentTable},
+}).Find(&users)
 // SELECT * FROM `users` FOR SHARE OF `users`
 
-db.Clauses(clause. ocking{
+db.Clauses(clause.Locking{
   Strength: "UPDATE",
   Options: "NOWAIT",
 }).Find(&users)
@@ -71,12 +71,12 @@ Consulte [Raw SQL y SQL Builder](sql_builder.html) para más detalles
 Una subconsulta puede ser anidada dentro de una consulta, GORM puede generar subconsulta al usar un objeto `*gorm.DB` como parámetro
 
 ```go
-db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")). ind(&orders)
+db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 // SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
-subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%"). able("usuarios")
-db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery). ind(&results)
-// SELECT AVG(age) as avgage FROM `users` GROUP BY `name` TIENE AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
+subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
+db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery).Find(&results)
+// SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
 ### <span id="from_subquery">Desde Subconsulta</span>
@@ -99,10 +99,10 @@ Fácil de escribir una consulta SQL complicada con las condiciones de grupo
 
 ```go
 db.Where(
-    db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small"). r("size = ?", "medium")),
+    db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small").Or("size = ?", "medium")),
 ).Or(
-    db.Where("pizza = ?", "hawaiian"). aquí("size = ?", "xlarge"),
-).Find(&Pizza{}). tatement
+    db.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
+).Find(&Pizza{}).Statement
 
 // SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
@@ -163,17 +163,17 @@ db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 Inicializar estructura con más atributos si no se encuentra el registro, esos `Attrs` no se utilizarán para construir la consulta SQL
 
 ```go
-// Usuario no encontrado, inicializar con condiciones y Attrs
+// User not found, initialize it with give conditions and Attrs
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// Usuario no encontrado, inicializar con condiciones y Attrs
+// User not found, initialize it with give conditions and Attrs
 db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
-// Usuario encontrado con `name` = `jinzhu`, los atributos serán ignorados
+// Found user with `name` = `jinzhu`, attributes will be ignored
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
@@ -182,11 +182,11 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 `Assign` atributos al struct independientemente de que se encuentre o no, esos atributos no se utilizarán para construir una consulta SQL y los datos finales no se guardarán en la base de datos
 
 ```go
-// Usuario no encontrado, inicialízalo con condiciones y Asigne atributos
+// User not found, initialize it with give conditions and Assign attributes
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // user -> User{Name: "non_existing", Age: 20}
 
-// Usuario encontrado con `name` = `jinzhu`, actualízalo con Asignar atributos
+// Found user with `name` = `jinzhu`, update it with Assign attributes
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 20}
@@ -197,13 +197,13 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 Obtenga el primer registro coincidente o cree uno nuevo con las condiciones dadas (solo funciona con struct, las condiciones del mapa), `RowsAfected` devuelve el conteo de registros creado/actualizado
 
 ```go
-// Usuario no encontrado, crea un nuevo registro con condiciones
+// User not found, create a new record with give conditions
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 // result.RowsAffected // => 1
 
-// Usuario encontrado con `name` = `jinzhu`
+// Found user with `name` = `jinzhu`
 result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 // result.RowsAffected // => 0
@@ -212,13 +212,13 @@ result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 Inicializar struct con más atributos si no se encuentra el registro, esos `Attrs` no se utilizarán para construir la consulta SQL
 
 ```go
-// Usuario no encontrado, inicializar con condiciones y Attrs
+// User not found, create it with give conditions and Attrs
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Usuario encontrado con `name` = `jinzhu`, los atributos serán ignorados
+// Found user with `name` = `jinzhu`, attributes will be ignored
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
@@ -227,13 +227,13 @@ db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 `Assign` atributos al registro independientemente de que se encuentre o no y guardarlos de vuelta a la base de datos.
 
 ```go
-// Usuario no encontrado, inicializar con condiones y con atributo Assign 
+// User not found, initialize it with give conditions and Assign attributes
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Usuario encontrado con `name` = `jinzhu`, actualiza con atributos Assing
+// Found user with `name` = `jinzhu`, update it with Assign attributes
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 // UPDATE users SET age=20 WHERE id = 111;
@@ -287,24 +287,24 @@ for rows.Next() {
 Consultar y procesar registros en lote
 
 ```go
-// lote de 100
+// batch size 100
 result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // procesamiento por lotes de registros encontrados
+    // batch processing found records
   }
 
   tx.Save(&results)
 
-  tx.RowsAffected // numero de registros en este lote
+  tx.RowsAffected // number of records in this batch
 
-  batch // Lote 1, 2, 3
+  batch // Batch 1, 2, 3
 
-  // retorna error y detendrá futuros lotes 
+  // returns error will stop future batches
   return nil
 })
 
-result.Error // error retornado
-result.RowsAffected // conteo de todos los registros en el lote
+result.Error // returned error
+result.RowsAffected // processed records count in all batches
 ```
 
 ## Consultas Hooks
@@ -337,7 +337,7 @@ db.Table("deleted_users").Pluck("name", &names)
 db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SELECT DISTINCT `name` FROM `users`
 
-// Solicita más de una columna, use `Scan` or `Find` así:
+// Requesting more than one column, use `Scan` or `Find` like this:
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
@@ -375,11 +375,11 @@ db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(
 // Find all paid, shipped orders that amount greater than 1000
 ```
 
-Checkout [Scopes](scopes.html) for details
+Consulta [Scopes](scopes.html) para más detalles
 
-## <span id="count">Count</span>
+## <span id="count">Recuento</span>
 
-Get matched records count
+Obtener recuento de registros coincidentes
 
 ```go
 var count int64
