@@ -1,11 +1,11 @@
 ---
-title: GORM Community
+title: Comunidad GORM
 layout: page
 ---
 
-## Ask
+## Preguntar
 
-**[How do I ask a good question?](https://stackoverflow.com/help/how-to-ask)**
+**[¿Cómo hago una buena pregunta?](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
 * Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
@@ -14,34 +14,34 @@ layout: page
 
 * Gitter - [https://gitter.im/jinzhu/gorm](https://gitter.im/jinzhu/gorm)
 
-## Links
+## Enlaces
 
-* An admin system based on GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
+* Un sistema de administración basado en GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
-* Go-admin is a middle background framework based on Gorm  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
+* Go-admin es un middle framework basado en Gorm - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
-* Article that validate GORM as ORM to Golang with CRUD implementation with SQLite database on tests - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
+* Artículo que valida GORM como ORM de Golang con la implementación de CRUD con la base de datos SQLite en pruebas - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
 
-* [Strongly typed JSON/JSONB fields in GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
+* [Campos JSON/JSONB fuertemente escritos en GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
 
-* [Using GORM concurrently is not safe](https://zhuanlan.zhihu.com/p/556065676)
+* [El uso simultáneo de GORM no es seguro](https://zhuanlan.zhihu.com/p/556065676)
 
-## Videos
+## Vídeos
 
-* Gorm quick start tutorial by [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
+* Gorm tutorial de inicio rápido por [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
 
-## Open Sources
+## Código abierto
 
 * [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
 * [go-paginate - cursor-based pagination](https://github.com/raphaelvigee/go-paginate)
 * [zapgorm - Uber's Zap logging driver for gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber's Zap logging driver for gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
-* [gorm-newrelic-telemetry-plugin - A plugin to allow telemetry by NewRelic Go Agent for GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
+* [gorm-newrelic-telemetry-plugin - plugin que permite telemetría NewRelic Go Agent para GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
 * [Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
-* [Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
+* [Asociar usuarios con roles y permisos](https://github.com/Permify/permify-gorm)
 * [gorm-cache - GORM query cache plugin](https://github.com/liyuan1125/gorm-cache)
-* [deepgorm - Nested map filtering](https://github.com/survivorbat/gorm-deep-filtering)
+* [deepgorm - Filtrado de mapas anidados](https://github.com/survivorbat/gorm-deep-filtering)
 
-## <span id="contribute">Contribute to this page</span>
+## <span id="contribute">Contribuye a esta página</span>
 
-Please edit [this page](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) to add your awesome links
+Por favor edite [esta página](https://github.com/go-gorm/gorm.io/edit/master/pages/community.md) para añadir enlaces impresionantes
