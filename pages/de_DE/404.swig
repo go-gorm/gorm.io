@@ -1,7 +1,7 @@
 ---
 layout: raw
 description: Die fantastische ORM Bibliothek für Golang, stets auf Entwickler-Freundlichkeit aus.
-Die fantastische ORM Bibliothek für Golang
+subtitle: Die fantastische ORM Bibliothek für Golang
 comments: false
 ---
 
