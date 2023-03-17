@@ -1,5 +1,5 @@
 ---
-title: Change Log
+title: Registro de Cambios
 layout: page
 ---
 
