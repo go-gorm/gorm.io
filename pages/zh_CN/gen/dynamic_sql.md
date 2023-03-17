@@ -3,9 +3,9 @@ title: Dynamic SQL
 layout: page
 ---
 
-Gen allows generate fully-type-safe idiomatic Go code from Raw SQL, it uses annotations on interfaces, those interfaces could be applied to multiple models during code generation.
+通过接口上添加注释的方式，Gen 允许从 Raw SQL 生成完全安全的通用 Go 代码， 这些接口可以在代码生成过程中应用于多个model。
 
-Not only your tuned SQL queries but also SQL snippets are allowed to be shared and reused, let's take an example:
+不仅支持完整的 SQL，也支持SQL 代码片段生成使用，让我们举一个例子：
 
 ## Raw SQL
 
@@ -36,7 +36,7 @@ g.ApplyInterface(func(Querier) {}, model.User{}, g.GenerateModel("employee"))
 g.Execute()
 ```
 
-Run the above configuration program to generate the query interface codes for your application, and use the generated code like:
+运行上面的配置程序，为您的应用程序生成查询代码。如何使用生成的代码：
 
 ```go
 import "your_project/query"
@@ -50,9 +50,9 @@ func main() {
 }
 ```
 
-## Code Snippets
+## 代码段
 
-Code Snippets are usually used with the [DAO interface](./dao.html) together
+代码片段通常与 [DAO 接口一起使用](./dao.html)
 
 ```go
 type Querier interface {
@@ -84,4 +84,4 @@ func main() {
 
 ## More control
 
-`Gen` support conditionally annotations and customize the returning results, refer [Annotation](./sql_annotation.html) to learn more
+`Gen` 支持有条件的注释并自定义返回的结果，参考 [注释](./sql_annotation.html) 了解更多
