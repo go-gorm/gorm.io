@@ -5,7 +5,7 @@ layout: page
 
 GEN 支持像 GORM 一样的处理关联的方式。 关系(属于To/HasOne/HasMany2Many) 重新使用GORM的标签。 支持关联已经存在的model，或者关联数据库中的表两种方式。
 
-## Relation
+## 关联
 
 Gen 支持四种关联方式。
 
@@ -123,7 +123,7 @@ type RelateConfig struct {
 }
 ```
 
-## Operation
+## 操作
 
 ### 跳过自动创建、更新
 
@@ -159,9 +159,9 @@ u.WithContext(ctx).Omit(field.AssociationFields).Create(&user)
 
 方法 ` Field ` 将通过 '.'进行连接, 例如: `u.BillingAddress.Field("Address1", "Street")` 等于 `BillingAddress.Address.Address.Address.Street`
 
-### Find Associations
+### 查找关联
 
-查找匹配的关联表数据
+查找匹配的关联
 
 ```go
 u := query.Use(db).User
@@ -178,7 +178,7 @@ u := q.User
 languages, err = u.Languages.Where(q.Language.Name.In([]string{"ZH","EN"})).Model(&user).Find()
 ```
 
-### Append Associations
+### 添加关联
 
 Append 可以添加新的关联关系`many to many`、`has many` ；替换已经存在的关联关系 `has one`, `belongs to`
 
@@ -192,7 +192,7 @@ u.Languages.Model(&user).Append(&Language{Name: "DE"})
 u.CreditCards.Model(&user).Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### 替换关联
 
 用新的关联关系替换当前存在的关联关联关系
 
@@ -200,7 +200,7 @@ u.CreditCards.Model(&user).Append(&CreditCard{Number: "411111111111"})
 u.Languages.Model(&user).Replace(&languageZH, &languageEN)
 ```
 
-### Delete Associations
+### 删除关联
 
 如果存在，则删除源模型与参数之间的关系，只会删除引用，不会从数据库中删除这些对象。
 
@@ -212,7 +212,7 @@ u.Languages.Model(&user).Delete(&languageZH, &languageEN)
 u.Languages.Model(&user).Delete([]*Language{&languageZH, &languageEN}...)
 ```
 
-### Clear Associations
+### 清除关联
 
 删除源 & 关联之间的所有引用，不会删除这些关联
 
