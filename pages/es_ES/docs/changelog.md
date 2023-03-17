@@ -5,35 +5,35 @@ layout: page
 
 ## v2.0 - 2020.08
 
-GORM 2.0 is a rewrite from scratch, it introduces some incompatible-API change and many improvements
+GORM 2.0 es una reescritura desde cero, introduce algún cambio incompatible-API y muchas mejoras
 
-* Performance Improvements
-* Modularity
-* Context, Batch Insert, Prepared Statement Mode, DryRun Mode, Join Preload, Find To Map, Create From Map, FindInBatches supports
-* Nested Transaction/SavePoint/RollbackTo SavePoint supports
-* Named Argument, Group Conditions, Upsert, Locking, Optimizer/Index/Comment Hints supports, SubQuery improvements
-* Full self-reference relationships supports, Join Table improvements, Association Mode for batch data
-* Multiple fields support for tracking create/update time, which adds support for UNIX (milli/nano) seconds
-* Field permissions support: read-only, write-only, create-only, update-only, ignored
-* New plugin system: multiple databases, read/write splitting support with plugin Database Resolver, prometheus integrations...
-* New Hooks API: unified interface with plugins
-* New Migrator: allows to create database foreign keys for relationships, constraints/checker support, enhanced index support
-* New Logger: context support, improved extensibility
-* Unified Naming strategy: table name, field name, join table name, foreign key, checker, index name rules
-* Better customized data type support (e.g: JSON)
+* Mejoras de rendimiento
+* Modularidad
+* Contexto, Inserción por Lote, Modo de Declaración Preparada, Modo DryRun, Join en Precarga, Buscar Mapa, Crear desde Mapa, soporta búsqueda en lotes
+* Soporte a Transacción Anidadas/Punto de Guardar/Rollback Anidado
+* Soporta argumentos nombrados, condiciones de grupo, Upsert, bloqueo, optimizador/índice/Comment Hints, mejoras en subconsulta
+* Compatibilidad completa con relaciones autorreferenciadas, mejoras en la tabla, modo de asociación para los datos de los lotes
+* Soporte de múltiples campos para el seguimiento de creación/actualización, lo que añade soporte para UNIX (mill/nano) segundos
+* Soporte de permisos en campo: solo lectura, solo escritura, solo creación, solo actualización, ignorado
+* Nuevo sistema de plugin: múltiples bases de datos, soporte para la división de lectura/escritura con plugin Resolver Base de Datos, integraciones a prometheus...
+* Nueva API de Hooks: interfaz unificada con plugins
+* Nuevo Migrador: permite crear claves foráneas de base de datos para las relaciones, soporte de restricciones/checker, soporte de índices mejorado
+* Nuevo Logger: soporte contextual, extensión mejorada
+* Estrategia unificada de nombres: nombre de la tabla, nombre del campo, nombre de la tabla, clave foránea, checker, reglas del índice
+* Mejor soporte de tipo de datos personalizado (por ejemplo: JSON)
 
-[GORM 2.0 Release Note](v2_release_note.html)
+[Nota de lanzamiento GORM 2.0](v2_release_note.html)
 
 ## v1.0 - 2016.04
 
 [GORM V1 Docs](https://v1.gorm.io)
 
-Breaking Changes:
+Cambios importantes:
 
-* `gorm.Open` returns `*gorm.DB` instead of `gorm.DB`
-* Updating will only update changed fields
-* Soft Delete's will only check `deleted_at IS NULL`
-* New ToDBName logic Common initialisms from [golint](https://github.com/golang/lint/blob/master/lint.go#L702) like `HTTP`, `URI` was converted to lowercase, so `HTTP`'s db name is `http`, but not `h_t_t_p`, but for some other initialisms not in the list, like `SKU`, it's db name was `s_k_u`, this change fixed it to `sku`
-* Error `RecordNotFound` has been renamed to `ErrRecordNotFound`
-* `mssql` dialect has been renamed to `github.com/jinzhu/gorm/dialects/mssql`
-* `Hstore` has been moved to package `github.com/jinzhu/gorm/dialects/postgres`
+* `gorm.Open` devuelve `*gorm.DB` instead of `gorm.DB`
+* Actualizar solo actualizará los campos modificados
+* Soft Delete's solo comprobará `deleted_at IS NULL`
+* Nueva lógica de ToDBName Común inicializador de [golint](https://github.com/golang/lint/blob/master/lint.go#L702) como `HTTP`, `URI` se convirtió en minúsculas, por lo que el nombre del db de `HTTP`es `http`, pero no `h_t_t_p`, pero para algunos otros iniciales no en la lista, como `SKU`, su nombre de db era `s_k_u`, este cambio lo arregló a `sku`
+* Error `RecordNotFound` ha sido renombrado a `ErrRecordNotFound`
+* `mssql` dialect ha sido renombrado a `github.com/jinzhu/gorm/dialects/mssql`
+* `Hstore` se ha movido al paquete `github.com/jinzhu/gorm/dialects/postgres`
