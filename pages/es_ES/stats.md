@@ -1,5 +1,5 @@
 ---
-title: ORM Estadísticas
+title: GORM Stats
 layout: page
 ---
 
