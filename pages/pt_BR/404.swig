@@ -1,8 +1,8 @@
 ---
 layout: raw
-A fantástica biblioteca ORM para Golang, projetada para ser amigável para desenvolvedores.
-A fantástica biblioteca ORM para Golang
-comentários: falso
+description: A fantástica biblioteca ORM para Golang, projetada para ser amigável para desenvolvedores.
+subtitle: A fantástica biblioteca ORM para Golang
+comments: false
 ---
 
 <div class="container page-not-found">

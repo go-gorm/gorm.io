@@ -1,6 +1,6 @@
 ---
-title: एक डेटाबेस से जुड़ना //Connecting to a Database
-layout: पृष्ठ
+title: 'title: एक डेटाबेस से जुड़ना //Connecting to a Database'
+layout: 'layout: page'
 ---
 
 GORM आधिकारिक तौर पर MySQL, PostgreSQL, SQLite, SQL Server और TiDB डेटाबेस का supports करता है
