@@ -299,7 +299,7 @@ type User struct {
 users, err := u.WithContext(ctx).Preload(field.Associations).Find()
 ```
 
-`clause.Associations` won’t preload nested associations, but you can use it with [Nested Preloading](#nested-preloading) together, e.g:
+`clause.Associations`不会预加载嵌套的关联关系，但是你可以将其与[Nested Preloading](#nested-preloading)一起使用， 例如：
 
 ```go
 users, err := u.WithContext(ctx).Preload(u.Orders.OrderItems.Product).Find()
@@ -307,7 +307,7 @@ users, err := u.WithContext(ctx).Preload(u.Orders.OrderItems.Product).Find()
 
 ### Preload with select
 
-Specify selected columns with method `Select`. Foregin key must be selected.
+使用方法 `Select` 指定加载的列. 。 外键必须选择。
 
 ```go
 type User struct {
@@ -332,7 +332,7 @@ users, err := u.WithContext(ctx).Where(c.ID.Eq(1)).Preload(u.CreditCards.Select(
 
 ### Preload with conditions
 
-GEN allows Preload associations with conditions, it works similar to Inline Conditions.
+GEN 允许带条件的 Preload 关联，类似于内联条件.
 
 ```go
 q := query.Use(db)
@@ -367,7 +367,7 @@ user, err := u.WithContext(ctx).Where(u.ID.Eq(1)).Preload(u.Orders.Offset(100).L
 
 ### Nested Preloading
 
-GEN supports nested preloading, for example:
+GEN 支持嵌套预加载，例如：
 
 ```go
 db.Preload(u.Orders.OrderItems.Product).Preload(u.CreditCard).Find(&users)
