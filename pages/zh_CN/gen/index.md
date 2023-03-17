@@ -5,7 +5,7 @@ layout: page
 
 ## GEN Guides
 
-[GEN](https://github.com/go-gorm/gen): Friendly & Safer [GORM](https://github.com/go-gorm/gorm) powered by Code Generation.
+[GEN](https://github.com/go-gorm/gen): 更友好 & 更安全 [GORM](https://github.com/go-gorm/gorm) 代码生成。
 
 ## 概览
 
