@@ -3,7 +3,7 @@ title: Associations
 layout: page
 ---
 
-GEN 支持像 GORM 一样的处理关联的方式。 关系(属于To/HasOne/HasMany2Many) 重新使用GORM的标签。 此功能目前只存在支持模式。
+GEN 支持像 GORM 一样的处理关联的方式。 关系(属于To/HasOne/HasMany2Many) 重新使用GORM的标签。 支持关联已经存在的model，或者关联数据库中的表两种方式。
 
 ## Relation
 
@@ -18,7 +18,7 @@ const (
 )
 ```
 
-### Relate to exist model
+### 关联已经存在的model
 
 ```go
 package model
@@ -36,7 +36,7 @@ type CreditCard struct {
 }
 ```
 
-GEN will detect model's associations:
+GEN 将检测模型的关联：
 
 ```go
 // specify model
@@ -55,9 +55,9 @@ type creditCard struct{
 }
 ```
 
-### Relate to table in database
+### 关联数据库中的表。
 
-The association have to be speified by `gen.FieldRelate`
+关联必须由 `gen.FieldRelate` 指定。
 
 ```go
 card := g.GenerateModel("credit_cards")
@@ -71,7 +71,7 @@ customer := g.GenerateModel("customers", gen.FieldRelate(field.HasMany, "CreditC
 g.ApplyBasic(card, custormer)
 ```
 
-GEN will generate models with associated field:
+GEN 将生成带有关联字段的model：
 
 ```go
 // customers
@@ -94,7 +94,7 @@ type CreditCard struct {
 }
 ```
 
-If associated model already exists, `gen.FieldRelateModel` can help you build associations between them.
+如果关联的mode已经存在， 可以通过`gen.FieldRelateModel` 设置关联。
 
 ```go
 customer := g.GenerateModel("customers", gen.FieldRelateModel(field.HasMany, "CreditCards", model.CreditCard{}, 
@@ -107,7 +107,7 @@ customer := g.GenerateModel("customers", gen.FieldRelateModel(field.HasMany, "Cr
 g.ApplyBasic(custormer)
 ```
 
-### Relate Config
+### 关联配置
 
 ```go
 type RelateConfig struct {
@@ -125,7 +125,7 @@ type RelateConfig struct {
 
 ## Operation
 
-### Skip Auto Create/Update
+### 跳过自动创建、更新
 
 ```go
 user := model.User{
@@ -157,11 +157,11 @@ u.WithContext(ctx).Omit(field.AssociationFields).Create(&user)
 // Skip all associations when creating a user
 ```
 
-Method `Field` will join a serious field name with ''.", for example: `u.BillingAddress.Field("Address1", "Street")` equals to `BillingAddress.Address1.Street`
+方法 ` Field ` 将通过 '.'进行连接, 例如: `u.BillingAddress.Field("Address1", "Street")` 等于 `BillingAddress.Address.Address.Address.Street`
 
 ### Find Associations
 
-Find matched associations
+查找匹配的关联表数据
 
 ```go
 u := query.Use(db).User
@@ -169,7 +169,7 @@ u := query.Use(db).User
 languages, err = u.Languages.Model(&user).Find()
 ```
 
-Find associations with conditions
+查找带条件的关联表数据
 
 ```go
 q := query.Use(db)
@@ -180,7 +180,7 @@ languages, err = u.Languages.Where(q.Language.Name.In([]string{"ZH","EN"})).Mode
 
 ### Append Associations
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+Append 可以添加新的关联关系`many to many`、`has many` ；替换已经存在的关联关系 `has one`, `belongs to`
 
 ```go
 u := query.Use(db).User
@@ -194,7 +194,7 @@ u.CreditCards.Model(&user).Append(&CreditCard{Number: "411111111111"})
 
 ### Replace Associations
 
-Replace current associations with new ones
+用新的关联关系替换当前存在的关联关联关系
 
 ```go
 u.Languages.Model(&user).Replace(&languageZH, &languageEN)
@@ -202,7 +202,7 @@ u.Languages.Model(&user).Replace(&languageZH, &languageEN)
 
 ### Delete Associations
 
-Remove the relationship between source & arguments if exists, only delete the reference, won’t delete those objects from DB.
+如果存在，则删除源模型与参数之间的关系，只会删除引用，不会从数据库中删除这些对象。
 
 ```go
 u := query.Use(db).User
@@ -214,7 +214,7 @@ u.Languages.Model(&user).Delete([]*Language{&languageZH, &languageEN}...)
 
 ### Clear Associations
 
-Remove all reference between source & association, won’t delete those associations
+删除源 & 关联之间的所有引用，不会删除这些关联
 
 ```go
 u.Languages.Model(&user).Clear()
@@ -222,7 +222,7 @@ u.Languages.Model(&user).Clear()
 
 ### Count Associations
 
-Return the count of current associations
+返回当前关联的数量
 
 ```go
 u.Languages.Model(&user).Count()
@@ -230,7 +230,7 @@ u.Languages.Model(&user).Count()
 
 ### Delete with Select
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+你可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
 
 ```go
 u := query.Use(db).User
@@ -247,11 +247,11 @@ db.Select(field.AssociationFields).Delete(&user)
 
 ## Preloading
 
-This feature only support exist model for now.
+支持关联已经存在的model，或者关联数据库中的表两种方式。
 
 ### Preload
 
-GEN allows eager loading relations in other SQL with `Preload`, for example:
+GEN允许使用 `Preload`通过多个SQL来直接加载关联表数据, 例如：
 
 ```go
 type User struct {
@@ -284,7 +284,7 @@ users, err := u.WithContext(ctx).Preload(u.Orders).Preload(u.Profile).Preload(u.
 
 ### Preload All
 
-`clause.Associations` can work with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
+与创建、更新时使用 `Select` 类似，`clause.Associations` 也可以和 `Preload` 一起使用，它可以用来 `预加载` 全部关联，例如：
 
 ```go
 type User struct {
