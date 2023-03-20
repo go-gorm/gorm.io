@@ -16,52 +16,52 @@ Daftarkan panggilan balik ke panggilan balik
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // potong bidang gambar dan unggah ke CDN, kode dummy
+    // crop image fields and upload them to CDN, dummy code
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
-          // Mendapatkan nilai dari bidng
-          if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
+          // Get value from field
+          if fieldValue, isZero := field.ValueOf(db.Statement.Context, db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
             }
           }
         }
       case reflect.Struct:
-        // Mendapatkan nilai dari bidang
-        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); !isZero {
+        // Get value from field
+        if fieldValue, isZero := field.ValueOf(db.Statement.Context, db.Statement.ReflectValue); !isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
 
-        // Menentukan nilai ke bidang
-        err := field.Set(db.Statement.ReflectValue, "newValue")
+        // Set value to field
+        err := field.Set(db.Statement.Context, db.Statement.ReflectValue, "newValue")
       }
     }
 
-    // Semua bidang untuk model saat ini
+    // All fields for current model
     db.Statement.Schema.Fields
 
-    // Semua bidang kunci utama untuk model saat ini
+    // All primary key fields for current model
     db.Statement.Schema.PrimaryFields
 
-    // Bidang kunci utama yang diprioritaskan: bidang dengan nama DB `id` atau kunci utama pertama yang ditentukan
+    // Prioritized primary key field: field with DB name `id` or the first defined primary key
     db.Statement.Schema.PrioritizedPrimaryField
 
-    // Semua hubungan untuk model saat ini
+    // All relationships for current model
     db.Statement.Schema.Relationships
 
-    // Temukan bidang dengan nama bidang atau nama db
+    // Find field with field name or db name
     field := db.Statement.Schema.LookUpField("Name")
 
-    // memproses
+    // processing
   }
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// daftarkan panggilan balik untuk proses Buat
+// register a callback for Create process
 ```
 
 ### Menhapus Panggilan Balik
