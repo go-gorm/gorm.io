@@ -74,7 +74,7 @@ type User struct {
 
 GORM 约定使用 `CreatedAt`、`UpdatedAt` 追踪创建/更新时间。如果您定义了这种字段，GORM 在创建、更新时会自动填充 [当前时间](gorm_config.html#now_func)
 
-要使用不同名称的字段，您可以配置 `autoCreateTime`、`autoUpdateTime` 标签
+要使用不同名称的字段，您可以配置 `autoCreateTime`、`autoUpdateTime` 标签。
 
 如果您想要保存 UNIX（毫/纳）秒时间戳，而不是 time，您只需简单地将 `time.Time` 修改为 `int` 即可
 
