@@ -56,8 +56,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="模型定义模型是标准的 struct，由 Go 的基本数据类型、实现了 Scanner 和 Valuer 接口的自定义类型及其指针或别名组成 例如： type User struct &amp;#123;  ID           uint  Name         string  Email        *string  Age          uint8  Birthday     *time.">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-08T03:36:27.955Z">
-<meta property="article:modified_time" content="2023-03-08T03:36:27.955Z">
+<meta property="article:published_time" content="2023-03-23T02:44:17.461Z">
+<meta property="article:modified_time" content="2023-03-23T02:44:17.461Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -155,7 +155,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:create"`</span> <span class="comment">// 允许读和创建</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:update"`</span> <span class="comment">// 允许读和更新</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-"`</span>        <span class="comment">// 允许读和写（创建和更新）</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:false"`</span>  <span class="comment">// 允许读，禁止写</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;"`</span>        <span class="comment">// 只读（除非有自定义配置，否则禁止写）</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;;&lt;-:create"`</span> <span class="comment">// 允许读和写</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;:false;&lt;-:create"`</span> <span class="comment">// 仅创建（禁止从 db 读）</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-"`</span>  <span class="comment">// 通过 struct 读写会忽略该字段</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-:all"`</span>        <span class="comment">// 通过 struct 读写、迁移会忽略该字段</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-:migration"`</span>  <span class="comment">// 通过 struct 迁移会忽略该字段</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="创建-x2F-更新时间追踪（纳秒、毫秒、秒、Time）" class="article-heading"><a href="#创建-x2F-更新时间追踪（纳秒、毫秒、秒、Time）" class="headerlink" title="创建/更新时间追踪（纳秒、毫秒、秒、Time）"></a><name id="time_tracking">创建/更新时间追踪（纳秒、毫秒、秒、Time）</name><a class="article-anchor" href="#创建-x2F-更新时间追踪（纳秒、毫秒、秒、Time）" aria-hidden="true"></a></h3><p>GORM 约定使用 <code>CreatedAt</code>、<code>UpdatedAt</code> 追踪创建/更新时间。如果您定义了这种字段，GORM 在创建、更新时会自动填充 <a href="gorm_config.html#now_func">当前时间</a></p>
-<p>要使用不同名称的字段，您可以配置 <code>autoCreateTime</code>、<code>autoUpdateTime</code> 标签</p>
+<p>要使用不同名称的字段，您可以配置 <code>autoCreateTime</code>、<code>autoUpdateTime</code> 标签。</p>
 <p>如果您想要保存 UNIX（毫/纳）秒时间戳，而不是 time，您只需简单地将 <code>time.Time</code> 修改为 <code>int</code> 即可</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  CreatedAt time.Time <span class="comment">// 在创建时，如果该字段值为零值，则使用当前时间填充</span></span><br><span class="line">  UpdatedAt <span class="type">int</span>       <span class="comment">// 在创建时该字段值为零值或者在更新时，使用当前时间戳秒数填充</span></span><br><span class="line">  Updated   <span class="type">int64</span> <span class="string">`gorm:"autoUpdateTime:nano"`</span> <span class="comment">// 使用时间戳纳秒数填充更新时间</span></span><br><span class="line">  Updated   <span class="type">int64</span> <span class="string">`gorm:"autoUpdateTime:milli"`</span> <span class="comment">// 使用时间戳毫秒数填充更新时间</span></span><br><span class="line">  Created   <span class="type">int64</span> <span class="string">`gorm:"autoCreateTime"`</span>      <span class="comment">// 使用时间戳秒数填充创建时间</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
@@ -283,7 +283,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2023-03-08T03:36:27.955Z" itemprop="dateModified">最后更新于 2023-03-08</time>
+                <time class="article-footer-updated" datetime="2023-03-23T02:44:17.461Z" itemprop="dateModified">最后更新于 2023-03-23</time>
 <a href="index.html" class="article-footer-prev" title="概述"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="connecting_to_the_database.html" class="article-footer-next" title="连接到数据库"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 

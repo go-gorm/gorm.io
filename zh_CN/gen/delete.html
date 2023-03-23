@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="Delete recordWhen deleting a record, it needs to have any conditions or it will raise error ErrMissingWhereClause, for example: e :&#x3D; query.Email&#x2F;&#x2F; Email&amp;#x27;s ID is &#96;10&#96;e.WithContext(ctx).Where(e.ID.">
+  <meta name="description" content="删除记录当删除一条记录时，需要满足一些条件否则程序会抛出ErrMissingWhereClause异常，例如： e :&#x3D; query.Email&#x2F;&#x2F; Email 的 ID 是 10e.WithContext(ctx).Where(e.ID.Eq(10)).Delete()&#x2F;&#x2F; DELETE from emails where id &#x3D; 10;&#x2F;&#x2F; 有附加条件的删除e.WithContext(ctx">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Gen Delete">
 <meta property="og:url" content="https://gorm.io/zh_CN/gen/delete.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="Delete recordWhen deleting a record, it needs to have any conditions or it will raise error ErrMissingWhereClause, for example: e :&#x3D; query.Email&#x2F;&#x2F; Email&amp;#x27;s ID is &#96;10&#96;e.WithContext(ctx).Where(e.ID.">
+<meta property="og:description" content="删除记录当删除一条记录时，需要满足一些条件否则程序会抛出ErrMissingWhereClause异常，例如： e :&#x3D; query.Email&#x2F;&#x2F; Email 的 ID 是 10e.WithContext(ctx).Where(e.ID.Eq(10)).Delete()&#x2F;&#x2F; DELETE from emails where id &#x3D; 10;&#x2F;&#x2F; 有附加条件的删除e.WithContext(ctx">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-08T03:36:27.959Z">
-<meta property="article:modified_time" content="2023-03-08T03:36:27.959Z">
+<meta property="article:published_time" content="2023-03-23T02:44:17.465Z">
+<meta property="article:modified_time" content="2023-03-23T02:44:17.465Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -138,10 +138,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><h2 id="Delete-record" class="article-heading"><a href="#Delete-record" class="headerlink" title="Delete record"></a>Delete record<a class="article-anchor" href="#Delete-record" aria-hidden="true"></a></h2><p>When deleting a record, it needs to have any conditions or it will raise error <code>ErrMissingWhereClause</code>, for example:</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">e := query.Email</span><br><span class="line"></span><br><span class="line"><span class="comment">// Email's ID is `10`</span></span><br><span class="line">e.WithContext(ctx).Where(e.ID.Eq(<span class="number">10</span>)).Delete()</span><br><span class="line"><span class="comment">// DELETE from emails where id = 10;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Delete with additional conditions</span></span><br><span class="line">e.WithContext(ctx).Where(e.ID.Eq(<span class="number">10</span>), e.Name.Eq(<span class="string">"modi"</span>)).Delete()</span><br><span class="line"><span class="comment">// DELETE from emails where id = 10 AND name = "modi";</span></span><br><span class="line"></span><br><span class="line">result, err := e.WithContext(ctx).Where(e.ID.Eq(<span class="number">10</span>), e.Name.Eq(<span class="string">"modi"</span>)).Delete()</span><br><span class="line"></span><br><span class="line">result.RowsAffected <span class="comment">// affect rows number</span></span><br><span class="line">err                 <span class="comment">// error</span></span><br></pre></td></tr></tbody></table></figure>
+                <html><head></head><body><h2 id="删除记录" class="article-heading"><a href="#删除记录" class="headerlink" title="删除记录"></a>删除记录<a class="article-anchor" href="#删除记录" aria-hidden="true"></a></h2><p>当删除一条记录时，需要满足一些条件否则程序会抛出<code>ErrMissingWhereClause</code>异常，例如：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">e := query.Email</span><br><span class="line"></span><br><span class="line"><span class="comment">// Email 的 ID 是 10</span></span><br><span class="line">e.WithContext(ctx).Where(e.ID.Eq(<span class="number">10</span>)).Delete()</span><br><span class="line"><span class="comment">// DELETE from emails where id = 10;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 有附加条件的删除</span></span><br><span class="line">e.WithContext(ctx).Where(e.ID.Eq(<span class="number">10</span>), e.Name.Eq(<span class="string">"modi"</span>)).Delete()</span><br><span class="line"><span class="comment">// DELETE from emails where id = 10 AND name = "modi";</span></span><br><span class="line"></span><br><span class="line">result, err := e.WithContext(ctx).Where(e.ID.Eq(<span class="number">10</span>), e.Name.Eq(<span class="string">"modi"</span>)).Delete()</span><br><span class="line"></span><br><span class="line">result.RowsAffected <span class="comment">// 受影响的行</span></span><br><span class="line">err                 <span class="comment">// 错误</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Delete-with-primary-key" class="article-heading"><a href="#Delete-with-primary-key" class="headerlink" title="Delete with primary key"></a>Delete with primary key<a class="article-anchor" href="#Delete-with-primary-key" aria-hidden="true"></a></h2><p>GEN allows to delete objects using primary key(s) with inline condition, it works with numbers.</p>
+<h2 id="通过主键删除" class="article-heading"><a href="#通过主键删除" class="headerlink" title="通过主键删除"></a>通过主键删除<a class="article-anchor" href="#通过主键删除" aria-hidden="true"></a></h2><p>GEN allows to delete objects using primary key(s) with inline condition, it works with numbers.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">u.WithContext(ctx).Where(u.ID.In(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>)).Delete()</span><br><span class="line"><span class="comment">// DELETE FROM users WHERE id IN (1,2,3);</span></span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Batch-Delete" class="article-heading"><a href="#Batch-Delete" class="headerlink" title="Batch Delete"></a>Batch Delete<a class="article-anchor" href="#Batch-Delete" aria-hidden="true"></a></h2><p>The specified value has no primary value, GEN will perform a batch delete, it will delete all matched records</p>
@@ -171,7 +171,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2023-03-08T03:36:27.959Z" itemprop="dateModified">最后更新于 2023-03-08</time>
+                <time class="article-footer-updated" datetime="2023-03-23T02:44:17.465Z" itemprop="dateModified">最后更新于 2023-03-23</time>
 <a href="update.html" class="article-footer-prev" title="更新"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="transaction.html" class="article-footer-next" title="事务"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -275,7 +275,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">内容</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Delete-record"><span class="toc-text">Delete record</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Delete-with-primary-key"><span class="toc-text">Delete with primary key</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Batch-Delete"><span class="toc-text">Batch Delete</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Soft-Delete"><span class="toc-text">Soft Delete</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Find-soft-deleted-records"><span class="toc-text">Find soft deleted records</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Delete-permanently"><span class="toc-text">Delete permanently</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Delete-Associations"><span class="toc-text">Delete Associations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Delete-with-Select"><span class="toc-text">Delete with Select</span></a></li></ol></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%AE%B0%E5%BD%95"><span class="toc-text">删除记录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87%E4%B8%BB%E9%94%AE%E5%88%A0%E9%99%A4"><span class="toc-text">通过主键删除</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Batch-Delete"><span class="toc-text">Batch Delete</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Soft-Delete"><span class="toc-text">Soft Delete</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Find-soft-deleted-records"><span class="toc-text">Find soft deleted records</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Delete-permanently"><span class="toc-text">Delete permanently</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Delete-Associations"><span class="toc-text">Delete Associations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Delete-with-Select"><span class="toc-text">Delete with Select</span></a></li></ol></li></ol>
 
               
                 <a href="https://translate.gorm.io/project/go-gorm/zh-CN" target="_blank" id="article-improve">
