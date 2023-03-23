@@ -56,8 +56,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="创建记录user :&#x3D; User&amp;#123;Name: &quot;Jinzhu&quot;, Age: 18, Birthday: time.Now()&amp;#125;result :&#x3D; db.Create(&amp;user) &#x2F;&#x2F; 通过数据的指针来创建user.ID             &#x2F;&#x2F; 返回插入数据的主键result.Error        &#x2F;&#x2F; 返回 errorresult.Row">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-03-23T02:44:17.461Z">
-<meta property="article:modified_time" content="2023-03-23T02:44:17.461Z">
+<meta property="article:published_time" content="2023-03-23T03:42:20.155Z">
+<meta property="article:modified_time" content="2023-03-23T03:42:20.155Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -165,7 +165,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">DB.Session(&amp;gorm.Session{SkipHooks: <span class="literal">true</span>}).Create(&amp;user)</span><br><span class="line"></span><br><span class="line">DB.Session(&amp;gorm.Session{SkipHooks: <span class="literal">true</span>}).Create(&amp;users)</span><br><span class="line"></span><br><span class="line">DB.Session(&amp;gorm.Session{SkipHooks: <span class="literal">true</span>}).CreateInBatches(users, <span class="number">100</span>)</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="根据-Map-创建" class="article-heading"><a href="#根据-Map-创建" class="headerlink" title="根据 Map 创建"></a>根据 Map 创建<a class="article-anchor" href="#根据-Map-创建" aria-hidden="true"></a></h2><p>GORM 支持根据 <code>map[string]interface{}</code> 和 <code>[]map[string]interface{}{}</code> 创建记录，例如：</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;User{}).Create(<span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>{}{</span><br><span class="line">  <span class="string">"Name"</span>: <span class="string">"jinzhu"</span>, <span class="string">"Age"</span>: <span class="number">18</span>,</span><br><span class="line">})</span><br><span class="line"></span><br><span class="line"><span class="comment">// batch insert from `[]map[string]interface{}{}`</span></span><br><span class="line">db.Model(&amp;User{}).Create([]<span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>{}{</span><br><span class="line">  {<span class="string">"Name"</span>: <span class="string">"jinzhu_1"</span>, <span class="string">"Age"</span>: <span class="number">18</span>},</span><br><span class="line">  {<span class="string">"Name"</span>: <span class="string">"jinzhu_2"</span>, <span class="string">"Age"</span>: <span class="number">20</span>},</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Model(&amp;User{}).Create(<span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>{}{</span><br><span class="line">  <span class="string">"Name"</span>: <span class="string">"jinzhu"</span>, <span class="string">"Age"</span>: <span class="number">18</span>,</span><br><span class="line">})</span><br><span class="line"></span><br><span class="line"><span class="comment">// batch insert from `&amp;[]map[string]interface{}{}`</span></span><br><span class="line">db.Model(&amp;User{}).Create(&amp;[]<span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>{}{</span><br><span class="line">  {<span class="string">"Name"</span>: <span class="string">"jinzhu_1"</span>, <span class="string">"Age"</span>: <span class="number">18</span>},</span><br><span class="line">  {<span class="string">"Name"</span>: <span class="string">"jinzhu_2"</span>, <span class="string">"Age"</span>: <span class="number">20</span>},</span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
 
 <blockquote class="note warn"><p><strong>注意：</strong> 根据 map 创建记录时，association 不会被调用，且主键也不会自动填充</p>
 </blockquote>
@@ -211,7 +211,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2023-03-23T02:44:17.461Z" itemprop="dateModified">最后更新于 2023-03-23</time>
+                <time class="article-footer-updated" datetime="2023-03-23T03:42:20.155Z" itemprop="dateModified">最后更新于 2023-03-23</time>
 <a href="connecting_to_the_database.html" class="article-footer-prev" title="连接到数据库"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="query.html" class="article-footer-next" title="查询"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
