@@ -57,7 +57,7 @@ db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-To efficiently delete large number of records, pass a slice with primary keys to the `Delete` method.
+可以将一个主键切片传递给`Delete` 方法，以便更高效的删除数据量大的记录
 
 ```go
 var users = []User{{ID: 1}, {ID: 2}, {ID: 3}}
@@ -70,9 +70,9 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 
 ### 阻止全局删除
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
+当你试图执行不带任何条件的批量删除时，GORM将不会运行并返回`ErrMissingWhereClause` 错误
 
-You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+如果一定要这么做，你必须添加一些条件，或者使用原生SQL，或者开启`AllowGlobalUpdate` 模式，如下例：
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -91,16 +91,16 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 ### 返回删除行的数据
 
-Return deleted data, only works for database support Returning, for example:
+返回被删除的数据，仅当数据库支持回写功能时才能正常运行，如下例：
 
 ```go
-// return all columns
+// 回写所有的列
 var users []User
 DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// return specified columns
+// 回写执行的列
 DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
