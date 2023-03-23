@@ -16,44 +16,44 @@ GORM 自身也是基于 `Callbacks` 的，包括 `Create`、`Query`、`Update`�
 ```go
 func cropImage(db *gorm.DB) {
   if db.Statement.Schema != nil {
-    // 裁剪图片字段并上传到CDN，dummy code
+    // crop image fields and upload them to CDN, dummy code
     for _, field := range db.Statement.Schema.Fields {
       switch db.Statement.ReflectValue.Kind() {
       case reflect.Slice, reflect.Array:
         for i := 0; i < db.Statement.ReflectValue.Len(); i++ {
-          // 从字段中获取数值
-          if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue.Index(i)); !isZero {
+          // Get value from field
+          if fieldValue, isZero := field.ValueOf(db.Statement.Context, db.Statement.ReflectValue.Index(i)); !isZero {
             if crop, ok := fieldValue.(CropInterface); ok {
               crop.Crop()
             }
           }
         }
       case reflect.Struct:
-        // 从字段中获取数值
-        if fieldValue, isZero := field.ValueOf(db.Statement.ReflectValue); !isZero {
+        // Get value from field
+        if fieldValue, isZero := field.ValueOf(db.Statement.Context, db.Statement.ReflectValue); !isZero {
           if crop, ok := fieldValue.(CropInterface); ok {
             crop.Crop()
           }
         }
 
-        // 将值设置给字段
-        err := field.Set(db.Statement.ReflectValue, "newValue")
+        // Set value to field
+        err := field.Set(db.Statement.Context, db.Statement.ReflectValue, "newValue")
       }
     }
 
-    // 当前实体的所有字段
+    // All fields for current model
     db.Statement.Schema.Fields
 
-    // 当前实体的所有主键字段
+    // All primary key fields for current model
     db.Statement.Schema.PrimaryFields
 
-    // 优先主键字段：带有数据库名称`id`或第一个定义的主键的字段。
+    // Prioritized primary key field: field with DB name `id` or the first defined primary key
     db.Statement.Schema.PrioritizedPrimaryField
 
-    // 当前模型的所有关系
+    // All relationships for current model
     db.Statement.Schema.Relationships
 
-    // 使用字段名或数据库名查找字段
+    // Find field with field name or db name
     field := db.Statement.Schema.LookUpField("Name")
 
     // processing
@@ -61,7 +61,7 @@ func cropImage(db *gorm.DB) {
 }
 
 db.Callback().Create().Register("crop_image", cropImage)
-// 为Create注册一个回调
+// register a callback for Create process
 ```
 
 ### 删除 Callback

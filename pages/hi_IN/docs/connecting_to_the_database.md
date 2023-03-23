@@ -1,6 +1,6 @@
 ---
-title: 'title: एक डेटाबेस से जुड़ना //Connecting to a Database'
-layout: 'layout: page'
+title: एक डेटाबेस से जुड़ना //Connecting to a Database
+layout: page
 ---
 
 GORM आधिकारिक तौर पर MySQL, PostgreSQL, SQLite, SQL Server और TiDB डेटाबेस का supports करता है
@@ -20,7 +20,7 @@ func main() {
 }
 ```
 
-foreign key
+{% note warn %}
 **ध्यान दें:** `time.Time` को सही तरीके से हैंडल करने के लिए, आपको `parseTime` को एक पैरामीटर के रूप में शामिल करना होगा। ([अधिक पैरामीटर](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 एन्कोडिंग का पूर्ण समर्थन करने के लिए, आपको `charset=utf8` को `charset=utf8mb4` में बदलना होगा। विस्तृत व्याख्या के लिए [यह लेख](https://mathiasbynens.be/notes/mysql-utf8mb4) देखें
 {% endnote %}
 
