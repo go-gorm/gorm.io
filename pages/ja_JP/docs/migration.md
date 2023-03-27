@@ -63,6 +63,10 @@ type Migrator interface {
   RenameColumn(dst interface{}, oldName, field string) error
   ColumnTypes(dst interface{}) ([]ColumnType, error)
 
+  // Views
+  CreateView(name string, option ViewOption) error
+  DropView(name string) error
+
   // Constraints
   CreateConstraint(dst interface{}, name string) error
   DropConstraint(dst interface{}, name string) error
@@ -150,24 +154,56 @@ type ColumnType interface {
 }
 ```
 
-### Constraints（制約）
+### Views
+
+Create views by `ViewOption`. About `ViewOption`:
+
+- `Query` is a [subquery](https://gorm.io/docs/advanced_query.html#SubQuery), which is required.
+- If `Replace` is true, exec `CREATE OR REPLACE` otherwise exec `CREATE`.
+- If `CheckOption` is not empty, append to sql, e.g. `WITH LOCAL CHECK OPTION`.
+
+{% note warn %}
+**NOTE** SQLite currently does not support `Replace` in `ViewOption`
+{% endnote %}
+
+```go
+qyery := db.Model(&User{}).Where("age > ?", 20)
+
+// Create View
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query})
+// CREATE VIEW `users_view` AS SELECT * FROM `users` WHERE age > 20
+
+// Create or Replace View
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query, Replace: true})
+// CREATE OR REPLACE VIEW `users_pets` AS SELECT * FROM `users` WHERE age > 20
+
+// Create View With Check Option
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query, CheckOption: "WITH CHECK OPTION"})
+// CREATE VIEW `users_pets` AS SELECT * FROM `users` WHERE age > 20 WITH CHECK OPTION
+
+// Drop View
+db.Migrator().DropView("users_pets")
+// DROP VIEW IF EXISTS "users_pets"
+```
+
+### Constraints
 
 ```go
 type UserIndex struct {
   Name  string `gorm:"check:name_checker,name <> 'jinzhu'"`
 }
 
-// 制約の作成
+// Create constraint
 db.Migrator().CreateConstraint(&User{}, "name_checker")
 
-// 制約の削除
+// Drop constraint
 db.Migrator().DropConstraint(&User{}, "name_checker")
 
-// 制約が存在するかチェックする
+// Check constraint exists
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
-リレーション用の外部キーを作成することもできます。
+Create foreign keys for relations
 
 ```go
 type User struct {
@@ -181,21 +217,21 @@ type CreditCard struct {
   UserID uint
 }
 
-// user と credit_cards で使用するための外部キーを作成する
+// create database foreign key for user & credit_cards
 db.Migrator().CreateConstraint(&User{}, "CreditCards")
 db.Migrator().CreateConstraint(&User{}, "fk_users_credit_cards")
 // ALTER TABLE `credit_cards` ADD CONSTRAINT `fk_users_credit_cards` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 
-// user と credit_cards で使用する外部キーが存在するかチェックする
+// check database foreign key for user & credit_cards exists or not
 db.Migrator().HasConstraint(&User{}, "CreditCards")
 db.Migrator().HasConstraint(&User{}, "fk_users_credit_cards")
 
-// user と credit_cards で使用する外部キーを削除する
+// drop database foreign key for user & credit_cards
 db.Migrator().DropConstraint(&User{}, "CreditCards")
 db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
 ```
 
-### Index
+### Indexes
 
 ```go
 type User struct {
@@ -203,15 +239,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// Nameフィールドにインデックスを作成する
+// Create index for Name field
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// Nameフィールドのインデックスを削除する
+// Drop index for Name field
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// インデックスが存在するかチェックする
+// Check Index exists
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -220,22 +256,22 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// インデックス名を変更する
+// Rename index name
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
 ## 制約
 
-GORMは、テーブルの自動マイグレーション時や作成時に制約を作成します。詳細は [制約](constraints.html) または [インデックス](indexes.html) を参照してください。
+GORM creates constraints when auto migrating or creating table, see [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
 
 ## その他のマイグレーションツール
 
-GORMのAutoMigrateはほとんどのケースでうまく機能しますが、より本格的なスキーママイグレーションツールを利用する際は、GORMが提供している一般的なDBインターフェースが役に立ちます
+GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-詳細については、 [Generic Interface](generic_interface. html) を参照してください。
+Refer to [Generic Interface](generic_interface.html) for more details.
