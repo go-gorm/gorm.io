@@ -15,9 +15,22 @@ result.Error        // hata döndür
 result.RowsAffected // oluşturulan kayıt sayısını döndür
 ```
 
+We can also create multiple records with `Create()`:
+```go
+users := []*User{
+    User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
+    User{Name: "Jackson", Age: 19, Birthday: time.Now()},
+}
+
+result := db.Create(users) // pass a slice to insert multiple row
+
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
+```
+
 ## Seçilen Alanlarla Kayıt Oluştur
 
-Bir kayıt oluştur ve belirtilen alanlara değer ata.
+Create a record and assign a value to the fields specified.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +46,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Batch Insert</span>
 
-Etkili biçimde çok sayıda kayıt oluşturmak için, `Create` metoduna bir slice gir. GORM, bütün verileri kaydetmek için tek bir SQL ifadesi oluşturacak; bütün verileri kaydedecek ve birincil anahtar değerleri dolduracak. Ayrıca hook metodları da çağırılacak.
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be splited into multiple batches.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -44,12 +57,12 @@ for _, user := range users {
 }
 ```
 
-`CreateInBatches` ile kayıt oluştururken grup boyutunu belirleyebilirsin, örnek:
+You can specify batch size when creating with `CreateInBatches`, e.g:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 
-// grup boyutu 100
+// batch size 100
 db.CreateInBatches(users, 100)
 ```
 
@@ -201,7 +214,7 @@ db.Omit(clause.Associations).Create(&user)
 
 ### <span id="default_values">Varsayılan Değerler</span>
 
-Alanlar için varsayılan değerleri `default` etiketiyle tanımlayabilirsin, örnek:
+You can define default values for fields with tag `default`, for example:
 
 ```go
 type User struct {
