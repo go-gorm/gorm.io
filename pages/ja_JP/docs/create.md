@@ -15,16 +15,29 @@ result.Error        // returns error
 result.RowsAffected // returns inserted records count
 ```
 
+We can also create multiple records with `Create()`:
+```go
+users := []*User{
+    User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
+    User{Name: "Jackson", Age: 19, Birthday: time.Now()},
+}
+
+result := db.Create(users) // pass a slice to insert multiple row
+
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
+```
+
 ## フィールドを選択してレコードを作成する
 
-レコードを作成し、指定したフィールドに値を割り当てます。
+Create a record and assign a value to the fields specified.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-省略する項目を指定し、レコードを作成します。
+Create a record and ignore the values for fields passed to omit.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +46,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">一括作成</span>
 
-大量のレコードを効率的に挿入するには、スライスを `Create` メソッドに渡します。 モデルのスライスをCreateメソッドに渡すと、GORMはすべてのデータを挿入する1つのSQL文を生成します。SQLが実行されると登録された主キーの値がモデルに代入され、フックメソッドも呼び出されます。
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be splited into multiple batches.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -44,7 +57,7 @@ for _, user := range users {
 }
 ```
 
-`CreateInBatches` を利用して、バッチサイズを指定してレコードを作成できます。
+You can specify batch size when creating with `CreateInBatches`, e.g:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -53,10 +66,10 @@ var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 db.CreateInBatches(users, 100)
 ```
 
-[Upsert](#upsert) や [Create With Associations](#create_with_associations) を使用する場合もバッチインサートはサポートされています。
+Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
 
 {% note warn %}
-**NOTE** `CreateBatchSize` オプションでGORMを初期化した場合、 `INSERT` メソッドはその設定を参照して、レコードを作成します。
+**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
 {% endnote %}
 
 ```go
@@ -75,7 +88,7 @@ db.Create(&users)
 
 ## 作成時のHook
 
-GORMでは、 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`といったメソッドを実装することで、独自のHook処理を定義できます。  これらのメソッドはレコードを作成するときに呼び出されます。ライフサイクルの詳細については [Hooks](hooks.html) を参照してください。
+GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -88,7 +101,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-`Hooks` メソッドをスキップしたい場合は、 `SkipHooks` セッションモードを使用できます。例:
+If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -100,7 +113,7 @@ DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 
 ## Mapを使って作成する
 
-GORMでは `map[string]interface{}` と `[]map[string]interface{}{}`を使ってレコード作成できます。例:
+GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
@@ -115,12 +128,12 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**注意** Mapを使用してレコードを作成する場合、Hookは呼び出されません。また、関連テーブルのレコードも保存されず、主キーの値も返されません。
+**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
 {% endnote %}
 
 ## <span id="create_from_sql_expr">SQL式/Context Valuer で作成する</span>
 
-GORMはSQL式でデータを挿入することができます。これを行うには `map[string]interface{}` と [Customized Data Types](data_types.html#gorm_valuer_interface) の2つの方法があります。例:
+GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
 
 ```go
 // Create from map
@@ -167,7 +180,7 @@ db.Create(&User{
 
 ### <span id="create_with_associations">関連データと関連付けて作成する</span>
 
-関連データと共にレコードを作成する場合、その値がゼロ値でなければ関連データもupsertされます。またその際には、関連データの `Hooks` メソッドも実行されます。
+When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
 
 ```go
 type CreditCard struct {
@@ -190,7 +203,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-`Select`, `Omit` を使うことで関連付けをスキップできます。例:
+You can skip saving associations with `Select`, `Omit`, for example:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -201,7 +214,7 @@ db.Omit(clause.Associations).Create(&user)
 
 ### <span id="default_values">デフォルト値</span>
 
-`default`タグによって、フィールドのデフォルト値を定義できます。例:
+You can define default values for fields with tag `default`, for example:
 
 ```go
 type User struct {
@@ -211,10 +224,10 @@ type User struct {
 }
 ```
 
-データベースへの挿入時にフィールドが [ ゼロ値 ](https://tour.golang.org/basics/12) の場合、デフォルト値が使用されます。
+Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
 {% note warn %}
-**注意** デフォルト値を定義したには、 `0`, `''`, `false`のようなゼロ値はデータベースに保存されないため、これを避けるにはポインタ型やScanner/Valuerを使用するとよいでしょう。例:
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 {% endnote %}
 
 ```go
@@ -227,7 +240,7 @@ type User struct {
 ```
 
 {% note warn %}
-**注意** データベース内でのデフォルト値、あるいは仮想の生成された値を持つフィールドには ` default ` タグを設定する必要があります。マイグレーション時にデフォルト値の定義をスキップする場合は、 `default:(-)`, 例:
+**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
 {% endnote %}
 
 ```go
@@ -240,11 +253,11 @@ type User struct {
 }
 ```
 
-仮想の生成された値を使用する場合は、作成/更新権限を無効にする必要がある場合があります。 [Field-Level Permission](models.html#field_permission) を確認してください。
+When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
 
 ### <span id="upsert">コンフリクト発生時のUpsert</span>
 
-GORMは異なるデータベースに対して互換性のあるUpsertをサポートしています。
+GORM provides compatible Upsert support for different databases
 
 ```go
 import "gorm.io/gorm/clause"
@@ -284,6 +297,6 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL
 ```
 
-[Advanced Query](advanced_query.html) の `FirstOrInit`, `FirstOrCreate` も確認してみてください。
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-より詳細については、 [Raw SQL and SQL Builder](sql_builder.html) も参照してみてください。
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
