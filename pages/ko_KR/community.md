@@ -16,9 +16,9 @@ layout: page
 
 ## 링크
 
-* An admin system based on GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
+* GORM V2를 기반으로 한 관리자 시스템[GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
-* Go-admin is a middle background framework based on Gorm  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
+* Go-admin은 Gorm을 기반으로 하는 미들 백그라운드 프레임워크입니다.  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
 * Article that validate GORM as ORM to Golang with CRUD implementation with SQLite database on tests - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
 
