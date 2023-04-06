@@ -15,9 +15,9 @@ type Result struct {
 }
 
 var result Result
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
+db.Raw("SELECT id, name, age FROM users WHERE id = ?", 3).Scan(&result)
 
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
+db.Raw("SELECT id, name, age FROM users WHERE name = ?", "jinzhu").Scan(&result)
 
 var age int
 db.Raw("SELECT SUM(age) FROM users WHERE role = ?", "admin").Scan(&age)
@@ -79,7 +79,7 @@ db.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = 
 Генерировать `SQL` и его аргументы без выполнения, может быть использовано для подготовки или тестирования сгенерированного SQL. Смотрите [Сессии](session.html) для деталей
 
 ```go
-stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
+stmt := db.Session(&gorm.Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 ```
@@ -91,7 +91,7 @@ stmt.Vars         //=> []interface{}{1}
 GORM использует плейсхолдеры аргументов базы данных/sql для построения запроса SQL, которые автоматически защищают от инъекций SQL, но сгенерированный SQL не предоставляет гарантий безопасности. Пожалуйста, используйте его только для отладки.
 
 ```go
-sql := DB.ToSQL(func(tx *gorm.DB) *gorm.DB {
+sql := db.ToSQL(func(tx *gorm.DB) *gorm.DB {
   return tx.Model(&User{}).Where("id = ?", 100).Limit(10).Order("age desc").Find(&[]User{})
 })
 sql //=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL ORDER BY age desc LIMIT 10
@@ -173,12 +173,18 @@ GORM uses SQL builder generates SQL internally, for each operation, GORM creates
 For example, when querying with `First`, it adds the following clauses to the `Statement`
 
 ```go
-clause.Select{Columns: "*"}
-clause.From{Tables: clause.CurrentTable}
-clause.Limit{Limit: 1}
-clause.OrderByColumn{
-  Column: clause.Column{Table: clause.CurrentTable, Name: clause.PrimaryKey},
-}
+var limit = 1
+clause.Select{Columns: []clause.Column{{Name: "*"}}}
+clause.From{Tables: []clause.Table{{Name: clause.CurrentTable}}}
+clause.Limit{Limit: &limit}
+clause.OrderBy{Columns: []clause.OrderByColumn{
+  {
+    Column: clause.Column{
+      Table: clause.CurrentTable,
+      Name:  clause.PrimaryKey,
+    },
+  },
+}}
 ```
 
 Then GORM build finally querying SQL in the `Query` callbacks like:
