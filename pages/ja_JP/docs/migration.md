@@ -274,4 +274,4 @@ GORM's AutoMigrate works well for most cases, but if you are looking for more se
 db.DB()
 ```
 
-Refer to [Generic Interface](generic_interface.html) for more details.
+詳細については、 [Generic Interface](generic_interface.html) を参照してください。
