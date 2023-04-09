@@ -15,7 +15,7 @@ result.Error        // returns error
 result.RowsAffected // returns inserted records count
 ```
 
-We can also create multiple records with `Create()`:
+`Create()` を使用して複数のレコードを作成することもできます:
 ```go
 users := []*User{
     User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
@@ -30,14 +30,14 @@ result.RowsAffected // returns inserted records count
 
 ## フィールドを選択してレコードを作成する
 
-Create a record and assign a value to the fields specified.
+レコードを作成し、指定したフィールドに値を割り当てます。
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and ignore the values for fields passed to omit.
+省略する項目を指定し、レコードを作成します。
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
