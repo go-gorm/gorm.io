@@ -305,6 +305,11 @@ users, err := u.WithContext(ctx).Preload(field.Associations).Find()
 users, err := u.WithContext(ctx).Preload(u.Orders.OrderItems.Product).Find()
 ```
 
+To include soft deleted records in all associactions use relation scope `field.RelationFieldUnscoped`, e.g:
+```go
+users, err := u.WithContext(ctx).Preload(field.Associations.Scopes(field.RelationFieldUnscoped)).Find()
+```
+
 ### Preload with select
 
 Specify selected columns with method `Select`. Foregin key must be selected.
