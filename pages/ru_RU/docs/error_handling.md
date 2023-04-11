@@ -36,7 +36,14 @@ GORM возвращает `ErrRecordNotFound`, когда не удалось н
 err := db.First(&user, 100).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
+## Dialect Translated Errors
 
-## Ошибки
+If you would like to be able to use the dialect translated errors(like ErrDuplicatedKey), then enable the TranslateError flag when opening a db connection.
 
-[Список ошибок](https://github.com/go-gorm/gorm/blob/master/errors.go)
+```go
+db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: true})
+```
+
+## Errors
+
+[Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go)
