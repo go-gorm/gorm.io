@@ -36,6 +36,13 @@ GORM returns `ErrRecordNotFound` when failed to find data with `First`, `Last`, 
 err := db.First(&user, 100).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
+## Dialect Translated Errors
+
+If you would like to be able to use the dialect translated errors(like ErrDuplicatedKey), then enable the TranslateError flag when opening a db connection.
+
+```go
+db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: true})
+```
 
 ## Errors
 

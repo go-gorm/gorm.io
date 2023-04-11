@@ -13,19 +13,20 @@ Logger menerima banyak opsi, anda dapat menyesuaikannya disaat inisialisasi, mis
 newLogger := logger.New(
   log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
   logger.Config{
-    SlowThreshold:              time.Second,   // ambang Slow SQL
-    LogLevel:                   logger.Silent, // tingkat Log
-    IgnoreRecordNotFoundError: true,           // mengabaikan kesalahan ErrRecordNotFound  untuk logger
-    Colorful:                  false,          // nonaktifkan warna
+    SlowThreshold:              time.Second,   // Slow SQL threshold
+    LogLevel:                   logger.Silent, // Log level
+    IgnoreRecordNotFoundError: true,           // Ignore ErrRecordNotFound error for logger
+    ParameterizedQueries:      true,           // Don't include params in the SQL log
+    Colorful:                  false,          // Disable color
   },
 )
 
-// Mode global
+// Globally mode
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
   Logger: newLogger,
 })
 
-// Mode sesi berkelanjutan
+// Continuous session mode
 tx := db.Session(&Session{Logger: newLogger})
 tx.First(&user)
 tx.Model(&user).Update("Age", 18)

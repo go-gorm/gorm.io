@@ -1,9 +1,9 @@
 ---
-title: GORM Config
+title: GORM 설정
 layout: page
 ---
 
-GORM provides Config can be used during initialization
+GORM은 초기화 중에 Config를 사용할 수 있습니다.
 
 ```go
 type Config struct {
@@ -22,7 +22,7 @@ type Config struct {
 
 ## SkipDefaultTransaction
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required
+GORM은 데이터 일관성을 보장하기 위해 트랜잭션 내에서 실행되는 쓰기(생성/갱신/삭제) 작업을 수행하며, 필요하지 않은 경우 초기화 중에 이 작업을 비활성화할 수 있습니다.
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -32,7 +32,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## <span id="naming_strategy">NamingStrategy</span>
 
-GORM allows users to change the naming conventions by overriding the default `NamingStrategy` which need to implements interface `Namer`
+GORM을 사용하면 사용자가 `Namer` 인터페이스를 구현해야 하는 기본 `NamingStrategy`를 재정의하여 명명 규칙을 변경할 수 있습니다.
 
 ```go
 type Namer interface {
@@ -46,7 +46,7 @@ type Namer interface {
 }
 ```
 
-The default `NamingStrategy` also provides few options, like:
+기본 `NamingStrategy`도 다음과 같은 몇 가지 옵션을 제공합니다:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -61,11 +61,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## Logger
 
-Allow to change GORM's default logger by overriding this option, refer [Logger](logger.html) for more details
+이 옵션을 재정의하여 GORM의 기본 logger를 변경할 수 있으며, 자세한 내용은 [Logger](logger.html)를 참조하세요.
 
 ## <span id="now_func">NowFunc</span>
 
-Change the function to be used when creating a new timestamp
+새 타임스탬프를 만들 때 사용할 함수를 변경할 수 있습니다.
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -77,7 +77,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DryRun
 
-Generate `SQL` without executing, can be used to prepare or test generated SQL, refer [Session](session.html) for details
+실행하지 않고 `SQL`을 생성하면 생성된 SQL을 준비하거나 테스트하는 데 사용할 수 있으며, 자세한 내용은 [Session](session.html)을 참조하십시오.
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -87,7 +87,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## PrepareStmt
 
-`PreparedStmt` creates a prepared statement when executing any SQL and caches them to speed up future calls, refer [Session](session.html) for details
+`PreparedStmt`는 SQL을 실행할 때 prepared statement를 생성하고 향후 호출 속도를 높이기 위해 캐시합니다. 자세한 내용은 [Session](session.html)을 참조하세요.
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{

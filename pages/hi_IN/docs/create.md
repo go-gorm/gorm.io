@@ -15,16 +15,29 @@ result.Error        // returns error
 result.RowsAffected // रिटर्न सम्मिलित रिकॉर्ड गिनती
 ```
 
+We can also create multiple records with `Create()`:
+```go
+users := []*User{
+    User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
+    User{Name: "Jackson", Age: 19, Birthday: time.Now()},
+}
+
+result := db.Create(users) // pass a slice to insert multiple row
+
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
+```
+
 ## Selected फ़ील्ड्स के साथ रिकॉर्ड Create करे ।
 
-एक रिकॉर्ड Create और specified फ़ील्ड के लिए एक मान assign करें।
+Create a record and assign a value to the fields specified.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-एक रिकॉर्ड Create और omit के लिए passed किए गए फ़ील्ड के मानों को ignore करें।
+Create a record and ignore the values for fields passed to omit.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +46,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Batch Insert</span>
 
-कुशलतापूर्वक बड़ी संख्या में रिकॉर्ड insert करने के लिए, एक slice को `Create` method में पास करें। GORM सभी डेटा डालने और primary key मानों को backfill करने के लिए एक single SQL स्टेटमेंट generate करेगा, hook methods को भी invoked किया जाएगा।
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be splited into multiple batches.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -44,7 +57,7 @@ for _, user := range users {
 }
 ```
 
-`CreateInBatches` के साथ बनाते समय आप बैच size specify कर सकते हैं, उदा
+You can specify batch size when creating with `CreateInBatches`, e.g:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -53,10 +66,10 @@ var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 db.CreateInBatches(users, 100)
 ```
 
-[Upsert](#upsert) और [Create with Associations](#create_with_associations) का उपयोग करते समय Batch Insert भी support है
+Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
 
 {% note warn %}
-**ध्यान दें** GORM को `CreateBatchSize` विकल्प के साथ प्रारंभ करें, सभी `INSERT` रिकॉर्ड और& associations बनाते समय इस विकल्प का सम्मान करेंगे
+**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
 {% endnote %}
 
 ```go
@@ -75,7 +88,7 @@ db.Create(&users)
 
 ## Create Hooks
 
-GORM user defined हुक को `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` के लिए लागू करने की अनुमति देता है।  रिकॉर्ड create करते समय इन hook method को कॉल किया जाएगा, जीवनचक्र पर विवरण के लिए [Hooks](hooks.html) देखें
+GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -88,7 +101,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-अगर आप `Hooks` methods को छोड़ना चाहते हैं, तो आप `SkipHooks` session मोड का उपयोग कर सकते हैं, उदाहरण के लिए:
+If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -100,27 +113,27 @@ DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 
 ## Create From Map
 
-GORM `map[string]interface{}` और `[]map[string]interface{}{}` से create का समर्थन करता है, e.g:
+GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// batch insert from `&[]map[string]interface{}{}`
-db.Model(&User{}).Create(&[]map[string]interface{}{
+// batch insert from `[]map[string]interface{}{}`
+db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
 })
 ```
 
 {% note warn %}
-**ध्यान दें** map से बनाते समय, हुक नहीं लगाए जाएंगे, associations save नहीं करा जाएगा और प्राथमिक कुंजी मान वापस नहीं भरे जाएंगे
+**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
 {% endnote %}
 
 ## <span id="create_from_sql_expr">Create From SQL Expression/Context Valuer</span>
 
-GORM SQL अभिव्यक्ति के साथ डेटा सम्मिलित करने की अनुमति देता है, इस लक्ष्य को प्राप्त करने के दो तरीके हैं, `map[string]interface{}` या [Customized Data Types](data_types.html#gorm_valuer_interface), उदाहरण के लिए:
+GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
 
 ```go
 // Create from map
@@ -167,7 +180,7 @@ db.Create(&User{
 
 ### <span id="create_with_associations">Create With Associations</span>
 
-Associations के साथ कुछ डेटा बनाते समय, यदि इसके associations का मूल्य शून्य-मान नहीं है, तो उन associations को upserted करे जाएगा, और इसके `Hooks` methods को लागू किया जाएगा।
+When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
 
 ```go
 type CreditCard struct {
@@ -190,7 +203,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-आप `Select`, `Omit` के साथ saving associations को छोड़ सकते हैं, उदाहरण के लिए:
+You can skip saving associations with `Select`, `Omit`, for example:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -201,7 +214,7 @@ db.Omit(clause.Associations).Create(&user)
 
 ### <span id="default_values">Default Values</span>
 
-आप `default` टैग वाले फ़ील्ड के लिए डिफ़ॉल्ट मान कर सकते हैं, उदाहरण के लिए:
+You can define default values for fields with tag `default`, for example:
 
 ```go
 type User struct {
@@ -211,10 +224,10 @@ type User struct {
 }
 ```
 
-फिर [शून्य-मान के लिए डेटाबेस में डालने पर डिफ़ॉल्ट मान *का उपयोग* किया जाएगा ](https://tour.golang.org/basics/12) फ़ील्ड्स
+Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
 {% note warn %}
-**ध्यान दें** कोई भी शून्य मान जैसे `0`, `''`, `false` नहीं होगा डिफ़ॉल्ट मान परिभाषित उन फ़ील्ड के लिए डेटाबेस में save किया गया है, आप इससे बचने के लिए पॉइंटर प्रकार या स्कैनर/वैल्यूअर(Scanner/Valuer) का उपयोग करना चाहेंगे, उदाहरण के लिए:
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 {% endnote %}
 
 ```go
@@ -227,7 +240,7 @@ type User struct {
 ```
 
 {% note warn %}
-**ध्यान दें** यदि आप डिफ़ॉल्ट मान परिभाषा को छोड़ना चाहते हैं, तो आपको `डिफ़ॉल्ट` टैग डेटाबेस में डिफ़ॉल्ट या वर्चुअल/जेनरेट (virtual/generated) किए गए मान वाले फ़ील्ड के लिए सेटअप करना होगा माइग्रेट करते समय, आप `डिफ़ॉल्ट:(-)` का उपयोग कर सकते हैं, उदाहरण के लिए:
+**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
 {% endnote %}
 
 ```go
@@ -240,11 +253,11 @@ type User struct {
 }
 ```
 
-वर्चुअल/जेनरेट(virtual/generated) किए गए मान का उपयोग करते समय, आपको इसकी बनाने/अपडेट (creating/updating) करने की अनुमति को अक्षम(disable) करने की आवश्यकता हो सकती है, [Field-Level Permission](models.html#field_permission) देखें
+When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
 
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORM विभिन्न डेटाबेस के लिए compatible Upsert support प्रदान करता है
+GORM provides compatible Upsert support for different databases
 
 ```go
 import "gorm.io/gorm/clause"
@@ -284,6 +297,6 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL
 ```
 
-[Advanced Query](advanced_query.html) पर `FirstOrInit`, `FirstOrCreate` भी चेकआउट करें
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-अधिक विवरण के लिए [Raw SQL and SQL Builder](sql_builder.html) चेकआउट करें
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details

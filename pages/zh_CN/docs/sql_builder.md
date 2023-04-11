@@ -15,9 +15,9 @@ type Result struct {
 }
 
 var result Result
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
+db.Raw("SELECT id, name, age FROM users WHERE id = ?", 3).Scan(&result)
 
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
+db.Raw("SELECT id, name, age FROM users WHERE name = ?", "jinzhu").Scan(&result)
 
 var age int
 db.Raw("SELECT SUM(age) FROM users WHERE role = ?", "admin").Scan(&age)
@@ -79,7 +79,7 @@ db.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = 
 在不执行的情况下生成 `SQL` 及其参数，可以用于准备或测试生成的 SQL，详情请参考 [Session](session.html)
 
 ```go
-stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
+stmt := db.Session(&gorm.Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 ```
@@ -91,7 +91,7 @@ stmt.Vars         //=> []interface{}{1}
 GORM使用 database/sql 的参数占位符来构建 SQL 语句，它会自动转义参数以避免 SQL 注入，但我们不保证生成 SQL 的安全，请只用于调试。
 
 ```go
-sql := DB.ToSQL(func(tx *gorm.DB) *gorm.DB {
+sql := db.ToSQL(func(tx *gorm.DB) *gorm.DB {
   return tx.Model(&User{}).Where("id = ?", 100).Limit(10).Order("age desc").Find(&[]User{})
 })
 sql //=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL ORDER BY age desc LIMIT 10
@@ -173,12 +173,18 @@ GORM 内部使用 SQL builder 生成 SQL。对于每个操作，GORM 都会创�
 例如，当通过 `First` 进行查询时，它会在 `Statement` 中添加以下子句
 
 ```go
-clause.Select{Columns: "*"}
-clause.From{Tables: clause.CurrentTable}
-clause.Limit{Limit: 1}
-clause.OrderByColumn{
-  Column: clause.Column{Table: clause.CurrentTable, Name: clause.PrimaryKey},
-}
+var limit = 1
+clause.Select{Columns: []clause.Column{{Name: "*"}}}
+clause.From{Tables: []clause.Table{{Name: clause.CurrentTable}}}
+clause.Limit{Limit: &limit}
+clause.OrderBy{Columns: []clause.OrderByColumn{
+  {
+    Column: clause.Column{
+      Table: clause.CurrentTable,
+      Name:  clause.PrimaryKey,
+    },
+  },
+}}
 ```
 
 然后 GORM 在 `Query` callback 中构建最终的查询 SQL，像这样：

@@ -53,7 +53,7 @@ type Company struct {
 
 对于 belongs to 关系，GORM 通常使用数据库表，主表（拥有者）的主键值作为外键参考。 正如上面的例子，我们使用主表Company中的主键字段ID作为外键的参考值。
 
-如果在Company实体中设置了User实体，那么GORM会自动把Company中的ID属性保存到User的CompanyID属性中。
+如果设置了User实体属于Company实体，那么GORM会自动把Company中的`ID`属性保存到User的`CompanyID`属性中。
 
 同样的，您也可以使用标签 `references` 来更改它，例如：
 

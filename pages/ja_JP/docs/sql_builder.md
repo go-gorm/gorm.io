@@ -15,9 +15,9 @@ type Result struct {
 }
 
 var result Result
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
+db.Raw("SELECT id, name, age FROM users WHERE id = ?", 3).Scan(&result)
 
-db.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
+db.Raw("SELECT id, name, age FROM users WHERE name = ?", "jinzhu").Scan(&result)
 
 var age int
 db.Raw("SELECT SUM(age) FROM users WHERE role = ?", "admin").Scan(&age)
@@ -79,7 +79,7 @@ db.Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = 
 実行せずに、`SQL` とその引数の生成だけを行います。生成されたSQLの確認やテストを行えます。詳細については[Session](session.html) を確認してください。
 
 ```go
-stmt := db.Session(&Session{DryRun: true}).First(&user, 1).Statement
+stmt := db.Session(&gorm.Session{DryRun: true}).First(&user, 1).Statement
 stmt.SQL.String() //=> SELECT * FROM `users` WHERE `id` = $1 ORDER BY `id`
 stmt.Vars         //=> []interface{}{1}
 ```
@@ -91,7 +91,7 @@ stmt.Vars         //=> []interface{}{1}
 GORMはSQL文を構築するために database/sql のプレースホルダ引数を使用します。これにより、引数を自動的にエスケープし、SQLインジェクションを防ぐことができます。 しかし、生成されたSQLが安全であるという保証はしていないため、デバッグにのみ使用するようにしてください。
 
 ```go
-sql := DB.ToSQL(func(tx *gorm.DB) *gorm.DB {
+sql := db.ToSQL(func(tx *gorm.DB) *gorm.DB {
   return tx.Model(&User{}).Where("id = ?", 100).Limit(10).Order("age desc").Find(&[]User{})
 })
 sql //=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL ORDER BY age desc LIMIT 10
@@ -173,12 +173,18 @@ GORMは内部的にSQLビルダーを使用してSQLを生成します。各操�
 例えば `First` でレコードを取得する場合、`First` は内部的に、以下の `Clauses` を `Statement` に追加します。
 
 ```go
-clause.Select{Columns: "*"}
-clause.From{Tables: clause.CurrentTable}
-clause.Limit{Limit: 1}
-clause.OrderByColumn{
-  Column: clause.Column{Table: clause.CurrentTable, Name: clause.PrimaryKey},
-}
+var limit = 1
+clause.Select{Columns: []clause.Column{{Name: "*"}}}
+clause.From{Tables: []clause.Table{{Name: clause.CurrentTable}}}
+clause.Limit{Limit: &limit}
+clause.OrderBy{Columns: []clause.OrderByColumn{
+  {
+    Column: clause.Column{
+      Table: clause.CurrentTable,
+      Name:  clause.PrimaryKey,
+    },
+  },
+}}
 ```
 
 その後、GORMは `Query` コールバックで最終的に実行されるSQLクエリを組み立てます。

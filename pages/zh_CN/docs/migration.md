@@ -63,6 +63,10 @@ type Migrator interface {
   RenameColumn(dst interface{}, oldName, field string) error
   ColumnTypes(dst interface{}) ([]ColumnType, error)
 
+  // Views
+  CreateView(name string, option ViewOption) error
+  DropView(name string) error
+
   // Constraints
   CreateConstraint(dst interface{}, name string) error
   DropConstraint(dst interface{}, name string) error
@@ -150,24 +154,56 @@ type ColumnType interface {
 }
 ```
 
-### 约束
+### Views
+
+Create views by `ViewOption`. About `ViewOption`:
+
+- `Query` is a [subquery](https://gorm.io/docs/advanced_query.html#SubQuery), which is required.
+- If `Replace` is true, exec `CREATE OR REPLACE` otherwise exec `CREATE`.
+- If `CheckOption` is not empty, append to sql, e.g. `WITH LOCAL CHECK OPTION`.
+
+{% note warn %}
+**NOTE** SQLite currently does not support `Replace` in `ViewOption`
+{% endnote %}
+
+```go
+qyery := db.Model(&User{}).Where("age > ?", 20)
+
+// Create View
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query})
+// CREATE VIEW `users_view` AS SELECT * FROM `users` WHERE age > 20
+
+// Create or Replace View
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query, Replace: true})
+// CREATE OR REPLACE VIEW `users_pets` AS SELECT * FROM `users` WHERE age > 20
+
+// Create View With Check Option
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query, CheckOption: "WITH CHECK OPTION"})
+// CREATE VIEW `users_pets` AS SELECT * FROM `users` WHERE age > 20 WITH CHECK OPTION
+
+// Drop View
+db.Migrator().DropView("users_pets")
+// DROP VIEW IF EXISTS "users_pets"
+```
+
+### Constraints
 
 ```go
 type UserIndex struct {
   Name  string `gorm:"check:name_checker,name <> 'jinzhu'"`
 }
 
-// 创建约束
+// Create constraint
 db.Migrator().CreateConstraint(&User{}, "name_checker")
 
-// 删除约束
+// Drop constraint
 db.Migrator().DropConstraint(&User{}, "name_checker")
 
-// 检查约束是否存在
+// Check constraint exists
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
-为 relation 创建外键
+Create foreign keys for relations
 
 ```go
 type User struct {
@@ -181,21 +217,21 @@ type CreditCard struct {
   UserID uint
 }
 
-// 为 user & credit_cards 创建 db 外键
+// create database foreign key for user & credit_cards
 db.Migrator().CreateConstraint(&User{}, "CreditCards")
 db.Migrator().CreateConstraint(&User{}, "fk_users_credit_cards")
 // ALTER TABLE `credit_cards` ADD CONSTRAINT `fk_users_credit_cards` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 
-// 检查 user & credit_cards 的外键是否存在
+// check database foreign key for user & credit_cards exists or not
 db.Migrator().HasConstraint(&User{}, "CreditCards")
 db.Migrator().HasConstraint(&User{}, "fk_users_credit_cards")
 
-// 删除 user & credit_cards 的 db 外键
+// drop database foreign key for user & credit_cards
 db.Migrator().DropConstraint(&User{}, "CreditCards")
 db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
 ```
 
-### 索引
+### Indexes
 
 ```go
 type User struct {
@@ -203,15 +239,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// 为 Name 字段创建索引
+// Create index for Name field
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// 为 Name 字段删除索引
+// Drop index for Name field
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// 检查索引是否存在
+// Check Index exists
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -220,22 +256,22 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// 修改索引名
+// Rename index name
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
 
 ## 约束
 
-GORM 会在自动迁移或建表时创建约束，请参阅 [约束](constraints.html) 或 [数据库索引](indexes.html) 以了解详情
+GORM creates constraints when auto migrating or creating table, see [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
 
 ## 其他迁移工具
 
-GORM 的 AutoMigrate 适用于大多数的迁移，如果您需要更加个性化的迁移工具 ，GORM 提供的一个通用数据库接口可能对您有帮助。
+GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-查看 [通用接口](generic_interface.html) 获取更多详情。
+Refer to [Generic Interface](generic_interface.html) for more details.

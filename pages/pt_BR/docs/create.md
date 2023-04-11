@@ -15,16 +15,29 @@ result.Error        // Retorna erro
 result.RowsAffected // Retorna a contagem de registros criados
 ```
 
+We can also create multiple records with `Create()`:
+```go
+users := []*User{
+    User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
+    User{Name: "Jackson", Age: 19, Birthday: time.Now()},
+}
+
+result := db.Create(users) // pass a slice to insert multiple row
+
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
+```
+
 ## Criar registro com campos selecionados
 
-Crie um registro e atribua um valor aos campos especificados.
+Create a record and assign a value to the fields specified.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Criar um registro e ignorar os valores dos campos passados para omitir.
+Create a record and ignore the values for fields passed to omit.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -33,7 +46,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Inserção em Lote</span>
 
-Para inserir eficientemente um grande número de registros, passe o slice de dados para o método `Create`. GORM irá gerar uma única instrução SQL para inserir todos os dados e fará o backfill com os valores de chave primárias, hooks serão invocados também.
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be splited into multiple batches.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -44,7 +57,7 @@ for _, user := range users {
 }
 ```
 
-Você pode especificar o tamanho do lote ao criar com `CreateInBatches`, por exemplo:
+You can specify batch size when creating with `CreateInBatches`, e.g:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -53,10 +66,10 @@ var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 db.CreateInBatches(users, 100)
 ```
 
-Inserção em lote também é suportada quando se usa [Upsert](#upsert) e [Criar com Associações](#create_with_associations)
+Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
 
 {% note warn %}
-**NOTA** Ao inicializar o GORM com a opção `CreateBatchSize`, todo `INSERT`vai respeitar essa opção quando criando registros e associações
+**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
 {% endnote %}
 
 ```go
@@ -107,8 +120,8 @@ db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// batch insert from `&[]map[string]interface{}{}`
-db.Model(&User{}).Create(&[]map[string]interface{}{
+// batch insert from `[]map[string]interface{}{}`
+db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
 })

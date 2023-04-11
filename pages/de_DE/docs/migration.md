@@ -63,6 +63,10 @@ type Migrator interface {
   RenameColumn(dst interface{}, oldName, field string) error
   ColumnTypes(dst interface{}) ([]ColumnType, error)
 
+  // Views
+  CreateView(name string, option ViewOption) error
+  DropView(name string) error
+
   // Constraints
   CreateConstraint(dst interface{}, name string) error
   DropConstraint(dst interface{}, name string) error
@@ -148,6 +152,38 @@ type ColumnType interface {
     Comment() (value string, ok bool)
     DefaultValue() (value string, ok bool)
 }
+```
+
+### Views
+
+Create views by `ViewOption`. About `ViewOption`:
+
+- `Query` is a [subquery](https://gorm.io/docs/advanced_query.html#SubQuery), which is required.
+- If `Replace` is true, exec `CREATE OR REPLACE` otherwise exec `CREATE`.
+- If `CheckOption` is not empty, append to sql, e.g. `WITH LOCAL CHECK OPTION`.
+
+{% note warn %}
+**NOTE** SQLite currently does not support `Replace` in `ViewOption`
+{% endnote %}
+
+```go
+qyery := db.Model(&User{}).Where("age > ?", 20)
+
+// Create View
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query})
+// CREATE VIEW `users_view` AS SELECT * FROM `users` WHERE age > 20
+
+// Create or Replace View
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query, Replace: true})
+// CREATE OR REPLACE VIEW `users_pets` AS SELECT * FROM `users` WHERE age > 20
+
+// Create View With Check Option
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query, CheckOption: "WITH CHECK OPTION"})
+// CREATE VIEW `users_pets` AS SELECT * FROM `users` WHERE age > 20 WITH CHECK OPTION
+
+// Drop View
+db.Migrator().DropView("users_pets")
+// DROP VIEW IF EXISTS "users_pets"
 ```
 
 ### Constraints

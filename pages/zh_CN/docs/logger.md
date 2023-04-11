@@ -11,21 +11,22 @@ Logger 接受的选项不多，您可以在初始化时自定义它，例如：
 
 ```go
 newLogger := logger.New(
-  log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer（日志输出的目标，前缀和日志包含的内容——译者注）
+  log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
   logger.Config{
-    SlowThreshold: time.Second,   // 慢 SQL 阈值
-    LogLevel:      logger.Silent, // 日志级别
-    IgnoreRecordNotFoundError: true,   // 忽略ErrRecordNotFound（记录未找到）错误
-    Colorful:      false,         // 禁用彩色打印
+    SlowThreshold:              time.Second,   // Slow SQL threshold
+    LogLevel:                   logger.Silent, // Log level
+    IgnoreRecordNotFoundError: true,           // Ignore ErrRecordNotFound error for logger
+    ParameterizedQueries:      true,           // Don't include params in the SQL log
+    Colorful:                  false,          // Disable color
   },
 )
 
-// 全局模式
+// Globally mode
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{
   Logger: newLogger,
 })
 
-// 新建会话模式
+// Continuous session mode
 tx := db.Session(&Session{Logger: newLogger})
 tx.First(&user)
 tx.Model(&user).Update("Age", 18)

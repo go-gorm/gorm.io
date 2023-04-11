@@ -41,7 +41,14 @@ for _, err := range errors {
  fmt.Println(err)
 }
 ```
+## Dialect Translated Errors
+
+If you would like to be able to use the dialect translated errors(like ErrDuplicatedKey), then enable the TranslateError flag when opening a db connection.
+
+```go
+db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: true})
+```
 
 ## Errors
 
-[Lista os erros](https://github.com/go-gorm/gorm/blob/master/errors.go)
+[Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go)

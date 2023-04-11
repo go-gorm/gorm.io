@@ -15,6 +15,19 @@ result.Error        // Gibt einen möglichen Fehler zurück
 result.RowsAffected // Gibt die Anzahl der erstellten Einträge zurück
 ```
 
+We can also create multiple records with `Create()`:
+```go
+users := []*User{
+    User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
+    User{Name: "Jackson", Age: 19, Birthday: time.Now()},
+}
+
+result := db.Create(users) // pass a slice to insert multiple row
+
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
+```
+
 ## Create Record With Selected Fields
 
 Create a record and assign a value to the fields specified.
@@ -33,7 +46,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Batch Insert</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too.
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be splited into multiple batches.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -107,8 +120,8 @@ db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// batch insert from `&[]map[string]interface{}{}`
-db.Model(&User{}).Create(&[]map[string]interface{}{
+// batch insert from `[]map[string]interface{}{}`
+db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
 })

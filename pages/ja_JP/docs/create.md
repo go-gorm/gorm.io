@@ -15,6 +15,19 @@ result.Error        // returns error
 result.RowsAffected // returns inserted records count
 ```
 
+`Create()` を使用して複数のレコードを作成することもできます:
+```go
+users := []*User{
+    User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
+    User{Name: "Jackson", Age: 19, Birthday: time.Now()},
+}
+
+result := db.Create(users) // pass a slice to insert multiple row
+
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
+```
+
 ## フィールドを選択してレコードを作成する
 
 レコードを作成し、指定したフィールドに値を割り当てます。
@@ -33,7 +46,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">一括作成</span>
 
-大量のレコードを効率的に挿入するには、スライスを `Create` メソッドに渡します。 モデルのスライスをCreateメソッドに渡すと、GORMはすべてのデータを挿入する1つのSQL文を生成します。SQLが実行されると登録された主キーの値がモデルに代入され、フックメソッドも呼び出されます。
+大量のレコードを効率的に挿入するには、スライスを `Create` メソッドに渡します。 モデルのスライスをCreateメソッドに渡すと、GORMはすべてのデータを挿入する1つのSQL文を生成します。SQLが実行されると登録された主キーの値がモデルに代入され、フックメソッドも呼び出されます。 レコードが複数のバッチに分割されると、 **トランザクション** が開始されます。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -100,22 +113,22 @@ DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 
 ## Mapを使って作成する
 
-GORMでは `map[string]interface{}` と `[]map[string]interface{}{}`を使ってレコード作成できます。例:
+GORMでは `map[string]interface{}` や `[]map[string]interface{}{}`を使ってレコード作成できます。例:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// batch insert from `&[]map[string]interface{}{}`
-db.Model(&User{}).Create(&[]map[string]interface{}{
+// batch insert from `[]map[string]interface{}{}`
+db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
 })
 ```
 
 {% note warn %}
-**注意** Mapを使用してレコードを作成する場合、Hookは呼び出されません。また、関連テーブルのレコードも保存されず、主キーの値も返されません。
+**注意** Mapを使用してレコードを作成する場合、Hookは呼び出されません。また、関連テーブルのレコードも保存されず、主キーの値もモデルに代入されません。
 {% endnote %}
 
 ## <span id="create_from_sql_expr">SQL式/Context Valuer で作成する</span>
@@ -211,10 +224,10 @@ type User struct {
 }
 ```
 
-データベースへの挿入時にフィールドが [ ゼロ値 ](https://tour.golang.org/basics/12) の場合、デフォルト値が使用されます。
+データベースへの挿入時にフィールドが [ ゼロ値 ](https://tour.golang.org/basics/12) の場合、*デフォルト値が使用されます*。
 
 {% note warn %}
-**注意** デフォルト値を定義したには、 `0`, `''`, `false`のようなゼロ値はデータベースに保存されないため、これを避けるにはポインタ型やScanner/Valuerを使用するとよいでしょう。例:
+**注意** デフォルト値を定義したフィールドには、 `0`, `''`, `false`のようなゼロ値はデータベースに保存されないため、これを避けるにはポインタ型やScanner/Valuerを使用するとよいでしょう。例:
 {% endnote %}
 
 ```go

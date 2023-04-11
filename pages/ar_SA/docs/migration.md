@@ -62,6 +62,10 @@ type Migrator interface {
   RenameColumn(dst interface{}, oldName, field string) error
   ColumnTypes(dst interface{}) ([]ColumnType, error)
 
+  // Views
+  CreateView(name string, option ViewOption) error
+  DropView(name string) error
+
   // Constraints
   CreateConstraint(dst interface{}, name string) error
   DropConstraint(dst interface{}, name string) error
@@ -149,18 +153,53 @@ type ColumnType interface {
 }
 ```
 
+### Views
+
+Create views by `ViewOption`. About `ViewOption`:
+
+- `Query` is a [subquery](https://gorm.io/docs/advanced_query.html#SubQuery), which is required.
+- If `Replace` is true, exec `CREATE OR REPLACE` otherwise exec `CREATE`.
+- If `CheckOption` is not empty, append to sql, e.g. `WITH LOCAL CHECK OPTION`.
+
+{% note warn %}
+**NOTE** SQLite currently does not support `Replace` in `ViewOption`
+{% endnote %}
+
+```go
+qyery := db.Model(&User{}).Where("age > ?", 20)
+
+// Create View
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query})
+// CREATE VIEW `users_view` AS SELECT * FROM `users` WHERE age > 20
+
+// Create or Replace View
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query, Replace: true})
+// CREATE OR REPLACE VIEW `users_pets` AS SELECT * FROM `users` WHERE age > 20
+
+// Create View With Check Option
+db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query, CheckOption: "WITH CHECK OPTION"})
+// CREATE VIEW `users_pets` AS SELECT * FROM `users` WHERE age > 20 WITH CHECK OPTION
+
+// Drop View
+db.Migrator().DropView("users_pets")
+// DROP VIEW IF EXISTS "users_pets"
+```
+
 ### Constraints
 
 ```go
-DropIndex(&User{}, "Name")
-db. DropIndex(&User{}, "idx_name")
+type UserIndex struct {
+  Name  string `gorm:"check:name_checker,name <> 'jinzhu'"`
+}
 
-// Check Index exists
-db. HasIndex(&User{}, "Name")
-db. HasIndex(&User{}, "idx_name")
+// Create constraint
+db.Migrator().CreateConstraint(&User{}, "name_checker")
 
-type User struct {
-  gorm.
+// Drop constraint
+db.Migrator().DropConstraint(&User{}, "name_checker")
+
+// Check constraint exists
+db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
 Create foreign keys for relations

@@ -9,7 +9,7 @@ layout: страница
 
 Например, если ваше приложение включает пользователей и кредитные карты, и каждый пользователь может иметь только одну кредитную карту.
 
-### Declare
+### Определение
 ```go
 // User has one CreditCard, UserID is the foreign key
 type User struct {
@@ -24,7 +24,7 @@ type CreditCard struct {
 }
 ```
 
-### Retrieve
+### Извлечение
 ```go
 // Retrieve user list with eager loading credit card
 func GetAll(db *gorm.DB) ([]User, error) {
