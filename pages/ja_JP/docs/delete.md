@@ -156,7 +156,7 @@ db.Unscoped().Delete(&order)
 
 ### 削除フラグ
 
-By default, `gorm.Model` uses `*time.Time` as the value for the `DeletedAt` field, and it provides other data formats support with plugin `gorm.io/plugin/soft_delete`
+デフォルトでは、`gorm.Model` は `*time.Time` を `DeletedAt` フィールドの値として使用します。 `gorm.io/plugin/soft_delete` を使用することで、他のデータ形式の対応も可能です。
 
 {% note warn %}
 **INFO** when creating unique composite index for the DeletedAt field, you must use other data format like unix second/flag with plugin `gorm.io/plugin/soft_delete`'s help, e.g:
