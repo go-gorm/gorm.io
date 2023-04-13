@@ -94,7 +94,7 @@ GORM使用 database/sql 的参数占位符来构建 SQL 语句，它会自动转
 sql := db.ToSQL(func(tx *gorm.DB) *gorm.DB {
   return tx.Model(&User{}).Where("id = ?", 100).Limit(10).Order("age desc").Find(&[]User{})
 })
-sql //=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL ORDER BY age desc LIMIT 10
+//=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL ORDER BY age desc LIMIT 10
 ```
 
 ## `Row` & `Rows`
@@ -103,9 +103,17 @@ sql //=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL O
 
 ```go
 // 使用 GORM API 构建 SQL
+var (
+  name string
+  age  int
+)
 row := db.Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row()
 row.Scan(&name, &age)
 
+var (
+  name, email string
+  age         int
+)
 // 使用原生 SQL
 row := db.Raw("select name, age, email from users where name = ?", "jinzhu").Row()
 row.Scan(&name, &age, &email)
@@ -118,6 +126,10 @@ row.Scan(&name, &age, &email)
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows()
 defer rows.Close()
 for rows.Next() {
+  var (
+    name, email string
+    age         int
+  )
   rows.Scan(&name, &age, &email)
 
   // 业务逻辑...
@@ -127,8 +139,12 @@ for rows.Next() {
 rows, err := db.Raw("select name, age, email from users where name = ?", "jinzhu").Rows()
 defer rows.Close()
 for rows.Next() {
+  var (
+    name, email string
+    age         int
+  )
   rows.Scan(&name, &age, &email)
-
+  
   // 业务逻辑...
 }
 ```
@@ -143,9 +159,9 @@ for rows.Next() {
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Select("name, age, email").Rows() // (*sql.Rows, error)
 defer rows.Close()
 
-var user User
 for rows.Next() {
-  // ScanRows 将一行扫描至 user
+  // ScanRows 将一行扫描至 user 
+  var user User 
   db.ScanRows(rows, &user)
 
   // 业务逻辑...
