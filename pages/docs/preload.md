@@ -117,8 +117,8 @@ db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&use
 
 ## <span id="embedded_preloading">Embedded Preloading</span>
 
-Embedded preloading is used for [Embedded Struct](models.html#embedded_struct), especially the
-same struct. The syntax for Embedded preloading is similar to Nested Preloading, they are divided by dot.
+Embedded Preloading is used for [Embedded Struct](models.html#embedded_struct), especially the
+same struct. The syntax for Embedded Preloading is similar to Nested Preloading, they are divided by dot.
 
 For example:
 
@@ -138,13 +138,13 @@ type Org struct {
 }
 
 // Only preload Org.Address and Org.Address.Country
-db.Preload("Address.Country")  // "Address" is has_one, "Country" is belongs_to (nested relation)
+db.Preload("Address.Country")  // "Address" is has_one, "Country" is belongs_to (nested association)
 
 // Only preload Org.VisitingAddress
-db.Preload("PostalAddress.Country") // "PostalAddress.Country" is belongs_to (embedded relation)
+db.Preload("PostalAddress.Country") // "PostalAddress.Country" is belongs_to (embedded association)
 
 // Only preload Org.NestedAddress
-db.Preload("NestedAddress.Address.Country") // "NestedAddress.Address.Country" is belongs_to (embedded relation)
+db.Preload("NestedAddress.Address.Country") // "NestedAddress.Address.Country" is belongs_to (embedded association)
 
 // All preloaded include "Address" but exclude "Address.Country", because it won't preload nested associations.
 db.Preload(clause.Associations)
