@@ -144,7 +144,7 @@ for rows.Next() {
     age         int
   )
   rows.Scan(&name, &age, &email)
-  
+
   // 业务逻辑...
 }
 ```
