@@ -56,8 +56,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="PreloadGORM allows eager loading relations in other SQL with Preload, for example: type User struct &amp;#123;  gorm.Model  Username string  Orders   []Order&amp;#125;type Order struct &amp;#123;  gorm.Model  Use">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-04-14T07:51:22.961Z">
-<meta property="article:modified_time" content="2023-04-14T07:51:22.961Z">
+<meta property="article:published_time" content="2023-04-14T07:51:45.902Z">
+<meta property="article:modified_time" content="2023-04-14T07:51:45.902Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -164,7 +164,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <h2 id="Nested-Preloading" class="article-heading"><a href="#Nested-Preloading" class="headerlink" title="Nested Preloading"></a><span id="nested_preloading">Nested Preloading</span><a class="article-anchor" href="#Nested-Preloading" aria-hidden="true"></a></h2><p>GORM supports nested preloading, for example:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Preload(<span class="string">"Orders.OrderItems.Product"</span>).Preload(<span class="string">"CreditCard"</span>).Find(&amp;users)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Customize Preload conditions for `Orders`</span></span><br><span class="line"><span class="comment">// And GORM won't preload unmatched order's OrderItems then</span></span><br><span class="line">db.Preload(<span class="string">"Orders"</span>, <span class="string">"state = ?"</span>, <span class="string">"paid"</span>).Preload(<span class="string">"Orders.OrderItems"</span>).Find(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
-</body></html>
+
+<h2 id="Embedded-Preloading" class="article-heading"><a href="#Embedded-Preloading" class="headerlink" title="Embedded Preloading"></a><span id="embedded_preloading">Embedded Preloading</span><a class="article-anchor" href="#Embedded-Preloading" aria-hidden="true"></a></h2><p>Embedded Preloading is used for <a href="models.html#embedded_struct">Embedded Struct</a>, especially the<br>same struct. The syntax for Embedded Preloading is similar to Nested Preloading, they are divided by dot.</p>
+<p>For example:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Address <span class="keyword">struct</span> {</span><br><span class="line">  CountryID <span class="type">int</span></span><br><span class="line">  Country   Country</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Org <span class="keyword">struct</span> {</span><br><span class="line">  PostalAddress   Address <span class="string">`gorm:"embedded;embeddedPrefix:postal_address_"`</span></span><br><span class="line">  VisitingAddress Address <span class="string">`gorm:"embedded;embeddedPrefix:visiting_address_"`</span></span><br><span class="line">  Address         <span class="keyword">struct</span> {</span><br><span class="line">    ID <span class="type">int</span></span><br><span class="line">    Address</span><br><span class="line">  }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Only preload Org.Address and Org.Address.Country</span></span><br><span class="line">db.Preload(<span class="string">"Address.Country"</span>)  <span class="comment">// "Address" is has_one, "Country" is belongs_to (nested association)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Only preload Org.VisitingAddress</span></span><br><span class="line">db.Preload(<span class="string">"PostalAddress.Country"</span>) <span class="comment">// "PostalAddress.Country" is belongs_to (embedded association)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Only preload Org.NestedAddress</span></span><br><span class="line">db.Preload(<span class="string">"NestedAddress.Address.Country"</span>) <span class="comment">// "NestedAddress.Address.Country" is belongs_to (embedded association)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// All preloaded include "Address" but exclude "Address.Country", because it won't preload nested associations.</span></span><br><span class="line">db.Preload(clause.Associations)</span><br></pre></td></tr></tbody></table></figure>
+
+<p>We can omit embedded part when there is no ambiguity.</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Address <span class="keyword">struct</span> {</span><br><span class="line">  CountryID <span class="type">int</span></span><br><span class="line">  Country   Country</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Org <span class="keyword">struct</span> {</span><br><span class="line">  Address Address <span class="string">`gorm:"embedded"`</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">db.Preload(<span class="string">"Address.Country"</span>)</span><br><span class="line">db.Preload(<span class="string">"Country"</span>) <span class="comment">// omit "Address" because there is no ambiguity</span></span><br></pre></td></tr></tbody></table></figure>
+
+<blockquote class="note warn"><p><strong>NOTE</strong> <code>Embedded Preload</code> only works with <code>belongs to</code> relation.<br>Values of other relations are the same in database, we can’t distinguish them.</p>
+</blockquote></body></html>
               </div>
 
               
@@ -176,7 +185,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2023-04-14T07:51:22.961Z" itemprop="dateModified">Last updated: 2023-04-14</time>
+                <time class="article-footer-updated" datetime="2023-04-14T07:51:45.902Z" itemprop="dateModified">Last updated: 2023-04-14</time>
 <a href="associations.html" class="article-footer-prev" title="Association Mode"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="context.html" class="article-footer-next" title="Context"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -280,7 +289,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">Contents</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Preload"><span class="toc-text">Preload</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Joins-Preloading"><span class="toc-text">Joins Preloading</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Preload-All"><span class="toc-text">Preload All</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Preload-with-conditions"><span class="toc-text">Preload with conditions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Custom-Preloading-SQL"><span class="toc-text">Custom Preloading SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nested-Preloading"><span class="toc-text">Nested Preloading</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Preload"><span class="toc-text">Preload</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Joins-Preloading"><span class="toc-text">Joins Preloading</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Preload-All"><span class="toc-text">Preload All</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Preload-with-conditions"><span class="toc-text">Preload with conditions</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Custom-Preloading-SQL"><span class="toc-text">Custom Preloading SQL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Nested-Preloading"><span class="toc-text">Nested Preloading</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Embedded-Preloading"><span class="toc-text">Embedded Preloading</span></a></li></ol>
 
               
                 <a href="https://github.com/go-gorm/gorm.io/edit/master/pages/docs/preload.md" target="_blank" id="article-improve">
