@@ -1,13 +1,13 @@
 ---
-title: Constraints
+title: Restricciones
 layout: page
 ---
 
-GORM allows create database constraints with tag, constraints will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORM permite crear restricciones de base de datos con [tag](https://pkg.go.dev/reflect#StructTag), las restricciones serán creadas al usar [AutoMigrate or CreateTable con GORM](migration.html)
 
-## CHECK Constraint
+## Restricción CHECK
 
-Create CHECK constraints with tag `check`
+Crear restricción CHECK con tag `check`
 
 ```go
 type UserIndex struct {
@@ -17,13 +17,13 @@ type UserIndex struct {
 }
 ```
 
-## Index Constraint
+## Restricción INDEX
 
-Checkout [Database Indexes](indexes.html)
+Ver [Índices Base de Datos](indexes.html)
 
-## Foreign Key Constraint
+## Restricción Llave foránea
 
-GORM will creates foreign keys constraints for associations, you can disable this feature during initialization:
+GORM creará restricciones de llaves foráneas para asociaciones, usted puede deshabilitar esta característica durante la inicialización:
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -31,7 +31,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-GORM allows you setup FOREIGN KEY constraints's `OnDelete`, `OnUpdate` option with tag `constraint`, for example:
+GORM permite configurar restricciones de llaves foráneas usando el tag `constraint` con las opciones `OnDelete` o `OnUpdate`, ver ejemplo:
 
 ```go
 type User struct {
