@@ -137,7 +137,7 @@ GORM 可以通过 `Preload` 预加载 has many 关联的记录，查看 [预加�
 type Person struct {
   ID        int
   Name      string
-  Addresses []Address `gorm:"many2many:person_address;"`
+  Addresses []Address `gorm:"many2many:person_addressses;"`
 }
 
 type Address struct {
