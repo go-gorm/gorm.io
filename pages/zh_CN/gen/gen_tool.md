@@ -98,7 +98,7 @@ Generate some tables code.
 
 #### withUnitTest
 
-生成单元测试，默认值 `fals`, 选项: `false` / `true`
+生成单元测试，默认值 `false`, 选项: `false` / `true`
 
 #### fieldSignable
 
