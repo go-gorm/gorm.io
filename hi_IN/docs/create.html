@@ -32,8 +32,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="Create Recorduser :&#x3D; User&amp;#123;Name: &quot;Jinzhu&quot;, Age: 18, Birthday: time.Now()&amp;#125;result :&#x3D; db.Create(&amp;user) &#x2F;&#x2F; pass pointer of data to Createuser.ID             &#x2F;&#x2F; inserted  डेटा की  pr">
 <meta property="og:locale" content="hi_IN">
-<meta property="article:published_time" content="2023-04-14T07:51:45.914Z">
-<meta property="article:modified_time" content="2023-04-14T07:51:45.914Z">
+<meta property="article:published_time" content="2023-04-21T14:23:13.850Z">
+<meta property="article:modified_time" content="2023-04-21T14:23:13.850Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -116,7 +116,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <div class="article-content" itemprop="articleBody">
                 <html><head></head><body><h2 id="Create-Record" class="article-heading"><a href="#Create-Record" class="headerlink" title="Create Record"></a>Create Record<a class="article-anchor" href="#Create-Record" aria-hidden="true"></a></h2><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">user := User{Name: <span class="string">"Jinzhu"</span>, Age: <span class="number">18</span>, Birthday: time.Now()}</span><br><span class="line"></span><br><span class="line">result := db.Create(&amp;user) <span class="comment">// pass pointer of data to Create</span></span><br><span class="line"></span><br><span class="line">user.ID             <span class="comment">// inserted  डेटा की  primary key लौटाता है</span></span><br><span class="line">result.Error        <span class="comment">// returns error</span></span><br><span class="line">result.RowsAffected <span class="comment">// रिटर्न सम्मिलित रिकॉर्ड गिनती</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>We can also create multiple records with <code>Create()</code>:</p>
+<p><code>Create()</code> से हम ( create multiple records) कई रिकॉर्ड भी बना सकते हैं:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">users := []*User{</span><br><span class="line">    User{Name: <span class="string">"Jinzhu"</span>, Age: <span class="number">18</span>, Birthday: time.Now()},</span><br><span class="line">    User{Name: <span class="string">"Jackson"</span>, Age: <span class="number">19</span>, Birthday: time.Now()},</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">result := db.Create(users) <span class="comment">// pass a slice to insert multiple row</span></span><br><span class="line"></span><br><span class="line">result.Error        <span class="comment">// returns error</span></span><br><span class="line">result.RowsAffected <span class="comment">// returns inserted records count</span></span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Selected-फ़ील्ड्स-के-साथ-रिकॉर्ड-Create-करे-।" class="article-heading"><a href="#Selected-फ़ील्ड्स-के-साथ-रिकॉर्ड-Create-करे-।" class="headerlink" title="Selected फ़ील्ड्स के साथ रिकॉर्ड Create करे ।"></a>Selected फ़ील्ड्स के साथ रिकॉर्ड Create करे ।<a class="article-anchor" href="#Selected-फ़ील्ड्स-के-साथ-रिकॉर्ड-Create-करे-।" aria-hidden="true"></a></h2><p>Create a record and assign a value to the fields specified.</p>
@@ -190,7 +190,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2023-04-14T07:51:45.914Z" itemprop="dateModified">Last updated: २०२३-०४-१४</time>
+                <time class="article-footer-updated" datetime="2023-04-21T14:23:13.850Z" itemprop="dateModified">Last updated: २०२३-०४-२१</time>
 <a href="connecting_to_the_database.html" class="article-footer-prev" title="Connecting to Database"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="query.html" class="article-footer-next" title="Query"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 

@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORM provides Context support, you can use it with method WithContext Single Session ModeSingle session mode usually used when you want to perform a single operation db.WithContext(ctx).Find(&amp;user">
+  <meta name="description" content="GORM proporciona soporte para Context, se puede utilizar con el método WithContext Modo de sesión únicaEl modo de sesión única se utiliza generalmente cuando se desea realizar una sola operación. db.W">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Context">
 <meta property="og:url" content="https://gorm.io/es_ES/docs/context.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORM provides Context support, you can use it with method WithContext Single Session ModeSingle session mode usually used when you want to perform a single operation db.WithContext(ctx).Find(&amp;user">
+<meta property="og:description" content="GORM proporciona soporte para Context, se puede utilizar con el método WithContext Modo de sesión únicaEl modo de sesión única se utiliza generalmente cuando se desea realizar una sola operación. db.W">
 <meta property="og:locale" content="es_ES">
-<meta property="article:published_time" content="2023-04-14T07:51:45.906Z">
-<meta property="article:modified_time" content="2023-04-14T07:51:45.906Z">
+<meta property="article:published_time" content="2023-04-21T14:23:13.842Z">
+<meta property="article:modified_time" content="2023-04-21T14:23:13.842Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -138,27 +138,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>GORM provides Context support, you can use it with method <code>WithContext</code></p>
-<h2 id="Single-Session-Mode" class="article-heading"><a href="#Single-Session-Mode" class="headerlink" title="Single Session Mode"></a>Single Session Mode<a class="article-anchor" href="#Single-Session-Mode" aria-hidden="true"></a></h2><p>Single session mode usually used when you want to perform a single operation</p>
+                <html><head></head><body><p>GORM proporciona soporte para <code>Context</code>, se puede utilizar con el método <code>WithContext</code></p>
+<h2 id="Modo-de-sesion-unica" class="article-heading"><a href="#Modo-de-sesion-unica" class="headerlink" title="Modo de sesión única"></a>Modo de sesión única<a class="article-anchor" href="#Modo-de-sesion-unica" aria-hidden="true"></a></h2><p>El modo de sesión única se utiliza generalmente cuando se desea realizar una sola operación.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.WithContext(ctx).Find(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Continuous-session-mode" class="article-heading"><a href="#Continuous-session-mode" class="headerlink" title="Continuous session mode"></a>Continuous session mode<a class="article-anchor" href="#Continuous-session-mode" aria-hidden="true"></a></h2><p>Continuous session mode is usually used when you want to perform a group of operations, for example:</p>
+<h2 id="Modo-de-sesion-continua" class="article-heading"><a href="#Modo-de-sesion-continua" class="headerlink" title="Modo de sesión continua"></a>Modo de sesión continua<a class="article-anchor" href="#Modo-de-sesion-continua" aria-hidden="true"></a></h2><p>El modo de sesión continua se utiliza generalmente cuando se desea realizar un grupo de operaciones, por ejemplo:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">tx := db.WithContext(ctx)</span><br><span class="line">tx.First(&amp;user, <span class="number">1</span>)</span><br><span class="line">tx.Model(&amp;user).Update(<span class="string">"role"</span>, <span class="string">"admin"</span>)</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Context-timeout" class="article-heading"><a href="#Context-timeout" class="headerlink" title="Context timeout"></a>Context timeout<a class="article-anchor" href="#Context-timeout" aria-hidden="true"></a></h2><p>You can pass in a context with a timeout to <code>db.WithContext</code> to set timeout for long running queries, for example:</p>
+<h2 id="Tiempo-de-espera-del-Contexto" class="article-heading"><a href="#Tiempo-de-espera-del-Contexto" class="headerlink" title="Tiempo de espera del Contexto"></a>Tiempo de espera del Contexto<a class="article-anchor" href="#Tiempo-de-espera-del-Contexto" aria-hidden="true"></a></h2><p>Puede pasar un contexto con un tiempo de espera a <code>db.WithContext</code> para establecer un tiempo de espera en las consultas de larga duración, por ejemplo:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">ctx, cancel := context.WithTimeout(context.Background(), <span class="number">2</span>*time.Second)</span><br><span class="line"><span class="keyword">defer</span> cancel()</span><br><span class="line"></span><br><span class="line">db.WithContext(ctx).Find(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Context-in-Hooks-x2F-Callbacks" class="article-heading"><a href="#Context-in-Hooks-x2F-Callbacks" class="headerlink" title="Context in Hooks/Callbacks"></a>Context in Hooks/Callbacks<a class="article-anchor" href="#Context-in-Hooks-x2F-Callbacks" aria-hidden="true"></a></h2><p>You can access the <code>Context</code> object from the current <code>Statement</code>, for example:</p>
+<h2 id="Contexto-en-Hooks-x2F-Callbacks" class="article-heading"><a href="#Contexto-en-Hooks-x2F-Callbacks" class="headerlink" title="Contexto en Hooks/Callbacks"></a>Contexto en Hooks/Callbacks<a class="article-anchor" href="#Contexto-en-Hooks-x2F-Callbacks" aria-hidden="true"></a></h2><p>Puede acceder al objeto <code>Context</code> desde el <code>Statement</code> actual, por ejemplo:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *User)</span></span> BeforeCreate(tx *gorm.DB) (err <span class="type">error</span>) {</span><br><span class="line">  ctx := tx.Statement.Context</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Chi-Middleware-Example" class="article-heading"><a href="#Chi-Middleware-Example" class="headerlink" title="Chi Middleware Example"></a>Chi Middleware Example<a class="article-anchor" href="#Chi-Middleware-Example" aria-hidden="true"></a></h2><p>Continuous session mode which might be helpful when handling API requests, for example, you can set up <code>*gorm.DB</code> with Timeout Context in middlewares, and then use the <code>*gorm.DB</code> when processing all requests</p>
-<p>Following is a Chi middleware example:</p>
+<h2 id="Ejemplo-de-Middleware-Chi" class="article-heading"><a href="#Ejemplo-de-Middleware-Chi" class="headerlink" title="Ejemplo de Middleware Chi"></a>Ejemplo de Middleware Chi<a class="article-anchor" href="#Ejemplo-de-Middleware-Chi" aria-hidden="true"></a></h2><p>El modo de sesión continua que puede ser útil al manejar solicitudes de API, por ejemplo, se puede configurar <code>*gorm.DB</code> con Contexto de Tiempo de espera en middlewares, y luego usar <code>*gorm.DB</code> en el procesamiento de todas las solicitudes.</p>
+<p>El siguiente es un ejemplo de middleware Chi:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SetDBMiddleware</span><span class="params">(next http.Handler)</span></span> http.Handler {</span><br><span class="line">  <span class="keyword">return</span> http.HandlerFunc(<span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> {</span><br><span class="line">    timeoutContext, _ := context.WithTimeout(context.Background(), time.Second)</span><br><span class="line">    ctx := context.WithValue(r.Context(), <span class="string">"DB"</span>, db.WithContext(timeoutContext))</span><br><span class="line">    next.ServeHTTP(w, r.WithContext(ctx))</span><br><span class="line">  })</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">r := chi.NewRouter()</span><br><span class="line">r.Use(SetDBMiddleware)</span><br><span class="line"></span><br><span class="line">r.Get(<span class="string">"/"</span>, <span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> {</span><br><span class="line">  db, ok := ctx.Value(<span class="string">"DB"</span>).(*gorm.DB)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> users []User</span><br><span class="line">  db.Find(&amp;users)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// lots of db operations</span></span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">r.Get(<span class="string">"/user"</span>, <span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> {</span><br><span class="line">  db, ok := ctx.Value(<span class="string">"DB"</span>).(*gorm.DB)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> user User</span><br><span class="line">  db.First(&amp;user)</span><br><span class="line"></span><br><span class="line">  <span class="comment">// lots of db operations</span></span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
 
-<blockquote class="note undefined"><p><strong>NOTE</strong> Setting <code>Context</code> with <code>WithContext</code> is goroutine-safe, refer <a href="session.html">Session</a> for details</p>
+<blockquote class="note undefined"><p><strong>NOTA</strong> Establecer <code>Context</code> con <code>WithContext</code> es seguro para gorutinas, consulte <a href="session.html">Session</a> para obtener detalles.</p>
 </blockquote>
 
-<h2 id="Logger" class="article-heading"><a href="#Logger" class="headerlink" title="Logger"></a>Logger<a class="article-anchor" href="#Logger" aria-hidden="true"></a></h2><p>Logger accepts <code>Context</code> too, you can use it for log tracking, refer <a href="logger.html">Logger</a> for details</p>
+<h2 id="Logger" class="article-heading"><a href="#Logger" class="headerlink" title="Logger"></a>Logger<a class="article-anchor" href="#Logger" aria-hidden="true"></a></h2><p>Logger acepta <code>Contexto</code> también, puedes usarlo para el seguimiento de registros, consulta <a href="logger.html">Logger</a> para más detalles</p>
 </body></html>
               </div>
 
@@ -171,7 +171,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2023-04-14T07:51:45.906Z" itemprop="dateModified">Última actualización: 2023-04-14</time>
+                <time class="article-footer-updated" datetime="2023-04-21T14:23:13.842Z" itemprop="dateModified">Última actualización: 2023-04-21</time>
 <a href="preload.html" class="article-footer-prev" title="Precarga (Carga Antigua)"><i class="fa fa-chevron-left"></i><span>Anterior</span></a><a href="error_handling.html" class="article-footer-next" title="Manejo de Errores"><span>Siguiente</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -275,7 +275,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">Contenido</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Single-Session-Mode"><span class="toc-text">Single Session Mode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Continuous-session-mode"><span class="toc-text">Continuous session mode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Context-timeout"><span class="toc-text">Context timeout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Context-in-Hooks-x2F-Callbacks"><span class="toc-text">Context in Hooks&#x2F;Callbacks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chi-Middleware-Example"><span class="toc-text">Chi Middleware Example</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Logger"><span class="toc-text">Logger</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Modo-de-sesion-unica"><span class="toc-text">Modo de sesión única</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Modo-de-sesion-continua"><span class="toc-text">Modo de sesión continua</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tiempo-de-espera-del-Contexto"><span class="toc-text">Tiempo de espera del Contexto</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Contexto-en-Hooks-x2F-Callbacks"><span class="toc-text">Contexto en Hooks&#x2F;Callbacks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ejemplo-de-Middleware-Chi"><span class="toc-text">Ejemplo de Middleware Chi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Logger"><span class="toc-text">Logger</span></a></li></ol>
 
               
                 <a href="https://translate.gorm.io/project/go-gorm/es-ES" target="_blank" id="article-improve">
