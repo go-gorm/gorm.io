@@ -115,3 +115,57 @@ db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)
 // 条件に一致しない `Orders` の `OrderItems` を preloadしないようにする
 db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
 ```
+
+## <span id="embedded_preloading">Embedded Preloading</span>
+
+Embedded Preloading is used for [Embedded Struct](models.html#embedded_struct), especially the same struct. The syntax for Embedded Preloading is similar to Nested Preloading, they are divided by dot.
+
+For example:
+
+```go
+type Address struct {
+    CountryID int
+    Country   Country
+}
+
+type Org struct {
+    PostalAddress   Address `gorm:"embedded;embeddedPrefix:postal_address_"`
+    VisitingAddress Address `gorm:"embedded;embeddedPrefix:visiting_address_"`
+    Address         struct {
+        ID int
+        Address
+    }
+}
+
+// Only preload Org.Address and Org.Address.Country
+db.Preload("Address.Country")  // "Address" is has_one, "Country" is belongs_to (nested association)
+
+// Only preload Org.VisitingAddress
+db.Preload("PostalAddress.Country") // "PostalAddress.Country" is belongs_to (embedded association)
+
+// Only preload Org.NestedAddress
+db.Preload("NestedAddress.Address.Country") // "NestedAddress.Address.Country" is belongs_to (embedded association)
+
+// All preloaded include "Address" but exclude "Address.Country", because it won't preload nested associations.
+db.Preload(clause.Associations)
+```
+
+We can omit embedded part when there is no ambiguity.
+
+```go
+type Address struct {
+    CountryID int
+    Country   Country
+}
+
+type Org struct {
+    Address Address `gorm:"embedded"`
+}
+
+db.Preload("Address.Country")
+db.Preload("Country") // omit "Address" because there is no ambiguity
+```
+
+{% note warn %}
+**NOTE** `Embedded Preload` only works with `belongs to` relation. Values of other relations are the same in database, we can't distinguish them.
+{% endnote %}

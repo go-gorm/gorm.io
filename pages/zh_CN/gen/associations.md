@@ -305,6 +305,11 @@ users, err := u.WithContext(ctx).Preload(field.Associations).Find()
 users, err := u.WithContext(ctx).Preload(u.Orders.OrderItems.Product).Find()
 ```
 
+To include soft deleted records in all associactions use relation scope `field.RelationFieldUnscoped`, e.g:
+```go
+users, err := u.WithContext(ctx).Preload(field.Associations.Scopes(field.RelationFieldUnscoped)).Find()
+```
+
 ### Preload with select
 
 使用方法 `Select` 指定加载的列. 。 外键必须选择。

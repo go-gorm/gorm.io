@@ -57,7 +57,7 @@ db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-To efficiently delete large number of records, pass a slice with primary keys to the `Delete` method.
+大量のレコードを効率的に削除するには、プライマリキーのスライスを `Delete` メソッドに渡します。
 
 ```go
 var users = []User{{ID: 1}, {ID: 2}, {ID: 3}}
@@ -70,9 +70,9 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 
 ### Global Deleteを防ぐ
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
+何も条件を指定せずに一括削除を行った場合、GORMは削除処理を実行せず、`ErrMissingWhereClause`エラーを返します。
 
-You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+条件を指定する、SQLをそのまま実行する、あるいは `AllowGlobalUpdate` モードを有効にする必要があります。例:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -91,7 +91,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 ### 削除されたレコードのデータを返却する
 
-Return deleted data, only works for database support Returning, for example:
+Returningをサポートしているデータベースであれば、削除されたデータを取得することができます。例：
 
 ```go
 // return all columns
@@ -108,9 +108,9 @@ DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "sal
 
 ## 論理削除
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+(`gorm.Model`にも含まれている) `gorm.DeletedAt` フィールドがモデルに含まれている場合、そのモデルは自動的に論理削除されるようになります。
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+`Delete` メソッドを実行した際、レコードはデータベースから物理削除されません。代わりに、`DeletedAt` フィールドに現在の時刻が設定され、そのレコードは通常のクエリ系のメソッドでは検索できなくなります。
 
 ```go
 // user's ID is `111`
@@ -126,7 +126,7 @@ db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+モデルに `gorm.Model` を含めたくない場合は、以下のようにすることで論理削除機能を有効にできます。
 
 ```go
 type User struct {
@@ -138,7 +138,7 @@ type User struct {
 
 ### 論理削除されたレコードを取得する
 
-You can find soft deleted records with `Unscoped`
+`Unscoped`を用いることで、論理削除されたレコードを取得することができます。
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
@@ -147,7 +147,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ### 完全な削除（物理削除）
 
-You can delete matched records permanently with `Unscoped`
+`Unscoped`を用いることで、レコードを物理削除できます。
 
 ```go
 db.Unscoped().Delete(&order)
@@ -156,7 +156,7 @@ db.Unscoped().Delete(&order)
 
 ### 削除フラグ
 
-By default, `gorm.Model` uses `*time.Time` as the value for the `DeletedAt` field, and it provides other data formats support with plugin `gorm.io/plugin/soft_delete`
+デフォルトでは、`gorm.Model` は `*time.Time` を `DeletedAt` フィールドの値として使用します。 `gorm.io/plugin/soft_delete` を使用することで、他のデータ形式の対応も可能です。
 
 {% note warn %}
 **INFO** when creating unique composite index for the DeletedAt field, you must use other data format like unix second/flag with plugin `gorm.io/plugin/soft_delete`'s help, e.g:

@@ -3,19 +3,19 @@ title: Context
 layout: page
 ---
 
-GORM provides Context support, you can use it with method `WithContext`
+GORM proporciona soporte para `Context`, se puede utilizar con el método `WithContext`
 
-## Single Session Mode
+## Modo de sesión única
 
-Single session mode usually used when you want to perform a single operation
+El modo de sesión única se utiliza generalmente cuando se desea realizar una sola operación.
 
 ```go
 db.WithContext(ctx).Find(&users)
 ```
 
-## Continuous session mode
+## Modo de sesión continua
 
-Continuous session mode is usually used when you want to perform a group of operations, for example:
+El modo de sesión continua se utiliza generalmente cuando se desea realizar un grupo de operaciones, por ejemplo:
 
 ```go
 tx := db.WithContext(ctx)
@@ -23,9 +23,9 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-## Context timeout
+## Tiempo de espera del Contexto
 
-You can pass in a context with a timeout to `db.WithContext` to set timeout for long running queries, for example:
+Puede pasar un contexto con un tiempo de espera a `db.WithContext` para establecer un tiempo de espera en las consultas de larga duración, por ejemplo:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -34,9 +34,9 @@ defer cancel()
 db.WithContext(ctx).Find(&users)
 ```
 
-## Context in Hooks/Callbacks
+## Contexto en Hooks/Callbacks
 
-You can access the `Context` object from the current `Statement`, for example:
+Puede acceder al objeto `Context` desde el `Statement` actual, por ejemplo:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -46,11 +46,11 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Chi Middleware Example
+## Ejemplo de Middleware Chi
 
-Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
+El modo de sesión continua que puede ser útil al manejar solicitudes de API, por ejemplo, se puede configurar `*gorm.DB` con Contexto de Tiempo de espera en middlewares, y luego usar `*gorm.DB` en el procesamiento de todas las solicitudes.
 
-Following is a Chi middleware example:
+El siguiente es un ejemplo de middleware Chi:
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {
@@ -84,9 +84,9 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 ```
 
 {% note %}
-**NOTE** Setting `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**NOTA** Establecer `Context` con `WithContext` es seguro para gorutinas, consulte [Session](session.html) para obtener detalles.
 {% endnote %}
 
 ## Logger
 
-Logger accepts `Context` too, you can use it for log tracking, refer [Logger](logger.html) for details
+Logger acepta `Contexto` también, puedes usarlo para el seguimiento de registros, consulta [Logger](logger.html) para más detalles

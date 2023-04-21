@@ -15,7 +15,7 @@ result.Error        // returns error
 result.RowsAffected // रिटर्न सम्मिलित रिकॉर्ड गिनती
 ```
 
-We can also create multiple records with `Create()`:
+`Create()` से हम ( create multiple records) कई रिकॉर्ड भी बना सकते हैं:
 ```go
 users := []*User{
     User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
