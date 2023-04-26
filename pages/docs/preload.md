@@ -34,7 +34,7 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 
 ## Joins Preloading
 
-`Preload` loads the association data in a separate query, `Join Preload` will loads association data using inner join, for example:
+`Preload` loads the association data in a separate query, `Join Preload` will loads association data using left join, for example:
 
 ```go
 db.Joins("Company").Joins("Manager").Joins("Account").First(&user, 1)
@@ -47,6 +47,13 @@ Join with conditions
 ```go
 db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
+```
+
+Join nested model
+
+```go
+db.Joins("Manager").Joins("Manager.Company").Find(&users)
+// SELECT "users"."id","users"."created_at","users"."updated_at","users"."deleted_at","users"."name","users"."age","users"."birthday","users"."company_id","users"."manager_id","users"."active","Manager"."id" AS "Manager__id","Manager"."created_at" AS "Manager__created_at","Manager"."updated_at" AS "Manager__updated_at","Manager"."deleted_at" AS "Manager__deleted_at","Manager"."name" AS "Manager__name","Manager"."age" AS "Manager__age","Manager"."birthday" AS "Manager__birthday","Manager"."company_id" AS "Manager__company_id","Manager"."manager_id" AS "Manager__manager_id","Manager"."active" AS "Manager__active","Manager__Company"."id" AS "Manager__Company__id","Manager__Company"."name" AS "Manager__Company__name" FROM "users" LEFT JOIN "users" "Manager" ON "users"."manager_id" = "Manager"."id" AND "Manager"."deleted_at" IS NULL LEFT JOIN "companies" "Manager__Company" ON "Manager"."company_id" = "Manager__Company"."id" WHERE "users"."deleted_at" IS NULL
 ```
 
 {% note warn %}
