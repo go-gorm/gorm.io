@@ -34,7 +34,7 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 
 ## Joins 预加载
 
-`Preload` 在一个单独查询中加载关联数据。而 `Join Preload` 会使用 left join 加载关联数据，例如：
+`Preload` loads the association data in a separate query, `Join Preload` will loads association data using left join, for example:
 
 ```go
 db.Joins("Company").Joins("Manager").Joins("Account").First(&user, 1)
@@ -49,13 +49,20 @@ db.Joins("Company", DB.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
+Join nested model
+
+```go
+db.Joins("Manager").Joins("Manager.Company").Find(&users)
+// SELECT "users"."id","users"."created_at","users"."updated_at","users"."deleted_at","users"."name","users"."age","users"."birthday","users"."company_id","users"."manager_id","users"."active","Manager"."id" AS "Manager__id","Manager"."created_at" AS "Manager__created_at","Manager"."updated_at" AS "Manager__updated_at","Manager"."deleted_at" AS "Manager__deleted_at","Manager"."name" AS "Manager__name","Manager"."age" AS "Manager__age","Manager"."birthday" AS "Manager__birthday","Manager"."company_id" AS "Manager__company_id","Manager"."manager_id" AS "Manager__manager_id","Manager"."active" AS "Manager__active","Manager__Company"."id" AS "Manager__Company__id","Manager__Company"."name" AS "Manager__Company__name" FROM "users" LEFT JOIN "users" "Manager" ON "users"."manager_id" = "Manager"."id" AND "Manager"."deleted_at" IS NULL LEFT JOIN "companies" "Manager__Company" ON "Manager"."company_id" = "Manager__Company"."id" WHERE "users"."deleted_at" IS NULL
+```
+
 {% note warn %}
-**注意** `Join Preload` 适用于一对一的关系，例如： `has one`, `belongs to`
+**NOTE** `Join Preload` works with one-to-one relation, e.g: `has one`, `belongs to`
 {% endnote %}
 
 ## 预加载全部
 
-与创建、更新时使用 `Select` 类似，`clause.Associations` 也可以和 `Preload` 一起使用，它可以用来 `预加载` 全部关联，例如：
+`clause.Associations` can work with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
 
 ```go
 type User struct {
@@ -70,7 +77,7 @@ type User struct {
 db.Preload(clause.Associations).Find(&users)
 ```
 
-`clause.Associations`不会预加载嵌套的关联关系，但是你可以将其与[嵌套预加载](#nested_preloading)一起使用， 例如：
+`clause.Associations` won't preload nested associations, but you can use it with [Nested Preloading](#nested_preloading) together, e.g:
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload(clause.Associations).Find(&users)
@@ -78,10 +85,10 @@ db.Preload("Orders.OrderItems.Product").Preload(clause.Associations).Find(&users
 
 ## 条件预加载
 
-GORM 允许带条件的 Preload 关联，类似于[内联条件](query.html#inline_conditions)
+GORM allows Preload associations with conditions, it works similar to [Inline Conditions](query.html#inline_conditions)
 
 ```go
-// 带条件的预加载 Order
+// Preload Orders with conditions
 db.Preload("Orders", "state NOT IN (?)", "cancelled").Find(&users)
 // SELECT * FROM users;
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4) AND state NOT IN ('cancelled');
@@ -93,7 +100,7 @@ db.Where("state = ?", "active").Preload("Orders", "state NOT IN (?)", "cancelled
 
 ## 自定义预加载 SQL
 
-您可以通过 `func(db *gorm.DB) *gorm.DB` 实现自定义预加载 SQL，例如：
+You are able to custom preloading SQL by passing in `func(db *gorm.DB) *gorm.DB`, for example:
 
 ```go
 db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
@@ -105,13 +112,13 @@ db.Preload("Orders", func(db *gorm.DB) *gorm.DB {
 
 ## <span id="nested_preloading">嵌套预加载</span>
 
-GORM 支持嵌套预加载，例如：
+GORM supports nested preloading, for example:
 
 ```go
 db.Preload("Orders.OrderItems.Product").Preload("CreditCard").Find(&users)
 
-// 自定义预加载 `Orders` 的条件
-// 这样，GORM 就不会加载不匹配的 order 记录
+// Customize Preload conditions for `Orders`
+// And GORM won't preload unmatched order's OrderItems then
 db.Preload("Orders", "state = ?", "paid").Preload("Orders.OrderItems").Find(&users)
 ```
 
