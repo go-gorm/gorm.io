@@ -400,7 +400,7 @@ f.LeftShift(3)
 #### String Fields
 
 ```go
-name := field.NewStirng("user", "name")
+name := field.NewString("user", "name")
 // `user`.`name` = "modi"
 name.Eq("modi")
 // `user`.`name` LIKE %modi%
@@ -416,7 +416,7 @@ name.Concat("[", "]")
 #### Time Fields
 
 ```go
-birth := field.NewStirng("user", "birth")
+birth := field.NewString("user", "birth")
 // `user`.`birth` = ? (now)
 birth.Eq(time.Now())
 // DATE_ADD(`user`.`birth`, INTERVAL ? MICROSECOND)
