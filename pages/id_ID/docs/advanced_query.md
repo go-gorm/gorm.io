@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Bidang Pilih Pintar</span>
 
-GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM mengijinkan pengambilan field secara spesifik dengan [`Select`](query.html), jika kamu sering menggunakan ini didalam aplikasi kamu, mungkin kamu hendak mendefinisikan struct yang lebih kecil untuk API yang mana dapat mengambil field secara otomatis, sebagai contoh:
 
 ```go
 type User struct {
