@@ -30,7 +30,7 @@ result.RowsAffected // returns inserted records count
 
 ## Создание записи с указанными полями
 
-Create a record and assign a value to the fields specified.
+Создаем запись и присваиваем значение указанным полям.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
@@ -46,7 +46,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Пакетная вставка</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be splited into multiple batches.
+Чтобы эффективно вставить большое количество записей, передайте слайс в метод `Create`. Передайте массив с данными в метод Create, GORM создаст запрос SQL для вставки и заполнит первичными ключами массив, будут также вызваны хук методы. При это начнется **транзакция**, когда записи могут быть переданы в несколько партий.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
