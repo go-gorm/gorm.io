@@ -21,18 +21,18 @@ sidebar:
   docs:
     getting_started: شروع
     overview: مرور کلی
-    declaring_models: Declaring Models
+    declaring_models: تعریف مدل ها
     conventions: قراردادها
     connecting_to_the_database: اتصال به پایگاه داده
-    crud_interface: CRUD Interface
-    create: Create
-    query: Query
+    crud_interface: رابط CRUD 
+    create: ساختن
+    query: کوئری
     advanced_query: Query های پیچیده
-    update: Update
-    delete: Delete
+    update: به‌روزرسانی
+    delete: حذف
     raw_sql_and_builder: Raw SQL & SQL Builder
-    batch: Batch Processing
-    associations: Associations
+    batch: پردازش دسته ای
+    associations: وابستگی‌ها
     belongs_to: Belongs To
     has_one: Has One
     has_many: Has Many

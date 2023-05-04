@@ -98,7 +98,7 @@ type CommonMethod struct {
 }
 
 // TableName 
-func (m CommonMethod) TableName() strng {
+func (m CommonMethod) TableName() string {
     return "@@table"
 }
 

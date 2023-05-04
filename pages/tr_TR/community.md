@@ -41,6 +41,7 @@ layout: sayfa
 * [Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
 * [gorm-cache - GORM query cache plugin](https://github.com/liyuan1125/gorm-cache)
 * [deepgorm - Nested map filtering](https://github.com/survivorbat/gorm-deep-filtering)
+* [oracle - GORM Oracle driver](https://github.com/CengSin/oracle)
 
 ## <span id="contribute">Bu sayfaya katkıda bulunmak</span>
 

@@ -41,6 +41,7 @@ layout: page
 * [Associação de usuários com funções e permissões](https://github.com/Permify/permify-gorm)
 * [gorm-cache - Plugin de cache de consultas para o GORM](https://github.com/liyuan1125/gorm-cache)
 * [deepgorm - Nested map filtering](https://github.com/survivorbat/gorm-deep-filtering)
+* [oracle - GORM Oracle driver](https://github.com/CengSin/oracle)
 
 ## <span id="contribute">Contribua para esta página</span>
 
