@@ -144,7 +144,7 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-获取第一条匹配的记录，或者根据给定的条件初始化一个实例（仅支持 sturct 和 map 条件）
+获取第一条匹配的记录，或者根据给定的条件初始化一个实例（仅支持 struct 和 map 条件）
 
 ```go
 // 未找到 user，则根据给定的条件初始化一条记录
