@@ -103,7 +103,7 @@ db.Model(User{ID: 10}).First(&result)
 ```
 
 {% note warn %}
-**NOTE:** If you use gorm's specific fields like `gorm.DeletedAt`, it will run a different query for fetching the retrieving object/s.
+**NOTE:** If you use gorm's specific fields types like `gorm.DeletedAt`, it will run a different query for fetching the retrieving object/s.
 {% endnote %}
 ```go
 type User struct {
