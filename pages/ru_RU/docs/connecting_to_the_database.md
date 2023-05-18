@@ -3,7 +3,7 @@ title: Подключение к базе данных
 layout: страница
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
+GORM официально поддерживает базы данных MySQL, PostgreSQL, SQlite, SQL Server и TiDB
 
 ## MySQL
 
