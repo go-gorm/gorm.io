@@ -419,9 +419,9 @@ db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 
 For more details, please refer to [Preloading (Eager Loading)](preload.html).
 
-### Joins a Derived Table
+### Joins к производной таблице
 
-You can also use `Joins` to join a derived table.
+Вы также можете использовать `Joins` для объединения производной таблицы.
 
 ```go
 type User struct {
@@ -442,7 +442,7 @@ db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Sc
 
 ## <span id="scan">Scan</span>
 
-Scanning results into a struct works similarly to the way we use `Find`
+Сканирование результатов в структуру работает аналогично тому, как мы используем `Find`
 
 ```go
 type Result struct {
