@@ -90,10 +90,10 @@ func (user User) BeforeCreate(tx *gorm.DB) {
 
 ```go
 func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
-  // use field.Tag, field.TagSettings gets field's tags
-  // checkout https://github.com/go-gorm/gorm/blob/master/schema/field.go for all options
+  // ипсользуйте field.Tag, field.TagSettings для получения тегов полей
+  // смотрите все возможности https://github.com/go-gorm/gorm/blob/master/schema/field.go
 
-  // returns different database type based on driver name
+  // возвращает другой тип базы данных в зависимости от имени драйвера
   switch db.Dialector.Name() {
   case "mysql", "sqlite":
     return "JSON"
@@ -119,16 +119,16 @@ type User struct {
 
 ### <span id="gorm_valuer_interface">Интерфейс GormValuerInterface</span>
 
-GORM provides a `GormValuerInterface` interface, which can allow to create/update from SQL Expr or value based on context, for example:
+GORM предоставляет интерфейс `GormValuerInterface`, который может позволить создавать/ обновлять из SQL-выражения или значения на основе контекста, например:
 
 ```go
-// GORM Valuer interface
+// GORM Valuer интерфейс
 type GormValuerInterface interface {
   GormValue(ctx context.Context, db *gorm.DB) clause.Expr
 }
 ```
 
-#### Создание/Обновление из SQL Expr
+#### Создание/Обновление из SQL-выражения
 
 ```go
 type Location struct {
@@ -146,7 +146,7 @@ func (loc Location) GormValue(ctx context.Context, db *gorm.DB) clause.Expr {
   }
 }
 
-// Scan implements the sql.Scanner interface
+// Scan реализует интерфейс sql.Scanner
 func (loc *Location) Scan(v interface{}) error {
   // Scan a value into struct from database driver
 }
@@ -170,11 +170,11 @@ db.Model(&User{ID: 1}).Updates(User{
 // UPDATE `user_with_points` SET `name`="jinzhu",`location`=ST_PointFromText("POINT(100 100)") WHERE `id` = 1
 ```
 
-You can also create/update with SQL Expr from map, checkout [Create From SQL Expr](create.html#create_from_sql_expr) and [Update with SQL Expression](update.html#update_from_sql_expr) for details
+Вы также можете создать / обновить с помощью SQL-выражения из map, смотрите [Создать из SQL-выражения](create.html#create_from_sql_expr) и [Обновить с помощью SQL-выражения](update.html#update_from_sql_expr) для получения подробной информации
 
 #### Значение на основе контекста
 
-If you want to create or update a value depends on current context, you can also implements the `GormValuerInterface` interface, for example:
+Если вы хотите создать или обновить значение в зависимости от текущего контекста, вы также можете реализовать интерфейс `GormValuerInterface`, например:
 
 ```go
 type EncryptedString struct {
@@ -202,7 +202,7 @@ type Expression interface {
 }
 ```
 
-Checkout [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) and [SQL Builder](sql_builder.html#clauses) for details, the following is an example of usage:
+Смотрите [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) и [SQL Builder](sql_builder.html#clauses) для получения подробной информации, ниже приведен пример использования:
 
 ```go
 // Generates SQL with clause Expression
