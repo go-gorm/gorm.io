@@ -215,32 +215,32 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 Вы можете удалять указанные связи `has one` / `has many` / `many2many` по выборке `Select` при удалении записей, например:
 
 ```go
-// delete user's account when deleting user
+// Удалить учетную запись пользователя при удалении пользователя
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// Удалить свзи с заказами и кредитными картами при удалении пользователя
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// Удалить связи has one/many/many2many при удалении пользователя
 db.Select(clause.Associations).Delete(&user)
 
-// delete each user's account when deleting users
+// Удалить учетную запись у каждого пользователя при удалении пользователей
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
+**ПРИМЕЧАНИЕ:** Ассоциации будут удалены только в том случае, если первичный ключ удаляемых записей не равен нулю, GORM будет использовать эти первичные ключи в качестве условий для удаления выбранных ассоциаций
 
 ```go
-/ DOESN'T WORK
+// НЕ РАБОТАЕТ
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// will delete all user with name `jinzhu`, but those user's account won't be deleted
+// Удалит всех пользователей с именем `jinzhu`, но учетная запись этого пользователя удалена не будет
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
+// Удалит пользователя с именем = `jinzhu` и id = `1`, учетная запись пользователя `1` будет удалена
 
 db.Select("Account").Delete(&User{ID: 1})
-// will delete the user with id = `1`, and user `1`'s account will be deleted
+// Удалит пользователя с id = `1`, и учетная запись пользователя `1` будет удалена
 ```
 {% endnote %}
 
