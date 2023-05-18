@@ -10,7 +10,7 @@ layout: страница
 Например, если в вашем приложении есть пользователи и компании, и каждый пользователь может быть только в одной компании, то следующие типы отражают это отношение. Обратите внимание, что у объекта `User` есть `CompanyID` и `Company`. По умолчанию, `CompanyID` неявно используется для создания отношения внешнего ключа между таблицами `User` и `Company`, и поэтому должен быть включен в структуру `User` для заполнения внутренней структуры `Company`.
 
 ```go
-// `User` belongs to `Company`, `CompanyID` это внешний ключ
+// `User` принадлежит к `Company`, `CompanyID` это внешний ключ
 type User struct {
   gorm.Model
   Name      string
@@ -62,7 +62,7 @@ type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // использовать Code как ссылку
+  Company   Company `gorm:"references:Code"` // использовать Code, как ссылку
 }
 
 type Company struct {
@@ -81,7 +81,7 @@ type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID as references
+  Company   Company `gorm:"references:CompanyID"` // использовать Company.CompanyID, как ссылку
 }
 
 type Company struct {
@@ -93,9 +93,9 @@ type Company struct {
 
 ## CRUD с Belongs To
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Пожалуйста, проверьте [Режим ассоциации](associations.html#Association-Mode) для работы с отношениями "belongs to"
 
-## Нетерпеливая загрузка
+## Жадная загрузка
 
 GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
 
