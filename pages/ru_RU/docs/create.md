@@ -22,10 +22,10 @@ users := []*User{
     User{Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
-result := db.Create(users) // pass a slice to insert multiple row
+result := db.Create(users) // передайте фрагмент, чтобы вставить несколько строк
 
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+result.Error        // возвращает ошибку
+result.RowsAffected // возвращает количество добавленных записей
 ```
 
 ## Создание записи с указанными полями
@@ -37,7 +37,7 @@ db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and ignore the values for fields passed to omit.
+Создайте запись и игнорируйте значения для полей, переданных в пропущенные (omit).
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -57,19 +57,19 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+Вы можете указать размер пакета при создании с помощью `CreateInBatches`, например:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 
-// batch size 100
+// размер пакета 100
 db.CreateInBatches(users, 100)
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+Пакетная вставка также поддерживается при использовании [Upsert](#upsert) и [Создания с помощью ассоциаций](#create_with_associations)
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**ПРИМЕЧАНИЕ** инициализируйте GORM с помощью параметра `CreateBatchSize`, все `INSERT` будут учитывать этот параметр при создании записей и ассоциаций
 {% endnote %}
 
 ```go
@@ -82,26 +82,26 @@ db := db.Session(&gorm.Session{CreateBatchSize: 1000})
 users = [5000]User{{Name: "jinzhu", Pets: []Pet{pet1, pet2, pet3}}...}
 
 db.Create(&users)
-// INSERT INTO users xxx (5 batches)
-// INSERT INTO pets xxx (15 batches)
+// INSERT INTO users xxx (5 пакетов)
+// INSERT INTO pets xxx (15 пакетов)
 ```
 
 ## Создание хуков
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORM позволяет реализовать пользовательские хуки для `BeforeSave`, `BeforeCreate`, `AfterSave` и `AfterCreate`.  Этот метод перехвата будет вызван при создании записи, обратитесь к [Хуки](hooks.html) для получения подробной информации о жизненном цикле
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
   u.UUID = uuid.New()
 
     if u.Role == "admin" {
-        return errors.New("invalid role")
+        return errors.New("неправильная роль")
     }
     return
 }
 ```
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+Если вы хотите пропустить `Хуки`, вы можете использовать режим сеанса `SkipHooks`, например:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -113,14 +113,14 @@ DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 
 ## Create с помощью Map(карты)
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORM поддерживает создание из `map[string]interface{}` и `[]map[string]interface{}{}`, например:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// batch insert from `[]map[string]interface{}{}`
+// пакетная вставка из `[]map[string]interface{}{}`
 db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
@@ -128,27 +128,27 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**ПРИМЕЧАНИЕ** При создании на основе карты не будут вызываться хуки, ассоциации не будут сохранены, а значения первичного ключа не будут заполнены обратно
 {% endnote %}
 
 ## <span id="create_from_sql_expr">Метод Create с помощью SQL выражения/значения контекста</span>
 
-GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+GORM позволяет вставлять данные с помощью SQL-выражения, есть два способа достичь этой цели, создать из `map[string]interface{}` или [Настраиваемые типы данных](data_types.html#gorm_valuer_interface), например:
 
 ```go
-// Create from map
+// Создать из map
 db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`location`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// Create from customized data type
+// Создать из настраиваемого типа
 type Location struct {
     X, Y int
 }
 
-// Scan implements the sql.Scanner interface
+// Scan реализует интерфейс sql.Scanner
 func (loc *Location) Scan(v interface{}) error {
   // Scan a value into struct from database driver
 }
@@ -180,7 +180,7 @@ db.Create(&User{
 
 ### <span id="create_with_associations">Create со связями</span>
 
-When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
+При создании некоторых данных с ассоциациями, если их значение не равно нулю, эти ассоциации будут обновлены, и будут вызваны его `Хуки`.
 
 ```go
 type CreditCard struct {
@@ -203,18 +203,18 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`, for example:
+Вы можете пропустить сохранение ассоциаций с помощью `Select`, `Omit`, например:
 
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// skip all associations
+// пропустить все ассоциации
 db.Omit(clause.Associations).Create(&user)
 ```
 
 ### <span id="default_values">Значения по умолчанию</span>
 
-You can define default values for fields with tag `default`, for example:
+Вы можете определить значения по умолчанию для полей с тегом `default`, например:
 
 ```go
 type User struct {
@@ -224,10 +224,10 @@ type User struct {
 }
 ```
 
-Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+Тогда значение по умолчанию * будет использоваться* при вставке в базу данных для [полей с нулевым значением](https://tour.golang.org/basics/12)
 
 {% note warn %}
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**ПРИМЕЧАНИЕ** Любое нулевое значение, например `0`, `"`, `false`, не будет сохранено в базе данных для этих полей, определенных значением по умолчанию, вы можете захотеть использовать тип указателя или Scanner / Valuer, чтобы избежать этого, например:
 {% endnote %}
 
 ```go
