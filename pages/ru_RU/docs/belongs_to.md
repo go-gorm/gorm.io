@@ -73,7 +73,7 @@ type Company struct {
 ```
 
 {% note warn %}
-**NOTE** GORM usually guess the relationship as `has one` if override foreign key name already exists in owner's type, we need to specify `references` in the `belongs to` relationship.
+**ПРИМЕЧАНИЕ** GORM обычно определяет связь, как ` has one ` если переопределяемое имя внешнего ключа уже существует в типе владельца, нам нужно указать тег `references` с `названием ключа`.
 {% endnote %}
 
 ```go
@@ -97,11 +97,11 @@ type Company struct {
 
 ## Жадная загрузка
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM разрешает жадную загрузку, относящуюся к ассоциациям с `предварительной загрузкой (preload)` или `объединениями (joins)`, смотрите [Предварительная загрузка (Жадная загрузка)](preload.html) для получения подробной информации
 
 ## Ограничения внешних ключей
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+Вы можете настроить ограничения `onUpdate`, `OnDelete` с помощью тега `constraint`, он будет создан при миграции с помощью GORM, например:
 
 ```go
 type User struct {
