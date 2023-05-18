@@ -80,10 +80,10 @@ sidebar:
     delete: Delete
     associations: Associations
     dynamic_sql: Dynamic SQL
-    annotation: Annotation
+    annotation: Аннотация
     database_to_structs: Database To Structs
     gentool: Gen Tool
-    tutorials: Tutorials
+    tutorials: Обучение
     gorm_clause: GORM Clause
-    transaction: Transaction
-    plugins: GORM Plugins
+    transaction: Транзакция
+    plugins: GORM плагины
