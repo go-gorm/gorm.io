@@ -205,7 +205,7 @@ type Expression interface {
 Смотрите [JSON](https://github.com/go-gorm/datatypes/blob/master/json.go) и [SQL Builder](sql_builder.html#clauses) для получения подробной информации, ниже приведен пример использования:
 
 ```go
-// Generates SQL with clause Expression
+// Генерирует SQL-выражение с условием
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("role"))
 db.Find(&user, datatypes.JSONQuery("attributes").HasKey("orgs", "orga"))
 
@@ -227,4 +227,4 @@ db.Find(&user, datatypes.JSONQuery("attributes").Equals("jinzhu", "name"))
 
 ## Настраиваемые наборы типов данных
 
-We created a Github repo for customized data types collections [https://github.com/go-gorm/datatypes](https://github.com/go-gorm/datatypes), pull request welcome ;)
+Мы создали репозиторий Github для пользовательских коллекций типов данных [https://github.com/go-gorm/datatypes ](https://github.com/go-gorm/datatypes), pull request приветствуется ;)
