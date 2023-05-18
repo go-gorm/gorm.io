@@ -81,12 +81,12 @@ type User struct {
 func (user User) BeforeCreate(tx *gorm.DB) {
   field := tx.Statement.Schema.LookUpField("Attrs")
   if field.DataType == "json" {
-    // do something
+    // что-то делаем
   }
 }
 ```
 
-`GormDBDataType` usually returns the right data type for current driver when migrating, for example:
+`GormDBDataType` обычно возвращает правильный тип данных для текущего драйвера при миграции, например:
 
 ```go
 func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
@@ -104,16 +104,16 @@ func (JSON) GormDBDataType(db *gorm.DB, field *schema.Field) string {
 }
 ```
 
-If the struct hasn't implemented the `GormDBDataTypeInterface` or `GormDataTypeInterface` interface, GORM will guess its data type from the struct's first field, for example, will use `string` for `NullString`
+Если в struct не реализует интерфейс `GormDBDataTypeInterface` или `GormDataTypeInterface`, GORM возьмет тип данных из первого поля struct, например, будет использовать `string` для `NullString`
 
 ```go
 type NullString struct {
-  String string // use the first field's data type
+  String string // использует тип данных первого поля
   Valid  bool
 }
 
 type User struct {
-  Name NullString // data type will be string
+  Name NullString // тип будет string
 }
 ```
 
@@ -192,9 +192,9 @@ func (es EncryptedString) GormValue(ctx context.Context, db *gorm.DB) (expr clau
 }
 ```
 
-### Выражения совпадения
+### Clause Expression
 
-If you want to build some query helpers, you can make a struct that implements the `clause.Expression` interface:
+Если вы хотите собрать несколько помощников запросов, вы можете создать struct, который реализует интерфейс `clause.Expression`:
 
 ```go
 type Expression interface {
