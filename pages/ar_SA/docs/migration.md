@@ -166,7 +166,7 @@ Create views by `ViewOption`. About `ViewOption`:
 {% endnote %}
 
 ```go
-qyery := db.Model(&User{}).Where("age > ?", 20)
+query := db.Model(&User{}).Where("age > ?", 20)
 
 // Create View
 db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query})
