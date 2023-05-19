@@ -128,7 +128,7 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 
 ```go
 import (
-  "gorm.io/driver/sqlite" // Sqlite driver based on GGO
+  "gorm.io/driver/sqlite" // Sqlite driver based on CGO
   // "github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
   "gorm.io/gorm"
 )
