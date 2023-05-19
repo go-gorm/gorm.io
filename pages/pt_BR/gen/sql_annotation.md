@@ -72,7 +72,7 @@ e.g:
 
 ```go
 type Filter interface {
-  // SELECT * FROM @@table WHERE @@column=@id
+  // SELECT * FROM @@table WHERE @@column=@value
   FilterWithColumn(column string, value string) (gen.T, error)
 }
 
