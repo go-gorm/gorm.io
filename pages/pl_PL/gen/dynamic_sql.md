@@ -14,7 +14,7 @@ type Querier interface {
   // SELECT * FROM @@table WHERE id=@id
   GetByID(id int) (gen.T, error) // GetByID query data by id and return it as *struct*
 
-  // GetUsersByRole query data by roles and return it as *slice of pointer*
+  // GetByRoles query data by roles and return it as *slice of pointer*
   //   (The below blank line is required to comment for the generated method)
   //
   // SELECT * FROM @@table WHERE role IN @rolesName
