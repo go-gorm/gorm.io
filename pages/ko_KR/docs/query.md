@@ -102,6 +102,20 @@ db.Model(User{ID: 10}).First(&result)
 // SELECT * FROM users WHERE id = 10;
 ```
 
+{% note warn %}
+**NOTE:** If you use gorm's specific field types like `gorm.DeletedAt`, it will run a different query for retrieving object/s.
+{% endnote %}
+```go
+type User struct {
+  ID           string `gorm:"primarykey;size:16"`
+  Name         string `gorm:"size:24"`
+  DeletedAt    gorm.DeletedAt `gorm:"index"`
+}
+
+var user = User{ID: 15}
+db.First(&user)
+//  SELECT * FROM `users` WHERE `users`.`id` = '15' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
+```
 ## Retrieving all objects
 
 ```go

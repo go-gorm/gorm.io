@@ -15,7 +15,7 @@ db.WithContext(ctx).Find(&users)
 
 ## Режим непрерывной сессии
 
-Continuous session mode is usually used when you want to perform a group of operations, for example:
+Режим непрерывной сессии обычно используется, когда вы хотите выполнить группу операций, например:
 
 ```go
 tx := db.WithContext(ctx)
@@ -23,9 +23,9 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-## Context timeout
+## Таймаут контекста
 
-You can pass in a context with a timeout to `db.WithContext` to set timeout for long running queries, for example:
+Вы можете установить контекст с тайм-аутом в `db.WithContext`, чтобы установить тайм-аут для длительно выполняющихся запросов, например:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -34,9 +34,9 @@ defer cancel()
 db.WithContext(ctx).Find(&users)
 ```
 
-## Context in Hooks/Callbacks
+## Контекст в Hooks/Callbacks
 
-You can access the `Context` object from the current `Statement`, for example:
+Вы можете получить доступ к объекту `Context` из текущего `Statement` объекта, например:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -46,11 +46,11 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-## Chi Middleware Example
+## Пример Chi Middleware
 
-Continuous session mode which might be helpful when handling API requests, for example, you can set up `*gorm.DB` with Timeout Context in middlewares, and then use the `*gorm.DB` when processing all requests
+Режим непрерывного сеанса, который может быть полезен при обработке запросов API, например, вы можете настроить `*gorm.DB` с контекстом тайм-аута в middleware, а затем использовать `*gorm.DB` при обработке всех запросов
 
-Following is a Chi middleware example:
+Ниже приведен пример Chi middleware:
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {
@@ -70,7 +70,7 @@ r.Get("/", func(w http.ResponseWriter, r *http.Request) {
   var users []User
   db.Find(&users)
 
-  // lots of db operations
+  // много операций с базой данных
 })
 
 r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
@@ -79,14 +79,14 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
   var user User
   db.First(&user)
 
-  // lots of db operations
+  //  много операций с базой данных
 })
 ```
 
 {% note %}
-**NOTE** Setting `Context` with `WithContext` is goroutine-safe, refer [Session](session.html) for details
+**ПРИМЕЧАНИЕ** Настройка `контекста` с помощью `WithContext` goroutine-safe, обратитесь к [Сессия](session.html) для получения подробной информации
 {% endnote %}
 
 ## Logger
 
-Logger accepts `Context` too, you can use it for log tracking, refer [Logger](logger.html) for details
+Logger также принимает ` контекст `, вы можете использовать его для отслеживания событий, обратитесь к [Logger](logger.html) для получения подробной информации

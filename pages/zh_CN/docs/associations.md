@@ -208,41 +208,59 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">带 Select 的删除</span>
+## <span id="delete_association_record">Delete Association Record</span>
 
-你可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
+By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+
+You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+
+How to delete is decided by `gorm.DB`.
 
 ```go
-// 删除 user 时，也删除 user 的 account
+// Soft delete
+// UPDATE `languages` SET `deleted_at`= ...
+db.Model(&user).Association("Languages").Unscoped().Clear()
+
+// Delete permanently
+// DELETE FROM `languages` WHERE ...
+db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
+```
+
+## <span id="delete_with_select">Delete with Select</span>
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+
+```go
+// delete user's account when deleting user
 db.Select("Account").Delete(&user)
 
-// 删除 user 时，也删除 user 的 Orders、CreditCards 记录
+// delete user's Orders, CreditCards relations when deleting user
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// 删除 user 时，也删除用户所有 has one/many、many2many 记录
+// delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
 
-// 删除 users 时，也删除每一个 user 的 account
+// delete each user's account when deleting users
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**注意：** 只有当记录的主键不为空时，关联才会被删除，GORM 会使用这些主键作为条件来删除关联记录
+**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
 // DOESN'T WORK
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// 会删除所有 name=`jinzhu` 的 user，但这些 user 的 account 不会被删除
+// will delete all user with name `jinzhu`, but those user's account won't be deleted
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// 会删除 name = `jinzhu` 且 id = `1` 的 user，并且 user `1` 的 account 也会被删除
+// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
 
 db.Select("Account").Delete(&User{ID: 1})
-// 会删除 id = `1` 的 user，并且 user `1` 的 account 也会被删除
+// will delete the user with id = `1`, and user `1`'s account will be deleted
 ```
 {% endnote %}
 
-## <span id="tags">关联标签</span>
+## <span id="tags">Association Tags</span>
 
 | 标签               | 描述                            |
 | ---------------- | ----------------------------- |

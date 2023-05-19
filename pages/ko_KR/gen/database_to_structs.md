@@ -205,18 +205,24 @@ WithOpts(opts ...ModelOpt)
 Specify datatype mapping between field type and db column type.
 
 ```go
-dataMap := map[string]func(detailType string) (dataType string){
-  "int": func(detailType string) (dataType string) {
-      return "int64"
-  },
-  // bool mapping
-  "tinyint": func(detailType string) (dataType string) {
-    if strings.HasPrefix(detailType, "tinyint(1)") {
-      return "bool"
-    }
-    return "int8"
-  },
-}
+    var dataMap = map[string]func(gorm.ColumnType) (dataType string){
+        // int mapping
+        "int": func(columnType gorm.ColumnType) (dataType string) {
+            if n, ok := columnType.Nullable(); ok && n {
+                return "*int32"
+            }
+            return "int32"
+        },
 
-g.WithDataTypeMap(dataMap)
+        // bool mapping
+        "tinyint": func(columnType gorm.ColumnType) (dataType string) {
+            ct, _ := columnType.ColumnType()
+            if strings.HasPrefix(ct, "tinyint(1)") {
+                return "bool"
+            }
+            return "byte"
+        },
+    }
+
+    conf.WithDataTypeMap(dataMap)
 ```

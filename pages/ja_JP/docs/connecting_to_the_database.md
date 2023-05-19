@@ -130,8 +130,8 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 
 ```go
 import (
-  "gorm.io/driver/sqlite" // GGOをベースにしたSQLiteドライバ
-  // "github.com/glebarez/sqlite" // 純粋なgoのSQLiteドライバ, 詳細は https://github.com/glebarez/sqliteで確認してください
+  "gorm.io/driver/sqlite" // Sqlite driver based on CGO
+  // "github.com/glebarez/sqlite" // Pure go SQLite driver, checkout https://github.com/glebarez/sqlite for details
   "gorm.io/gorm"
 )
 

@@ -55,8 +55,8 @@ sidebar:
     settings: Настройки
     advanced_topics: Дополнительные возможности
     dbresolver: Резолвер базы данных
-    serializer: Serializer
-    sharding: Sharding
+    serializer: Сериализатор
+    sharding: Шардирование
     prometheus: Prometheus
     hints: Подсказки
     indexes: Индексы
@@ -71,19 +71,19 @@ sidebar:
     contribute: Внести вклад
     translate: Перевести текущий сайт
   gen:
-    getting_started: Getting Started
-    overview: Overview
+    getting_started: Начало работы
+    overview: Общие сведения
     dao: DAO
-    create: Create
-    query: Query
-    update: Update
-    delete: Delete
-    associations: Associations
-    dynamic_sql: Dynamic SQL
-    annotation: Annotation
-    database_to_structs: Database To Structs
+    create: Создать
+    query: Запрос
+    update: Обновить
+    delete: Удалить
+    associations: Связи
+    dynamic_sql: Динамичный SQL
+    annotation: Аннотация
+    database_to_structs: База данных на структуры
     gentool: Gen Tool
-    tutorials: Tutorials
-    gorm_clause: GORM Clause
-    transaction: Transaction
-    plugins: GORM Plugins
+    tutorials: Обучение
+    gorm_clause: GORM предложения
+    transaction: Транзакция
+    plugins: GORM плагины

@@ -1,11 +1,11 @@
 ---
-title: Serializer
+title: Сериализатор
 layout: page
 ---
 
-Serializer is an extensible interface that allows to customize how to serialize and deserialize data with databasae.
+Serializer - это расширяемый интерфейс, который позволяет настраивать способ сериализации и десериализации данных с помощью базы данных.
 
-GORM provides some default serializers: `json`, `gob`, `unixtime`, here is a quick example of how to use it.
+GORM предоставляет несколько сериализаторов по умолчанию: `json`, `gob`, `unixtime`, вот краткий пример того, как их использовать.
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
     Roles       Roles                  `gorm:"serializer:json"`
     Contracts   map[string]interface{} `gorm:"serializer:json"`
     JobInfo     Job                    `gorm:"type:bytes;serializer:gob"`
-    CreatedTime int64                  `gorm:"serializer:unixtime;type:time"` // store int as datetime into database
+    CreatedTime int64                  `gorm:"serializer:unixtime;type:time"` // сохранить int как datetime в базе данных
 }
 
 type Roles []string
@@ -59,9 +59,9 @@ DB.Where(User{Name: []byte("jinzhu")}).Take(&result)
 // SELECT * FROM `users` WHERE `users`.`name` = "\"amluemh1\"
 ```
 
-## Register Serializer
+## Регистрация сериализатора
 
-A Serializer needs to implement how to serialize and deserialize data, so it requires to implement the the following interface
+Сериализатор должен реализовать способ сериализации и десериализации данных, поэтому ему требуется реализовать следующий интерфейс
 
 ```go
 import "gorm.io/gorm/schema"
@@ -76,14 +76,14 @@ type SerializerValuerInterface interface {
 }
 ```
 
-For example, the default `JSONSerializer` is implemented like:
+Например, по умолчанию `JsonSerializer` реализован следующим образом:
 
 ```go
 // JSONSerializer json serializer
 type JSONSerializer struct {
 }
 
-// Scan implements serializer interface
+// Scan реализует интерфейс сериализатора
 func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value, dbValue interface{}) (err error) {
     fieldValue := reflect.New(field.FieldType)
 
@@ -105,19 +105,19 @@ func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value,
     return
 }
 
-// Value implements serializer interface
+// Value реализует интерфейс сериализатора
 func (JSONSerializer) Value(ctx context.Context, field *Field, dst reflect.Value, fieldValue interface{}) (interface{}, error) {
     return json.Marshal(fieldValue)
 }
 ```
 
-And registered with the following code:
+И регистрируем следующим кодом:
 
 ```go
 schema.RegisterSerializer("json", JSONSerializer{})
 ```
 
-After registering a serializer, you can use it with the `serializer` tag, for example:
+После регистрации сериализатора вы можете использовать его с тегом `serializer`, например:
 
 ```go
 type User struct {
@@ -125,17 +125,17 @@ type User struct {
 }
 ```
 
-## Customized Serializer Type
+## Настраиваемый тип сериализатора
 
-You can use a registered serializer with tags, you are also allowed to create a customized struct that implements the above `SerializerInterface` and use it as a field type directly, for example:
+Вы можете использовать зарегистрированный сериализатор с тегами, вам также разрешено создавать настраиваемую структуру, которая реализует вышеуказанный `SerializerInterface` и напрямую использовать его в качестве типа поля, например:
 
 ```go
 type EncryptedString string
 
-// ctx: contains request-scoped values
-// field: the field using the serializer, contains GORM settings, struct tags
-// dst: current model value, `user` in the below example
-// dbValue: current field's value in database
+// ctx: содержит значения, относящиеся к области запроса
+// field: поле, использующее сериализатор, содержит настройки GORM, теги структуры
+// dst: текущее значение модели, `user` в приведенном ниже примере
+// dbValue: текущее значение поля в базе данных
 func (es *EncryptedString) Scan(ctx context.Context, field *schema.Field, dst reflect.Value, dbValue interface{}) (err error) {
     switch value := dbValue.(type) {
     case []byte:
@@ -148,10 +148,10 @@ func (es *EncryptedString) Scan(ctx context.Context, field *schema.Field, dst re
     return nil
 }
 
-// ctx: contains request-scoped values
-// field: the field using the serializer, contains GORM settings, struct tags
-// dst: current model value, `user` in the below example
-// fieldValue: current field's value of the dst
+// ctx: содержит значения, относящиеся к области запроса
+// field: поле, использующее сериализатор, содержит настройки GORM, теги структуры
+// dst: текущее значение модели, `user` в приведенном ниже примере
+// fieldValue: текущее значение поля dst
 func (es EncryptedString) Value(ctx context.Context, field *schema.Field, dst reflect.Value, fieldValue interface{}) (interface{}, error) {
     return "hello" + string(es), nil
 }

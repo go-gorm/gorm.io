@@ -32,18 +32,18 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 GORM возвращает `ErrRecordNotFound`, когда не удалось найти данные при помощи `First`, `Last`, `Take`, если произошло несколько ошибок, вы можете проверить `ErrRecordNotFound` при помощи `errors.Is`, например:
 
 ```go
-// Check if returns RecordNotFound error
+// Проверка возвращается ли ошибка RecordNotFound
 err := db.First(&user, 100).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
 ## Dialect Translated Errors
 
-If you would like to be able to use the dialect translated errors(like ErrDuplicatedKey), then enable the TranslateError flag when opening a db connection.
+Если вы хотите иметь возможность использовать ошибки перевода диалекта (например, ErrDuplicatedKey), то включите флаг TranslateError при открытии подключения к базе данных.
 
 ```go
 db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: true})
 ```
 
-## Errors
+## Ошибки
 
-[Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go)
+[Список ошибок](https://github.com/go-gorm/gorm/blob/master/errors.go)

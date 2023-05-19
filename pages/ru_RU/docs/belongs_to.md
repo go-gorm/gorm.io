@@ -10,7 +10,7 @@ layout: страница
 Например, если в вашем приложении есть пользователи и компании, и каждый пользователь может быть только в одной компании, то следующие типы отражают это отношение. Обратите внимание, что у объекта `User` есть `CompanyID` и `Company`. По умолчанию, `CompanyID` неявно используется для создания отношения внешнего ключа между таблицами `User` и `Company`, и поэтому должен быть включен в структуру `User` для заполнения внутренней структуры `Company`.
 
 ```go
-// `User` belongs to `Company`, `CompanyID` это внешний ключ
+// `User` принадлежит к `Company`, `CompanyID` это внешний ключ
 type User struct {
   gorm.Model
   Name      string
@@ -62,7 +62,7 @@ type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // использовать Code как ссылку
+  Company   Company `gorm:"references:Code"` // использовать Code, как ссылку
 }
 
 type Company struct {
@@ -73,7 +73,7 @@ type Company struct {
 ```
 
 {% note warn %}
-**NOTE** GORM usually guess the relationship as `has one` if override foreign key name already exists in owner's type, we need to specify `references` in the `belongs to` relationship.
+**ПРИМЕЧАНИЕ** GORM обычно определяет связь, как ` has one ` если переопределяемое имя внешнего ключа уже существует в типе владельца, нам нужно указать тег `references` с `названием ключа`.
 {% endnote %}
 
 ```go
@@ -81,7 +81,7 @@ type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID as references
+  Company   Company `gorm:"references:CompanyID"` // использовать Company.CompanyID, как ссылку
 }
 
 type Company struct {
@@ -93,15 +93,15 @@ type Company struct {
 
 ## CRUD с Belongs To
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Пожалуйста, проверьте [Режим ассоциации](associations.html#Association-Mode) для работы с отношениями "belongs to"
 
-## Нетерпеливая загрузка
+## Жадная загрузка
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM разрешает жадную загрузку, относящуюся к ассоциациям с `предварительной загрузкой (preload)` или `объединениями (joins)`, смотрите [Предварительная загрузка (Жадная загрузка)](preload.html) для получения подробной информации
 
 ## Ограничения внешних ключей
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+Вы можете настроить ограничения `onUpdate`, `OnDelete` с помощью тега `constraint`, он будет создан при миграции с помощью GORM, например:
 
 ```go
 type User struct {

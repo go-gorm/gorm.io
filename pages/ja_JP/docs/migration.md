@@ -167,7 +167,7 @@ Create views by `ViewOption`. About `ViewOption`:
 {% endnote %}
 
 ```go
-qyery := db.Model(&User{}).Where("age > ?", 20)
+query := db.Model(&User{}).Where("age > ?", 20)
 
 // Create View
 db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query})
@@ -267,7 +267,7 @@ GORM creates constraints when auto migrating or creating table, see [Constraints
 
 ## その他のマイグレーションツール
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
+GORMのAutoMigrateはほとんどのケースでうまく機能しますが、より本格的なスキーママイグレーションツールを利用する際は、GORMが提供している一般的なDBインターフェースが役に立ちます
 
 ```go
 // returns `*sql.DB`

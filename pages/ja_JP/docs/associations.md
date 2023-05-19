@@ -211,41 +211,59 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">関連を指定して削除する</span>
+## <span id="delete_association_record">Delete Association Record</span>
 
-レコード削除時に `Select` を使用することで、has one / has many / many2many 関係にある関連も同時に削除することができます。例:
+By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+
+You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+
+How to delete is decided by `gorm.DB`.
 
 ```go
-// ユーザ削除時に ユーザのアカウントも削除します
+// Soft delete
+// UPDATE `languages` SET `deleted_at`= ...
+db.Model(&user).Association("Languages").Unscoped().Clear()
+
+// Delete permanently
+// DELETE FROM `languages` WHERE ...
+db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
+```
+
+## <span id="delete_with_select">Delete with Select</span>
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+
+```go
+// delete user's account when deleting user
 db.Select("Account").Delete(&user)
 
-// ユーザ削除時に ユーザの注文とクレジットカードの関連レコードも削除します
+// delete user's Orders, CreditCards relations when deleting user
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// ユーザ削除時に ユーザ全ての has one / has many / many2many の関連レコードも削除します
+// delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
 
-// 複数ユーザ削除時に それぞれのユーザのアカウントも削除します
+// delete each user's account when deleting users
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**注意:** レコード削除時の主キーが非ゼロ値の場合のみ、関連レコードの削除も可能となります。GORMは指定の関連を削除するための条件として主キーを使用します。
+**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
 // DOESN'T WORK
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// 名前が `jinzhu` である全てのユーザは削除されますが、ユーザのアカウントは削除されません
+// will delete all user with name `jinzhu`, but those user's account won't be deleted
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// 名前が `jinzhu` で id が `1` のユーザが削除され、そのユーザのアカウントも削除されます
+// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
 
 db.Select("Account").Delete(&User{ID: 1})
-// id が `1` のユーザが削除され、そのユーザのアカウントも削除されます
+// will delete the user with id = `1`, and user `1`'s account will be deleted
 ```
 {% endnote %}
 
-## <span id="tags">アソシエーションで使用できるタグ</span>
+## <span id="tags">Association Tags</span>
 
 | タグ               | 説明                                                |
 | ---------------- | ------------------------------------------------- |

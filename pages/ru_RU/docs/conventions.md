@@ -127,7 +127,7 @@ db.Create(&user2) // поле `CreatedAt` не будет изменено
 db.Model(&user).Update("CreatedAt", time.Now())
 ```
 
-You can disable the timestamp tracking by setting `autoCreateTime` tag to `false`, for example:
+Вы можете отключить отслеживание временных меток, установив для тега `autoCreateTime` значение `false`, например так:
 
 ```go
 type User struct {
@@ -137,23 +137,23 @@ type User struct {
 
 ### UpdatedAt
 
-For models having `UpdatedAt` field, the field will be set to the current time when the record is updated or created if its value is zero
+Для моделей, имеющих поле `UpdatedAt`, для поля будет установлено текущее время обновления или создания записи, если его значение равно нулю
 
 ```go
-db.Save(&user) // set `UpdatedAt` to current time
+db.Save(&user) // установит `updatedAt` на текущее время
 
-db.Model(&user).Update("name", "jinzhu") // will set `UpdatedAt` to current time
+db.Model(&user).Update("name", "jinzhu") // установит `updatedAt` на текущее время
 
-db.Model(&user).UpdateColumn("name", "jinzhu") // `UpdatedAt` won't be changed
+db.Model(&user).UpdateColumn("name", "jinzhu") // `UpdatedAt` не изменится
 
 user2 := User{Name: "jinzhu", UpdatedAt: time.Now()}
-db.Create(&user2) // user2's `UpdatedAt` won't be changed when creating
+db.Create(&user2) // параметр `UpdatedAt` у пользователя user2 при создании записи не изменится
 
 user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
-db.Save(&user3) // user3's `UpdatedAt` will change to current time when updating
+db.Save(&user3) // параметр `UpdatedAt` у пользователя user3 при обновлении записи изменится на текущее время
 ```
 
-You can disable the timestamp tracking by setting `autoUpdateTime` tag to `false`, for example:
+Вы можете отключить отслеживание временных меток, установив для тега `autoUpdateTime` значение `false`, например:
 
 ```go
 type User struct {
@@ -162,5 +162,5 @@ type User struct {
 ```
 
 {% note %}
-**NOTE** GORM supports having multiple time tracking fields and track with UNIX (nano/milli) seconds, checkout [Models](models.html#time_tracking) for more details
+**ПРИМЕЧАНИЕ** GORM поддерживает наличие нескольких полей отслеживания времени и отслеживание с помощью UNIX (nano/milli) секунд, проверьте [Модели](models.html#time_tracking) для получения более подробной информации
 {% endnote %}

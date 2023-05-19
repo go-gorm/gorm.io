@@ -208,41 +208,59 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Excluir com alguma consulta</span>
+## <span id="delete_association_record">Delete Association Record</span>
 
-Você tem permissão para excluir registros a partir de uma consulta em relacionamentos one/has many/many to many relações com `Select` quando excluir registros, por exemplo:
+By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+
+You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+
+How to delete is decided by `gorm.DB`.
 
 ```go
-// Exclui o Account quando o user for excluído
+// Soft delete
+// UPDATE `languages` SET `deleted_at`= ...
+db.Model(&user).Association("Languages").Unscoped().Clear()
+
+// Delete permanently
+// DELETE FROM `languages` WHERE ...
+db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
+```
+
+## <span id="delete_with_select">Delete with Select</span>
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+
+```go
+// delete user's account when deleting user
 db.Select("Account").Delete(&user)
 
-// Exclui os relacionamentos Orders, CreditCards quando o user for excluído
+// delete user's Orders, CreditCards relations when deleting user
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// Exclui os relacionamentos do user has one/many/many to many quando o user for excluído
+// delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
 
-// Exclui cada Account quando os users são excluídos
+// delete each user's account when deleting users
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**OBSERVE:** As associações só serão excluídas se a chave primária do registro a ser excluído não for zero, GORM usará essas chaves primárias como condições para excluir as associações selecionadas
+**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
-// NÃO FUNCIONA
+// DOESN'T WORK
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// excluirá todos users com nome `jinzhu`, mas o Account desses users não serão excluídos
+// will delete all user with name `jinzhu`, but those user's account won't be deleted
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// excluirá o user com name = `jinzhu` e id = `1`, e o Account do user `1` será excluído
+// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
 
 db.Select("Account").Delete(&User{ID: 1})
-// excluirá o user com id = `1`, e o Accounto do user `1` será excluído
+// will delete the user with id = `1`, and user `1`'s account will be deleted
 ```
 {% endnote %}
 
-## <span id="tags">Tags de associação</span>
+## <span id="tags">Association Tags</span>
 
 | Tag              | Descrição                                                                                                      |
 | ---------------- | -------------------------------------------------------------------------------------------------------------- |

@@ -29,37 +29,37 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
 {% note warn %}
-Если вы не хотите проверять наличие ошибки `ErrRecordNotFound`, вы можете использовать метод `Find` следующим образом `db.Limit(1).Find(&user)`, метод `Find` принимает такие типы данных как структура, так и слайс.
+Если вы хотите избежать ошибки `ErrRecordNotFound`, используйте метод `Find`, например `db.Limit(1).Find(&user)`, метод `Find` принимает как структурные, так и срезанные данные
 {% endnote %}
 
 {% note warn %}
-Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is not performant and nondeterministic
+Использование `Find` без лимита для одного объекта `db.Find(&user)` запросит полную таблицу и вернет только первый объект, который не является исполнительным и недетерминированным
 {% endnote %}
 
-The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
+Методы `First` и `Last` найдут первую и последнюю запись (соответственно) в порядке, установленном первичным ключом. Они работают только тогда, когда указатель на целевую структуру передается методам в качестве аргумента или когда модель указана с помощью `db.Model()`. Кроме того, если для соответствующей модели не определен первичный ключ, то модель будет упорядочена по первому полю. Например:
 
 ```go
 var user User
 var users []User
 
-// works because destination struct is passed in
+// работает, потому что передается целевая структура
 db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// works because model is specified using `db.Model()`
+// работает, потому что модель указана с помощью `db.Model()`
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// doesn't work
+// не работает
 result := map[string]interface{}{}
 db.Table("users").First(&result)
 
-// works with Take
+// работает с методом `Take`
 result := map[string]interface{}{}
 db.Table("users").Take(&result)
 
-// no primary key defined, results will be ordered by first field (i.e., `Code`)
+// первичный ключ не определен, результаты будут упорядочены по первому полю (т.е. "Коду").
 type Language struct {
   Code string
   Name string
@@ -70,7 +70,7 @@ db.First(&Language{})
 
 ### Получение объектов по первичному ключу
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
+Объекты могут быть извлечены с использованием первичного ключа с помощью [Встроенных условий](#inline_conditions), если первичным ключом является число. При работе со строками необходимо соблюдать особую осторожность, чтобы избежать SQL-инъекции; ознакомьтесь с [Раздел "Безопасность"](security.html) для получения подробной информации.
 
 ```go
 db.First(&user, 10)
@@ -83,14 +83,14 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If the primary key is a string (for example, like a uuid), the query will be written as follows:
+Если первичным ключом является строка (например, как uuid), запрос будет записан следующим образом:
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-When the destination object has a primary value, the primary key will be used to build the condition, for example:
+Когда целевой объект имеет первичное значение, первичный ключ будет использоваться для построения условия, например:
 
 ```go
 var user = User{ID: 10}
@@ -102,6 +102,20 @@ db.Model(User{ID: 10}).First(&result)
 // SELECT * FROM users WHERE id = 10;
 ```
 
+{% note warn %}
+**NOTE:** If you use gorm's specific field types like `gorm.DeletedAt`, it will run a different query for retrieving object/s.
+{% endnote %}
+```go
+type User struct {
+  ID           string `gorm:"primarykey;size:16"`
+  Name         string `gorm:"size:24"`
+  DeletedAt    gorm.DeletedAt `gorm:"index"`
+}
+
+var user = User{ID: 15}
+db.First(&user)
+//  SELECT * FROM `users` WHERE `users`.`id` = '15' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
+```
 ## Получение всех объектов
 
 ```go
@@ -419,7 +433,7 @@ db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 
 For more details, please refer to [Preloading (Eager Loading)](preload.html).
 
-### Joins a Derived Table
+### Joins к производной таблице
 
 You can also use `Joins` to join a derived table.
 

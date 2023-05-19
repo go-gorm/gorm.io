@@ -3,31 +3,31 @@ title: Database To Structs
 layout: page
 ---
 
-## Quick Start
+## Быстрый старт
 
-Gen supports generate structs from databases following GORM conventions, it can be used like:
+Gen поддерживает создание структур из баз данных в соответствии с конвенциями GORM, он может использоваться так:
 
 ```go
-// Generate struct `User` based on table `users`
+// Генерирование структуры `User` на основе таблицы `users`
 g.GenerateModel("users")
 
-// Generate struct `Employee` based on table `users`
-g.GenerateModelAs("users", "Employee")
+// Генерирование структуры `Employee` на основе таблицы `users`
+g. enerateModelAs("users", "Сотрудник")
 
-// Generate struct `User` based on table `users` and generating options
-g.GenerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64"))
+// Создание структуры `User` на основе таблицы `users` и генерация опций
+g. enerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64"))
 
-// Generate structs from all tables of current database
+// Генерация построек из всех таблиц текущей базы данных
 g.GenerateAllTable()
 ```
 
-## Methods Template
+## Шаблон методов
 
-When generating structs from database, you can also generate methods with a template for them by the way, for example:
+При генерации структур из базы данных можно также создавать методы с шаблоном для них кстати, например:
 
 ```Go
 type CommonMethod struct {
-    ID   int32
+    ID int32
     Name *string
 }
 
@@ -35,28 +35,28 @@ func (m *CommonMethod) IsEmpty() bool {
     if m == nil {
         return true
     }
-    return m.ID == 0
+    return m. D == 0
 }
 
 func (m *CommonMethod) GetName() string {
-    if m == nil || m.Name == nil {
+    if m == nil || m. ame == nil {
         return ""
     }
-    return *m.Name
+    return *m. ame
 }
 
-// Add IsEmpty method to the generated `People` struct
-g.GenerateModel("people", gen.WithMethod(CommonMethod{}.IsEmpty))
+// Добавляем метод IsEmpty в сгенерированный `People` struct
+g.GenerateModel("people", gen.WithMethod(CommonMethod{}. sEmpty))
 
-// Add all methods defined on `CommonMethod` to the generated `User` struct
+// Добавить все методы, определенные в `CommonMethod` в сгенерированный `User` struct
 g.GenerateModel("user", gen.WithMethod(CommonMethod))
 ```
 
-The generated code would look like this:
+Обновленный код должен выглядеть следующим образом:
 
 ```go
-// Generated Person struct
-type Person struct {
+// Полученная структура  Persone
+тип Person struct {
   // ...
 }
 
@@ -205,18 +205,24 @@ WithOpts(opts ...ModelOpt)
 Specify datatype mapping between field type and db column type.
 
 ```go
-dataMap := map[string]func(detailType string) (dataType string){
-  "int": func(detailType string) (dataType string) {
-      return "int64"
-  },
-  // bool mapping
-  "tinyint": func(detailType string) (dataType string) {
-    if strings.HasPrefix(detailType, "tinyint(1)") {
-      return "bool"
-    }
-    return "int8"
-  },
-}
+    var dataMap = map[string]func(gorm.ColumnType) (dataType string){
+        // int mapping
+        "int": func(columnType gorm.ColumnType) (dataType string) {
+            if n, ok := columnType.Nullable(); ok && n {
+                return "*int32"
+            }
+            return "int32"
+        },
 
-g.WithDataTypeMap(dataMap)
+        // bool mapping
+        "tinyint": func(columnType gorm.ColumnType) (dataType string) {
+            ct, _ := columnType.ColumnType()
+            if strings.HasPrefix(ct, "tinyint(1)") {
+                return "bool"
+            }
+            return "byte"
+        },
+    }
+
+    conf.WithDataTypeMap(dataMap)
 ```

@@ -10,24 +10,24 @@ GORM будет автоматически сохранять связи и их
 ```go
 user := User{
   Name:            "jinzhu",
-  BillingAddress:  Address{Address1: "Billing Address - Address 1"},
-  ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
+  BillingAddress:  Address{Address1: "Платежный адрес - Адрес 1"},
+  ShippingAddress: Address{Address1: "Адрес доставки - Адрес 1"},
   Emails:          []Email{
     {Email: "jinzhu@example.com"},
     {Email: "jinzhu-2@example.com"},
   },
   Languages:       []Language{
-    {Name: "ZH"},
+    {Name: "RU"},
     {Name: "EN"},
   },
 }
 
 db.Create(&user)
 // BEGIN TRANSACTION;
-// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "addresses" (address1) VALUES ("Платежный адрес - Адрес 1"), ("Адрес доставки - Адрес 1") ON DUPLICATE KEY DO NOTHING;
 // INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
 // INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY DO NOTHING;
-// INSERT INTO "languages" ("name") VALUES ('ZH'), ('EN') ON DUPLICATE KEY DO NOTHING;
+// INSERT INTO "languages" ("name") VALUES ('RU'), ('EN') ON DUPLICATE KEY DO NOTHING;
 // INSERT INTO "user_languages" ("user_id","language_id") VALUES (111, 1), (111, 2) ON DUPLICATE KEY DO NOTHING;
 // COMMIT;
 
@@ -92,13 +92,13 @@ db.Omit("Languages").Create(&user)
 
 ```go
 user := User{
-  Name:            "jinzhu",
-  BillingAddress:  Address{Address1: "Billing Address - Address 1", Address2: "addr2"},
-  ShippingAddress: Address{Address1: "Shipping Address - Address 1", Address2: "addr2"},
+  Name:            "jenya",
+  BillingAddress:  Address{Address1: "Платежный адрес - Адрес 1", Address2: "адрес2"},
+  ShippingAddress: Address{Address1: "Адрес доставки - Адрес 1", Address2: "адрес2"},
 }
 
-// Create user and his BillingAddress, ShippingAddress
-// When creating the BillingAddress only use its address1, address2 fields and omit others
+// Создать пользователя его платежный адрес и адрес доставки
+// При создании BillingAddress используйте только его поля address1, address2 и опускайте другие
 db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
 
 db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
@@ -109,12 +109,12 @@ db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 Режим связывания включает некоторые часто используемые вспомогательные методы для обработки отношений
 
 ```go
-// Start Association Mode
+// Старт режима ассоциаций
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
+// `пользователь` - это исходная модель, она должна содержать первичный ключ
+// `Languages` - это имя связанного поля
+// Если два вышеуказанных требования совпадают, AssociationMode должен быть запущен успешно, иначе он должен возвратить ошибку
 db.Model(&user).Association("Languages").Error
 ```
 
@@ -181,7 +181,7 @@ db.Model(&user).Association("Languages").Clear()
 ```go
 db.Model(&user).Association("Languages").Count()
 
-// Count with conditions
+// Количество с учетом условий
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
@@ -191,26 +191,46 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 Режим связывания поддерживает пакетную обработку, пример:
 
 ```go
-// Find all roles for all users
+// Найти все роли для всех пользователей
 db.Model(&users).Association("Role").Find(&roles)
 
-// Delete User A from all user's team
+// Удалить пользователя A из всех команд, в которых пользователь состоит
 db.Model(&users).Association("Team").Delete(&userA)
 
-// Get distinct count of all users' teams
+// Получить distinct количество всех команд пользователя
 db.Model(&users).Association("Team").Count()
 
-// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
+// Для `Append`, `Replace` с пакетными данными длина аргументов должна быть равна длине данных, иначе будет возвращена ошибка
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+
+// Например: у нас есть 3 пользователя, добавляем UserA в команду user1, UserB в команду user2, добавляем UserA, UserB и UserC в команду user3
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+
+// Сбросить команду UserA у пользователя user1, сбросить команду UserB у пользователя user2, сбросить команды UserA, UserB и UserC у пользователя user3
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Удаление связанных(ассоциируемых) записей</span>
+## <span id="delete_association_record">Delete Association Record</span>
 
-Вы можете удалять указанные связи `has one` / `has many` / `many2many` по выборке `Select` при удалении записей, например:
+By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+
+You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+
+How to delete is decided by `gorm.DB`.
+
+```go
+// Soft delete
+// UPDATE `languages` SET `deleted_at`= ...
+db.Model(&user).Association("Languages").Unscoped().Clear()
+
+// Delete permanently
+// DELETE FROM `languages` WHERE ...
+db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
+```
+
+## <span id="delete_with_select">Delete with Select</span>
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
 
 ```go
 // delete user's account when deleting user
@@ -230,7 +250,7 @@ db.Select("Account").Delete(&users)
 **NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
-/ DOESN'T WORK
+// DOESN'T WORK
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
 // will delete all user with name `jinzhu`, but those user's account won't be deleted
 
@@ -242,7 +262,7 @@ db.Select("Account").Delete(&User{ID: 1})
 ```
 {% endnote %}
 
-## <span id="tags">Теги связей(ассоциаций)</span>
+## <span id="tags">Association Tags</span>
 
 | Тег              | Описание                                                                                                     |
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |

@@ -5,7 +5,7 @@ layout: страница
 
 ## <span id="smart_select">Умный выбор полей</span>
 
-GORM allows selecting specific fields with [`Select`](query.html), if you often use this in your application, maybe you want to define a smaller struct for API usage which can select specific fields automatically, for example:
+GORM позволяет выбирать определенные поля с помощью [`Select`](query.html), если вы часто используете их в своем приложении, вы можете использовать более короткий struct для выбора определенных полей автоматически:
 
 ```go
 type User struct {
@@ -36,7 +36,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // with this option
+// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // с помощью этой опции
 
 // Режим сессии
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
@@ -81,7 +81,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">Из SubQuery (под запроса)</span>
 
-GORM allows you using subquery in FROM clause with the method `Table`, for example:
+GORM позволяет вам использовать подзапрос в предложении FROM с помощью метода `Table`, например:
 
 ```go
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
@@ -132,7 +132,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 ## Find с картами
 
-GORM allows scanning results to `map[string]interface{}` or `[]map[string]interface{}`, don't forget to specify `Model` or `Table`, for example:
+GORM позволяет передавать результаты сканирования в `map[string]interface{}` или `[]map[string]interface{}`, не забудьте указать `Model` или `Table`, например:
 
 ```go
 result := map[string]interface{}{}
@@ -147,20 +147,20 @@ db.Table("users").Find(&results)
 Получить первую найденную запись, или инициализировать новую с заданными параметрами (работает только со структурой и картой)
 
 ```go
-// Пользователь user не найден, создаем новую запись с данными значениями
+// Пользователь не найден, создаем новую запись с данными значениями
 db.FirstOrInit(&user, User{Name: "non_existing"})
 // user -> User{Name: "non_existing"}
 
-// Найден user с `name` = `jinzhu`
+// Найден пользователь с `name` = `jinzhu`
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 
-// Найден user с `name` = `jinzhu`
+// Найден пользователь с `name` = `jinzhu`
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18}
 ```
 
-Initialize struct with more attributes if record not found, those `Attrs` won't be used to build the SQL query
+Инициализируйте структуру с большим количеством атрибутов, если запись не найдена, эти `Attrs` не будут использоваться для построения SQL-запроса
 
 ```go
 // Пользователь не найден, инициализировать структуру с указанными параметрами и атрибутами Attrs
@@ -182,11 +182,11 @@ db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 Метод `Assign` назначает атрибуты в структуру, независимо от того, найдена запись или нет, эти атрибуты не будут участвовать в генерации запроса SQL и не будут сохранены в БД
 
 ```go
-// User не найден, создать его с данными условиями и с атрибутами в Assign 
+// Пользователь не найден, создать его с данными условиями и с атрибутами в Assign 
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // user -> User{Name: "non_existing", Age: 20}
 
-// Найден user с `name` = `jinzhu`, обновить запись с атрибутами в Assign 
+// Найден пользователь с `name` = `jinzhu`, обновить запись с атрибутами в Assign 
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 20}
@@ -194,16 +194,16 @@ db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 
 ## FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
+Получите первую совпадающую запись или создайте новую с заданными условиями (работает только со структурой, условиями сопоставления), `rowsAffected` возвращает количество созданных/обновленных записей
 
 ```go
-// User not found, create a new record with give conditions
+// Пользователь не найден, создать новую запись с заданными условиями
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 // result.RowsAffected // => 1
 
-// Found user with `name` = `jinzhu`
+// Найден пользователь с `name` = `jinzhu`
 result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", "Age": 18}
 // result.RowsAffected // => 0
