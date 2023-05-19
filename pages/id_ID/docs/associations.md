@@ -208,21 +208,39 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Hapus dengan Pilihan</span>
+## <span id="delete_association_record">Delete Association Record</span>
 
-Anda diperbolehkan untuk menghapus yang dipilih memiliki satu/memiliki banyak/banyak2 banyak hubungan dengan `Select` saat menghapus catatan, misalnya:
+By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+
+You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+
+How to delete is decided by `gorm.DB`.
 
 ```go
-// hapus akun pengguna saat menghapus pengguna
+// Soft delete
+// UPDATE `languages` SET `deleted_at`= ...
+db.Model(&user).Association("Languages").Unscoped().Clear()
+
+// Delete permanently
+// DELETE FROM `languages` WHERE ...
+db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
+```
+
+## <span id="delete_with_select">Delete with Select</span>
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+
+```go
+// delete user's account when deleting user
 db.Select("Account").Delete(&user)
 
-// hapus Pesanan pengguna, hubungan Kartu Kredit saat menghapus pengguna
+// delete user's Orders, CreditCards relations when deleting user
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// hapus hubungan pengguna memiliki satu/banyak/banyak2 banyak saat menghapus pengguna
+// delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
 
-// hapus akun setiap pengguna saat menghapus pengguna
+// delete each user's account when deleting users
 db.Select("Account").Delete(&users)
 ```
 
@@ -230,19 +248,19 @@ db.Select("Account").Delete(&users)
 **NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
-// TIDAK BERFUNGSI
+// DOESN'T WORK
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// akan menghapus semua pengguna dengan nama `jinzhu`, tetapi akun pengguna tersebut tidak akan dihapus
+// will delete all user with name `jinzhu`, but those user's account won't be deleted
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// akan menghapus pengguna dengan nama = `jinzhu` dan id = `1`, dan akun pengguna `1` akan dihapus
+// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
 
 db.Select("Account").Delete(&User{ID: 1})
-// akan menghapus pengguna dengan id = `1`, dan akun pengguna `1` akan dihapus
+// will delete the user with id = `1`, and user `1`'s account will be deleted
 ```
 {% endnote %}
 
-## <span id="tags">Tag Asosiasi</span>
+## <span id="tags">Association Tags</span>
 
 | Tag              | Deskripsi                                                                                      |
 | ---------------- | ---------------------------------------------------------------------------------------------- |
