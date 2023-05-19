@@ -210,41 +210,59 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">Удаление связанных(ассоциируемых) записей</span>
+## <span id="delete_association_record">Delete Association Record</span>
 
-Вы можете удалять указанные связи `has one` / `has many` / `many2many` по выборке `Select` при удалении записей, например:
+By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+
+You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+
+How to delete is decided by `gorm.DB`.
 
 ```go
-// Удалить учетную запись пользователя при удалении пользователя
+// Soft delete
+// UPDATE `languages` SET `deleted_at`= ...
+db.Model(&user).Association("Languages").Unscoped().Clear()
+
+// Delete permanently
+// DELETE FROM `languages` WHERE ...
+db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
+```
+
+## <span id="delete_with_select">Delete with Select</span>
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+
+```go
+// delete user's account when deleting user
 db.Select("Account").Delete(&user)
 
-// Удалить свзи с заказами и кредитными картами при удалении пользователя
+// delete user's Orders, CreditCards relations when deleting user
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// Удалить связи has one/many/many2many при удалении пользователя
+// delete user's has one/many/many2many relations when deleting user
 db.Select(clause.Associations).Delete(&user)
 
-// Удалить учетную запись у каждого пользователя при удалении пользователей
+// delete each user's account when deleting users
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**ПРИМЕЧАНИЕ:** Ассоциации будут удалены только в том случае, если первичный ключ удаляемых записей не равен нулю, GORM будет использовать эти первичные ключи в качестве условий для удаления выбранных ассоциаций
+**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
-// НЕ РАБОТАЕТ
+// DOESN'T WORK
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// Удалит всех пользователей с именем `jinzhu`, но учетная запись этого пользователя удалена не будет
+// will delete all user with name `jinzhu`, but those user's account won't be deleted
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// Удалит пользователя с именем = `jinzhu` и id = `1`, учетная запись пользователя `1` будет удалена
+// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
 
 db.Select("Account").Delete(&User{ID: 1})
-// Удалит пользователя с id = `1`, и учетная запись пользователя `1` будет удалена
+// will delete the user with id = `1`, and user `1`'s account will be deleted
 ```
 {% endnote %}
 
-## <span id="tags">Теги связей(ассоциаций)</span>
+## <span id="tags">Association Tags</span>
 
 | Тег              | Описание                                                                                                     |
 | ---------------- | ------------------------------------------------------------------------------------------------------------ |
