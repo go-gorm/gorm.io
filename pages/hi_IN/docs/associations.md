@@ -220,17 +220,33 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_with_select">सेलेक्ट के साथ डिलीट करें</span>
+## <span id="delete_association_record">Delete Association Record</span>
 
-रिकॉर्ड हटाते समय आपको `Select` के साथ Selected has one/ many2many संबंध हटाने की अनुमति है, उदाहरण के लिए:
+By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+
+You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+
+How to delete is decided by `gorm.DB`.
+
+```go
+// Soft delete
+// UPDATE `languages` SET `deleted_at`= ...
+db.Model(&user).Association("Languages").Unscoped().Clear()
+
+// Delete permanently
+// DELETE FROM `languages` WHERE ...
+db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
+```
+
+## <span id="delete_with_select">Delete with Select</span>
+
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
 
 ```go
 // delete user's account when deleting user
-// उपयोगकर्ता को हटाते समय उपयोगकर्ता का खाता हटाएं
 db.Select("Account").Delete(&user)
 
 // delete user's Orders, CreditCards relations when deleting user
-// उपयोगकर्ता को हटाते समय उपयोगकर्ता के आदेश, क्रेडिट कार्ड संबंध हटाएं
 db.Select("Orders", "CreditCards").Delete(&user)
 
 // delete user's has one/many/many2many relations when deleting user
@@ -241,7 +257,7 @@ db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**ध्यान दें:** Associations को केवल तभी हटाया जाएगा जब हटाए जाने वाले रिकॉर्ड की प्राथमिक कुंजी(primary key) शून्य नहीं होगी, GORM selected associations को हटाने के लिए शर्तों के रूप में उन प्राथमिक कुंजियों(primary keys) का उपयोग करेगा
+**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
 
 ```go
 // DOESN'T WORK
@@ -256,7 +272,7 @@ db.Select("Account").Delete(&User{ID: 1})
 ```
 {% endnote %}
 
-## <span id="tags">Association Tags // एसोसिएशन टैग</span>
+## <span id="tags">Association Tags</span>
 
 | टैग                    | विवरण                                                                                                                      |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
