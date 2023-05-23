@@ -250,15 +250,15 @@ db.Select("Account").Delete(&users)
 **ПРИМЕЧАНИЕ:** Ассоциации будут удалены только в том случае, если первичный ключ удаляемых записей не равен нулю, GORM будет использовать эти первичные ключи в качестве условий для удаления выбранных связей
 
 ```go
-// DOESN'T WORK
+// НЕ РАБОТАЕТ
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// will delete all user with name `jinzhu`, but those user's account won't be deleted
+// удалит всех пользователей с именем `jinzhu`, но учетная запись этого пользователя удалена не будет
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
+// удалит пользователя с именем = `jinzhu` и id = `1`, учетная запись пользователя `1` будет удалена
 
 db.Select("Account").Delete(&User{ID: 1})
-// will delete the user with id = `1`, and user `1`'s account will be deleted
+// удалит пользователя с id = `1`, учетная запись пользователя `1` будет удалена
 ```
 {% endnote %}
 
