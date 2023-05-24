@@ -32,8 +32,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="Объявление моделейМодели являются обычными структурами с основными типами Go, указателями&#x2F;псевдонимами или пользовательскими типами, реализующими интерфейсы Scanner и Valuer Например: type User s">
 <meta property="og:locale" content="ru_RU">
-<meta property="article:published_time" content="2023-05-19T11:01:07.339Z">
-<meta property="article:modified_time" content="2023-05-19T11:01:07.339Z">
+<meta property="article:published_time" content="2023-05-24T09:23:01.516Z">
+<meta property="article:modified_time" content="2023-05-24T09:23:01.516Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -118,17 +118,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>Например:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID           <span class="type">uint</span></span><br><span class="line">  Name         <span class="type">string</span></span><br><span class="line">  Email        *<span class="type">string</span></span><br><span class="line">  Age          <span class="type">uint8</span></span><br><span class="line">  Birthday     *time.Time</span><br><span class="line">  MemberNumber sql.NullString</span><br><span class="line">  ActivatedAt  sql.NullTime</span><br><span class="line">  CreatedAt    time.Time</span><br><span class="line">  UpdatedAt    time.Time</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Преобразования" class="article-heading"><a href="#Преобразования" class="headerlink" title="Преобразования"></a>Преобразования<a class="article-anchor" href="#Преобразования" aria-hidden="true"></a></h2><p>GORM prefers convention over configuration. By default, GORM uses <code>ID</code> as primary key, pluralizes struct name to <code>snake_cases</code> as table name, <code>snake_case</code> as column name, and uses <code>CreatedAt</code>, <code>UpdatedAt</code> to track creating/updating time</p>
-<p>If you follow the conventions adopted by GORM, you’ll need to write very little configuration/code. If convention doesn’t match your requirements, <a href="conventions.html">GORM allows you to configure them</a></p>
+<h2 id="Преобразования" class="article-heading"><a href="#Преобразования" class="headerlink" title="Преобразования"></a>Преобразования<a class="article-anchor" href="#Преобразования" aria-hidden="true"></a></h2><p>GORM предпочитает преобразование конфигурации. По умолчанию GORM использует <code>ID</code> в качестве первичного ключа, преобразует имя структуры во множественное число в <code>snake_cases</code> в качестве имени таблицы, <code>snake_case</code> в качестве имени столбца и использует <code>СreatedAt</code>, <code>UpdatedAt</code> для отслеживания времени создания/обновления записи</p>
+<p>Если вы будете следовать соглашениям, принятым GORM, вам нужно будет написать очень мало конфигурации / кода. Если соглашение не соответствует вашим требованиям, <a href="conventions.html">GORM позволяет вам настраивать их</a></p>
 <h2 id="gorm-Model" class="article-heading"><a href="#gorm-Model" class="headerlink" title="gorm.Model"></a>gorm.Model<a class="article-anchor" href="#gorm-Model" aria-hidden="true"></a></h2><p>GORM определяет структуру <code>gorm.Model</code>, которая включает в себя поля <code>ID</code>, <code>CreatedAt</code>, <code>UpdatedAt</code>, <code>DeletedAt</code></p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// объявление gorm.Model</span></span><br><span class="line"><span class="keyword">type</span> Model <span class="keyword">struct</span> {</span><br><span class="line">  ID        <span class="type">uint</span>           <span class="string">`gorm:"primaryKey"`</span></span><br><span class="line">  CreatedAt time.Time</span><br><span class="line">  UpdatedAt time.Time</span><br><span class="line">  DeletedAt gorm.DeletedAt <span class="string">`gorm:"index"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>Вы можете встроить gorm.Model в свою структуру. Чтобы включить эти поля, смотрите <a href="#embedded_struct">Встроенные структуры</a></p>
-<h2 id="Дополнительно" class="article-heading"><a href="#Дополнительно" class="headerlink" title="Дополнительно"></a>Дополнительно<a class="article-anchor" href="#Дополнительно" aria-hidden="true"></a></h2><h3 id="Разрешение-для-каждого-поля" class="article-heading"><a href="#Разрешение-для-каждого-поля" class="headerlink" title="Разрешение для каждого поля"></a><span id="field_permission">Разрешение для каждого поля</span><a class="article-anchor" href="#Разрешение-для-каждого-поля" aria-hidden="true"></a></h3><p>Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored</p>
+<h2 id="Дополнительно" class="article-heading"><a href="#Дополнительно" class="headerlink" title="Дополнительно"></a>Дополнительно<a class="article-anchor" href="#Дополнительно" aria-hidden="true"></a></h2><h3 id="Разрешение-для-каждого-поля" class="article-heading"><a href="#Разрешение-для-каждого-поля" class="headerlink" title="Разрешение для каждого поля"></a><span id="field_permission">Разрешение для каждого поля</span><a class="article-anchor" href="#Разрешение-для-каждого-поля" aria-hidden="true"></a></h3><p>Экспортированные поля имеют все разрешения при выполнении CRUD с помощью GORM, и GORM позволяет вам изменять разрешение на уровне поля с помощью тегов, поэтому вы можете сделать поле доступным только для чтения, записи, создания, обновления или игнорируемым</p>
 <blockquote class="note warn"><p>Игнорируемые поля не будут созданы при использовании GORM Migrator для создания таблицы</p>
 </blockquote>
 
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:create"`</span> <span class="comment">// allow read and create</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:update"`</span> <span class="comment">// allow read and update</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-"`</span>        <span class="comment">// allow read and write (create and update)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:false"`</span>  <span class="comment">// allow read, disable write permission</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;"`</span>        <span class="comment">// readonly (disable write permission unless it configured)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;;&lt;-:create"`</span> <span class="comment">// allow read and create</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;:false;&lt;-:create"`</span> <span class="comment">// createonly (disabled read from db)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-"`</span>            <span class="comment">// ignore this field when write and read with struct</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-:all"`</span>        <span class="comment">// ignore this field when write, read and migrate with struct</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-:migration"`</span>  <span class="comment">// ignore this field when migrate with struct</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:create"`</span> <span class="comment">// разрешены чтение и создание</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:update"`</span> <span class="comment">// разрешены чтение и обновление</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-"`</span>        <span class="comment">// разрешены чтение и запись (создание и обновление)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:false"`</span>  <span class="comment">// разрешено чтение, отключена запись</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;"`</span>        <span class="comment">// только чтение (отключена запись если она не настроена)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;;&lt;-:create"`</span> <span class="comment">// разрешены чтение и создание</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;:false;&lt;-:create"`</span> <span class="comment">// только создание (отключено чтение из базы данных)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-"`</span>            <span class="comment">// игнорируйте это поле при записи и чтении с помощью struct</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-:all"`</span>        <span class="comment">// игнорируйте это поле при записи, чтении и миграции с помощью struct</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-:migration"`</span>  <span class="comment">// игнорируйте это поле при миграции с помощью struct</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="Создание-x2F-обновление-Time-x2F-Unix-Milli-x2F-Nano-секунд-отслеживания" class="article-heading"><a href="#Создание-x2F-обновление-Time-x2F-Unix-Milli-x2F-Nano-секунд-отслеживания" class="headerlink" title="Создание/обновление Time/Unix (Milli/Nano) секунд отслеживания"></a><name id="time_tracking">Создание/обновление Time/Unix (Milli/Nano) секунд отслеживания</name><a class="article-anchor" href="#Создание-x2F-обновление-Time-x2F-Unix-Milli-x2F-Nano-секунд-отслеживания" aria-hidden="true"></a></h3><p>GORM использует <code>CreatedAt</code>, <code>UpdatedAt</code> для отслеживания создания/обновления времени. Если эти поля определены, GORM автоматически установит <a href="gorm_config.html#now_func">текущее время</a> при создании/обновлении</p>
 <p>Чтобы использовать поля с другим именем, вы можете настроить эти поля при помощи тегов <code>autoCreateTime</code>, <code>autoUpdateTime</code></p>
@@ -163,27 +163,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </tr>
 <tr>
 <td>serializer</td>
-<td>specifies serializer for how to serialize and deserialize data into db, e.g: <code>serializer:json/gob/unixtime</code></td>
+<td>указывает сериализатор для сериализации и десериализации данных в Бд, например: <code>serializer:json/gob/unixtime</code></td>
 </tr>
 <tr>
 <td>size</td>
-<td>specifies column data size/length, e.g: <code>size:256</code></td>
+<td>определяет размер/длину данных столбца, например: <code>size:256</code></td>
 </tr>
 <tr>
 <td>primaryKey</td>
-<td>specifies column as primary key</td>
+<td>указывает столбец в качестве первичного ключа</td>
 </tr>
 <tr>
 <td>unique</td>
-<td>specifies column as unique</td>
+<td>указывает столбец, как уникальный</td>
 </tr>
 <tr>
 <td>default</td>
-<td>specifies column default value</td>
+<td>задает значение столбца по умолчанию</td>
 </tr>
 <tr>
 <td>precision</td>
-<td>specifies column precision</td>
+<td>определяет точность значений столбца</td>
 </tr>
 <tr>
 <td>scale</td>
@@ -191,59 +191,59 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </tr>
 <tr>
 <td>not null</td>
-<td>specifies column as NOT NULL</td>
+<td>указывает столбец, как NOT NULL</td>
 </tr>
 <tr>
 <td>autoIncrement</td>
-<td>specifies column auto incrementable</td>
+<td>определяет столбец с авто инкрементом</td>
 </tr>
 <tr>
 <td>autoIncrementIncrement</td>
-<td>auto increment step, controls the interval between successive column values</td>
+<td>шаг автоматического увеличения, управляет интервалом между последовательными значениями столбца</td>
 </tr>
 <tr>
 <td>embedded</td>
-<td>embed the field</td>
+<td>встраиваемое поле</td>
 </tr>
 <tr>
 <td>embeddedPrefix</td>
-<td>column name prefix for embedded fields</td>
+<td>префикс имени столбца для встроенных полей</td>
 </tr>
 <tr>
 <td>autoCreateTime</td>
-<td>track current time when creating, for <code>int</code> fields, it will track unix seconds, use value <code>nano</code>/<code>milli</code> to track unix nano/milli seconds, e.g: <code>autoCreateTime:nano</code></td>
+<td>отслеживать текущее время при создании, для полей <code>int</code>, он будет отслеживать секунды unix, используйте значение <code>nano</code>/<code>milli</code> для отслеживания unix нано/миллисекунд, например: <code>autoCreateTime:nano</code></td>
 </tr>
 <tr>
 <td>autoUpdateTime</td>
-<td>track current time when creating/updating, for <code>int</code> fields, it will track unix seconds, use value <code>nano</code>/<code>milli</code> to track unix nano/milli seconds, e.g: <code>autoUpdateTime:milli</code></td>
+<td>отслеживайте текущее время при создании/обновлении, для полей <code>int</code> оно будет отслеживать секунды unix, используйте значение <code>nano</code>/<code>milli</code> для отслеживания unix нано/миллисекунд, например: <code>autoUpdateTime:milli</code></td>
 </tr>
 <tr>
 <td>index</td>
-<td>create index with options, use same name for multiple fields creates composite indexes, refer <a href="indexes.html">Indexes</a> for details</td>
+<td>создает индекс с параметрами, используйте одно и то же имя для нескольких полей, создавая составные индексы, смотрите <a href="indexes.html">Индексы</a> для получения подробной информации</td>
 </tr>
 <tr>
 <td>uniqueIndex</td>
-<td>same as <code>index</code>, but create uniqued index</td>
+<td>то же, что и параметр <code>index</code>, но создает уникальный индекс</td>
 </tr>
 <tr>
 <td>check</td>
-<td>creates check constraint, eg: <code>check:age &gt; 13</code>, refer <a href="constraints.html">Constraints</a></td>
+<td>создает ограничение проверки, например: <code>check:age &gt; 13</code>, смотрите <a href="constraints.html">Ограничения</a></td>
 </tr>
 <tr>
 <td>&lt;-</td>
-<td>set field’s write permission, <code>&lt;-:create</code> create-only field, <code>&lt;-:update</code> update-only field, <code>&lt;-:false</code> no write permission, <code>&lt;-</code> create and update permission</td>
+<td>устанавливает разрешение на запись поля, <code>&lt;-:create</code> поле только для создания, <code>&lt;-:update</code> поле только для обновления, <code>&lt;-:false</code> нет разрешения на запись, <code>&lt;-</code> разрешение на создание и обновление</td>
 </tr>
 <tr>
 <td>-&gt;</td>
-<td>set field’s read permission, <code>-&gt;:false</code> no read permission</td>
+<td>устанавливает разрешение на чтение поля, <code>-&gt;:false</code> нет разрешения на чтение</td>
 </tr>
 <tr>
 <td>-</td>
-<td>ignore this field, <code>-</code> no read/write permission, <code>-:migration</code> no migrate permission, <code>-:all</code> no read/write/migrate permission</td>
+<td>игнорировать это поле, <code>-</code> нет разрешения на чтение/запись, <code>-:migration</code> нет разрешения на миграцию, <code>-:all</code> нет разрешения на чтение/запись/миграцию</td>
 </tr>
 <tr>
 <td>comment</td>
-<td>add comment for field when migration</td>
+<td>добавить комментарий к полю при миграции</td>
 </tr>
 </tbody></table>
 <h3 id="Взаимосвязи" class="article-heading"><a href="#Взаимосвязи" class="headerlink" title="Взаимосвязи"></a>Взаимосвязи<a class="article-anchor" href="#Взаимосвязи" aria-hidden="true"></a></h3><p>GORM позволяет настраивать внешние ключи (foreign keys), ограничения (constraints), отношения многие ко многим через теги связей, для получения подробной информации перейдите в <a href="associations.html#tags">раздел Ассоциации</a></p>
@@ -259,7 +259,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2023-05-19T11:01:07.339Z" itemprop="dateModified">Последнее обновление: 2023-05-19</time>
+                <time class="article-footer-updated" datetime="2023-05-24T09:23:01.516Z" itemprop="dateModified">Последнее обновление: 2023-05-24</time>
 <a href="index.html" class="article-footer-prev" title="Обзор"><i class="fa fa-chevron-left"></i><span>Пред.</span></a><a href="connecting_to_the_database.html" class="article-footer-next" title="Подключение к базе данных"><span>След.</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -377,7 +377,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </article>
       <aside id="sidebar" role="navigation">
   <div class="inner">
-    <strong class="sidebar-title">Начало работы</strong><a href="index.html" class="sidebar-link">Обзор</a><a href="models.html" class="sidebar-link current">Объявление моделей</a><a href="connecting_to_the_database.html" class="sidebar-link">Подключение к базе данных</a><strong class="sidebar-title">CRUD интерфейс</strong><a href="create.html" class="sidebar-link">Создать</a><a href="query.html" class="sidebar-link">Запрос</a><a href="advanced_query.html" class="sidebar-link">Расширенный запрос</a><a href="update.html" class="sidebar-link">Обновление</a><a href="delete.html" class="sidebar-link">Удалить</a><a href="sql_builder.html" class="sidebar-link">Raw SQL и конструктор SQL</a><strong class="sidebar-title">Связи</strong><a href="belongs_to.html" class="sidebar-link">Belongs To</a><a href="has_one.html" class="sidebar-link">Has One</a><a href="has_many.html" class="sidebar-link">Has Many</a><a href="many_to_many.html" class="sidebar-link">Many To Many</a><a href="associations.html" class="sidebar-link">Режим связи</a><a href="preload.html" class="sidebar-link">Предзагрузка (Нетерпеливая загрузка)</a><strong class="sidebar-title">Обучение</strong><a href="context.html" class="sidebar-link">Контекст</a><a href="error_handling.html" class="sidebar-link">Обработка ошибок</a><a href="method_chaining.html" class="sidebar-link">Цепочки методов</a><a href="session.html" class="sidebar-link">Сессия</a><a href="hooks.html" class="sidebar-link">Хуки</a><a href="transactions.html" class="sidebar-link">Транзакции</a><a href="migration.html" class="sidebar-link">Миграция</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">Универсальный интерфейс базы данных</a><a href="performance.html" class="sidebar-link">Производительность</a><a href="data_types.html" class="sidebar-link">Настройка типов данных</a><a href="scopes.html" class="sidebar-link">Области</a><a href="conventions.html" class="sidebar-link">Преобразования</a><a href="settings.html" class="sidebar-link">Настройки</a><strong class="sidebar-title">Дополнительные возможности</strong><a href="dbresolver.html" class="sidebar-link">Резолвер базы данных</a><a href="sharding.html" class="sidebar-link">Sharding</a><a href="serializer.html" class="sidebar-link">Serializer</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">Подсказки</a><a href="indexes.html" class="sidebar-link">Индексы</a><a href="constraints.html" class="sidebar-link">Ограничения</a><a href="composite_primary_key.html" class="sidebar-link">Композитный первичный ключ</a><a href="security.html" class="sidebar-link">Безопасность</a><a href="gorm_config.html" class="sidebar-link">Настройки GORM</a><a href="write_plugins.html" class="sidebar-link">Написание плагинов</a><a href="write_driver.html" class="sidebar-link">Написание драйверов</a><a href="changelog.html" class="sidebar-link">История изменений</a><a href="/community.html" class="sidebar-link">Сообщество</a><a href="/contribute.html" class="sidebar-link">Внести вклад</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">Перевести текущий сайт</a>
+    <strong class="sidebar-title">Начало работы</strong><a href="index.html" class="sidebar-link">Обзор</a><a href="models.html" class="sidebar-link current">Объявление моделей</a><a href="connecting_to_the_database.html" class="sidebar-link">Подключение к базе данных</a><strong class="sidebar-title">CRUD интерфейс</strong><a href="create.html" class="sidebar-link">Создать</a><a href="query.html" class="sidebar-link">Запрос</a><a href="advanced_query.html" class="sidebar-link">Расширенный запрос</a><a href="update.html" class="sidebar-link">Обновление</a><a href="delete.html" class="sidebar-link">Удалить</a><a href="sql_builder.html" class="sidebar-link">Raw SQL и конструктор SQL</a><strong class="sidebar-title">Связи</strong><a href="belongs_to.html" class="sidebar-link">Belongs To</a><a href="has_one.html" class="sidebar-link">Has One</a><a href="has_many.html" class="sidebar-link">Has Many</a><a href="many_to_many.html" class="sidebar-link">Many To Many</a><a href="associations.html" class="sidebar-link">Режим связи</a><a href="preload.html" class="sidebar-link">Предзагрузка (Нетерпеливая загрузка)</a><strong class="sidebar-title">Обучение</strong><a href="context.html" class="sidebar-link">Контекст</a><a href="error_handling.html" class="sidebar-link">Обработка ошибок</a><a href="method_chaining.html" class="sidebar-link">Цепочки методов</a><a href="session.html" class="sidebar-link">Сессия</a><a href="hooks.html" class="sidebar-link">Хуки</a><a href="transactions.html" class="sidebar-link">Транзакции</a><a href="migration.html" class="sidebar-link">Миграция</a><a href="logger.html" class="sidebar-link">Logger</a><a href="generic_interface.html" class="sidebar-link">Универсальный интерфейс базы данных</a><a href="performance.html" class="sidebar-link">Производительность</a><a href="data_types.html" class="sidebar-link">Настройка типов данных</a><a href="scopes.html" class="sidebar-link">Области</a><a href="conventions.html" class="sidebar-link">Преобразования</a><a href="settings.html" class="sidebar-link">Настройки</a><strong class="sidebar-title">Дополнительные возможности</strong><a href="dbresolver.html" class="sidebar-link">Резолвер базы данных</a><a href="sharding.html" class="sidebar-link">Шардирование</a><a href="serializer.html" class="sidebar-link">Сериализатор</a><a href="prometheus.html" class="sidebar-link">Prometheus</a><a href="hints.html" class="sidebar-link">Подсказки</a><a href="indexes.html" class="sidebar-link">Индексы</a><a href="constraints.html" class="sidebar-link">Ограничения</a><a href="composite_primary_key.html" class="sidebar-link">Композитный первичный ключ</a><a href="security.html" class="sidebar-link">Безопасность</a><a href="gorm_config.html" class="sidebar-link">Настройки GORM</a><a href="write_plugins.html" class="sidebar-link">Написание плагинов</a><a href="write_driver.html" class="sidebar-link">Написание драйверов</a><a href="changelog.html" class="sidebar-link">История изменений</a><a href="/community.html" class="sidebar-link">Сообщество</a><a href="/contribute.html" class="sidebar-link">Внести вклад</a><a href="/contribute.html#Translate-this-site" class="sidebar-link">Перевести текущий сайт</a>
   </div>
 </aside>
 
