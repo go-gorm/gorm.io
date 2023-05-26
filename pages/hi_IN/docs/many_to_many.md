@@ -108,7 +108,7 @@ Self-referencing many2many relationship
 
 ```go
 type User struct {
-  gorm.Model
+    gorm.Model
     Friends []*User `gorm:"many2many:user_friends"`
 }
 
