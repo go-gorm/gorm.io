@@ -110,7 +110,7 @@ Auto-referenciando relacionamentos muitos para muitos
 
 ```go
 type User struct {
-  gorm.Model
+    gorm.Model
     Friends []*User `gorm:"many2many:user_friends"`
 }
 
