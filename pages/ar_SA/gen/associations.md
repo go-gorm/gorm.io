@@ -61,10 +61,12 @@ The association have to be speified by `gen.FieldRelate`
 
 ```go
 card := g.GenerateModel("credit_cards")
+t := field.NewGormTag()
+t.Set("foreignKey", "CustomerRefer")
 customer := g.GenerateModel("customers", gen.FieldRelate(field.HasMany, "CreditCards", card, 
     &field.RelateConfig{
         // RelateSlice: true,
-        GORMTag: "foreignKey:CustomerRefer",
+        GORMTag: t,
     }),
 )
 
