@@ -15,7 +15,7 @@ result.Error        // 返回 error
 result.RowsAffected // 返回插入记录的条数
 ```
 
-We can also create multiple records with `Create()`:
+我们还可以使用 `Create()` 创建多项记录：
 ```go
 users := []*User{
     User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
@@ -30,14 +30,14 @@ result.RowsAffected // returns inserted records count
 
 ## 用指定的字段创建记录
 
-Create a record and assign a value to the fields specified.
+创建记录并为指定的字段分配值：
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and ignore the values for fields passed to omit.
+创建记录并忽略要省略的传递字段的值：
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
