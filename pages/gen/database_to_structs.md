@@ -8,17 +8,41 @@ layout: page
 Gen supports generate structs from databases following GORM conventions, it can be used like:
 
 ```go
-// Generate struct `User` based on table `users`
-g.GenerateModel("users")
+package main
 
-// Generate struct `Employee` based on table `users`
-g.GenerateModelAs("users", "Employee")
+import "gorm.io/gen"
+
+func main() {
+ conf := gen.Config{
+    OutPath: "../query",
+    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
+  }
+  g := gen.NewGenerator(conf)
+
+  // gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
+  g.UseDB(gormdb) // reuse your gorm db
+
+  // Generate basic type-safe DAO API for struct `model.User` following conventions
+  
+  g.ApplyBasic(
+  // Generate struct `User` based on table `users`
+  g.GenerateModel("users"),
+  
+  // Generate struct `Employee` based on table `users`
+ g.GenerateModelAs("users", "Employee"),
+
 
 // Generate struct `User` based on table `users` and generating options
-g.GenerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64"))
+g.GenerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64")),
 
 // Generate structs from all tables of current database
-g.GenerateAllTable()
+g.GenerateAllTable(),
+  )
+
+  // Generate the code
+  g.Execute()
+}
+
 ```
 
 ## Methods Template
