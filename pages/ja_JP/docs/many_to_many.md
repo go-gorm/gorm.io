@@ -108,7 +108,7 @@ many2manyリレーションにおける自己参照も可能です。
 
 ```go
 type User struct {
-    gorm.Model
+  gorm.Model
     Friends []*User `gorm:"many2many:user_friends"`
 }
 
