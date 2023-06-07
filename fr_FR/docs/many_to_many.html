@@ -56,8 +56,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="Many To ManyMany to Many add a join table between two models. For example, if your application includes users and languages, and a user can speak many languages, and many users can speak a specified l">
 <meta property="og:locale" content="fr_FR">
-<meta property="article:published_time" content="2023-06-07T03:07:44.188Z">
-<meta property="article:modified_time" content="2023-06-07T03:07:44.188Z">
+<meta property="article:published_time" content="2023-06-07T07:05:30.804Z">
+<meta property="article:modified_time" content="2023-06-07T07:05:30.804Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -159,7 +159,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </blockquote>
 
 <h2 id="Self-Referential-Many2Many" class="article-heading"><a href="#Self-Referential-Many2Many" class="headerlink" title="Self-Referential Many2Many"></a>Self-Referential Many2Many<a class="article-anchor" href="#Self-Referential-Many2Many" aria-hidden="true"></a></h2><p>Self-referencing many2many relationship</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    gorm.Model</span><br><span class="line">    Friends []*User <span class="string">`gorm:"many2many:user_friends"`</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Which creates join table: user_friends</span></span><br><span class="line"><span class="comment">//   foreign key: user_id, reference: users.id</span></span><br><span class="line"><span class="comment">//   foreign key: friend_id, reference: users.id</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  gorm.Model</span><br><span class="line">    Friends []*User <span class="string">`gorm:"many2many:user_friends"`</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Which creates join table: user_friends</span></span><br><span class="line"><span class="comment">//   foreign key: user_id, reference: users.id</span></span><br><span class="line"><span class="comment">//   foreign key: friend_id, reference: users.id</span></span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Eager-Loading" class="article-heading"><a href="#Eager-Loading" class="headerlink" title="Eager Loading"></a>Eager Loading<a class="article-anchor" href="#Eager-Loading" aria-hidden="true"></a></h2><p>GORM allows eager loading has many associations with <code>Preload</code>, refer <a href="preload.html">Preloading (Eager loading)</a> for details</p>
 <h2 id="CRUD-with-Many2Many" class="article-heading"><a href="#CRUD-with-Many2Many" class="headerlink" title="CRUD with Many2Many"></a>CRUD with Many2Many<a class="article-anchor" href="#CRUD-with-Many2Many" aria-hidden="true"></a></h2><p>Please checkout <a href="associations.html#Association-Mode">Association Mode</a> for working with many2many relations</p>
@@ -190,7 +190,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2023-06-07T03:07:44.188Z" itemprop="dateModified">Last updated: 2023-06-07</time>
+                <time class="article-footer-updated" datetime="2023-06-07T07:05:30.804Z" itemprop="dateModified">Last updated: 2023-06-07</time>
 <a href="has_many.html" class="article-footer-prev" title="Has Many"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="associations.html" class="article-footer-next" title="Association Mode"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
