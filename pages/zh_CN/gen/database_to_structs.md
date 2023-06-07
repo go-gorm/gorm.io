@@ -35,10 +35,11 @@ func main() {
 // Generate struct `User` based on table `users` and generating options
 g.GenerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64")),
 
-// Generate structs from all tables of current database
-g.GenerateAllTable(),
   )
-
+g.ApplyBasic(
+// Generate structs from all tables of current database
+g.GenerateAllTable()...,
+)
   // Generate the code
   g.Execute()
 }
