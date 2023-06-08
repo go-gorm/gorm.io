@@ -213,10 +213,7 @@ WithFileNameStrategy(ns func(tableName string) (fileName string))
 WithJSONTagNameStrategy(ns func(columnName string) (tagContent string))
 
 // WithDataTypeMap specify data type mapping relationship, only work when syncing table from db
-WithDataTypeMap(newMap map[string]func(detailType string) (dataType string))
-
-// WithNewTagNameStrategy specify new tag naming strategy
-WithNewTagNameStrategy(ns func(columnName string) (tagContent string))
+WithDataTypeMap(newMap map[string]func(gorm.ColumnType) (dataType string))
 
 // WithImportPkgPath specify import package path
 WithImportPkgPath(paths ...string)
