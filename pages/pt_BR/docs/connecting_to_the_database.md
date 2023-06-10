@@ -235,7 +235,7 @@ func main() {
 
 ## Conjunto de Conexão
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM usando [database/sql](https://pkg.go.dev/database/sql) para manter o *pool* de conexão
 
 ```go
 sqlDB, err := db.DB()

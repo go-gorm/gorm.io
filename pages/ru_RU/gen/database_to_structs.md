@@ -8,17 +8,42 @@ layout: page
 Gen поддерживает создание структур из баз данных в соответствии с конвенциями GORM, он может использоваться так:
 
 ```go
-// Генерирование структуры `User` на основе таблицы `users`
-g.GenerateModel("users")
+package main
 
-// Генерирование структуры `Employee` на основе таблицы `users`
-g. enerateModelAs("users", "Сотрудник")
+import "gorm.io/gen"
 
-// Создание структуры `User` на основе таблицы `users` и генерация опций
-g. enerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64"))
+func main() {
+ conf := gen.Config{
+    OutPath: "../query",
+    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
+  }
+  g := gen.NewGenerator(conf)
 
-// Генерация построек из всех таблиц текущей базы данных
-g.GenerateAllTable()
+  // gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
+  g.UseDB(gormdb) // reuse your gorm db
+
+  // Generate basic type-safe DAO API for struct `model.User` following conventions
+
+  g.ApplyBasic(
+  // Generate struct `User` based on table `users`
+  g.GenerateModel("users"),
+
+  // Generate struct `Employee` based on table `users`
+ g.GenerateModelAs("users", "Employee"),
+
+
+// Generate struct `User` based on table `users` and generating options
+g.GenerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64")),
+
+  )
+g.ApplyBasic(
+// Generate structs from all tables of current database
+g.GenerateAllTable()...,
+)
+  // Generate the code
+  g.Execute()
+}
+
 ```
 
 ## Шаблон методов
@@ -188,10 +213,7 @@ WithFileNameStrategy(ns func(tableName string) (fileName string))
 WithJSONTagNameStrategy(ns func(columnName string) (tagContent string))
 
 // WithDataTypeMap specify data type mapping relationship, only work when syncing table from db
-WithDataTypeMap(newMap map[string]func(detailType string) (dataType string))
-
-// WithNewTagNameStrategy specify new tag naming strategy
-WithNewTagNameStrategy(ns func(columnName string) (tagContent string))
+WithDataTypeMap(newMap map[string]func(gorm.ColumnType) (dataType string))
 
 // WithImportPkgPath specify import package path
 WithImportPkgPath(paths ...string)
