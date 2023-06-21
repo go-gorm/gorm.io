@@ -520,7 +520,7 @@ Get first matched record or create a new one with given conditions (only works w
 result := u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "gen", "Age": 18}
 // result.RowsAffected // => 0
-```3
+```
 
 Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
 
