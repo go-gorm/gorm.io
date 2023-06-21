@@ -476,4 +476,85 @@ users, err := gen.Table(subQuery1.As("u"), subQuery2.As("p")).Find()
 db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
+### FirstOrInit
 
+Initialize struct with more attributes if record not found, those `Attrs` won't be used to build the SQL query
+
+```go
+// User not found, initialize it with given conditions and Attrs
+u.WithContext(ctx).Attrs(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("non_existing")).FirstOrInit()
+// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
+// user -> User{Name: "non_existing", Age: 20}
+
+// User not found, initialize it with given conditions and Attrs
+u.WithContext(ctx).Attrs(u.Age.Value(20).Where(u.Name.Eq("non_existing")).FirstOrInit()
+// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
+// user -> User{Name: "non_existing", Age: 20}
+
+// Found user with `name` = `gen`, attributes will be ignored
+u.WithContext(ctx).Attrs(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("gen")).FirstOrInit()
+// SELECT * FROM USERS WHERE name = 'gen' ORDER BY id LIMIT 1;
+// user -> User{ID: 111, Name: "gen", Age: 18}
+```
+
+`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+
+```go
+// User not found, initialize it with give conditions and Assign attributes
+u.WithContext(ctx).Assign(field.Assign(map[string]interface{}{"age": 20})).Where(u.Name.Eq("non_existing")).FirstOrInit()
+// user -> User{Name: "non_existing", Age: 20}
+
+// Found user with `name` = `gen`, update it with Assign attributes
+u.WithContext(ctx).Assign(field.Assign(&model.User{Name: "gen_assign"}).Select(dal.User.ALL)).Where(u.Name.Eq("gen")).FirstOrInit()
+// SELECT * FROM USERS WHERE name = gen' ORDER BY id LIMIT 1;
+// user -> User{ID: 111, Name: "gen", Age: 20}
+```
+
+### FirstOrCreate
+
+Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
+
+```go
+
+// Found user with `name` = `gen`
+result := u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate(&user)
+// user -> User{ID: 111, Name: "gen", "Age": 18}
+// result.RowsAffected // => 0
+```
+
+Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+
+```go
+// User not found, create it with give conditions and Attrs
+u.WithContext(ctx).Attrs(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("non_existing")).FirstOrCreate()
+// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
+// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
+// user -> User{ID: 112, Name: "non_existing", Age: 20}
+
+// Found user with `name` = `gen`, attributes will be ignored
+u.WithContext(ctx).Attrs(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("gen")).FirstOrCreate()
+// SELECT * FROM users WHERE name = 'gen' ORDER BY id LIMIT 1;
+// user -> User{ID: 111, Name: "gen", Age: 18}
+```
+
+`Assign` attributes to the record regardless it is found or not and save them back to the database.
+
+```go
+// User not found, initialize it with give conditions and Assign attributes
+u.WithContext(ctx).Assign(field.Assign(&model.User{Age: 20})).Where(u.Name.Eq("non_existing")).FirstOrCreate()
+// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
+// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
+// user -> User{ID: 112, Name: "non_existing", Age: 20}
+
+// Found user with `name` = `gen`, update it with Assign attributes
+u.WithContext(ctx).Assign(field.Assign(&model.User{Age: 20})).Where(u.Name.Eq("gen")).FirstOrCreate()
+// SELECT * FROM users WHERE name = 'gen' ORDER BY id LIMIT 1;
+// UPDATE users SET age=20 WHERE id = 111;
+// user -> User{ID: 111, Name: "gen", Age: 20}
+
+// Found user with `name` = `gen`, update it with Assign attributes
+u.WithContext(ctx).Assign(u.Age.Value(20)).Where(u.Name.Eq("gen")).FirstOrCreate()
+// SELECT * FROM users WHERE name = 'gen' ORDER BY id LIMIT 1;
+// UPDATE users SET age=20 WHERE id = 111;
+// user -> User{ID: 111, Name: "gen", Age: 20}
+```
