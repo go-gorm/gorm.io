@@ -192,7 +192,7 @@ SELECT * FROM users WHERE deleted_at = 0;
 UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
-你同样可以指定使用毫秒 `milli`或纳秒 `milli`作为值，如下例
+你同样可以指定使用毫秒 `milli`或纳秒 `nano`作为值，如下例：
 
 ```go
 type User struct {

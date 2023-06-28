@@ -13,11 +13,10 @@ package main
 import "gorm.io/gen"
 
 func main() {
- conf := gen.Config{
+  g := gen.NewGenerator(gen.Config{
     OutPath: "../query",
     Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
-  }
-  g := gen.NewGenerator(conf)
+  })
 
   // gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
   g.UseDB(gormdb) // reuse your gorm db
@@ -139,10 +138,10 @@ func (m CommonMethod) TableName(namer schema.Namer) string {
 g.GenerateModel("user", gen.WithMethod(CommonMethod{}.TableName))
 
 // DIY TableName method for the generated all struct
-conf.WithOpts(gen.WithMethod(CommonMethod{}.TableName))
+g.WithOpts(gen.WithMethod(CommonMethod{}.TableName))
 
 // Set Default DIY TableName method for the generated all struct
-conf.WithOpts(gen.WithMethod(gen.DefaultMethodTableWithNamer))
+g.WithOpts(gen.WithMethod(gen.DefaultMethodTableWithNamer))
 
 ```
 
@@ -246,5 +245,5 @@ WithOpts(opts ...ModelOpt)
         },
     }
 
-    conf.WithDataTypeMap(dataMap)
+    g.WithDataTypeMap(dataMap)
 ```
