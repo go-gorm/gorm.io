@@ -501,11 +501,12 @@ u.WithContext(ctx).Attrs(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("gen
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
-u.WithContext(ctx).Assign(field.Assign(map[string]interface{}{"age": 20})).Where(u.Name.Eq("non_existing")).FirstOrInit()
+u.WithContext(ctx).Assign(field.Attrs(map[string]interface{}{"age": 20})).Where(u.Name.Eq("non_existing")).FirstOrInit()
 // user -> User{Name: "non_existing", Age: 20}
 
 // Found user with `name` = `gen`, update it with Assign attributes
-u.WithContext(ctx).Assign(field.Assign(&model.User{Name: "gen_assign"}).Select(dal.User.ALL)).Where(u.Name.Eq("gen")).FirstOrInit()
+u.WithContext(ctx).Assign(field.Attrs(&model.User{Name: "gen_assign"}).Select(dal.User.ALL)).Where(u.Name.Eq("gen")).FirstOrInit()
+
 // SELECT * FROM USERS WHERE name = gen' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "gen", Age: 20}
 ```
@@ -541,13 +542,13 @@ u.WithContext(ctx).Attrs(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("gen
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
-u.WithContext(ctx).Assign(field.Assign(&model.User{Age: 20})).Where(u.Name.Eq("non_existing")).FirstOrCreate()
+u.WithContext(ctx).Assign(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("non_existing")).FirstOrCreate()
 // SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
 // Found user with `name` = `gen`, update it with Assign attributes
-u.WithContext(ctx).Assign(field.Assign(&model.User{Age: 20})).Where(u.Name.Eq("gen")).FirstOrCreate()
+u.WithContext(ctx).Assign(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("gen")).FirstOrCreate()
 // SELECT * FROM users WHERE name = 'gen' ORDER BY id LIMIT 1;
 // UPDATE users SET age=20 WHERE id = 111;
 // user -> User{ID: 111, Name: "gen", Age: 20}
@@ -557,4 +558,48 @@ u.WithContext(ctx).Assign(u.Age.Value(20)).Where(u.Name.Eq("gen")).FirstOrCreate
 // SELECT * FROM users WHERE name = 'gen' ORDER BY id LIMIT 1;
 // UPDATE users SET age=20 WHERE id = 111;
 // user -> User{ID: 111, Name: "gen", Age: 20}
+```
+
+
+### Struct & Map Conditions
+
+```go
+// Struct
+u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen", Age: 20})).First()
+// SELECT * FROM users WHERE name = "gen" AND age = 20 ORDER BY id LIMIT 1;
+
+// Map
+u.WithContext(ctx).Where(field.Attrs(map[string]interface{}{"name": "gen", "age": 20})).Find()
+// SELECT * FROM users WHERE name = "gen" AND age = 20;
+
+```
+
+{% note warn %}
+**NOTE** When querying with struct, GORM GEN will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+{% endnote %}
+
+```go
+u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen", Age: 0})).Find()
+// SELECT * FROM users WHERE name = "gen";
+```
+
+To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
+
+```go
+u.WithContext(ctx).Where(field.Attrs(map[string]interface{}{"name": "gen", "age": 0})).Find()
+// SELECT * FROM users WHERE name = "gen" AND age = 0;
+```
+
+For more details, see [Specify Struct search fields](#specify_search_fields).
+
+### <span id="specify_search_fields">Specify Struct search fields</span>
+
+When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant  the dbname to `Attrs()`, for example:
+
+```go
+u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen"}).Select(u.Name,u.Age)).Find()
+// SELECT * FROM users WHERE name = "gen" AND age = 0;
+
+u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen"}).Select(u.Age)).Find()
+// SELECT * FROM users WHERE age = 0;
 ```
