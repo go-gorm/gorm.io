@@ -254,7 +254,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
     return errors.New("role not allowed to change")
 	}
 
-  if tx.Statement.Changed("Name", "Admin") { // if Name or Role changed
+  if tx.Statement.Changed("Name", "Admin") { // if Name or Admin changed
     tx.Statement.SetColumn("Age", 18)
   }
 
