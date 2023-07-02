@@ -593,7 +593,7 @@ u.WithContext(ctx).Where(field.Attrs(map[string]interface{}{"name": "gen", "age"
 
 ### <span id="specify_search_fields">Specify Struct search fields</span>
 
-When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant  the dbname to `Attrs()`, for example:
+当使用 struct 进行查询时，你可以通过向 `Select()` 、`Omit()` 传入 字段名来指定查询条件，例如：
 
 ```go
 u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen"}).Select(u.Name,u.Age)).Find()
