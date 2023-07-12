@@ -13,7 +13,7 @@ https://github.com/go-gorm/hints
 import "gorm.io/hints"
 
 db.Clauses(hints.New("hint")).Find(&User{})
-// SELECT * /*+ hint */ FROM `users`
+// SELECT * /*+ подсказка */ FROM `users`
 ```
 
 ## Подсказки индексирования
