@@ -70,7 +70,7 @@ db.First(&Language{})
 
 ### 根据主键检索
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
+如果主键是数字类型，您可以使用 [内联条件](#inline_conditions) 来检索对象。 当使用字符串时，需要额外的注意来避免SQL注入；查看 [Security](security.html) 部分来了解详情。
 
 ```go
 db.First(&user, 10)
@@ -83,7 +83,7 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If the primary key is a string (for example, like a uuid), the query will be written as follows:
+如果主键是字符串(例如像uuid)，查询将被写成如下：
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
@@ -103,7 +103,7 @@ db.Model(User{ID: 10}).First(&result)
 ```
 
 {% note warn %}
-**NOTE:** If you use gorm's specific field types like `gorm.DeletedAt`, it will run a different query for retrieving object/s.
+**NOTE:** 如果您使用 gorm 的特定字段类型（例如 `gorm.DeletedAt`），它将运行不同的查询来检索对象。
 {% endnote %}
 ```go
 type User struct {
@@ -162,13 +162,13 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 ```
 
 {% note warn %}
-If the object's primary key has been set, then condition query wouldn't cover the value of primary key but use it as a 'and' condition. For example:
+如果对象设置了主键，条件查询将不会覆盖主键的值，而是用 And 连接条件。 例如：
 ```go
 var user = User{ID: 10}
 db.Where("id = ?", 20).First(&user)
 // SELECT * FROM users WHERE id = 10 and id = 20 ORDER BY id ASC LIMIT 1
 ```
-This query would give `record not found` Error. So set the primary key attribute such as `id` to nil before you want to use the variable such as `user` to get new value from database.
+这个查询将会给出`record not found`错误 所以，在你想要使用例如 `user` 这样的变量从数据库中获取新值前，需要将例如 `id` 这样的主键设置为nil。
 {% endnote %}
 
 
