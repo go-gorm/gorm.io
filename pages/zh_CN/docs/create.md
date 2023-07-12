@@ -28,16 +28,20 @@ result.Error        // returns error
 result.RowsAffected // returns inserted records count
 ```
 
+{% note warn %}
+**NOTE** You cannot pass a struct to 'create', so you should pass a pointer to the data.
+{% endnote %}
+
 ## 用指定的字段创建记录
 
-创建记录并为指定的字段分配值：
+Create a record and assign a value to the fields specified.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-创建记录并忽略要省略的传递字段的值：
+Create a record and ignore the values for fields passed to omit.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
