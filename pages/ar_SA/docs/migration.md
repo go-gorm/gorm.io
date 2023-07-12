@@ -264,9 +264,26 @@ db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 
 GORM creates constraints when auto migrating or creating table, see [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
 
+## Atlas Integration
+
+[Atlas](https://atlasgo.io) is an open-source database migration tool that has an official integration with GORM.
+
+While GORM's `AutoMigrate` feature works in most cases, at some point you many need to switch to a [versioned migrations](https://atlasgo.io/concepts/declarative-vs-versioned#versioned-migrations) strategy.
+
+Once this happens, the responsibility for planning migration scripts and making sure they are in line with what GORM expects at runtime is moved to developers.
+
+Atlas can automatically plan database schema migrations for developers using the official [GORM Provider](https://github.com/ariga/atlas-provider-gorm).  After configuring the provider you can automatically plan migrations by running:
+```bash
+atlas migrate diff --env gorm
+```
+
+To learn how to use Atlas with GORM, check out the [official documentation](https://atlasgo.io/guides/orms/gorm).
+
+
+
 ## Other Migration Tools
 
-GORM's AutoMigrate works well for most cases, but if you are looking for more serious migration tools, GORM provides a generic DB interface that might be helpful for you.
+To use GORM with other Go-based migration tools, GORM provides a generic DB interface that might be helpful for you.
 
 ```go
 // returns `*sql.DB`
