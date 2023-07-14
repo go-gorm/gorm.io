@@ -1,9 +1,9 @@
 ---
-title: Connecting to a Database
+title: Connexion à la base de données
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
+GORM supporte officiellement les bases de données MySQL, PostgreSQL, SQLite, SQL Server et TiDB
 
 ## MySQL
 
@@ -21,10 +21,10 @@ func main() {
 ```
 
 {% note warn %}
-**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+**NOTE :** Pour gérer `time.Time` correctement, vous devez inclure `parseTime` comme paramètre. ([plus de paramètres](https://github.com/go-sql-driver/mysql#parameters)) Pour supporter pleinement l'encodage UTF-8, vous devez changer `charset=utf8` à `charset=utf8mb4`. Voir [cet article](https://mathiasbynens.be/notes/mysql-utf8mb4) pour une explication détaillée
 {% endnote %}
 
-MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
+MySQL Driver fournit [quelques configurations avancées ](https://github.com/go-gorm/mysql) qui peut être utilisé lors d'initialisation, for exemple :
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -37,9 +37,9 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### Personnaliser le Driver
 
-GORM allows to customize the MySQL driver with the `DriverName` option, for example:
+GORM permet de personnaliser le Driver MySQL avec l'option `DriverName` par exemple :
 
 ```go
 import (
