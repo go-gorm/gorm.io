@@ -1,20 +1,20 @@
 ---
-title: Composite Primary Key
+title: Clé primaire composite
 layout: page
 ---
 
-Set multiple fields as primary key creates composite primary key, for example:
+Définir plusieurs champs comme clé primaire crée une clé primaire composite, par exemple :
 
 ```go
 type Product struct {
-  ID           string `gorm:"primaryKey"`
+  ID string `gorm:"primaryKey"`
   LanguageCode string `gorm:"primaryKey"`
-  Code         string
-  Name         string
+  Code string
+  Name string
 }
 ```
 
-**Note** integer `PrioritizedPrimaryField` enables `AutoIncrement` by default, to disable it, you need to turn off `autoIncrement` for the int fields:
+**Note**integer `PrioritizedPrimaryField` active `Auto-Increment` par défaut, pour le désactiver, vous devez désactiver `autoIncrement` pour les champs int :
 
 ```go
 type Product struct {
