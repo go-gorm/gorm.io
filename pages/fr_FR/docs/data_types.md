@@ -1,11 +1,11 @@
 ---
-title: Customize Data Types
+title: Personnaliser les types de données
 layout: page
 ---
 
-GORM provides few interfaces that allow users to define well-supported customized data types for GORM, takes [json](https://github.com/go-gorm/datatypes/blob/master/json.go) as an example
+GORM fournit quelques interfaces qui permettent aux utilisateurs de définir des types de données personnalisés bien pris en charge pour GORM, prend [json](https://github.com/go-gorm/datatypes/blob/master/json.go) comme exemple
 
-## Implements Customized Data Type
+## Implémenter de type de données personnalisées
 
 ### Scanner / Valuer
 
