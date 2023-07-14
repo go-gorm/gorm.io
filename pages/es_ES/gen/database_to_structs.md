@@ -247,3 +247,49 @@ Specify datatype mapping between field type and db column type.
 
     g.WithDataTypeMap(dataMap)
 ```
+## Generate From Sql
+
+Gen supports generate structs from sql following GORM conventions, it can be used like:
+
+```go
+package main
+
+import (
+    "gorm.io/gorm"
+    "gorm.io/rawsql"
+)
+
+func main() {
+  g := gen.NewGenerator(gen.Config{
+    OutPath: "../query",
+    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
+  })
+  // https://github.com/go-gorm/rawsql/blob/master/tests/gen_test.go
+  gormdb, _ := gorm.Open(rawsql.New(rawsql.Config{
+        //SQL:      rawsql,                      //create table sql
+        FilePath: []string{
+            //"./sql/user.sql", // create table sql file
+            "./test_sql", // create table sql file directory
+        },
+    }))
+  g.UseDB(gormdb) // reuse your gorm db
+
+  // Generate basic type-safe DAO API for struct `model.User` following conventions
+
+  g.ApplyBasic(
+  // Generate struct `User` based on table `users`
+  g.GenerateModel("users"),
+
+  // Generate struct `Employee` based on table `users`
+ g.GenerateModelAs("users", "Employee"),
+
+  )
+g.ApplyBasic(
+// Generate structs from all tables of current database
+g.GenerateAllTable()...,
+)
+  // Generate the code
+  g.Execute()
+}
+
+```
