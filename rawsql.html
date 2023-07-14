@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="it_IT">
+<html lang="en">
 <head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
   <title>GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://gorm.io/it_IT/datatypes.html">
+  <link rel="canonical" href="https://gorm.io/rawsql.html">
   <!-- Alternative links -->
   
     
-      <link rel="alternative" hreflang="en" href="https://gorm.io/datatypes.html">
+      <link rel="alternative" hreflang="en" href="https://gorm.io/rawsql.html">
     
-      <link rel="alternative" hreflang="zh_CN" href="https://gorm.io/zh_CN/datatypes.html">
+      <link rel="alternative" hreflang="zh_CN" href="https://gorm.io/zh_CN/rawsql.html">
     
-      <link rel="alternative" hreflang="de_DE" href="https://gorm.io/de_DE/datatypes.html">
+      <link rel="alternative" hreflang="de_DE" href="https://gorm.io/de_DE/rawsql.html">
     
-      <link rel="alternative" hreflang="id_ID" href="https://gorm.io/id_ID/datatypes.html">
+      <link rel="alternative" hreflang="id_ID" href="https://gorm.io/id_ID/rawsql.html">
     
-      <link rel="alternative" hreflang="ja_JP" href="https://gorm.io/ja_JP/datatypes.html">
+      <link rel="alternative" hreflang="ja_JP" href="https://gorm.io/ja_JP/rawsql.html">
     
-      <link rel="alternative" hreflang="ru_RU" href="https://gorm.io/ru_RU/datatypes.html">
+      <link rel="alternative" hreflang="ru_RU" href="https://gorm.io/ru_RU/rawsql.html">
     
-      <link rel="alternative" hreflang="ko_KR" href="https://gorm.io/ko_KR/datatypes.html">
+      <link rel="alternative" hreflang="ko_KR" href="https://gorm.io/ko_KR/rawsql.html">
     
-      <link rel="alternative" hreflang="hi_IN" href="https://gorm.io/hi_IN/datatypes.html">
+      <link rel="alternative" hreflang="hi_IN" href="https://gorm.io/hi_IN/rawsql.html">
     
-      <link rel="alternative" hreflang="fr_FR" href="https://gorm.io/fr_FR/datatypes.html">
+      <link rel="alternative" hreflang="fr_FR" href="https://gorm.io/fr_FR/rawsql.html">
     
-      <link rel="alternative" hreflang="it_IT" href="https://gorm.io/it_IT/datatypes.html">
+      <link rel="alternative" hreflang="it_IT" href="https://gorm.io/it_IT/rawsql.html">
     
-      <link rel="alternative" hreflang="es_ES" href="https://gorm.io/es_ES/datatypes.html">
+      <link rel="alternative" hreflang="es_ES" href="https://gorm.io/es_ES/rawsql.html">
     
   
   <!-- Icon -->
@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="Gorm            https:&#x2F;&#x2F;gorm.io     https:&#x2F;&#x2F;github.com&#x2F;go-gorm&#x2F;datatypes">
+  <meta name="description" content="Gorm            https:&#x2F;&#x2F;gorm.io     https:&#x2F;&#x2F;github.com&#x2F;go-gorm&#x2F;rawsql">
 <meta property="og:type" content="website">
 <meta property="og:title" content="GORM">
-<meta property="og:url" content="https://gorm.io/it_IT/datatypes.html">
+<meta property="og:url" content="https://gorm.io/rawsql.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="Gorm            https:&#x2F;&#x2F;gorm.io     https:&#x2F;&#x2F;github.com&#x2F;go-gorm&#x2F;datatypes">
-<meta property="og:locale" content="it_IT">
-<meta property="article:published_time" content="2023-07-14T06:32:12.496Z">
-<meta property="article:modified_time" content="2023-07-14T06:32:12.496Z">
+<meta property="og:description" content="Gorm            https:&#x2F;&#x2F;gorm.io     https:&#x2F;&#x2F;github.com&#x2F;go-gorm&#x2F;rawsql">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-07-14T06:32:12.508Z">
+<meta property="article:modified_time" content="2023-07-14T06:32:12.508Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -77,12 +77,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <header id="header" class="wrapper">
   <div id="header-inner" class="inner">
     <h1 id="logo-wrap">
-      <a href="/it_IT/" id="logo">
+      <a href="/" id="logo">
         <img src="/gorm.svg" alt="GORM">
       </a>
     </h1>
     <nav id="main-nav">
-      <a href="/it_IT/docs/" class="main-nav-link"><i class="fa fa-book"></i>Docs</a><a href="/it_IT/gen/" class="main-nav-link"><i class="fa fa-tools"></i>Gen</a><a href="/it_IT/community.html" class="main-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/it_IT/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+      <a href="/docs/" class="main-nav-link"><i class="fa fa-book"></i>Docs</a><a href="/gen/" class="main-nav-link"><i class="fa fa-tools"></i>Gen</a><a href="/community.html" class="main-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
       <div id="search-input-wrap">
         <div id="search-input-icon">
           <i class="fa fa-search"></i>
@@ -91,10 +91,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </div>
     </nav>
     <div id="lang-select-wrap">
-      <label id="lang-select-label"><i class="fa fa-globe"></i><span>Italiano</span></label>
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>English</span></label>
       <select id="lang-select" data-canonical="">
         
-          <option value="en">English</option>
+          <option value="en" selected>English</option>
         
           <option value="zh_CN">简体中文</option>
         
@@ -112,7 +112,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         
           <option value="fr_FR">French</option>
         
-          <option value="it_IT" selected>Italiano</option>
+          <option value="it_IT">Italiano</option>
         
           <option value="es_ES">Español</option>
         
@@ -136,7 +136,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <header class="article-header">
                 <h1 class="article-title" itemprop="name"></h1>
                 
-                <a target="_blank" rel="noopener" href="https://translate.gorm.io/project/go-gorm/it" class="article-edit-link" title="Improve this page"><i class="fa fa-pencil"></i></a>
+                <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm.io/edit/master/pages/rawsql.html" class="article-edit-link" title="Improve this page"><i class="fa fa-pencil"></i></a>
                 
               </header>
               <div class="article-content" itemprop="articleBody">
@@ -145,14 +145,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="go-import" content="gorm.io/datatypes git https://github.com/go-gorm/datatypes">
-    <meta name="go-source" content="gorm.io/datatypes https://github.com/go-gorm/datatypes https://github.com/go-gorm/datatypes/tree/master{/dir} https://github.com/go-gorm/datatypes/blob/master{/dir}/{file}#L{line}">
+    <meta name="go-import" content="gorm.io/rawsql git https://github.com/go-gorm/rawsql">
+    <meta name="go-source" content="gorm.io/rawsql https://github.com/go-gorm/rawsql https://github.com/go-gorm/rawsql/tree/master{/dir} https://github.com/go-gorm/rawsql/blob/master{/dir}/{file}#L{line}">
     <title>Gorm</title>
   </head>
 
   <body>
-    <a href="https://gorm.io">https://gorm.io</a><br>
-    <a href="https://github.com/go-gorm/datatypes" target="_blank">https://github.com/go-gorm/datatypes</a>
+    <a href="https://gorm.io/gen/index.html">https://gorm.io</a><br>
+    <a href="https://github.com/go-gorm/rawsql" target="_blank">https://github.com/go-gorm/rawsql</a>
   </body>
 </html>
 
@@ -161,7 +161,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2023-07-14T06:32:12.496Z" itemprop="dateModified">Last updated: 2023-07-14</time>
+                <time class="article-footer-updated" datetime="2023-07-14T06:32:12.508Z" itemprop="dateModified">Last updated: 2023-07-14</time>
 
               </footer>
 
@@ -245,9 +245,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <!-- <script> -->
 <!-- var disqus_config = function () { -->
-<!-- this.page.url = 'https://gorm.io/it_IT/datatypes.html'; -->
-<!-- this.page.identifier = 'https://gorm.io/it_IT/datatypes.html'; -->
-<!-- this.language = 'it'; -->
+<!-- this.page.url = 'https://gorm.io/rawsql.html'; -->
+<!-- this.page.identifier = 'https://gorm.io/rawsql.html'; -->
+<!-- this.language = 'en'; -->
 <!-- }; -->
 
 <!-- (function() { // DON'T EDIT BELOW THIS LINE -->
@@ -268,7 +268,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               
-                <a href="https://translate.gorm.io/project/go-gorm/it" target="_blank" id="article-improve">
+                <a href="https://github.com/go-gorm/gorm.io/edit/master/pages/rawsql.html" target="_blank" id="article-improve">
                   Improve this page
                 </a>
               
@@ -318,17 +318,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <li class="mobile-nav-item">
         <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>Home</a>
       </li>
-      <a href="/it_IT/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>Docs</a><a href="/it_IT/gen/" class="mobile-nav-link"><i class="fa fa-tools"></i>Gen</a><a href="/it_IT/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/it_IT/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+      <a href="/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>Docs</a><a href="/gen/" class="mobile-nav-link"><i class="fa fa-tools"></i>Gen</a><a href="/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
     </ul>
     
       
     
   </div>
   <div id="mobile-lang-select-wrap">
-    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>Italiano</span></span>
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>English</span></span>
     <select id="mobile-lang-select" data-canonical="">
       
-        <option value="en">English</option>
+        <option value="en" selected>English</option>
       
         <option value="zh_CN">简体中文</option>
       
@@ -346,7 +346,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       
         <option value="fr_FR">French</option>
       
-        <option value="it_IT" selected>Italiano</option>
+        <option value="it_IT">Italiano</option>
       
         <option value="es_ES">Español</option>
       
@@ -373,6 +373,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- endbuild -->
 
 <!-- Algolia -->
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script type="text/javascript">
+document.getElementById('search-input-wrap').classList.add('on');
+docsearch({
+ apiKey: '442683d88a109de42c6d01bb0c7c4cec',
+ indexName: 'gorm',
+ inputSelector: '#search-input'
+});
+</script>
 
 
 
