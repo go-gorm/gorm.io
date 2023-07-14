@@ -1,9 +1,9 @@
 ---
-title: Constraints
+title: Contraintes
 layout: page
 ---
 
-GORM allows create database constraints with tag, constraints will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORM permet de créer de base de données avec des contraintes, les contraintes sont créées quand  [AutoMigrate ou CreateTable avec GORM](migration.html)
 
 ## CHECK Constraint
 
