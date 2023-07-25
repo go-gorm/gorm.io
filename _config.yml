@@ -28,7 +28,7 @@ github: go-gorm/gorm
 disqus_shortname: gormv2
 algolia:
   en:
-    api_key: 9c8ecfc6d000185094db849f7193a7be
+    api_key: 442683d88a109de42c6d01bb0c7c4cec
     index_name: gorm
 google_tag_manager: GTM-WSNPD75
 
