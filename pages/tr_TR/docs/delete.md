@@ -5,7 +5,7 @@ layout: sayfa
 
 ## Bir Kaydı Sil
 
-When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
+Bir kaydı silerken, silinen değerin birincil anahtara sahip olması gerekir, aksi takdirde [toplu silme](#batch_delete) işlemini tetiklenir. Örneğin:
 
 ```go
 // Email's ID is `10`
@@ -19,7 +19,7 @@ db.Where("name = ?", "jinzhu").Delete(&email)
 
 ## Birincil anahtar ile sil
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out [Query Inline Conditions](query.html#inline_conditions) for details
+GORM, satır içi koşul ile birincil anahtar(lar) kullanarak nesneleri silmeye izin verir, sayılarla çalışır, ayrıntılar için [Satır içi koşullar](query.html#inline_conditions) bölümüne göz atın
 
 ```go
 db.Delete(&User{}, 10)
@@ -32,14 +32,14 @@ db.Delete(&users, []int{1,2,3})
 // DELETE FROM users WHERE id IN (1,2,3);
 ```
 
-## Delete Hooks
+## Hook ile Silme
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+GORM,`BeforeDelete`, `AfterDelete` hooklarına izin verir, bu yöntemler bir kayıt silinirken çağrılacaktır, ayrıntılar için [Hooks](hooks.html) sayfasına bakınız
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
     if u.Role == "admin" {
-        return errors.New("admin user not allowed to delete")
+        return errors.New("admin kullanıcısının silme yetkisi yok")
     }
     return
 }
