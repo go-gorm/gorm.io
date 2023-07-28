@@ -8,11 +8,11 @@ layout: sayfa
 Bir kaydı silerken, silinen değerin birincil anahtara sahip olması gerekir, aksi takdirde [toplu silme](#batch_delete) işlemini tetiklenir. Örneğin:
 
 ```go
-// Email's ID is `10`
+// Email Id değerimizin '10' olduğunu varsayalım
 db.Delete(&email)
 // DELETE from emails where id = 10;
 
-// Delete with additional conditions
+// Koşul belirterek silme işlemi
 db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 ```
@@ -45,9 +45,9 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 }
 ```
 
-## <span id="batch_delete">Batch Delete</span>
+## <span id="batch_delete">Toplu Silme</span>
 
-The specified value has no primary value, GORM will perform a batch delete, it will delete all matched records
+Belirtilen değerin birincil değeri yoksa, GORM bir toplu silme işlemi gerçekleştirir, koşulla eşleşen tüm kayıtları siler
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
@@ -57,7 +57,7 @@ db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-To efficiently delete large number of records, pass a slice with primary keys to the `Delete` method.
+Çok sayıda kaydı verimli bir şekilde silmek için, `Delete` yöntemine birincil anahtarları içeren bir slice ekleyin.
 
 ```go
 var users = []User{{ID: 1}, {ID: 2}, {ID: 3}}
@@ -68,16 +68,16 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 // DELETE FROM users WHERE name LIKE "%jinzhu%" AND id IN (1,2,3); 
 ```
 
-### Block Global Delete
+### Global Silme İşlemini Engelleme
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
+Herhangi bir koşul olmadan bir toplu silme işlemi gerçekleştirirseniz, GORM bunu çalıştırmaz ve `ErrMissingWhereClause` hatası döndürür
 
-You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+Eğer kullanmak istiyorsanız, bazı koşulları eklemelisiniz, Saf (Raw) SQL sorgusu kullanmalısınız veya `AllowGlobalUpdate` modunu aktif etmeniz gerekiyor. Örneğin:
 
 ```go
-db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
+db.Delete(&User{}).Error // gorm.ErrMissingWhereClause hatası döndürür.
 
-db.Delete(&[]User{{Name: "jinzhu1"}, {Name: "jinzhu2"}}).Error // gorm.ErrMissingWhereClause
+db.Delete(&[]User{{Name: "jinzhu1"}, {Name: "jinzhu2"}}).Error // gorm.ErrMissingWhereClause hatası döndürür.
 
 db.Where("1 = 1").Delete(&User{})
 // DELETE FROM `users` WHERE 1=1
@@ -89,24 +89,24 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-### Returning Data From Deleted Rows
+### Silinen Satırlardan Veri Döndürme
 
-Return deleted data, only works for database support Returning, for example:
+Silinen verileri döndür, yalnızca destekleyen veritabanları için döndürür, Örneğin:
 
 ```go
-// return all columns
+// Bütün sütunları döndürür
 var users []User
 DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// return specified columns
+// Belirtilen sütunları döndürür
 DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
 ```
 
-## Soft Delete
+## Geçici Silme
 
 If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
 
