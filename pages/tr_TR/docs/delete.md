@@ -108,25 +108,25 @@ DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "sal
 
 ## Geçici Silme
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+Modeliniz bir `gorm.DeletedAt` alanı içeriyorsa (`gorm.Model` içinde yer alır), otomatik olarak geçici silme özelliğine sahip olur!
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+`Delete` çağrıldığında, kayıt veritabanından kaldırılmaz, ancak GORM `DeletedAt`'ın değerine silinme tarihi atanır. Veriler sorgularınızda gözükmezler.
 
 ```go
 // user's ID is `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// Toplu Silme
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when querying
+// Sorgulama sırasında geçici silinen kayıtlar yok sayılır
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+`gorm.Model`'i dahil etmek istemiyorsanız, geçici silmeyi modelinize ekleyebilirsiniz. Örneğin:
 
 ```go
 type User struct {
@@ -136,18 +136,18 @@ type User struct {
 }
 ```
 
-### Find soft deleted records
+### Geçici silinmiş kayıtların bulunması
 
-You can find soft deleted records with `Unscoped`
+Geçici silinen kayıtları `Unscoped` ile bulabilirsiniz
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Delete permanently
+### Kalıcı Olarak Sil
 
-You can delete matched records permanently with `Unscoped`
+`Unscoped` ile eşleşen kayıtları kalıcı olarak silebilirsiniz
 
 ```go
 db.Unscoped().Delete(&order)
@@ -156,10 +156,10 @@ db.Unscoped().Delete(&order)
 
 ### Delete Flag
 
-By default, `gorm.Model` uses `*time.Time` as the value for the `DeletedAt` field, and it provides other data formats support with plugin `gorm.io/plugin/soft_delete`
+Varsayılan olarak, `gorm.Model` `DeletedAt` alanı için değer olarak `*time.Time` kullanır.`gorm.io/plugin/soft_delete` eklentisi ise diğer veri türleri içinde destek sağlar
 
 {% note warn %}
-**INFO** when creating unique composite index for the DeletedAt field, you must use other data format like unix second/flag with plugin `gorm.io/plugin/soft_delete`'s help, e.g:
+**INFO** DeletedAt alanı için benzersiz bileşik dizin oluştururken, `gorm.io/plugin/soft_delete` eklentisinin yardımıyla unix second/flag gibi diğer veri türleri kullanmalısınız, örn:
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -172,9 +172,9 @@ type User struct {
 ```
 {% endnote %}
 
-#### Unix Second
+#### Unix Zamanı (Epoch veya Posix)
 
-Use unix second as delete flag
+Delete Flag'de unix zamanı kullanma
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -192,7 +192,7 @@ SELECT * FROM users WHERE deleted_at = 0;
 UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
-You can also specify to use `milli` or `nano` seconds as the value, for example:
+Değer olarak örneğin `milli` veya `nano` saniye kullanılmasını da belirtebilirsiniz:
 
 ```go
 type User struct {
@@ -206,10 +206,10 @@ type User struct {
 SELECT * FROM users WHERE deleted_at = 0;
 
 // Delete
-UPDATE users SET deleted_at = /* current unix milli second or nano second */ WHERE ID = 1;
+UPDATE users SET deleted_at = /* geçerli zamana ait unix mili saniyesi veya nano saniyesi */ WHERE ID = 1;
 ```
 
-#### Use `1` / `0` AS Delete Flag
+#### Delete Flag olarak `1` / `0` kullanılması
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -227,9 +227,9 @@ SELECT * FROM users WHERE is_del = 0;
 UPDATE users SET is_del = 1 WHERE ID = 1;
 ```
 
-#### Mixed Mode
+#### Karışık Mod
 
-Mixed mode can use `0`, `1` or unix seconds to mark data as deleted or not, and save the deleted time at the same time.
+Karma mod, verileri silinmiş veya silinmemiş olarak işaretlemek ve aynı zamanda silinen zamanı kaydetmek için `0`, `1` veya unix saniye kullanabilir.
 
 ```go
 type User struct {
