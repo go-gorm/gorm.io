@@ -22,26 +22,26 @@ users := []*User{
     User{Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
-result := db.Create(users) // pass a slice to insert multiple row
+result := db.Create(users) // 传递切片以插入多行数据
 
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+result.Error        // 返回 error
+result.RowsAffected // 返回插入记录的条数
 ```
 
 {% note warn %}
-**NOTE** You cannot pass a struct to 'create', so you should pass a pointer to the data.
+**NOTE** 你无法向 'create' 传递结构体，所以你应该传入数据的指针.
 {% endnote %}
 
 ## 用指定的字段创建记录
 
-Create a record and assign a value to the fields specified.
+创建记录并为指定字段赋值。
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and ignore the values for fields passed to omit.
+创建记录并忽略传递给 'Omit' 的字段值
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
