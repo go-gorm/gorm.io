@@ -186,7 +186,7 @@ codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Lote de dados
+### Lote de Dados
 
 Modo de associação suporta dados em lote, por exemplo:
 
@@ -208,20 +208,20 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_association_record">Delete Association Record</span>
+## <span id="delete_association_record">Apagar Registro de Associação</span>
 
-By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+Por padrão, `Replace`/`Delete`/`Clear` em `gorm.Association` apenas deletam a referência, ou seja, definem a chave estrangeira das associações antigas como nula.
 
-You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+Você pode excluir esses objetos com `Unscoped` (isso não tem nada a ver com `ManyToMany`).
 
-How to delete is decided by `gorm.DB`.
+Como excluir é decidido por `gorm.DB`.
 
 ```go
-// Soft delete
+// Exclusão reversível
 // UPDATE `languages` SET `deleted_at`= ...
 db.Model(&user).Association("Languages").Unscoped().Clear()
 
-// Delete permanently
+// Apagar permanentemente
 // DELETE FROM `languages` WHERE ...
 db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
 ```
