@@ -517,7 +517,7 @@ u.WithContext(ctx).Assign(field.Attrs(&model.User{Name: "gen_assign"}).Select(da
 ```go
 
 // Found user with `name` = `gen`
-result := u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate(&user)
+result := u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate()
 // user -> User{ID: 111, Name: "gen", "Age": 18}
 // result.RowsAffected // => 0
 ```
