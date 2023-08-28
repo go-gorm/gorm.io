@@ -518,7 +518,7 @@ Get first matched record or create a new one with given conditions (only works w
 ```go
 
 // Found user with `name` = `gen`
-result := u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate(&user)
+result := u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate()
 // user -> User{ID: 111, Name: "gen", "Age": 18}
 // result.RowsAffected // => 0
 ```
