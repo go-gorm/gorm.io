@@ -49,28 +49,26 @@ type Model struct {
 
 ### <span id="field_permission">필드 수준 권한</span>
 
-Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
+내보낸 필드는 GORM으로 CRUD를 수행할 때 모든 권한을 가지며, GORM에서는 태그를 사용하여 필드 수준 권한을 읽기 전용, 쓰기 전용, 만들기 전용, 업데이트 전용 또는 무시로 설정할 수 있습니다.
 
 {% note warn %}
-**NOTE** ignored fields won't be created when using GORM Migrator to create table
+**참고** GORM 마이그레이터를 사용하여 테이블을 만들 때 무시된 필드는 생성되지 않습니다.
 {% endnote %}
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured)
-  Name string `gorm:"->;<-:create"` // allow read and create
-  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`            // ignore this field when write and read with struct
-  Name string `gorm:"-:all"`        // ignore this field when write, read and migrate with struct
-  Name string `gorm:"-:migration"`  // ignore this field when migrate with struct
+  Name string `gorm:"<-:create"` // 읽기/생성 허용
+  Name string `gorm:"<-:update"` // 읽기/수정 허용
+  Name string `gorm:"<-"`        // 읽기/쓰기 허용 (생성 및 수정)
+  Name string `gorm:"<-:false"`  // 읽기전용, 쓰기 불가능
+  Name string `gorm:"->"`        // 읽기허용 (설정되지 않은경우 쓰기 불가능)
+  Name string `gorm:"->;<-:create"` //읽기/생성 허용
+  Name string `gorm:"->:false;<-:create"` // 생성만 가능 (읽기 불가능)
+  Name string `gorm:"-"`  // gorm 에서 이 필드 무시
 }
 ```
 
-### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
+### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking 생성/업데이트 시 시간/유닉스시간(밀리/나노) 기록</span>
 
 GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will set the  [current time](gorm_config.html#now_func) when creating/updating if the fields are defined
 
