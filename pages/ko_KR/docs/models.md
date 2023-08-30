@@ -1,11 +1,11 @@
 ---
-title: Declaring Models
+title: 모델 선언
 layout: page
 ---
 
-## Declaring Models
+## 모델 선언
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+모델은 기본 Go 유형, 포인터/별칭 또는 [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner)및 [Valuer](https://pkg.go.dev/database/sql/driver#Valuer)인터페이스를 구현하는 사용자 정의 유형이 있는 일반 구조체입니다.
 
 예를 들면 다음과 같습니다:
 
@@ -23,11 +23,11 @@ type User struct {
 }
 ```
 
-## Conventions
+## 규칙
 
-GORM prefers convention over configuration. By default, GORM uses `ID` as primary key, pluralizes struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+GORM은 구성보다 규칙을 선호합니다. 기본적으로 GORM은 `ID`를 기본 키로 사용하고, 복수형 `snake_cases`를 구조체 이름을 테이블 이름으로, `snake_case`를 열 이름으로, 생성/업데이트 시간을 추적하기 위해 `CreatedAt`, `UpdatedAt`을 사용합니다.
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code. If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+GORM에서 채택한 규칙을 따르는 경우 구성/코드를 거의 작성하지 않아도 됩니다. 규칙이 요구 사항과 일치하지 않는 경우 [GORM을 사용하여 규칙을 구성할 수 있습니다.](conventions.html)
 
 ## gorm.Model
 
@@ -43,11 +43,11 @@ type Model struct {
 }
 ```
 
-해당 필드를 포함하도록 구조체를 만들 할 수 있습니다. [Embedded Struct를 참조하세요.](#embedded_struct)
+해당 필드를 포함하도록 구조체를 만들 할 수 있습니다. [Embedded Struct](#embedded_struct)를 참조하세요.
 
-## Advanced
+## 고급
 
-### <span id="field_permission">Field-Level Permission</span>
+### <span id="field_permission">필드 수준 권한</span>
 
 Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
 
