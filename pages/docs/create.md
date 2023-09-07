@@ -17,7 +17,7 @@ result.RowsAffected // returns inserted records count
 
 We can also create multiple records with `Create()`:
 ```go
-users := []*User{
+users := []User{
 	User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
 	User{Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
