@@ -36,9 +36,9 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 err := db.First(&user, 100).Error
 errors.Is(err, gorm.ErrRecordNotFound)
 ```
-## Dialect Translated Errors
+## 翻译方言错误
 
-If you would like to be able to use the dialect translated errors(like ErrDuplicatedKey), then enable the TranslateError flag when opening a db connection.
+如果您希望将数据库的方言错误转换为gorm的错误类型（例如将MySQL中的“Duplicate entry”转换为ErrDuplicatedKey），则在打开数据库连接时启用TranslateError标志。
 
 ```go
 db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: true})
