@@ -9,27 +9,27 @@ menu:
   contribute: <i class="fa fa-rocket"></i>Contribute
   search: Search documents...
 index:
-  get_started: Get started
+  get_started: Commencer
 page:
-  contents: Contents
-  back_to_top: Back to Top
-  improve: Improve this page
-  prev: Prev
-  next: Next
-  last_updated: "Last updated: %s"
+  contents: Contenus
+  back_to_top: Retour en haut de la page
+  improve: Améliorer ce document
+  prev: Précédent
+  next: Suivant
+  last_updated: "Dernière mise à jour : %s"
 sidebar:
   docs:
-    getting_started: Getting Started
-    overview: Overview
+    getting_started: Premiers pas
+    overview: Aperçu
     declaring_models: Declaring Models
     conventions: Conventions
     connecting_to_the_database: Connecting to Database
     crud_interface: CRUD Interface
-    create: Create
-    query: Query
+    create: Créer
+    query: Requête
     advanced_query: Advanced Query
-    update: Update
-    delete: Delete
+    update: Mettre à jour
+    delete: Supprimer
     raw_sql_and_builder: Raw SQL & SQL Builder
     batch: Batch Processing
     associations: Associations
@@ -53,7 +53,7 @@ sidebar:
     data_types: Customize Data Types
     scopes: Scopes
     settings: Settings
-    advanced_topics: Advanced Topics
+    advanced_topics: Sujets avancés
     dbresolver: Database Resolver
     serializer: Serializer
     sharding: Sharding
@@ -68,13 +68,13 @@ sidebar:
     write_driver: Write Driver
     change_log: ChangeLog
     community: Community
-    contribute: Contribute
-    translate: Translate current site
+    contribute: Contribuer
+    translate: Traduire dans l'onglet actuel
   gen:
-    getting_started: Getting Started
-    overview: Overview
+    getting_started: Premiers pas
+    overview: Aperçu
     dao: DAO
-    create: Create
+    create: Créer
     query: Query
     update: Update
     delete: Delete
@@ -83,7 +83,7 @@ sidebar:
     annotation: Annotation
     database_to_structs: Database To Structs
     gentool: Gen Tool
-    tutorials: Tutorials
-    gorm_clause: GORM Clause
+    tutorials: Tutoriels
+    gorm_clause: Clause GORM
     transaction: Transaction
-    plugins: GORM Plugins
+    plugins: Plugins GORM

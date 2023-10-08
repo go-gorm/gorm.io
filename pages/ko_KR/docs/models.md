@@ -1,11 +1,11 @@
 ---
-title: Declaring Models
+title: 모델 선언
 layout: page
 ---
 
-## Declaring Models
+## 모델 선언
 
-Models are normal structs with basic Go types, pointers/alias of them or custom types implementing [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces
+모델은 기본 Go 유형, 포인터/별칭 또는 [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner)및 [Valuer](https://pkg.go.dev/database/sql/driver#Valuer)인터페이스를 구현하는 사용자 정의 유형이 있는 일반 구조체입니다.
 
 예를 들면 다음과 같습니다:
 
@@ -23,11 +23,11 @@ type User struct {
 }
 ```
 
-## Conventions
+## 규칙
 
-GORM prefers convention over configuration. By default, GORM uses `ID` as primary key, pluralizes struct name to `snake_cases` as table name, `snake_case` as column name, and uses `CreatedAt`, `UpdatedAt` to track creating/updating time
+GORM은 구성보다 규칙을 선호합니다. 기본적으로 GORM은 `ID`를 기본 키로 사용하고, 복수형 `snake_cases`를 구조체 이름을 테이블 이름으로, `snake_case`를 열 이름으로, 생성/업데이트 시간을 추적하기 위해 `CreatedAt`, `UpdatedAt`을 사용합니다.
 
-If you follow the conventions adopted by GORM, you'll need to write very little configuration/code. If convention doesn't match your requirements, [GORM allows you to configure them](conventions.html)
+GORM에서 채택한 규칙을 따르는 경우 구성/코드를 거의 작성하지 않아도 됩니다. 규칙이 요구 사항과 일치하지 않는 경우 [GORM을 사용하여 규칙을 구성할 수 있습니다.](conventions.html)
 
 ## gorm.Model
 
@@ -43,34 +43,32 @@ type Model struct {
 }
 ```
 
-해당 필드를 포함하도록 구조체를 만들 할 수 있습니다. [Embedded Struct를 참조하세요.](#embedded_struct)
+해당 필드를 포함하도록 구조체를 만들 할 수 있습니다. [Embedded Struct](#embedded_struct)를 참조하세요.
 
-## Advanced
+## 고급
 
-### <span id="field_permission">Field-Level Permission</span>
+### <span id="field_permission">필드 수준 권한</span>
 
-Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
+내보낸 필드는 GORM으로 CRUD를 수행할 때 모든 권한을 가지며, GORM에서는 태그를 사용하여 필드 수준 권한을 읽기 전용, 쓰기 전용, 만들기 전용, 업데이트 전용 또는 무시로 설정할 수 있습니다.
 
 {% note warn %}
-**NOTE** ignored fields won't be created when using GORM Migrator to create table
+**참고** GORM 마이그레이터를 사용하여 테이블을 만들 때 무시된 필드는 생성되지 않습니다.
 {% endnote %}
 
 ```go
 type User struct {
-  Name string `gorm:"<-:create"` // allow read and create
-  Name string `gorm:"<-:update"` // allow read and update
-  Name string `gorm:"<-"`        // allow read and write (create and update)
-  Name string `gorm:"<-:false"`  // allow read, disable write permission
-  Name string `gorm:"->"`        // readonly (disable write permission unless it configured)
-  Name string `gorm:"->;<-:create"` // allow read and create
-  Name string `gorm:"->:false;<-:create"` // createonly (disabled read from db)
-  Name string `gorm:"-"`            // ignore this field when write and read with struct
-  Name string `gorm:"-:all"`        // ignore this field when write, read and migrate with struct
-  Name string `gorm:"-:migration"`  // ignore this field when migrate with struct
+  Name string `gorm:"<-:create"` // 읽기/생성 허용
+  Name string `gorm:"<-:update"` // 읽기/수정 허용
+  Name string `gorm:"<-"`        // 읽기/쓰기 허용 (생성 및 수정)
+  Name string `gorm:"<-:false"`  // 읽기전용, 쓰기 불가능
+  Name string `gorm:"->"`        // 읽기허용 (설정되지 않은경우 쓰기 불가능)
+  Name string `gorm:"->;<-:create"` //읽기/생성 허용
+  Name string `gorm:"->:false;<-:create"` // 생성만 가능 (읽기 불가능)
+  Name string `gorm:"-"`  // gorm 에서 이 필드 무시
 }
 ```
 
-### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking</span>
+### <name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking 생성/업데이트 시 시간/유닉스시간(밀리/나노) 기록</span>
 
 GORM use `CreatedAt`, `UpdatedAt` to track creating/updating time by convention, and GORM will set the  [current time](gorm_config.html#now_func) when creating/updating if the fields are defined
 

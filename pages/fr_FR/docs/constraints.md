@@ -1,13 +1,13 @@
 ---
-title: Constraints
+title: Contraintes
 layout: page
 ---
 
-GORM allows create database constraints with tag, constraints will be created when [AutoMigrate or CreateTable with GORM](migration.html)
+GORM permet de créer de base de données avec des contraintes, les contraintes sont créées quand  [AutoMigrate ou CreateTable avec GORM](migration.html)
 
-## CHECK Constraint
+## Contrainte CHECK
 
-Create CHECK constraints with tag `check`
+Créer les contraintes CHECK avec le tag `check`
 
 ```go
 type UserIndex struct {
@@ -17,13 +17,13 @@ type UserIndex struct {
 }
 ```
 
-## Index Constraint
+## Contrainte Index
 
 Checkout [Database Indexes](indexes.html)
 
-## Foreign Key Constraint
+## Contrainte clé étrangère
 
-GORM will creates foreign keys constraints for associations, you can disable this feature during initialization:
+GORM crée des contraintes sur la clé étrangère pour les associations, vous pouvez désactiver cette fonctionnalité lors d'initialisation :
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
@@ -31,7 +31,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-GORM allows you setup FOREIGN KEY constraints's `OnDelete`, `OnUpdate` option with tag `constraint`, for example:
+GORM vous permet de configurer les contraintes sur la clé étrangère avec `OnDelete`, `OnUpdate` avec le tag en option wit`constraint`, par exemple:
 
 ```go
 type User struct {

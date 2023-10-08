@@ -150,7 +150,7 @@ user2 := User{Name: "jinzhu", UpdatedAt: time.Now()}
 db.Create(&user2) // 创建记录时，user2 的 `UpdatedAt` 不会被修改
 
 user3 := User{Name: "jinzhu", UpdatedAt: time.Now()}
-db.Save(&user3) // 更新世，user3 的 `UpdatedAt` 会修改为当前时间
+db.Save(&user3) // 更新时，user3 的 `UpdatedAt` 会修改为当前时间
 ```
 
 你可以通过将 `autoUpdateTime` 标签置为 `false` 来禁用时间戳追踪，例如：

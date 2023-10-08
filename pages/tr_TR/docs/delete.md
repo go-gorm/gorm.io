@@ -5,21 +5,21 @@ layout: sayfa
 
 ## Bir Kaydı Sil
 
-When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
+Bir kaydı silerken, silinen değerin birincil anahtara sahip olması gerekir, aksi takdirde [toplu silme](#batch_delete) işlemini tetiklenir. Örneğin:
 
 ```go
-// Email's ID is `10`
+// Email Id değerimizin '10' olduğunu varsayalım
 db.Delete(&email)
 // DELETE from emails where id = 10;
 
-// Delete with additional conditions
+// Koşul belirterek silme işlemi
 db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
 ## Birincil anahtar ile sil
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out [Query Inline Conditions](query.html#inline_conditions) for details
+GORM, satır içi koşul ile birincil anahtar(lar) kullanarak nesneleri silmeye izin verir, sayılarla çalışır, ayrıntılar için [Satır içi koşullar](query.html#inline_conditions) bölümüne göz atın
 
 ```go
 db.Delete(&User{}, 10)
@@ -32,22 +32,22 @@ db.Delete(&users, []int{1,2,3})
 // DELETE FROM users WHERE id IN (1,2,3);
 ```
 
-## Delete Hooks
+## Hook ile Silme
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+GORM,`BeforeDelete`, `AfterDelete` hooklarına izin verir, bu yöntemler bir kayıt silinirken çağrılacaktır, ayrıntılar için [Hooks](hooks.html) sayfasına bakınız
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
     if u.Role == "admin" {
-        return errors.New("admin user not allowed to delete")
+        return errors.New("admin kullanıcısının silme yetkisi yok")
     }
     return
 }
 ```
 
-## <span id="batch_delete">Batch Delete</span>
+## <span id="batch_delete">Toplu Silme</span>
 
-The specified value has no primary value, GORM will perform a batch delete, it will delete all matched records
+Belirtilen değerin birincil değeri yoksa, GORM bir toplu silme işlemi gerçekleştirir, koşulla eşleşen tüm kayıtları siler
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
@@ -57,7 +57,7 @@ db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-To efficiently delete large number of records, pass a slice with primary keys to the `Delete` method.
+Çok sayıda kaydı verimli bir şekilde silmek için, `Delete` yöntemine birincil anahtarları içeren bir slice ekleyin.
 
 ```go
 var users = []User{{ID: 1}, {ID: 2}, {ID: 3}}
@@ -68,16 +68,16 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 // DELETE FROM users WHERE name LIKE "%jinzhu%" AND id IN (1,2,3); 
 ```
 
-### Block Global Delete
+### Global Silme İşlemini Engelleme
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
+Herhangi bir koşul olmadan bir toplu silme işlemi gerçekleştirirseniz, GORM bunu çalıştırmaz ve `ErrMissingWhereClause` hatası döndürür
 
-You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+Eğer kullanmak istiyorsanız, bazı koşulları eklemelisiniz, Saf (Raw) SQL sorgusu kullanmalısınız veya `AllowGlobalUpdate` modunu aktif etmeniz gerekiyor. Örneğin:
 
 ```go
-db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
+db.Delete(&User{}).Error // gorm.ErrMissingWhereClause hatası döndürür.
 
-db.Delete(&[]User{{Name: "jinzhu1"}, {Name: "jinzhu2"}}).Error // gorm.ErrMissingWhereClause
+db.Delete(&[]User{{Name: "jinzhu1"}, {Name: "jinzhu2"}}).Error // gorm.ErrMissingWhereClause hatası döndürür.
 
 db.Where("1 = 1").Delete(&User{})
 // DELETE FROM `users` WHERE 1=1
@@ -89,44 +89,44 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-### Returning Data From Deleted Rows
+### Silinen Satırlardan Veri Döndürme
 
-Return deleted data, only works for database support Returning, for example:
+Silinen verileri döndür, yalnızca destekleyen veritabanları için döndürür, Örneğin:
 
 ```go
-// return all columns
+// Bütün sütunları döndürür
 var users []User
 DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// return specified columns
+// Belirtilen sütunları döndürür
 DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
 ```
 
-## Soft Delete
+## Geçici Silme
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+Modeliniz bir `gorm.DeletedAt` alanı içeriyorsa (`gorm.Model` içinde yer alır), otomatik olarak geçici silme özelliğine sahip olur!
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+`Delete` çağrıldığında, kayıt veritabanından kaldırılmaz, ancak GORM `DeletedAt`'ın değerine silinme tarihi atanır. Veriler sorgularınızda gözükmezler.
 
 ```go
 // user's ID is `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// Toplu Silme
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when querying
+// Sorgulama sırasında geçici silinen kayıtlar yok sayılır
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+`gorm.Model`'i dahil etmek istemiyorsanız, geçici silmeyi modelinize ekleyebilirsiniz. Örneğin:
 
 ```go
 type User struct {
@@ -136,18 +136,18 @@ type User struct {
 }
 ```
 
-### Find soft deleted records
+### Geçici silinmiş kayıtların bulunması
 
-You can find soft deleted records with `Unscoped`
+Geçici silinen kayıtları `Unscoped` ile bulabilirsiniz
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Delete permanently
+### Kalıcı Olarak Sil
 
-You can delete matched records permanently with `Unscoped`
+`Unscoped` ile eşleşen kayıtları kalıcı olarak silebilirsiniz
 
 ```go
 db.Unscoped().Delete(&order)
@@ -156,10 +156,10 @@ db.Unscoped().Delete(&order)
 
 ### Delete Flag
 
-By default, `gorm.Model` uses `*time.Time` as the value for the `DeletedAt` field, and it provides other data formats support with plugin `gorm.io/plugin/soft_delete`
+Varsayılan olarak, `gorm.Model` `DeletedAt` alanı için değer olarak `*time.Time` kullanır.`gorm.io/plugin/soft_delete` eklentisi ise diğer veri türleri içinde destek sağlar
 
 {% note warn %}
-**INFO** when creating unique composite index for the DeletedAt field, you must use other data format like unix second/flag with plugin `gorm.io/plugin/soft_delete`'s help, e.g:
+**INFO** DeletedAt alanı için benzersiz bileşik dizin oluştururken, `gorm.io/plugin/soft_delete` eklentisinin yardımıyla unix second/flag gibi diğer veri türleri kullanmalısınız, örn:
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -172,9 +172,9 @@ type User struct {
 ```
 {% endnote %}
 
-#### Unix Second
+#### Unix Zamanı (Epoch veya Posix)
 
-Use unix second as delete flag
+Delete Flag'de unix zamanı kullanma
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -192,7 +192,7 @@ SELECT * FROM users WHERE deleted_at = 0;
 UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
-You can also specify to use `milli` or `nano` seconds as the value, for example:
+Değer olarak örneğin `milli` veya `nano` saniye kullanılmasını da belirtebilirsiniz:
 
 ```go
 type User struct {
@@ -206,10 +206,10 @@ type User struct {
 SELECT * FROM users WHERE deleted_at = 0;
 
 // Delete
-UPDATE users SET deleted_at = /* current unix milli second or nano second */ WHERE ID = 1;
+UPDATE users SET deleted_at = /* geçerli zamana ait unix mili saniyesi veya nano saniyesi */ WHERE ID = 1;
 ```
 
-#### Use `1` / `0` AS Delete Flag
+#### Delete Flag olarak `1` / `0` kullanılması
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -227,9 +227,9 @@ SELECT * FROM users WHERE is_del = 0;
 UPDATE users SET is_del = 1 WHERE ID = 1;
 ```
 
-#### Mixed Mode
+#### Karışık Mod
 
-Mixed mode can use `0`, `1` or unix seconds to mark data as deleted or not, and save the deleted time at the same time.
+Karma mod, verileri silinmiş veya silinmemiş olarak işaretlemek ve aynı zamanda silinen zamanı kaydetmek için `0`, `1` veya unix saniye kullanabilir.
 
 ```go
 type User struct {

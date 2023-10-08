@@ -1,5 +1,5 @@
 ---
-title: Create
+title: Créer
 layout: page
 ---
 
@@ -27,6 +27,10 @@ result := db.Create(users) // pass a slice to insert multiple row
 result.Error        // returns error
 result.RowsAffected // returns inserted records count
 ```
+
+{% note warn %}
+**NOTE** You cannot pass a struct to 'create', so you should pass a pointer to the data.
+{% endnote %}
 
 ## Create Record With Selected Fields
 

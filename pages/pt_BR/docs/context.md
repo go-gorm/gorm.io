@@ -3,9 +3,9 @@ title: Contexto
 layout: page
 ---
 
-GORM provides Context support, you can use it with method `WithContext`
+GORM fornece suporte a contextos, você pode usá-lo com o método `WithContext`
 
-## Single Session Mode
+## Modo de sessão única
 
 Single session mode usually used when you want to perform a single operation
 

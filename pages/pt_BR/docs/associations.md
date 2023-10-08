@@ -186,7 +186,7 @@ codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Lote de dados
+### Lote de Dados
 
 Modo de associação suporta dados em lote, por exemplo:
 
@@ -208,59 +208,59 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_association_record">Delete Association Record</span>
+## <span id="delete_association_record">Apagar Registro de Associação</span>
 
-By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+Por padrão, `Replace`/`Delete`/`Clear` em `gorm.Association` apenas deletam a referência, ou seja, definem a chave estrangeira das associações antigas como nula.
 
-You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+Você pode excluir esses objetos com `Unscoped` (isso não tem nada a ver com `ManyToMany`).
 
-How to delete is decided by `gorm.DB`.
+Como excluir é decidido por `gorm.DB`.
 
 ```go
-// Soft delete
+// Exclusão reversível
 // UPDATE `languages` SET `deleted_at`= ...
 db.Model(&user).Association("Languages").Unscoped().Clear()
 
-// Delete permanently
+// Apagar permanentemente
 // DELETE FROM `languages` WHERE ...
 db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">Excluir com Select</span>
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+É permitido excluir relações selecionadas de has one/has many/many2many usando `Select` ao deletar registros, por exemplo:
 
 ```go
-// delete user's account when deleting user
+// excluir a conta do usuário ao excluir o usuário
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// excluir as relações de Pedidos e CartoesDeCredito do usuário ao deletar o usuário
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// excluir as relações "has one/many/many2many" do usuário ao deletar o usuário
 db.Select(clause.Associations).Delete(&user)
 
-// delete each user's account when deleting users
+// excluir a conta de cada usuário ao deletar os usuários
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
+**Nota:** As associações serão excluídas somente se a chave primária dos registros a serem excluídos não for zero. O GORM usará essas chaves primárias como condições para excluir as associações selecionadas
 
 ```go
-// DOESN'T WORK
+// NÃO FUNCIONA
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// will delete all user with name `jinzhu`, but those user's account won't be deleted
+// irá excluir todos os usuários com o nome `jinzhu`, mas as contas desses usuários não serão excluídas
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
+// irá excluir o usuário com o nome `jinzhu` e id = `1`, e a conta do usuário `1` será excluída
 
 db.Select("Account").Delete(&User{ID: 1})
-// will delete the user with id = `1`, and user `1`'s account will be deleted
+// irá excluir o usuário com id = `1`, e a conta do usuário `1` será excluída
 ```
 {% endnote %}
 
-## <span id="tags">Association Tags</span>
+## <span id="tags">Associação de Tags</span>
 
 | Tag              | Descrição                                                                                                      |
 | ---------------- | -------------------------------------------------------------------------------------------------------------- |

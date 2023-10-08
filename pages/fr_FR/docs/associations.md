@@ -5,7 +5,7 @@ layout: page
 
 ## Auto Create/Update
 
-GORM will auto-save associations and its reference using [Upsert](create.html#upsert) when creating/updating a record.
+GORM enregistrera automatiquement les associations et ses références en utilisant [Upsert](create.html#upsert) lors de la création/mise à jour d'un enregistrement.
 
 ```go
 user := User{
@@ -34,7 +34,7 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-If you want to update associations's data, you should use the `FullSaveAssociations` mode:
+Si vous voulez mettre à jour les données des associations, vous devez utiliser le mode `FullSaveAssociations`:
 
 ```go
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
@@ -47,7 +47,7 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## Skip Auto Create/Update
 
-To skip the auto save when creating/updating, you can use `Select` or `Omit`, for example:
+Pour ignorer la sauvegarde automatique lors de la création/mise à jour, vous pouvez utiliser ` Select ` ou `Omit`, par exemple :
 
 ```go
 user := User{
@@ -75,20 +75,20 @@ db.Omit(clause.Associations).Create(&user)
 ```
 
 {% note warn %}
-**NOTE:** For many2many associations, GORM will upsert the associations before creating the join table references, if you want to skip the upserting of associations, you could skip it like:
+**NOTE :** Pour de nombreuses associations, GORM fera la mise en valeur des associations avant de créer les références de la table d'association, si vous voulez sauter l'insertion des associations, vous pouvez passer comme :
 
 ```go
 db.Omit("Languages.*").Create(&user)
 ```
 
-The following code will skip the creation of the association and its references
+Le code suivant ignorera la création de l'association et de ses références
 
 ```go
 db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
-## Select/Omit Association fields
+## Select/Omit Champs d'association
 
 ```go
 user := User{
@@ -104,9 +104,9 @@ db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
 db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 ```
 
-## Association Mode
+## Mode d'association
 
-Association Mode contains some commonly used helper methods to handle relationships
+Le mode association contient des méthodes d'aide couramment utilisées pour gérer les relations
 
 ```go
 // Start Association Mode
@@ -118,15 +118,15 @@ db.Model(&user).Association("Languages")
 db.Model(&user).Association("Languages").Error
 ```
 
-### Find Associations
+### Trouver des associations
 
-Find matched associations
+Trouver les associations correspondantes
 
 ```go
 db.Model(&user).Association("Languages").Find(&languages)
 ```
 
-Find associations with conditions
+Trouver des associations avec des conditions
 
 ```go
 codes := []string{"zh-CN", "en-US", "ja-JP"}
@@ -135,9 +135,9 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### Append Associations
+### Ajouter des associations
 
-Append new associations for `many to many`, `has many`, replace current association for `has one`, `belongs to`
+Ajouter de nouvelles associations pour `many to many`, `has many`, remplacer l'association actuelle pour `has one`, `belongs to`</code>
 
 ```go
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
@@ -147,9 +147,9 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Replace Associations
+### Remplacer des associations
 
-Replace current associations with new ones
+Remplacer les associations actuelles par de nouvelles associations
 
 ```go
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
@@ -157,9 +157,9 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Delete Associations
+### Supprimer des associations
 
-Remove the relationship between source & arguments if exists, only delete the reference, won't delete those objects from DB.
+Supprimer la relation entre les arguments source & s'il existe, supprimer seulement la référence, ne supprimera pas ces objets de la base de données.
 
 ```go
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
@@ -168,15 +168,15 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### Clear Associations
 
-Remove all reference between source & association, won't delete those associations
+Supprimer toutes les références entre l'association source & ne supprimera pas ces associations
 
 ```go
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Count Associations
+### Nombre d'associations
 
-Return the count of current associations
+Renvoie le nombre d'associations actuelles
 
 ```go
 db.Model(&user).Association("Languages").Count()
@@ -188,7 +188,7 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 
 ### Batch Data
 
-Association Mode supports batch data, e.g:
+Le mode association supporte les données par lot, par exemple:
 
 ```go
 // Find all roles for all users
@@ -208,11 +208,11 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_association_record">Delete Association Record</span>
+## <span id="delete_association_record">Supprimer l'enregistrement de l'association</span>
 
-By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+Par défaut `Replace`/`Delete`/`Clear` dans `gorm.Association` ne supprime que la référence, qui est, définit la clé étrangère des anciennes associations à null.
 
-You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+Vous pouvez supprimer ces objets avec `Unscoped` (cela n'a rien à voir avec `ManyToMany`).
 
 How to delete is decided by `gorm.DB`.
 

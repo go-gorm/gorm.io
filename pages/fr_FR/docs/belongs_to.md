@@ -1,68 +1,68 @@
 ---
-title: Belongs To
+title: Appartient à (Belongs To)
 layout: page
 ---
 
-## Belongs To
+## Appartient à (Belongs To)
 
-A `belongs to` association sets up a one-to-one connection with another model, such that each instance of the declaring model "belongs to" one instance of the other model.
+Une association `belongs to` met en place une connexion individuelle avec un autre modèle, de telle sorte que chaque instance du modèle déclarant "appartient" à une instance de l'autre modèle.
 
-For example, if your application includes users and companies, and each user can be assigned to exactly one company, the following types represent that relationship. Notice here that, on the `User` object, there is both a `CompanyID` as well as a `Company`. By default, the `CompanyID` is implicitly used to create a foreign key relationship between the `User` and `Company` tables, and thus must be included in the `User` struct in order to fill the `Company` inner struct.
+Par exemple, si votre application comprend des utilisateurs et des entreprises, et que chaque utilisateur peut être assigné à une seule entreprise, les types suivants représentent cette relation. Notez ici que, sur l'objet `User` , il y a à la fois une `CompanyID` ainsi qu'une `Company`. Par défaut, la `CompanyID` est implicitement utilisée pour créer une relation clé étrangère entre les tables `User` et `Company` et donc doit être inclus dans la structure `User` afin de remplir la structure intérieure `Company`.
 
 ```go
-// `User` belongs to `Company`, `CompanyID` is the foreign key
+// `User` appartient à `Company`, `CompanyID` est la clé étrangère
 type User struct {
   gorm.Model
-  Name      string
+  Name string
   CompanyID int
-  Company   Company
+  Company
 }
 
 type Company struct {
-  ID   int
+  ID int
   Name string
 }
 ```
 
-Refer to [Eager Loading](belongs_to.html#Eager-Loading) for details on populating the inner struct.
+Reportez-vous à [Eager Loading](belongs_to.html#Eager-Loading) pour plus de détails sur le remplissage de la structure intérieure.
 
-## Override Foreign Key
+## Redéfinir la clé étrangère
 
-To define a belongs to relationship, the foreign key must exist, the default foreign key uses the owner's type name plus its primary field name.
+Pour définir une relation d'appartenance, la clé étrangère doit exister, la clé étrangère par défaut utilise le nom de type du propriétaire plus son nom de champ primaire.
 
-For the above example, to define the `User` model that belongs to `Company`, the foreign key should be `CompanyID` by convention
+Pour l'exemple ci-dessus, définir le modèle `User` qui appartient à `Company`, la clé étrangère doit être `CompanyID` par convention
 
-GORM provides a way to customize the foreign key, for example:
+GORM fournit un moyen de personnaliser la clé étrangère, par exemple :
 
 ```go
 type User struct {
   gorm.Model
-  Name         string
+  Name string
   CompanyRefer int
-  Company      Company `gorm:"foreignKey:CompanyRefer"`
-  // use CompanyRefer as foreign key
+  Company `gorm:"foreignKey:CompanyRefer"`
+  // utiliser CompanyRefer comme clé étrangère
 }
 
 type Company struct {
-  ID   int
+  ID int
   Name string
 }
 ```
 
-## Override References
+## Surcharger les références
 
-For a belongs to relationship, GORM usually uses the owner's primary field as the foreign key's value, for the above example, it is `Company`'s field `ID`.
+Pour une appartenance à une relation, GORM utilise généralement le champ principal du propriétaire comme valeur de la clé étrangère, pour l'exemple ci-dessus, il s'agit du champ `Company`du champ `ID`.
 
-When you assign a user to a company, GORM will save the company's `ID` into the user's `CompanyID` field.
+Lorsque vous assignez un utilisateur à une entreprise, GORM enregistrera l' `ID` de l'entreprise dans le champ `CompanyID` de l'utilisateur.
 
-You are able to change it with tag `references`, e.g:
+Vous pouvez le modifier avec le tag `references`, par exemple:
 
 ```go
 type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:Code"` // use Code as references
+  Company   Company `gorm:"references:Code"` // utilise Code comme references
 }
 
 type Company struct {
@@ -73,7 +73,7 @@ type Company struct {
 ```
 
 {% note warn %}
-**NOTE** GORM usually guess the relationship as `has one` if override foreign key name already exists in owner's type, we need to specify `references` in the `belongs to` relationship.
+**NOTE** GORM devine généralement la relation comme `has one` si le nom de la clé étrangère est déjà remplacé dans le type du propriétaire, nous devons spécifier `references` dans la relation `belongs to`.
 {% endnote %}
 
 ```go
@@ -81,7 +81,7 @@ type User struct {
   gorm.Model
   Name      string
   CompanyID string
-  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID as references
+  Company   Company `gorm:"references:CompanyID"` // utilise Company.CompanyID comme references
 }
 
 type Company struct {
@@ -91,17 +91,17 @@ type Company struct {
 }
 ```
 
-## CRUD with Belongs To
+## CRUD avec Belongs To
 
-Please checkout [Association Mode](associations.html#Association-Mode) for working with belongs to relations
+Veuillez consulter le [Mode d'association](associations.html#Association-Mode) pour travailler avec les relations belongs to
 
-## Eager Loading
+## Chargement Eager (pressé)
 
-GORM allows eager loading belongs to associations with `Preload` or `Joins`, refer [Preloading (Eager loading)](preload.html) for details
+GORM permet au chargement désireux d'appartenir à des associations avec `Preload` ou `Joins`, se référer à [Préchargement (Eager loading)](preload.html) pour plus de détails
 
-## FOREIGN KEY Constraints
+## Contraintes de la CLÉ étrangère
 
-You can setup `OnUpdate`, `OnDelete` constraints with tag `constraint`, it will be created when migrating with GORM, for example:
+Vous pouvez configurer les contraintes `OnUpdate`, `OnDelete` avec la contrainte de balise `constraint`, il sera créé lors de la migration avec GORM, par exemple :
 
 ```go
 type User struct {

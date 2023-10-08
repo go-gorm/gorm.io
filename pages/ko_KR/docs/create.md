@@ -28,6 +28,10 @@ result.Error        // returns error
 result.RowsAffected // returns inserted records count
 ```
 
+{% note warn %}
+**NOTE** You cannot pass a struct to 'create', so you should pass a pointer to the data.
+{% endnote %}
+
 ## 선택한 필드로 레코드 만들기
 
 Create a record and assign a value to the fields specified.

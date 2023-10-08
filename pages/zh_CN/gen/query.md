@@ -477,7 +477,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 ```
 ### FirstOrInit
 
-Initialize struct with more attributes if record not found, those `Attrs` won't be used to build the SQL query
+如果没有找到记录，可以使用包含更多的属性的结构体初始化 user，`Attrs` 不会被用于生成查询 SQL
 
 ```go
 // User not found, initialize it with given conditions and Attrs
@@ -496,7 +496,7 @@ u.WithContext(ctx).Attrs(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("gen
 // user -> User{ID: 111, Name: "gen", Age: 18}
 ```
 
-`Assign` attributes to struct regardless it is found or not, those attributes won't be used to build SQL query and the final data won't be saved into database
+不管是否找到记录，`Assign` 都会将属性赋值给 struct，但这些属性不会被用于生成查询 SQL，也不会被保存到数据库
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -505,23 +505,24 @@ u.WithContext(ctx).Assign(field.Attrs(map[string]interface{}{"age": 20})).Where(
 
 // Found user with `name` = `gen`, update it with Assign attributes
 u.WithContext(ctx).Assign(field.Attrs(&model.User{Name: "gen_assign"}).Select(dal.User.ALL)).Where(u.Name.Eq("gen")).FirstOrInit()
+
 // SELECT * FROM USERS WHERE name = gen' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "gen", Age: 20}
 ```
 
 ### FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
+获取匹配的第一条记录或者根据给定条件创建一条新纪录（仅 struct, map 条件有效），`RowsAffected` 返回创建、更新的记录数
 
 ```go
 
-// Found user with `name` = `gen`
-result := u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate(&user)
-// user -> User{ID: 111, Name: "gen", "Age": 18}
+//通过`name` = `gen`查找用户
+result:=u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate()
+// 用户信息 -> User{ID: 111, Name: "gen", "Age": 18}
 // result.RowsAffected // => 0
 ```
 
-Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
+如果没有找到记录，可以使用包含更多的属性的结构体创建记录，`Attrs` 不会被用于生成查询 SQL 。
 
 ```go
 // User not found, create it with give conditions and Attrs
@@ -536,7 +537,7 @@ u.WithContext(ctx).Attrs(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("gen
 // user -> User{ID: 111, Name: "gen", Age: 18}
 ```
 
-`Assign` attributes to the record regardless it is found or not and save them back to the database.
+不管是否找到记录，`Assign` 都会将属性赋值给 struct，并将结果写回数据库
 
 ```go
 // User not found, initialize it with give conditions and Assign attributes
@@ -558,6 +559,7 @@ u.WithContext(ctx).Assign(u.Age.Value(20)).Where(u.Name.Eq("gen")).FirstOrCreate
 // user -> User{ID: 111, Name: "gen", Age: 20}
 ```
 
+
 ### Struct & Map Conditions
 
 ```go
@@ -572,7 +574,7 @@ u.WithContext(ctx).Where(field.Attrs(map[string]interface{}{"name": "gen", "age"
 ```
 
 {% note warn %}
-**NOTE** When querying with struct, GORM GEN will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**注意** 当使用 struct 进行查询时，GORM GEN只会使用非零值字段进行查询。这意味着如果您的字段值为 `0`、`''`、`false` 或其他 [零值](https://tour.golang.org/basics/12)，该字段不会被用于构建查询条件，例如：
 {% endnote %}
 
 ```go
@@ -580,18 +582,18 @@ u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen", Age: 0})).Find()
 // SELECT * FROM users WHERE name = "gen";
 ```
 
-To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
+如果想要在查询条件中包含零值，你可以使用 map ，其会包含所有的键值对查询条件，例如：
 
 ```go
 u.WithContext(ctx).Where(field.Attrs(map[string]interface{}{"name": "gen", "age": 0})).Find()
 // SELECT * FROM users WHERE name = "gen" AND age = 0;
 ```
 
-For more details, see [Specify Struct search fields](#specify_search_fields).
+了解更多的细节，请阅读 [Specify Struct search fields](#specify_search_fields) 。
 
 ### <span id="specify_search_fields">Specify Struct search fields</span>
 
-When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant  the dbname to `Attrs()`, for example:
+当使用 struct 进行查询时，你可以通过向 `Select()` 、`Omit()` 传入 字段名来指定查询条件，例如：
 
 ```go
 u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen"}).Select(u.Name,u.Age)).Find()

@@ -28,16 +28,20 @@ result.Error        // возвращает ошибку
 result.RowsAffected // возвращает количество добавленных записей
 ```
 
+{% note warn %}
+**NOTE** You cannot pass a struct to 'create', so you should pass a pointer to the data.
+{% endnote %}
+
 ## Создание записи с указанными полями
 
-Создаем запись и присваиваем значение указанным полям.
+Create a record and assign a value to the fields specified.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Создайте запись и игнорируйте значения для полей, переданных в пропущенные (omit).
+Create a record and ignore the values for fields passed to omit.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -46,7 +50,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Пакетная вставка</span>
 
-Чтобы эффективно вставить большое количество записей, передайте срез в метод `Create`. Передайте массив с данными в метод Create, GORM создаст запрос SQL для вставки и заполнит первичными ключами массив, будут также вызваны хук методы. При это начнется **транзакция**, когда записи могут быть переданы в несколько партий.
+To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be splited into multiple batches.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -57,7 +61,7 @@ for _, user := range users {
 }
 ```
 
-Вы можете указать размер пакета при создании с помощью `CreateInBatches`, например:
+You can specify batch size when creating with `CreateInBatches`, e.g:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -66,10 +70,10 @@ var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 db.CreateInBatches(users, 100)
 ```
 
-Пакетная вставка также поддерживается при использовании [Upsert](#upsert) и [Создания с помощью ассоциаций](#create_with_associations)
+Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
 
 {% note warn %}
-**ПРИМЕЧАНИЕ** инициализируйте GORM с помощью параметра `CreateBatchSize`, все `INSERT` будут учитывать этот параметр при создании записей и ассоциаций
+**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
 {% endnote %}
 
 ```go
@@ -88,7 +92,7 @@ db.Create(&users)
 
 ## Создание хуков
 
-GORM позволяет реализовать пользовательские хуки для `BeforeSave`, `BeforeCreate`, `AfterSave` и `AfterCreate`.  Этот метод перехвата будет вызван при создании записи, обратитесь к [Хуки](hooks.html) для получения подробной информации о жизненном цикле
+GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -101,7 +105,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-Если вы хотите пропустить `Хуки`, вы можете использовать режим сеанса `SkipHooks`, например:
+If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -113,7 +117,7 @@ DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 
 ## Create с помощью Map(карты)
 
-GORM поддерживает создание из `map[string]interface{}` и `[]map[string]interface{}{}`, например:
+GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
@@ -128,12 +132,12 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**ПРИМЕЧАНИЕ** При создании на основе карты не будут вызываться хуки, ассоциации не будут сохранены, а значения первичного ключа не будут заполнены обратно
+**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
 {% endnote %}
 
 ## <span id="create_from_sql_expr">Метод Create с помощью SQL выражения/значения контекста</span>
 
-GORM позволяет вставлять данные с помощью SQL-выражения, есть два способа достичь этой цели, создать из `map[string]interface{}` или [Настраиваемые типы данных](data_types.html#gorm_valuer_interface), например:
+GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
 
 ```go
 // Создать из map
@@ -180,7 +184,7 @@ db.Create(&User{
 
 ### <span id="create_with_associations">Create со связями</span>
 
-При создании некоторых данных с ассоциациями, если их значение не равно нулю, эти ассоциации будут обновлены, и будут вызваны его `Хуки`.
+When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
 
 ```go
 type CreditCard struct {
@@ -203,7 +207,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-Вы можете пропустить сохранение ассоциаций с помощью `Select`, `Omit`, например:
+You can skip saving associations with `Select`, `Omit`, for example:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -214,7 +218,7 @@ db.Omit(clause.Associations).Create(&user)
 
 ### <span id="default_values">Значения по умолчанию</span>
 
-Вы можете определить значения по умолчанию для полей с тегом `default`, например:
+You can define default values for fields with tag `default`, for example:
 
 ```go
 type User struct {
@@ -224,10 +228,10 @@ type User struct {
 }
 ```
 
-Тогда значение по умолчанию * будет использоваться* при вставке в базу данных для [полей с нулевым значением](https://tour.golang.org/basics/12)
+Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
 {% note warn %}
-**ПРИМЕЧАНИЕ** Любое нулевое значение, например `0`, `"`, `false`, не будет сохранено в базе данных для этих полей, определенных значением по умолчанию, вы можете захотеть использовать тип указателя или Scanner / Valuer, чтобы избежать этого, например:
+**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
 {% endnote %}
 
 ```go
@@ -240,7 +244,7 @@ type User struct {
 ```
 
 {% note warn %}
-**ПРИМЕЧАНИЕ** Вам необходимо настроить тег `default` для полей, имеющих значение по умолчанию или виртуальное/сгенерированное значение в базе данных, если вы хотите пропустить определение значения по умолчанию при миграции, вы могли бы использовать `default:(-)`, например:
+**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
 {% endnote %}
 
 ```go
@@ -253,11 +257,11 @@ type User struct {
 }
 ```
 
-При использовании виртуального/сгенерированного значения вам может потребоваться отключить разрешение на его создание/обновление, проверьте [Разрешение на уровне поля](models.html#field_permission)
+When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
 
 ### <span id="upsert">Upsert (Создать или обновить) / При конфликте</span>
 
-GORM обеспечивает совместимую поддержку Upsert для различных баз данных
+GORM provides compatible Upsert support for different databases
 
 ```go
 import "gorm.io/gorm/clause"
@@ -297,6 +301,6 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL
 ```
 
-Также посмотрите `FirstOrInit`, `FirstOrCreate` на [Расширенный запрос](advanced_query.html)
+Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
 
-Откройте [Необработанный SQL и SQL Builder](sql_builder.html) для получения более подробной информации
+Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details

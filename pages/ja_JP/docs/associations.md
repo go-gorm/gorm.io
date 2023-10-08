@@ -211,13 +211,13 @@ db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
-## <span id="delete_association_record">Delete Association Record</span>
+## <span id="delete_association_record">関連レコードを削除する</span>
 
-By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+デフォルトでは、`gorm.Association`の`Replace`/`Delete`/`Clear`は参照のみを削除します。つまり、古いアソシエーションの外部キーをNULLに設定します。
 
-You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+`Unscoped`を使用することで、オブジェクトを削除することができます。（`ManyToMany`の場合は挙動に変更はありません）
 
-How to delete is decided by `gorm.DB`.
+削除方法は、 `gorm.DB` の内部で判定します。
 
 ```go
 // Soft delete
@@ -229,37 +229,37 @@ db.Model(&user).Association("Languages").Unscoped().Clear()
 db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
+## <span id="delete_with_select">Selectを使って削除する</span>
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+レコード削除時に `Select` を使用することで、has one / has many / many2many 関係にある関連も同時に削除することができます。例:
 
 ```go
-// delete user's account when deleting user
+// ユーザ削除時に ユーザのアカウントも削除します
 db.Select("Account").Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// ユーザ削除時に ユーザの注文とクレジットカードの関連レコードも削除します
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// ユーザ削除時に ユーザの全ての has one / has many / many2many の関連レコードも削除します
 db.Select(clause.Associations).Delete(&user)
 
-// delete each user's account when deleting users
+// 複数ユーザ削除時に それぞれのユーザのアカウントも削除します
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
+**注意:** レコード削除時の主キーが非ゼロ値の場合のみ、関連レコードの削除が可能となります。GORMは指定の関連を削除するための条件として主キーを使用するためです。
 
 ```go
 // DOESN'T WORK
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// will delete all user with name `jinzhu`, but those user's account won't be deleted
+// 名前が `jinzhu` である全てのユーザは削除されますが、ユーザのアカウントは削除されません
 
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
+// 名前が `jinzhu` で id が `1` のユーザが削除され、そのユーザのアカウントも削除されます
 
 db.Select("Account").Delete(&User{ID: 1})
-// will delete the user with id = `1`, and user `1`'s account will be deleted
+// id が `1` のユーザが削除され、そのユーザのアカウントも削除されます
 ```
 {% endnote %}
 

@@ -22,22 +22,26 @@ users := []*User{
     User{Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
-result := db.Create(users) // pass a slice to insert multiple row
+result := db.Create(users) // 传递切片以插入多行数据
 
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+result.Error        // 返回 error
+result.RowsAffected // 返回插入记录的条数
 ```
+
+{% note warn %}
+**NOTE** 你无法向 'create' 传递结构体，所以你应该传入数据的指针.
+{% endnote %}
 
 ## 用指定的字段创建记录
 
-创建记录并为指定的字段分配值：
+创建记录并为指定字段赋值。
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-创建记录并忽略要省略的传递字段的值：
+创建记录并忽略传递给 'Omit' 的字段值
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -46,7 +50,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">批量插入</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be splited into multiple batches.
+要高效地插入大量记录，请将切片传递给`Create`方法。 GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be splited into multiple batches.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}

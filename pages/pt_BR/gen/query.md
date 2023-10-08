@@ -505,6 +505,7 @@ u.WithContext(ctx).Assign(field.Attrs(map[string]interface{}{"age": 20})).Where(
 
 // Found user with `name` = `gen`, update it with Assign attributes
 u.WithContext(ctx).Assign(field.Attrs(&model.User{Name: "gen_assign"}).Select(dal.User.ALL)).Where(u.Name.Eq("gen")).FirstOrInit()
+
 // SELECT * FROM USERS WHERE name = gen' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "gen", Age: 20}
 ```
@@ -516,7 +517,7 @@ Get first matched record or create a new one with given conditions (only works w
 ```go
 
 // Found user with `name` = `gen`
-result := u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate(&user)
+result := u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate()
 // user -> User{ID: 111, Name: "gen", "Age": 18}
 // result.RowsAffected // => 0
 ```
@@ -557,6 +558,7 @@ u.WithContext(ctx).Assign(u.Age.Value(20)).Where(u.Name.Eq("gen")).FirstOrCreate
 // UPDATE users SET age=20 WHERE id = 111;
 // user -> User{ID: 111, Name: "gen", Age: 20}
 ```
+
 
 ### Struct & Map Conditions
 
