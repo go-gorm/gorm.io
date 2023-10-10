@@ -182,7 +182,7 @@ type Product struct {
 func main() {
   db, err := gorm.Open(mysql.Open("root:@tcp(127.0.0.1:4000)/test"), &gorm.Config{})
   if err != nil {
-    panic("Ошибка подключения к базе данных")
+    panic("failed to connect database")
   }
 
   db.AutoMigrate(&Product{})
@@ -190,13 +190,13 @@ func main() {
   insertProduct := &Product{Code: "D42", Price: 100}
 
   db.Create(insertProduct)
-  fmt.Printf("Добавлен ID: %d, Код: %s, Цена: %d\n",
+  fmt.Printf("insert ID: %d, Code: %s, Price: %d\n",
     insertProduct.ID, insertProduct.Code, insertProduct.Price)
 
   readProduct := &Product{}
-  db.First(&readProduct, "code = ?", "D42") //найти продукт с кодом D42
+  db.First(&readProduct, "code = ?", "D42") // find product with code D42
 
-  fmt.Printf("Прочитан ID: %d, Код: %s, Цена: %d\n",
+  fmt.Printf("read ID: %d, Code: %s, Price: %d\n",
     readProduct.ID, readProduct.Code, readProduct.Price)
 }
 ```
