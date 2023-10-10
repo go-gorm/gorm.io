@@ -192,13 +192,13 @@ func main() {
   insertProduct := &Product{Code: "D42", Price: 100}
 
   db.Create(insertProduct)
-  fmt.Printf("insert ID: %d, Code: %s, Prict: %d\n",
+  fmt.Printf("insert ID: %d, Code: %s, Price: %d\n",
     insertProduct.ID, insertProduct.Code, insertProduct.Price)
 
   readProduct := &Product{}
   db.First(&readProduct, "code = ?", "D42") // find product with code D42
 
-  fmt.Printf("read ID: %d, Code: %s, Prict: %d\n",
+  fmt.Printf("read ID: %d, Code: %s, Price: %d\n",
     readProduct.ID, readProduct.Code, readProduct.Price)
 }
 ```
