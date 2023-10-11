@@ -73,7 +73,7 @@ func (m *CommonMethod) GetName() string {
 g.GenerateModel("people", gen.WithMethod(CommonMethod{}.IsEmpty))
 
 // Add all methods defined on `CommonMethod` to the generated `User` struct
-g.GenerateModel("user", gen.WithMethod(CommonMethod))
+g.GenerateModel("user", gen.WithMethod(CommonMethod{}))
 ```
 
 The generated code would look like this:
