@@ -22,9 +22,9 @@ layout: page
 
 * Artigo que usa GORM como ORM para Golang com implementação CRUD com SQLite como base de dados de testes - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
 
-* [Strongly typed JSON/JSONB fields in GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
+* [Campos JSON/JSONB fortemente tipados no GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
 
-* [Using GORM concurrently is not safe](https://zhuanlan.zhihu.com/p/556065676)
+* [Utilizar GORM concorrentemente não é seguro](https://zhuanlan.zhihu.com/p/556065676)
 
 ## Vídeos
 
@@ -40,8 +40,8 @@ layout: page
 * [Driver para SQLite em Go](https://github.com/glebarez/sqlite)
 * [Associação de usuários com funções e permissões](https://github.com/Permify/permify-gorm)
 * [gorm-cache - Plugin de cache de consultas para o GORM](https://github.com/liyuan1125/gorm-cache)
-* [deepgorm - Nested map filtering](https://github.com/survivorbat/gorm-deep-filtering)
-* [oracle - GORM Oracle driver](https://github.com/CengSin/oracle)
+* [deepgorm - Filtragem aninhada de maps](https://github.com/survivorbat/gorm-deep-filtering)
+* [oracle - Driver do Oracle para o GORM](https://github.com/CengSin/oracle)
 * [Go ORM Helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
 
 ## <span id="contribute">Contribua para esta página</span>
