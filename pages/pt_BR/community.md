@@ -42,7 +42,7 @@ layout: page
 * [gorm-cache - Plugin de cache de consultas para o GORM](https://github.com/liyuan1125/gorm-cache)
 * [deepgorm - Filtragem aninhada de maps](https://github.com/survivorbat/gorm-deep-filtering)
 * [oracle - Driver do Oracle para o GORM](https://github.com/CengSin/oracle)
-* [Go ORM Helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
+* [Go ORM Helper - Plugin do Goland para autocompletar código GORM](https://github.com/maiqingqiang/go-orm-helper)
 
 ## <span id="contribute">Contribua para esta página</span>
 
