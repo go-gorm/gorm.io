@@ -64,7 +64,7 @@ card := g.GenerateModel("credit_cards")
 customer := g.GenerateModel("customers", gen.FieldRelate(field.HasMany, "CreditCards", card, 
     &field.RelateConfig{
         // RelateSlice: true,
-        GORMTag: "foreignKey:CustomerRefer",
+         GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"}},
     }),
 )
 
@@ -100,7 +100,7 @@ type CreditCard struct {
 customer := g.GenerateModel("customers", gen.FieldRelateModel(field.HasMany, "CreditCards", model.CreditCard{}, 
     &field.RelateConfig{
         // RelateSlice: true,
-        GORMTag: "foreignKey:CustomerRefer",
+        GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"}},
     }),
 )
 
