@@ -51,7 +51,7 @@ g.GenerateAllTable()...,
 
 ```Go
 type CommonMethod struct {
-    ID int32
+    ID   int32
     Name *string
 }
 
@@ -59,21 +59,21 @@ func (m *CommonMethod) IsEmpty() bool {
     if m == nil {
         return true
     }
-    return m. D == 0
+    return m.ID == 0
 }
 
 func (m *CommonMethod) GetName() string {
-    if m == nil || m. ame == nil {
+    if m == nil || m.Name == nil {
         return ""
     }
-    return *m. ame
+    return *m.Name
 }
 
-// Добавляем метод IsEmpty в сгенерированный `People` struct
-g.GenerateModel("people", gen.WithMethod(CommonMethod{}. sEmpty))
+// Add IsEmpty method to the generated `People` struct
+g.GenerateModel("people", gen.WithMethod(CommonMethod{}.IsEmpty))
 
-// Добавить все методы, определенные в `CommonMethod` в сгенерированный `User` struct
-g.GenerateModel("user", gen.WithMethod(CommonMethod))
+// Add all methods defined on `CommonMethod` to the generated `User` struct
+g.GenerateModel("user", gen.WithMethod(CommonMethod{}))
 ```
 
 Обновленный код должен выглядеть следующим образом:

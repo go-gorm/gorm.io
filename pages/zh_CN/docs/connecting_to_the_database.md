@@ -190,13 +190,13 @@ func main() {
   insertProduct := &Product{Code: "D42", Price: 100}
 
   db.Create(insertProduct)
-  fmt.Printf("insert ID: %d, Code: %s, Prict: %d\n",
+  fmt.Printf("insert ID: %d, Code: %s, Price: %d\n",
     insertProduct.ID, insertProduct.Code, insertProduct.Price)
 
   readProduct := &Product{}
   db.First(&readProduct, "code = ?", "D42") // find product with code D42
 
-  fmt.Printf("read ID: %d, Code: %s, Prict: %d\n",
+  fmt.Printf("read ID: %d, Code: %s, Price: %d\n",
     readProduct.ID, readProduct.Code, readProduct.Price)
 }
 ```
@@ -215,18 +215,18 @@ func main() {
   dsn := "tcp://localhost:9000?database=gorm&username=gorm&password=gorm&read_timeout=10&write_timeout=20"
   db, err := gorm.Open(clickhouse.Open(dsn), &gorm.Config{})
 
-  // Auto Migrate
+  // 自动迁移 (这是GORM自动创建表的一种方式--译者注)
   db.AutoMigrate(&User{})
-  // Set table options
+  // 设置表选项
   db.Set("gorm:table_options", "ENGINE=Distributed(cluster, default, hits)").AutoMigrate(&User{})
 
-  // Insert
+  // 插入
   db.Create(&user)
 
-  // Select
+  // 查询
   db.Find(&user, "id = ?", 10)
 
-  // Batch Insert
+  // 批量插入
   var users = []User{user1, user2, user3}
   db.Create(&users)
   // ...
