@@ -1,5 +1,5 @@
 ---
-title: Database To Structs
+title: 从数据库生成结构
 layout: page
 ---
 
