@@ -15,31 +15,30 @@ import "gorm.io/gen"
 func main() {
   g := gen.NewGenerator(gen.Config{
     OutPath: "../query",
-    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
+    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // 生成模式
   })
 
   // gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
   g.UseDB(gormdb) // reuse your gorm db
 
-  // Generate basic type-safe DAO API for struct `model.User` following conventions
+  // 按照约定为结构体 `model.User` 生成类型安全的 DAO API
+  g.ApplyBasic(
+    // 根据 `user` 表生成结构 `User` 
+    g.GenerateModel("users"),
+
+    // 根据 `user` 表生成结构 `Employee` 
+    g.GenerateModelAs("users", "Employee"),
+
+    // 根据 `user` 表和生成时选项生成结构 `User`
+    g.GenerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64")),
+  )
 
   g.ApplyBasic(
-  // Generate struct `User` based on table `users`
-  g.GenerateModel("users"),
-
-  // Generate struct `Employee` based on table `users`
- g.GenerateModelAs("users", "Employee"),
-
-
-// Generate struct `User` based on table `users` and generating options
-g.GenerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64")),
-
+    // 从当前数据库中生成所有表的结构
+    g.GenerateAllTable()...,
   )
-g.ApplyBasic(
-// Generate structs from all tables of current database
-g.GenerateAllTable()...,
-)
-  // Generate the code
+
+  // 生成代码
   g.Execute()
 }
 
@@ -69,17 +68,17 @@ func (m *CommonMethod) GetName() string {
     return *m.Name
 }
 
-// Add IsEmpty method to the generated `People` struct
+// 为生成的 `People` 结构添加 `IsEmpty` 方法
 g.GenerateModel("people", gen.WithMethod(CommonMethod{}.IsEmpty))
 
-// Add all methods defined on `CommonMethod` to the generated `User` struct
+// 将 `CommonMethod` 上定义的所有方法添加到生成的 `User` 结构中
 g.GenerateModel("user", gen.WithMethod(CommonMethod{}))
 ```
 
-The generated code would look like this:
+生成的代码看起来像这样：
 
 ```go
-// Generated Person struct
+// 生成的 Person 结构
 type Person struct {
   // ...
 }
@@ -92,7 +91,7 @@ func (m *Person) IsEmpty() bool {
 }
 
 
-// Generated User struct
+// 生成的 User 结构
 type User struct {
   // ...
 }
@@ -145,9 +144,9 @@ g.WithOpts(gen.WithMethod(gen.DefaultMethodTableWithNamer))
 
 ```
 
-## Field Options
+## 字段选项
 
-Following are options that can be used during `GenerateModel`/`GenerateModelAs`
+以下是调用 `GenerateModel`/`GenerateModelAs` 时可以使用的选项
 
 ```go
 FieldNew           // create new a field
