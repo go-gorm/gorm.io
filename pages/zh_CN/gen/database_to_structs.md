@@ -149,27 +149,27 @@ g.WithOpts(gen.WithMethod(gen.DefaultMethodTableWithNamer))
 以下是调用 `GenerateModel`/`GenerateModelAs` 时可以使用的选项
 
 ```go
-FieldNew           // create new a field
-FieldIgnore        // ignore field
-FieldIgnoreReg     // ignore field (match with regexp)
-FieldRename        // rename field in the struct
-FieldComment       // specify field comment in generated struct
-FieldType          // specify the field type
-FieldTypeReg       // specify field type (match with regexp)
-FieldGenType       // specify field gen type
-FieldGenTypeReg    // specify field gen type (match with regexp)
-FieldTag           // specify gorm and json tag
-FieldJSONTag       // specify json tag
-FieldJSONTagWithNS // specify json tag with name strategy
-FieldGORMTag       // specify gorm tag
-FieldNewTag        // append new tag
-FieldNewTagWithNS  // specify the new tag with name strategy
-FieldTrimPrefix    // trim column prefix
-FieldTrimSuffix    // trim column suffix
-FieldAddPrefix     // add the prefix to struct field's name
-FieldAddSuffix     // add the suffix to struct field's name
-FieldRelate        // specify relationship with other tables
-FieldRelateModel   // specify the relationship with existing models
+FieldNew           // 创建一个新字段
+FieldIgnore        // 忽略字段
+FieldIgnoreReg     // 忽略字段 (与正则匹配的)
+FieldRename        // 在结构中重命名字段
+FieldComment       // 在生成的结构中指定字段注释
+FieldType          // 指定字段类型
+FieldTypeReg       // 指定字段类型 (与正则匹配的)
+FieldGenType       // 指定字段 gen 类型
+FieldGenTypeReg    // 指定字段 gen 类型 (与正则匹配的)
+FieldTag           // 指定 gorm 和 json tag
+FieldJSONTag       // 指定 json tag
+FieldJSONTagWithNS // 使用命名策略指定 json tag
+FieldGORMTag       // 指定 gorm tag
+FieldNewTag        // 添加新 tag
+FieldNewTagWithNS  // 使用命令策略指定新 tag
+FieldTrimPrefix    // 去除列前缀
+FieldTrimSuffix    // 去除列后缀
+FieldAddPrefix     // 在结构字段名上添加前缀
+FieldAddSuffix     // 在结构字体名上添加后缀
+FieldRelate        // 指定与其它表的关系
+FieldRelateModel   // 指定与现有模型的关系
 ```
 
 ## 全局生成选项
@@ -178,45 +178,45 @@ Gen 有一些全局选项可以在 `gen.Config`中设置：
 
 ```go
 g := gen.NewGenerator(gen.Config{
-  // if you want the nullable field generation property to be pointer type, set FieldNullable true
+  // 如果你希望为可为null的字段生成属性为指针类型, 设置 FieldNullable 为 true
   FieldNullable: true,
-  // if you want to assign field which has a default value in the `Create` API, set FieldCoverable true, reference: https://gorm.io/docs/create.html#Default-Values
+  // 如果你希望在 `Create` API 中为字段分配默认值, 设置 FieldCoverable 为 true, 参考: https://gorm.io/docs/create.html#Default-Values
   FieldCoverable: true,
-  // if you want to generate field with unsigned integer type, set FieldSignable true
+  // 如果你希望生成无符号整数类型字段, 设置 FieldSignable 为 true
   FieldSignable: true,
-  // if you want to generate index tags from database, set FieldWithIndexTag true
+  // 如果你希望从数据库生成索引标记, 设置 FieldWithIndexTag 为 true
   FieldWithIndexTag: true,
-  // if you want to generate type tags from database, set FieldWithTypeTag true
+  // 如果你希望从数据库生成类型标记, 设置 FieldWithTypeTag 为 true
   FieldWithTypeTag: true,
-  // if you need unit tests for query code, set WithUnitTest true
+  // 如果你需要对查询代码进行单元测试, 设置 WithUnitTest 为 true
   WithUnitTest: true,
 })
 ```
 
 ```go
-// WithDbNameOpts set get database name function
+// WithDbNameOpts 设置获取数据库名称方法
 WithDbNameOpts(opts ...model.SchemaNameOpt)
 
-// WithTableNameStrategy specify table name naming strategy, only work when syncing table from db
+// WithTableNameStrategy 指定表名命名策略, 仅在从数据库同步表时工作
 WithTableNameStrategy(ns func(tableName string) (targetTableName string))
 
-// WithModelNameStrategy specify model struct name naming strategy, only work when syncing table from db
+// WithModelNameStrategy 指定 model 结构名命名策略, 仅在从数据库同步表时工作
 // If an empty string is returned, the table will be ignored
 WithModelNameStrategy(ns func(tableName string) (modelName string))
 
-// WithFileNameStrategy specify file name naming strategy, only work when syncing table from db
+// WithFileNameStrategy 指定文件名命名策略, 仅在从数据库同步表时工作
 WithFileNameStrategy(ns func(tableName string) (fileName string))
 
-// WithJSONTagNameStrategy specify json tag naming strategy
+// WithJSONTagNameStrategy 指定 json tag 命名策略
 WithJSONTagNameStrategy(ns func(columnName string) (tagContent string))
 
-// WithDataTypeMap specify data type mapping relationship, only work when syncing table from db
+// WithDataTypeMap 指定数据类型命名策略, 仅在从数据库同步表时工作
 WithDataTypeMap(newMap map[string]func(gorm.ColumnType) (dataType string))
 
-// WithImportPkgPath specify import package path
+// WithImportPkgPath 指定导入包路径
 WithImportPkgPath(paths ...string)
 
-// WithOpts specify global model options
+// WithOpts 指定全局 model 选项
 WithOpts(opts ...ModelOpt)
 ```
 
@@ -248,7 +248,7 @@ WithOpts(opts ...ModelOpt)
 ```
 ## Generate From Sql
 
-Gen supports generate structs from sql following GORM conventions, it can be used like:
+Gen 支持根据 GORM 约定从 SQL 生成 structs，其使用方式如下：
 
 ```go
 package main
@@ -259,36 +259,37 @@ import (
 )
 
 func main() {
-  g := gen.NewGenerator(gen.Config{
-    OutPath: "../query",
-    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
-  })
-  // https://github.com/go-gorm/rawsql/blob/master/tests/gen_test.go
-  gormdb, _ := gorm.Open(rawsql.New(rawsql.Config{
-        //SQL:      rawsql,                      //create table sql
+    g := gen.NewGenerator(gen.Config{
+        OutPath: "../query",
+        Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // 生成模式
+    })
+
+    // https://github.com/go-gorm/rawsql/blob/master/tests/gen_test.go
+    gormdb, _ := gorm.Open(rawsql.New(rawsql.Config{
+        //SQL:      rawsql,                      // 建表sql
         FilePath: []string{
-            //"./sql/user.sql", // create table sql file
-            "./test_sql", // create table sql file directory
+            //"./sql/user.sql", // 建表sql文件
+            "./test_sql", // 建表sql目录
         },
     }))
-  g.UseDB(gormdb) // reuse your gorm db
+    g.UseDB(gormdb) // 重新引用你的 gorm db
 
-  // Generate basic type-safe DAO API for struct `model.User` following conventions
+    // 按照约定为结构 `model.User` 生成基本类型安全的DAO API
+    g.ApplyBasic(
+        // 基于 `user` 表生成 `User` 结构
+        g.GenerateModel("users"),
 
-  g.ApplyBasic(
-  // Generate struct `User` based on table `users`
-  g.GenerateModel("users"),
+        // 基于 `user` 表生成 `Employee` 结构
+        g.GenerateModelAs("users", "Employee"),
+    )
 
-  // Generate struct `Employee` based on table `users`
- g.GenerateModelAs("users", "Employee"),
+    g.ApplyBasic(
+        // 从当前数据库生成所有表结构
+        g.GenerateAllTable()...,
+    )
 
-  )
-g.ApplyBasic(
-// Generate structs from all tables of current database
-g.GenerateAllTable()...,
-)
-  // Generate the code
-  g.Execute()
-}
+    // 生成代码
+    g.Execute()
+}`
 
 ```
