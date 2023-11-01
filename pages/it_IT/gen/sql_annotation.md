@@ -248,7 +248,7 @@ The `for` expression iterates over a slice to generate the SQL, let's explain by
 ```go
 // SELECT * FROM @@table
 // {{where}}
-//   {{for _,user:=range user}}
+//   {{for _,user:=range users}}
 //     {{if user.Name !="" && user.Age >0}}
 //       (username = @user.Name AND age=@user.Age AND role LIKE concat("%",@user.Role,"%")) OR
 //     {{end}}
