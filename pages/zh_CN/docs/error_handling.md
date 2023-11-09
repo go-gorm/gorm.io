@@ -27,23 +27,26 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 }
 ```
 
-## ErrRecordNotFound
+{% note warn %}
+## Dialect Translated Errors
 
-当 `First`、`Last`、`Take` 方法找不到记录时，GORM 会返回 `ErrRecordNotFound` 错误。如果发生了多个错误，你可以通过 `errors.Is` 判断错误是否为 `ErrRecordNotFound`，例如：
-
-```go
-// 检查错误是否为 RecordNotFound
-err := db.First(&user, 100).Error
-errors.Is(err, gorm.ErrRecordNotFound)
-```
-## 翻译方言错误
-
-如果您希望将数据库的方言错误转换为gorm的错误类型（例如将MySQL中的“Duplicate entry”转换为ErrDuplicatedKey），则在打开数据库连接时启用TranslateError标志。
+If you would like to be able to use the dialect translated errors(like ErrDuplicatedKey), then enable the `TranslateError` flag when opening a db connection.
 
 ```go
 db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: true})
 ```
+{% endnote %}
 
+
+## ErrRecordNotFound
+
+GORM returns `ErrRecordNotFound` when failed to find data with `First`, `Last`, `Take` (only when dialect translated errors are enabled). If there are several errors happened, you can check the `ErrRecordNotFound` error with `errors.Is`. For example,
+
+```go
+// Check if returns RecordNotFound error
+err := db.First(&user, 100).Error
+errors.Is(err, gorm.ErrRecordNotFound)
+```
 ## Errors
 
 [Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go)
