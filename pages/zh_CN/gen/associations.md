@@ -57,14 +57,14 @@ type creditCard struct{
 
 ### 关联数据库中的表。
 
-关联必须由 `gen.FieldRelate` 指定。
+The association have to be specified by `gen.FieldRelate`
 
 ```go
 card := g.GenerateModel("credit_cards")
 customer := g.GenerateModel("customers", gen.FieldRelate(field.HasMany, "CreditCards", card, 
     &field.RelateConfig{
         // RelateSlice: true,
-         GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"}},
+         GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"},"references": []string{"ID"}},
     }),
 )
 
@@ -80,7 +80,7 @@ type Customer struct {
     CreatedAt   time.Time      `gorm:"column:created_at;type:datetime(3)" json:"created_at"`
     UpdatedAt   time.Time      `gorm:"column:updated_at;type:datetime(3)" json:"updated_at"`
     DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at;type:datetime(3)" json:"deleted_at"`
-    CreditCards []CreditCard   `gorm:"foreignKey:CustomerRefer" json:"credit_cards"`
+    CreditCards []CreditCard   `gorm:"foreignKey:CustomerRefer;references:ID" json:"credit_cards"`
 }
 
 
@@ -100,7 +100,7 @@ type CreditCard struct {
 customer := g.GenerateModel("customers", gen.FieldRelateModel(field.HasMany, "CreditCards", model.CreditCard{}, 
     &field.RelateConfig{
         // RelateSlice: true,
-        GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"}},
+        GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"},"references": []string{"ID"}},
     }),
 )
 
@@ -157,7 +157,7 @@ u.WithContext(ctx).Omit(field.AssociationFields).Create(&user)
 // Skip all associations when creating a user
 ```
 
-方法 ` Field ` 将通过 '.'进行连接, 例如: `u.BillingAddress.Field("Address1", "Street")` 等于 `BillingAddress.Address.Address.Address.Street`
+Method `Field` will join a serious field name with '', for example: `u.BillingAddress.Field("Address1", "Street")` equals to `BillingAddress.Address1.Street`
 
 ### 查找关联
 
@@ -202,7 +202,7 @@ u.Languages.Model(&user).Replace(&languageZH, &languageEN)
 
 ### 删除关联
 
-如果存在，则删除源模型与参数之间的关系，只会删除引用，不会从数据库中删除这些对象。
+Remove the relationship between source & arguments if exists, only delete the reference, won’t delete those objects from DB.
 
 ```go
 u := query.Use(db).User
@@ -230,7 +230,7 @@ u.Languages.Model(&user).Count()
 
 ### Delete with Select
 
-你可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
+You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
 
 ```go
 u := query.Use(db).User
@@ -284,7 +284,7 @@ users, err := u.WithContext(ctx).Preload(u.Orders).Preload(u.Profile).Preload(u.
 
 ### Preload All
 
-与创建、更新时使用 `Select` 类似，`clause.Associations` 也可以和 `Preload` 一起使用，它可以用来 `预加载` 全部关联，例如：
+`clause.Associations` can work with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
 
 ```go
 type User struct {
@@ -299,20 +299,21 @@ type User struct {
 users, err := u.WithContext(ctx).Preload(field.Associations).Find()
 ```
 
-`clause.Associations`不会预加载嵌套的关联关系，但是你可以将其与[Nested Preloading](#nested-preloading)一起使用， 例如：
+`clause.Associations` won’t preload nested associations, but you can use it with [Nested Preloading](#nested-preloading) together, e.g:
 
 ```go
 users, err := u.WithContext(ctx).Preload(u.Orders.OrderItems.Product).Find()
 ```
 
-To include soft deleted records in all associactions use relation scope `field.RelationFieldUnscoped`, e.g:
+To include soft deleted records in all associations use relation scope `field.RelationFieldUnscoped`, e.g:
+
 ```go
 users, err := u.WithContext(ctx).Preload(field.Associations.Scopes(field.RelationFieldUnscoped)).Find()
 ```
 
 ### Preload with select
 
-使用方法 `Select` 指定加载的列. 。 外键必须选择。
+使用方法 `Select` 指定加载的列. 。 Foreign key must be selected.
 
 ```go
 type User struct {
@@ -381,4 +382,3 @@ db.Preload(u.Orders.OrderItems.Product).Preload(u.CreditCard).Find(&users)
 // And GEN won't preload unmatched order's OrderItems then
 db.Preload(u.Orders.On(o.State.Eq("paid"))).Preload(u.Orders.OrderItems).Find(&users)
 ```
-
