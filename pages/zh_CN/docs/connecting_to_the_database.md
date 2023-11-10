@@ -252,8 +252,8 @@ sqlDB.SetConnMaxLifetime(time.Hour)
 
 查看 [通用接口](generic_interface.html) 获取详情。
 
-## Unsupported Databases
+## 还未支持的数据库
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+有些数据库可能兼容 `mysql`、`postgres` 的方言，在这种情况下，你可以直接使用这些数据库的方言。
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+对于其他还未支持的数据库驱动，我们鼓励开发者积极的提交更多类型的数据库驱动！
