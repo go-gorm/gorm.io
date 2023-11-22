@@ -408,7 +408,7 @@ name.Like("%modi%")
 name.Regexp(".*")
 // `user`.`name` FIND_IN_SET(`name`,"modi,jinzhu,zhangqiang")
 name.FindInSet("modi,jinzhu,zhangqiang")
-// `uesr`.`name` CONCAT("[",name,"]")
+// `user`.`name` CONCAT("[",name,"]")
 name.Concat("[", "]")
 ```
 
