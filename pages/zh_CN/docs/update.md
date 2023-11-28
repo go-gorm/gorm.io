@@ -16,7 +16,7 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-`Save` is a combination function. If save value does not contain primary key, it will execute `Create`, otherwise it will execute `Update` (with all fields).
+`保存` 是一个组合函数。 如果保存值不包含主键，它将执行 `Create`，否则它将执行 `Update` (包含所有字段)。
 
 ```go
 db.Save(&User{Name: "jinzhu", Age: 100})
@@ -27,23 +27,23 @@ db.Save(&User{ID: 1, Name: "jinzhu", Age: 100})
 ```
 
 {% note warn %}
-**NOTE** Don't use `Save` with `Model`, it's an **Undefined Behavior**.
+**NOTE**不要将 `Save` 和 `Model`一同使用, 这是 **为定义的行为**。
 {% endnote %}
 
 ## 更新单个列
 
-When updating a single column with `Update`, it needs to have any conditions or it will raise error `ErrMissingWhereClause`, checkout [Block Global Updates](#block_global_updates) for details. When using the `Model` method and its value has a primary value, the primary key will be used to build the condition, for example:
+当使用 `Update` 更新单列时，需要有一些条件，否则将会引起`ErrMissingWhereClause` 错误，查看 [阻止全局更新](#block_global_updates) 了解详情。 当使用 `Model` 方法，并且它有主键值时，主键将会被用于构建条件，例如：
 
 ```go
-// Update with conditions
+// 根据条件更新
 db.Model(&User{}).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE active=true;
 
-// User's ID is `111`:
+// User 的 ID 是 `111`
 db.Model(&user).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Update with conditions and model value
+// 根据条件和 model 的值进行更新
 db.Model(&user).Where("active = ?", true).Update("name", "hello")
 // UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
 ```
