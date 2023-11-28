@@ -50,49 +50,49 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 
 ## 更新多列
 
-`Updates` supports updating with `struct` or `map[string]interface{}`, when updating with `struct` it will only update non-zero fields by default
+`Updates` 方法支持 `struct` 和 `map[string]interface{}` 参数。当使用 `struct` 更新时，默认情况下GORM 只会更新非零值的字段
 
 ```go
-// Update attributes with `struct`, will only update non-zero fields
+// 根据 `struct` 更新属性，只会更新非零值的字段
 db.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
 // UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 
-// Update attributes with `map`
+// 根据 `map` 更新属性
 db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
 
 {% note warn %}
-**NOTE** When updating with struct, GORM will only update non-zero fields. You might want to use `map` to update attributes or use `Select` to specify fields to update
+**注意** 使用 struct 更新时, GORM 将只更新非零值字段。 你可能想用 `map` 来更新属性，或者使用 `Select` 声明字段来更新
 {% endnote %}
 
 ## 更新选定字段
 
-If you want to update selected fields or ignore some fields when updating, you can use `Select`, `Omit`
+如果您想要在更新时选择、忽略某些字段，您可以使用 `Select`、`Omit`
 
 ```go
-// Select with Map
-// User's ID is `111`:
+// 选择 Map 的字段
+// User 的 ID 是 `111`:
 db.Model(&user).Select("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello' WHERE id=111;
 
 db.Model(&user).Omit("name").Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// Select with Struct (select zero value fields)
+// 选择 Struct 的字段（会选中零值的字段）
 db.Model(&user).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
 // UPDATE users SET name='new_name', age=0 WHERE id=111;
 
-// Select all fields (select all fields include zero value fields)
+// 选择所有字段（选择包括零值字段的所有字段）
 db.Model(&user).Select("*").Updates(User{Name: "jinzhu", Role: "admin", Age: 0})
 
-// Select all fields but omit Role (select all fields include zero value fields)
+// 选择除 Role 外的所有字段（包括零值字段的所有字段）
 db.Model(&user).Select("*").Omit("Role").Updates(User{Name: "jinzhu", Role: "admin", Age: 0})
 ```
 
 ## 更新 Hook
 
-GORM allows the hooks `BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`. Those methods will be called when updating a record, refer [Hooks](hooks.html) for details
+GORM 支持的 hook 包括：`BeforeSave`, `BeforeUpdate`, `AfterSave`, `AfterUpdate`. 更新记录时将调用这些方法，查看 [Hooks](hooks.html) 获取详细信息
 
 ```go
 func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
