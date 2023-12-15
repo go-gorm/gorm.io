@@ -62,11 +62,11 @@ type Querier interface {
 
 Gen 提供了一些占位符来生成动态且安全的 SQL
 
-| Name             | Description                                    |
-| ---------------- | ---------------------------------------------- |
-| `@@table`        | escaped & quoted table name                    |
-| `@@<name>` | escaped & quoted table/column name from params |
-| `@<name>`  | SQL query params from params                   |
+| Name             | Description     |
+| ---------------- | --------------- |
+| `@@table`        | 被转义并引用的表名       |
+| `@@<name>` | 被转义并引用为列名的参数名   |
+| `@<name>`  | 用于SQL查询语句参数的参数名 |
 
 e.g:
 
@@ -105,7 +105,7 @@ Gen 提供强大的表达式支持动态条件SQL，目前支持以下表达式�
 
 ### `if/else`
 
-The `if/else` expression allows to use golang syntax as condition, it can be written like:
+`if/else`表达式中可以使用golang句法的条件语句, 可以像这样写为:
 
 ```
 {{if cond1}}
@@ -155,7 +155,7 @@ query.User.QueryWith(&User{Name: "zhangqiang"})
 
 ### `where`
 
-The `where` expression make you write the `WHERE` clause for the SQL query easier, let take a simple case as example:
+`where`表达式可以让你更轻松的写出SQL查询语句中的`WHERE`子句, 下例为一个简单示例:
 
 ```go
 type Querier interface {
@@ -174,7 +174,7 @@ query.User.Query(10)
 // SELECT * FROM users WHERE id=10
 ```
 
-Here is another complicated case, in this case, you will learn the `WHERE` clause only be inserted if there are any children expressions matched and it can smartly trim uncessary `and`, `or`, `xor`, `,` inside the `where` clause.
+这是另一个复杂的案例，在这种情况下，你将了解到只有在有任何子表达式匹配时才插入`WHERE`子句，并且它可以巧妙地修剪`where`子句内不必要的`and`, `or`, `xor`, `,`。
 
 ```go
 type Querier interface {
@@ -191,7 +191,7 @@ type Querier interface {
 }
 ```
 
-The generated code can be used like:
+生成的代码可以像这样使用:
 
 ```go
 var (
@@ -215,7 +215,7 @@ query.User.FilterWithTime(zero, zero)
 
 ### `set`
 
-The `set` expression used to generate the `SET` clause for the SQL query, it will trim uncessary `,` automatically, for example:
+`set`表达式用来生成SQL语句中的`SET`子句, 它会自动修剪不必要的`,`, 比如:
 
 ```go
 // UPDATE @@table
@@ -228,7 +228,7 @@ The `set` expression used to generate the `SET` clause for the SQL query, it wil
 Update(user gen.T, id int) (gen.RowsAffected, error)
 ```
 
-The generated code can be used like:
+生成的代码可以像这样使用:
 
 ```go
 query.User.Update(User{Name: "jinzhu", Age: 18}, 10)
@@ -243,32 +243,14 @@ query.User.Update(User{Age: 0}, 10)
 
 ### `for`
 
-The `for` expression iterates over a slice to generate the SQL, let's explain by example
+`for`表达式遍历切片生成SQL，用下例说明
 
 ```go
-// SELECT * FROM @@table
-// {{where}}
-//   {{for _,user:=range users}}
-//     {{if user.Name !="" && user.Age >0}}
-//       (username = @user.Name AND age=@user.Age AND role LIKE concat("%",@user.Role,"%")) OR
-//     {{end}}
-//   {{end}}
-// {{end}}
-Filter(users []gen.T) ([]gen.T, error)
+
 ```
 
-Usage:
+用法:
 
 ```go
-query.User.Filter([]User{
-        {Name: "jinzhu", Age: 18, Role: "admin"},
-        {Name: "zhangqiang", Age: 18, Role: "admin"},
-        {Name: "modi", Age: 18, Role: "admin"},
-        {Name: "songyuan", Age: 18, Role: "admin"},
-})
-// SELECT * FROM users WHERE
-//   (username = "jinzhu" AND age=18 AND role LIKE concat("%","admin","%")) OR
-//   (username = "zhangqiang" AND age=18 AND role LIKE concat("%","admin","%"))
-//   (username = "modi" AND age=18 AND role LIKE concat("%","admin","%")) OR
-//   (username = "songyuan" AND age=18 AND role LIKE concat("%","admin","%"))
+
 ```
