@@ -24,6 +24,11 @@
           <img src="{{ url_for('/sponsors-imgs/bytebase.png') }}" alt="bytebase">
         </a>
       </div>
+      <div class="sponsor_item">
+        <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" rel="sponsored noopener" title="Encore">
+          <img src="{{ url_for('/sponsors-imgs/encore.png') }}" alt="Encore">
+        </a>
+      </div>
 
       <div class="sponsor_item" title="Help to deliver a better GORM!">
         <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
@@ -68,6 +73,11 @@
       <div class="sponsor_item">
         <a href="https://www.bytebase.com/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20220715" target="_blank" rel="sponsored noopener" title="bytebase">
           <img src="{{ url_for('/sponsors-imgs/bytebase.png') }}" alt="bytebase">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" rel="sponsored noopener" title="Encore">
+          <img src="{{ url_for('/sponsors-imgs/encore.png') }}" alt="Encore">
         </a>
       </div>
 
