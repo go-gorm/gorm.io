@@ -43,28 +43,40 @@ db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## ロック (FOR UPDATE)
+## Locking
 
 GORMは数種類のロック処理をサポートしています。例:
 
 ```go
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SELECT * FROM `users` FOR UPDATE
+```
+The above statement will lock the selected rows for the duration of the transaction. This can be used in scenarios where you are preparing to update the rows and want to prevent other transactions from modifying them until your transaction is complete.
 
+The `Strength` can be also set to `SHARE` which locks the rows in a way that allows other transactions to read the locked rows but not to update or delete them.
+```go
+db.Clauses(clause.Locking{
+  Strength: "SHARE",
+}).Find(&users)
+// SELECT * FROM `users` FOR SHARE OF `users`
+```
+The `Table` option can be used to specify the table to lock. This is useful when you are joining multiple tables and want to lock only one of them.
+```go
 db.Clauses(clause.Locking{
   Strength: "SHARE",
   Table: clause.Table{Name: clause.CurrentTable},
 }).Find(&users)
 // SELECT * FROM `users` FOR SHARE OF `users`
-
+```
+Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
+```go
 db.Clauses(clause.Locking{
   Strength: "UPDATE",
   Options: "NOWAIT",
 }).Find(&users)
 // SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
-
-詳細については、[Raw SQL and SQL Builder](sql_builder.html)を参照してください。
+Another option can be `SKIP LOCKED` which skips over any rows that are already locked by other transactions. This is useful in high concurrency situations where you want to process rows that are not currently locked by other transactions.
 
 ## サブクエリ
 
