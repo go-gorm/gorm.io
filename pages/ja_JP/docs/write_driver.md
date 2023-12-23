@@ -9,7 +9,7 @@ GORM offers built-in support for popular databases like `SQLite`, `MySQL`, `Post
 
 For databases that closely resemble the behavior of `MySQL` or `Postgres`, you can often use the respective dialects directly. However, if your database significantly deviates from these dialects or offers additional features, developing a custom driver is recommended.
 
-## Implementing the Dialector Interface
+## Implementing the Dialector
 
 The `Dialector` interface in GORM consists of methods that a database driver must implement to facilitate communication between the database and GORM. Let's break down the key methods:
 
@@ -28,9 +28,9 @@ type Dialector interface {
 
 Each method in this interface serves a crucial role in how GORM interacts with the database, from establishing connections to handling queries and migrations.
 
-### SavePoint / Nested Transaction Support
+### Nested Transaction Support
 
-If your database supports savepoints or nested transactions, you can implement the `SavePointerDialectorInterface`.
+If your database supports savepoints, you can implement the `SavePointerDialectorInterface` to get the `Nested Transaction Support` and `SavePoint` support.
 
 ```go
 type SavePointerDialectorInterface interface {
