@@ -3,10 +3,6 @@ title: 编写插件
 layout: page
 ---
 
-Certainly! Let's delve into the functionality and customization options offered by GORM's Callbacks:
-
----
-
 ## Callbacks
 
 GORM leverages `Callbacks` to power its core functionalities. These callbacks provide hooks for various database operations like `Create`, `Query`, `Update`, `Delete`, `Row`, and `Raw`, allowing for extensive customization of GORM's behavior.
