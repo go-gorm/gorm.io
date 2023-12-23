@@ -168,8 +168,6 @@ db.Select("Account").Delete(&User{ID: 1})
 
 Association Mode in GORM offers various helper methods to handle relationships between models, providing an efficient way to manage associated data.
 
-### Starting Association Mode
-
 To start Association Mode, specify the source model and the relationship's field name. The source model must contain a primary key, and the relationship's field name should match an existing association.
 
 ```go
@@ -288,8 +286,6 @@ db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, user
 ## <span id="delete_association_record">Delete Association Record</span>
 
 In GORM, the `Replace`, `Delete`, and `Clear` methods in Association Mode primarily affect the foreign key references, not the associated records themselves. Understanding and managing this behavior is crucial for data integrity.
-
-### Default Behavior in Association Deletion
 
 - **Reference Update**: These methods update the association's foreign key to null, effectively removing the link between the source and associated models.
 - **No Physical Record Deletion**: The actual associated records remain untouched in the database.
