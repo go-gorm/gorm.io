@@ -5,11 +5,11 @@ layout: page
 
 GORM offers built-in support for popular databases like `SQLite`, `MySQL`, `Postgres`, `SQLServer`, and `ClickHouse`. However, when you need to integrate GORM with databases that are not directly supported or have unique features, you can create a custom driver. This involves implementing the `Dialector` interface provided by GORM.
 
-### Compatibility with MySQL or Postgres Dialects
+## Compatibility with MySQL or Postgres Dialects
 
 For databases that closely resemble the behavior of `MySQL` or `Postgres`, you can often use the respective dialects directly. However, if your database significantly deviates from these dialects or offers additional features, developing a custom driver is recommended.
 
-### Implementing the Dialector Interface
+## Implementing the Dialector Interface
 
 The `Dialector` interface in GORM consists of methods that a database driver must implement to facilitate communication between the database and GORM. Let's break down the key methods:
 
@@ -45,7 +45,7 @@ By implementing these methods, you enable support for savepoints and nested tran
 
 Defining custom clause builders in GORM allows you to extend the query capabilities for specific database operations. In this example, we'll go through the steps to define a custom clause builder for the "LIMIT" clause, which may have database-specific behavior.
 
-### Step 1: Define a Custom Clause Builder Function
+- **Step 1: Define a Custom Clause Builder Function**:
 
 To create a custom clause builder, you need to define a function that adheres to the `clause.ClauseBuilder` interface. This function will be responsible for constructing the SQL clause for a specific operation. In our example, we'll create a custom "LIMIT" clause builder.
 
@@ -66,7 +66,7 @@ func MyCustomLimitBuilder(c clause.Clause, builder clause.Builder) {
 
 Replace `MYLIMIT` with the actual SQL logic for your database. This is where you can implement database-specific behavior for the "LIMIT" clause.
 
-### Step 2: Register the Custom Clause Builder
+- **Step 2: Register the Custom Clause Builder**:
 
 To make your custom "LIMIT" clause builder available to GORM, register it with the `db.ClauseBuilders` map, typically during driver initialization. Here's how to register the custom "LIMIT" clause builder:
 
@@ -81,7 +81,7 @@ func (d *MyDialector) Initialize(db *gorm.DB) error {
 
 In this code, we use the key `"LIMIT"` to register our custom clause builder in the `db.ClauseBuilders` map, associating our custom builder with the "LIMIT" clause.
 
-### Step 3: Use the Custom Clause Builder
+- **Step 3: Use the Custom Clause Builder**:
 
 After registering the custom clause builder, GORM will call it when generating SQL statements that involve the "LIMIT" clause. You can use your custom logic to generate the SQL clause as needed.
 
