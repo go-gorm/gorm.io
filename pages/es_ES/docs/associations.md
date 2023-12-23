@@ -5,7 +5,11 @@ layout: page
 
 ## Crear/ actualizar Automáticamente
 
-GORM guardará automáticamente asociaciones y su referencia al usar [Upsert](create.html#upsert), cuando se crear/actualiza un registro.
+GORM automates the saving of associations and their references when creating or updating records, using an upsert technique that primarily updates foreign key references for existing associations.
+
+### Auto-Saving Associations on Create
+
+When you create a new record, GORM will automatically save its associated data. This includes inserting data into related tables and managing foreign key references.
 
 ```go
 user := User{
@@ -22,6 +26,7 @@ user := User{
   },
 }
 
+// Creating a user along with its associated addresses, emails, and languages
 db.Create(&user)
 // BEGIN TRANSACTION;
 // INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
@@ -34,61 +39,74 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-Si desea actualizar los datos de las asociaciones, debe usar el modo `FullSaveAssociations` mode:
+### Updating Associations with `FullSaveAssociations`
+
+For scenarios where a full update of the associated data is required (not just the foreign key references), the `FullSaveAssociations` mode should be used.
 
 ```go
+// Update a user and fully update all its associations
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
-// ...
-// INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY SET address1=VALUES(address1);
-// INSERT INTO "users" (name,billing_address_id,shipping_address_id) VALUES ("jinzhu", 1, 2);
-// INSERT INTO "emails" (user_id,email) VALUES (111, "jinzhu@example.com"), (111, "jinzhu-2@example.com") ON DUPLICATE KEY SET email=VALUES(email);
-// ...
+// SQL: Fully updates addresses, users, emails tables, including existing associated records
 ```
+
+Using `FullSaveAssociations` ensures that the entire state of the model, including all its associations, is reflected in the database, maintaining data integrity and consistency throughout the application.
 
 ## Crear/ actualizar Automáticamente
 
-Para omitir el guardado automático al crear/actualizar, puede utilizar `Select` o `Omit`, por ejemplo:
+GORM provides flexibility to skip automatic saving of associations during create or update operations. This can be achieved using the `Select` or `Omit` methods, which allow you to specify exactly which fields or associations should be included or excluded in the operation.
+
+### Using `Select` to Include Specific Fields
+
+The `Select` method lets you specify which fields of the model should be saved. This means that only the selected fields will be included in the SQL operation.
 
 ```go
 user := User{
-  Name:            "jinzhu",
-  BillingAddress:  Address{Address1: "Billing Address - Address 1"},
-  ShippingAddress: Address{Address1: "Shipping Address - Address 1"},
-  Emails:          []Email{
-    {Email: "jinzhu@example.com"},
-    {Email: "jinzhu-2@example.com"},
-  },
-  Languages:       []Language{
-    {Name: "ZH"},
-    {Name: "EN"},
-  },
+  // User and associated data
 }
 
+// Only include the 'Name' field when creating the user
 db.Select("Name").Create(&user)
-// INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
+// SQL: INSERT INTO "users" (name) VALUES ("jinzhu");
+```
 
+### Using `Omit` to Exclude Fields or Associations
+
+Conversely, `Omit` allows you to exclude certain fields or associations when saving a model.
+
+```go
+// Skip creating the 'BillingAddress' when creating the user
 db.Omit("BillingAddress").Create(&user)
-// Skip create BillingAddress when creating a user
 
+// Skip all associations when creating the user
 db.Omit(clause.Associations).Create(&user)
-// Skip all associations when creating a user
 ```
 
 {% note warn %}
-**NOTA:** Para las asociaciones many2many, GORM actualizará las asociaciones antes de crear las referencias de la tabla de unión, si quieres omitir el upseting de las asociaciones, puedes saltarla:
+**NOTE:** For many-to-many associations, GORM upserts the associations before creating join table references. To skip this upserting, use `Omit` with the association name followed by `.*`:
 
 ```go
+// Skip upserting 'Languages' associations
 db.Omit("Languages.*").Create(&user)
 ```
 
-El siguiente código omitirá la creación de la asociación y sus referencias
+To skip creating both the association and its references:
 
 ```go
+// Skip creating 'Languages' associations and their references
 db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
+Using `Select` and `Omit`, you can fine-tune how GORM handles the creation or updating of your models, giving you control over the auto-save behavior of associations.
+
 ## Seleccionar/Omitir campos de asociación
+
+In GORM, when creating or updating records, you can use the `Select` and `Omit` methods to specifically include or exclude certain fields of an associated model.
+
+With `Select`, you can specify which fields of an associated model should be included when saving the primary model. This is particularly useful for selectively saving parts of an association.
+
+Conversely, `Omit` lets you exclude certain fields of an associated model from being saved. This can be useful when you want to prevent specific parts of an association from being persisted.
+
 
 ```go
 user := User{
@@ -97,49 +115,87 @@ user := User{
   ShippingAddress: Address{Address1: "Shipping Address - Address 1", Address2: "addr2"},
 }
 
-// Create user and his BillingAddress, ShippingAddress
-// When creating the BillingAddress only use its address1, address2 fields and omit others
+// Create user and his BillingAddress, ShippingAddress, including only specified fields of BillingAddress
 db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
+// SQL: Creates user and BillingAddress with only 'Address1' and 'Address2' fields
 
+// Create user and his BillingAddress, ShippingAddress, excluding specific fields of BillingAddress
 db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
+// SQL: Creates user and BillingAddress, omitting 'Address2' and 'CreatedAt' fields
 ```
+
+## Eliminar Asociaciones
+
+GORM allows for the deletion of specific associated relationships (has one, has many, many2many) using the `Select` method when deleting a primary record. This feature is particularly useful for maintaining database integrity and ensuring related data is appropriately managed upon deletion.
+
+You can specify which associations should be deleted along with the primary record by using `Select`.
+
+```go
+// Delete a user's account when deleting the user
+db.Select("Account").Delete(&user)
+
+// Delete a user's Orders and CreditCards associations when deleting the user
+db.Select("Orders", "CreditCards").Delete(&user)
+
+// Delete all of a user's has one, has many, and many2many associations
+db.Select(clause.Associations).Delete(&user)
+
+// Delete each user's account when deleting multiple users
+db.Select("Account").Delete(&users)
+```
+
+{% note warn %}
+**NOTE:** It's important to note that associations will only be deleted if the primary key of the deleting record is not zero. GORM uses these primary keys as conditions to delete the selected associations.
+
+```go
+// This will not work as intended
+db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
+// SQL: Deletes all users with name 'jinzhu', but their accounts won't be deleted
+
+// Correct way to delete a user and their account
+db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
+// SQL: Deletes the user with name 'jinzhu' and ID '1', and the user's account
+
+// Deleting a user with a specific ID and their account
+db.Select("Account").Delete(&User{ID: 1})
+// SQL: Deletes the user with ID '1', and the user's account
+```
+{% endnote %}
 
 ## Modo de asociación
 
-El modo de asociación contiene algunos métodos de ayuda comúnmente utilizados para manejar relaciones
+Association Mode in GORM offers various helper methods to handle relationships between models, providing an efficient way to manage associated data.
+
+### Starting Association Mode
+
+To start Association Mode, specify the source model and the relationship's field name. The source model must contain a primary key, and the relationship's field name should match an existing association.
 
 ```go
-// Start Association Mode
 var user User
 db.Model(&user).Association("Languages")
-// `user` is the source model, it must contains primary key
-// `Languages` is a relationship's field name
-// If the above two requirements matched, the AssociationMode should be started successfully, or it should return error
-db.Model(&user).Association("Languages").Error
+// Check for errors
+error := db.Model(&user).Association("Languages").Error
 ```
 
-### Buscar asociaciones
+### Finding Associations
 
-Buscar asociaciones coincidentes
+Retrieve associated records with or without additional conditions.
 
 ```go
+// Simple find
 db.Model(&user).Association("Languages").Find(&languages)
-```
 
-Buscar asociaciones con condiciones
-
-```go
+// Find with conditions
 codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
-
-db.Model(&user).Where("code IN ?", codes).Order("code desc").Association("Languages").Find(&languages)
 ```
 
-### Añadir asociaciones
+### Appending Associations
 
-Añadir nuevas asociaciones para `muchas a muchas`, `tiene muchas`, reemplazar asociación actual para `tiene un`, `pertenece a`
+Add new associations for `many to many`, `has many`, or replace the current association for `has one`, `belongs to`.
 
 ```go
+// Append new languages
 db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 
 db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
@@ -147,38 +203,43 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Reemplazar asociaciones
+### Replacing Associations
 
-Reemplazar asociaciones actuales por nuevas
+Replace current associations with new ones.
 
 ```go
+// Replace existing languages
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
 
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Eliminar Asociaciones
+### Deleting Associations
 
-Eliminar la relación entre la fuente & argumentos si existe, solo eliminar la referencia, no eliminará esos objetos de la DB.
+Remove the relationship between the source and arguments, only deleting the reference.
 
 ```go
+// Delete specific languages
 db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageEN})
+
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Limpiar asociaciones
+### Clearing Associations
 
-Eliminar toda referencia entre la fuente & asociación, no eliminará esas asociaciones
+Remove all references between the source and association.
 
 ```go
+// Clear all languages
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Contar Asociaciones
+### Counting Associations
 
-Devolver el recuento de asociaciones actuales
+Get the count of current associations, with or without conditions.
 
 ```go
+// Count all languages
 db.Model(&user).Association("Languages").Count()
 
 // Count with conditions
@@ -186,89 +247,79 @@ codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Datos de Lote
+### Batch Data Handling
 
-El modo de asociación soporta datos por lotes, por ejemplo:
+Association Mode allows you to handle relationships for multiple records in a batch. This includes finding, appending, replacing, deleting, and counting operations for associated data.
+
+- **Finding Associations**: Retrieve associated data for a collection of records.
 
 ```go
-// Find all roles for all users
 db.Model(&users).Association("Role").Find(&roles)
+```
 
-// Delete User A from all user's team
+- **Deleting Associations**: Remove specific associations across multiple records.
+
+```go
 db.Model(&users).Association("Team").Delete(&userA)
+```
 
-// Get distinct count of all users' teams
+- **Counting Associations**: Get the count of associations for a batch of records.
+
+```go
 db.Model(&users).Association("Team").Count()
+```
 
-// For `Append`, `Replace` with batch data, the length of the arguments needs to be equal to the data's length or else it will return an error
+- **Appending/Replacing Associations**: Manage associations for multiple records. Note the need for matching argument lengths with the data.
+
+```go
 var users = []User{user1, user2, user3}
-// e.g: we have 3 users, Append userA to user1's team, append userB to user2's team, append userA, userB and userC to user3's team
+
+// Append different teams to different users in a batch
+// Append userA to user1's team, userB to user2's team, and userA, userB, userC to user3's team
 db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-// Reset user1's team to userA，reset user2's team to userB, reset user3's team to userA, userB and userC
+
+// Replace teams for multiple users in a batch
+// Reset user1's team to userA, user2's team to userB, and user3's team to userA, userB, and userC
 db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## <span id="delete_association_record">Delete Association Record</span>
 
-By default, `Replace`/`Delete`/`Clear` in `gorm.Association` only delete the reference, that is, set old associations's foreign key to null.
+In GORM, the `Replace`, `Delete`, and `Clear` methods in Association Mode primarily affect the foreign key references, not the associated records themselves. Understanding and managing this behavior is crucial for data integrity.
 
-You can delete those objects with `Unscoped` (it has nothing to do with `ManyToMany`).
+### Default Behavior in Association Deletion
 
-How to delete is decided by `gorm.DB`.
+- **Reference Update**: These methods update the association's foreign key to null, effectively removing the link between the source and associated models.
+- **No Physical Record Deletion**: The actual associated records remain untouched in the database.
+
+### Modifying Deletion Behavior with `Unscoped`
+
+For scenarios requiring actual deletion of associated records, the `Unscoped` method alters this behavior.
+
+- **Soft Delete**: Marks associated records as deleted (sets `deleted_at` field) without removing them from the database.
 
 ```go
-// Soft delete
-// UPDATE `languages` SET `deleted_at`= ...
 db.Model(&user).Association("Languages").Unscoped().Clear()
-
-// Delete permanently
-// DELETE FROM `languages` WHERE ...
-db.Unscoped().Model(&item).Association("Languages").Unscoped().Clear()
 ```
 
-## <span id="delete_with_select">Delete with Select</span>
-
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+- **Permanent Delete**: Physically deletes the association records from the database.
 
 ```go
-// delete user's account when deleting user
-db.Select("Account").Delete(&user)
-
-// delete user's Orders, CreditCards relations when deleting user
-db.Select("Orders", "CreditCards").Delete(&user)
-
-// delete user's has one/many/many2many relations when deleting user
-db.Select(clause.Associations).Delete(&user)
-
-// delete each user's account when deleting users
-db.Select("Account").Delete(&users)
+// db.Unscoped().Model(&user)
+db.Unscoped().Model(&user).Association("Languages").Unscoped().Clear()
 ```
-
-{% note warn %}
-**NOTE:** Associations will only be deleted if the deleting records's primary key is not zero, GORM will use those primary keys as conditions to delete selected associations
-
-```go
-// DOESN'T WORK
-db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// will delete all user with name `jinzhu`, but those user's account won't be deleted
-
-db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// will delete the user with name = `jinzhu` and id = `1`, and user `1`'s account will be deleted
-
-db.Select("Account").Delete(&User{ID: 1})
-// will delete the user with id = `1`, and user `1`'s account will be deleted
-```
-{% endnote %}
 
 ## <span id="tags">Association Tags</span>
 
-| Etiqueta         | Descripción                                                                                                    |
-| ---------------- | -------------------------------------------------------------------------------------------------------------- |
-| foreignKey       | Especifica el nombre de la columna del modelo actual que se utiliza como clave foránea para la tabla de unión  |
-| references       | Especifica el nombre de la columna de la tabla de referencia que se asigna a la clave foránea de la tabla join |
-| polymorphic      | Especifica el tipo polimórfico como el nombre del modelo                                                       |
-| polymorphicValue | Especifica el valor polimórfico, nombre de tabla por defecto                                                   |
-| many2many        | Especifica el nombre de la tabla de unión                                                                      |
-| joinForeignKey   | Especifica el nombre de columna de clave foránea de la tabla de unión que mapea a la tabla actual              |
-| joinForeignKey   | Especifica el nombre de columna de clave foránea de la tabla de unión que mapea a la tabla de referencia       |
-| constraint       | Restricción de relaciones, por ejemplo: `OnUpdate`,`OnDelete`                                                  |
+Association tags in GORM are used to specify how associations between models are handled. These tags define the relationship's details, such as foreign keys, references, and constraints. Understanding these tags is essential for setting up and managing relationships effectively.
+
+| Etiqueta           | Descripción                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------ |
+| `foreignKey`       | Specifies the column name of the current model used as a foreign key in the join table.          |
+| `references`       | Indicates the column name in the reference table that the foreign key of the join table maps to. |
+| `polymorphic`      | Defines the polymorphic type, typically the model name.                                          |
+| `polymorphicValue` | Sets the polymorphic value, usually the table name, if not specified otherwise.                  |
+| `many2many`        | Names the join table used in a many-to-many relationship.                                        |
+| `joinForeignKey`   | Identifies the foreign key column in the join table that maps back to the current model's table. |
+| `joinForeignKey`   | Points to the foreign key column in the join table that links to the reference model's table.    |
+| `constraint`       | Specifies relational constraints like `OnUpdate`, `OnDelete` for the association.                |
