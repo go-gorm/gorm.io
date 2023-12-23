@@ -118,7 +118,7 @@ GORM comes with a set of predefined callbacks that drive its standard features. 
 
 ## Plugins
 
-GORM's plugin system allows for the extension and customization of its core functionalities. Plugins in GORM are integrated using the `Use` method and must conform to the `Plugin` interface.
+GORM's plugin system allows for easy extensibility and customization of its core functionalities, enhancing your application's capabilities while maintaining a modular architecture.
 
 ### The `Plugin` Interface
 
@@ -152,7 +152,7 @@ After a plugin is registered, it is stored in GORM's configuration. You can acce
 plugin := db.Config.Plugins[pluginName]
 ```
 
-### Practical Example: Prometheus Plugin
+### Practical Example
 
 An example of a GORM plugin is the Prometheus plugin, which integrates Prometheus monitoring with GORM:
 
@@ -164,9 +164,3 @@ db.Use(prometheus.New(prometheus.Config{
 ```
 
 [Prometheus plugin documentation](prometheus.html) provides detailed information on its implementation and usage.
-
-### Benefits of Using Plugins
-
-- **Extensibility**: Plugins offer a way to enhance GORM's capabilities without modifying its core code.
-- **Customization**: They enable customization of GORM's behavior to fit specific application requirements.
-- **Modularity**: Plugins promote a modular architecture, making it easier to maintain and update different aspects of the application.
