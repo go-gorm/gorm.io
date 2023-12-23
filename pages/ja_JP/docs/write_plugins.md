@@ -3,15 +3,19 @@ title: プラグインの作成
 layout: page
 ---
 
+Certainly! Let's delve into the functionality and customization options offered by GORM's Callbacks:
+
+---
+
 ## Callbacks
 
-GORM内部では、 `Callbacks` の技術が活かされています。GORMには `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw` 処理のcallbackが用意されています。これらのcallbackを使うことでGORMを自由にカスタマイズすることができます。
+GORM leverages `Callbacks` to power its core functionalities. These callbacks provide hooks for various database operations like `Create`, `Query`, `Update`, `Delete`, `Row`, and `Raw`, allowing for extensive customization of GORM's behavior.
 
-Callbacks はグローバルな `*gorm.DB` に登録されます（セッションレベルではありません）。そのため、別のcallbackが登録された `*gorm.DB` が必要な場合は、新規の `*gorm.DB` を用意する必要があります。
+Callbacks are registered at the global `*gorm.DB` level, not on a session basis. This means if you need different callback behaviors, you should initialize a separate `*gorm.DB` instance.
 
-### Callbackを登録する
+### Registering a Callback
 
-独自のcallbackを登録できます
+You can register a callback for specific operations. For example, to add a custom image cropping functionality:
 
 ```go
 func cropImage(db *gorm.DB) {
@@ -60,65 +64,69 @@ func cropImage(db *gorm.DB) {
   }
 }
 
+// Register the callback for the Create operation
 db.Callback().Create().Register("crop_image", cropImage)
-// register a callback for Create process
 ```
 
-### Callbackを削除する
+### Deleting a Callback
 
-指定したcallbackを削除することができます
+If a callback is no longer needed, it can be removed:
 
 ```go
+// Remove the 'gorm:create' callback from Create operations
 db.Callback().Create().Remove("gorm:create")
-// delete callback `gorm:create` from Create callbacks
 ```
 
-### Callbackを置き換える
+### Replacing a Callback
 
-同じ名称を指定することでcallbackを置き換えることができます
+Callbacks with the same name can be replaced with a new function:
 
 ```go
+// Replace the 'gorm:create' callback with a new function
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
-// replace callback `gorm:create` with new function `newCreateFunction` for Create process
 ```
 
-### 実行順序を指定してCallbackを登録する
+### Ordering Callbacks
 
-実行順序を指定してCallbackを登録することができます。
+Callbacks can be registered with specific orders to ensure they execute at the right time in the operation lifecycle.
 
 ```go
-// before gorm:create
+// Register to execute before the 'gorm:create' callback
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
 
-// after gorm:create
+// Register to execute after the 'gorm:create' callback
 db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
 
-// after gorm:query
+// Register to execute after the 'gorm:query' callback
 db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
 
-// after gorm:delete
+// Register to execute after the 'gorm:delete' callback
 db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
 
-// before gorm:update
+// Register to execute before the 'gorm:update' callback
 db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
 
-// before gorm:create and after gorm:before_create
+// Register to execute before 'gorm:create' and after 'gorm:before_create'
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 
-// before any other callbacks
+// Register to execute before any other callbacks
 db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
 
-// after any other callbacks
+// Register to execute after any other callbacks
 db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
-### 定義済みのCallbacks
+### Predefined Callbacks
 
-GORMをより高機能にするために、 GORMにはすでに [定義されているCallbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) があります。プラグインを作成する前にそれらをチェックしてみるとよいでしょう。
+GORM comes with a set of predefined callbacks that drive its standard features. It's recommended to review these [defined callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) before creating custom plugins or additional callback functions.
 
-## プラグイン
+## Plugins
 
-GORMにはプラグインを登録するための `Use` メソッドがあります。プラグインは `Plugin` インターフェイスを実装している必要があります。
+GORM's plugin system allows for the extension and customization of its core functionalities. Plugins in GORM are integrated using the `Use` method and must conform to the `Plugin` interface.
+
+### The `Plugin` Interface
+
+To create a plugin for GORM, you need to define a struct that implements the `Plugin` interface:
 
 ```go
 type Plugin interface {
@@ -127,10 +135,42 @@ type Plugin interface {
 }
 ```
 
-GORMにプラグインを登録すると `Initialize` メソッドが実行されます。 GORMは登録されたプラグインを保存しているため、以下のようにアクセスすることができます:
+- **`Name` Method**: Returns a unique string identifier for the plugin.
+- **`Initialize` Method**: Contains the logic to set up the plugin. This method is called when the plugin is registered with GORM for the first time.
+
+### Registering a Plugin
+
+Once your plugin conforms to the `Plugin` interface, you can register it with a GORM instance:
 
 ```go
-db.Config.Plugins[pluginName]
+// Example of registering a plugin
+db.Use(MyCustomPlugin{})
 ```
 
-プラグインの例として [Prometheus](prometheus.html) を参照するとよいでしょう。
+### Accessing Registered Plugins
+
+After a plugin is registered, it is stored in GORM's configuration. You can access registered plugins via the `Plugins` map:
+
+```go
+// Access a registered plugin by its name
+plugin := db.Config.Plugins[pluginName]
+```
+
+### Practical Example: Prometheus Plugin
+
+An example of a GORM plugin is the Prometheus plugin, which integrates Prometheus monitoring with GORM:
+
+```go
+// Registering the Prometheus plugin
+db.Use(prometheus.New(prometheus.Config{
+  // Configuration options here
+}))
+```
+
+[Prometheus plugin documentation](prometheus.html) provides detailed information on its implementation and usage.
+
+### Benefits of Using Plugins
+
+- **Extensibility**: Plugins offer a way to enhance GORM's capabilities without modifying its core code.
+- **Customization**: They enable customization of GORM's behavior to fit specific application requirements.
+- **Modularity**: Plugins promote a modular architecture, making it easier to maintain and update different aspects of the application.
