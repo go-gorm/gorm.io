@@ -30,12 +30,4 @@ type Dialector interface {
 
 Each method in this interface plays a crucial role in how GORM interacts with the database, from initializing connections to handling queries and migrations.
 
-### Steps to Write a New Driver
-
-1. **Understand Database Specifics**: Familiarize yourself with the database's querying language, data types, and specific features or constraints.
-2. **Implement Dialector Methods**: Based on the database specifics, implement each method in the `Dialector` interface. Ensure that your implementation correctly handles all the operations that GORM performs.
-3. **Test the Driver**: Rigorously test the driver to ensure it handles all typical ORM operations, including CRUD actions, migrations, transactions, and advanced queries.
-4. **Optimize and Refine**: Optimize the driver for performance and ensure it adheres to best practices in handling database interactions.
-5. **Document Usage**: Provide clear documentation on how to use the driver, including setup, configuration, and any database-specific considerations.
-
 For inspiration and guidance, examining the [MySQL Driver](https://github.com/go-gorm/mysql) can be helpful. This driver shows how the `Dialector` interface is implemented to suit the specific needs of the MySQL database.
