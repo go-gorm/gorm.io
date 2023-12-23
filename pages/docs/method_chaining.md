@@ -48,7 +48,7 @@ For the full list, refer to [GORM Finisher API](https://github.com/go-gorm/gorm/
 
 GORM defines methods like `Session`, `WithContext`, and `Debug` as New Session Methods, which are essential for creating shareable and reusable `*gorm.DB` instances. For more details, see [Session](session.html) documentation.
 
-## Understanding the Reusability and Safety of `*gorm.DB` Instances
+## Reusability and Safety
 
 A critical aspect of GORM is understanding when a `*gorm.DB` instance is safe to reuse. Following a `Chain Method` or `Finisher Method`, GORM returns an initialized `*gorm.DB` instance. This instance is not safe for reuse as it may carry over conditions from previous operations, potentially leading to contaminated SQL queries. For example:
 
@@ -66,7 +66,7 @@ queryDB.Where("age > ?", 20).First(&user2)
 // SQL: SELECT * FROM users WHERE name = "jinzhu" AND age > 10 AND age > 20
 ```
 
-### Using New Session Methods for Safe Reuse
+### Example of Safe Reuse
 
 To safely reuse a `*gorm.DB` instance, use a New Session Method:
 
@@ -88,7 +88,7 @@ In this scenario, using `Session(&gorm.Session{})` ensures that each query start
 
 Let's clarify with a few examples:
 
-### Example 1: Safe Instance Reuse
+- **Example 1: Safe Instance Reuse**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -113,7 +113,7 @@ db.Find(&users)
 
 In this example, each chain of method calls is independent, ensuring clean, non-polluted SQL queries.
 
-### (Bad) Example 2: Unsafe Instance Reuse
+- **(Bad) Example 2: Unsafe Instance Reuse**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -135,7 +135,7 @@ tx.Where("age = ?", 28).Find(&users)
 
 In this bad example, reusing the `tx` variable leads to compounded conditions, which is generally not desirable.
 
-### Example 3: Safe Reuse with New Session Methods
+- **Example 3: Safe Reuse with New Session Methods**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})

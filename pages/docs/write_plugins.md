@@ -152,7 +152,7 @@ After a plugin is registered, it is stored in GORM's configuration. You can acce
 plugin := db.Config.Plugins[pluginName]
 ```
 
-### Practical Example: Prometheus Plugin
+### Practical Example
 
 An example of a GORM plugin is the Prometheus plugin, which integrates Prometheus monitoring with GORM:
 
