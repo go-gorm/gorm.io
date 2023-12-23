@@ -3,15 +3,19 @@ title: Membuat Plugin
 layout: page
 ---
 
+Certainly! Let's delve into the functionality and customization options offered by GORM's Callbacks:
+
+---
+
 ## Panggilan Balik
 
-GORM tersendiri mendukung `Callbacks`, memiliki panggilan balik untuk `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw`, Anda dapat sepenuhnya menyesuaikan GORM dengan mereka seperti yang Anda inginkan
+GORM leverages `Callbacks` to power its core functionalities. These callbacks provide hooks for various database operations like `Create`, `Query`, `Update`, `Delete`, `Row`, and `Raw`, allowing for extensive customization of GORM's behavior.
 
-Callback terdaftar ke `*gorm.DB` global, bukan tingkat sesi, jika Anda memerlukan `*gorm.DB` dengan callback yang berbeda, Anda perlu menginisialisasi `*gorm.DB` lain
+Callbacks are registered at the global `*gorm.DB` level, not on a session basis. This means if you need different callback behaviors, you should initialize a separate `*gorm.DB` instance.
 
-### Mendaftarkan Panggilan Balik
+### Registering a Callback
 
-Daftarkan panggilan balik ke panggilan balik
+You can register a callback for specific operations. For example, to add a custom image cropping functionality:
 
 ```go
 func cropImage(db *gorm.DB) {
@@ -60,65 +64,69 @@ func cropImage(db *gorm.DB) {
   }
 }
 
+// Register the callback for the Create operation
 db.Callback().Create().Register("crop_image", cropImage)
-// register a callback for Create process
 ```
 
-### Menhapus Panggilan Balik
+### Deleting a Callback
 
-Hapus panggilan balik dari panggilan balik
+If a callback is no longer needed, it can be removed:
 
 ```go
+// Remove the 'gorm:create' callback from Create operations
 db.Callback().Create().Remove("gorm:create")
-// hapus panggilan balik `gorm: create` dari Buat panggilan balik
 ```
 
-### Mengganti Panggilan Balik
+### Replacing a Callback
 
-Ganti panggilan balik yang memiliki nama yang sama dengan yang baru
+Callbacks with the same name can be replaced with a new function:
 
 ```go
+// Replace the 'gorm:create' callback with a new function
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
-// ganti callback `gorm:create` dengan fungsi baru `newCreateFunction` untuk proses Create
 ```
 
-### Daftarkan Panggilan Balik dengan `Orders`
+### Ordering Callbacks
 
-Daftarkan Panggilan Balik dengan `Orders`
+Callbacks can be registered with specific orders to ensure they execute at the right time in the operation lifecycle.
 
 ```go
-// sebelum gorm:create
+// Register to execute before the 'gorm:create' callback
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
 
-// setelah gorm:create
+// Register to execute after the 'gorm:create' callback
 db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
 
-// setelah gorm:query
+// Register to execute after the 'gorm:query' callback
 db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
 
-// setelah gorm:delete
+// Register to execute after the 'gorm:delete' callback
 db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
 
-// sebelum gorm: perbarui
+// Register to execute before the 'gorm:update' callback
 db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
 
-// sebelum gorm:buat dan setelah gorm:sebelum_buat
+// Register to execute before 'gorm:create' and after 'gorm:before_create'
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 
-// sebelum panggilan balik lainnya
+// Register to execute before any other callbacks
 db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
 
-// setelah panggilan balik lainnya
+// Register to execute after any other callbacks
 db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
-### Mendefinisikan Panggilan Balik
+### Predefined Callbacks
 
-GORM telah menetapkan [beberapa panggilan balik](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) untuk mengaktifkan fitur GORM saat ini, periksa sebelum memulai plugin Anda
+GORM comes with a set of predefined callbacks that drive its standard features. It's recommended to review these [defined callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) before creating custom plugins or additional callback functions.
 
-## Plugin
+## Plugins
 
-GORM menyediakan metode `Use` untuk mendaftarkan plugin, plugin perlu mengimplementasikan antarmuka `Plugin`
+GORM's plugin system allows for the extension and customization of its core functionalities. Plugins in GORM are integrated using the `Use` method and must conform to the `Plugin` interface.
+
+### The `Plugin` Interface
+
+To create a plugin for GORM, you need to define a struct that implements the `Plugin` interface:
 
 ```go
 type Plugin interface {
@@ -127,10 +135,42 @@ type Plugin interface {
 }
 ```
 
-Metode `Initialize` akan dipanggil saat mendaftarkan plugin ke GORM pertama kali, dan GORM akan menyimpan plugin yang terdaftar, mengaksesnya seperti:
+- **`Name` Method**: Returns a unique string identifier for the plugin.
+- **`Initialize` Method**: Contains the logic to set up the plugin. This method is called when the plugin is registered with GORM for the first time.
+
+### Registering a Plugin
+
+Once your plugin conforms to the `Plugin` interface, you can register it with a GORM instance:
 
 ```go
-db.Config.Plugins[pluginName]
+// Example of registering a plugin
+db.Use(MyCustomPlugin{})
 ```
 
-Lihat [Prometheus](prometheus.html) sebagai contoh
+### Accessing Registered Plugins
+
+After a plugin is registered, it is stored in GORM's configuration. You can access registered plugins via the `Plugins` map:
+
+```go
+// Access a registered plugin by its name
+plugin := db.Config.Plugins[pluginName]
+```
+
+### Practical Example: Prometheus Plugin
+
+An example of a GORM plugin is the Prometheus plugin, which integrates Prometheus monitoring with GORM:
+
+```go
+// Registering the Prometheus plugin
+db.Use(prometheus.New(prometheus.Config{
+  // Configuration options here
+}))
+```
+
+[Prometheus plugin documentation](prometheus.html) provides detailed information on its implementation and usage.
+
+### Benefits of Using Plugins
+
+- **Extensibility**: Plugins offer a way to enhance GORM's capabilities without modifying its core code.
+- **Customization**: They enable customization of GORM's behavior to fit specific application requirements.
+- **Modularity**: Plugins promote a modular architecture, making it easier to maintain and update different aspects of the application.
