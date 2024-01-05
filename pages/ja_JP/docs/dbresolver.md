@@ -96,13 +96,13 @@ But you can specifies which DB to use before starting a transaction, for example
 
 ```go
 // Start transaction based on default replicas db
-tx := DB.Clauses(dbresolver.Read).Begin()
+tx := db.Clauses(dbresolver.Read).Begin()
 
 // Start transaction based on default sources db
-tx := DB.Clauses(dbresolver.Write).Begin()
+tx := db.Clauses(dbresolver.Write).Begin()
 
 // Start transaction based on `secondary`'s sources
-tx := DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).Begin()
+tx := db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).Begin()
 ```
 
 ## 負荷分散
