@@ -95,14 +95,14 @@ db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).First(&user)
 但您可以在事务开始之前指定使用哪个数据库，例如：
 
 ```go
-// 通过默认 replicas db 开始事务
-tx := DB.Clauses(dbresolver.Read).Begin()
+// Start transaction based on default replicas db
+tx := db.Clauses(dbresolver.Read).Begin()
 
-// 通过默认 sources db 开始事务
-tx := DB.Clauses(dbresolver.Write).Begin()
+// Start transaction based on default sources db
+tx := db.Clauses(dbresolver.Write).Begin()
 
-// 通过 `secondary` 的 sources db 开始事务
-tx := DB.Clauses(dbresolver.Use("secondary"), dbresolver.Write).Begin()
+// Start transaction based on `secondary`'s sources
+tx := db.Clauses(dbresolver.Use("secondary"), dbresolver.Write).Begin()
 ```
 
 ## 负载均衡
