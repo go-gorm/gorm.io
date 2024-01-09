@@ -212,7 +212,7 @@ import (
 )
 
 func main() {
-  dsn := "tcp://localhost:9000?database=gorm&username=gorm&password=gorm&read_timeout=10&write_timeout=20"
+ dsn := "clickhouse://gorm:gorm@localhost:9942/gorm?dial_timeout=10s&read_timeout=20s"
   db, err := gorm.Open(clickhouse.Open(dsn), &gorm.Config{})
 
   // 自动迁移 (这是GORM自动创建表的一种方式--译者注)
