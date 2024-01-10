@@ -40,7 +40,7 @@ userInputID := "1=1;drop table users;"
 // safe, return error
 id,err := strconv.Atoi(userInputID)
 if err != nil {
-    return error
+    return err
 }
 db.First(&user, id)
 
