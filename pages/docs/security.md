@@ -38,7 +38,7 @@ When retrieving objects with number primary key by user's input, you should chec
 ```go
 userInputID := "1=1;drop table users;"
 // safe, return error
-id,err := strconv.Atoi(userInputID)
+id, err := strconv.Atoi(userInputID)
 if err != nil {
     return err
 }
