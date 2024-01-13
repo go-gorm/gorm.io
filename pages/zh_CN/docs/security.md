@@ -37,14 +37,14 @@ db.First(&user, fmt.Sprintf("name = %v", userInput))
 
 ```go
 userInputID := "1=1;drop table users;"
-// 安全的，返回 err
-id,err := strconv.Atoi(userInputID)
+// safe, return error
+id, err := strconv.Atoi(userInputID)
 if err != nil {
-    return error
+    return err
 }
 db.First(&user, id)
 
-// SQL 注入
+// SQL injection
 db.First(&user, userInputID)
 // SELECT * FROM users WHERE 1=1;drop table users;
 ```
