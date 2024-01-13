@@ -139,7 +139,7 @@ Customized join table's foreign keys required to be composited primary keys or c
 type Person struct {
   ID        int
   Name      string
-  Addresses []Address `gorm:"many2many:person_addressses;"`
+  Addresses []Address `gorm:"many2many:person_addresses;"`
 }
 
 type Address struct {
