@@ -86,7 +86,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 
 ### <span id="naming_strategy">Стратегия именования</span>
 
-GORM позволяет пользователям изменять стратегию именования по умолчанию, переопределяя стандартную `NamingStrategy`, которая используется для сборки `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Смотрите [Настройки GORM](gorm_config.html#naming_strategy) для подробностей
+GORM allows users to change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html#naming_strategy) for details
 
 ## Название столбца
 
