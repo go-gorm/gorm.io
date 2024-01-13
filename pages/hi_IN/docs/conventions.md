@@ -87,7 +87,7 @@ FROM clause में SubQuery का उपयोग कैसे करें,
 
 ### <span id="naming_strategy">NamingStrategy</span>
 
-GORM users को डिफॉल्ट `NamingStrategy` को ओवरराइड करके डिफॉल्ट नेमिंग कन्वेंशन को बदलने की अनुमति देता है, जिसका उपयोग `TableName`, `ColumnName`, `JoinTableName` बनाने के लिए किया जाता है। code>, `RelationshipFKName`, `CheckerName`, `IndexName`, [GORM Config](gorm_config.html#naming_strategy) देखें जानकारी के लिए
+GORM allows users to change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html#naming_strategy) for details
 
 ## Column Name
 
