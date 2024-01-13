@@ -137,7 +137,7 @@ many2many リレーションを使った処理の詳細については [Associat
 type Person struct {
   ID        int
   Name      string
-  Addresses []Address `gorm:"many2many:person_addressses;"`
+  Addresses []Address `gorm:"many2many:person_addresses;"`
 }
 
 type Address struct {
