@@ -97,7 +97,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DisableNestedTransaction
 
-When using `Transaction` method inside a db transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support, you could disable it by using the `DisableNestedTransaction` option, refer [Session](session.html) for details
+Db 트랜잭션 내부에서 또 다른 트랜잭션을 시작할 때, GORM은 중첩 트랜잭션을 지원하기 위해서 SavePoint와 RollbackTo 메서드를 사용합니다. DisableNestedTransaction 옵션을 이용하여 비활성화할 수 있으며, 자세한 내용은 Session을 참고하세요.
 
 
 ## AllowGlobalUpdate
@@ -106,7 +106,7 @@ Enable global update/delete, refer [Session](session.html) for details
 
 ## DisableAutomaticPing
 
-GORM automatically ping database after initialized to check database availability, disable it by setting it to `true`
+GORM은 초기화 후에 데이터베이스와의 연결 상태를 확인하기 위해 기본적으로 Ping을 요청합니다. 그러나 자주 변경하지 않아 기본적인 Ping 요청을 제거하거나, 자원 소모나 부하를 줄이기 위해 이 기능을 비활성화할 수 있습니다. 또한 개발자가 직접 데이터베이스 연결 상태를 통제하고자 할 때, 필요한 시점에만 Ping을 보내도록 이 옵션을 활용할 수 있습니다.
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
