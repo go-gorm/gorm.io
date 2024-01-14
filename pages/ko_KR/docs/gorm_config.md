@@ -51,10 +51,10 @@ type Namer interface {
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   NamingStrategy: schema.NamingStrategy{
-    TablePrefix: "t_",   // table name prefix, table for `User` would be `t_users`
-    SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
-    NoLowerCase: true, // skip the snake_casing of names
-    NameReplacer: strings.NewReplacer("CID", "Cid"), // use name replacer to change struct/field name before convert it to db name
+    TablePrefix: "t_",   // 테이블명의 접두사를 지정합니다. 예시로, User를 테이블명으로 변환할 때 t_users로 변환합니다. 
+    SingularTable: true, // 단수형 테이블명을 사용합니다. 기본적으로 GORM은 복수형 테이블명 규칙이 적용되는데 true로 설정하면 구조체 이름 그대로 테이블명을 생성합니다.
+    NoLowerCase: true, // 소문자와 언더스코어를 사용한 스네이크 표기를 사용하지 않고, 구조체의 필드명을 그대로 사용합니다.
+    NameReplacer: strings.NewReplacer("CID", "Cid"), // 구조체의 필드 이름을 DB에 넣기 전에 변환하여 테이블/열 이름으로 매핑합니다. 예시로 문자열 CID를 Cid로 변경하여 넣는다는 예시입니다.
   },
 })
 ```
