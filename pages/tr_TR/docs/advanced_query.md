@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Akıllı Alan Seçimi</span>
 
-In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+GORM'da, [`Select`](query.html) yöntemini kullanarak belirli alanları verimli bir şekilde seçebilirsiniz. Bu, özellikle API yanıtlarında büyük modellerle uğraşırken ancak yalnızca bir alan alt kümesi gerektirdiğinde kullanışlıdır.
 
 ```go
 type User struct {
