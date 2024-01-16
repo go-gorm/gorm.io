@@ -5,25 +5,23 @@ layout: page
 
 ## <span id="smart_select">انتخاب هوشمند field ها</span>
 
-In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. به طور خاص در هنگام برخورد با مدل های بزرگ که تنها به زیر مجموعه ای از فیلدها نیاز دارند، این ویژگی مفید است، مخصوصا در پاسخ های API.
 
 ```go
-type User struct {
+} type User struct
   ID     uint
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
-}
+  // و صدها فیلد دیگر
+{
 
-type APIUser struct {
+ } type APIUser struct
   ID   uint
   Name string
-}
+{
 
-// GORM will automatically select `id`, `name` fields when querying
-db.Model(&User{}).Limit(10).Find(&APIUser{})
-// SQL: SELECT `id`, `name` FROM `users` LIMIT 10
+// GORM به صورت خودکار فیلدهای id و name را
 ```
 
 {% note warn %}
