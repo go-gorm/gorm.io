@@ -275,7 +275,7 @@ A viable alternative is to assign default value to fields in the hook, e.g.
 ```go
 func (p *Pet) BeforeCreate(tx *gorm.DB) (err error) {
 	if p.Name == "" {
-		p.Value = "cat"
+		p.Name = "cat"
 	}
 }
 ```
