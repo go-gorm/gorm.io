@@ -29,7 +29,7 @@ Per trafurre GORM nella tua lingua devi fare richiesta nelle [Issues su Github](
 
 ## Donazioni
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+La vostra gentilezza e la vostra generosità sono molto apprezzate, grazie mille a tutti i nostri sponsor!
 
 * Github Sponsors (Platinum, Gold Sponsors etc)
 

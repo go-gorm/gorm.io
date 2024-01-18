@@ -3,35 +3,52 @@ title: 模型定义
 layout: page
 ---
 
+GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities.
+
 ## 模型定义
 
-模型是标准的 struct，由 Go 的基本数据类型、实现了 [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) 和 [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) 接口的自定义类型及其指针或别名组成
+Models are defined using normal structs. These structs can contain fields with basic Go types, pointers or aliases of these types, or even custom types, as long as they implement the [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces from the `database/sql` package
 
-例如：
+Consider the following example of a `User` model:
 
 ```go
 type User struct {
-  ID           uint
-  Name         string
-  Email        *string
-  Age          uint8
-  Birthday     *time.Time
-  MemberNumber sql.NullString
-  ActivatedAt  sql.NullTime
-  CreatedAt    time.Time
-  UpdatedAt    time.Time
+  ID           uint           // Standard field for the primary key
+  Name         string         // A regular string field
+  Email        *string        // A pointer to a string, allowing for null values
+  Age          uint8          // An unsigned 8-bit integer
+  Birthday     *time.Time     // A pointer to time.Time, can be null
+  MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
+  ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
+  CreatedAt    time.Time      // Automatically managed by GORM for creation time
+  UpdatedAt    time.Time      // Automatically managed by GORM for update time
 }
 ```
 
-## 约定
+In this model:
 
-GORM 倾向于约定优于配置 默认情况下，GORM 使用 `ID` 作为主键，使用结构体名的 `蛇形复数` 作为表名，字段名的 `蛇形` 作为列名，并使用 `CreatedAt`、`UpdatedAt` 字段追踪创建、更新时间
+- Basic data types like `uint`, `string`, and `uint8` are used directly.
+- Pointers to types like `*string` and `*time.Time` indicate nullable fields.
+- `sql.NullString` and `sql.NullTime` from the `database/sql` package are used for nullable fields with more control.
+- `CreatedAt` and `UpdatedAt` are special fields that GORM automatically populates with the current time when a record is created or updated.
 
-如果您遵循 GORM 的约定，您就可以少写的配置、代码。 如果约定不符合您的实际要求，[GORM 允许你配置它们](conventions.html)
+In addition to the fundamental features of model declaration in GORM, it's important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See [Serializer](serializer.html) for a detailed explanation
 
-## gorm.Model
+### 约定
 
-GORM 定义一个 `gorm.Model` 结构体，其包括字段 `ID`、`CreatedAt`、`UpdatedAt`、`DeletedAt`
+1. **Primary Key**: GORM uses a field named `ID` as the default primary key for each model.
+
+2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database.
+
+3. **Column Names**: GORM automatically converts struct field names to `snake_case` for column names in the database.
+
+4. **Timestamp Fields**: GORM uses fields named `CreatedAt` and `UpdatedAt` to automatically track the creation and update times of records.
+
+Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don't fit your requirements. You can learn more about customizing these conventions in GORM's documentation on [conventions](conventions.html).
+
+### `gorm.Model`
+
+GORM provides a predefined struct named `gorm.Model`, which includes commonly used fields:
 
 ```go
 // gorm.Model 的定义
@@ -43,7 +60,13 @@ type Model struct {
 }
 ```
 
-您可以将它嵌入到您的结构体中，以包含这几个字段，详情请参考 [嵌入结构体](#embedded_struct)
+- **Embedding in Your Struct**: You can embed `gorm.Model` directly in your structs to include these fields automatically. This is useful for maintaining consistency across different models and leveraging GORM's built-in conventions, refer [Embedded Struct](#embedded_struct)
+
+- **Fields Included**:
+  - `ID`: A unique identifier for each record (primary key).
+  - `CreatedAt`: Automatically set to the current time when a record is created.
+  - `UpdatedAt`: Automatically updated to the current time whenever a record is updated.
+  - `DeletedAt`: Used for soft deletes (marking records as deleted without actually removing them from the database).
 
 ## 高级选项
 

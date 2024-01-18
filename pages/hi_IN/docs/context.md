@@ -3,19 +3,19 @@ title: Context
 layout: पृष्ठ
 ---
 
-GORM कॉन्टेक्स्ट सपोर्ट प्रदान करता है, आप इसे `WithContext` method के साथ उपयोग कर सकते हैं
+GORM's context support, enabled by the `WithContext` method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management across different operational modes, timeout settings, and even integration into hooks/callbacks and middlewares. Let's delve into these various aspects:
 
-## Single Session Mode
+### Single Session Mode
 
-सिंगल सेशन मोड आमतौर पर तब उपयोग किया जाता है जब आप एक ही ऑपरेशन करना चाहते हैं
+Single session mode is appropriate for executing individual operations. It ensures that the specific operation is executed within the context's scope, allowing for better control and monitoring.
 
 ```go
 db.WithContext(ctx).Find(&users)
 ```
 
-## Continuous session mode
+### Continuous Session Mode
 
-Continuous session मोड का उपयोग आमतौर पर तब किया जाता है जब आप operations का एक समूह perform करना चाहते हैं, उदाहरण के लिए:
+Continuous session mode is ideal for performing a series of related operations. It maintains the context across these operations, which is particularly useful in scenarios like transactions.
 
 ```go
 tx := db.WithContext(ctx)
@@ -23,9 +23,9 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-## Context timeout
+### Context Timeout
 
-लंबे समय तक चलने वाले प्रश्नों(queries) के लिए टाइमआउट सेट करने के लिए आप `db.WithContext` के टाइमआउट के साथ संदर्भ(context) में पास कर सकते हैं, उदाहरण के लिए:
+Setting a timeout on the context passed to `db.WithContext` can control the duration of long-running queries. This is crucial for maintaining performance and avoiding resource lock-ups in database interactions.
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -34,25 +34,24 @@ defer cancel()
 db.WithContext(ctx).Find(&users)
 ```
 
-## Context in Hooks/Callbacks
+### Context in Hooks/Callbacks
 
-आप `Context` ऑब्जेक्ट को वर्तमान `स्टेटमेंट` से एक्सेस कर सकते हैं, उदाहरण के लिए:
+The context can also be accessed within GORM's hooks/callbacks. This enables contextual information to be used during these lifecycle events.
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
   ctx := tx.Statement.Context
-  // ...
+  // ... use context
   return
 }
 ```
 
-## Chi Middleware Example
+### Integration with Chi Middleware
 
-Continuous session मोड जो API अनुरोधों(requests) को संभालने में सहायक हो सकता है, उदाहरण के लिए, आप मिडलवेयर में टाइमआउट संदर्भ के साथ `*gorm.DB` सेटअप कर सकते हैं और फिर `*gorm.DB</code का उपयोग कर सकते हैं। > सभी अनुरोधों को संसाधित करते समय</p>
+GORM's context support extends to web server middlewares, such as those in the Chi router. This allows setting a context with a timeout for all database operations within the scope of a web request.
 
-<p spaces-before="0">Following is a Chi middleware example:</p>
-
-<pre><code class="go">func SetDBMiddleware(next http.Handler) http.Handler {
+```go
+func SetDBMiddleware(next http.Handler) http.Handler {
   return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
     timeoutContext, _ := context.WithTimeout(context.Background(), time.Second)
     ctx := context.WithValue(r.Context(), "DB", db.WithContext(timeoutContext))
@@ -60,32 +59,26 @@ Continuous session मोड जो API अनुरोधों(requests) क�
   })
 }
 
+// Router setup
 r := chi.NewRouter()
 r.Use(SetDBMiddleware)
 
+// Route handlers
 r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-  db, ok := ctx.Value("DB").(*gorm.DB)
-
-  var users []User
-  db.Find(&users)
-
-  // lots of db operations
+  db, ok := r.Context().Value("DB").(*gorm.DB)
+  // ... db operations
 })
 
 r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
-  db, ok := ctx.Value("DB").(*gorm.DB)
-
-  var user User
-  db.First(&user)
-
-  // lots of db operations
+  db, ok := r.Context().Value("DB").(*gorm.DB)
+  // ... db operations
 })
-`</pre>
+```
 
-{% note %}
-**ध्यान दें** `Context` को `WithContext` के साथ सेट करना गोरूटीन-सुरक्षित है, [Session देखें ](session.html) विवरण के लिए
-{% endnote %}
+**Note**: Setting the `Context` with `WithContext` is goroutine-safe. This ensures that database operations are safely managed across multiple goroutines. For more details, refer to the [Session documentation](session.html) in GORM.
 
-## Logger
+### Logger Integration
 
-Logger `Context` भी स्वीकार करता है, आप इसे लॉग ट्रैकिंग के लिए उपयोग कर सकते हैं, विवरण के लिए [Logger](logger.html) देखें
+GORM's logger also accepts `Context`, which can be used for log tracking and integrating with existing logging infrastructures.
+
+Refer to [Logger documentation](logger.html) for more details.

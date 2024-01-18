@@ -51,10 +51,10 @@ type Namer interface {
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   NamingStrategy: schema.NamingStrategy{
-    TablePrefix: "t_",   // table name prefix, table for `User` would be `t_users`
-    SingularTable: true, // use singular table name, table for `User` would be `user` with this option enabled
-    NoLowerCase: true, // skip the snake_casing of names
-    NameReplacer: strings.NewReplacer("CID", "Cid"), // use name replacer to change struct/field name before convert it to db name
+    TablePrefix: "t_",   // 테이블명의 접두사를 지정합니다. 예시로, User를 테이블명으로 변환할 때 t_users로 변환합니다. 
+    SingularTable: true, // 단수형 테이블명을 사용합니다. 기본적으로 GORM은 복수형 테이블명 규칙이 적용되는데 true로 설정하면 구조체 이름 그대로 테이블명을 생성합니다.
+    NoLowerCase: true, // 소문자와 언더스코어를 사용한 스네이크 표기를 사용하지 않고, 구조체의 필드명을 그대로 사용합니다.
+    NameReplacer: strings.NewReplacer("CID", "Cid"), // 구조체의 필드 이름을 DB에 넣기 전에 변환하여 테이블/열 이름으로 매핑합니다. 예시로 문자열 CID를 Cid로 변경하여 넣는다는 예시입니다.
   },
 })
 ```
@@ -97,7 +97,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 
 ## DisableNestedTransaction
 
-When using `Transaction` method inside a db transaction, GORM will use `SavePoint(savedPointName)`, `RollbackTo(savedPointName)` to give you the nested transaction support, you could disable it by using the `DisableNestedTransaction` option, refer [Session](session.html) for details
+Db 트랜잭션 내부에서 또 다른 트랜잭션을 시작할 때, GORM은 중첩 트랜잭션을 지원하기 위해서 SavePoint와 RollbackTo 메서드를 사용합니다. DisableNestedTransaction 옵션을 이용하여 비활성화할 수 있으며, 자세한 내용은 Session을 참고하세요.
 
 
 ## AllowGlobalUpdate
@@ -106,7 +106,7 @@ Enable global update/delete, refer [Session](session.html) for details
 
 ## DisableAutomaticPing
 
-GORM automatically ping database after initialized to check database availability, disable it by setting it to `true`
+GORM은 초기화 후에 데이터베이스와의 연결 상태를 확인하기 위해 기본적으로 Ping을 요청합니다. 그러나 자주 변경하지 않아 기본적인 Ping 요청을 제거하거나, 자원 소모나 부하를 줄이기 위해 이 기능을 비활성화할 수 있습니다. 또한 개발자가 직접 데이터베이스 연결 상태를 통제하고자 할 때, 필요한 시점에만 Ping을 보내도록 이 옵션을 활용할 수 있습니다.
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{

@@ -38,9 +38,9 @@ db.First(&user, fmt.Sprintf("name = %v", userInput))
 ```go
 userInputID := "1=1;drop table users;"
 // safe, return error
-id,err := strconv.Atoi(userInputID)
+id, err := strconv.Atoi(userInputID)
 if err != nil {
-    return error
+    return err
 }
 db.First(&user, id)
 

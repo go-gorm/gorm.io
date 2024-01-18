@@ -3,47 +3,101 @@ title: 处理错误
 layout: page
 ---
 
-在 Go 中，处理错误是很重要的。
+Effective error handling is a cornerstone of robust application development in Go, particularly when interacting with databases using GORM. GORM's approach to error handling, influenced by its chainable API, requires a nuanced understanding.
 
-我们鼓励您在调用任何 [Finisher 方法](method_chaining.html#finisher_method) 后，都进行错误检查
+## Basic Error Handling
 
-## 处理错误
+GORM integrates error handling into its chainable method syntax. The `*gorm.DB` instance contains an `Error` field, which is set when an error occurs. The common practice is to check this field after executing database operations, especially after [Finisher Methods](method_chaining.html#finisher_method).
 
-GORM 的错误处理与常见的 Go 代码不同，因为 GORM 提供的是链式 API。
-
-如果遇到任何错误，GORM 会设置 `*gorm.DB` 的 `Error` 字段，您需要像这样检查它：
+After a chain of methods, it's crucial to check the `Error` field:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-  // 处理错误...
+  // Handle error...
 }
 ```
 
-或者
+Or alternatively:
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-  // 处理错误...
+  // Handle error...
 }
 ```
 
-## ErrRecordNotFound
+## `ErrRecordNotFound`
 
-当 `First`、`Last`、`Take` 方法找不到记录时，GORM 会返回 `ErrRecordNotFound` 错误。如果发生了多个错误，你可以通过 `errors.Is` 判断错误是否为 `ErrRecordNotFound`，例如：
+GORM returns `ErrRecordNotFound` when no record is found using methods like `First`, `Last`, `Take`.
 
 ```go
-// 检查错误是否为 RecordNotFound
 err := db.First(&user, 100).Error
-errors.Is(err, gorm.ErrRecordNotFound)
+if errors.Is(err, gorm.ErrRecordNotFound) {
+  // Handle record not found error...
+}
 ```
-## 翻译方言错误
 
-如果您希望将数据库的方言错误转换为gorm的错误类型（例如将MySQL中的“Duplicate entry”转换为ErrDuplicatedKey），则在打开数据库连接时启用TranslateError标志。
+## Handling Error Codes
+
+Many databases return errors with specific codes, which can be indicative of various issues like constraint violations, connection problems, or syntax errors. Handling these error codes in GORM requires parsing the error returned by the database and extracting the relevant code
+
+- **Example: Handling MySQL Error Codes**
+
+```go
+import (
+    "github.com/go-sql-driver/mysql"
+    "gorm.io/gorm"
+)
+
+// ...
+
+result := db.Create(&newRecord)
+if result.Error != nil {
+    if mysqlErr, ok := result.Error.(*mysql.MySQLError); ok {
+        switch mysqlErr.Number {
+        case 1062: // MySQL code for duplicate entry
+            // Handle duplicate entry
+        // Add cases for other specific error codes
+        default:
+            // Handle other errors
+        }
+    } else {
+        // Handle non-MySQL errors or unknown errors
+    }
+}
+```
+
+## Dialect Translated Errors
+
+GORM can return specific errors related to the database dialect being used, when `TranslateError` is enabled, GORM converts database-specific errors into its own generalized errors.
 
 ```go
 db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: true})
 ```
 
+- **ErrDuplicatedKey**
+
+This error occurs when an insert operation violates a unique constraint:
+
+```go
+result := db.Create(&newRecord)
+if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+    // Handle duplicated key error...
+}
+```
+
+- **ErrForeignKeyViolated**
+
+This error is encountered when a foreign key constraint is violated:
+
+```go
+result := db.Create(&newRecord)
+if errors.Is(result.Error, gorm.ErrForeignKeyViolated) {
+    // Handle foreign key violation error...
+}
+```
+
+By enabling `TranslateError`, GORM provides a more unified way of handling errors across different databases, translating database-specific errors into common GORM error types.
+
 ## Errors
 
-[Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go)
+For a complete list of errors that GORM can return, refer to the [Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go) in GORM's documentation.

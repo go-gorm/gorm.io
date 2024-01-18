@@ -86,7 +86,7 @@ FROM句でサブクエリを使用する方法については、 [From SubQuery]
 
 ### <span id="naming_strategy">NamingStrategy</span>
 
-`TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`の生成に使用されている`NamingStrategy`をオーバーライドすることで、デフォルトの命名規則を変更できます。詳細は[GORM Config](gorm_config.html#naming_strategy)を参照してください。
+GORM allows users to change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html#naming_strategy) for details
 
 ## カラム名
 

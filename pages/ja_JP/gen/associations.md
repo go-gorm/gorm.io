@@ -57,14 +57,14 @@ type creditCard struct{
 
 ### Relate to table in database
 
-The association have to be speified by `gen.FieldRelate`
+The association have to be specified by `gen.FieldRelate`
 
 ```go
 card := g.GenerateModel("credit_cards")
 customer := g.GenerateModel("customers", gen.FieldRelate(field.HasMany, "CreditCards", card, 
     &field.RelateConfig{
         // RelateSlice: true,
-         GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"}},
+         GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"},"references": []string{"ID"}},
     }),
 )
 
@@ -80,7 +80,7 @@ type Customer struct {
     CreatedAt   time.Time      `gorm:"column:created_at;type:datetime(3)" json:"created_at"`
     UpdatedAt   time.Time      `gorm:"column:updated_at;type:datetime(3)" json:"updated_at"`
     DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at;type:datetime(3)" json:"deleted_at"`
-    CreditCards []CreditCard   `gorm:"foreignKey:CustomerRefer" json:"credit_cards"`
+    CreditCards []CreditCard   `gorm:"foreignKey:CustomerRefer;references:ID" json:"credit_cards"`
 }
 
 
@@ -100,7 +100,7 @@ If associated model already exists, `gen.FieldRelateModel` can help you build as
 customer := g.GenerateModel("customers", gen.FieldRelateModel(field.HasMany, "CreditCards", model.CreditCard{}, 
     &field.RelateConfig{
         // RelateSlice: true,
-        GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"}},
+        GORMTag: field.GormTag{"foreignKey": []string{"CustomerRefer"},"references": []string{"ID"}},
     }),
 )
 
@@ -157,7 +157,7 @@ u.WithContext(ctx).Omit(field.AssociationFields).Create(&user)
 // Skip all associations when creating a user
 ```
 
-Method `Field` will join a serious field name with ''.", for example: `u.BillingAddress.Field("Address1", "Street")` equals to `BillingAddress.Address1.Street`
+Method `Field` will join a serious field name with '', for example: `u.BillingAddress.Field("Address1", "Street")` equals to `BillingAddress.Address1.Street`
 
 ### Find Associations
 
@@ -305,14 +305,15 @@ users, err := u.WithContext(ctx).Preload(field.Associations).Find()
 users, err := u.WithContext(ctx).Preload(u.Orders.OrderItems.Product).Find()
 ```
 
-To include soft deleted records in all associactions use relation scope `field.RelationFieldUnscoped`, e.g:
+To include soft deleted records in all associations use relation scope `field.RelationFieldUnscoped`, e.g:
+
 ```go
 users, err := u.WithContext(ctx).Preload(field.Associations.Scopes(field.RelationFieldUnscoped)).Find()
 ```
 
 ### Preload with select
 
-Specify selected columns with method `Select`. Foregin key must be selected.
+Specify selected columns with method `Select`. Foreign key must be selected.
 
 ```go
 type User struct {
@@ -381,4 +382,3 @@ db.Preload(u.Orders.OrderItems.Product).Preload(u.CreditCard).Find(&users)
 // And GEN won't preload unmatched order's OrderItems then
 db.Preload(u.Orders.On(o.State.Eq("paid"))).Preload(u.Orders.OrderItems).Find(&users)
 ```
-

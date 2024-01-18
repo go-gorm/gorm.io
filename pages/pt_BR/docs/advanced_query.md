@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Seleção Inteligente de Campos</span>
 
-GORM permite selecionar campos específicos com [`Select`](query.html), se você frequentemente usa isso em seu aplicativo, talvez você queira definir uma estrutura menor para uso da API, que pode selecionar campos específicos automaticamente, por exemplo:
+In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // milhares de campos
+  // hundreds of fields
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// Seleciona automaticamente o `id`, `name`
+// GORM will automatically select `id`, `name` fields when querying
 db.Model(&User{}).Limit(10).Find(&APIUser{})
-// SELECT `id`, `name` FROM `users` LIMIT 10
+// SQL: SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTA:** o modo `QueryFields` irá selecionar todos os campos do modelo
+**NOTE** In `QueryFields` mode, all model fields are selected by their names.
 {% endnote %}
 
 ```go
@@ -35,239 +35,282 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   QueryFields: true,
 })
 
+// Default behavior with QueryFields set to true
 db.Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users` // com esta opção
+// SQL: SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 
-// Session Mode
+// Using Session Mode with QueryFields
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
-// SELECT `users`.`name`, `users`.`age`, ... FROM `users`
+// SQL: SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Bloqueio (FOR UPDATE)
+## Locking
 
 O GORM suporta diferente tipos de bloqueio, por exemplo:
 
 ```go
+// Basic FOR UPDATE lock
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
-// SELECT * FROM `users` FOR UPDATE
+// SQL: SELECT * FROM `users` FOR UPDATE
+```
 
+The above statement will lock the selected rows for the duration of the transaction. This can be used in scenarios where you are preparing to update the rows and want to prevent other transactions from modifying them until your transaction is complete.
+
+The `Strength` can be also set to `SHARE` which locks the rows in a way that allows other transactions to read the locked rows but not to update or delete them.
+```go
 db.Clauses(clause.Locking{
   Strength: "SHARE",
   Table: clause.Table{Name: clause.CurrentTable},
 }).Find(&users)
-// SELECT * FROM `users` FOR SHARE OF `users`
+// SQL: SELECT * FROM `users` FOR SHARE OF `users`
+```
 
+The `Table` option can be used to specify the table to lock. This is useful when you are joining multiple tables and want to lock only one of them.
+
+Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
+
+```go
 db.Clauses(clause.Locking{
   Strength: "UPDATE",
   Options: "NOWAIT",
 }).Find(&users)
-// SELECT * FROM `users` FOR UPDATE NOWAIT
+// SQL: SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Consulte [SQL Puro e Construtor de SQL](sql_builder.html) para mais detalhes
+Another option can be `SKIP LOCKED` which skips over any rows that are already locked by other transactions. This is useful in high concurrency situations where you want to process rows that are not currently locked by other transactions.
+
+For more advanced locking strategies, refer to [Raw SQL and SQL Builder](sql_builder.html).
 
 ## Subconsultas
 
-Uma subconsulta pode ser aninhada dentro de outra consulta, o GORM pode gerar uma subconsulta quando se usa o objeto `*gorm.DB` como parâmetro
+Subqueries are a powerful feature in SQL, allowing nested queries. GORM can generate subqueries automatically when using a *gorm.DB object as a parameter.
 
 ```go
+// Simple subquery
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
-// SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
+// SQL: SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
+// Nested subquery
 subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
 db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery).Find(&results)
-// SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
+// SQL: SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 ```
 
 ### <span id="from_subquery">Consulta a partir de uma subconsulta</span>
 
-O GORM permite que você use uma subconsulta na cláusula FROM com o método `Table`, por exemplo:
+GORM allows the use of subqueries in the FROM clause, enabling complex queries and data organization.
 
 ```go
+// Using subquery in FROM clause
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
-// SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
+// SQL: SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
+// Combining multiple subqueries in FROM clause
 subQuery1 := db.Model(&User{}).Select("name")
 subQuery2 := db.Model(&Pet{}).Select("name")
 db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
-// SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
+// SQL: SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
 
 ## <span id="group_conditions">Condições de agrupamento</span>
 
-Mais fácil de escrever uma complicada consulta SQL com condições de agrupamento
+Group Conditions in GORM provide a more readable and maintainable way to write complex SQL queries involving multiple conditions.
 
 ```go
+// Complex SQL query using Group Conditions
 db.Where(
-    db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small").Or("size = ?", "medium")),
+  db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small").Or("size = ?", "medium")),
 ).Or(
-    db.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
-).Find(&Pizza{}).Statement
-
-// SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
+  db.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
+).Find(&Pizza{})
+// SQL: SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
 ## IN com múltiplas colunas
 
-Consulta usando IN com múltimas colunas
+GORM supports the IN clause with multiple columns, allowing you to filter data based on multiple field values in a single query.
 
 ```go
+// Using IN with multiple columns
 db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"jinzhu2", 19, "user"}}).Find(&users)
-// SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
+// SQL: SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
 ```
 
 ## Argumento Nomeado
 
-O GORM suporta argumentos nomeados com [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) ou `map[string]interface{}{}`, por exemplo:
+GORM enhances the readability and maintainability of SQL queries by supporting named arguments. This feature allows for clearer and more organized query construction, especially in complex queries with multiple parameters. Named arguments can be utilized using either [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, providing flexibility in how you structure your queries.
 
 ```go
+// Example using sql.NamedArg for named arguments
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
-// SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
+// SQL: SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
+// Example using a map for named arguments
 db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
-// SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
+// SQL: SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-Consulte [Raw SQL e SQL Builder](sql_builder.html#named_argument) para mais detalhes
+For more examples and details, see [Raw SQL and SQL Builder](sql_builder.html#named_argument)
 
 ## Mapear resultado de consulta
 
-O GORM mapear o resultado de uma consulta para `map[string]interface{}` ou `[]map[string]interface{}`, não esqueça de definir o `Model` ou `Table`, por exemplo:
+GORM provides flexibility in querying data by allowing results to be scanned into a `map[string]interface{}` or `[]map[string]interface{}`, which can be useful for dynamic data structures.
+
+When using `Find To Map`, it's crucial to include `Model` or `Table` in your query to explicitly specify the table name. This ensures that GORM understands which table to query against.
 
 ```go
+// Scanning the first result into a map with Model
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result, "id = ?", 1)
+// SQL: SELECT * FROM `users` WHERE id = 1 LIMIT 1
 
+// Scanning multiple results into a slice of maps with Table
 var results []map[string]interface{}
 db.Table("users").Find(&results)
+// SQL: SELECT * FROM `users`
 ```
 
 ## FirstOrInit
 
-Obtenha o primeiro registro correspondente ou inicialize uma nova instância com determinadas condições (funciona apenas com struct ou com condições usando map)
+GORM's `FirstOrInit` method is utilized to fetch the first record that matches given conditions, or initialize a new instance if no matching record is found. This method is compatible with both struct and map conditions and allows additional flexibility with the `Attrs` and `Assign` methods.
 
 ```go
-// Usuário não encontrado, inicialize o objeto com os seguintes dados
+// If no User with the name "non_existing" is found, initialize a new User
+var user User
 db.FirstOrInit(&user, User{Name: "non_existing"})
-// user -> User{Name: "non_existing"}
+// user -> User{Name: "non_existing"} if not found
 
-// Pesquisa um usuário com `name` = `jinzhu`
+// Retrieving a user named "jinzhu"
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
-// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
+// user -> User{ID: 111, Name: "Jinzhu", Age: 18} if found
 
-// Usuário encontrado com `name` = `jinzhu`
+// Using a map to specify the search condition
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
-// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
+// user -> User{ID: 111, Name: "Jinzhu", Age: 18} if found
 ```
 
-Inicializar struct com mais atributos se o registro não for encontrado, os `Attrs` não serão usados para criar uma consulta SQL
+### Using `Attrs` for Initialization
+
+When no record is found, you can use `Attrs` to initialize a struct with additional attributes. These attributes are included in the new struct but are not used in the SQL query.
 
 ```go
-// Usuário não encontrado, inicialize o objeto com os dados
+// If no User is found, initialize with given conditions and additional attributes
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
-// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
-// user -> User{Name: "non_existing", Age: 20}
+// SQL: SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
+// user -> User{Name: "non_existing", Age: 20} if not found
 
-// Usuário não encontrado, inicialize o objeto com os dados
-db.Where(User{Name: "non_existing"}).Attrs("age", 20).FirstOrInit(&user)
-// SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
-// user -> User{Name: "non_existing", Age: 20}
-
-// Usuário encontrado com `name` = `jinzhu`, os atributos serão ignorados
+// If a User named "Jinzhu" is found, `Attrs` are ignored
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
-// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
-// user -> User{ID: 111, Name: "Jinzhu", Age: 18}
+// SQL: SELECT * FROM USERS WHERE name = 'Jinzhu' ORDER BY id LIMIT 1;
+// user -> User{ID: 111, Name: "Jinzhu", Age: 18} if found
 ```
 
-`Assign` atribue a struct independente se o registro foi localizado ou não, esses atributos não serão usados para criar uma consulta SQL e os dados finais não serão gravados no banco de dados
+### Using `Assign` for Attributes
+
+The `Assign` method allows you to set attributes on the struct regardless of whether the record is found or not. These attributes are set on the struct but are not used to build the SQL query and the final data won't be saved into the database.
 
 ```go
-// Usuário não encontrado, inicialize o objeto com os dados e preencha os atributos
+// Initialize with given conditions and Assign attributes, regardless of record existence
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
-// user -> User{Name: "non_existing", Age: 20}
+// user -> User{Name: "non_existing", Age: 20} if not found
 
-// Usuário encontrado com `name` = `jinzhu`, altere o objeto preenchendo os atributos
+// If a User named "Jinzhu" is found, update the struct with Assign attributes
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
-// SELECT * FROM USERS WHERE name = jinzhu' ORDER BY id LIMIT 1;
-// user -> User{ID: 111, Name: "Jinzhu", Age: 20}
+// SQL: SELECT * FROM USERS WHERE name = 'Jinzhu' ORDER BY id LIMIT 1;
+// user -> User{ID: 111, Name: "Jinzhu", Age: 20} if found
 ```
+
+`FirstOrInit`, along with `Attrs` and `Assign`, provides a powerful and flexible way to ensure a record exists and is initialized or updated with specific attributes in a single step.
 
 ## FirstOrCreate
 
-Seja o primeiro registro correspondente ou crie um novo com determinadas condições (só funciona com estrutura, condições de mapa), `RowsAffected` retornou contagem de registros criados/atualizados
+`FirstOrCreate` in GORM is used to fetch the first record that matches given conditions or create a new one if no matching record is found. This method is effective with both struct and map conditions. The `RowsAffected` property is useful to determine the number of records created or updated.
 
 ```go
-// Usuário não encontrado, crie um novo registro com os dados
+// Create a new record if not found
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
-// INSERT INTO "users" (name) VALUES ("non_existing");
+// SQL: INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
-// result.RowsAffected // => 1
+// result.RowsAffected // => 1 (record created)
 
-// Usuário encontrado com `name` = `jinzhu`
-result := db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
-// user -> User{ID: 111, Name: "jinzhu", "Age": 18}
-// result.RowsAffected // => 0
+// If the user is found, no new record is created
+result = db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
+// user -> User{ID: 111, Name: "jinzhu", Age: 18}
+// result.RowsAffected // => 0 (no record created)
 ```
 
-Cria struct com mais atributos se o registro não for localizado, esses `Attrs` não serão usados para construir uma consulta SQL
+### Using `Attrs` with FirstOrCreate
+
+`Attrs` can be used to specify additional attributes for the new record if it is not found. These attributes are used for creation but not in the initial search query.
 
 ```go
-// Usuário não encontrado, crie um novo registro com os dados
+// Create a new record with additional attributes if not found
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
-// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
-// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
+// SQL: SELECT * FROM users WHERE name = 'non_existing';
+// SQL: INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Usuário encontrado com `name` = `jinzhu`, os atributos serão ignorados
+// If the user is found, `Attrs` are ignored
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
-// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
+// SQL: SELECT * FROM users WHERE name = 'jinzhu';
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-`Assign` atribue ao registro independente se for encontrado ou não e grava de volta no banco de dados.
+### Using `Assign` with FirstOrCreate
+
+The `Assign` method sets attributes on the record regardless of whether it is found or not, and these attributes are saved back to the database.
 
 ```go
-// Usuário não encontrado, inicialize o objeto com os dados e preencha os atributos
+// Initialize and save new record with `Assign` attributes if not found
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
-// SELECT * FROM users WHERE name = 'non_existing' ORDER BY id LIMIT 1;
-// INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
+// SQL: SELECT * FROM users WHERE name = 'non_existing';
+// SQL: INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Usuário encontrado com `name` = `jinzhu`, altere o objeto com os atributos
+// Update found record with `Assign` attributes
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
-// SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
-// UPDATE users SET age=20 WHERE id = 111;
-// user -> User{ID: 111, Name: "jinzhu", Age: 20}
+// SQL: SELECT * FROM users WHERE name = 'jinzhu';
+// SQL: UPDATE users SET age=20 WHERE id = 111;
+// user -> User{ID: 111, Name: "Jinzhu", Age: 20}
 ```
 
 ## Sugestões de Otimizer/Índice
 
-Dicas de otimização permitem controlar o otimizador de consultas para escolher um determinado plano de execução de consultas, GORM suporta-o com `gorm.io/hints`, por exemplo:
+GORM includes support for optimizer and index hints, allowing you to influence the query optimizer's execution plan. This can be particularly useful in optimizing query performance or when dealing with complex queries.
+
+Optimizer hints are directives that suggest how a database's query optimizer should execute a query. GORM facilitates the use of optimizer hints through the gorm.io/hints package.
 
 ```go
 import "gorm.io/hints"
 
+// Using an optimizer hint to set a maximum execution time
 db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
-// SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
+// SQL: SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-Dicas de índice permitem a aprovação de dicas de índice para o banco de dados caso o planejador de consultas fique confuso.
+### Index Hints
+
+Index hints provide guidance to the database about which indexes to use. They can be beneficial if the query planner is not selecting the most efficient indexes for a query.
 
 ```go
 import "gorm.io/hints"
 
+// Suggesting the use of a specific index
 db.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
-// SELECT * FROM `users` USE INDEX (`idx_user_name`)
+// SQL: SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
+// Forcing the use of certain indexes for a JOIN operation
 db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
-// SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"
+// SQL: SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)
 ```
 
-Consulte [Dicas otimizador/Index/Comentário](hints.html) para obter mais detalhes
+These hints can significantly impact query performance and behavior, especially in large databases or complex data models. For more detailed information and additional examples, refer to [Optimizer Hints/Index/Comment](hints.html) in the GORM documentation.
 
 ## Iteração
 
-GORM suporta iteração através de Linhas
+GORM supports the iteration over query results using the `Rows` method. This feature is particularly useful when you need to process large datasets or perform operations on each record individually.
+
+You can iterate through rows returned by a query, scanning each row into a struct. This method provides granular control over how each record is handled.
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -275,131 +318,176 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows é um método do `gorm.DB`, ele pode ser usado para mapear o resultado para uma struct
+  // ScanRows scans a row into a struct
   db.ScanRows(rows, &user)
 
-  // faça alguma coisa
+  // Perform operations on each user
 }
 ```
+
+This approach is ideal for complex data processing that cannot be easily achieved with standard query methods.
 
 ## FindInBatches
 
-Consultar e processar registros em lote
+`FindInBatches` allows querying and processing records in batches. This is especially useful for handling large datasets efficiently, reducing memory usage and improving performance.
+
+With `FindInBatches`, GORM processes records in specified batch sizes. Inside the batch processing function, you can apply operations to each batch of records.
 
 ```go
-// lote com tamanho 100
+// Processing records in batches of 100
 result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // processando os registros encontrados em lotes
+    // Operations on each record in the batch
   }
 
+  // Save changes to the records in the current batch
   tx.Save(&results)
 
-  tx.RowsAffected // número de registros no lote
+  // tx.RowsAffected provides the count of records in the current batch
+  // The variable 'batch' indicates the current batch number
 
-  batch // Lote 1, 2, 3
-
-  // se retornar algum erro os próximos lotes são interrompidos
+  // Returning an error will stop further batch processing
   return nil
 })
 
-result.Error // erro retornado
-result.RowsAffected // total de registros processados em todos lotes
+// result.Error contains any errors encountered during batch processing
+// result.RowsAffected provides the count of all processed records across batches
 ```
+
+`FindInBatches` is an effective tool for processing large volumes of data in manageable chunks, optimizing resource usage and performance.
 
 ## Hooks de consulta
 
-GORM permite que hooks `AfterFind` para uma consulta, será chamado quando consultar um registro, consulte [Hooks](hooks.html) para obter detalhes
+GORM offers the ability to use hooks, such as `AfterFind`, which are triggered during the lifecycle of a query. These hooks allow for custom logic to be executed at specific points, such as after a record has been retrieved from the databas.
+
+This hook is useful for post-query data manipulation or default value settings. For more detailed information and additional hook types, refer to [Hooks](hooks.html) in the GORM documentation.
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
+  // Custom logic after finding a user
   if u.Role == "" {
-    u.Role = "user"
+    u.Role = "user" // Set default role if not specified
   }
   return
 }
+
+// Usage of AfterFind hook happens automatically when a User is queried
 ```
 
 ## <span id="pluck">Pluck</span>
 
-Consultar uma coluna única do banco de dados e mapear em um slice, se você quiser consultar múltiplas colunas, use `Select` com [`Scan`](query.html#scan) em vez disso
+The `Pluck` method in GORM is used to query a single column from the database and scan the result into a slice. This method is ideal for when you need to retrieve specific fields from a model.
+
+If you need to query more than one column, you can use `Select` with [Scan](query.html) or [Find](query.html) instead.
 
 ```go
+// Retrieving ages of all users
 var ages []int64
-db.Model(&users).Pluck("age", &ages)
+db.Model(&User{}).Pluck("age", &ages)
 
+// Retrieving names of all users
 var names []string
 db.Model(&User{}).Pluck("name", &names)
 
+// Retrieving names from a different table
 db.Table("deleted_users").Pluck("name", &names)
 
-// Distinct Pluck
+// Using Distinct with Pluck
 db.Model(&User{}).Distinct().Pluck("Name", &names)
-// SELECT DISTINCT `name` FROM `users`
+// SQL: SELECT DISTINCT `name` FROM `users`
 
-// Precisa de mais de uma coluna, use `Scan` ou `Find` como abaixo:
+// Querying multiple columns
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
 ## Escopos
 
-`Scopes` permite que você especifique consultas comumente usadas que podem ser referenciadas como chamadas de método
+`Scopes` in GORM are a powerful feature that allows you to define commonly-used query conditions as reusable methods. These scopes can be easily referenced in your queries, making your code more modular and readable.
+
+### Defining Scopes
+
+`Scopes` are defined as functions that modify and return a `gorm.DB` instance. You can define a variety of conditions as scopes based on your application's requirements.
 
 ```go
+// Scope for filtering records where amount is greater than 1000
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
   return db.Where("amount > ?", 1000)
 }
 
-func PaidWithCreditCard(db *gorm. B) *gorm.DB {
+// Scope for orders paid with a credit card
+func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
   return db.Where("pay_mode_sign = ?", "C")
 }
 
-func PaidWithCod(db *gorm. B) *gorm.DB {
+// Scope for orders paid with cash on delivery (COD)
+func PaidWithCod(db *gorm.DB) *gorm.DB {
   return db.Where("pay_mode_sign = ?", "C")
 }
 
-func OrderStatus(status []string) func (db *gorm. B) *gorm.DB {
-  return func (db *gorm.DB) *gorm.DB {
-    return db. aqui("status IN (?)", status)
+// Scope for filtering orders by status
+func OrderStatus(status []string) func(db *gorm.DB) *gorm.DB {
+  return func(db *gorm.DB) *gorm.DB {
+    return db.Where("status IN (?)", status)
   }
 }
-
-db.Scopes(AmountGreaterThan1000, PaidWithCreditCard). ind(&orders
-// Encontrar todas as ordens de cartão de crédito e valor maior que 1000
-
-db.Scopes(AmountGreaterThan1000, PaidWithCod). ind(&orders)
-// Encontrar todas as ordens de COD e quantidade superior a 1000
-
-db. copes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
-// Encontrar todas as ordens pagas e enviadas com valor superior a 1000
 ```
 
-Confira [Scopes](scopes.html) para detalhes
+### Applying Scopes in Queries
+
+You can apply one or more scopes to a query by using the `Scopes` method. This allows you to chain multiple conditions dynamically.
+
+```go
+// Applying scopes to find all credit card orders with an amount greater than 1000
+db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
+
+// Applying scopes to find all COD orders with an amount greater than 1000
+db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
+
+// Applying scopes to find all orders with specific statuses and an amount greater than 1000
+db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
+```
+
+`Scopes` are a clean and efficient way to encapsulate common query logic, enhancing the maintainability and readability of your code. For more detailed examples and usage, refer to [Scopes](scopes.html) in the GORM documentation.
 
 ## <span id="count">Count</span>
 
-Obter quantidade de registros correspondentes
+The `Count` method in GORM is used to retrieve the number of records that match a given query. It's a useful feature for understanding the size of a dataset, particularly in scenarios involving conditional queries or data analysis.
+
+### Getting the Count of Matched Records
+
+You can use `Count` to determine the number of records that meet specific criteria in your queries.
 
 ```go
 var count int64
+
+// Counting users with specific names
 db.Model(&User{}).Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Count(&count)
-// SELECT count(1) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
+// SQL: SELECT count(1) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
 
+// Counting users with a single name condition
 db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
-// SELECT count(1) FROM users WHERE name = 'jinzhu'; (count)
+// SQL: SELECT count(1) FROM users WHERE name = 'jinzhu'
 
+// Counting records in a different table
 db.Table("deleted_users").Count(&count)
-// SELECT count(1) FROM deleted_users;
+// SQL: SELECT count(1) FROM deleted_users
+```
 
-// Count com Distinct
+### Count with Distinct and Group
+
+GORM also allows counting distinct values and grouping results.
+
+```go
+// Counting distinct names
 db.Model(&User{}).Distinct("name").Count(&count)
-// SELECT COUNT(DISTINCT(`name`)) FROM `users`
+// SQL: SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
+// Counting distinct values with a custom select
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
-// SELECT count(distinct(name)) FROM deleted_users
+// SQL: SELECT count(distinct(name)) FROM deleted_users
 
-// Count with Group
+// Counting grouped records
 users := []User{
   {Name: "name1"},
   {Name: "name2"},
@@ -408,5 +496,6 @@ users := []User{
 }
 
 db.Model(&User{}).Group("name").Count(&count)
-count // => 3
+// Count after grouping by name
+// count => 3
 ```

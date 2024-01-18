@@ -86,7 +86,7 @@ db.Table("deleted_users").Where("name = ?", "jinzhu").Delete(&User{})
 
 ### <span id="naming_strategy">命名策略</span>
 
-GORM 允许用户通过覆盖默认的`命名策略`更改默认的命名约定，命名策略被用于构建： `TableName`、`ColumnName`、`JoinTableName`、`RelationshipFKName`、`CheckerName`、`IndexName`。查看 [GORM 配置](gorm_config.html#naming_strategy) 获取详情
+GORM allows users to change the default naming conventions by overriding the default `NamingStrategy`, which is used to build `TableName`, `ColumnName`, `JoinTableName`, `RelationshipFKName`, `CheckerName`, `IndexName`, Check out [GORM Config](gorm_config.html#naming_strategy) for details
 
 ## 列名
 

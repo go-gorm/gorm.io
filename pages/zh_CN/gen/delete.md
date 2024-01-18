@@ -26,16 +26,16 @@ err                 // 错误
 
 ## 通过主键删除
 
-GEN allows to delete objects using primary key(s) with inline condition, it works with numbers.
+GEN 允许使用带有内联条件的主键删除对象，它适用于数字
 
 ```go
 u.WithContext(ctx).Where(u.ID.In(1,2,3)).Delete()
 // DELETE FROM users WHERE id IN (1,2,3);
 ```
 
-## Batch Delete
+## 批量删除
 
-The specified value has no primary value, GEN will perform a batch delete, it will delete all matched records
+如果指定值不包括主键，GEN 将执行批量删除，删除所有匹配记录
 
 ```go
 e := query.Email
@@ -44,23 +44,23 @@ e.WithContext(ctx).Where(e.Name.Like("%modi%")).Delete()
 // DELETE from emails where email LIKE "%modi%";
 ```
 
-## Soft Delete
+## 软删除
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+如果你的模型包含了 `gorm.DeletedAt`字段（在`gorm.Model`中），那么该模型将会自动获得软删除的能力！
 
-When calling `Delete`, the record WON’T be removed from the database, but GORM will set the `DeletedAt`‘s value to the current time, and the data is not findable with normal Query methods anymore.
+当调用`Delete`时，GORM并不会从数据库中删除该记录，而是将该记录的`DeleteAt`设置为当前时间，之后普通查询方法将无法查找到此条记录。
 
 ```go
-// Batch Delete
+// 批量删除
 u.WithContext(ctx).Where(u.Age.Eq(20)).Delete()
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when querying
+// 查询时将忽略被软删除的记录
 users, err := u.WithContext(ctx).Where(u.Age.Eq(20)).Find()
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don’t want to include `gorm.Model`, you can enable the soft delete feature like:
+如果你不想嵌入 `gorm.Model`，你也可以这样启用软删除特性：
 
 ```go
 type User struct {
@@ -70,25 +70,25 @@ type User struct {
 }
 ```
 
-## Find soft deleted records
+## 查找被软删除的记录
 
-You can find soft deleted records with `Unscoped`
+你可以使用 `Unscoped` 找到被软删除的记录
 
 ```go
 users, err := db.WithContext(ctx).Unscoped().Where(u.Age.Eq(20)).Find()
 // SELECT * FROM users WHERE age = 20;
 ```
 
-## Delete permanently
+## 永久删除
 
-You can delete matched records permanently with `Unscoped`
+你可以使用 `Unscoped`来永久删除匹配的记录
 
 ```go
 o.WithContext(ctx).Unscoped().Where(o.ID.Eq(10)).Delete()
 // DELETE FROM orders WHERE id=10;
 ```
 
-### Delete Associations
+### 删除关联
 
 Remove the relationship between source & arguments if exists, only delete the reference, won’t delete those objects from DB.
 
@@ -100,19 +100,19 @@ u.Languages.Model(&user).Delete(&languageZH, &languageEN)
 u.Languages.Model(&user).Delete([]*Language{&languageZH, &languageEN}...)
 ```
 
-### Delete with Select
+### 带 Select 的删除
 
-You are allowed to delete selected has one/has many/many2many relations with `Select` when deleting records, for example:
+你可以在删除记录时通过 `Select` 来删除具有 has one、has many、many2many 关系的记录，例如：
 
 ```go
 u := query.User
 
-// delete user's account when deleting user
+// 删除 user 时，也删除 user 关联的 account 数据
 u.Select(u.Account).Delete(&user)
 
-// delete user's Orders, CreditCards relations when deleting user
+// 删除 user 时，也删除 user 关联的 Orders, CreditCards 数据
 db.Select(u.Orders.Field(), u.CreditCards.Field()).Delete(&user)
 
-// delete user's has one/many/many2many relations when deleting user
+// 删除 user 时，也删除 user 关联的 has one/many/many2many 关系数据
 db.Select(field.AssociationsFields).Delete(&user)
 ```

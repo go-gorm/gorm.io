@@ -3,47 +3,101 @@ title: Обработка ошибок
 layout: страница
 ---
 
-В Go, очень важна обработка ошибок.
+Effective error handling is a cornerstone of robust application development in Go, particularly when interacting with databases using GORM. GORM's approach to error handling, influenced by its chainable API, requires a nuanced understanding.
 
-Вам рекомендуется проверять ошибки после [Методов окончания](method_chaining.html#finisher_method)
+## Basic Error Handling
 
-## Обработка ошибок
+GORM integrates error handling into its chainable method syntax. The `*gorm.DB` instance contains an `Error` field, which is set when an error occurs. The common practice is to check this field after executing database operations, especially after [Finisher Methods](method_chaining.html#finisher_method).
 
-Обработка ошибок в GORM отличается от идиоматического Go кода из-за цепного API.
-
-Если возникнет ошибка, GORM заполнит поле `*gorm.DB` `Error`, его необходимо проверять следующим образом:
+After a chain of methods, it's crucial to check the `Error` field:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
-  // обработка ошибок ...
+  // Handle error...
 }
 ```
 
-или
+Or alternatively:
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
-  // обработка ошибок ...
+  // Handle error...
 }
 ```
 
-## ErrRecordNotFound
+## `ErrRecordNotFound`
 
-GORM возвращает `ErrRecordNotFound`, когда не удалось найти данные при помощи `First`, `Last`, `Take`, если произошло несколько ошибок, вы можете проверить `ErrRecordNotFound` при помощи `errors.Is`, например:
+GORM returns `ErrRecordNotFound` when no record is found using methods like `First`, `Last`, `Take`.
 
 ```go
-// Проверка возвращается ли ошибка RecordNotFound
 err := db.First(&user, 100).Error
-errors.Is(err, gorm.ErrRecordNotFound)
+if errors.Is(err, gorm.ErrRecordNotFound) {
+  // Handle record not found error...
+}
 ```
+
+## Handling Error Codes
+
+Many databases return errors with specific codes, which can be indicative of various issues like constraint violations, connection problems, or syntax errors. Handling these error codes in GORM requires parsing the error returned by the database and extracting the relevant code
+
+- **Example: Handling MySQL Error Codes**
+
+```go
+import (
+    "github.com/go-sql-driver/mysql"
+    "gorm.io/gorm"
+)
+
+// ...
+
+result := db.Create(&newRecord)
+if result.Error != nil {
+    if mysqlErr, ok := result.Error.(*mysql.MySQLError); ok {
+        switch mysqlErr.Number {
+        case 1062: // MySQL code for duplicate entry
+            // Handle duplicate entry
+        // Add cases for other specific error codes
+        default:
+            // Handle other errors
+        }
+    } else {
+        // Handle non-MySQL errors or unknown errors
+    }
+}
+```
+
 ## Dialect Translated Errors
 
-Если вы хотите иметь возможность использовать ошибки перевода диалекта (например, ErrDuplicatedKey), то включите флаг TranslateError при открытии подключения к базе данных.
+GORM can return specific errors related to the database dialect being used, when `TranslateError` is enabled, GORM converts database-specific errors into its own generalized errors.
 
 ```go
 db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: true})
 ```
 
+- **ErrDuplicatedKey**
+
+This error occurs when an insert operation violates a unique constraint:
+
+```go
+result := db.Create(&newRecord)
+if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
+    // Handle duplicated key error...
+}
+```
+
+- **ErrForeignKeyViolated**
+
+This error is encountered when a foreign key constraint is violated:
+
+```go
+result := db.Create(&newRecord)
+if errors.Is(result.Error, gorm.ErrForeignKeyViolated) {
+    // Handle foreign key violation error...
+}
+```
+
+By enabling `TranslateError`, GORM provides a more unified way of handling errors across different databases, translating database-specific errors into common GORM error types.
+
 ## Ошибки
 
-[Список ошибок](https://github.com/go-gorm/gorm/blob/master/errors.go)
+For a complete list of errors that GORM can return, refer to the [Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go) in GORM's documentation.

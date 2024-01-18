@@ -408,7 +408,7 @@ name.Like("%modi%")
 name.Regexp(".*")
 // `user`.`name` FIND_IN_SET(`name`,"modi,jinzhu,zhangqiang")
 name.FindInSet("modi,jinzhu,zhangqiang")
-// `uesr`.`name` CONCAT("[",name,"]")
+// `user`.`name` CONCAT("[",name,"]")
 name.Concat("[", "]")
 ```
 
@@ -454,7 +454,7 @@ users, err := u.WithContext(ctx).Select(u.Age.Avg().As("avgage")).Group(u.Name).
 // Select users with orders between 100 and 200
 subQuery1 := o.WithContext(ctx).Select(o.ID).Where(o.UserID.EqCol(u.ID), o.Amount.Gt(100))
 subQuery2 := o.WithContext(ctx).Select(o.ID).Where(o.UserID.EqCol(u.ID), o.Amount.Gt(200))
-u.WithContext(ctx).Exists(subQuery1).Not(u.WithContext(ctx).Exists(subQuery2)).Find()
+u.WithContext(ctx).Where(gen.Exists(subQuery1)).Not(gen.Exists(subQuery2)).Find()
 // SELECT * FROM `users` WHERE EXISTS (SELECT `orders`.`id` FROM `orders` WHERE `orders`.`user_id` = `users`.`id` AND `orders`.`amount` > 100 AND `orders`.`deleted_at` IS NULL) AND NOT EXISTS (SELECT `orders`.`id` FROM `orders` WHERE `orders`.`user_id` = `users`.`id` AND `orders`.`amount` > 200 AND `orders`.`deleted_at` IS NULL) AND `users`.`deleted_at` IS NULL
 ```
 

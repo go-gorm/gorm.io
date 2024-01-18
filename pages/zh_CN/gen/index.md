@@ -3,7 +3,7 @@ title: Gen Guides
 layout: page
 ---
 
-## GEN Guides
+## GEN 指南
 
 [GEN](https://github.com/go-gorm/gen): 更友好 & 更安全 [GORM](https://github.com/go-gorm/gorm) 代码生成。
 
@@ -20,11 +20,11 @@ layout: page
 go get -u gorm.io/gen
 ```
 
-## Quick start
+## 快速入门
 
-It is quite straightforward to use `gen` for your application, here is how it works:
+在程序中使用 `gen` 非常简单，具体操作如下：
 
-**1. Write the configuration in golang**
+**1. 在 Go 中写入配置**
 
 ```go
 package main
@@ -57,11 +57,11 @@ func main() {
 }
 ```
 
-**2. Generate Code**
+**2. 生成代码**
 
 `go run main.go`
 
-**3. Use the generated code in your project**
+**3. 在您的项目中使用生成的代码**
 
 ```go
 import "your_project/query"

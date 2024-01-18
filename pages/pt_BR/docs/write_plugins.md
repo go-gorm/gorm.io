@@ -5,13 +5,13 @@ layout: page
 
 ## Callbacks
 
-GORM itself is powered by `Callbacks`, it has callbacks for `Create`, `Query`, `Update`, `Delete`, `Row`, `Raw`, you could fully customize GORM with them as you want
+GORM leverages `Callbacks` to power its core functionalities. These callbacks provide hooks for various database operations like `Create`, `Query`, `Update`, `Delete`, `Row`, and `Raw`, allowing for extensive customization of GORM's behavior.
 
-Callbacks are registered into the global `*gorm.DB`, not the session-level, if you require `*gorm.DB` with different callbacks, you need to initialize another `*gorm.DB`
+Callbacks are registered at the global `*gorm.DB` level, not on a session basis. This means if you need different callback behaviors, you should initialize a separate `*gorm.DB` instance.
 
-### Register Callback
+### Registering a Callback
 
-Register a callback into callbacks
+You can register a callback for specific operations. For example, to add a custom image cropping functionality:
 
 ```go
 func cropImage(db *gorm.DB) {
@@ -60,65 +60,69 @@ func cropImage(db *gorm.DB) {
   }
 }
 
+// Register the callback for the Create operation
 db.Callback().Create().Register("crop_image", cropImage)
-// register a callback for Create process
 ```
 
-### Delete Callback
+### Deleting a Callback
 
-Delete a callback from callbacks
+If a callback is no longer needed, it can be removed:
 
 ```go
+// Remove the 'gorm:create' callback from Create operations
 db.Callback().Create().Remove("gorm:create")
-// delete callback `gorm:create` from Create callbacks
 ```
 
-### Replace Callback
+### Replacing a Callback
 
-Replace a callback having the same name with the new one
+Callbacks with the same name can be replaced with a new function:
 
 ```go
+// Replace the 'gorm:create' callback with a new function
 db.Callback().Create().Replace("gorm:create", newCreateFunction)
-// replace callback `gorm:create` with new function `newCreateFunction` for Create process
 ```
 
-### Register Callback with orders
+### Ordering Callbacks
 
-Register callbacks with orders
+Callbacks can be registered with specific orders to ensure they execute at the right time in the operation lifecycle.
 
 ```go
-// before gorm:create
+// Register to execute before the 'gorm:create' callback
 db.Callback().Create().Before("gorm:create").Register("update_created_at", updateCreated)
 
-// after gorm:create
+// Register to execute after the 'gorm:create' callback
 db.Callback().Create().After("gorm:create").Register("update_created_at", updateCreated)
 
-// after gorm:query
+// Register to execute after the 'gorm:query' callback
 db.Callback().Query().After("gorm:query").Register("my_plugin:after_query", afterQuery)
 
-// after gorm:delete
+// Register to execute after the 'gorm:delete' callback
 db.Callback().Delete().After("gorm:delete").Register("my_plugin:after_delete", afterDelete)
 
-// before gorm:update
+// Register to execute before the 'gorm:update' callback
 db.Callback().Update().Before("gorm:update").Register("my_plugin:before_update", beforeUpdate)
 
-// before gorm:create and after gorm:before_create
+// Register to execute before 'gorm:create' and after 'gorm:before_create'
 db.Callback().Create().Before("gorm:create").After("gorm:before_create").Register("my_plugin:before_create", beforeCreate)
 
-// before any other callbacks
+// Register to execute before any other callbacks
 db.Callback().Create().Before("*").Register("update_created_at", updateCreated)
 
-// after any other callbacks
+// Register to execute after any other callbacks
 db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 ```
 
-### Defined Callbacks
+### Predefined Callbacks
 
-GORM has defined [some callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) to power current GORM features, check them out before starting your plugins
+GORM comes with a set of predefined callbacks that drive its standard features. It's recommended to review these [defined callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) before creating custom plugins or additional callback functions.
 
-## Plugin
+## Plugins
 
-GORM provides a `Use` method to register plugins, the plugin needs to implement the `Plugin` interface
+GORM's plugin system allows for easy extensibility and customization of its core functionalities, enhancing your application's capabilities while maintaining a modular architecture.
+
+### The `Plugin` Interface
+
+To create a plugin for GORM, you need to define a struct that implements the `Plugin` interface:
 
 ```go
 type Plugin interface {
@@ -127,10 +131,36 @@ type Plugin interface {
 }
 ```
 
-The `Initialize` method will be invoked when registering the plugin into GORM first time, and GORM will save the registered plugins, access them like:
+- **`Name` Method**: Returns a unique string identifier for the plugin.
+- **`Initialize` Method**: Contains the logic to set up the plugin. This method is called when the plugin is registered with GORM for the first time.
+
+### Registering a Plugin
+
+Once your plugin conforms to the `Plugin` interface, you can register it with a GORM instance:
 
 ```go
-db.Config.Plugins[pluginName]
+// Example of registering a plugin
+db.Use(MyCustomPlugin{})
 ```
 
-Checkout [Prometheus](prometheus.html) as example
+### Accessing Registered Plugins
+
+After a plugin is registered, it is stored in GORM's configuration. You can access registered plugins via the `Plugins` map:
+
+```go
+// Access a registered plugin by its name
+plugin := db.Config.Plugins[pluginName]
+```
+
+### Practical Example
+
+An example of a GORM plugin is the Prometheus plugin, which integrates Prometheus monitoring with GORM:
+
+```go
+// Registering the Prometheus plugin
+db.Use(prometheus.New(prometheus.Config{
+  // Configuration options here
+}))
+```
+
+[Prometheus plugin documentation](prometheus.html) provides detailed information on its implementation and usage.
