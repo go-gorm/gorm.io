@@ -267,7 +267,7 @@ type Pet struct {
 }
 
 // In SQLite, this is not supported, so GORM will build a wrong SQL to raise error:
-// INSERT INTO `pets` (`name`) VALUES ("dog"),(DEFAULT) RETURNING `value`
+// INSERT INTO `pets` (`name`) VALUES ("dog"),(DEFAULT) RETURNING `name`
 db.Create(&[]Pet{{Name: "dog"}, {}})
 ```
 A viable alternative is to assign default value to fields in the hook, e.g.
