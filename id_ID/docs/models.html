@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="Deklarasi ModelModel adalah struct biasa dengan type basic Go, pointer&#x2F;aliasnya type custom yang mengimplementasikan interface Scanner dan Valuer Contoh: type User struct &amp;#123;  ID           uin">
+  <meta name="description" content="GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities. Deklarasi ModelModels a">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Declaring Models">
 <meta property="og:url" content="https://gorm.io/id_ID/docs/models.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="Deklarasi ModelModel adalah struct biasa dengan type basic Go, pointer&#x2F;aliasnya type custom yang mengimplementasikan interface Scanner dan Valuer Contoh: type User struct &amp;#123;  ID           uin">
+<meta property="og:description" content="GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities. Deklarasi ModelModels a">
 <meta property="og:locale" content="id_ID">
-<meta property="article:published_time" content="2024-01-13T11:25:00.449Z">
-<meta property="article:modified_time" content="2024-01-13T11:25:00.449Z">
+<meta property="article:published_time" content="2024-01-18T01:49:03.154Z">
+<meta property="article:modified_time" content="2024-01-18T01:49:03.154Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -141,27 +141,48 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><h2 id="Deklarasi-Model" class="article-heading"><a href="#Deklarasi-Model" class="headerlink" title="Deklarasi Model"></a>Deklarasi Model<a class="article-anchor" href="#Deklarasi-Model" aria-hidden="true"></a></h2><p>Model adalah struct biasa dengan type basic Go, pointer/aliasnya type custom yang mengimplementasikan interface <a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/?tab=doc#Scanner">Scanner</a> dan <a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/driver#Valuer">Valuer</a></p>
-<p>Contoh:</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID           <span class="type">uint</span></span><br><span class="line">  Name         <span class="type">string</span></span><br><span class="line">  Email        *<span class="type">string</span></span><br><span class="line">  Age          <span class="type">uint8</span></span><br><span class="line">  Birthday     *time.Time</span><br><span class="line">  MemberNumber sql.NullString</span><br><span class="line">  ActivatedAt  sql.NullTime</span><br><span class="line">  CreatedAt    time.Time</span><br><span class="line">  UpdatedAt    time.Time</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+                <html><head></head><body><p>GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities.</p>
+<h2 id="Deklarasi-Model" class="article-heading"><a href="#Deklarasi-Model" class="headerlink" title="Deklarasi Model"></a>Deklarasi Model<a class="article-anchor" href="#Deklarasi-Model" aria-hidden="true"></a></h2><p>Models are defined using normal structs. These structs can contain fields with basic Go types, pointers or aliases of these types, or even custom types, as long as they implement the <a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/?tab=doc#Scanner">Scanner</a> and <a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/driver#Valuer">Valuer</a> interfaces from the <code>database/sql</code> package</p>
+<p>Consider the following example of a <code>User</code> model:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID           <span class="type">uint</span>           <span class="comment">// Standard field for the primary key</span></span><br><span class="line">  Name         <span class="type">string</span>         <span class="comment">// A regular string field</span></span><br><span class="line">  Email        *<span class="type">string</span>        <span class="comment">// A pointer to a string, allowing for null values</span></span><br><span class="line">  Age          <span class="type">uint8</span>          <span class="comment">// An unsigned 8-bit integer</span></span><br><span class="line">  Birthday     *time.Time     <span class="comment">// A pointer to time.Time, can be null</span></span><br><span class="line">  MemberNumber sql.NullString <span class="comment">// Uses sql.NullString to handle nullable strings</span></span><br><span class="line">  ActivatedAt  sql.NullTime   <span class="comment">// Uses sql.NullTime for nullable time fields</span></span><br><span class="line">  CreatedAt    time.Time      <span class="comment">// Automatically managed by GORM for creation time</span></span><br><span class="line">  UpdatedAt    time.Time      <span class="comment">// Automatically managed by GORM for update time</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Konvensi" class="article-heading"><a href="#Konvensi" class="headerlink" title="Konvensi"></a>Konvensi<a class="article-anchor" href="#Konvensi" aria-hidden="true"></a></h2><p>GORM prefers convention over configuration. By default, GORM uses <code>ID</code> as primary key, pluralizes struct name to <code>snake_cases</code> as table name, <code>snake_case</code> as column name, and uses <code>CreatedAt</code>, <code>UpdatedAt</code> to track creating/updating time</p>
-<p>If you follow the conventions adopted by GORM, you’ll need to write very little configuration/code. If convention doesn’t match your requirements, <a href="conventions.html">GORM allows you to configure them</a></p>
-<h2 id="gorm-Model" class="article-heading"><a href="#gorm-Model" class="headerlink" title="gorm.Model"></a>gorm.Model<a class="article-anchor" href="#gorm-Model" aria-hidden="true"></a></h2><p>GORM mendefinisikan struct <code>gorm.Model</code>, yang mencakup <em>field</em> <code>ID</code>, <code>CreatedAt</code>, <code>UpdatedAt</code>, ``DeletedAt&lt; /kode&gt;</p><p></p>
-<pre><code class="go">// definisi gorm.Model
-type Model struct {
-  ID        uint           `gorm:"primaryKey"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt gorm.DeletedAt `gorm:"index"`
-}
-``</code></pre><code class="go">
+<p>In this model:</p>
+<ul>
+<li>Basic data types like <code>uint</code>, <code>string</code>, and <code>uint8</code> are used directly.</li>
+<li>Pointers to types like <code>*string</code> and <code>*time.Time</code> indicate nullable fields.</li>
+<li><code>sql.NullString</code> and <code>sql.NullTime</code> from the <code>database/sql</code> package are used for nullable fields with more control.</li>
+<li><code>CreatedAt</code> and <code>UpdatedAt</code> are special fields that GORM automatically populates with the current time when a record is created or updated.</li>
+</ul>
+<p>In addition to the fundamental features of model declaration in GORM, it’s important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See <a href="serializer.html">Serializer</a> for a detailed explanation</p>
+<h3 id="Konvensi" class="article-heading"><a href="#Konvensi" class="headerlink" title="Konvensi"></a>Konvensi<a class="article-anchor" href="#Konvensi" aria-hidden="true"></a></h3><ol>
+<li><p><strong>Primary Key</strong>: GORM uses a field named <code>ID</code> as the default primary key for each model.</p>
+</li>
+<li><p><strong>Table Names</strong>: By default, GORM converts struct names to <code>snake_case</code> and pluralizes them for table names. For instance, a <code>User</code> struct becomes <code>users</code> in the database.</p>
+</li>
+<li><p><strong>Column Names</strong>: GORM automatically converts struct field names to <code>snake_case</code> for column names in the database.</p>
+</li>
+<li><p><strong>Timestamp Fields</strong>: GORM uses fields named <code>CreatedAt</code> and <code>UpdatedAt</code> to automatically track the creation and update times of records.</p>
+</li>
+</ol>
+<p>Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don’t fit your requirements. You can learn more about customizing these conventions in GORM’s documentation on <a href="conventions.html">conventions</a>.</p>
+<h3 id="gorm-Model" class="article-heading"><a href="#gorm-Model" class="headerlink" title="gorm.Model"></a><code>gorm.Model</code><a class="article-anchor" href="#gorm-Model" aria-hidden="true"></a></h3><p>GORM provides a predefined struct named <code>gorm.Model</code>, which includes commonly used fields:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// definisi gorm.Model</span></span><br><span class="line"><span class="keyword">type</span> Model <span class="keyword">struct</span> {</span><br><span class="line">  ID        <span class="type">uint</span>           <span class="string">`gorm:"primaryKey"`</span></span><br><span class="line">  CreatedAt time.Time</span><br><span class="line">  UpdatedAt time.Time</span><br><span class="line">  DeletedAt gorm.DeletedAt <span class="string">`gorm:"index"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>Anda dapat menyematkannya ke dalam struct Anda untuk menyertakan <em>field</em> tersebut, lihat <a href="#embedded_struct">Embedded Struct</a></p>
+<ul>
+<li><p><strong>Embedding in Your Struct</strong>: You can embed <code>gorm.Model</code> directly in your structs to include these fields automatically. This is useful for maintaining consistency across different models and leveraging GORM’s built-in conventions, refer <a href="#embedded_struct">Embedded Struct</a></p>
+</li>
+<li><p><strong>Fields Included</strong>:</p>
+<ul>
+<li><code>ID</code>: A unique identifier for each record (primary key).</li>
+<li><code>CreatedAt</code>: Automatically set to the current time when a record is created.</li>
+<li><code>UpdatedAt</code>: Automatically updated to the current time whenever a record is updated.</li>
+<li><code>DeletedAt</code>: Used for soft deletes (marking records as deleted without actually removing them from the database).</li>
+</ul>
+</li>
+</ul>
 <h2 id="Advanced" class="article-heading"><a href="#Advanced" class="headerlink" title="Advanced"></a>Advanced<a class="article-anchor" href="#Advanced" aria-hidden="true"></a></h2><h3 id="Field-Level-Permission" class="article-heading"><a href="#Field-Level-Permission" class="headerlink" title="Field-Level Permission"></a><span id="field_permission">Field-Level Permission</span><a class="article-anchor" href="#Field-Level-Permission" aria-hidden="true"></a></h3><p>Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored</p>
-{% note warn %}
-**CATATAN** *field* yang diabaikan tidak akan dibuat saat menggunakan GORM Migrator untuk membuat tabel
-{% endnote %}
+<blockquote class="note warn"><p><strong>CATATAN</strong> <em>field</em> yang diabaikan tidak akan dibuat saat menggunakan GORM Migrator untuk membuat tabel</p>
+</blockquote>
 
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:create"`</span> <span class="comment">// allow read and create</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:update"`</span> <span class="comment">// allow read and update</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-"`</span>        <span class="comment">// allow read and write (create and update)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:false"`</span>  <span class="comment">// allow read, disable write permission</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;"`</span>        <span class="comment">// readonly (disable write permission unless it configured)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;;&lt;-:create"`</span> <span class="comment">// allow read and create</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;:false;&lt;-:create"`</span> <span class="comment">// createonly (disabled read from db)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-"`</span>            <span class="comment">// ignore this field when write and read with struct</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-:all"`</span>        <span class="comment">// ignore this field when write, read and migrate with struct</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-:migration"`</span>  <span class="comment">// ignore this field when migrate with struct</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
@@ -282,7 +303,7 @@ type Model struct {
 </tr>
 </tbody></table>
 <h3 id="Associations-Tags" class="article-heading"><a href="#Associations-Tags" class="headerlink" title="Associations Tags"></a>Associations Tags<a class="article-anchor" href="#Associations-Tags" aria-hidden="true"></a></h3><p>GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the <a href="associations.html#tags">Associations section</a> for details</p>
-</code></body></html>
+</body></html>
               </div>
 
               
@@ -294,7 +315,7 @@ type Model struct {
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2024-01-13T11:25:00.449Z" itemprop="dateModified">Terakhir diubah: 2024-01-13</time>
+                <time class="article-footer-updated" datetime="2024-01-18T01:49:03.154Z" itemprop="dateModified">Terakhir diubah: 2024-01-18</time>
 <a href="index.html" class="article-footer-prev" title="Pratinjau"><i class="fa fa-chevron-left"></i><span>Sebelumnya</span></a><a href="connecting_to_the_database.html" class="article-footer-next" title="Menghubungkan ke Database"><span>Selanjutnya</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -408,7 +429,7 @@ type Model struct {
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">Isi</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Deklarasi-Model"><span class="toc-text">Deklarasi Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Konvensi"><span class="toc-text">Konvensi</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gorm-Model"><span class="toc-text">gorm.Model</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Advanced"><span class="toc-text">Advanced</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Field-Level-Permission"><span class="toc-text">Field-Level Permission</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Creating-x2F-Updating-Time-x2F-Unix-Milli-x2F-Nano-Seconds-Tracking"><span class="toc-text">Creating&#x2F;Updating Time&#x2F;Unix (Milli&#x2F;Nano) Seconds Tracking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Embedded-Struct"><span class="toc-text">Embedded Struct</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fields-Tags"><span class="toc-text">Fields Tags</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Associations-Tags"><span class="toc-text">Associations Tags</span></a></li></ol></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Deklarasi-Model"><span class="toc-text">Deklarasi Model</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Konvensi"><span class="toc-text">Konvensi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gorm-Model"><span class="toc-text">gorm.Model</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Advanced"><span class="toc-text">Advanced</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Field-Level-Permission"><span class="toc-text">Field-Level Permission</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Creating-x2F-Updating-Time-x2F-Unix-Milli-x2F-Nano-Seconds-Tracking"><span class="toc-text">Creating&#x2F;Updating Time&#x2F;Unix (Milli&#x2F;Nano) Seconds Tracking</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Embedded-Struct"><span class="toc-text">Embedded Struct</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fields-Tags"><span class="toc-text">Fields Tags</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Associations-Tags"><span class="toc-text">Associations Tags</span></a></li></ol></li></ol>
 
               
                 <a href="https://translate.gorm.io/project/go-gorm/id" target="_blank" id="article-improve">

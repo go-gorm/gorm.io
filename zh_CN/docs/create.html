@@ -56,8 +56,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="创建记录user :&#x3D; User&amp;#123;Name: &quot;Jinzhu&quot;, Age: 18, Birthday: time.Now()&amp;#125;result :&#x3D; db.Create(&amp;user) &#x2F;&#x2F; 通过数据的指针来创建user.ID             &#x2F;&#x2F; 返回插入数据的主键result.Error        &#x2F;&#x2F; 返回 errorresult.Row">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-01-13T11:25:00.473Z">
-<meta property="article:modified_time" content="2024-01-13T11:25:00.473Z">
+<meta property="article:published_time" content="2024-01-18T01:49:03.178Z">
+<meta property="article:modified_time" content="2024-01-18T01:49:03.178Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -155,7 +155,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>创建记录并忽略传递给 ‘Omit’ 的字段值</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Omit(<span class="string">"Name"</span>, <span class="string">"Age"</span>, <span class="string">"CreatedAt"</span>).Create(&amp;user)</span><br><span class="line"><span class="comment">// INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="批量插入" class="article-heading"><a href="#批量插入" class="headerlink" title="批量插入"></a><span id="batch_insert">批量插入</span><a class="article-anchor" href="#批量插入" aria-hidden="true"></a></h2><p>要高效地插入大量记录，请将切片传递给<code>Create</code>方法。 GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. 当记录可以分成多个批处理时，它将开始一个 <strong>交易</strong>。</p>
+<h2 id="批量插入" class="article-heading"><a href="#批量插入" class="headerlink" title="批量插入"></a><span id="batch_insert">批量插入</span><a class="article-anchor" href="#批量插入" aria-hidden="true"></a></h2><p>要高效地插入大量记录，请将切片传递给<code>Create</code>方法。 GORM 将生成一条 SQL 来插入所有数据，以返回所有主键值，并触发 <code>Hook</code> 方法 It will begin a <strong>transaction</strong> when records can be split into multiple batches.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> users = []User{{Name: <span class="string">"jinzhu1"</span>}, {Name: <span class="string">"jinzhu2"</span>}, {Name: <span class="string">"jinzhu3"</span>}}</span><br><span class="line">db.Create(&amp;users)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _, user := <span class="keyword">range</span> users {</span><br><span class="line">  user.ID <span class="comment">// 1,2,3</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>You can specify batch size when creating with <code>CreateInBatches</code>, e.g:</p>
@@ -220,7 +220,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2024-01-13T11:25:00.473Z" itemprop="dateModified">最后更新于 2024-01-13</time>
+                <time class="article-footer-updated" datetime="2024-01-18T01:49:03.178Z" itemprop="dateModified">最后更新于 2024-01-18</time>
 <a href="connecting_to_the_database.html" class="article-footer-prev" title="连接到数据库"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="query.html" class="article-footer-next" title="查询"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 

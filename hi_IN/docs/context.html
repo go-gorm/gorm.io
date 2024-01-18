@@ -25,15 +25,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORM कॉन्टेक्स्ट सपोर्ट प्रदान करता है, आप इसे WithContext method के साथ उपयोग कर सकते हैं Single Session Modeसिंगल सेशन मोड आमतौर पर तब उपयोग किया जाता है जब आप एक ही ऑपरेशन करना चाहते हैं db.WithCon">
+  <meta name="description" content="GORM’s context support, enabled by the WithContext method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management a">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Context">
 <meta property="og:url" content="https://gorm.io/hi_IN/docs/context.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORM कॉन्टेक्स्ट सपोर्ट प्रदान करता है, आप इसे WithContext method के साथ उपयोग कर सकते हैं Single Session Modeसिंगल सेशन मोड आमतौर पर तब उपयोग किया जाता है जब आप एक ही ऑपरेशन करना चाहते हैं db.WithCon">
+<meta property="og:description" content="GORM’s context support, enabled by the WithContext method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management a">
 <meta property="og:locale" content="hi_IN">
-<meta property="article:published_time" content="2024-01-13T11:25:00.445Z">
-<meta property="article:modified_time" content="2024-01-13T11:25:00.445Z">
+<meta property="article:published_time" content="2024-01-18T01:49:03.150Z">
+<meta property="article:modified_time" content="2024-01-18T01:49:03.150Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -117,58 +117,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>GORM कॉन्टेक्स्ट सपोर्ट प्रदान करता है, आप इसे <code>WithContext</code> method के साथ उपयोग कर सकते हैं</p>
-<h2 id="Single-Session-Mode" class="article-heading"><a href="#Single-Session-Mode" class="headerlink" title="Single Session Mode"></a>Single Session Mode<a class="article-anchor" href="#Single-Session-Mode" aria-hidden="true"></a></h2><p>सिंगल सेशन मोड आमतौर पर तब उपयोग किया जाता है जब आप एक ही ऑपरेशन करना चाहते हैं</p>
+                <html><head></head><body><p>GORM’s context support, enabled by the <code>WithContext</code> method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management across different operational modes, timeout settings, and even integration into hooks/callbacks and middlewares. Let’s delve into these various aspects:</p>
+<h3 id="Single-Session-Mode" class="article-heading"><a href="#Single-Session-Mode" class="headerlink" title="Single Session Mode"></a>Single Session Mode<a class="article-anchor" href="#Single-Session-Mode" aria-hidden="true"></a></h3><p>Single session mode is appropriate for executing individual operations. It ensures that the specific operation is executed within the context’s scope, allowing for better control and monitoring.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.WithContext(ctx).Find(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Continuous-session-mode" class="article-heading"><a href="#Continuous-session-mode" class="headerlink" title="Continuous session mode"></a>Continuous session mode<a class="article-anchor" href="#Continuous-session-mode" aria-hidden="true"></a></h2><p>Continuous session मोड का उपयोग आमतौर पर तब किया जाता है जब आप operations का एक समूह perform करना चाहते हैं, उदाहरण के लिए:</p>
+<h3 id="Continuous-Session-Mode" class="article-heading"><a href="#Continuous-Session-Mode" class="headerlink" title="Continuous Session Mode"></a>Continuous Session Mode<a class="article-anchor" href="#Continuous-Session-Mode" aria-hidden="true"></a></h3><p>Continuous session mode is ideal for performing a series of related operations. It maintains the context across these operations, which is particularly useful in scenarios like transactions.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">tx := db.WithContext(ctx)</span><br><span class="line">tx.First(&amp;user, <span class="number">1</span>)</span><br><span class="line">tx.Model(&amp;user).Update(<span class="string">"role"</span>, <span class="string">"admin"</span>)</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Context-timeout" class="article-heading"><a href="#Context-timeout" class="headerlink" title="Context timeout"></a>Context timeout<a class="article-anchor" href="#Context-timeout" aria-hidden="true"></a></h2><p>लंबे समय तक चलने वाले प्रश्नों(queries) के लिए टाइमआउट सेट करने के लिए आप <code>db.WithContext</code> के टाइमआउट के साथ संदर्भ(context) में पास कर सकते हैं, उदाहरण के लिए:</p>
+<h3 id="Context-Timeout" class="article-heading"><a href="#Context-Timeout" class="headerlink" title="Context Timeout"></a>Context Timeout<a class="article-anchor" href="#Context-Timeout" aria-hidden="true"></a></h3><p>Setting a timeout on the context passed to <code>db.WithContext</code> can control the duration of long-running queries. This is crucial for maintaining performance and avoiding resource lock-ups in database interactions.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">ctx, cancel := context.WithTimeout(context.Background(), <span class="number">2</span>*time.Second)</span><br><span class="line"><span class="keyword">defer</span> cancel()</span><br><span class="line"></span><br><span class="line">db.WithContext(ctx).Find(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Context-in-Hooks-x2F-Callbacks" class="article-heading"><a href="#Context-in-Hooks-x2F-Callbacks" class="headerlink" title="Context in Hooks/Callbacks"></a>Context in Hooks/Callbacks<a class="article-anchor" href="#Context-in-Hooks-x2F-Callbacks" aria-hidden="true"></a></h2><p>आप <code>Context</code> ऑब्जेक्ट को वर्तमान <code>स्टेटमेंट</code> से एक्सेस कर सकते हैं, उदाहरण के लिए:</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *User)</span></span> BeforeCreate(tx *gorm.DB) (err <span class="type">error</span>) {</span><br><span class="line">  ctx := tx.Statement.Context</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="Context-in-Hooks-x2F-Callbacks" class="article-heading"><a href="#Context-in-Hooks-x2F-Callbacks" class="headerlink" title="Context in Hooks/Callbacks"></a>Context in Hooks/Callbacks<a class="article-anchor" href="#Context-in-Hooks-x2F-Callbacks" aria-hidden="true"></a></h3><p>The context can also be accessed within GORM’s hooks/callbacks. This enables contextual information to be used during these lifecycle events.</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(u *User)</span></span> BeforeCreate(tx *gorm.DB) (err <span class="type">error</span>) {</span><br><span class="line">  ctx := tx.Statement.Context</span><br><span class="line">  <span class="comment">// ... use context</span></span><br><span class="line">  <span class="keyword">return</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Chi-Middleware-Example" class="article-heading"><a href="#Chi-Middleware-Example" class="headerlink" title="Chi Middleware Example"></a>Chi Middleware Example<a class="article-anchor" href="#Chi-Middleware-Example" aria-hidden="true"></a></h2><p>Continuous session मोड जो API अनुरोधों(requests) को संभालने में सहायक हो सकता है, उदाहरण के लिए, आप मिडलवेयर में टाइमआउट संदर्भ के साथ <code>*gorm.DB</code> सेटअप कर सकते हैं और फिर `*gorm.DB&lt;/code का उपयोग कर सकते हैं। &gt; सभी अनुरोधों को संसाधित करते समय</p><p></p>
-<p spaces-before="0">Following is a Chi middleware example:</p>
+<h3 id="Integration-with-Chi-Middleware" class="article-heading"><a href="#Integration-with-Chi-Middleware" class="headerlink" title="Integration with Chi Middleware"></a>Integration with Chi Middleware<a class="article-anchor" href="#Integration-with-Chi-Middleware" aria-hidden="true"></a></h3><p>GORM’s context support extends to web server middlewares, such as those in the Chi router. This allows setting a context with a timeout for all database operations within the scope of a web request.</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SetDBMiddleware</span><span class="params">(next http.Handler)</span></span> http.Handler {</span><br><span class="line">  <span class="keyword">return</span> http.HandlerFunc(<span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> {</span><br><span class="line">    timeoutContext, _ := context.WithTimeout(context.Background(), time.Second)</span><br><span class="line">    ctx := context.WithValue(r.Context(), <span class="string">"DB"</span>, db.WithContext(timeoutContext))</span><br><span class="line">    next.ServeHTTP(w, r.WithContext(ctx))</span><br><span class="line">  })</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Router setup</span></span><br><span class="line">r := chi.NewRouter()</span><br><span class="line">r.Use(SetDBMiddleware)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Route handlers</span></span><br><span class="line">r.Get(<span class="string">"/"</span>, <span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> {</span><br><span class="line">  db, ok := r.Context().Value(<span class="string">"DB"</span>).(*gorm.DB)</span><br><span class="line">  <span class="comment">// ... db operations</span></span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">r.Get(<span class="string">"/user"</span>, <span class="function"><span class="keyword">func</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> {</span><br><span class="line">  db, ok := r.Context().Value(<span class="string">"DB"</span>).(*gorm.DB)</span><br><span class="line">  <span class="comment">// ... db operations</span></span><br><span class="line">})</span><br></pre></td></tr></tbody></table></figure>
 
-<pre><code class="go">func SetDBMiddleware(next http.Handler) http.Handler {
-  return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-    timeoutContext, _ := context.WithTimeout(context.Background(), time.Second)
-    ctx := context.WithValue(r.Context(), "DB", db.WithContext(timeoutContext))
-    next.ServeHTTP(w, r.WithContext(ctx))
-  })
-}
-
-r := chi.NewRouter()
-r.Use(SetDBMiddleware)
-
-r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-  db, ok := ctx.Value("DB").(*gorm.DB)
-
-  var users []User
-  db.Find(&amp;users)
-
-  // lots of db operations
-})
-
-r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
-  db, ok := ctx.Value("DB").(*gorm.DB)
-
-  var user User
-  db.First(&amp;user)
-
-  // lots of db operations
-})
-`</code></pre><code class="go">
-
-{% note %}
-**ध्यान दें** `Context` को `WithContext` के साथ सेट करना गोरूटीन-सुरक्षित है, [Session देखें ](session.html) विवरण के लिए
-{% endnote %}
-
-<h2 id="Logger" class="article-heading"><a href="#Logger" class="headerlink" title="Logger"></a>Logger<a class="article-anchor" href="#Logger" aria-hidden="true"></a></h2><p>Logger <code>Context</code> भी स्वीकार करता है, आप इसे लॉग ट्रैकिंग के लिए उपयोग कर सकते हैं, विवरण के लिए <a href="logger.html">Logger</a> देखें</p>
-</code></body></html>
+<p><strong>Note</strong>: Setting the <code>Context</code> with <code>WithContext</code> is goroutine-safe. This ensures that database operations are safely managed across multiple goroutines. For more details, refer to the <a href="session.html">Session documentation</a> in GORM.</p>
+<h3 id="Logger-Integration" class="article-heading"><a href="#Logger-Integration" class="headerlink" title="Logger Integration"></a>Logger Integration<a class="article-anchor" href="#Logger-Integration" aria-hidden="true"></a></h3><p>GORM’s logger also accepts <code>Context</code>, which can be used for log tracking and integrating with existing logging infrastructures.</p>
+<p>Refer to <a href="logger.html">Logger documentation</a> for more details.</p>
+</body></html>
               </div>
 
               
@@ -180,7 +148,7 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2024-01-13T11:25:00.445Z" itemprop="dateModified">Last updated: २०२४-०१-१३</time>
+                <time class="article-footer-updated" datetime="2024-01-18T01:49:03.150Z" itemprop="dateModified">Last updated: २०२४-०१-१८</time>
 <a href="preload.html" class="article-footer-prev" title="Preloading (Eager Loading)"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="error_handling.html" class="article-footer-next" title="Error Handling"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -294,7 +262,7 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">Contents</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Single-Session-Mode"><span class="toc-text">Single Session Mode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Continuous-session-mode"><span class="toc-text">Continuous session mode</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Context-timeout"><span class="toc-text">Context timeout</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Context-in-Hooks-x2F-Callbacks"><span class="toc-text">Context in Hooks&#x2F;Callbacks</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Chi-Middleware-Example"><span class="toc-text">Chi Middleware Example</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Logger"><span class="toc-text">Logger</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Single-Session-Mode"><span class="toc-text">Single Session Mode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Continuous-Session-Mode"><span class="toc-text">Continuous Session Mode</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Context-Timeout"><span class="toc-text">Context Timeout</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Context-in-Hooks-x2F-Callbacks"><span class="toc-text">Context in Hooks&#x2F;Callbacks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Integration-with-Chi-Middleware"><span class="toc-text">Integration with Chi Middleware</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Logger-Integration"><span class="toc-text">Logger Integration</span></a></li></ol>
 
               
                 <a href="https://translate.gorm.io/project/go-gorm/hi" target="_blank" id="article-improve">
