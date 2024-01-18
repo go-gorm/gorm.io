@@ -14,19 +14,19 @@
 
     <div class="sponsors">
       <h1>Gold Sponsors {% if !homepage %}<i class="far fa-kiss-wink-heart"></i>{% endif %}</h1>
-      <div class="sponsor_item">
-        <a href="https://hubuc.com" target="_blank" rel="sponsored noopener" title="hubuc">
-          <img src="{{ url_for('/sponsors-imgs/hubuc.svg') }}" alt="hubuc">
-        </a>
-      </div>
-      <div class="sponsor_item">
-        <a href="https://www.bytebase.com/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20220715" target="_blank" rel="sponsored noopener" title="bytebase">
-          <img src="{{ url_for('/sponsors-imgs/bytebase.png') }}" alt="bytebase">
-        </a>
-      </div>
-      <div class="sponsor_item">
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://hubuc.com" target="_blank" rel="sponsored noopener" title="hubuc"> -->
+      <!--     <img src="{{ url_for('/sponsors-imgs/hubuc.svg') }}" alt="hubuc"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <div class="sponsor_item sponsor_item_link">
         <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" rel="sponsored noopener" title="Encore">
           <img src="{{ url_for('/sponsors-imgs/encore.png') }}" alt="Encore">
+        </a>
+      </div>
+      <div class="sponsor_item sponsor_item_link">
+        <a href="https://incident.io" target="_blank" rel="sponsored noopener" title="Incident.io">
+          <img src="{{ url_for('/sponsors-imgs/incident-io.svg') }}" alt="Incident.io">
         </a>
       </div>
 
@@ -65,19 +65,24 @@
 
     <div class="sponsors">
       <h1>Gold Sponsors</h1>
-      <div class="sponsor_item">
-        <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener" title="hubuc">
-          <img src="{{ url_for('/sponsors-imgs/hubuc.svg') }}" alt="hubuc">
-        </a>
-      </div>
-      <div class="sponsor_item">
-        <a href="https://www.bytebase.com/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20220715" target="_blank" rel="sponsored noopener" title="bytebase">
-          <img src="{{ url_for('/sponsors-imgs/bytebase.png') }}" alt="bytebase">
-        </a>
-      </div>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener" title="hubuc"> -->
+      <!--     <img src="{{ url_for('/sponsors-imgs/hubuc.svg') }}" alt="hubuc"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://www.bytebase.com/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20220715" target="_blank" rel="sponsored noopener" title="bytebase"> -->
+      <!--     <img src="{{ url_for('/sponsors-imgs/bytebase.png') }}" alt="bytebase"> -->
+      <!--   </a> -->
+      <!-- </div> -->
       <div class="sponsor_item">
         <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" rel="sponsored noopener" title="Encore">
           <img src="{{ url_for('/sponsors-imgs/encore.png') }}" alt="Encore">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://incident.io" target="_blank" rel="sponsored noopener" title="Incident.io">
+          <img src="{{ url_for('/sponsors-imgs/incident-io.svg') }}" alt="Incident.io">
         </a>
       </div>
 
