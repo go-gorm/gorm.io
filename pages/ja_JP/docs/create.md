@@ -29,19 +29,19 @@ result.RowsAffected // returns inserted records count
 ```
 
 {% note warn %}
-**NOTE** You cannot pass a struct to 'create', so you should pass a pointer to the data.
+**注意** **Create()**の引数として構造体を渡すことはできません。代わりにポインタを渡すようにしてください。
 {% endnote %}
 
 ## フィールドを選択してレコードを作成する
 
-Create a record and assign a value to the fields specified.
+レコード作成時に、Selectで指定されたフィールドのみに対して値をアサインできます。
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and ignore the values for fields passed to omit.
+省略する項目を指定し、レコードを作成します。
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -50,7 +50,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">一括作成</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be split into multiple batches.
+大量のレコードを効率的に挿入するには、スライスを `Create` メソッドに渡します。 GORMはすべてのデータを挿入する1つのSQL文を生成します。SQLが実行されると登録された主キーの値がモデルに代入され、フックメソッドも呼び出されます。 レコードを複数のバッチに分割することが可能な場合には、 **トランザクション** が開始されます。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -61,7 +61,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+`CreateInBatches` を利用することで、バッチサイズを指定してレコードを作成することができます。
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -70,10 +70,10 @@ var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 db.CreateInBatches(users, 100)
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+[Upsert](#upsert) や [Create With Associations](#create_with_associations) を使用する場合もバッチインサートはサポートされています。
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**注記** `CreateBatchSize` オプションを使ってGORMを初期化した場合、すべての `INSERT` は、その設定を参照してレコードやアソシエーションを作成します。
 {% endnote %}
 
 ```go
