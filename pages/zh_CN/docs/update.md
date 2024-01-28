@@ -27,7 +27,7 @@ db.Save(&User{ID: 1, Name: "jinzhu", Age: 100})
 ```
 
 {% note warn %}
-**NOTE**不要将 `Save` 和 `Model`一同使用, 这是 **为定义的行为**。
+**NOTE**不要将 `Save` 和 `Model`一同使用, 这是 **未定义的行为**。
 {% endnote %}
 
 ## 更新单个列
