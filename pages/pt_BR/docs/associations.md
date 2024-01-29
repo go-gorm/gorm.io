@@ -5,11 +5,11 @@ layout: page
 
 ## Criar/Atualizar Automaticamente
 
-GORM automates the saving of associations and their references when creating or updating records, using an upsert technique that primarily updates foreign key references for existing associations.
+Ao criar um registro, o GORM salvará automaticamente os dados associados. Isto inclui a inserção de dados em tabelas relacionadas e o gerenciamento de referências de chave estrangeira.
 
-### Auto-Saving Associations on Create
+### Associações de salvamento automático ao criar
 
-When you create a new record, GORM will automatically save its associated data. This includes inserting data into related tables and managing foreign key references.
+Ao criar um registro, o GORM salvará automaticamente os dados associados. Isto inclui a inserção de dados em tabelas relacionadas e o gerenciamento de referências de chave estrangeira.
 
 ```go
 user := User{
@@ -39,14 +39,14 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-### Updating Associations with `FullSaveAssociations`
+### Atualizando associações com `FullSaveAssociations`
 
-For scenarios where a full update of the associated data is required (not just the foreign key references), the `FullSaveAssociations` mode should be used.
+Para cenários onde é necessária uma atualização completa dos dados associados (não apenas das referências de chave estrangeira), o modo `FullSaveAssociations` deve ser usado.
 
 ```go
-// Update a user and fully update all its associations
+// Atualizar um usuário e atualizar totalmente todas as suas associações
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
-// SQL: Fully updates addresses, users, emails tables, including existing associated records
+// SQL: Atualiza totalmente endereços, usuários, tabelas de e-mails, incluindo registros associados existentes
 ```
 
 Using `FullSaveAssociations` ensures that the entire state of the model, including all its associations, is reflected in the database, maintaining data integrity and consistency throughout the application.
