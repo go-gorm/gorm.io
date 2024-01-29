@@ -32,17 +32,17 @@ type User struct {
 - `sql.NullString` と `sql.NullTime` の `database/sql` パッケージは null可能フィールドでより多くの制御が可能です。
 - `Created` と `UpdatedAt` は、レコードが作成または更新されたときにGORMが自動的に現在の時刻を入力する特別なフィールドです。
 
-GORMにおけるモデル宣言の基本的な機能に加えて、シリアライザタグによるシリアライズのサポートに注目することが重要です。 This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See [Serializer](serializer.html) for a detailed explanation
+GORMにおけるモデル宣言の基本的な機能に加えて、シリアライザタグによるシリアライズのサポートに注目することが重要です。 この機能により、特にカスタム・シリアライズ・ロジックを必要とするフィールドについて、データの格納方法とデータベースからの取得方法の柔軟性が高まります。詳細な説明については [シリアライザー](serializer.html) を参照してください。
 
 ### 規約
 
-1. **Primary Key**: GORM uses a field named `ID` as the default primary key for each model.
+1. **主キー**: GORMは各モデルのデフォルト主キーとして `ID` という名前のフィールドを使用します。
 
-2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database.
+2. **テーブル名**: デフォルトでは、GORMは構造体名を `スネークケース` に変換し、テーブル名を複数形にします。 例えば、 `User` 構造体は、データベースの `users` テーブルになります。
 
-3. **Column Names**: GORM automatically converts struct field names to `snake_case` for column names in the database.
+3. **カラム名**: GORMは、データベース内のカラム名を自動的に `スネークケース` に変換します。
 
-4. **Timestamp Fields**: GORM uses fields named `CreatedAt` and `UpdatedAt` to automatically track the creation and update times of records.
+4. **タイムスタンプフィールド**: GORMは `Created` および `UpdatedAt` という名前のフィールドを使用して、レコードの作成と更新時間を自動的に追跡します。
 
 Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don't fit your requirements. You can learn more about customizing these conventions in GORM's documentation on [conventions](conventions.html).
 
