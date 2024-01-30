@@ -73,7 +73,7 @@ db.CreateInBatches(users, 100)
 [Upsert](#upsert) 和 [Create With Associations](#create_with_associations)同样支持批量插入
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**注意** 使用`CreateBatchSize` 选项初始化GORM实例后，此后进行创建& 关联操作时所有的`INSERT`行为都会遵循初始化时的配置。
 {% endnote %}
 
 ```go
@@ -92,7 +92,7 @@ db.Create(&users)
 
 ## 创建钩子
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GROM允许用户通过实现这些接口 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`来自定义钩子。  这些钩子方法会在创建一条记录时被调用，关于钩子的生命周期请参阅[Hooks](hooks.html)。
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -105,7 +105,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+如果你想跳过`Hooks`方法，可以使用`SkipHooks`会话模式，例子如下
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -117,7 +117,7 @@ DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 
 ## 根据 Map 创建
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORM支持通过 `map[string]interface{}` 与 `[]map[string]interface{}{}`来创建记录。
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
@@ -132,12 +132,12 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**注意**当使用map来创建时，钩子方法不会执行，关联不会被保存且不会回写主键。
 {% endnote %}
 
 ## <span id="create_from_sql_expr">使用 SQL 表达式、Context Valuer 创建记录</span>
 
-GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+GORM允许使用SQL表达式来插入数据，有两种方法可以达成该目的，使用`map[string]interface{}` 或者 [Customized Data Types](data_types.html#gorm_valuer_interface)， 示例如下：
 
 ```go
 // Create from map
@@ -184,7 +184,7 @@ db.Create(&User{
 
 ### <span id="create_with_associations">关联创建</span>
 
-When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
+创建关联数据时，如果关联值非零，这些关联会被upsert，并且它们的`Hooks`方法也会被调用。
 
 ```go
 type CreditCard struct {
@@ -207,7 +207,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`, for example:
+你可以通过`Select`, `Omit`方法来跳过关联更新，示例如下：
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -218,7 +218,7 @@ db.Omit(clause.Associations).Create(&user)
 
 ### <span id="default_values">默认值</span>
 
-You can define default values for fields with tag `default`, for example:
+你可以通过结构体Tag `default`来定义字段的默认值，示例如下：
 
 ```go
 type User struct {
@@ -228,10 +228,10 @@ type User struct {
 }
 ```
 
-Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+这些默认值会被当作结构体字段的[零值](https://tour.golang.org/basics/12)插入到数据库中
 
 {% note warn %}
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**注意**，当结构体的字段默认值是零值的时候比如 `0`, `''`, `false`，这些字段值将不会被保存到数据库中，你可以使用指针类型或者Scanner/Valuer来避免这种情况。
 {% endnote %}
 
 ```go
@@ -244,7 +244,7 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+**注意**，若要让字段在数据库中拥有默认值则必须使用`default`Tag来为结构体字段设置默认值。如果想要在数据库迁移的时候跳过默认值，可以使用 `default:(-)`，示例如下：
 {% endnote %}
 
 ```go
@@ -258,18 +258,18 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** **SQLite** doesn't support some records are default values when batch insert. See [SQLite Insert stmt](https://www.sqlite.org/lang_insert.html). For example:
+**注意** **SQLite** 不支持批量插入的时候使用默认值。 前往 [SQLite Insert stmt](https://www.sqlite.org/lang_insert.html)了解。 下面是一个使用案例：
 
 ```go
 type Pet struct {
     Name string `gorm:"default:cat"`
 }
 
-// In SQLite, this is not supported, so GORM will build a wrong SQL to raise error:
+// 在SqlLite中，这是不允许的, 所以GORM会通过构建错误的SQL来返回错误:
 // INSERT INTO `pets` (`name`) VALUES ("dog"),(DEFAULT) RETURNING `name`
 db.Create(&[]Pet{{Name: "dog"}, {}})
 ```
-A viable alternative is to assign default value to fields in the hook, e.g.
+一个可行的替代方案是通过钩子方法来设置默认字段
 
 ```go
 func (p *Pet) BeforeCreate(tx *gorm.DB) (err error) {
@@ -279,14 +279,14 @@ func (p *Pet) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-You can see more info in [issues#6335](https://github.com/go-gorm/gorm/issues/6335)
+你可以在[issues#6335](https://github.com/go-gorm/gorm/issues/6335)了解到更多有关信息。
 {% endnote %}
 
-When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+当使用virtual/generated value时，你可能需要禁用它的创建/更新权限，前往[Field-Level Permission](models.html#field_permission)了解字段权限。
 
 ### <span id="upsert">Upsert 及冲突</span>
 
-GORM provides compatible Upsert support for different databases
+GORM为不同数据库提供了对Upsert的兼容性支持。
 
 ```go
 import "gorm.io/gorm/clause"
@@ -326,6 +326,6 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+前往[Advanced Query](advanced_query.html)了解有关`FirstOrInit`, `FirstOrCreate`的信息。
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+查看 [Raw SQL and SQL Builder](sql_builder.html)获取详情
