@@ -50,7 +50,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">批量插入</span>
 
-要高效地插入大量记录，请将切片传递给`Create`方法。 GORM 将生成一条 SQL 来插入所有数据，以返回所有主键值，并触发 `Hook` 方法 It will begin a **transaction** when records can be split into multiple batches.
+要高效地插入大量记录，请将切片传递给`Create`方法。 GORM 将生成一条 SQL 来插入所有数据，以返回所有主键值，并触发 `Hook` 方法。 当这些记录可以被分割成多个批次时，GORM会开启一个</strong>事务</0>来处理它们。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -61,7 +61,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+你可以通过`db.CreateInBatches`方法来指定批量插入的批次大小
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -70,7 +70,7 @@ var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 db.CreateInBatches(users, 100)
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+[Upsert](#upsert) 和 [Create With Associations](#create_with_associations)同样支持批量插入
 
 {% note warn %}
 **NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
