@@ -3,46 +3,46 @@ title: モデルを宣言する
 layout: page
 ---
 
-GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities.
+GORMは、Goの構造体をデータベーステーブルにマッピングすることで、データベースの相互作用を簡素化します。 GORMでモデルを宣言する方法を理解することは、その機能をフルに活用するための基本です。
 
 ## モデルを宣言する
 
-Models are defined using normal structs. These structs can contain fields with basic Go types, pointers or aliases of these types, or even custom types, as long as they implement the [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces from the `database/sql` package
+モデルは通常の構造体を使用して定義されます。 これらの構造体には、`database/sql`パッケージの[Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner)インタフェースと[Valuer](https://pkg.go.dev/database/sql/driver#Valuer)インタフェースを実装している限り、基本的なGoの型、それらのポインタまたはエイリアス、あるいはカスタムタイプを含むフィールドを含めることができます。
 
-Consider the following example of a `User` model:
+`User` モデルの次の例を考えてみましょう。
 
 ```go
 type User struct {
-  ID           uint           // Standard field for the primary key
-  Name         string         // A regular string field
-  Email        *string        // A pointer to a string, allowing for null values
-  Age          uint8          // An unsigned 8-bit integer
-  Birthday     *time.Time     // A pointer to time.Time, can be null
-  MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
-  ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
-  CreatedAt    time.Time      // Automatically managed by GORM for creation time
-  UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  ID           uint           // 主キーの標準フィールド
+  Name         string         // 通常の文字列フィールド
+  Email        *string        // 文字列へのポインタ、nullを許可
+  Age          uint8          // 符号なし8ビット整数
+  Birthday     *time.Time     // time.Timeへのポインタ。nullを許可
+  MemberNumber sql.NullString // sql.NullStringを使用して、null可能な文字列をハンドリング
+  ActivatedAt  sql.NullTime   // sql.NullTimeを使用したnull可能な時間フィールド
+  CreatedAt    time.Time      // GORMによって自動的に管理される作成時間
+  UpdatedAt    time.Time      // GORMによって自動的に管理される更新時間
 }
 ```
 
-In this model:
+このモデルでは:
 
-- Basic data types like `uint`, `string`, and `uint8` are used directly.
-- Pointers to types like `*string` and `*time.Time` indicate nullable fields.
-- `sql.NullString` and `sql.NullTime` from the `database/sql` package are used for nullable fields with more control.
-- `CreatedAt` and `UpdatedAt` are special fields that GORM automatically populates with the current time when a record is created or updated.
+- `uint`, `文字列`, および `uint8` のような基本的なデータ型が直接使用されます。
+- `*string` や `*time.Time` のような型へのポインタは、null可能フィールドを示します。
+- `sql.NullString` と `sql.NullTime` の `database/sql` パッケージは null可能フィールドでより多くの制御が可能です。
+- `Created` と `UpdatedAt` は、レコードが作成または更新されたときにGORMが自動的に現在の時刻を入力する特別なフィールドです。
 
-In addition to the fundamental features of model declaration in GORM, it's important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See [Serializer](serializer.html) for a detailed explanation
+GORMにおけるモデル宣言の基本的な機能に加えて、シリアライザタグによるシリアライズのサポートに注目することが重要です。 この機能により、特にカスタム・シリアライズ・ロジックを必要とするフィールドについて、データの格納方法とデータベースからの取得方法の柔軟性が高まります。詳細な説明については [シリアライザー](serializer.html) を参照してください。
 
 ### 規約
 
-1. **Primary Key**: GORM uses a field named `ID` as the default primary key for each model.
+1. **主キー**: GORMは各モデルのデフォルト主キーとして `ID` という名前のフィールドを使用します。
 
-2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database.
+2. **テーブル名**: デフォルトでは、GORMは構造体名を `スネークケース` に変換し、テーブル名を複数形にします。 例えば、 `User` 構造体は、データベースの `users` テーブルになります。
 
-3. **Column Names**: GORM automatically converts struct field names to `snake_case` for column names in the database.
+3. **カラム名**: GORMは、データベース内のカラム名を自動的に `スネークケース` に変換します。
 
-4. **Timestamp Fields**: GORM uses fields named `CreatedAt` and `UpdatedAt` to automatically track the creation and update times of records.
+4. **タイムスタンプフィールド**: GORMは `Created` および `UpdatedAt` という名前のフィールドを使用して、レコードの作成と更新時間を自動的に追跡します。
 
 Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don't fit your requirements. You can learn more about customizing these conventions in GORM's documentation on [conventions](conventions.html).
 
