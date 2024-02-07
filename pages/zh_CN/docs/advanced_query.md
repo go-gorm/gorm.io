@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">智能选择字段</span>
 
-在 GORM 中，您可以使用 [`Select`](query.html) 方法有效地选择特定字段。 This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+在 GORM 中，您可以使用 [`Select`](query.html) 方法有效地选择特定字段。 这在Model字段较多但只需要其中部分的时候尤其有用，比如编写API响应。
 
 ```go
 type User struct {
