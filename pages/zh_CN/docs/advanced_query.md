@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // 很多很多字段
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// GORM will automatically select `id`, `name` fields when querying
+// 在查询时，GORM 会自动选择 `id `, `name` 字段
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SQL: SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** In `QueryFields` mode, all model fields are selected by their names.
+**注意** 在 `QueryFields` 模式中, 所有的模型字段（model fields）都会被根据他们的名字选择。
 {% endnote %}
 
 ```go
@@ -35,21 +35,21 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   QueryFields: true,
 })
 
-// Default behavior with QueryFields set to true
+// 当 QueryFields 被设置为 true 时，此行为默认进行
 db.Find(&user)
 // SQL: SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 
-// Using Session Mode with QueryFields
+// 开启 QueryFields 并使用会话模式（Session mode）
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SQL: SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking
+## 锁
 
 GORM 支持多种类型的锁，例如：
 
 ```go
-// Basic FOR UPDATE lock
+// 基本的 FOR UPDATE 锁
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SQL: SELECT * FROM `users` FOR UPDATE
 ```
