@@ -410,22 +410,22 @@ GORM中的 `Scopes` 是一个强大的特性，它允许您将常用的查询条
 `Scopes` 被定义为被修改后返回一个 `gorm.DB` 实例的函数。 您可以根据您的应用程序的需要定义各种条件作为范围。
 
 ```go
-// Scope for filtering records where amount is greater than 1000
+// 用于筛选 amount > 1000 的记录的 Scope
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
   return db.Where("amount > ?", 1000)
 }
 
-// Scope for orders paid with a credit card
+// 用于 订单使用信用卡支付 的 Scope
 func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
   return db.Where("pay_mode_sign = ?", "C")
 }
 
-// Scope for orders paid with cash on delivery (COD)
+// 用于 订单货到付款(COD)的 Scope
 func PaidWithCod(db *gorm.DB) *gorm.DB {
   return db.Where("pay_mode_sign = ?", "C")
 }
 
-// Scope for filtering orders by status
+//  用于按状态筛选订单的 Scope
 func OrderStatus(status []string) func(db *gorm.DB) *gorm.DB {
   return func(db *gorm.DB) *gorm.DB {
     return db.Where("status IN (?)", status)
@@ -435,59 +435,59 @@ func OrderStatus(status []string) func(db *gorm.DB) *gorm.DB {
 
 ### 在查询中使用 Scopes
 
-You can apply one or more scopes to a query by using the `Scopes` method. This allows you to chain multiple conditions dynamically.
+你可以通过 `Scopes` 方法使用一个或者多个 Scope 来查询。 这允许您动态地连接多个条件。
 
 ```go
-// Applying scopes to find all credit card orders with an amount greater than 1000
+// 使用 scopes 来寻找所有的 金额大于1000的信用卡订单
 db.Scopes(AmountGreaterThan1000, PaidWithCreditCard).Find(&orders)
 
-// Applying scopes to find all COD orders with an amount greater than 1000
+// 使用 scopes 来寻找所有的 金额大于1000的货到付款（COD）订单
 db.Scopes(AmountGreaterThan1000, PaidWithCod).Find(&orders)
 
-// Applying scopes to find all orders with specific statuses and an amount greater than 1000
+//使用 scopes 来寻找所有的 具有特定状态且金额大于1000的订单
 db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})).Find(&orders)
 ```
 
-`Scopes` are a clean and efficient way to encapsulate common query logic, enhancing the maintainability and readability of your code. For more detailed examples and usage, refer to [Scopes](scopes.html) in the GORM documentation.
+`Scopes` 是封装普通查询逻辑的一种干净而有效的方式，增强了代码的可维护性和可读性。 更详细的示例和用法，请参阅GORM 文档中的 [范围](scopes.html)。
 
 ## <span id="count">Count</span>
 
-The `Count` method in GORM is used to retrieve the number of records that match a given query. It's a useful feature for understanding the size of a dataset, particularly in scenarios involving conditional queries or data analysis.
+GORM中的 `Count` 方法用于检索匹配给定查询的记录数。 这是了解数据集大小的一个有用的功能，特别是在涉及有条件查询或数据分析的情况下。
 
-### Getting the Count of Matched Records
+### 得到匹配记录的 Count
 
-You can use `Count` to determine the number of records that meet specific criteria in your queries.
+您可以使用 `Count` 来确定符合您的查询中符合特定标准的记录的数量。
 
 ```go
 var count int64
 
-// Counting users with specific names
+// 计数 有着特定名字的 users
 db.Model(&User{}).Where("name = ?", "jinzhu").Or("name = ?", "jinzhu 2").Count(&count)
 // SQL: SELECT count(1) FROM users WHERE name = 'jinzhu' OR name = 'jinzhu 2'
 
-// Counting users with a single name condition
+// 计数 有着单一名字条件（single name condition）的 users
 db.Model(&User{}).Where("name = ?", "jinzhu").Count(&count)
 // SQL: SELECT count(1) FROM users WHERE name = 'jinzhu'
 
-// Counting records in a different table
+// 在不同的表中对记录计数
 db.Table("deleted_users").Count(&count)
 // SQL: SELECT count(1) FROM deleted_users
 ```
 
-### Count with Distinct and Group
+### 配合 Distinct 和 Group 使用 Count
 
-GORM also allows counting distinct values and grouping results.
+GORM还允许对不同的值进行计数并对结果进行分组。
 
 ```go
-// Counting distinct names
+// 为不同 name 计数
 db.Model(&User{}).Distinct("name").Count(&count)
 // SQL: SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
-// Counting distinct values with a custom select
+// 使用自定义选择（custom select）计数不同的值
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
 // SQL: SELECT count(distinct(name)) FROM deleted_users
 
-// Counting grouped records
+// 分组记录计数
 users := []User{
   {Name: "name1"},
   {Name: "name2"},
@@ -496,6 +496,6 @@ users := []User{
 }
 
 db.Model(&User{}).Group("name").Count(&count)
-// Count after grouping by name
+// 按名称分组后计数
 // count => 3
 ```
