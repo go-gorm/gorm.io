@@ -156,15 +156,15 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 
 GORM 提供了灵活的数据查询，允许将结果扫描进（scanned into）`map[string]interface{}` or `[]map[string]interface{}`，这对动态数据结构非常有用。
 
-When using `Find To Map`, it's crucial to include `Model` or `Table` in your query to explicitly specify the table name. This ensures that GORM understands which table to query against.
+当使用 `Find To Map`时，一定要在你的查询中包含 `Model` 或者 `Table` ，以此来显式地指定表名。 这能确保 GORM 正确的理解哪个表要被查询。
 
 ```go
-// Scanning the first result into a map with Model
+// 扫描第一个结果到 map with Model 中
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result, "id = ?", 1)
 // SQL: SELECT * FROM `users` WHERE id = 1 LIMIT 1
 
-// Scanning multiple results into a slice of maps with Table
+// 扫描多个结果到部分 maps with Table 中
 var results []map[string]interface{}
 db.Table("users").Find(&results)
 // SQL: SELECT * FROM `users`
@@ -172,102 +172,102 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-GORM's `FirstOrInit` method is utilized to fetch the first record that matches given conditions, or initialize a new instance if no matching record is found. This method is compatible with both struct and map conditions and allows additional flexibility with the `Attrs` and `Assign` methods.
+GORM 的 `First OrInit` 方法用于获取与特定条件匹配的第一条记录，如果没有成功获取，就初始化一个新实例。 这个方法与结构和map条件兼容，并且在使用 `Attrs` 和 `Assign` 方法时有着更多的灵活性。
 
 ```go
-// If no User with the name "non_existing" is found, initialize a new User
+// 如果没找到 name 为 "non_existing" 的 User，就初始化一个新的 User
 var user User
 db.FirstOrInit(&user, User{Name: "non_existing"})
 // user -> User{Name: "non_existing"} if not found
 
-// Retrieving a user named "jinzhu"
+// 检索名为 “jinzhu” 的 User
 db.Where(User{Name: "jinzhu"}).FirstOrInit(&user)
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18} if found
 
-// Using a map to specify the search condition
+// 使用 map 来指定搜索条件
 db.FirstOrInit(&user, map[string]interface{}{"name": "jinzhu"})
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18} if found
 ```
 
-### Using `Attrs` for Initialization
+### 使用 `Attrs` 进行初始化
 
-When no record is found, you can use `Attrs` to initialize a struct with additional attributes. These attributes are included in the new struct but are not used in the SQL query.
+当记录未找到，你可以使用 `Attrs` 来初始化一个有着额外属性的结构体。 这些属性包含在新结构中，但不在 SQL 查询中使用。
 
 ```go
-// If no User is found, initialize with given conditions and additional attributes
+// 如果没找到 User，根据所给条件和额外属性初始化 User
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SQL: SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20} if not found
 
-// If a User named "Jinzhu" is found, `Attrs` are ignored
+// 如果名为 “Jinzhu” 的 User 被找到，`Attrs` 会被忽略
 db.Where(User{Name: "Jinzhu"}).Attrs(User{Age: 20}).FirstOrInit(&user)
 // SQL: SELECT * FROM USERS WHERE name = 'Jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 18} if found
 ```
 
-### Using `Assign` for Attributes
+### 为属性使用 `Assign`
 
-The `Assign` method allows you to set attributes on the struct regardless of whether the record is found or not. These attributes are set on the struct but are not used to build the SQL query and the final data won't be saved into the database.
+`Assign` 方法允许您在结构上设置属性，不管是否找到记录。 这些属性设定在结构上，但不用于生成 SQL 查询，最终数据不会被保存到数据库。
 
 ```go
-// Initialize with given conditions and Assign attributes, regardless of record existence
+// 根据所给条件和分配的属性初始化，不管记录是否存在
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // user -> User{Name: "non_existing", Age: 20} if not found
 
-// If a User named "Jinzhu" is found, update the struct with Assign attributes
+// 如果找到了名为“Jinzhu”的用户，使用分配的属性更新结构体
 db.Where(User{Name: "Jinzhu"}).Assign(User{Age: 20}).FirstOrInit(&user)
 // SQL: SELECT * FROM USERS WHERE name = 'Jinzhu' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "Jinzhu", Age: 20} if found
 ```
 
-`FirstOrInit`, along with `Attrs` and `Assign`, provides a powerful and flexible way to ensure a record exists and is initialized or updated with specific attributes in a single step.
+`FirstOrInit`, 以及 `Attrs` 和 `Assign`, 提供了一种强大和灵活的方法来确保记录的存在，并且在一个步骤中以特定的属性初始化或更新。
 
 ## FirstOrCreate
 
-`FirstOrCreate` in GORM is used to fetch the first record that matches given conditions or create a new one if no matching record is found. This method is effective with both struct and map conditions. The `RowsAffected` property is useful to determine the number of records created or updated.
+`FirstOrCreate` 用于获取与特定条件匹配的第一条记录，或者如果没有找到匹配的记录，创建一个新的记录。 这个方法在结构和map条件下都是有效的。 `受RowsAffected的` 属性有助于确定创建或更新记录的数量。
 
 ```go
-// Create a new record if not found
+// 如果没找到，就创建一个新纪录
 result := db.FirstOrCreate(&user, User{Name: "non_existing"})
 // SQL: INSERT INTO "users" (name) VALUES ("non_existing");
 // user -> User{ID: 112, Name: "non_existing"}
 // result.RowsAffected // => 1 (record created)
 
-// If the user is found, no new record is created
+// 如果用户已经被找到，不会创建新纪录
 result = db.Where(User{Name: "jinzhu"}).FirstOrCreate(&user)
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 // result.RowsAffected // => 0 (no record created)
 ```
 
-### Using `Attrs` with FirstOrCreate
+### 配合 `Attrs` 使用 FirstOrCreate
 
-`Attrs` can be used to specify additional attributes for the new record if it is not found. These attributes are used for creation but not in the initial search query.
+`Attrs` 可以用于指定新记录的附加属性。 这些属性用于创建，但不在初始搜索查询中。
 
 ```go
-// Create a new record with additional attributes if not found
+// 如果没找到，根据额外属性创建新的记录
 db.Where(User{Name: "non_existing"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SQL: SELECT * FROM users WHERE name = 'non_existing';
 // SQL: INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// If the user is found, `Attrs` are ignored
+// 如果user被找到了，`Attrs` 会被忽略
 db.Where(User{Name: "jinzhu"}).Attrs(User{Age: 20}).FirstOrCreate(&user)
 // SQL: SELECT * FROM users WHERE name = 'jinzhu';
 // user -> User{ID: 111, Name: "jinzhu", Age: 18}
 ```
 
-### Using `Assign` with FirstOrCreate
+### 配合 `Assign` 使用 FirstOrCreate
 
-The `Assign` method sets attributes on the record regardless of whether it is found or not, and these attributes are saved back to the database.
+不管记录是否被找到，`Assign` 方法都会设置记录中的属性。 并且这些属性被保存到数据库。
 
 ```go
-// Initialize and save new record with `Assign` attributes if not found
+// 如果没找到记录，通过 `Assign` 属性 初始化并且保存新的记录
 db.Where(User{Name: "non_existing"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SQL: SELECT * FROM users WHERE name = 'non_existing';
 // SQL: INSERT INTO "users" (name, age) VALUES ("non_existing", 20);
 // user -> User{ID: 112, Name: "non_existing", Age: 20}
 
-// Update found record with `Assign` attributes
+// 通过 `Assign` 属性 更新记录
 db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 // SQL: SELECT * FROM users WHERE name = 'jinzhu';
 // SQL: UPDATE users SET age=20 WHERE id = 111;
@@ -276,41 +276,41 @@ db.Where(User{Name: "jinzhu"}).Assign(User{Age: 20}).FirstOrCreate(&user)
 
 ## 优化器、索引提示
 
-GORM includes support for optimizer and index hints, allowing you to influence the query optimizer's execution plan. This can be particularly useful in optimizing query performance or when dealing with complex queries.
+GORM 包括对优化器和索引提示的支持, 允许您影响查询优化器的执行计划。 这对于优化查询性能或处理复杂查询尤其有用。
 
-Optimizer hints are directives that suggest how a database's query optimizer should execute a query. GORM facilitates the use of optimizer hints through the gorm.io/hints package.
+优化器提示是说明数据库查询优化器应如何执行查询的指令。 GORM 通过 gorm.io/hints 包简化了优化器提示的使用。
 
 ```go
 import "gorm.io/hints"
 
-// Using an optimizer hint to set a maximum execution time
+// 使用优化器提示来设置最大执行时长
 db.Clauses(hints.New("MAX_EXECUTION_TIME(10000)")).Find(&User{})
 // SQL: SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`
 ```
 
-### Index Hints
+### 索引提示
 
-Index hints provide guidance to the database about which indexes to use. They can be beneficial if the query planner is not selecting the most efficient indexes for a query.
+索引提示为数据库提供关于使用哪些索引的指导。 如果查询规划者没有为查询选择最有效的索引，它们（索引提示）将是有好处的。
 
 ```go
 import "gorm.io/hints"
 
-// Suggesting the use of a specific index
+// 对指定索引提供建议
 db.Clauses(hints.UseIndex("idx_user_name")).Find(&User{})
 // SQL: SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
-// Forcing the use of certain indexes for a JOIN operation
+// 强制对JOIN操作使用某些索引
 db.Clauses(hints.ForceIndex("idx_user_name", "idx_user_id").ForJoin()).Find(&User{})
 // SQL: SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)
 ```
 
-These hints can significantly impact query performance and behavior, especially in large databases or complex data models. For more detailed information and additional examples, refer to [Optimizer Hints/Index/Comment](hints.html) in the GORM documentation.
+这些提示会对查询性能和行为产生显著影响（significantly impact），特别是在大型数据库或复杂的数据模型中。 欲了解更详细的信息和其他示例，请参阅GORM 文档中的 [Optimizer Hints/Index/Comment](hints.html)。
 
 ## 迭代
 
-GORM supports the iteration over query results using the `Rows` method. This feature is particularly useful when you need to process large datasets or perform operations on each record individually.
+GORM 支持使用 `Rows` 方法对查询结果进行迭代。 当您需要处理大型数据集或在每个记录上单独执行操作时，此功能特别有用。
 
-You can iterate through rows returned by a query, scanning each row into a struct. This method provides granular control over how each record is handled.
+您可以通过对查询返回的行进行迭代，扫描每行到一个结构体中。 该方法提供了对如何处理每条记录的粒度控制。（granular control）。
 
 ```go
 rows, err := db.Model(&User{}).Where("name = ?", "jinzhu").Rows()
@@ -318,96 +318,96 @@ defer rows.Close()
 
 for rows.Next() {
   var user User
-  // ScanRows scans a row into a struct
+  // ScanRows 扫描每一行进结构体
   db.ScanRows(rows, &user)
 
-  // Perform operations on each user
+  // 对每一个 User 进行操作
 }
 ```
 
-This approach is ideal for complex data processing that cannot be easily achieved with standard query methods.
+这种方法非常适合于使用标准查询方法无法轻松实现的复杂数据处理。
 
 ## FindInBatches
 
-`FindInBatches` allows querying and processing records in batches. This is especially useful for handling large datasets efficiently, reducing memory usage and improving performance.
+`FindInBatches` 允许分批查询和处理记录。 这对于有效地处理大型数据集、减少内存使用和提高性能尤其有用。
 
-With `FindInBatches`, GORM processes records in specified batch sizes. Inside the batch processing function, you can apply operations to each batch of records.
+使用`FindInBatches`, GORM 处理指定批大小的记录。 在批处理功能中，您可以对每批记录应用操作。
 
 ```go
-// Processing records in batches of 100
+// 处理记录，批处理大小为100
 result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx *gorm.DB, batch int) error {
   for _, result := range results {
-    // Operations on each record in the batch
+    // 对批中的每条记录进行操作
   }
 
-  // Save changes to the records in the current batch
+  // 保存对当前批记录的修改
   tx.Save(&results)
 
-  // tx.RowsAffected provides the count of records in the current batch
-  // The variable 'batch' indicates the current batch number
+  // tx.RowsAffected 提供当前批处理中记录的计数（the count of records in the current batch）
+  // 'batch' 变量表示当前批号（the current batch number）
 
-  // Returning an error will stop further batch processing
+  // 返回 error 将阻止更多的批处理
   return nil
 })
 
-// result.Error contains any errors encountered during batch processing
-// result.RowsAffected provides the count of all processed records across batches
+// result.Error 包含批处理过程中遇到的任何错误
+// result.RowsAffected 提供跨批处理的所有记录的计数（the count of all processed records across batches）
 ```
 
-`FindInBatches` is an effective tool for processing large volumes of data in manageable chunks, optimizing resource usage and performance.
+`FindInBatches` 是处理大量可管理数据的有效工具，可以优化资源使用和性能。
 
 ## 查询钩子
 
-GORM offers the ability to use hooks, such as `AfterFind`, which are triggered during the lifecycle of a query. These hooks allow for custom logic to be executed at specific points, such as after a record has been retrieved from the databas.
+GORM 提供了使用钩子的能力，例如 `AfterFind`，这些钩子是在查询的生命周期中触发的。 这些钩子允许在特定点执行自定义逻辑，例如在从数据库检索记录之后。
 
-This hook is useful for post-query data manipulation or default value settings. For more detailed information and additional hook types, refer to [Hooks](hooks.html) in the GORM documentation.
+此钩子对后查询数据操纵或默认值设置非常有用。 欲了解更详细的信息和额外的钩子，请参阅GORM文档中的 [Hooks](hooks.html)。
 
 ```go
 func (u *User) AfterFind(tx *gorm.DB) (err error) {
-  // Custom logic after finding a user
+  // 在找到 user 后自定义逻辑
   if u.Role == "" {
-    u.Role = "user" // Set default role if not specified
+    u.Role = "user" // 如果没有指定，将设置默认 role
   }
   return
 }
 
-// Usage of AfterFind hook happens automatically when a User is queried
+// 当用户被查询时，会自动使用AfterFind钩子
 ```
 
 ## <span id="pluck">Pluck</span>
 
-The `Pluck` method in GORM is used to query a single column from the database and scan the result into a slice. This method is ideal for when you need to retrieve specific fields from a model.
+GORM 中的 `Pluck` 方法用于从数据库中查询单列并扫描结果到片段（slice）。 当您需要从模型中检索特定字段时，此方法非常理想。
 
-If you need to query more than one column, you can use `Select` with [Scan](query.html) or [Find](query.html) instead.
+如果需要查询多个列，可以使用 `Select` 配合 [Scan](query.html) 或者 [Find](query.html) 来代替。
 
 ```go
-// Retrieving ages of all users
+// 检索所有用户的 age
 var ages []int64
 db.Model(&User{}).Pluck("age", &ages)
 
-// Retrieving names of all users
+// 检索所有用户的 name
 var names []string
 db.Model(&User{}).Pluck("name", &names)
 
-// Retrieving names from a different table
+// 从不同的表中检索 name
 db.Table("deleted_users").Pluck("name", &names)
 
-// Using Distinct with Pluck
+// 使用Distinct和Pluck
 db.Model(&User{}).Distinct().Pluck("Name", &names)
 // SQL: SELECT DISTINCT `name` FROM `users`
 
-// Querying multiple columns
+// 多列查询
 db.Select("name", "age").Scan(&users)
 db.Select("name", "age").Find(&users)
 ```
 
 ## Scope
 
-`Scopes` in GORM are a powerful feature that allows you to define commonly-used query conditions as reusable methods. These scopes can be easily referenced in your queries, making your code more modular and readable.
+GORM中的 `Scopes` 是一个强大的特性，它允许您将常用的查询条件定义为可重用的方法。 这些作用域可以很容易地在查询中引用，从而使代码更加模块化和可读。
 
-### Defining Scopes
+### 定义 Scopes
 
-`Scopes` are defined as functions that modify and return a `gorm.DB` instance. You can define a variety of conditions as scopes based on your application's requirements.
+`Scopes` 被定义为被修改后返回一个 `gorm.DB` 实例的函数。 您可以根据您的应用程序的需要定义各种条件作为范围。
 
 ```go
 // Scope for filtering records where amount is greater than 1000
@@ -433,7 +433,7 @@ func OrderStatus(status []string) func(db *gorm.DB) *gorm.DB {
 }
 ```
 
-### Applying Scopes in Queries
+### 在查询中使用 Scopes
 
 You can apply one or more scopes to a query by using the `Scopes` method. This allows you to chain multiple conditions dynamically.
 
