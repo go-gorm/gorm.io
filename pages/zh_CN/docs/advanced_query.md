@@ -54,9 +54,9 @@ db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SQL: SELECT * FROM `users` FOR UPDATE
 ```
 
-The above statement will lock the selected rows for the duration of the transaction. This can be used in scenarios where you are preparing to update the rows and want to prevent other transactions from modifying them until your transaction is complete.
+上述语句将会在事务（transaction）中锁定选中行（selected rows）。 可以被用于以下场景：当你准备在事务（transaction）中更新（update）一些行（rows）时，并且想要在本事务完成前，阻止（prevent）其他的事务（other transactions）修改你准备更新的选中行。
 
-The `Strength` can be also set to `SHARE` which locks the rows in a way that allows other transactions to read the locked rows but not to update or delete them.
+`Strength` 也可以被设置为 `SHARE` ，这种锁只允许其他事务读取（read）被锁定的内容，而无法修改（update）或者删除（delete）。
 ```go
 db.Clauses(clause.Locking{
   Strength: "SHARE",
@@ -65,9 +65,9 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-The `Table` option can be used to specify the table to lock. This is useful when you are joining multiple tables and want to lock only one of them.
+`Table`选项用于指定将要被锁定的表。 这在你想要 join 多个表，并且锁定其一时非常有用。
 
-Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
+你也可以提供如 `NOWAIT` 的Options，这将尝试获取一个锁，如果锁不可用，导致了获取失败，函数将会立即返回一个error。 当一个事务等待其他事务释放它们的锁时，此Options（Nowait）可以阻止这种行为
 
 ```go
 db.Clauses(clause.Locking{
@@ -77,20 +77,20 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Another option can be `SKIP LOCKED` which skips over any rows that are already locked by other transactions. This is useful in high concurrency situations where you want to process rows that are not currently locked by other transactions.
+Options也可以是`SKIP LOCKED`，设置后将跳过所有已经被其他事务锁定的行（any rows that are already locked by other transactions.）。 这次高并发情况下非常有用：那时你可能会想要对未经其他事务锁定的行进行操作（process ）。
 
-For more advanced locking strategies, refer to [Raw SQL and SQL Builder](sql_builder.html).
+想了解更多高级的锁策略，请参阅 [Raw SQL and SQL Builder](sql_builder.html)。
 
 ## 子查询
 
-Subqueries are a powerful feature in SQL, allowing nested queries. GORM can generate subqueries automatically when using a *gorm.DB object as a parameter.
+子查询（Subquery）是SQL中非常强大的功能，它允许嵌套查询。 当你使用 *gorm.DB 对象作为参数时，GORM 可以自动生成子查询。
 
 ```go
-// Simple subquery
+// 简单的子查询
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 // SQL: SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
-// Nested subquery
+// 内嵌子查询
 subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
 db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery).Find(&results)
 // SQL: SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
@@ -98,14 +98,14 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">From 子查询</span>
 
-GORM allows the use of subqueries in the FROM clause, enabling complex queries and data organization.
+GORM 允许在 FROM 子句中使用子查询，从而支持复杂的查询和数据组织。
 
 ```go
-// Using subquery in FROM clause
+// 在 FROM 子句中使用子查询
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
 // SQL: SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
-// Combining multiple subqueries in FROM clause
+// 在 FROM 子句中结合多个子查询
 subQuery1 := db.Model(&User{}).Select("name")
 subQuery2 := db.Model(&Pet{}).Select("name")
 db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
@@ -114,10 +114,10 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">Group 条件</span>
 
-Group Conditions in GORM provide a more readable and maintainable way to write complex SQL queries involving multiple conditions.
+GORM 中的Group条件（Group Conditions）提供了一种可读性更强，操作性更强的方法来写复杂的，涉及多个条件的 SQL 查询。
 
 ```go
-// Complex SQL query using Group Conditions
+// 使用 Group 条件的复杂 SQL 查询
 db.Where(
   db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small").Or("size = ?", "medium")),
 ).Or(
@@ -128,33 +128,33 @@ db.Where(
 
 ## 带多个列的 In
 
-GORM supports the IN clause with multiple columns, allowing you to filter data based on multiple field values in a single query.
+GROM 支持多列的 IN 子句（the IN clause with multiple columns），允许你在单次查询里基于多个字段值筛选数据。
 
 ```go
-// Using IN with multiple columns
+// 多列 IN
 db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"jinzhu2", 19, "user"}}).Find(&users)
 // SQL: SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
 ```
 
 ## 命名参数
 
-GORM enhances the readability and maintainability of SQL queries by supporting named arguments. This feature allows for clearer and more organized query construction, especially in complex queries with multiple parameters. Named arguments can be utilized using either [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, providing flexibility in how you structure your queries.
+GORM 支持命名的参数，提高SQL 查询的可读性和可维护性。 此功能使查询结构更加清晰、更加有条理，尤其是在有多个参数的复杂查询中。 命名参数可以使用 [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) 或 `map[string]interface{}{}}`，你可以根据你的查询结构灵活提供。
 
 ```go
-// Example using sql.NamedArg for named arguments
+// 使用 sql.NamedArg 命名参数的例子
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
 // SQL: SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-// Example using a map for named arguments
+// 使用 map 命名参数的例子
 db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
 // SQL: SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-For more examples and details, see [Raw SQL and SQL Builder](sql_builder.html#named_argument)
+欲了解更多示例和详细信息，请参阅 [Raw SQL 和 SQL Builder](sql_builder.html#named_argument)
 
 ## Find 至 map
 
-GORM provides flexibility in querying data by allowing results to be scanned into a `map[string]interface{}` or `[]map[string]interface{}`, which can be useful for dynamic data structures.
+GORM 提供了灵活的数据查询，允许将结果扫描进（scanned into）`map[string]interface{}` or `[]map[string]interface{}`，这对动态数据结构非常有用。
 
 When using `Find To Map`, it's crucial to include `Model` or `Table` in your query to explicitly specify the table name. This ensures that GORM understands which table to query against.
 
