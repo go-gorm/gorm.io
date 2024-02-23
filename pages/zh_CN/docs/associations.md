@@ -9,7 +9,7 @@ GORM在创建或更新记录时会自动地保存其关联和引用，主要使�
 
 ### 在创建时自动保存关联
 
-When you create a new record, GORM will automatically save its associated data. This includes inserting data into related tables and managing foreign key references.
+当你创建一条新的记录时，GORM会自动保存它的关联数据。 这个过程包括向关联表插入数据以及维护外键引用。
 
 ```go
 user := User{
@@ -39,9 +39,9 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-### Updating Associations with `FullSaveAssociations`
+### 通过`FullSaveAssociations`来更新关联
 
-For scenarios where a full update of the associated data is required (not just the foreign key references), the `FullSaveAssociations` mode should be used.
+对于需要全面更新关联数据（不止外键）的情况，就应该使用 `FullSaveAssociations` 方法。
 
 ```go
 // Update a user and fully update all its associations
@@ -49,13 +49,13 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 // SQL: Fully updates addresses, users, emails tables, including existing associated records
 ```
 
-Using `FullSaveAssociations` ensures that the entire state of the model, including all its associations, is reflected in the database, maintaining data integrity and consistency throughout the application.
+使用`FullSaveAssociations` 方法来确保模型的整体状态，包括其所有关联都反映在了数据库中，从在应用中保持数据的完整性和一致性。
 
 ## 跳过自动创建、更新
 
 GORM provides flexibility to skip automatic saving of associations during create or update operations. This can be achieved using the `Select` or `Omit` methods, which allow you to specify exactly which fields or associations should be included or excluded in the operation.
 
-### Using `Select` to Include Specific Fields
+### 使用`Select` 来指定字段范围
 
 The `Select` method lets you specify which fields of the model should be saved. This means that only the selected fields will be included in the SQL operation.
 
@@ -69,7 +69,7 @@ db.Select("Name").Create(&user)
 // SQL: INSERT INTO "users" (name) VALUES ("jinzhu");
 ```
 
-### Using `Omit` to Exclude Fields or Associations
+### 使用`Omit`来排除字段或关联
 
 Conversely, `Omit` allows you to exclude certain fields or associations when saving a model.
 
@@ -175,7 +175,7 @@ db.Model(&user).Association("Languages")
 error := db.Model(&user).Association("Languages").Error
 ```
 
-### Finding Associations
+### 查询关联
 
 Retrieve associated records with or without additional conditions.
 
@@ -188,7 +188,7 @@ codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languages)
 ```
 
-### Appending Associations
+### 追加关联
 
 Add new associations for `many to many`, `has many`, or replace the current association for `has one`, `belongs to`.
 
@@ -201,7 +201,7 @@ db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
 db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
-### Replacing Associations
+### 替换关联
 
 Replace current associations with new ones.
 
@@ -212,7 +212,7 @@ db.Model(&user).Association("Languages").Replace([]Language{languageZH, language
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
-### Deleting Associations
+### 删除关联
 
 Remove the relationship between the source and arguments, only deleting the reference.
 
@@ -223,7 +223,7 @@ db.Model(&user).Association("Languages").Delete([]Language{languageZH, languageE
 db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 ```
 
-### Clearing Associations
+### 清空关联
 
 Remove all references between the source and association.
 
@@ -232,7 +232,7 @@ Remove all references between the source and association.
 db.Model(&user).Association("Languages").Clear()
 ```
 
-### Counting Associations
+### 关联计数
 
 Get the count of current associations, with or without conditions.
 
@@ -245,7 +245,7 @@ codes := []string{"zh-CN", "en-US", "ja-JP"}
 db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 ```
 
-### Batch Data Handling
+### 批量数据处理
 
 Association Mode allows you to handle relationships for multiple records in a batch. This includes finding, appending, replacing, deleting, and counting operations for associated data.
 
@@ -288,7 +288,7 @@ In GORM, the `Replace`, `Delete`, and `Clear` methods in Association Mode primar
 - **Reference Update**: These methods update the association's foreign key to null, effectively removing the link between the source and associated models.
 - **No Physical Record Deletion**: The actual associated records remain untouched in the database.
 
-### Modifying Deletion Behavior with `Unscoped`
+### 通过`Unscoped`来变更默认的删除行为
 
 For scenarios requiring actual deletion of associated records, the `Unscoped` method alters this behavior.
 
@@ -307,7 +307,7 @@ db.Unscoped().Model(&user).Association("Languages").Unscoped().Clear()
 
 ## <span id="tags">关联标签（Association Tags）</span>
 
-Association tags in GORM are used to specify how associations between models are handled. These tags define the relationship's details, such as foreign keys, references, and constraints. Understanding these tags is essential for setting up and managing relationships effectively.
+GORM中的关联标签通常用于指定如何处理模型之间的关联。 这些标签定义了一些关系细节，比如外键，引用和约束。 理解这些标签对于有效地建立和管理模型之间的关系而言至关重要。
 
 | 标签                 | 描述                                                                                               |
 | ------------------ | ------------------------------------------------------------------------------------------------ |
