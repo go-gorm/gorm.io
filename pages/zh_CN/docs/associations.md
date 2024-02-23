@@ -5,9 +5,9 @@ layout: page
 
 ## 自动创建、更新
 
-GORM automates the saving of associations and their references when creating or updating records, using an upsert technique that primarily updates foreign key references for existing associations.
+GORM在创建或更新记录时会自动地保存其关联和引用，主要使用upsert技术来更新现有关联的外键引用。
 
-### Auto-Saving Associations on Create
+### 在创建时自动保存关联
 
 When you create a new record, GORM will automatically save its associated data. This includes inserting data into related tables and managing foreign key references.
 
