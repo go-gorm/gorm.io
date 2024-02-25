@@ -3,7 +3,7 @@ title: Serializer
 layout: page
 ---
 
-Serializer is an extensible interface that allows to customize how to serialize and deserialize data with databasae.
+Serializer is an extensible interface that allows to customize how to serialize and deserialize data with database.
 
 GORM provides some default serializers: `json`, `gob`, `unixtime`, here is a quick example of how to use it.
 
