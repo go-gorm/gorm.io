@@ -26,7 +26,7 @@ r. Get("/user", func(w http. Value("DB").(*gorm.DB)
 Continuous session mode is ideal for performing a series of related operations. It maintains the context across these operations, which is particularly useful in scenarios like transactions.
 
 ```go
-tx := db. WithContext(ctx)
+tx := db.WithContext(ctx)
 tx. First(&user, 1)
 tx. Model(&user). Update("role", "admin")
 ```

@@ -18,7 +18,7 @@ import (
 
 db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{})
 
-db. Use(prometheus. New(prometheus. Config{
+db.Use(prometheus. New(prometheus. Config{
   DBName:          "db1", // use `DBName` as metrics label
   RefreshInterval: 15,    // Refresh metrics interval (default 15 seconds)
   PushAddr:        "prometheus pusher address", // push metrics if `PushAddr` configured

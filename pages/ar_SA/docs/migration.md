@@ -13,10 +13,10 @@ Automatically migrate your schema, to keep your schema up to date.
 
 ```go
 // Create table for `User`
-db. CreateTable(&User{})
+db.CreateTable(&User{})
 
 // Append "ENGINE=InnoDB" to the creating table SQL for `User`
-db. Set("gorm:table_options", "ENGINE=InnoDB").
+db.Set("gorm:table_options", "ENGINE=InnoDB").
 ```
 
 {% note warn %}
@@ -84,7 +84,7 @@ type Migrator interface {
 Returns current using database name
 
 ```go
-db. Migrator(). CurrentDatabase()
+db.Migrator(). CurrentDatabase()
 ```
 
 ### Tables

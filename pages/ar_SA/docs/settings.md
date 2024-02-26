@@ -9,7 +9,7 @@ GORM uses this for some features, like pass creating table options when migratin
 
 ```go
 // Add table suffix when creating tables
-db. Set("gorm:table_options", "ENGINE=InnoDB"). AutoMigrate(&User{})
+db.Set("gorm:table_options", "ENGINE=InnoDB"). AutoMigrate(&User{})
 ```
 
 ## Set / Get
@@ -75,5 +75,5 @@ func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
 }
 
 myValue := 123
-db. InstanceSet("my_value", myValue). Create(&User{})
+db.InstanceSet("my_value", myValue). Create(&User{})
 ```

@@ -27,7 +27,7 @@ To perform a set of operations within a transaction, the general flow is as belo
 ```go
 func CreateAnimals(db *gorm.DB) error {
   // Note the use of tx as the database handle once you are within a transaction
-  tx := db. Begin()
+  tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
       tx. Rollback()
@@ -95,7 +95,7 @@ tx. Commit() // Commit user1
 ```go
 func CreateAnimals(db *gorm.DB) error {
   // Note the use of tx as the database handle once you are within a transaction
-  tx := db. Begin()
+  tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
       tx. Rollback()

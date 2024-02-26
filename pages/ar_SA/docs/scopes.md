@@ -11,30 +11,30 @@ Scope examples for querying
 
 ```go
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
-  return db. Where("amount > ?", 1000)
+  return db.Where("amount > ?", 1000)
 }
 
 func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
-  return db. Where("pay_mode = ?", "card")
+  return db.Where("pay_mode = ?", "card")
 }
 
 func PaidWithCod(db *gorm.DB) *gorm.DB {
-  return db. Where("pay_mode = ?", "cod")
+  return db.Where("pay_mode = ?", "cod")
 }
 
 func OrderStatus(status []string) func (db *gorm.DB) *gorm.DB {
   return func (db *gorm.DB) *gorm.DB {
-    return db. Scopes(AmountGreaterThan1000). Where("status IN (?)", status)
+    return db.Scopes(AmountGreaterThan1000). Where("status IN (?)", status)
   }
 }
 
-db. Scopes(AmountGreaterThan1000, PaidWithCreditCard). Find(&orders)
+db.Scopes(AmountGreaterThan1000, PaidWithCreditCard). Find(&orders)
 // Find all credit card orders and amount greater than 1000
 
-db. Scopes(AmountGreaterThan1000, PaidWithCod). Find(&orders)
+db.Scopes(AmountGreaterThan1000, PaidWithCod). Find(&orders)
 // Find all COD orders and amount greater than 1000
 
-db. Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})). Find(&orders)
+db.Scopes(AmountGreaterThan1000, OrderStatus([]string{"paid", "shipped"})). Find(&orders)
 // Find all paid, shipped orders that amount greater than 1000
 ```
 

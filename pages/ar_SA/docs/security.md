@@ -15,7 +15,7 @@ User's input should be only used as an argument, for example:
 
 ```go
 First(&user)
-db. Distinct("name; drop table users;").
+db.Distinct("name; drop table users;").
 ```
 
 ## Inline Condition

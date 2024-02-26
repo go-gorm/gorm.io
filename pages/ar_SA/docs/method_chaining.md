@@ -9,7 +9,7 @@ GORM's method chaining feature allows for a smooth and fluent style of coding. H
 First(&user)
 }
 
-tx := db. Where("name = ?", "jinzhu")
+tx := db.Where("name = ?", "jinzhu")
 // NOT Safe as reusing Statement
 for i := 0; i < 100; i++ {
   go tx.
