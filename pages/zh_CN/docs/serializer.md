@@ -3,7 +3,7 @@ title: 序列化
 layout: 页面
 ---
 
-Serializer 是一个可扩展的接口，允许自定义如何使用数据库对数据进行序列化和反序列化
+Serializer is an extensible interface that allows to customize how to serialize and deserialize data with database.
 
 GORM 提供了一些默认的序列化器：json、gob、unixtime，这里有一个如何使用它的快速示例
 
