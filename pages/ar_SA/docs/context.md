@@ -27,8 +27,8 @@ Continuous session mode is ideal for performing a series of related operations. 
 
 ```go
 tx := db.WithContext(ctx)
-tx. First(&user, 1)
-tx. Model(&user). Update("role", "admin")
+tx.First(&user, 1)
+tx.Model(&user).Update("role", "admin")
 ```
 
 ### Context Timeout

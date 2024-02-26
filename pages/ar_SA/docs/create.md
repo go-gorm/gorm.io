@@ -6,7 +6,7 @@ layout: page
 ## Create Record
 
 ```go
-db.Omit("Name", "Age", "CreatedAt"). Create(&user)
+db.Omit("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")
 ```
 

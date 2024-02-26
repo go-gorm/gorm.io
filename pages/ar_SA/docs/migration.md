@@ -84,7 +84,7 @@ type Migrator interface {
 Returns current using database name
 
 ```go
-db.Migrator(). CurrentDatabase()
+db.Migrator().CurrentDatabase()
 ```
 
 ### Tables

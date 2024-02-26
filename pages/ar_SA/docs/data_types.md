@@ -14,7 +14,7 @@ The customized data type has to implement the [Scanner](https://pkg.go.dev/datab
 For example:
 
 ```go
-type JSON json. RawMessage
+type JSON json.RawMessage
 
 // Scan scan value into Jsonb, implements sql. Scanner interface
 func (j *JSON) Scan(value interface{}) error {
@@ -23,8 +23,8 @@ func (j *JSON) Scan(value interface{}) error {
     return errors. New(fmt. Sprint("Failed to unmarshal JSONB value:", value))
   }
 
-  result := json. RawMessage{}
-  err := json. Unmarshal(bytes, &result)
+  result := json.RawMessage{}
+  err := json.Unmarshal(bytes, &result)
   *j = JSON(result)
   return err
 }
@@ -34,7 +34,7 @@ func (j JSON) Value() (driver. Value, error) {
   if len(j) == 0 {
     return nil, nil
   }
-  return json. RawMessage(j). MarshalJSON()
+  return json.RawMessage(j).MarshalJSON()
 }
 ```
 

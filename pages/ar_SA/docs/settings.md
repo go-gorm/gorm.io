@@ -9,7 +9,7 @@ GORM uses this for some features, like pass creating table options when migratin
 
 ```go
 // Add table suffix when creating tables
-db.Set("gorm:table_options", "ENGINE=InnoDB"). AutoMigrate(&User{})
+db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
 ## Set / Get
@@ -24,7 +24,7 @@ type User struct {
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  myValue, ok := tx. InstanceGet("my_value")
+  myValue, ok := tx.InstanceGet("my_value")
   // ok => true
   // myValue => 123
 }
@@ -35,7 +35,7 @@ type CreditCard struct {
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  myValue, ok := tx. InstanceGet("my_value")
+  myValue, ok := tx.InstanceGet("my_value")
   // ok => true
   // myValue => 123
 }
@@ -57,7 +57,7 @@ type User struct {
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  myValue, ok := tx. InstanceGet("my_value")
+  myValue, ok := tx.InstanceGet("my_value")
   // ok => true
   // myValue => 123
 }
@@ -69,11 +69,11 @@ type CreditCard struct {
 
 // When creating associations, GORM creates a new `*Statement`, so can't read other instance's settings
 func (card *CreditCard) BeforeCreate(tx *gorm.DB) error {
-  myValue, ok := tx. InstanceGet("my_value")
+  myValue, ok := tx.InstanceGet("my_value")
   // ok => false
   // myValue => nil
 }
 
 myValue := 123
-db.InstanceSet("my_value", myValue). Create(&User{})
+db.InstanceSet("my_value", myValue).Create(&User{})
 ```

@@ -47,7 +47,7 @@ db, err := gorm. Open(sqlite. Open("gorm.db"), &gorm. Config{
   PrepareStmt: true,
 })
 
-db.Raw("select sum(age) from users where role = ?", "admin"). Scan(&age)
+db.Raw("select sum(age) from users where role = ?", "admin").Scan(&age)
 ```
 
 You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and execute it with prepared statement later, checkout [Session Mode](session.html) for details
@@ -57,7 +57,7 @@ You can also use GORM API to prepare SQL with [DryRun Mode](session.html), and e
 By default GORM select all fields when querying, you can use `Select` to specify fields you want
 
 ```go
-UseIndex("idx_user_name")). Find(&User{})
+UseIndex("idx_user_name")).Find(&User{})
 // SELECT * FROM `users` USE INDEX (`idx_user_name`)
 
 DB.
@@ -80,7 +80,7 @@ type APIUser struct {
 }
 
 // Select `id`, `name` automatically when query
-db.Model(&User{}). Limit(10). Find(&APIUser{})
+db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 

@@ -33,14 +33,14 @@ Code Example:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx. Statement, e.g:
-  tx. Select("Name", "Age")
-  tx. AddClause(clause. OnConflict{DoNothing: true})
+  // Modify current operation through tx.Statement, e.g:
+  tx.Select("Name", "Age")
+  tx.AddClause(clause. OnConflict{DoNothing: true})
 
   // tx is new session mode without the `WithConditions` option
   // operations based on it will run inside same transaction but without any current conditions
   var role Role
-  err := tx. First(&role, "name = ?", user. Role). Error
+  err := tx.First(&role, "name = ?", user. Role). Error
   // SELECT * FROM roles WHERE name = "admin"
   // ... return err
 }
@@ -52,14 +52,14 @@ func (u *User) BeforeCreate(tx *gorm.DB) error {
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx. Statement, e.g:
-  tx. Select("Name", "Age")
-  tx. AddClause(clause. OnConflict{DoNothing: true})
+  // Modify current operation through tx.Statement, e.g:
+  tx.Select("Name", "Age")
+  tx.AddClause(clause. OnConflict{DoNothing: true})
 
   // tx is new session mode without the `WithConditions` option
   // operations based on it will run inside same transaction but without any current conditions
   var role Role
-  err := tx. First(&role, "name = ?", user. Role).
+  err := tx.First(&role, "name = ?", user. Role)
 ```
 
 ### Updating an object
@@ -82,14 +82,14 @@ Code Example:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx. Statement, e.g:
-  tx. Select("Name", "Age")
-  tx. AddClause(clause. OnConflict{DoNothing: true})
+  // Modify current operation through tx.Statement, e.g:
+  tx.Select("Name", "Age")
+  tx.AddClause(clause. OnConflict{DoNothing: true})
 
   // tx is new session mode without the `WithConditions` option
   // operations based on it will run inside same transaction but without any current conditions
   var role Role
-  err := tx. First(&role, "name = ?", user.
+  err := tx.First(&role, "name = ?", user.
 ```
 
 ### Deleting an object
@@ -108,14 +108,14 @@ Code Example:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) error {
-  // Modify current operation through tx. Statement, e.g:
-  tx. Select("Name", "Age")
-  tx. AddClause(clause. OnConflict{DoNothing: true})
+  // Modify current operation through tx.Statement, e.g:
+  tx.Select("Name", "Age")
+  tx.AddClause(clause. OnConflict{DoNothing: true})
 
   // tx is new session mode without the `WithConditions` option
   // operations based on it will run inside same transaction but without any current conditions
   var role Role
-  err := tx. First(&role, "name = ?", user.
+  err := tx.First(&role, "name = ?", user.
 ```
 
 ### Querying an object

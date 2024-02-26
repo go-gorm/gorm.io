@@ -10,13 +10,13 @@ GORM provides the method `DB` which returns a generic database interface [\*sql.
 sqlDB, err := db.DB()
 
 // Ping
-sqlDB. Ping()
+sqlDB.Ping()
 
 // Close
-sqlDB. Close()
+sqlDB.Close()
 
 // Returns database statistics
-sqlDB. Stats()
+sqlDB.Stats()
 ```
 
 {% note warn %}

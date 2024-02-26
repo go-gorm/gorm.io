@@ -30,23 +30,23 @@ func CreateAnimals(db *gorm.DB) error {
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
-      tx. Rollback()
+      tx.Rollback()
     }
   }()
 
-  if err := tx. Error; err != nil {
+  if err := tx.Error; err != nil {
     return err
   }
 
-  if err := tx. Create(&Animal{Name: "Giraffe"}). Rollback()
+  if err := tx.Create(&Animal{Name: "Giraffe"}).Rollback()
      return err
   }
 
-  if err := tx. Create(&Animal{Name: "Lion"}). Rollback()
+  if err := tx.Create(&Animal{Name: "Lion"}).Rollback()
      return err
   }
 
-  return tx. Commit().
+  return tx.Commit().
 ```
 
 ### Nested Transactions
@@ -78,8 +78,8 @@ db.Transaction(func(tx *gorm.DB) error {
 Gorm supports calling transaction control functions (commit / rollback) directly, for example:
 
 ```go
-tx := DB. Begin()
-tx. Create(&user1)
+tx := DB.Begin()
+tx.Create(&user1)
 
 tx.
 
@@ -87,7 +87,7 @@ tx.
 
 RollbackTo("sp1") // Rollback user2
 
-tx. Commit() // Commit user1
+tx.Commit() // Commit user1
 ```
 
 ### A Specific Example
@@ -98,23 +98,23 @@ func CreateAnimals(db *gorm.DB) error {
   tx := db.Begin()
   defer func() {
     if r := recover(); r != nil {
-      tx. Rollback()
+      tx.Rollback()
     }
   }()
 
-  if err := tx. Error; err != nil {
+  if err := tx.Error; err != nil {
     return err
   }
 
-  if err := tx. Create(&Animal{Name: "Giraffe"}). Rollback()
+  if err := tx.Create(&Animal{Name: "Giraffe"}).Rollback()
      return err
   }
 
-  if err := tx. Create(&Animal{Name: "Lion"}). Rollback()
+  if err := tx.Create(&Animal{Name: "Lion"}).Rollback()
      return err
   }
 
-  return tx. Commit(). Error
+  return tx.Commit(). Error
 }
 ```
 
