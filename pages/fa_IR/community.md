@@ -1,14 +1,14 @@
 ---
 title: جامعه GORM
-layout: page
+layout: صفحه
 ---
 
-## Ask
+## درخواست
 
 **[چگونه یک سوال خوب بپرسم؟](https://stackoverflow.com/help/how-to-ask)**
 
 * Stackoverflow - [https://stackoverflow.com/questions/tagged/go-gorm](https://stackoverflow.com/questions/tagged/go-gorm)
-* Github Issues - [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
+* ایشوها در گیت هاب:  [https://github.com/go-gorm/gorm/issues](https://github.com/go-gorm/gorm/issues)
 
 ## چت
 
@@ -16,21 +16,21 @@ layout: page
 
 ## لینک های کاربردی
 
-* An admin system based on GORM V2 - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
+* یک سیستم مدیریت مبتنی بر GORM V2 - - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
 
-* Go-admin is a middle background framework based on Gorm  - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
+* Go-admin یک چارچوب پس زمینه میانی مبتنی بر Gorm است   - [go-admin-team/go-admin](https://github.com/go-admin-team/go-admin)
 
-* Article that validate GORM as ORM to Golang with CRUD implementation with SQLite database on tests - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
+* مقاله ای که GORM را به عنوان ORM به Golang با اجرای CRUD با پایگاه داده SQLite در آزمایشات تأیید می کند - - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
 
-* [Strongly typed JSON/JSONB fields in GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
+* [فیلدهای JSON/JSONB به شدت قوی در GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
 
-* [Using GORM concurrently is not safe](https://zhuanlan.zhihu.com/p/556065676)
+* [استفاده از همزمانی در GORM ایمن نیست](https://zhuanlan.zhihu.com/p/556065676)
 
 ## ویدیوها
 
-* Gorm quick start tutorial by [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
+* آموزش شروع سریع Gorm توسط  [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
 
-## Open Sources
+## متن‌باز
 
 * [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
 * [go-paginate - cursor-based pagination](https://github.com/raphaelvigee/go-paginate)
