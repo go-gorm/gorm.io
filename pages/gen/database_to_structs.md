@@ -34,6 +34,10 @@ func main() {
 // Generate struct `User` based on table `users` and generating options
 g.GenerateModel("users", gen.FieldIgnore("address"), gen.FieldType("id", "int64")),
 
+// Generate struct `Customer` based on table `customer` and generating options
+// customer table may have a tags column, it can be JSON type, gorm/gen tool can generate for your JSON data type
+g.GenerateModel("customer", gen.FieldType("tags", "datatypes.JSON")),
+
   )
 g.ApplyBasic(
 // Generate structs from all tables of current database
