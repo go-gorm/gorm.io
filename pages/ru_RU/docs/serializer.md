@@ -3,7 +3,7 @@ title: Сериализатор
 layout: page
 ---
 
-Serializer - это расширяемый интерфейс, который позволяет настраивать способ сериализации и десериализации данных с помощью базы данных.
+Serializer is an extensible interface that allows to customize how to serialize and deserialize data with database.
 
 GORM предоставляет несколько сериализаторов по умолчанию: `json`, `gob`, `unixtime`, вот краткий пример того, как их использовать.
 

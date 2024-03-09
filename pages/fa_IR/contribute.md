@@ -1,28 +1,28 @@
 ---
 title: Contribute to GORM
-layout: page
+layout: صفحه
 ---
 
-**You can help to deliver a better GORM! there are many things that you can do:**
+**شما می توانید به ارائه GORM بهتر کمک کنید! کارهای زیادی وجود دارد که می توانید انجام دهید:**
 
-## Help others to know GORM
+## به دیگران کمک کنید تا GORM را بشناسند
 
-* Share GORM with the world by social channels, or simply tell people who might be interested
-* Help newcomers to solve questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) and [Chat Rooms](/community.html#Chat)
-* Write tutorials, record videos, etc... (Don't forget to add them to [the list](/community.html))
-* Help to promote GORM on GitHub by [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
+* GORM را از طریق کانال های اجتماعی با جهان به اشتراک بگذارید، یا به سادگی به افرادی که ممکن است علاقه مند هستند بگویید
+* به تازه واردها کمک کنید تا سوالات را حل کنند   [Stack Overflow](https://stackoverflow.com/questions/tagged/go-gorm), [Github Issues](https://github.com/go-gorm/gorm/issues) and [Chat Rooms](/community.html#Chat)
+* آموزش بنویسید، فیلم ضبط کنید و غیره... (فراموش نکنید که آنها را به این لیست اضافه کنید  [the list](/community.html))
+* کمک به ترویج GORM در GitHub توسط [Starring](https://github.com/go-gorm/gorm/stargazers) and [Watching](https://github.com/go-gorm/gorm/watchers) the [GORM repository](https://github.com/go-gorm/gorm)
 
-## Documentation and Writing
+## مستندسازی و نگارش
 
-* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
+* با نوشتن محتوای جدید، اصلاح مطالب موجود، مستندات GORM را بهتر کنید [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
-### Translate this site
+### این سایت را ترجمه کنید
 
-You can translate the current site with [https://translate.gorm.io](https://translate.gorm.io)
+می‌توانید سایت فعلی را با [https://translate.gorm.io](https://translate.gorm.io) ترجمه کنید
 
-To translate GORM in your language you need to post a request in the [Github issues](https://github.com/go-gorm/gorm.io/issues) for it be added to [https://translate.gorm.io](https://translate.gorm.io).
+برای ترجمه GORM به زبان خود، باید درخواستی را در [مشکلات Github](https://github.com/go-gorm/gorm.io/issues) ارسال کنید تا به [مشکلات Github](https://github.com/go-gorm/gorm.io/issues) اضافه شود. a href="https://translate.gorm.io">https://translate.gorm.io</a>.
 
-## Program
+## برنامه‌
 
 * Create a pull request on [Github](https://github.com/go-gorm/gorm) to fix issues, new features
 * Create open-source plugins for GORM (Don't forget to add them to [the list](/community.html#Open-Sources))

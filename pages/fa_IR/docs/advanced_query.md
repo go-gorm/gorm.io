@@ -63,9 +63,9 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-The `Table` option can be used to specify the table to lock. This is useful when you are joining multiple tables and want to lock only one of them.
+از گزینه `Table` می توان برای تعیین جدول برای قفل استفاده کرد. این زمانی مفید است که به چندین جدول می‌پیوندید و می‌خواهید فقط یکی از آنها را قفل کنید.
 
-Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
+گزینه‌هایی مانند `NOWAIT` ارائه می‌شوند که سعی می‌کند یک قفل را بدست آورد و در صورت در دسترس نبودن قفل، فوراً با یک خطا شکست می‌خورد. It prevents the transaction from waiting for other transactions to release their locks.
 
 ```go
 db.Clauses(clause.Locking{

@@ -1,12 +1,12 @@
 ---
-layout: index
+layout: شاخص
 description: Gorm یک ORM کاربردی است که برای زبان برنامه نویسی Go توسعه داده شده است.
 subtitle: یک ORM فوق‌العاده برای زبان برنامه نویسی Go
-comments: false
+comments: نادرست
 ---
 
 * <i class="fa fa-rocket" aria-hidden="true"></i> Full-Featured ORM
-* <i class="fa fa-rocket" aria-hidden="true"></i> Associations (has one, has many, belongs to, many to many, polymorphism, single-table inheritance)
+* <i class="fa fa-rocket" aria-hidden="true"></i> انجمن ها (دارای یک، دارای بسیاری، متعلق به، بسیاری به بسیاری، چندشکلی، وراثت تک جدولی)
 * <i class="fa fa-rocket" aria-hidden="true"></i> Hooks (before/after create/save/update/delete/find)
 * <i class="fa fa-rocket" aria-hidden="true"></i> Eager loading with Preload, Joins
 * <i class="fa fa-rocket" aria-hidden="true"></i> Transactions, Nested Transactions, Save Point, RollbackTo to Saved Point
