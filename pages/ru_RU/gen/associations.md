@@ -3,11 +3,11 @@ title: Associations
 layout: page
 ---
 
-GEN will auto-save associations as GORM do. The relationships (BelongsTo/HasOne/HasMany/Many2Many) reuse GORM's tag. This feature only support exist model for now.
+GEN will auto-save associations as GORM do. Отношения (один к одному, один ко многим, многие к одному, многие ко многим) повторно используют тег GORM. На данный момент эта функциональность поддерживает только существующие модели.
 
-## Relation
+## Отношения
 
-There are 4 kind of relationship.
+Есть 4 вида отношений.
 
 ```go
 const (
@@ -36,7 +36,7 @@ type CreditCard struct {
 }
 ```
 
-GEN will detect model's associations:
+GEN обнаружит обратные ссылки:
 
 ```go
 // specify model
