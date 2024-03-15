@@ -2,7 +2,7 @@
 <html lang="zh_CN">
 <head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
-  <title>Context | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <title>上下文 | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Canonical links -->
@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORM’s context support, enabled by the WithContext method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management a">
+  <meta name="description" content="GORM 的上下文支持由 WithContext 方法启用，是一项强大的功能，可以增强 Go 应用程序中数据库操作的灵活性和控制力。 它允许在不同的操作模式、超时设置以及甚至集成到钩子&#x2F;回调和中间件中进行上下文管理。 让我们从不同方面深入了解： 单会话模式Single session mode is appropriate for executing individual operati">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Context">
+<meta property="og:title" content="上下文">
 <meta property="og:url" content="https://gorm.io/zh_CN/docs/context.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORM’s context support, enabled by the WithContext method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management a">
+<meta property="og:description" content="GORM 的上下文支持由 WithContext 方法启用，是一项强大的功能，可以增强 Go 应用程序中数据库操作的灵活性和控制力。 它允许在不同的操作模式、超时设置以及甚至集成到钩子&#x2F;回调和中间件中进行上下文管理。 让我们从不同方面深入了解： 单会话模式Single session mode is appropriate for executing individual operati">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-03-09T09:08:51.619Z">
-<meta property="article:modified_time" content="2024-03-09T09:08:51.619Z">
+<meta property="article:published_time" content="2024-03-15T06:16:56.080Z">
+<meta property="article:modified_time" content="2024-03-15T06:16:56.080Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -135,13 +135,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <div class="article">
             <div class="inner">
               <header class="article-header">
-                <h1 class="article-title" itemprop="name">Context</h1>
+                <h1 class="article-title" itemprop="name">上下文</h1>
                 
                 <a target="_blank" rel="noopener" href="https://translate.gorm.io/project/go-gorm/zh-CN" class="article-edit-link" title="改进此页面"><i class="fa fa-pencil"></i></a>
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>GORM’s context support, enabled by the <code>WithContext</code> method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management across different operational modes, timeout settings, and even integration into hooks/callbacks and middlewares. Let’s delve into these various aspects:</p>
+                <html><head></head><body><p>GORM 的上下文支持由 <code>WithContext</code> 方法启用，是一项强大的功能，可以增强 Go 应用程序中数据库操作的灵活性和控制力。 它允许在不同的操作模式、超时设置以及甚至集成到钩子/回调和中间件中进行上下文管理。 让我们从不同方面深入了解：</p>
 <h3 id="单会话模式" class="article-heading"><a href="#单会话模式" class="headerlink" title="单会话模式"></a>单会话模式<a class="article-anchor" href="#单会话模式" aria-hidden="true"></a></h3><p>Single session mode is appropriate for executing individual operations. It ensures that the specific operation is executed within the context’s scope, allowing for better control and monitoring.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.WithContext(ctx).Find(&amp;users)</span><br></pre></td></tr></tbody></table></figure>
 
@@ -172,7 +172,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2024-03-09T09:08:51.619Z" itemprop="dateModified">最后更新于 2024-03-09</time>
+                <time class="article-footer-updated" datetime="2024-03-15T06:16:56.080Z" itemprop="dateModified">最后更新于 2024-03-15</time>
 <a href="preload.html" class="article-footer-prev" title="预加载"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="error_handling.html" class="article-footer-next" title="错误处理"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
