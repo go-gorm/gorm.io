@@ -3,9 +3,9 @@ title: Consulta
 layout: page
 ---
 
-## Retrieving a single object
+## Recuperando um único objeto
 
-GORM provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
+GORM fornece os métodos `First`, `Take` e `Last` para recuperar um único objeto do banco de dados, adiciona a condição `LIMIT 1` ao consultar o banco de dados e retornará o erro `ErrRecordNotFound` se nenhum registro for encontrado.
 
 ```go
 // Get the first record ordered by primary key
