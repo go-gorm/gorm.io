@@ -3,11 +3,11 @@ title: Contexto
 layout: page
 ---
 
-GORM's context support, enabled by the `WithContext` method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management across different operational modes, timeout settings, and even integration into hooks/callbacks and middlewares. Let's delve into these various aspects:
+GORM's context support, enabled by the `WithContext` method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. Isto possibilita o gerenciamento de contexto entre diferentes modos operacionais como configuração de timeout, integração entre hooks/callbacks e middlewares. Vamos nos aprofundar nestes diferentes aspectos:
 
 ### Modo de sessão única
 
-Single session mode is appropriate for executing individual operations. It ensures that the specific operation is executed within the context's scope, allowing for better control and monitoring.
+Modo de sessão única é apropriado para executar operações simples. Isto garante que a operação específica seja executada no escopo do contexto, permitindo melhor controle e monitoramento.
 
 ```go
 db.WithContext(ctx).Find(&users)
