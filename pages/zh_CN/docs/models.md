@@ -3,13 +3,13 @@ title: 模型定义
 layout: page
 ---
 
-GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities.
+GORM 通过将 Go 结构体（Go structs） 映射到数据库表来简化数据库交互。 了解如何在GORM中定义模型，是充分利用GORM全部功能的基础。
 
 ## 模型定义
 
-Models are defined using normal structs. These structs can contain fields with basic Go types, pointers or aliases of these types, or even custom types, as long as they implement the [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces from the `database/sql` package
+模型是使用普通结构体定义的。 这些结构体可以包含具有基本Go类型、指针或这些类型的别名，甚至是自定义类型（只需要实现 `database/sql` 包中的[Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner)和[Valuer](https://pkg.go.dev/database/sql/driver#Valuer)接口）。
 
-Consider the following example of a `User` model:
+考虑以下 `user` 模型的示例：
 
 ```go
 type User struct {
@@ -25,7 +25,7 @@ type User struct {
 }
 ```
 
-In this model:
+在此模型中：
 
 - Basic data types like `uint`, `string`, and `uint8` are used directly.
 - Pointers to types like `*string` and `*time.Time` indicate nullable fields.
