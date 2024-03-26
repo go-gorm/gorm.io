@@ -48,7 +48,7 @@ type User struct {
 
 ### `gorm.Model`
 
-GORM provides a predefined struct named `gorm.Model`, which includes commonly used fields:
+GORM提供了一个预定义的结构体，名为`gorm.Model`，其中包含常用字段：
 
 ```go
 // gorm.Model 的定义
@@ -60,13 +60,13 @@ type Model struct {
 }
 ```
 
-- **Embedding in Your Struct**: You can embed `gorm.Model` directly in your structs to include these fields automatically. This is useful for maintaining consistency across different models and leveraging GORM's built-in conventions, refer [Embedded Struct](#embedded_struct)
+- **将其嵌入在您的结构体中**: 您可以直接在您的结构体中嵌入 `gorm.Model` ，以便自动包含这些字段。 这对于在不同模型之间保持一致性并利用GORM内置的约定非常有用，请参考[嵌入结构](#embedded_struct)。
 
-- **Fields Included**:
-  - `ID`: A unique identifier for each record (primary key).
-  - `CreatedAt`: Automatically set to the current time when a record is created.
-  - `UpdatedAt`: Automatically updated to the current time whenever a record is updated.
-  - `DeletedAt`: Used for soft deletes (marking records as deleted without actually removing them from the database).
+- **包含的字段**：
+  - `ID` ：每个记录的唯一标识符（主键）。
+  - `CreatedAt` ：在创建记录时自动设置为当前时间。
+  - `UpdatedAt`：每当记录更新时，自动更新为当前时间。
+  - `DeletedAt`：用于软删除（将记录标记为已删除，而实际上并未从数据库中删除）。
 
 ## 高级选项
 
