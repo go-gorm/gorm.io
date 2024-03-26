@@ -75,10 +75,10 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 })
 ```
 
-**Note**: Setting the `Context` with `WithContext` is goroutine-safe. This ensures that database operations are safely managed across multiple goroutines. For more details, refer to the [Session documentation](session.html) in GORM.
+**Note**: Setting the `Context` with `WithContext` is goroutine-safe. . For more details, refer to the [Session documentation](session.html) in GORM.
 
-### Logger Integration
+### Integração com Logger
 
-GORM's logger also accepts `Context`, which can be used for log tracking and integrating with existing logging infrastructures.
+O GORM logger também aceita `Context`, que pode ser utilizado para log tracking e integração com a infraestrutura de log existente.
 
-Refer to [Logger documentation](logger.html) for more details.
+Consulte a [documentação do Logger](logger.html) para mais detalhes.
