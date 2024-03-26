@@ -14,14 +14,14 @@ GORM 通过将 Go 结构体（Go structs） 映射到数据库表来简化数据
 ```go
 type User struct {
   ID           uint           // Standard field for the primary key
-  Name         string         // A regular string field
-  Email        *string        // A pointer to a string, allowing for null values
-  Age          uint8          // An unsigned 8-bit integer
+  Name         string         // 一个常规字符串字段
+  Email        *string        // 一个指向字符串的指针, allowing for null values
+  Age          uint8          // 一个未签名的8位整数
   Birthday     *time.Time     // A pointer to time.Time, can be null
   MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
   ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
-  CreatedAt    time.Time      // Automatically managed by GORM for creation time
-  UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  CreatedAt    time.Time      // 创建时间（由GORM自动管理）
+  UpdatedAt    time.Time      // 最后一次更新时间（由GORM自动管理）
 }
 ```
 
@@ -29,22 +29,22 @@ type User struct {
 
 - 具体数字类型如 `uint`、`string`和 `uint8` 直接使用。
 - 指向 `*string` 和 `*time.Time` 类型的指针表示可空字段。
-- `sql.NullString` and `sql.NullTime` from the `database/sql` package are used for nullable fields with more control.
-- `CreatedAt` and `UpdatedAt` are special fields that GORM automatically populates with the current time when a record is created or updated.
+- 来自 `database/sql` 包的 `sql.NullString` 和 `sql.NullTime` 用于具有更多控制的可空字段。
+- `CreatedAt` 和 `UpdatedAt` 是特殊字段，当记录被创建或更新时，GORM 会自动向内填充当前时间。
 
-In addition to the fundamental features of model declaration in GORM, it's important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See [Serializer](serializer.html) for a detailed explanation
+除了 GORM 中模型声明的基本特性外，强调下通过 serializer 标签支持序列化也很重要。 此功能增强了数据存储和检索的灵活性，特别是对于需要自定义序列化逻辑的字段。详细说明请参见 [Serializer](serializer.html)。
 
 ### 约定
 
-1. **Primary Key**: GORM uses a field named `ID` as the default primary key for each model.
+1. **主键**：GORM 使用一个名为`ID` 的字段作为每个模型的默认主键。
 
-2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database.
+2. **表名**：默认情况下，GORM 将结构体名称转换为 `snake_case` 并为表名加上复数形式。 例如，一个 `User` 结构体在数据库中的表名变为 `users` 。
 
-3. **Column Names**: GORM automatically converts struct field names to `snake_case` for column names in the database.
+3. **列名**：GORM 自动将结构体字段名称转换为 `snake_case` 作为数据库中的列名。
 
-4. **Timestamp Fields**: GORM uses fields named `CreatedAt` and `UpdatedAt` to automatically track the creation and update times of records.
+4. **时间戳字段**：GORM使用字段 `CreatedAt` 和 `UpdatedAt` 来自动跟踪记录的创建和更新时间。
 
-Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don't fit your requirements. You can learn more about customizing these conventions in GORM's documentation on [conventions](conventions.html).
+遵循这些约定可以大大减少您需要编写的配置或代码量。 但是，GORM也具有灵活性，允许您根据自己的需求自定义这些设置。 您可以在GORM的[约定](conventions.html)文档中了解更多关于自定义这些约定的信息。
 
 ### `gorm.Model`
 
