@@ -3,30 +3,30 @@ title: Convenções
 layout: page
 ---
 
-## `ID` as Primary Key
+## ID como chave primária
 
-GORM uses the field with the name `ID` as the table's primary key by default.
+GORM usa o campo com o nome ID como chave primária por padrão.
 
 ```go
 type User struct {
-  ID   string // field named `ID` will be used as a primary field by default
-  Name string
+ ID string // campo `ID` vai ser usado como chave primária por padrão
+ Name string
 }
 ```
 
-You can set other fields as primary key with tag `primaryKey`
+Você pode usar outro campo como chave primária usando a tag primaryKey
 
 ```go
-// Set field `UUID` as primary field
+// Configurando o campo `UUID` como chave primária
 type Animal struct {
-  ID     int64
-  UUID   string `gorm:"primaryKey"`
-  Name   string
-  Age    int64
+ ID int64
+ UUID string `gorm:"primaryKey"`
+ Name string
+ Age int64
 }
 ```
 
-Also check out [Composite Primary Key](composite_primary_key.html)
+Veja também composição de chave primária
 
 ## Pluralized Table Name
 
