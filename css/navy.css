@@ -1492,6 +1492,11 @@ pre code {
 .highlight .line {
   height: 22px;
 }
+@media print {
+  .highlight .line {
+    text-wrap: wrap;
+  }
+}
 pre .comment,
 pre .title {
   color: #8e908c;
