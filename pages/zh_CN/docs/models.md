@@ -27,8 +27,8 @@ type User struct {
 
 在此模型中：
 
-- Basic data types like `uint`, `string`, and `uint8` are used directly.
-- Pointers to types like `*string` and `*time.Time` indicate nullable fields.
+- 具体数字类型如 `uint`、`string`和 `uint8` 直接使用。
+- 指向 `*string` 和 `*time.Time` 类型的指针表示可空字段。
 - `sql.NullString` and `sql.NullTime` from the `database/sql` package are used for nullable fields with more control.
 - `CreatedAt` and `UpdatedAt` are special fields that GORM automatically populates with the current time when a record is created or updated.
 
