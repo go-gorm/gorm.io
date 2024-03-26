@@ -25,10 +25,8 @@ users := []*User{
 result := db.Create(users) // 传递切片以插入多行数据
 
 result.Error        // 返回 error
-result.RowsAffected // 返回插入记录的条数
+result.RowsAffected // 返回插入记录的条数    
 ```
-
-{% note warn %}
 **NOTE** 你无法向 'create' 传递结构体，所以你应该传入数据的指针.
 {% endnote %}
 

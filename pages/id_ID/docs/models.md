@@ -9,34 +9,34 @@ GORM simplifies database interactions by mapping Go structs to database tables. 
 
 Models are defined using normal structs. These structs can contain fields with basic Go types, pointers or aliases of these types, or even custom types, as long as they implement the [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces from the `database/sql` package
 
-Consider the following example of a `User` model:
+Pertimbangkan contoh model `User` berikut ini:
 
 ```go
 type User struct {
-  ID           uint           // Standard field for the primary key
-  Name         string         // A regular string field
-  Email        *string        // A pointer to a string, allowing for null values
-  Age          uint8          // An unsigned 8-bit integer
-  Birthday     *time.Time     // A pointer to time.Time, can be null
-  MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
-  ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
-  CreatedAt    time.Time      // Automatically managed by GORM for creation time
-  UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  ID           uint           // Bidang standar untuk primary key
+  Name         string         // Bidang string biasa
+  Email        *string        // Sebuah pointer string, yang memungkinkan nilai null
+  Age          uint8          // Bilangan bulat positif 8-bit
+  Birthday     *time.Time     // Sebuah pointer time.Time, bisa berupa nilai null
+  MemberNumber sql.NullString // Menggunakan sql.NullString untuk menangani string yang bisa bernilai null
+  ActivatedAt  sql.NullTime   // Menggunakan sql.NullTime untuk bidang waktu yang bisa bernilai null
+  CreatedAt    time.Time      // Dikelola secara otomatis oleh GORM untuk waktu pembuatan
+  UpdatedAt    time.Time      // Dikelola secara otomatis oleh GORM untuk waktu pembaruan
 }
 ```
 
-In this model:
+Dalam model ini:
 
-- Basic data types like `uint`, `string`, and `uint8` are used directly.
-- Pointers to types like `*string` and `*time.Time` indicate nullable fields.
-- `sql.NullString` and `sql.NullTime` from the `database/sql` package are used for nullable fields with more control.
-- `CreatedAt` and `UpdatedAt` are special fields that GORM automatically populates with the current time when a record is created or updated.
+- Tipe data dasar seperti `uint`, `string`, dan `uint8` digunakan secara langsung.
+- Sebuah pointer ke tipe seperti `*string` dan `*time.Time` mengindikasikan bidang yang dapat bernilai null.
+- `sql.NullString` dan `sql.NullTime` dari package `database/sql` digunakan untuk bidang yang dapat bernilai null dengan kontrol yang lebih luas.
+- `CreatedAt` dan `UpdatedAt` adalah bidang khusus yang secara otomatis diisi oleh GORM dengan waktu saat ini ketika record dibuat atau diperbarui.
 
-In addition to the fundamental features of model declaration in GORM, it's important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See [Serializer](serializer.html) for a detailed explanation
+Selain fitur dasar deklarasi model di GORM, penting untuk menyoroti dukungan serialisasi melalui tag serializer. Fitur ini meningkatkan fleksibilitas bagaimana data disimpan dan diambil dari database, terutama untuk bidang yang memerlukan logika serialisasi khusus, Lihat [Serializer](serializer.html) untuk penjelasan yang lebih rinci
 
 ### Konvensi
 
-1. **Primary Key**: GORM uses a field named `ID` as the default primary key for each model.
+1. **Primary Key**: GORM menggunakan bidang bernama `ID` sebagai primary key default untuk setiap model.
 
 2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database.
 

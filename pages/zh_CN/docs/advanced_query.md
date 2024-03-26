@@ -172,7 +172,7 @@ db.Table("users").Find(&results)
 
 ## FirstOrInit
 
-GORM 的 `First OrInit` 方法用于获取与特定条件匹配的第一条记录，如果没有成功获取，就初始化一个新实例。 这个方法与结构和map条件兼容，并且在使用 `Attrs` 和 `Assign` 方法时有着更多的灵活性。
+GORM 的 `FirstOrInit` 方法用于获取与特定条件匹配的第一条记录，如果没有成功获取，就初始化一个新实例。 这个方法与结构和map条件兼容，并且在使用 `Attrs` 和 `Assign` 方法时有着更多的灵活性。
 
 ```go
 // 如果没找到 name 为 "non_existing" 的 User，就初始化一个新的 User

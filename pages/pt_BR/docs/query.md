@@ -3,20 +3,20 @@ title: Consulta
 layout: page
 ---
 
-## Retrieving a single object
+## Recuperando um único objeto
 
-GORM provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
+GORM fornece os métodos `First`, `Take` e `Last` para recuperar um único objeto do banco de dados, adiciona a condição `LIMIT 1` ao consultar o banco de dados e retornará o erro `ErrRecordNotFound` se nenhum registro for encontrado.
 
 ```go
-// Get the first record ordered by primary key
+// Obtém o primeiro registro ordenado pela chave primária
 db.First(&user)
 // SELECT * FROM users ORDER BY id LIMIT 1;
 
-// Get one record, no specified order
+// Obtém um registro, sem ordem especificada
 db.Take(&user)
 // SELECT * FROM users LIMIT 1;
 
-// Get last record, ordered by primary key desc
+// Obtém o último registro, ordenado em ordem decrescente pela chave primária
 db.Last(&user)
 // SELECT * FROM users ORDER BY id DESC LIMIT 1;
 
@@ -24,42 +24,42 @@ result := db.First(&user)
 result.RowsAffected // returns count of records found
 result.Error        // returns error or nil
 
-// check error ErrRecordNotFound
+// Verifica o erro ErrRecordNotFound
 errors.Is(result.Error, gorm.ErrRecordNotFound)
 ```
 
 {% note warn %}
-If you want to avoid the `ErrRecordNotFound` error, you could use `Find` like `db.Limit(1).Find(&user)`, the `Find` method accepts both struct and slice data
+Se você quer evitar o erro `ErrRecordNotFound`, você pode usar `Find` como `db.Limit(1).Find(&user)`, o método `Find` aceita dados de struct e slice
 {% endnote %}
 
 {% note warn %}
-Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is not performant and nondeterministic
+Usando `Find` sem um limite para um único objeto `db.Find(&user)` consultará a tabela completa e retornará apenas o primeiro objeto no qual não é performático e não é determinístico
 {% endnote %}
 
-The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
+Os métodos `First` e `Last` encontrarão o primeiro e último registro (respectivamente), ordenado pela chave primária. Eles só funcionam quando um ponteiro para a struct de destino é passado para os métodos como argumento ou quando o modelo é especificado usando `db.Model()`. Além disso, se nenhuma chave primária for definida para modelo relevante, então o modelo será ordenado pelo primeiro campo. Por exemplo:
 
 ```go
 var user User
 var users []User
 
-// works because destination struct is passed in
+// funciona porque a struct de destino é passada
 db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// works because model is specified using `db.Model()`
+// funciona porque o modelo é especificado usando `db.Model()`
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// doesn't work
+// não funciona
 result := map[string]interface{}{}
 db.Table("users").First(&result)
 
-// works with Take
+// funciona com `Take`
 result := map[string]interface{}{}
 db.Table("users").Take(&result)
 
-// no primary key defined, results will be ordered by first field (i.e., `Code`)
+// nenhuma chave primária definida, os resultados serão ordenados pelo primeiro campo (ou seja, `Code`)
 type Language struct {
   Code string
   Name string

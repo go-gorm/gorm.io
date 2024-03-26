@@ -26,7 +26,7 @@ user := User{
   },
 }
 
-// Creating a user along with its associated addresses, emails, and languages
+// 创建用户及其关联的地址、电子邮件和语言
 db.Create(&user)
 // BEGIN TRANSACTION;
 // INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
@@ -44,9 +44,9 @@ db.Save(&user)
 对于需要全面更新关联数据（不止外键）的情况，就应该使用 `FullSaveAssociations` 方法。
 
 ```go
-// Update a user and fully update all its associations
+// 更新用户并完全更新其所有关联
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
-// SQL: Fully updates addresses, users, emails tables, including existing associated records
+// SQL：完全更新地址、用户、电子邮件表，包括现有的关联记录
 ```
 
 使用`FullSaveAssociations` 方法来确保模型的整体状态，包括其所有关联都反映在了数据库中，从在应用中保持数据的完整性和一致性。

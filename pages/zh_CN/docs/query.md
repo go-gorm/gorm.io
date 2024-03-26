@@ -33,7 +33,7 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 {% endnote %}
 
 {% note warn %}
-对单个对象使用`Find`而不带limit，`db.Find(&user)`将会查询整个表并且只返回第一个对象，这是性能不高并且不确定的。
+对单个对象使用`Find`而不带limit，`db.Find(&user)`将会查询整个表并且只返回第一个对象，只是性能不高并且不确定的。
 {% endnote %}
 
 `First` and `Last` 方法会按主键排序找到第一条记录和最后一条记录 (分别)。 只有在目标 struct 是指针或者通过 `db.Model()` 指定 model 时，该方法才有效。 此外，如果相关 model 没有定义主键，那么将按 model 的第一个字段进行排序。 例如：

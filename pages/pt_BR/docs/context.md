@@ -3,19 +3,19 @@ title: Contexto
 layout: page
 ---
 
-GORM's context support, enabled by the `WithContext` method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management across different operational modes, timeout settings, and even integration into hooks/callbacks and middlewares. Let's delve into these various aspects:
+Suporte de contexto do GORM, habilitado pelo método `WithContext`, é um recurso poderoso que melhora a flexibilidade e o controle das operações do banco de dados no Go aplicativos. Isto possibilita o gerenciamento de contexto entre diferentes modos operacionais como configuração de timeout, integração entre hooks/callbacks e middlewares. Vamos nos aprofundar nestes diferentes aspectos:
 
 ### Modo de sessão única
 
-Single session mode is appropriate for executing individual operations. It ensures that the specific operation is executed within the context's scope, allowing for better control and monitoring.
+Modo de sessão única é apropriado para executar operações simples. Isto garante que a operação específica seja executada no escopo do contexto, permitindo melhor controle e monitoramento.
 
 ```go
 db.WithContext(ctx).Find(&users)
 ```
 
-### Continuous Session Mode
+### Modo sessão continuada
 
-Continuous session mode is ideal for performing a series of related operations. It maintains the context across these operations, which is particularly useful in scenarios like transactions.
+O modo sessão continuada é ideal para execução de operações em série. O contexto é mantido entre as operações e é particularmente útil em cenários como transações.
 
 ```go
 tx := db.WithContext(ctx)
@@ -23,9 +23,9 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-### Context Timeout
+### Timeout de contexto
 
-Setting a timeout on the context passed to `db.WithContext` can control the duration of long-running queries. This is crucial for maintaining performance and avoiding resource lock-ups in database interactions.
+Configurar timeout no contexto e passar para `db.WithContext` para controlar a duração de queries demoradas. Isto é crucial para manter a desempenho e evitar o bloqueio de recursos em iterações com o banco de dados.
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -34,21 +34,21 @@ defer cancel()
 db.WithContext(ctx).Find(&users)
 ```
 
-### Context in Hooks/Callbacks
+### Contexto em Hooks/Callbacks
 
-The context can also be accessed within GORM's hooks/callbacks. This enables contextual information to be used during these lifecycle events.
+O contexto também pode ser acessado por hooks/callbacks no GORM. Isto habilita informações contextuais para serem utilizadas durante o ciclo de vida dos eventos.
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
   ctx := tx.Statement.Context
-  // ... use context
+  // ... uso do contexto
   return
 }
 ```
 
-### Integration with Chi Middleware
+### Integração com Chi Middleware
 
-GORM's context support extends to web server middlewares, such as those in the Chi router. This allows setting a context with a timeout for all database operations within the scope of a web request.
+O contexto do GORM suporta extensão para middleware de servidores web, como este no roteador do Chi. Assim permitindo a configuração de contexto com timeout para todas as operações de banco de dados no escopo do request.
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {
@@ -59,26 +59,26 @@ func SetDBMiddleware(next http.Handler) http.Handler {
   })
 }
 
-// Router setup
+// Configuração do roteador
 r := chi.NewRouter()
 r.Use(SetDBMiddleware)
 
-// Route handlers
+// Configurações de rotas
 r.Get("/", func(w http.ResponseWriter, r *http.Request) {
   db, ok := r.Context().Value("DB").(*gorm.DB)
-  // ... db operations
+  // ... Operações de BD
 })
 
 r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
   db, ok := r.Context().Value("DB").(*gorm.DB)
-  // ... db operations
+  // ... Operações de BD
 })
 ```
 
-**Note**: Setting the `Context` with `WithContext` is goroutine-safe. This ensures that database operations are safely managed across multiple goroutines. For more details, refer to the [Session documentation](session.html) in GORM.
+**Nota**: A configuração do `Context` com `WithContext` é goroutine-safe. Isto garante que as operações de bancos de dados são gerenciadas entre múltiplas goroutines. Para mais detalhes, consulte a [documentação de Session](session.html) em GORM.
 
-### Logger Integration
+### Integração com Logger
 
-GORM's logger also accepts `Context`, which can be used for log tracking and integrating with existing logging infrastructures.
+O GORM logger também aceita `Context`, que pode ser utilizado para log tracking e integração com a infraestrutura de log existente.
 
-Refer to [Logger documentation](logger.html) for more details.
+Consulte a [documentação do Logger](logger.html) para mais detalhes.
