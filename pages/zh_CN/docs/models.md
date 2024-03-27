@@ -14,41 +14,41 @@ GORM 通过将 Go 结构体（Go structs） 映射到数据库表来简化数据
 ```go
 type User struct {
   ID           uint           // Standard field for the primary key
-  Name         string         // A regular string field
-  Email        *string        // A pointer to a string, allowing for null values
-  Age          uint8          // An unsigned 8-bit integer
+  Name         string         // 一个常规字符串字段
+  Email        *string        // 一个指向字符串的指针, allowing for null values
+  Age          uint8          // 一个未签名的8位整数
   Birthday     *time.Time     // A pointer to time.Time, can be null
   MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
   ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
-  CreatedAt    time.Time      // Automatically managed by GORM for creation time
-  UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  CreatedAt    time.Time      // 创建时间（由GORM自动管理）
+  UpdatedAt    time.Time      // 最后一次更新时间（由GORM自动管理）
 }
 ```
 
 在此模型中：
 
-- Basic data types like `uint`, `string`, and `uint8` are used directly.
-- Pointers to types like `*string` and `*time.Time` indicate nullable fields.
-- `sql.NullString` and `sql.NullTime` from the `database/sql` package are used for nullable fields with more control.
-- `CreatedAt` and `UpdatedAt` are special fields that GORM automatically populates with the current time when a record is created or updated.
+- 具体数字类型如 `uint`、`string`和 `uint8` 直接使用。
+- 指向 `*string` 和 `*time.Time` 类型的指针表示可空字段。
+- 来自 `database/sql` 包的 `sql.NullString` 和 `sql.NullTime` 用于具有更多控制的可空字段。
+- `CreatedAt` 和 `UpdatedAt` 是特殊字段，当记录被创建或更新时，GORM 会自动向内填充当前时间。
 
-In addition to the fundamental features of model declaration in GORM, it's important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See [Serializer](serializer.html) for a detailed explanation
+除了 GORM 中模型声明的基本特性外，强调下通过 serializer 标签支持序列化也很重要。 此功能增强了数据存储和检索的灵活性，特别是对于需要自定义序列化逻辑的字段。详细说明请参见 [Serializer](serializer.html)。
 
 ### 约定
 
-1. **Primary Key**: GORM uses a field named `ID` as the default primary key for each model.
+1. **主键**：GORM 使用一个名为`ID` 的字段作为每个模型的默认主键。
 
-2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database.
+2. **表名**：默认情况下，GORM 将结构体名称转换为 `snake_case` 并为表名加上复数形式。 例如，一个 `User` 结构体在数据库中的表名变为 `users` 。
 
-3. **Column Names**: GORM automatically converts struct field names to `snake_case` for column names in the database.
+3. **列名**：GORM 自动将结构体字段名称转换为 `snake_case` 作为数据库中的列名。
 
-4. **Timestamp Fields**: GORM uses fields named `CreatedAt` and `UpdatedAt` to automatically track the creation and update times of records.
+4. **时间戳字段**：GORM使用字段 `CreatedAt` 和 `UpdatedAt` 来自动跟踪记录的创建和更新时间。
 
-Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don't fit your requirements. You can learn more about customizing these conventions in GORM's documentation on [conventions](conventions.html).
+遵循这些约定可以大大减少您需要编写的配置或代码量。 但是，GORM也具有灵活性，允许您根据自己的需求自定义这些设置。 您可以在GORM的[约定](conventions.html)文档中了解更多关于自定义这些约定的信息。
 
 ### `gorm.Model`
 
-GORM provides a predefined struct named `gorm.Model`, which includes commonly used fields:
+GORM提供了一个预定义的结构体，名为`gorm.Model`，其中包含常用字段：
 
 ```go
 // gorm.Model 的定义
@@ -60,13 +60,13 @@ type Model struct {
 }
 ```
 
-- **Embedding in Your Struct**: You can embed `gorm.Model` directly in your structs to include these fields automatically. This is useful for maintaining consistency across different models and leveraging GORM's built-in conventions, refer [Embedded Struct](#embedded_struct)
+- **将其嵌入在您的结构体中**: 您可以直接在您的结构体中嵌入 `gorm.Model` ，以便自动包含这些字段。 这对于在不同模型之间保持一致性并利用GORM内置的约定非常有用，请参考[嵌入结构](#embedded_struct)。
 
-- **Fields Included**:
-  - `ID`: A unique identifier for each record (primary key).
-  - `CreatedAt`: Automatically set to the current time when a record is created.
-  - `UpdatedAt`: Automatically updated to the current time whenever a record is updated.
-  - `DeletedAt`: Used for soft deletes (marking records as deleted without actually removing them from the database).
+- **包含的字段**：
+  - `ID` ：每个记录的唯一标识符（主键）。
+  - `CreatedAt` ：在创建记录时自动设置为当前时间。
+  - `UpdatedAt`：每当记录更新时，自动更新为当前时间。
+  - `DeletedAt`：用于软删除（将记录标记为已删除，而实际上并未从数据库中删除）。
 
 ## 高级选项
 
