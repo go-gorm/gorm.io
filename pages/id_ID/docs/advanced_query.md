@@ -1,11 +1,11 @@
 ---
-title: Kueri Lanjutan
+title: Query Lanjutan
 layout: page
 ---
 
-## <span id="smart_select">Bidang Pilih Pintar</span>
+## <span id="smart_select">Query Lanjutan</span>
 
-In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+Di Gorm, Anda bisa secara efektif untuk memilih field menggunakan metode [`Select`](query.html). Hal ini sangat berguna ketika Anda memiliki model data yang besar, tetapi hanya membutuhkan sebagian kecil dari field tersebut, terutama saat mengirimkan API response.
 
 ```go
 type User struct {
