@@ -3,7 +3,7 @@ title: Excluir
 layout: page
 ---
 
-## Delete a Record
+## Apagar um registro
 
 When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
 
