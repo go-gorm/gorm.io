@@ -18,8 +18,8 @@ result.RowsAffected // रिटर्न सम्मिलित रिकॉ�
 `Create()` से हम ( create multiple records) कई रिकॉर्ड भी बना सकते हैं:
 ```go
 users := []*User{
-    User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
-    User{Name: "Jackson", Age: 19, Birthday: time.Now()},
+    {Name: "Jinzhu", Age: 18, Birthday: time.Now()},
+    {Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
 result := db.Create(users) // pass a slice to insert multiple row
