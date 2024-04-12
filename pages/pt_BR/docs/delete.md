@@ -5,21 +5,21 @@ layout: page
 
 ## Apagar um registro
 
-When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
+Quando for remover um registro, o valor a ser removido precisa ter uma chave primária ou ele vai disparar uma [Remoção em lote](#batch_delete), por exemplo:
 
 ```go
-// Email's ID is `10`
+// O ID do Email é `10`
 db.Delete(&email)
 // DELETE from emails where id = 10;
 
-// Delete with additional conditions
+// Remover registro com condições adicionais
 db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 ```
 
-## Delete with primary key
+## Remover usando uma chave primária
 
-GORM allows to delete objects using primary key(s) with inline condition, it works with numbers, check out [Query Inline Conditions](query.html#inline_conditions) for details
+GORM permite a remoção de objetos usando chave primária com uma condição "inline", funciona com números, acesse: [Query Inline Conditions](query.html#inline_conditions) para mais detalhes
 
 ```go
 db.Delete(&User{}, 10)
