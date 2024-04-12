@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities. 模型定义Models are defined">
+  <meta name="description" content="GORM 通过将 Go 结构体（Go structs） 映射到数据库表来简化数据库交互。 了解如何在GORM中定义模型，是充分利用GORM全部功能的基础。 模型定义模型是使用普通结构体定义的。 这些结构体可以包含具有基本Go类型、指针或这些类型的别名，甚至是自定义类型（只需要实现 database&#x2F;sql 包中的Scanner和Valuer接口）。 考虑以下 user 模型的示例： type Us">
 <meta property="og:type" content="website">
 <meta property="og:title" content="模型定义">
 <meta property="og:url" content="https://gorm.io/zh_CN/docs/models.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities. 模型定义Models are defined">
+<meta property="og:description" content="GORM 通过将 Go 结构体（Go structs） 映射到数据库表来简化数据库交互。 了解如何在GORM中定义模型，是充分利用GORM全部功能的基础。 模型定义模型是使用普通结构体定义的。 这些结构体可以包含具有基本Go类型、指针或这些类型的别名，甚至是自定义类型（只需要实现 database&#x2F;sql 包中的Scanner和Valuer接口）。 考虑以下 user 模型的示例： type Us">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-03-26T03:30:27.962Z">
-<meta property="article:modified_time" content="2024-03-26T03:30:27.962Z">
+<meta property="article:published_time" content="2024-04-12T15:45:59.048Z">
+<meta property="article:modified_time" content="2024-04-12T15:45:59.048Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -141,42 +141,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities.</p>
-<h2 id="模型定义" class="article-heading"><a href="#模型定义" class="headerlink" title="模型定义"></a>模型定义<a class="article-anchor" href="#模型定义" aria-hidden="true"></a></h2><p>Models are defined using normal structs. These structs can contain fields with basic Go types, pointers or aliases of these types, or even custom types, as long as they implement the <a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/?tab=doc#Scanner">Scanner</a> and <a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/driver#Valuer">Valuer</a> interfaces from the <code>database/sql</code> package</p>
-<p>Consider the following example of a <code>User</code> model:</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID           <span class="type">uint</span>           <span class="comment">// Standard field for the primary key</span></span><br><span class="line">  Name         <span class="type">string</span>         <span class="comment">// A regular string field</span></span><br><span class="line">  Email        *<span class="type">string</span>        <span class="comment">// A pointer to a string, allowing for null values</span></span><br><span class="line">  Age          <span class="type">uint8</span>          <span class="comment">// An unsigned 8-bit integer</span></span><br><span class="line">  Birthday     *time.Time     <span class="comment">// A pointer to time.Time, can be null</span></span><br><span class="line">  MemberNumber sql.NullString <span class="comment">// Uses sql.NullString to handle nullable strings</span></span><br><span class="line">  ActivatedAt  sql.NullTime   <span class="comment">// Uses sql.NullTime for nullable time fields</span></span><br><span class="line">  CreatedAt    time.Time      <span class="comment">// Automatically managed by GORM for creation time</span></span><br><span class="line">  UpdatedAt    time.Time      <span class="comment">// Automatically managed by GORM for update time</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+                <html><head></head><body><p>GORM 通过将 Go 结构体（Go structs） 映射到数据库表来简化数据库交互。 了解如何在GORM中定义模型，是充分利用GORM全部功能的基础。</p>
+<h2 id="模型定义" class="article-heading"><a href="#模型定义" class="headerlink" title="模型定义"></a>模型定义<a class="article-anchor" href="#模型定义" aria-hidden="true"></a></h2><p>模型是使用普通结构体定义的。 这些结构体可以包含具有基本Go类型、指针或这些类型的别名，甚至是自定义类型（只需要实现 <code>database/sql</code> 包中的<a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/?tab=doc#Scanner">Scanner</a>和<a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/driver#Valuer">Valuer</a>接口）。</p>
+<p>考虑以下 <code>user</code> 模型的示例：</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID           <span class="type">uint</span>           <span class="comment">// Standard field for the primary key</span></span><br><span class="line">  Name         <span class="type">string</span>         <span class="comment">// 一个常规字符串字段</span></span><br><span class="line">  Email        *<span class="type">string</span>        <span class="comment">// 一个指向字符串的指针, allowing for null values</span></span><br><span class="line">  Age          <span class="type">uint8</span>          <span class="comment">// 一个未签名的8位整数</span></span><br><span class="line">  Birthday     *time.Time     <span class="comment">// A pointer to time.Time, can be null</span></span><br><span class="line">  MemberNumber sql.NullString <span class="comment">// Uses sql.NullString to handle nullable strings</span></span><br><span class="line">  ActivatedAt  sql.NullTime   <span class="comment">// Uses sql.NullTime for nullable time fields</span></span><br><span class="line">  CreatedAt    time.Time      <span class="comment">// 创建时间（由GORM自动管理）</span></span><br><span class="line">  UpdatedAt    time.Time      <span class="comment">// 最后一次更新时间（由GORM自动管理）</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>In this model:</p>
+<p>在此模型中：</p>
 <ul>
-<li>Basic data types like <code>uint</code>, <code>string</code>, and <code>uint8</code> are used directly.</li>
-<li>Pointers to types like <code>*string</code> and <code>*time.Time</code> indicate nullable fields.</li>
-<li><code>sql.NullString</code> and <code>sql.NullTime</code> from the <code>database/sql</code> package are used for nullable fields with more control.</li>
-<li><code>CreatedAt</code> and <code>UpdatedAt</code> are special fields that GORM automatically populates with the current time when a record is created or updated.</li>
+<li>具体数字类型如 <code>uint</code>、<code>string</code>和 <code>uint8</code> 直接使用。</li>
+<li>指向 <code>*string</code> 和 <code>*time.Time</code> 类型的指针表示可空字段。</li>
+<li>来自 <code>database/sql</code> 包的 <code>sql.NullString</code> 和 <code>sql.NullTime</code> 用于具有更多控制的可空字段。</li>
+<li><code>CreatedAt</code> 和 <code>UpdatedAt</code> 是特殊字段，当记录被创建或更新时，GORM 会自动向内填充当前时间。</li>
 </ul>
-<p>In addition to the fundamental features of model declaration in GORM, it’s important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See <a href="serializer.html">Serializer</a> for a detailed explanation</p>
+<p>除了 GORM 中模型声明的基本特性外，强调下通过 serializer 标签支持序列化也很重要。 此功能增强了数据存储和检索的灵活性，特别是对于需要自定义序列化逻辑的字段。详细说明请参见 <a href="serializer.html">Serializer</a>。</p>
 <h3 id="约定" class="article-heading"><a href="#约定" class="headerlink" title="约定"></a>约定<a class="article-anchor" href="#约定" aria-hidden="true"></a></h3><ol>
-<li><p><strong>Primary Key</strong>: GORM uses a field named <code>ID</code> as the default primary key for each model.</p>
+<li><p><strong>主键</strong>：GORM 使用一个名为<code>ID</code> 的字段作为每个模型的默认主键。</p>
 </li>
-<li><p><strong>Table Names</strong>: By default, GORM converts struct names to <code>snake_case</code> and pluralizes them for table names. For instance, a <code>User</code> struct becomes <code>users</code> in the database.</p>
+<li><p><strong>表名</strong>：默认情况下，GORM 将结构体名称转换为 <code>snake_case</code> 并为表名加上复数形式。 例如，一个 <code>User</code> 结构体在数据库中的表名变为 <code>users</code> 。</p>
 </li>
-<li><p><strong>Column Names</strong>: GORM automatically converts struct field names to <code>snake_case</code> for column names in the database.</p>
+<li><p><strong>列名</strong>：GORM 自动将结构体字段名称转换为 <code>snake_case</code> 作为数据库中的列名。</p>
 </li>
-<li><p><strong>Timestamp Fields</strong>: GORM uses fields named <code>CreatedAt</code> and <code>UpdatedAt</code> to automatically track the creation and update times of records.</p>
+<li><p><strong>时间戳字段</strong>：GORM使用字段 <code>CreatedAt</code> 和 <code>UpdatedAt</code> 来自动跟踪记录的创建和更新时间。</p>
 </li>
 </ol>
-<p>Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don’t fit your requirements. You can learn more about customizing these conventions in GORM’s documentation on <a href="conventions.html">conventions</a>.</p>
-<h3 id="gorm-Model" class="article-heading"><a href="#gorm-Model" class="headerlink" title="gorm.Model"></a><code>gorm.Model</code><a class="article-anchor" href="#gorm-Model" aria-hidden="true"></a></h3><p>GORM provides a predefined struct named <code>gorm.Model</code>, which includes commonly used fields:</p>
+<p>遵循这些约定可以大大减少您需要编写的配置或代码量。 但是，GORM也具有灵活性，允许您根据自己的需求自定义这些设置。 您可以在GORM的<a href="conventions.html">约定</a>文档中了解更多关于自定义这些约定的信息。</p>
+<h3 id="gorm-Model" class="article-heading"><a href="#gorm-Model" class="headerlink" title="gorm.Model"></a><code>gorm.Model</code><a class="article-anchor" href="#gorm-Model" aria-hidden="true"></a></h3><p>GORM提供了一个预定义的结构体，名为<code>gorm.Model</code>，其中包含常用字段：</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// gorm.Model 的定义</span></span><br><span class="line"><span class="keyword">type</span> Model <span class="keyword">struct</span> {</span><br><span class="line">  ID        <span class="type">uint</span>           <span class="string">`gorm:"primaryKey"`</span></span><br><span class="line">  CreatedAt time.Time</span><br><span class="line">  UpdatedAt time.Time</span><br><span class="line">  DeletedAt gorm.DeletedAt <span class="string">`gorm:"index"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <ul>
-<li><p><strong>Embedding in Your Struct</strong>: You can embed <code>gorm.Model</code> directly in your structs to include these fields automatically. This is useful for maintaining consistency across different models and leveraging GORM’s built-in conventions, refer <a href="#embedded_struct">Embedded Struct</a></p>
+<li><p><strong>将其嵌入在您的结构体中</strong>: 您可以直接在您的结构体中嵌入 <code>gorm.Model</code> ，以便自动包含这些字段。 这对于在不同模型之间保持一致性并利用GORM内置的约定非常有用，请参考<a href="#embedded_struct">嵌入结构</a>。</p>
 </li>
-<li><p><strong>Fields Included</strong>:</p>
+<li><p><strong>包含的字段</strong>：</p>
 <ul>
-<li><code>ID</code>: A unique identifier for each record (primary key).</li>
-<li><code>CreatedAt</code>: Automatically set to the current time when a record is created.</li>
-<li><code>UpdatedAt</code>: Automatically updated to the current time whenever a record is updated.</li>
-<li><code>DeletedAt</code>: Used for soft deletes (marking records as deleted without actually removing them from the database).</li>
+<li><code>ID</code> ：每个记录的唯一标识符（主键）。</li>
+<li><code>CreatedAt</code> ：在创建记录时自动设置为当前时间。</li>
+<li><code>UpdatedAt</code>：每当记录更新时，自动更新为当前时间。</li>
+<li><code>DeletedAt</code>：用于软删除（将记录标记为已删除，而实际上并未从数据库中删除）。</li>
 </ul>
 </li>
 </ul>
@@ -315,7 +315,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2024-03-26T03:30:27.962Z" itemprop="dateModified">最后更新于 2024-03-26</time>
+                <time class="article-footer-updated" datetime="2024-04-12T15:45:59.048Z" itemprop="dateModified">最后更新于 2024-04-12</time>
 <a href="index.html" class="article-footer-prev" title="概述"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="connecting_to_the_database.html" class="article-footer-next" title="连接到数据库"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
