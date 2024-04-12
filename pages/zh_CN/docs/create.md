@@ -18,15 +18,17 @@ result.RowsAffected // 返回插入记录的条数
 我们还可以使用 `Create()` 创建多项记录：
 ```go
 users := []*User{
-    User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
-    User{Name: "Jackson", Age: 19, Birthday: time.Now()},
+    {Name: "Jinzhu", Age: 18, Birthday: time.Now()},
+    {Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
-result := db.Create(users) // 传递切片以插入多行数据
+result := db.Create(users) // pass a slice to insert multiple row
 
-result.Error        // 返回 error
-result.RowsAffected // 返回插入记录的条数    
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
 ```
+
+{% note warn %}
 **NOTE** 你无法向 'create' 传递结构体，所以你应该传入数据的指针.
 {% endnote %}
 
