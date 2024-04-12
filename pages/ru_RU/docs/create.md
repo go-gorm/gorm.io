@@ -18,14 +18,14 @@ result.RowsAffected // возвращает количество вставле�
 Мы также можем создать несколько записей с помощью `Create()`:
 ```go
 users := []*User{
-    User{Name: "Jinzhu", Age: 18, Birthday: time.Now()},
-    User{Name: "Jackson", Age: 19, Birthday: time.Now()},
+    {Name: "Jinzhu", Age: 18, Birthday: time.Now()},
+    {Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
-result := db.Create(users) // передайте фрагмент, чтобы вставить несколько строк
+result := db.Create(users) // pass a slice to insert multiple row
 
-result.Error        // возвращает ошибку
-result.RowsAffected // возвращает количество добавленных записей
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
 ```
 
 {% note warn %}
