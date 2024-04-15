@@ -108,9 +108,9 @@ DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "sal
 
 ## Soft Delete
 
-If your model includes a `gorm.DeletedAt` field (which is included in `gorm.Model`), it will get soft delete ability automatically!
+Se o seu modelo inclui o campo `gorm.DeletedAt`, (que está em `gorm.Model`), ele irá trabalhar com "soft delete" automaticamente!
 
-When calling `Delete`, the record WON'T be removed from the database, but GORM will set the `DeletedAt`'s value to the current time, and the data is not findable with normal Query methods anymore.
+Quando o método `Delete` for executado, o registro NÃO será removido do banco de dados, GORM irá definir o valor do campo `DeletedAt` com a data e hora atuais, dessa forma, o registro não poderá mais ser encontrado por nenhum método de query.
 
 ```go
 // user's ID is `111`
@@ -126,7 +126,7 @@ db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
-If you don't want to include `gorm.Model`, you can enable the soft delete feature like:
+Se você não incluir `gorm.Model`, você pode habilitar o mecanismo da "soft delete" da seguinte forma:
 
 ```go
 type User struct {
@@ -138,7 +138,7 @@ type User struct {
 
 ### Find soft deleted records
 
-You can find soft deleted records with `Unscoped`
+Você pode procurar por registros que sofreram "soft delete" com `Unscoped`
 
 ```go
 db.Unscoped().Where("age = 20").Find(&users)
