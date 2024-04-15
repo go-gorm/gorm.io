@@ -47,7 +47,7 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 ## <span id="batch_delete">Batch Delete</span>
 
-The specified value has no primary value, GORM will perform a batch delete, it will delete all matched records
+Se o valor especificado não estiver dentro uma chave primária, GORM vai executar uma remoção em massa, ele vai remover todos os registros que satisfaçam a condição
 
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
@@ -57,7 +57,7 @@ db.Delete(&Email{}, "email LIKE ?", "%jinzhu%")
 // DELETE from emails where email LIKE "%jinzhu%";
 ```
 
-To efficiently delete large number of records, pass a slice with primary keys to the `Delete` method.
+Para uma remoção eficiente de um grande número de registros, passe um slice de chaves primárias para o método  `Delete`
 
 ```go
 var users = []User{{ID: 1}, {ID: 2}, {ID: 3}}
@@ -70,9 +70,9 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 
 ### Block Global Delete
 
-If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
+Se você tentar executar uma remoção em massa sem nenhuma condição, GORMO NÃO vai executar a instrução, e irá retornar o erro `ErrMissingWhereClause`
 
-You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+Você precisa inserir alguma condição, usar uma instrução SQL nativa ou habilitar o modo `AllowGlobalUpdate`, por exemplo:
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
@@ -91,7 +91,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 
 ### Returning Data From Deleted Rows
 
-Return deleted data, only works for database support Returning, for example:
+O retorno do dado removido, somente funciona para bancos de dados que suportam "returning", por exemplo:
 
 ```go
 // return all columns
