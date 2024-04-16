@@ -34,7 +34,7 @@ db.Delete(&users, []int{1,2,3})
 
 ## Delete Hooks
 
-GORM allows hooks `BeforeDelete`, `AfterDelete`, those methods will be called when deleting a record, refer [Hooks](hooks.html) for details
+GORM permite os seguintes hooks `BeforeDelete`, `AfterDelete`, estes métodos vão ser chamados quando um registro estiver sendo removido, confira [Hooks](hooks.html) para mais detalhes
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -147,7 +147,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 
 ### Delete permanently
 
-You can delete matched records permanently with `Unscoped`
+Você pode remover registros permanentemente com `Unscoped`
 
 ```go
 db.Unscoped().Delete(&order)
