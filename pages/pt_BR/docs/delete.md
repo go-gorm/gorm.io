@@ -136,7 +136,7 @@ type User struct {
 }
 ```
 
-### Find soft deleted records
+### Buscando registros que sofreram um soft delete
 
 Você pode procurar por registros que sofreram "soft delete" com `Unscoped`
 
@@ -145,7 +145,7 @@ db.Unscoped().Where("age = 20").Find(&users)
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Delete permanently
+### Remoção permanente
 
 Você pode remover registros permanentemente com `Unscoped`
 
@@ -172,9 +172,9 @@ type User struct {
 ```
 {% endnote %}
 
-#### Unix Second
+#### Segundos no formato unix
 
-Use unix second as delete flag
+Utilize segundos no formato unix como uma flag de remoção
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -192,7 +192,7 @@ SELECT * FROM users WHERE deleted_at = 0;
 UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
-You can also specify to use `milli` or `nano` seconds as the value, for example:
+Você também pode especificar o uso de `milli` ou `nano` segundos como valor, por exemplo:
 
 ```go
 type User struct {
@@ -212,7 +212,6 @@ UPDATE users SET deleted_at = /* current unix milli second or nano second */ WHE
 #### Use `1` / `0` AS Delete Flag
 
 ```go
-import "gorm.io/plugin/soft_delete"
 
 type User struct {
   ID    uint
@@ -229,7 +228,7 @@ UPDATE users SET is_del = 1 WHERE ID = 1;
 
 #### Mixed Mode
 
-Mixed mode can use `0`, `1` or unix seconds to mark data as deleted or not, and save the deleted time at the same time.
+Mixed mode pode utilizar `0`, `1` ou segundos no formato unix para marcar um registro como removido, e salvar data e hora ao mesmo tempo.
 
 ```go
 type User struct {
