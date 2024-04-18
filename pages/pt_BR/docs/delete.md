@@ -68,7 +68,7 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 // DELETE FROM users WHERE name LIKE "%jinzhu%" AND id IN (1,2,3); 
 ```
 
-### Block Global Delete
+### Bloqueio de remoções globais
 
 Se você tentar executar uma remoção em massa sem nenhuma condição, GORMO NÃO vai executar a instrução, e irá retornar o erro `ErrMissingWhereClause`
 
@@ -89,7 +89,7 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 // DELETE FROM users
 ```
 
-### Returning Data From Deleted Rows
+### Retornando dados de registros excluídos
 
 O retorno do dado removido, somente funciona para bancos de dados que suportam "returning", por exemplo:
 
@@ -156,10 +156,10 @@ db.Unscoped().Delete(&order)
 
 ### Delete Flag
 
-By default, `gorm.Model` uses `*time.Time` as the value for the `DeletedAt` field, and it provides other data formats support with plugin `gorm.io/plugin/soft_delete`
+Por padrão, `gorm.Model` utiliza `*time.Time` como valor para o campo `DeletedAt`, mas o GORM fornece outros tipos de dados com o plugin `gorm.io/plugin/soft_delete`
 
 {% note warn %}
-**INFO** when creating unique composite index for the DeletedAt field, you must use other data format like unix second/flag with plugin `gorm.io/plugin/soft_delete`'s help, e.g:
+**INFO** quando estiver criando um índice composto para o campo DeletedAt, você precisa utilizar outro formato de dado como unix second/flag com o plugin `gorm.io/plugin/soft_delete` exemplo:
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -209,7 +209,7 @@ SELECT * FROM users WHERE deleted_at = 0;
 UPDATE users SET deleted_at = /* current unix milli second or nano second */ WHERE ID = 1;
 ```
 
-#### Use `1` / `0` AS Delete Flag
+#### Utilize `1` / `0` como Delete Flag
 
 ```go
 
