@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">स्मार्ट सेलेक्ट फील्ड्स</span>
 
-In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. यदि आपका प्रतिरूप काफ़ी बड़ा हो लेकिन आपको कुछ तत्वों का उपसमुच्चय ही चाहिए तो यह काफ़ी काम आ सकता है, खासतौर पर एपीआई प्रतिक्रियाओं में ।
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // सैकड़ों और तत्व
 }
 
 type APIUser struct {
@@ -21,9 +21,9 @@ type APIUser struct {
   Name string
 }
 
-// GORM will automatically select `id`, `name` fields when querying
+// GORM तफ़्तीश करते समय  `id`, `name` तत्वों को अपने आप चुन लेगा।
 db.Model(&User{}).Limit(10).Find(&APIUser{})
-// SQL: SELECT `id`, `name` FROM `users` LIMIT 10
+// एसक्यूएल: SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
