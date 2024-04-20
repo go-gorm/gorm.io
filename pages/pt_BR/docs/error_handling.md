@@ -3,9 +3,9 @@ title: Tratamento de Erro
 layout: page
 ---
 
-Effective error handling is a cornerstone of robust application development in Go, particularly when interacting with databases using GORM. GORM's approach to error handling, influenced by its chainable API, requires a nuanced understanding.
+Manipular os erros corretamente é um pilar no desenvolvimento de aplicações robustas em GO, particularmente quando estamos interagindo com banco de dados usando GORM. A abordagem de como manipular erros em GORM, influenciado pela sua chamada encadeada da API, necessita uma abordagem diferenciada.
 
-## Basic Error Handling
+## Manipulação básica de erros
 
 GORM integrates error handling into its chainable method syntax. The `*gorm.DB` instance contains an `Error` field, which is set when an error occurs. The common practice is to check this field after executing database operations, especially after [Finisher Methods](method_chaining.html#finisher_method).
 
