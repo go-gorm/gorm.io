@@ -16,7 +16,7 @@ https://github.com/go-gorm/sharding
 
 ## 使用说明
 
-配置 Sharding 中间件，为需要分表的业务表定义他们分表的规则。 查看 [Godoc](https://pkg.go.dev/github.com/go-gorm/sharding) 获取配置详情。
+配置 Sharding 中间件，为需要分表的业务表定义他们分表的规则。 See [Godoc](https://pkg.go.dev/gorm.io/sharding) for config details.
 
 ```go
 import (
