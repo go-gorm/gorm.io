@@ -43,6 +43,7 @@ layout: पृष्ठ
 * [deepgorm - Nested map filtering](https://github.com/survivorbat/gorm-deep-filtering)
 * [oracle - GORM Oracle driver](https://github.com/CengSin/oracle)
 * [Go ORM Helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
+* [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
 
 ## <span id="contribute">Contribute to this page</span>
 
