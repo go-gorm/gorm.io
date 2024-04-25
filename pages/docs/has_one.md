@@ -78,56 +78,6 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
-
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field
-
-```go
-type Cat struct {
-  ID    int
-  Name  string
-  Toy   Toy `gorm:"polymorphic:Owner;"`
-}
-
-type Dog struct {
-  ID   int
-  Name string
-  Toy  Toy `gorm:"polymorphic:Owner;"`
-}
-
-type Toy struct {
-  ID        int
-  Name      string
-  OwnerID   int
-  OwnerType string
-}
-
-db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
-// INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs")
-```
-
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
-
-```go
-type Dog struct {
-  ID   int
-  Name string
-  Toy  Toy `gorm:"polymorphic:Owner;polymorphicValue:master"`
-}
-
-type Toy struct {
-  ID        int
-  Name      string
-  OwnerID   int
-  OwnerType string
-}
-
-db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
-// INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master")
-```
-
 ## CRUD with Has One
 
 Please checkout [Association Mode](associations.html#Association-Mode) for working with `has one` relations
