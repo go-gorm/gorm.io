@@ -21,7 +21,7 @@ func main() {
 ```
 
 {% note warn %}
-**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+**주의할점**: `time.Time` 을 정확하게 다루기 위하여 먼저 `parseTime`을 인자로서 포함해주세요. ([더 많은 인자를 고려하기](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 인코딩을 완전히 지원하기 위하여 `charset=utf8`을 `charset=utf8mb4` 로 바꿔주세요. 해당 [기사](https://mathiasbynens.be/notes/mysql-utf8mb4)를 통해 더욱 자세한 사항을 확인할 수 있습니다.
 {% endnote %}
 
 MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
