@@ -1,5 +1,5 @@
 ---
-title: Composite Primary Key
+title: 복합키
 layout: page
 ---
 
@@ -14,7 +14,7 @@ type Product struct {
 }
 ```
 
-**Note** integer `PrioritizedPrimaryField` enables `AutoIncrement` by default, to disable it, you need to turn off `autoIncrement` for the int fields:
+**주의** 정수 타입의 `PrioritizedPrimaryField (기본키) `는 기본적으로 `AutoIncrement` 을 지원합니다. 이것을 비활성화하려면, 해당 int 필드의 자동 증가 옵션을 해제해야 합니다.
 
 ```go
 type Product struct {
