@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Smart Select Fields</span>
 
-In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. 이는 특히 대규모 모델을 다룰 때 모델의 일부 필드만 필요한 경우에 API 응답에서 특히 유용합니다.
 
 ```go
 type User struct {
@@ -27,7 +27,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 ```
 
 {% note warn %}
-**NOTE** In `QueryFields` mode, all model fields are selected by their names.
+**NOTE** `QueryFields 모드`에서는 모든 모델 필드가 그들의 이름에 따라 선택됩니다.
 {% endnote %}
 
 ```go
