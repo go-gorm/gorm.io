@@ -38,7 +38,7 @@ if errors.Is(err, gorm.ErrRecordNotFound) {
 
 ## Handling Error Codes
 
-Muitos bancos de dados retornam erros com códigos específicos, que podem indicar várias categorias de problemas como violação de constraints, problemas de conexão, ou erros de sintaxe. Handling these error codes in GORM requires parsing the error returned by the database and extracting the relevant code
+Muitos bancos de dados retornam erros com códigos específicos, que podem indicar várias categorias de problemas como violação de constraints, problemas de conexão, ou erros de sintaxe. Manipular esses códigos de erro no GORM requer análise do erro retornado pelo banco de dados e extrair o código relevante
 
 - **Example: Handling MySQL Error Codes**
 
