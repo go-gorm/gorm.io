@@ -40,7 +40,7 @@ if errors.Is(err, gorm.ErrRecordNotFound) {
 
 Muitos bancos de dados retornam erros com códigos específicos, que podem indicar várias categorias de problemas como violação de constraints, problemas de conexão, ou erros de sintaxe. Manipular esses códigos de erro no GORM requer análise do erro retornado pelo banco de dados e extrair o código relevante
 
-- **Example: Handling MySQL Error Codes**
+- **Exemplo: Manipulando Códigos de Erro do MySQL**
 
 ```go
 import (
@@ -87,7 +87,7 @@ if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
 
 - **ErrForeignKeyViolated**
 
-This error is encountered when a foreign key constraint is violated:
+Esse erro é encontrado quando uma chave estrangeira é violada:
 
 ```go
 result := db.Create(&newRecord)
