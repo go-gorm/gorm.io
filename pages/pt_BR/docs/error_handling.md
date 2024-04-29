@@ -100,4 +100,4 @@ By enabling `TranslateError`, GORM provides a more unified way of handling error
 
 ## Errors
 
-For a complete list of errors that GORM can return, refer to the [Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go) in GORM's documentation.
+Para uma lista completa de erros que o GORM pode retornar, verifique a documentação GORM em [Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go).
