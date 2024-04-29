@@ -9,7 +9,7 @@ Manipular os erros corretamente é um pilar no desenvolvimento de aplicações r
 
 GORM integrates error handling into its chainable method syntax. The `*gorm.DB` instance contains an `Error` field, which is set when an error occurs. The common practice is to check this field after executing database operations, especially after [Finisher Methods](method_chaining.html#finisher_method).
 
-After a chain of methods, it's crucial to check the `Error` field:
+Depois de uma cadeia de métodos, é crucial verificar o campo `Error`:
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
@@ -17,7 +17,7 @@ if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
 }
 ```
 
-Or alternatively:
+Ou alternativamente:
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
@@ -27,7 +27,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 
 ## `ErrRecordNotFound`
 
-GORM returns `ErrRecordNotFound` when no record is found using methods like `First`, `Last`, `Take`.
+GORM retorna `ErrRecordNotFound` quando nenhum registro é encontrado quando métodos como `First`, `Last`, `Take` são utilizados.
 
 ```go
 err := db.First(&user, 100).Error
@@ -38,7 +38,7 @@ if errors.Is(err, gorm.ErrRecordNotFound) {
 
 ## Handling Error Codes
 
-Many databases return errors with specific codes, which can be indicative of various issues like constraint violations, connection problems, or syntax errors. Handling these error codes in GORM requires parsing the error returned by the database and extracting the relevant code
+Muitos bancos de dados retornam erros com códigos específicos, que podem indicar várias categorias de problemas como violação de constraints, problemas de conexão, ou erros de sintaxe. Handling these error codes in GORM requires parsing the error returned by the database and extracting the relevant code
 
 - **Example: Handling MySQL Error Codes**
 
