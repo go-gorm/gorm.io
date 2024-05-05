@@ -39,7 +39,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### Customize Driver
 
-GORM allows to customize the MySQL driver with the `DriverName` option, for example:
+GORM은 `드라이버 이름` 옵션을 통해 MySQL 드라이버를 Customize하는 것을 지원합니다. 예시:
 
 ```go
 import (
@@ -56,7 +56,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### Existing database connection
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM은 `*gorm.DB`을 생성시 이미 존재하는 데이터베이스 connection을 바탕으로 생성이 가능합니다.
 
 ```go
 import (
@@ -95,7 +95,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Customize Driver
 
-GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
+`드라이버 이름` 옵션을 통해 PostgreSQL 드라이버를 Customize하는 것을 지원합니다. 예시:
 
 ```go
 import (
@@ -111,7 +111,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Existing database connection
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM은 `*gorm.DB`를 생성시 이미 존재하는 데이터베이스 connection을 바탕으로 생성이 가능합니다.
 
 ```go
 import (
@@ -140,7 +140,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
 {% note warn %}
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. 이 경우 SQLite는 시스템의 메모리에 있는 임시적인 DataBase를 활용할 것 입니다. ([SQLite docs](https://www.sqlite.org/inmemorydb.html)를 참고하세요)
 {% endnote %}
 
 ## SQL Server
@@ -158,7 +158,7 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## TiDB
 
-TiDB is compatible with MySQL protocol. You can follow the [MySQL](#mysql) part to create a connection to TiDB.
+TiDB는 MySQL 프로토콜과 호환됩니다. [MySQL](#mysql)파트와 동일한 방법으로 TiDB와의 연결을 설정할 수 있습니다.
 
 There are some points noteworthy for TiDB:
 
@@ -235,7 +235,7 @@ func main() {
 
 ## Connection Pool
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM은 [database/sql](https://pkg.go.dev/database/sql)을 사용하여 connection pool을 유지합니다.
 
 ```go
 sqlDB, err := db.DB()
@@ -250,9 +250,9 @@ sqlDB.SetMaxOpenConns(100)
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+[Generic Interface](generic_interface.html)를 조하여 더욱 디테일한 사항을 알아보세요.
 
-## Unsupported Databases
+## 지원되지 않는 데이터베이스
 
 Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
 
