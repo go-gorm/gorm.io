@@ -160,11 +160,11 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 TiDB는 MySQL 프로토콜과 호환됩니다. [MySQL](#mysql)파트와 동일한 방법으로 TiDB와의 연결을 설정할 수 있습니다.
 
-There are some points noteworthy for TiDB:
+TiDB사용시 몇 가지 참고할 점:
 
-- You can use `gorm:"primaryKey;default:auto_random()"` tag to use [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) feature for TiDB.
-- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
-- TiDB supported [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key) from `v6.6.0`, please notice the version of TiDB when you use this feature.
+- `gorm:"primaryKey;default:auto_random()"` 태그를 통해 TiDB의 [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random)기능을 사용할 수 있습니다.
+- TiDB는 `v6.2.0`버전부터 [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint)기능을 지원합니다, 사용하시는 TiDB 버전을 참고하시어 해당 기능을 사용해 주세요.
+- TiDB는 `v6.6.0`버전부터 [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key)기능을 지원합니다, 사용하시는 TiDB버전을 참고하시어 해당 기능을 사용해주세요.
 
 ```go
 import (
@@ -233,7 +233,7 @@ func main() {
 }
 ```
 
-## Connection Pool
+## 커넥션 풀
 
 GORM은 [database/sql](https://pkg.go.dev/database/sql)을 사용하여 connection pool을 유지합니다.
 
@@ -250,10 +250,10 @@ sqlDB.SetMaxOpenConns(100)
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-[Generic Interface](generic_interface.html)를 조하여 더욱 디테일한 사항을 알아보세요.
+[Generic Interface](generic_interface.html)를 참조하여 더욱 자세한 사항을 알아보세요.
 
 ## 지원되지 않는 데이터베이스
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+특정 데이터베이스는 `mysql`이나 `postgres`의 Sql문법과 호환될 수 있습니다. 어떤 경우라도, 해당 데이터 베이스 문법을 활용하여 Gorm을 사용할 수 있습니다.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+[데이터베이스 드라이버를 만드셨거나, 혹은 다른 이유라도 pull request는 환영입니다!](write_driver.html)
