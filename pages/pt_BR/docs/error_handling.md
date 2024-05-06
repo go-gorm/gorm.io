@@ -68,7 +68,7 @@ if result.Error != nil {
 
 ## Dialect Translated Errors
 
-GORM can return specific errors related to the database dialect being used, when `TranslateError` is enabled, GORM converts database-specific errors into its own generalized errors.
+GORM pode retornar erros específicos relacionados ao dialeto do banco de dados, quando `TranslateError` está ativo, GORM converto os erros específicos do banco de dados para seu próprio tipo generalizado de erro.
 
 ```go
 db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: true})
@@ -76,7 +76,7 @@ db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: tr
 
 - **ErrDuplicatedKey**
 
-This error occurs when an insert operation violates a unique constraint:
+Esse erro acontece quando uma operação de insert viola uma unique constraint:
 
 ```go
 result := db.Create(&newRecord)
@@ -96,7 +96,7 @@ if errors.Is(result.Error, gorm.ErrForeignKeyViolated) {
 }
 ```
 
-By enabling `TranslateError`, GORM provides a more unified way of handling errors across different databases, translating database-specific errors into common GORM error types.
+Habilitando `TranslateError`, GORM fornece uma maneira mais unificada de manipular os erros em diversos tipos de bancos de dados, traduzindo erros específicos de banco de dados para erros que pertencem ao GORM.
 
 ## Errors
 
