@@ -5,9 +5,9 @@ layout: page
 
 ## Has One
 
-A `has one` association sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+Uma associação `has one`, confgura uma conexão um para um com outro modelo, mas com semântica diferente de alguma forma (e consequências). Essa associação indica que cada instância do modelo contem ou possui uma instância de outro modelo.
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+Por exemplo, se sua aplicação inclui usuários e cartão de crédito, e cada usuário só pode ter um cartão de crédito.
 
 ### Declare
 ```go
@@ -36,13 +36,13 @@ func GetAll(db *gorm.DB) ([]User, error) {
 
 ## Override Foreign Key
 
-For a `has one` relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
+Para um relacionamento `has one`, um campo de chave estrangeira deve existir, o dono irá salvar a chave primária do modelo que pertence a ele nesse campo.
 
-The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
+O nome do campo geralmente é gerado com o tipo do modelo do `has one`, mais a sua `primary key`, para o exemplo acima é `UserID`.
 
 When you give a credit card to the user, it will save the User's `ID` into its `UserID` field.
 
-If you want to use another field to save the relationship, you can change it with tag `foreignKey`, e.g:
+Se você quiser usar outro campo para salvar o relacionamento, você pode mudar isso com a tag `foreignKey`, ex:
 
 ```go
 type User struct {
