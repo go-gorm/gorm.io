@@ -40,7 +40,7 @@ Para um relacionamento `has one`, um campo de chave estrangeira deve existir, o 
 
 O nome do campo geralmente é gerado com o tipo do modelo do `has one`, mais a sua `primary key`, para o exemplo acima é `UserID`.
 
-When you give a credit card to the user, it will save the User's `ID` into its `UserID` field.
+Quando você der um cartão de crédito para o usuário, ele vai salvar o `ID` do Usuário no campo `UserID`.
 
 Se você quiser usar outro campo para salvar o relacionamento, você pode mudar isso com a tag `foreignKey`, ex:
 
@@ -58,11 +58,11 @@ type CreditCard struct {
 }
 ```
 
-## Override References
+## Sobrescrever referências
 
-By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field's value, like using `Name` for the below example.
+Po padrão, a entidade irá salvar a chave primária do modelo `has one` em uma chave estrangeira, você pode alterar para salvar em outro campo, como por exemplo `Name` para o exemplo abaixo.
 
-You are able to change it with tag `references`, e.g:
+Você pode mudar isso com a tag `references`, ex:
 
 ```go
 type User struct {
