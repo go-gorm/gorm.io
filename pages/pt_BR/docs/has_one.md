@@ -48,7 +48,7 @@ Se você quiser usar outro campo para salvar o relacionamento, você pode mudar 
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // use UserName as foreign key
+  // utilizar UserName como chave estrangeira
 }
 
 type CreditCard struct {
