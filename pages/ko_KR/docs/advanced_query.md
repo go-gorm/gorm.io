@@ -67,7 +67,7 @@ db.Clauses(clause.Locking{
 
 `테이블(Table)` 옵션은 특정 테이블을 잠그는데 사용될 수 있습니다. 여러 테이블을 조인하고, 그 중 하나만 잠그려고 할 때 유용할 수 있습니다.
 
-Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
+옵션(Options) 에는 `NOWAIT`을 사용할 수 있습니다. 이는 lock을 획득하려고 시도하고 lock이 사용될 수 없는 경우 즉시 오류가 발생합니다. 다른 트랜잭션이 lock을 풀 때까지 기다리는 것을 방지합니다.
 
 ```go
 db.Clauses(clause.Locking{
@@ -77,9 +77,9 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Another option can be `SKIP LOCKED` which skips over any rows that are already locked by other transactions. This is useful in high concurrency situations where you want to process rows that are not currently locked by other transactions.
+다른 옵션으로는 `SKIP LOCKED`을 사용할 수 있습니다. 이는 다른 트랜잭션에 의해 이미 잠겨 있는 행을 건너뛰게 됩니다. 이는 다른 트랜잭션에 의해 현재 잠겨 있지 않은 행을 처리하고자 하는 높은 동시성 상황에서 유용합니다.
 
-For more advanced locking strategies, refer to [Raw SQL and SQL Builder](sql_builder.html).
+잠금 전략들에 대한 더 상세한 정보를 원한다면 [Raw SQL and SQL Builder](sql_builder.html)를 참고해주세요.
 
 ## SubQuery
 
