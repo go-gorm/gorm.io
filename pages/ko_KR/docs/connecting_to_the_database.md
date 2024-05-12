@@ -235,7 +235,7 @@ func main() {
 
 ## 커넥션 풀
 
-GORM은 [database/sql](https://pkg.go.dev/database/sql)을 사용하여 connection pool을 유지합니다.
+GORM은 [database/sql](https://pkg.go.dev/database/sql)을 사용하여 커넥션 풀을 유지합니다.
 
 ```go
 sqlDB, err := db.DB()
