@@ -15,21 +15,21 @@ result.Error        // 에러를 반환합니다
 result.RowsAffected // 입력된 레코드의 개수를 반환합니다.
 ```
 
-We can also create multiple records with `Create()`:
+`Create()` 함수를 통해 여러 레코드를 동시에 생성할수도 있습니다.
 ```go
 users := []*User{
     {Name: "Jinzhu", Age: 18, Birthday: time.Now()},
     {Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
-result := db.Create(users) // pass a slice to insert multiple row
+result := db.Create(users) // 레코드들이 들어갈 슬라이스를 넣어줍니다.
 
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+result.Error        // 에러를 반환합니다. 
+result.RowsAffected // 슬라이스에 삽입된 레코드의 숫자를 반환합니다.
 ```
 
 {% note warn %}
-**NOTE** You cannot pass a struct to 'create', so you should pass a pointer to the data.
+**주의할점** 구조체를 직접 'create' 함수에 넣지 마세요, 대신 포인터를 넣어주세요.
 {% endnote %}
 
 ## 선택한 필드로 레코드 만들기
@@ -50,7 +50,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Batch Insert</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be split into multiple batches.
+많은 레코드를 만들기 위해서, slice를 `Create` 메소드에 넣어주세요. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be split into multiple batches.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
