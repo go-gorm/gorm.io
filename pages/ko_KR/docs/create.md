@@ -50,7 +50,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Batch Insert</span>
 
-많은 레코드를 만들기 위해서, slice를 `Create` 메소드에 넣어주세요. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be split into multiple batches.
+많은 레코드를 만들기 위해서, slice를 `Create` 메소드에 넣어주세요. GORM은 단 하나의 SQL 구문을 작성하여 모든 데이터를 삽입합니다 또한 hook methods, primary key 값 자동 삽입등이 이를 기점으로 하여 실행됩니다. 이를 일정한 배치 단위로 나누어서 **트랜잭션**으로 처리할 수 있습니다.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
