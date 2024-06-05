@@ -1,6 +1,6 @@
 ---
 layout: index
-description: Фантастическая ORM библиотека для Golang, стремится быть дружественной к разработчику.
+description: Фантастическая ORM библиотека для Golang, стремится быть дружелюбной к разработчику.
 subtitle: Фантастическая библиотека ORM для Golang
 comments: false
 ---
@@ -18,4 +18,4 @@ comments: false
 * <i class="fa fa-rocket" aria-hidden="true"></i> Logger
 * <i class="fa fa-rocket" aria-hidden="true"></i> Расширяемое и гибкое API для плагинов: Резолвер баз данных (нножество БД, разделение чтения/записи) / Prometheus...
 * <i class="fa fa-rocket" aria-hidden="true"></i> Каждая функция поставляется с тестами
-* <i class="fa fa-rocket" aria-hidden="true"></i> Дружественная для разработчиков
+* <i class="fa fa-rocket" aria-hidden="true"></i> Дружелюбна к разработчикам
