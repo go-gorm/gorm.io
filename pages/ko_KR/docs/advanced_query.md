@@ -422,7 +422,7 @@ func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
 
 // Scope for orders paid with cash on delivery (COD)
 func PaidWithCod(db *gorm.DB) *gorm.DB {
-  return db.Where("pay_mode_sign = ?", "C")
+  return db.Where("pay_mode_sign = ?", "COD")
 }
 
 // Scope for filtering orders by status
