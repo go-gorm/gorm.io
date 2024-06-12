@@ -36,6 +36,7 @@ sidebar:
     belongs_to: Belongs To
     has_one: Has One
     has_many: Has Many
+    polymorphism: Polymorphism
     many_to_many: Many To Many
     association_mode: Association Mode
     preload: Preloading (Eager Loading)
