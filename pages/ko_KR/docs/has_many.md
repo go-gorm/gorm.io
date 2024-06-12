@@ -77,49 +77,6 @@ type CreditCard struct {
 }
 ```
 
-## 다형성 연관관계
-
-GORM은 `has one`과 `has many`에서 다형성 연관관계를 지원합니다. 소속된 엔티티의 테이블 명은 다형성 타입 필드에 저장되며, primary key 값은 다형성 필드에 저장됩니다.
-
-```go
-type Dog struct {
-  ID   int
-  Name string
-  Toys []Toy `gorm:"polymorphic:Owner;"`
-}
-
-type Toy struct {
-  ID        int
-  Name      string
-  OwnerID   int
-  OwnerType string
-}
-
-db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
-// INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs"), ("toy2","1","dogs")
-```
-
-다형성 타입의 값을 `polymorphicValue` 태그를 활용해 변경할 수 있습니다. 아래는 그 예시입니다.
-
-```go
-type Dog struct {
-  ID   int
-  Name string
-  Toys []Toy `gorm:"polymorphic:Owner;polymorphicValue:master"`
-}
-
-type Toy struct {
-  ID        int
-  Name      string
-  OwnerID   int
-  OwnerType string
-}
-
-db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
-// INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
-```
 
 ## Has Many 연관관계를 활용한 CRUD
 

@@ -77,49 +77,6 @@ type CreditCard struct {
 }
 ```
 
-## Polymorphism Association
-
-GORMは `has one` と `has many` アソシエーションにおいて、polymorphism associationをサポートしています。所有する側のエンティティのテーブル名が polymorphic type のフィールドに保存され、主キーが polymorphic 用のフィールドに保存されます。
-
-```go
-type Dog struct {
-  ID   int
-  Name string
-  Toys []Toy `gorm:"polymorphic:Owner;"`
-}
-
-type Toy struct {
-  ID        int
-  Name      string
-  OwnerID   int
-  OwnerType string
-}
-
-db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
-// INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs"), ("toy2","1","dogs")
-```
-
-`polymorphicValue`タグを使用して、polymorphic typeとして登録される値を変更できます。例：
-
-```go
-type Dog struct {
-  ID   int
-  Name string
-  Toys []Toy `gorm:"polymorphic:Owner;polymorphicValue:master"`
-}
-
-type Toy struct {
-  ID        int
-  Name      string
-  OwnerID   int
-  OwnerType string
-}
-
-db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
-// INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master"), ("toy2","1","master")
-```
 
 ## Has ManyリレーションでのCRUD処理
 

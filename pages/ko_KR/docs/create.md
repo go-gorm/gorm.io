@@ -15,21 +15,21 @@ result.Error        // 에러를 반환합니다
 result.RowsAffected // 입력된 레코드의 개수를 반환합니다.
 ```
 
-We can also create multiple records with `Create()`:
+`Create()` 함수를 통해 여러 레코드를 동시에 생성할수도 있습니다.
 ```go
 users := []*User{
     {Name: "Jinzhu", Age: 18, Birthday: time.Now()},
     {Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
-result := db.Create(users) // pass a slice to insert multiple row
+result := db.Create(users) // 레코드들이 들어갈 슬라이스를 넣어줍니다.
 
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+result.Error        // 에러를 반환합니다. 
+result.RowsAffected // 슬라이스에 삽입된 레코드의 숫자를 반환합니다.
 ```
 
 {% note warn %}
-**NOTE** You cannot pass a struct to 'create', so you should pass a pointer to the data.
+**주의할점** 구조체를 직접 'create' 함수에 넣지 마세요, 대신 포인터를 넣어주세요.
 {% endnote %}
 
 ## 선택한 필드로 레코드 만들기
@@ -50,7 +50,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Batch Insert</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be split into multiple batches.
+효율적으로 많은 레코드를 만들기 위해서, slice를 `Create` 메소드에 넣어주세요. GORM은 단 하나의 SQL 구문을 작성하여 모든 데이터를 삽입합니다 또한 hook methods, primary key 값 자동 삽입등이 이를 기점으로 하여 실행됩니다. 이를 일정한 배치 단위로 나누어서 **트랜잭션**으로 처리할 수 있습니다.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -61,7 +61,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+`CreateInBatches`를 활용하여 배치 사이즈를 결정할 수 있습니다, e.g:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -70,10 +70,10 @@ var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 db.CreateInBatches(users, 100)
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+Batch Insert는 [Upset](#upsert)와 [Create With Associtations](#create_with_associations)에도 지원됩니다.
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**주의할점:** GORM을 `CreateBatchSize`옵션과 함께 생성할 경우, 모든 `INSERT`구문은 레코드 생성시 해당 배치 옵션을 따를것입니다.
 {% endnote %}
 
 ```go
@@ -92,7 +92,7 @@ db.Create(&users)
 
 ## Hooks 생성하기
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORM은 `BeforeSave`,`BeforeCreate`,`AfterSave`,`AfterCreate`등과 같은 사용자가 정의한 hook을 구현하여 사용할 수 있습니다.  이런 hook 메소드들은 레코드를 만들때 호출 됩니다, [Hooks](hooks.html)를 참고하여 좀 더 자세한 생명주기에 관하여 참고해보세요.
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -105,7 +105,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+만일 `Hooks` 메소드들을 생략하고 싶으시다면, `SkipHooks`를 session mode에서 활용할 수 있습닏, 예시:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -117,14 +117,14 @@ DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 
 ## Map으로 생성하기
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORM은 `map[string] interface{}` 및 `[]map[string] interface{}{}`를 활용한 레코드 생성을 지원합니다, 예시:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// batch insert from `[]map[string]interface{}{}`
+// `[]map[string]interface{}{}`를 활용한 batch insert
 db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
@@ -132,27 +132,27 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**주의할점** map 자료구조를 활용한 레코드 생성시, hooks은 실행되지 않으며 기본키가 채워지지 안흥며 연결이 저장되지 않습니다.
 {% endnote %}
 
 ## <span id="create_from_sql_expr">SQL Expression/Context Valuer로 생성</span>
 
-GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+GORM은 SQL을 활용한 데이터 삽입을 지원합니다. SQL을 활용하기 위하여는 두 가지 방법을 사용할 수 있습니다. `map[string] interface{}` 혹은 [사용자 정의 데이터 타입](data_types.html#gorm_valuer_interface)을 활용할 수 있습니다. 예시:
 
 ```go
-// Create from map
+// map을 활용한 레코드 생성 
 db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`location`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// Create from customized data type
+// 사용자 정의 타입을 활용한 데이터 생성 
 type Location struct {
     X, Y int
 }
 
-// Scan implements the sql.Scanner interface
+// sql.Scanner 인터페이스의 구현을 검사 
 func (loc *Location) Scan(v interface{}) error {
   // Scan a value into struct from database driver
 }
@@ -184,7 +184,7 @@ db.Create(&User{
 
 ### <span id="create_with_associations">Create With Associations</span>
 
-When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
+연관(associations) 이 있는 일부 데이터를 작성할 때 association 값이 0 값이 아닌 경우 해당 association이 upsert 되고 해당 `Hooks` 메소드가 호출됩니다.
 
 ```go
 type CreditCard struct {

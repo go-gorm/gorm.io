@@ -36,6 +36,7 @@ sidebar:
     belongs_to: Kepunyaan
     has_one: Punya-satu
     has_many: Punya-banyak
+    polymorphism: Polymorphism
     many_to_many: Bakak-ke-banyak
     association_mode: Tipe Asosiasi
     preload: Pramuat (Pemuatan Eager)

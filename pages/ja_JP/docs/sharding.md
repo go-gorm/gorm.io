@@ -16,7 +16,7 @@ https://github.com/go-gorm/sharding
 
 ## 使用方法
 
-シャーディングミドルウェアを設定し、シャーディング対象のテーブルを登録します。 設定の詳細は [Godoc](https://pkg.go.dev/github.com/go-gorm/sharding) を参照してください。
+シャーディングミドルウェアを設定し、シャーディング対象のテーブルを登録します。 See [Godoc](https://pkg.go.dev/gorm.io/sharding) for config details.
 
 ```go
 import (

@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Seleção Inteligente de Campos</span>
 
-In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+No GORM, é possível selecionar campos específicos com eficiência usando o método [`Select`](query.html). Isso é particularmente útil ao lidar com modelos grandes, mas exigindo apenas um subconjunto de campos, especialmente em respostas de API.
 
 ```go
 type User struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// GORM will automatically select `id`, `name` fields when querying
+// GORM vai selecionar automaticamente os campos `id`, `name` quando fizer a query
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SQL: SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** In `QueryFields` mode, all model fields are selected by their names.
+**NOTA** No modo `QueryFields`, todos os campos do modelo são selecionados por seus nomes.
 {% endnote %}
 
 ```go
@@ -422,7 +422,7 @@ func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
 
 // Scope for orders paid with cash on delivery (COD)
 func PaidWithCod(db *gorm.DB) *gorm.DB {
-  return db.Where("pay_mode_sign = ?", "C")
+  return db.Where("pay_mode_sign = ?", "COD")
 }
 
 // Scope for filtering orders by status

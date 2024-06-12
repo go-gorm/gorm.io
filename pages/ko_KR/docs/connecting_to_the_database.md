@@ -1,9 +1,9 @@
 ---
-title: Connecting to a Database
+title: 데이터베이스에 연결하기
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
+GORM은 공식적으로 MYSQL, PostreSQL, SQLite, SQL Server 그리고 TiDB를 지원합니다.
 
 ## MySQL
 
@@ -21,10 +21,10 @@ func main() {
 ```
 
 {% note warn %}
-**NOTE:** To handle `time.Time` correctly, you need to include `parseTime` as a parameter. ([more parameters](https://github.com/go-sql-driver/mysql#parameters)) To fully support UTF-8 encoding, you need to change `charset=utf8` to `charset=utf8mb4`. See [this article](https://mathiasbynens.be/notes/mysql-utf8mb4) for a detailed explanation
+**주의할점**: `time.Time` 을 정확하게 다루기 위하여 먼저 `parseTime`을 인자로서 포함해주세요. ([더 많은 인자를 고려하기](https://github.com/go-sql-driver/mysql#parameters)) UTF-8 인코딩을 완전히 지원하기 위하여 `charset=utf8`을 `charset=utf8mb4` 로 바꿔주세요. 해당 [기사](https://mathiasbynens.be/notes/mysql-utf8mb4)를 통해 더욱 자세한 사항을 확인할 수 있습니다.
 {% endnote %}
 
-MySQL Driver provides a [few advanced configurations](https://github.com/go-gorm/mysql) which can be used during initialization, for example:
+MySQL 드라이버는 다음과 같이 생성시 사용될 수 있는 [향상된 추가 설정](https://github.com/go-gorm/mysql)을 지원합니다. 예시:
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
@@ -39,7 +39,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### Customize Driver
 
-GORM allows to customize the MySQL driver with the `DriverName` option, for example:
+GORM은 `드라이버 이름` 옵션을 통해 MySQL 드라이버를 Customize하는 것을 지원합니다. 예시:
 
 ```go
 import (
@@ -56,7 +56,7 @@ db, err := gorm.Open(mysql.New(mysql.Config{
 
 ### Existing database connection
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM은 `*gorm.DB`을 생성시 이미 존재하는 데이터베이스 connection을 바탕으로 생성이 가능합니다.
 
 ```go
 import (
@@ -95,7 +95,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Customize Driver
 
-GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
+`드라이버 이름` 옵션을 통해 PostgreSQL 드라이버를 Customize하는 것을 지원합니다. 예시:
 
 ```go
 import (
@@ -111,7 +111,7 @@ db, err := gorm.Open(postgres.New(postgres.Config{
 
 ### Existing database connection
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM은 `*gorm.DB`를 생성시 이미 존재하는 데이터베이스 connection을 바탕으로 생성이 가능합니다.
 
 ```go
 import (
@@ -140,7 +140,7 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})
 ```
 
 {% note warn %}
-**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. This will tell SQLite to use a temporary database in system memory. (See [SQLite docs](https://www.sqlite.org/inmemorydb.html) for this)
+**NOTE:** You can also use `file::memory:?cache=shared` instead of a path to a file. 이 경우 SQLite는 시스템의 메모리에 있는 임시적인 DataBase를 활용할 것 입니다. ([SQLite docs](https://www.sqlite.org/inmemorydb.html)를 참고하세요)
 {% endnote %}
 
 ## SQL Server
@@ -158,13 +158,13 @@ db, err := gorm.Open(sqlserver.Open(dsn), &gorm.Config{})
 
 ## TiDB
 
-TiDB is compatible with MySQL protocol. You can follow the [MySQL](#mysql) part to create a connection to TiDB.
+TiDB는 MySQL 프로토콜과 호환됩니다. [MySQL](#mysql)파트와 동일한 방법으로 TiDB와의 연결을 설정할 수 있습니다.
 
-There are some points noteworthy for TiDB:
+TiDB사용시 몇 가지 참고할 점:
 
-- You can use `gorm:"primaryKey;default:auto_random()"` tag to use [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random) feature for TiDB.
-- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
-- TiDB supported [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key) from `v6.6.0`, please notice the version of TiDB when you use this feature.
+- `gorm:"primaryKey;default:auto_random()"` 태그를 통해 TiDB의 [`AUTO_RANDOM`](https://docs.pingcap.com/tidb/stable/auto-random)기능을 사용할 수 있습니다.
+- TiDB는 `v6.2.0`버전부터 [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint)기능을 지원합니다, 사용하시는 TiDB 버전을 참고하시어 해당 기능을 사용해 주세요.
+- TiDB는 `v6.6.0`버전부터 [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key)기능을 지원합니다, 사용하시는 TiDB버전을 참고하시어 해당 기능을 사용해주세요.
 
 ```go
 import (
@@ -233,9 +233,9 @@ func main() {
 }
 ```
 
-## Connection Pool
+## 커넥션 풀
 
-GORM using [database/sql](https://pkg.go.dev/database/sql) to maintain connection pool
+GORM은 [database/sql](https://pkg.go.dev/database/sql)을 사용하여 커넥션 풀을 유지합니다.
 
 ```go
 sqlDB, err := db.DB()
@@ -250,10 +250,10 @@ sqlDB.SetMaxOpenConns(100)
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
-Refer [Generic Interface](generic_interface.html) for details
+[Generic Interface](generic_interface.html)를 참조하여 더욱 자세한 사항을 알아보세요.
 
-## Unsupported Databases
+## 지원되지 않는 데이터베이스
 
-Some databases may be compatible with the `mysql` or `postgres` dialect, in which case you could just use the dialect for those databases.
+특정 데이터베이스는 `mysql`이나 `postgres`의 Sql문법과 호환될 수 있습니다. 어떤 경우라도, 해당 데이터 베이스 문법을 활용하여 Gorm을 사용할 수 있습니다.
 
-For others, [you are encouraged to make a driver, pull request welcome!](write_driver.html)
+[데이터베이스 드라이버를 만드셨거나, 혹은 다른 이유라도 pull request는 환영입니다!](write_driver.html)

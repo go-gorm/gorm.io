@@ -5,7 +5,7 @@ layout: page
 
 ## <span id="smart_select">Smart Select Fields</span>
 
-In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. 이는 특히 대규모 모델을 다룰 때 모델의 일부 필드만 필요한 경우에 API 응답에서 특히 유용합니다.
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // 수백 개의 필드가 있다고 가정
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// GORM will automatically select `id`, `name` fields when querying
+// 쿼리를 실행할 때 `id`, `name` 필드를 자동으로 select 합니다.
 db.Model(&User{}).Limit(10).Find(&APIUser{})
-// SQL: SELECT `id`, `name` FROM `users` LIMIT 10
+// SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** In `QueryFields` mode, all model fields are selected by their names.
+**NOTE** `QueryFields 모드`에서는 모든 모델 필드가 그들의 이름에 따라 선택됩니다.
 {% endnote %}
 
 ```go
@@ -35,11 +35,11 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   QueryFields: true,
 })
 
-// Default behavior with QueryFields set to true
+// QueryFields가 true로 설정되어 있을 때 기본 동작
 db.Find(&user)
 // SQL: SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 
-// Using Session Mode with QueryFields
+// QueryFields와 함께 세션 모드를 사용할 때
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SQL: SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
@@ -54,9 +54,9 @@ db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SQL: SELECT * FROM `users` FOR UPDATE
 ```
 
-The above statement will lock the selected rows for the duration of the transaction. This can be used in scenarios where you are preparing to update the rows and want to prevent other transactions from modifying them until your transaction is complete.
+위의 명령문은 트랜잭션이 진행되는 동안 선택된 행을 잠그게 됩니다. 이는 행을 업데이트하기 전에 다른 트랜잭션이 해당 행을 수정하지 못하도록 원한다면 사용될 수 있습니다.
 
-The `Strength` can be also set to `SHARE` which locks the rows in a way that allows other transactions to read the locked rows but not to update or delete them.
+`강도(Strength)`는 `SHARE`로 설정될 수 있으며, 이는 다른 트랜잭션이 잠긴 행을 읽을 수 있지만 수정할 수는 없도록 행을 잠근다는 의미입니다.
 ```go
 db.Clauses(clause.Locking{
   Strength: "SHARE",
@@ -65,9 +65,9 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-The `Table` option can be used to specify the table to lock. This is useful when you are joining multiple tables and want to lock only one of them.
+`테이블(Table)` 옵션은 특정 테이블을 잠그는데 사용될 수 있습니다. 여러 테이블을 조인하고, 그 중 하나만 잠그려고 할 때 유용할 수 있습니다.
 
-Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
+옵션(Options) 에는 `NOWAIT`을 사용할 수 있습니다. 이는 lock을 획득하려고 시도하고 lock이 사용될 수 없는 경우 즉시 오류가 발생합니다. 다른 트랜잭션이 lock을 풀 때까지 기다리는 것을 방지합니다.
 
 ```go
 db.Clauses(clause.Locking{
@@ -77,9 +77,9 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Another option can be `SKIP LOCKED` which skips over any rows that are already locked by other transactions. This is useful in high concurrency situations where you want to process rows that are not currently locked by other transactions.
+다른 옵션으로는 `SKIP LOCKED`을 사용할 수 있습니다. 이는 다른 트랜잭션에 의해 이미 잠겨 있는 행을 건너뛰게 됩니다. 이는 다른 트랜잭션에 의해 현재 잠겨 있지 않은 행을 처리하고자 하는 높은 동시성 상황에서 유용합니다.
 
-For more advanced locking strategies, refer to [Raw SQL and SQL Builder](sql_builder.html).
+잠금 전략들에 대한 더 상세한 정보를 원한다면 [Raw SQL and SQL Builder](sql_builder.html)를 참고해주세요.
 
 ## SubQuery
 
@@ -422,7 +422,7 @@ func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
 
 // Scope for orders paid with cash on delivery (COD)
 func PaidWithCod(db *gorm.DB) *gorm.DB {
-  return db.Where("pay_mode_sign = ?", "C")
+  return db.Where("pay_mode_sign = ?", "COD")
 }
 
 // Scope for filtering orders by status

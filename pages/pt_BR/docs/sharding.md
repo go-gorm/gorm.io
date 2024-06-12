@@ -16,7 +16,7 @@ https://github.com/go-gorm/sharding
 
 ## Usage
 
-Config the sharding middleware, register the tables which you want to shard. See [Godoc](https://pkg.go.dev/github.com/go-gorm/sharding) for config details.
+Config the sharding middleware, register the tables which you want to shard. See [Godoc](https://pkg.go.dev/gorm.io/sharding) for config details.
 
 ```go
 import (

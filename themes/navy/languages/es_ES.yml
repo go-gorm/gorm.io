@@ -36,6 +36,7 @@ sidebar:
     belongs_to: Pertenece a
     has_one: Tiene uno
     has_many: Tiene muchos
+    polymorphism: Polymorphism
     many_to_many: Muchos a muchos
     association_mode: Tipos de asociación
     preload: Precarga (Carga Antigua)

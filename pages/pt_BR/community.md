@@ -43,6 +43,7 @@ layout: page
 * [deepgorm - Filtragem aninhada de maps](https://github.com/survivorbat/gorm-deep-filtering)
 * [oracle - Driver do Oracle para o GORM](https://github.com/CengSin/oracle)
 * [Go ORM Helper - Plugin do Goland para autocompletar código GORM](https://github.com/maiqingqiang/go-orm-helper)
+* [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
 
 ## <span id="contribute">Contribua para esta página</span>
 

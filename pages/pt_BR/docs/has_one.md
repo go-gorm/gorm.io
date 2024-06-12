@@ -5,9 +5,9 @@ layout: page
 
 ## Has One
 
-A `has one` association sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+Uma associação `has one`, confgura uma conexão um para um com outro modelo, mas com semântica diferente de alguma forma (e consequências). Essa associação indica que cada instância do modelo contem ou possui uma instância de outro modelo.
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+Por exemplo, se sua aplicação inclui usuários e cartão de crédito, e cada usuário só pode ter um cartão de crédito.
 
 ### Declare
 ```go
@@ -36,19 +36,19 @@ func GetAll(db *gorm.DB) ([]User, error) {
 
 ## Override Foreign Key
 
-For a `has one` relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
+Para um relacionamento `has one`, um campo de chave estrangeira deve existir, o dono irá salvar a chave primária do modelo que pertence a ele nesse campo.
 
-The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
+O nome do campo geralmente é gerado com o tipo do modelo do `has one`, mais a sua `primary key`, para o exemplo acima é `UserID`.
 
-When you give a credit card to the user, it will save the User's `ID` into its `UserID` field.
+Quando você der um cartão de crédito para o usuário, ele vai salvar o `ID` do Usuário no campo `UserID`.
 
-If you want to use another field to save the relationship, you can change it with tag `foreignKey`, e.g:
+Se você quiser usar outro campo para salvar o relacionamento, você pode mudar isso com a tag `foreignKey`, ex:
 
 ```go
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // use UserName as foreign key
+  // utilizar UserName como chave estrangeira
 }
 
 type CreditCard struct {
@@ -58,11 +58,11 @@ type CreditCard struct {
 }
 ```
 
-## Override References
+## Sobrescrever referências
 
-By default, the owned entity will save the `has one` model's primary key into a foreign key, you could change to save another field's value, like using `Name` for the below example.
+Po padrão, a entidade irá salvar a chave primária do modelo `has one` em uma chave estrangeira, você pode alterar para salvar em outro campo, como por exemplo `Name` para o exemplo abaixo.
 
-You are able to change it with tag `references`, e.g:
+Você pode mudar isso com a tag `references`, ex:
 
 ```go
 type User struct {
@@ -76,56 +76,6 @@ type CreditCard struct {
   Number   string
   UserName string
 }
-```
-
-## Polymorphism Association
-
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key into the polymorphic field
-
-```go
-type Cat struct {
-  ID    int
-  Name  string
-  Toy   Toy `gorm:"polymorphic:Owner;"`
-}
-
-type Dog struct {
-  ID   int
-  Name string
-  Toy  Toy `gorm:"polymorphic:Owner;"`
-}
-
-type Toy struct {
-  ID        int
-  Name      string
-  OwnerID   int
-  OwnerType string
-}
-
-db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
-// INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","dogs")
-```
-
-You can change the polymorphic type value with tag `polymorphicValue`, for example:
-
-```go
-type Dog struct {
-  ID   int
-  Name string
-  Toy  Toy `gorm:"polymorphic:Owner;polymorphicValue:master"`
-}
-
-type Toy struct {
-  ID        int
-  Name      string
-  OwnerID   int
-  OwnerType string
-}
-
-db.Create(&Dog{Name: "dog1", Toy: Toy{Name: "toy1"}})
-// INSERT INTO `dogs` (`name`) VALUES ("dog1")
-// INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1","1","master")
 ```
 
 ## CRUD with Has One

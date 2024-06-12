@@ -36,6 +36,7 @@ sidebar:
     belongs_to: Ait
     has_one: Tekli Sahiplik
     has_many: Çoklu Sahiplik
+    polymorphism: Polymorphism
     many_to_many: Çoktan Çoka
     association_mode: İlişki Modu
     preload: Ön Yükleme
