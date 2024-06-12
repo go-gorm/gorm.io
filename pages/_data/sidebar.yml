@@ -15,6 +15,7 @@ docs:
     has_one: has_one.html
     has_many: has_many.html
     many_to_many: many_to_many.html
+    polymorphism: polymorphism.html
     association_mode: associations.html
     preload: preload.html
   tutorials:
