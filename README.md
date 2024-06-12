@@ -2,8 +2,6 @@
 
 Welcome to the GORM official website, accessible at [https://gorm.io](https://gorm.io).
 
-![build](https://github.com/go-gorm/gorm.io/workflows/build/badge.svg)
-
 ## Contributing to Documentation
 
 At our GitHub repository, we currently only accept pull requests for English documentation. Basic markdown knowledge is sufficient for you to contribute. Feel free to update documents in the `pages/docs` and `pages/gen` directories. We highly value your contributions!
