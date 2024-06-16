@@ -265,7 +265,7 @@ type Pet struct {
     Name string `gorm:"default:cat"`
 }
 
-// In SQLite, this is not supported, so GORM will build a wrong SQL to raise error:
+// SQLite는 다음과 같은 구문을 지원하지 않으므로 GORM은 잘못된 SQL을 생성하고 에러를 일으킬 것입니다.
 // INSERT INTO `pets` (`name`) VALUES ("dog"),(DEFAULT) RETURNING `name`
 db.Create(&[]Pet{{Name: "dog"}, {}})
 ```
@@ -279,14 +279,14 @@ func (p *Pet) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-You can see more info in [issues#6335](https://github.com/go-gorm/gorm/issues/6335)
+[issues#6335](https://github.com/go-gorm/gorm/issues/6335)를 통해 더 자세한 사항을 볼 수 있습니다.
 {% endnote %}
 
-When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+Virtual/generated 값을 활용하려면 creating/dupdating 권한을 비활성화해야할 수 있습니다, [Field-Level Permission](models.html#field_permission)을 참고해 주세요.
 
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORM provides compatible Upsert support for different databases
+GORM은 다른 데이터베이스와 상호 운용가능한 Upsert를 지원합니다.
 
 ```go
 import "gorm.io/gorm/clause"
