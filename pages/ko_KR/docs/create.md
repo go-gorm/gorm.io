@@ -207,18 +207,18 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`, for example:
+`Select`, `Omit` 를 사용하여 associations를 스킵 할 수 있습니다. 예시:
 
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// skip all associations
+// 모든 associations 무시
 db.Omit(clause.Associations).Create(&user)
 ```
 
 ### <span id="default_values">기본 값</span>
 
-You can define default values for fields with tag `default`, for example:
+`default`태그를 사용하여 필드의 기본값을 정의 할 수 있습니다. 예를 들면 다음과 같습니다.
 
 ```go
 type User struct {
@@ -231,7 +231,7 @@ type User struct {
 Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
 
 {% note warn %}
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**NOTE** `0`, `''`, `false`와 같은 값들은 지정된 기본값으로 데이터베이스에 저장되지 않습니다, 대신에 포인터 타입 혹은 Scanner/Value를 활용해주세요, 예시:
 {% endnote %}
 
 ```go
@@ -244,7 +244,7 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+**NOTE** 데이터베이스에 기본 값 또는 가상/생성 값이 있는 필드에 대해` default ` 태그를 설정해야 합니다. 데이터베이스 마이그레이션 할 때 기본 값을 정의하는 부분을 건너뛰려면 다음과 같이 ` default:(-) ` 를 사용할 수 있습니다. 예시:
 {% endnote %}
 
 ```go
@@ -258,14 +258,14 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** **SQLite** doesn't support some records are default values when batch insert. See [SQLite Insert stmt](https://www.sqlite.org/lang_insert.html). For example:
+**NOTE****SQLite**는 특정 레코드에 대하여 batch insert를 실행시 기본값을 지원하지 않습니다. [SQLite insert 구문](https://www.sqlite.org/lang_insert.html)을 참고하세요. For example:
 
 ```go
 type Pet struct {
     Name string `gorm:"default:cat"`
 }
 
-// In SQLite, this is not supported, so GORM will build a wrong SQL to raise error:
+// SQLite는 다음과 같은 구문을 지원하지 않으므로 GORM은 잘못된 SQL을 생성하고 에러를 일으킬 것입니다.
 // INSERT INTO `pets` (`name`) VALUES ("dog"),(DEFAULT) RETURNING `name`
 db.Create(&[]Pet{{Name: "dog"}, {}})
 ```
@@ -279,14 +279,14 @@ func (p *Pet) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-You can see more info in [issues#6335](https://github.com/go-gorm/gorm/issues/6335)
+[issues#6335](https://github.com/go-gorm/gorm/issues/6335)를 통해 더 자세한 사항을 볼 수 있습니다.
 {% endnote %}
 
-When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+Virtual/generated 값을 활용하려면 creating/dupdating 권한을 비활성화해야할 수 있습니다, [Field-Level Permission](models.html#field_permission)을 참고해 주세요.
 
 ### <span id="upsert">Upsert / On Conflict</span>
 
-GORM provides compatible Upsert support for different databases
+GORM은 다른 데이터베이스와 상호 운용가능한 Upsert를 지원합니다.
 
 ```go
 import "gorm.io/gorm/clause"
