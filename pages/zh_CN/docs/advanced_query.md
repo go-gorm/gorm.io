@@ -358,7 +358,7 @@ result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx 
 
 ## 查询钩子
 
-GORM 提供了使用钩子的能力，例如 `AfterFind`，这些钩子是在查询的生命周期中触发的。 这些钩子允许在特定点执行自定义逻辑，例如在从数据库检索记录之后。
+GORM 提供了使用钩子的能力，例如 `AfterFind`，这些钩子是在查询的生命周期中触发的。 These hooks allow for custom logic to be executed at specific points, such as after a record has been retrieved from the database.
 
 此钩子对后查询数据操纵或默认值设置非常有用。 欲了解更详细的信息和额外的钩子，请参阅GORM文档中的 [Hooks](hooks.html)。
 
