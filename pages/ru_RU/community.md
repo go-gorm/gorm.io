@@ -22,9 +22,9 @@ layout: страница
 
 * Article that validate GORM as ORM to Golang with CRUD implementation with SQLite database on tests - [looking-for-an-orm-to-database-layer-with-golang](https://medium.com/@rafaelholanda90/continuing-looking-for-an-orm-to-database-layer-with-golang-7fee0316a989)
 
-* [Strongly typed JSON/JSONB fields in GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
+* [Строго типизированые JSON/JSONB поля в GORM](https://www.terminateandstayresident.com/2022-07-13/orm-json)
 
-* [Using GORM concurrently is not safe](https://zhuanlan.zhihu.com/p/556065676)
+* [Конкурентное использование GORM небезопасно](https://zhuanlan.zhihu.com/p/556065676)
 
 ## Видео
 
@@ -32,8 +32,8 @@ layout: страница
 
 ## Открытый исходный код
 
-* [gormt - GORM mysql to golang struct](https://github.com/xxjwxc/gormt)
-* [go-paginate - cursor-based pagination](https://github.com/raphaelvigee/go-paginate)
+* [gormt - GORM mysql в golang структура](https://github.com/xxjwxc/gormt)
+* [go-paginate - пагинация на основе указателя](https://github.com/raphaelvigee/go-paginate)
 * [zapgorm - Uber's Zap logging driver for gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber's Zap logging driver for gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 * [gorm-newrelic-telemetry-plugin - A plugin to allow telemetry by NewRelic Go Agent for GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
