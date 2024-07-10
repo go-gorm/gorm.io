@@ -29,9 +29,9 @@ layout: страница
 
 ## Пожертвования
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+Спасибо всем нашим спонсорам за вашу доброту и щедрость!
 
-* Github Sponsors (Platinum, Gold Sponsors etc)
+* Github Sponsors (Platinum, Gold Sponsors и т.д.)
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
