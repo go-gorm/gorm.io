@@ -5,7 +5,7 @@ layout: страница
 
 ## <span id="smart_select">Умный выбор полей</span>
 
-In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+В GORM вы можете эффективно выбирать конкретные поля, используя метод [`Select`](query.html). This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
 
 ```go
 type User struct {
@@ -98,7 +98,7 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 
 ### <span id="from_subquery">Из SubQuery (под запроса)</span>
 
-GORM allows the use of subqueries in the FROM clause, enabling complex queries and data organization.
+GORM позволяет использовать подзапросы в оговорке "FROM", позволяя сложные запросы и организацию данных.
 
 ```go
 // Using subquery in FROM clause
@@ -114,21 +114,22 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">Группировка условий</span>
 
-Group Conditions in GORM provide a more readable and maintainable way to write complex SQL queries involving multiple conditions.
+Групповые условия в GORM обеспечивают более читаемый и поддерживаемый способ записи сложных SQL-запросов с несколькими условиями.
 
 ```go
-// Complex SQL query using Group Conditions
+// Сложны SQL запросы использую групповые условия
 db.Where(
-  db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small").Or("size = ?", "medium")),
+    db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small").Or("size = ?", "medium")),
 ).Or(
-  db.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
-).Find(&Pizza{})
-// SQL: SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
+    db.Where("pizza = ?", "hawaiian").Where("size = ?", "xlarge"),
+).Find(&Pizza{}).Statement
+
+// SELECT * FROM `pizzas` WHERE (pizza = "pepperoni" AND (size = "small" OR size = "medium")) OR (pizza = "hawaiian" AND size = "xlarge")
 ```
 
 ## IN с несколькими столбцами
 
-GORM supports the IN clause with multiple columns, allowing you to filter data based on multiple field values in a single query.
+GORM поддерживает оператор IN с несколькими колонками, позволяя фильтровать данные на основе нескольких значений полей в одном запросе.
 
 ```go
 // Using IN with multiple columns
