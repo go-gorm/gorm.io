@@ -40,7 +40,7 @@ You can specify polymorphism properties separately using the following GORM tags
 type Dog struct {
   ID   int
   Name string
-  Toys Toy `gorm:"polymorphicType:Kind;polymorphicId:OwnerID;polymorphicValue:master"`
+  Toys []Toy `gorm:"polymorphicType:Kind;polymorphicId:OwnerID;polymorphicValue:master"`
 }
 
 type Toy struct {
