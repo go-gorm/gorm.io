@@ -14,7 +14,7 @@ layout: страница
 
 ## Документация и написание
 
-* Make GORM's documentation better by writing new content, correcting existing material [https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
+* Сделайте документацию GORM лучше добавляя новый контент, исправляя существующие материалы[https://github.com/go-gorm/gorm.io](https://github.com/go-gorm/gorm.io)
 
 ### Перевести этот сайт
 
@@ -29,9 +29,9 @@ layout: страница
 
 ## Пожертвования
 
-Your kindness and generosity is greatly appreciated, many thanks to all our sponsors!
+Спасибо всем нашим спонсорам за вашу доброту и щедрость!
 
-* Github Sponsors (Platinum, Gold Sponsors etc)
+* Github Sponsors (Platinum, Gold Sponsors и т.д.)
 
 [https://github.com/sponsors/jinzhu](https://github.com/sponsors/jinzhu)
 
