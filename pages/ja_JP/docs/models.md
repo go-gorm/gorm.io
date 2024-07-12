@@ -172,7 +172,7 @@ type Blog struct {
 
 ### <span id="tags">フィールドに指定可能なタグ</span>
 
-タグはモデル宣言時に任意で使用できます。GORMは以下のタグをサポートしています。（タグは大文字小文字を区別しませんが、 `camelCase` が推奨されます）
+Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however `camelCase` is preferred. If multiple tags are used they should be separated by a semicolon (`;`). Characters that have special meaning to the parser can be escaped with a backslash (`\`) allowing them to be used as parameter values.
 
 | タグ名                    | 説明                                                                                                                                                                                                                                                                                                          |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
