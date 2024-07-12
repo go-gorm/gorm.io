@@ -67,7 +67,7 @@ type CreditCard struct {
 type User struct {
   gorm.Model
   Name       string     `gorm:"index"`
-  CreditCard CreditCard `gorm:"foreignKey:UserName;references:name"`
+  CreditCard CreditCard `gorm:"foreignKey:UserName;references:Name"`
 }
 
 type CreditCard struct {
