@@ -83,7 +83,7 @@ For more advanced locking strategies, refer to [Raw SQL and SQL Builder](sql_bui
 
 ## Subconsultas
 
-Subqueries are a powerful feature in SQL, allowing nested queries. GORM can generate subqueries automatically when using a *gorm.DB object as a parameter.
+Subconsultas são recursos poderosos em SQL, permitindo consultas aninhadas. O GORM pode gerar consultas aninhadas automaticamente quando usado o *gorm.DB como parâmetro.
 
 ```go
 // Simple subquery
@@ -154,7 +154,7 @@ For more examples and details, see [Raw SQL and SQL Builder](sql_builder.html#na
 
 ## Mapear resultado de consulta
 
-GORM provides flexibility in querying data by allowing results to be scanned into a `map[string]interface{}` or `[]map[string]interface{}`, which can be useful for dynamic data structures.
+O Gorm fornece flexibilidade nas consultas de dados por aceitar resultados para serem escaneados em `map[string]interface{}` ou `[]map[string]interface{}`, isso pode ser de grande utilidade em estruturas dinâmicas.
 
 When using `Find To Map`, it's crucial to include `Model` or `Table` in your query to explicitly specify the table name. This ensures that GORM understands which table to query against.
 
