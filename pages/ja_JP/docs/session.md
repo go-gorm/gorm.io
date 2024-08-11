@@ -91,7 +91,7 @@ for sql, stmt := range stmtManger.Stmts {
 
 ## NewDB
 
-`NewDB`オプションを指定せずに新しいDBオブジェクトを作成します。例:
+`NewDB`オプションを指定して、条件なしで新しいDBオブジェクトを作成します。例:
 
 ```go
 tx := db.Where("name = ?", "jinzhu").Session(&gorm.Session{NewDB: true})
