@@ -53,7 +53,7 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## 跳过自动创建、更新
 
-GORM provides flexibility to skip automatic saving of associations during create or update operations. This can be achieved using the `Select` or `Omit` methods, which allow you to specify exactly which fields or associations should be included or excluded in the operation.
+GORM 提供了在创建或更新操作过程中跳过自动保存关联的灵活性。 This can be achieved using the `Select` or `Omit` methods, which allow you to specify exactly which fields or associations should be included or excluded in the operation.
 
 ### 使用`Select` 来指定字段范围
 
