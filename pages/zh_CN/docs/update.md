@@ -105,7 +105,7 @@ func (u *User) BeforeUpdate(tx *gorm.DB) (err error) {
 
 ## 批量更新
 
-If we haven't specified a record having a primary key value with `Model`, GORM will perform a batch update
+如果没有通过 `Model` 指定一个含有主键的记录，GORM 会执行批量更新
 
 ```go
 // Update with struct
@@ -119,9 +119,9 @@ db.Table("users").Where("id IN ?", []int{10, 11}).Updates(map[string]interface{}
 
 ### <span id="block_global_updates">阻止全局更新</span>
 
-If you perform a batch update without any conditions, GORM WON'T run it and will return `ErrMissingWhereClause` error by default
+如果你执行一个没有任何条件的批量更新，GORM 默认不会运行，并且会返回 `ErrMissingWhereClause` 错误
 
-You have to use some conditions or use raw SQL or enable the `AllowGlobalUpdate` mode, for example:
+你可以用一些条件，使用原生 SQL 或者启用 `AllowGlobalUpdate` 模式，例如：
 
 ```go
 db.Model(&User{}).Update("name", "jinzhu").Error // gorm.ErrMissingWhereClause
@@ -153,7 +153,7 @@ result.Error        // returns updating error
 
 ### <span id="update_from_sql_expr">使用 SQL 表达式更新</span>
 
-GORM allows updating a column with a SQL expression, e.g:
+GORM 允许用 SQL 表达式更新列，例如：
 
 ```go
 // product's ID is `3`
@@ -170,7 +170,7 @@ db.Model(&product).Where("quantity > 1").UpdateColumn("quantity", gorm.Expr("qua
 // UPDATE "products" SET "quantity" = quantity - 1 WHERE "id" = 3 AND quantity > 1;
 ```
 
-And GORM also allows updating with SQL Expression/Context Valuer with [Customized Data Types](data_types.html#gorm_valuer_interface), e.g:
+另外，GORM 也允许 SQL 表达式或是带有 [自定义数据类型](data_types.html#gorm_valuer_interface) 的 Content Valuer，例如：
 
 ```go
 // Create from customized data type
