@@ -194,7 +194,7 @@ db.Model(&User{ID: 1}).Updates(User{
 
 ### 根据子查询进行更新
 
-Update a table by using SubQuery
+使用子查询更新一个表
 
 ```go
 db.Model(&user).Update("company_name", db.Model(&Company{}).Select("name").Where("companies.id = users.company_id"))
@@ -207,7 +207,7 @@ db.Table("users as u").Where("name = ?", "jinzhu").Updates(map[string]interface{
 
 ### 不使用 Hook 和时间追踪
 
-If you want to skip `Hooks` methods and don't track the update time when updating, you can use `UpdateColumn`, `UpdateColumns`, it works like `Update`, `Updates`
+如果你希望更新时跳过 `Hook` 方法，并且不追踪更新的时间，你可以使用 `UpdateColumn`, `UpdateColumns`, 它们的用法类似于 `Update`, `Updates`
 
 ```go
 // Update single column
