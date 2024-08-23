@@ -53,59 +53,57 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## 跳过自动创建、更新
 
-GORM 提供了在创建或更新操作过程中跳过自动保存关联的灵活性。 通过使用`Select`或者`Omit`方法可以允许您选择具体哪些字段在操作中被包含或者排除
+GORM 提供了在创建或更新操作过程中跳过自动保存关联的灵活性。 通过使用`Select`或者`Omit`方法可以允许您指定具体哪些字段在操作中被包含或者排除
 
 ### 使用`Select` 来指定字段范围
 
-The `Select` method lets you specify which fields of the model should be saved. This means that only the selected fields will be included in the SQL operation.
+`Select`方法可以让您模型中的哪些字段应该被保存 也就是说只有被选中的字段会被包含在SQL中
 
 ```go
 user := User{
-  // User and associated data
+  // 用户及关联的数据
 }
 
-// Only include the 'Name' field when creating the user
+// 当插入用户的时候仅包含“Name”字段
 db.Select("Name").Create(&user)
 // SQL: INSERT INTO "users" (name) VALUES ("jinzhu");
 ```
 
 ### 使用`Omit`来排除字段或关联
 
-Conversely, `Omit` allows you to exclude certain fields or associations when saving a model.
-
 ```go
-// Skip creating the 'BillingAddress' when creating the user
+// 创建用户时跳过字段“BillingAddress”
 db.Omit("BillingAddress").Create(&user)
 
-// Skip all associations when creating the user
+// 创建用户时跳过全部关联关系
 db.Omit(clause.Associations).Create(&user)
 ```
 
 {% note warn %}
-**NOTE:** For many-to-many associations, GORM upserts the associations before creating join table references. To skip this upserting, use `Omit` with the association name followed by `.*`:
+**注意:** 对于多对多关联关系, GORM 会在创建连接表引用之前更新关联。 要跳过更新，可以使用`Omit`，参数为关联名后面跟着`.*`
 
 ```go
-// Skip upserting 'Languages' associations
+// 跳过更新"Languages"关联
 db.Omit("Languages.*").Create(&user)
 ```
 
-To skip creating both the association and its references:
+跳过创建关联及其引用：
 
 ```go
-// Skip creating 'Languages' associations and their references
+// 跳过创建 'Languages' 关联及其引用
 db.Omit("Languages").Create(&user)
 ```
 {% endnote %}
 
-Using `Select` and `Omit`, you can fine-tune how GORM handles the creation or updating of your models, giving you control over the auto-save behavior of associations.
+通过使用 `Select` 和 `Omit`，你能够很好地调整GORM处理创建或更新您的模型的行为，同时让您也能控制关联关系的自动保存行为
 
 ## Select/Omit 关联字段
 
-In GORM, when creating or updating records, you can use the `Select` and `Omit` methods to specifically include or exclude certain fields of an associated model.
+在GORM中创建或者更新记录时，可以使用`Select`和`Omit`方法来指定是否包含某个关联的字段
 
-With `Select`, you can specify which fields of an associated model should be included when saving the primary model. This is particularly useful for selectively saving parts of an association.
+使用`Select`，你能够指定关联模型中的特定字段在保存主模型的时候是否被包含 在仅保存部分关联时这非常有用
 
-Conversely, `Omit` lets you exclude certain fields of an associated model from being saved. This can be useful when you want to prevent specific parts of an association from being persisted.
+而`Omit`则能够排除关联模型的特定字段。 这可能会在你想阻止关联模型的特定部分被更新时有用
 
 
 ```go
@@ -126,9 +124,9 @@ db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 
 ## 删除关联
 
-GORM allows for the deletion of specific associated relationships (has one, has many, many2many) using the `Select` method when deleting a primary record. This feature is particularly useful for maintaining database integrity and ensuring related data is appropriately managed upon deletion.
+GORM 能在删除主模型时使用`Select`方法来删除关联关系(一对一、一对多、多对多)。 在删除时维护好数据完整性并确保关联数据被妥当管理上，这项特性非常有用。
 
-You can specify which associations should be deleted along with the primary record by using `Select`.
+你可以用`Select`来指定哪些关联应该随着主模型被删除
 
 ```go
 // Delete a user's account when deleting the user
