@@ -224,6 +224,17 @@ WithImportPkgPath(paths ...string)
 // WithOpts specify global model options
 WithOpts(opts ...ModelOpt)
 ```
+### Ignore Table
+By ``` WithTableNameStrategy```, you can ignore some tables that do not need to be generated, such as tables starting with ```_```.
+
+```go
+g.WithTableNameStrategy(func(tableName string) (targetTableName string) {
+		if strings.HasPrefix(tableName, "_") { //Just return an empty string and the table will be ignored.
+			return ""
+		}
+		return tableName
+	})
+```
 
 ### Data Mapping
 
