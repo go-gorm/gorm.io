@@ -44,6 +44,7 @@ layout: page
 * [oracle - GORM Oracle driver](https://github.com/CengSin/oracle)
 * [Go ORM 助手 - GORM 代码补全 Goland 插件](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
+* [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
 
 ## <span id="contribute">完善本页面</span>
 
