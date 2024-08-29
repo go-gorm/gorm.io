@@ -44,6 +44,7 @@ layout: page
 * [oracle - GORM Oracle driver](https://github.com/CengSin/oracle)
 * [Go ORM Helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
+* [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
 
 ## <span id="contribute">이 페이지에 기여하세요</span>
 
