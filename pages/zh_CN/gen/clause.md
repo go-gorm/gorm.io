@@ -14,7 +14,7 @@ u := query.User
 
 user := model.User{Name: "Modi", Age: 18, Birthday: time.Now()}
 
-u.Save(&mode)
+u.Save(&model)
 // equal to
 u.Clauses(clause.OnConflict{UpdateAll: true}).Create(value).Error
 ```
