@@ -44,6 +44,7 @@ layout: страница
 * [oracle - GORM Oracle driver](https://github.com/CengSin/oracle)
 * [Go ORM Helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
+* [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
 
 ## <span id="contribute">Внести изменения в эту страницу</span>
 
