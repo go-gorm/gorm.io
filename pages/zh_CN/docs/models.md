@@ -116,17 +116,22 @@ type User struct {
 对于匿名字段，GORM 会将其字段包含在父结构体中，例如：
 
 ```go
-type User struct {
-  gorm.Model
-  Name string
+type Author struct {
+  Name  string
+  Email string
 }
-// 等效于
-type User struct {
-  ID        uint           `gorm:"primaryKey"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt gorm.DeletedAt `gorm:"index"`
-  Name string
+
+type Blog struct {
+  Author
+  ID      int
+  Upvotes int32
+}
+// equals
+type Blog struct {
+  ID      int64
+  Name    string
+  Email   string
+  Upvotes int32
 }
 ```
 
