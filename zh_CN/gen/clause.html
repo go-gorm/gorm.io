@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="Gen也支持GORM Clauses，其使用类似于Gorm。 UpsertGen 为不同数据库提供兼容的 Upsert 支持 就像GORM u :&#x3D; query.Useruser :&#x3D; model.User&amp;#123;Name: &quot;Modi&quot;, Age: 18, Birthday: time.Now()&amp;#125;u.Save(&amp;mode)&#x2F;&#x2F; equal tou.Cl">
+  <meta name="description" content="Gen也支持GORM Clauses，其使用类似于Gorm。 UpsertGen 为不同数据库提供兼容的 Upsert 支持 就像GORM u :&#x3D; query.Useruser :&#x3D; model.User&amp;#123;Name: &quot;Modi&quot;, Age: 18, Birthday: time.Now()&amp;#125;u.Save(&amp;model)&#x2F;&#x2F; equal tou.C">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Clauses">
 <meta property="og:url" content="https://gorm.io/zh_CN/gen/clause.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="Gen也支持GORM Clauses，其使用类似于Gorm。 UpsertGen 为不同数据库提供兼容的 Upsert 支持 就像GORM u :&#x3D; query.Useruser :&#x3D; model.User&amp;#123;Name: &quot;Modi&quot;, Age: 18, Birthday: time.Now()&amp;#125;u.Save(&amp;mode)&#x2F;&#x2F; equal tou.Cl">
+<meta property="og:description" content="Gen也支持GORM Clauses，其使用类似于Gorm。 UpsertGen 为不同数据库提供兼容的 Upsert 支持 就像GORM u :&#x3D; query.Useruser :&#x3D; model.User&amp;#123;Name: &quot;Modi&quot;, Age: 18, Birthday: time.Now()&amp;#125;u.Save(&amp;model)&#x2F;&#x2F; equal tou.C">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-09-14T12:31:11.805Z">
-<meta property="article:modified_time" content="2024-09-14T12:31:11.805Z">
+<meta property="article:published_time" content="2024-09-14T12:31:25.137Z">
+<meta property="article:modified_time" content="2024-09-14T12:31:25.137Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -143,7 +143,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <div class="article-content" itemprop="articleBody">
                 <html><head></head><body><p>Gen也支持GORM Clauses，其使用类似于Gorm。</p>
 <h2 id="Upsert" class="article-heading"><a href="#Upsert" class="headerlink" title="Upsert"></a>Upsert<a class="article-anchor" href="#Upsert" aria-hidden="true"></a></h2><p>Gen 为不同数据库提供兼容的 Upsert 支持 <a href="../docs/create.html#upsert">就像GORM</a></p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">u := query.User</span><br><span class="line"></span><br><span class="line">user := model.User{Name: <span class="string">"Modi"</span>, Age: <span class="number">18</span>, Birthday: time.Now()}</span><br><span class="line"></span><br><span class="line">u.Save(&amp;mode)</span><br><span class="line"><span class="comment">// equal to</span></span><br><span class="line">u.Clauses(clause.OnConflict{UpdateAll: <span class="literal">true</span>}).Create(value).Error</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">u := query.User</span><br><span class="line"></span><br><span class="line">user := model.User{Name: <span class="string">"Modi"</span>, Age: <span class="number">18</span>, Birthday: time.Now()}</span><br><span class="line"></span><br><span class="line">u.Save(&amp;model)</span><br><span class="line"><span class="comment">// equal to</span></span><br><span class="line">u.Clauses(clause.OnConflict{UpdateAll: <span class="literal">true</span>}).Create(value).Error</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Hints" class="article-heading"><a href="#Hints" class="headerlink" title="Hints"></a>Hints<a class="article-anchor" href="#Hints" aria-hidden="true"></a></h2><p>优化器提示用于控制查询优化器选择某个查询执行计划，Gen 通过 <a href="../docs/hints.html">gorm.io/hints</a> 提供支持，例如：</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"gorm.io/hints"</span></span><br><span class="line"></span><br><span class="line">u := query.Use(db).User</span><br><span class="line"></span><br><span class="line">users, err := u.WithContext(ctx).Clauses(hints.New(<span class="string">"MAX_EXECUTION_TIME(10000)"</span>)).Find()</span><br><span class="line"><span class="comment">// SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`</span></span><br></pre></td></tr></tbody></table></figure>
@@ -156,7 +156,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2024-09-14T12:31:11.805Z" itemprop="dateModified">最后更新于 2024-09-14</time>
+                <time class="article-footer-updated" datetime="2024-09-14T12:31:25.137Z" itemprop="dateModified">最后更新于 2024-09-14</time>
 <a href="gen_tool.html" class="article-footer-prev" title="Gen Tool"><i class="fa fa-chevron-left"></i><span>上一个</span></a>
               </footer>
 

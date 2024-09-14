@@ -56,8 +56,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="Gen also support GORM Clauses, their use is similar to Gorm. UpsertGen provides compatible Upsert support for different databases like GORM u :&#x3D; query.Useruser :&#x3D; model.User&amp;#123;Name: &quot;Modi&amp;quot">
 <meta property="og:locale" content="de_DE">
-<meta property="article:published_time" content="2024-09-14T12:31:11.757Z">
-<meta property="article:modified_time" content="2024-09-14T12:31:11.757Z">
+<meta property="article:published_time" content="2024-09-14T12:31:25.093Z">
+<meta property="article:modified_time" content="2024-09-14T12:31:25.093Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -143,7 +143,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <div class="article-content" itemprop="articleBody">
                 <html><head></head><body><p>Gen also support GORM Clauses, their use is similar to Gorm.</p>
 <h2 id="Upsert" class="article-heading"><a href="#Upsert" class="headerlink" title="Upsert"></a>Upsert<a class="article-anchor" href="#Upsert" aria-hidden="true"></a></h2><p>Gen provides compatible Upsert support for different databases <a href="../docs/create.html#upsert">like GORM</a></p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">u := query.User</span><br><span class="line"></span><br><span class="line">user := model.User{Name: <span class="string">"Modi"</span>, Age: <span class="number">18</span>, Birthday: time.Now()}</span><br><span class="line"></span><br><span class="line">u.Save(&amp;mode)</span><br><span class="line"><span class="comment">// equal to</span></span><br><span class="line">u.Clauses(clause.OnConflict{UpdateAll: <span class="literal">true</span>}).Create(value).Error</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">u := query.User</span><br><span class="line"></span><br><span class="line">user := model.User{Name: <span class="string">"Modi"</span>, Age: <span class="number">18</span>, Birthday: time.Now()}</span><br><span class="line"></span><br><span class="line">u.Save(&amp;model)</span><br><span class="line"><span class="comment">// equal to</span></span><br><span class="line">u.Clauses(clause.OnConflict{UpdateAll: <span class="literal">true</span>}).Create(value).Error</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Hints" class="article-heading"><a href="#Hints" class="headerlink" title="Hints"></a>Hints<a class="article-anchor" href="#Hints" aria-hidden="true"></a></h2><p>Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with <a href="../docs/hints.html">gorm.io/hints</a>, e.g:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"gorm.io/hints"</span></span><br><span class="line"></span><br><span class="line">u := query.Use(db).User</span><br><span class="line"></span><br><span class="line">users, err := u.WithContext(ctx).Clauses(hints.New(<span class="string">"MAX_EXECUTION_TIME(10000)"</span>)).Find()</span><br><span class="line"><span class="comment">// SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`</span></span><br></pre></td></tr></tbody></table></figure>
@@ -156,7 +156,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2024-09-14T12:31:11.757Z" itemprop="dateModified">Last updated: 2024-09-14</time>
+                <time class="article-footer-updated" datetime="2024-09-14T12:31:25.093Z" itemprop="dateModified">Last updated: 2024-09-14</time>
 <a href="gen_tool.html" class="article-footer-prev" title="Gen Tool"><i class="fa fa-chevron-left"></i><span>Prev</span></a>
               </footer>
 
