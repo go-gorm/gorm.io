@@ -44,6 +44,7 @@ layout: page
 * [oracle - Driver do Oracle para o GORM](https://github.com/CengSin/oracle)
 * [Go ORM Helper - Plugin do Goland para autocompletar código GORM](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
+* [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
 
 ## <span id="contribute">Contribua para esta página</span>
 

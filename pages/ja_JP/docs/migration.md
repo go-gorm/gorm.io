@@ -8,7 +8,7 @@ layout: page
 スキーマ定義のマイグレーションを自動で行い、スキーマを最新の状態に保ちます。
 
 {% note warn %}
-**注意:** AutoMigrate はテーブル、外部キー、制約、カラム、インデックスを作成します。 カラムのサイズ、精度、null可否などが変更された場合、既存のカラムの型を変更します。 しかし、データを守るために、使われなくなったカラムの削除は**実行されません**。
+**注意:** AutoMigrate はテーブル、外部キー、制約、カラム、インデックスを作成します。 It will change existing column's type if its size, precision changed, or if it's changing from non-nullable to nullable. しかし、データを守るために、使われなくなったカラムの削除は**実行されません**。
 {% endnote %}
 
 ```go
@@ -269,7 +269,7 @@ GORM creates constraints when auto migrating or creating table, see [Constraints
 
 [Atlas](https://atlasgo.io) is an open-source database migration tool that has an official integration with GORM.
 
-While GORM's `AutoMigrate` feature works in most cases, at some point you many need to switch to a [versioned migrations](https://atlasgo.io/concepts/declarative-vs-versioned#versioned-migrations) strategy.
+While GORM's `AutoMigrate` feature works in most cases, at some point you may need to switch to a [versioned migrations](https://atlasgo.io/concepts/declarative-vs-versioned#versioned-migrations) strategy.
 
 Once this happens, the responsibility for planning migration scripts and making sure they are in line with what GORM expects at runtime is moved to developers.
 

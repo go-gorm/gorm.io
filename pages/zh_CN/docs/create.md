@@ -92,7 +92,7 @@ db.Create(&users)
 
 ## 创建钩子
 
-GROM允许用户通过实现这些接口 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`来自定义钩子。  这些钩子方法会在创建一条记录时被调用，关于钩子的生命周期请参阅[Hooks](hooks.html)。
+GORM允许用户通过实现这些接口 `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`来自定义钩子。  这些钩子方法会在创建一条记录时被调用，关于钩子的生命周期请参阅[Hooks](hooks.html)。
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -201,7 +201,7 @@ type User struct {
 
 db.Create(&User{
   Name: "jinzhu",
-  CreditCard: CreditCard{Number: "411111111111"}
+  CreditCard: CreditCard{Number: "411111111111"},
 })
 // INSERT INTO `users` ...
 // INSERT INTO `credit_cards` ...

@@ -8,7 +8,7 @@ layout: page
 Automatically migrate your schema, to keep your schema up to date.
 
 {% note warn %}
-**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes. It will change existing column's type if its size, precision, nullable changed. It **WON'T** delete unused columns to protect your data.
+**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes. It will change existing column's type if its size, precision changed, or if it's changing from non-nullable to nullable. It **WON'T** delete unused columns to protect your data.
 {% endnote %}
 
 ```go
@@ -269,7 +269,7 @@ GORM creates constraints when auto migrating or creating table, see [Constraints
 
 [Atlas](https://atlasgo.io) is an open-source database migration tool that has an official integration with GORM.
 
-While GORM's `AutoMigrate` feature works in most cases, at some point you many need to switch to a [versioned migrations](https://atlasgo.io/concepts/declarative-vs-versioned#versioned-migrations) strategy.
+While GORM's `AutoMigrate` feature works in most cases, at some point you may need to switch to a [versioned migrations](https://atlasgo.io/concepts/declarative-vs-versioned#versioned-migrations) strategy.
 
 Once this happens, the responsibility for planning migration scripts and making sure they are in line with what GORM expects at runtime is moved to developers.
 

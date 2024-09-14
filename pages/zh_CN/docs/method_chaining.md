@@ -3,7 +3,7 @@ title: 链式方法
 layout: page
 ---
 
-GORM's method chaining feature allows for a smooth and fluent style of coding. Here's an example:
+GORM 的方法链功能可实现平滑流畅的编码风格。 Here's an example:
 
 ```go
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
@@ -11,11 +11,11 @@ db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 
 ## Method Categories
 
-GORM organizes methods into three primary categories: `Chain Methods`, `Finisher Methods`, and `New Session Methods`.
+GORM 将方法分为三大类： `Chain Methods`, `Finisher Methods`, and `New Session Methods`.
 
 ### Chain Methods
 
-Chain methods are used to modify or append `Clauses` to the current `Statement`. Some common chain methods include:
+用于修改或追加目前 `Clauses` 的 `Statement`。 一些常见的链式方法包括：
 
 - `Where`
 - `Select`
@@ -29,7 +29,7 @@ For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/
 
 ### Finisher Methods
 
-Finisher methods are immediate, executing registered callbacks that generate and run SQL commands. This category includes methods:
+终结方法是即时的，执行生成和运行 SQL 命令的注册回调。 This category includes methods:
 
 - `Create`
 - `First`
@@ -46,11 +46,11 @@ For the full list, refer to [GORM Finisher API](https://github.com/go-gorm/gorm/
 
 ### New Session Methods
 
-GORM defines methods like `Session`, `WithContext`, and `Debug` as New Session Methods, which are essential for creating shareable and reusable `*gorm.DB` instances. For more details, see [Session](session.html) documentation.
+更多详情，请参阅 [Session](session.html) 文档。
 
 ## Reusability and Safety
 
-A critical aspect of GORM is understanding when a `*gorm.DB` instance is safe to reuse. Following a `Chain Method` or `Finisher Method`, GORM returns an initialized `*gorm.DB` instance. This instance is not safe for reuse as it may carry over conditions from previous operations, potentially leading to contaminated SQL queries. For example:
+A critical aspect of GORM is understanding when a `*gorm.DB` instance is safe to reuse. Following a `Chain Method` or `Finisher Method`, GORM returns an initialized `*gorm.DB` instance. 这个实例无法安全地重新使用，因为它可能会将先前操作中的状况带回，有可能导致被污染的 SQL 查询。 For example:
 
 ### Example of Unsafe Reuse
 
@@ -66,7 +66,7 @@ queryDB.Where("age > ?", 20).First(&user2)
 // SQL: SELECT * FROM users WHERE name = "jinzhu" AND age > 10 AND age > 20
 ```
 
-### Example of Safe Reuse
+### 安全再利用的例子
 
 To safely reuse a `*gorm.DB` instance, use a New Session Method:
 
@@ -94,8 +94,8 @@ Let's clarify with a few examples:
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 // 'db' is a newly initialized `*gorm.DB`, which is safe to reuse.
 
-db.Where("name = ?", "jinzhu").Where("age = ?", 18).Find(&users)
-// The first `Where("name = ?", "jinzhu")` call is a chain method that initializes a `*gorm.DB` instance, or `*gorm.Statement`.
+db.where ("name = ?", "jinzhu").Where("age = ?", 18). ind(&用户)
+// 第一个`Where ("name = ?", "jinzhu")`是一个启动一个 `*gorm.DB` 实例或`*gorm.Statement`的链式方法。
 // The second `Where("age = ?", 18)` call adds a new condition to the existing `*gorm.Statement`.
 // `Find(&users)` is a finisher method, executing registered Query Callbacks, generating and running:
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18;
@@ -111,9 +111,9 @@ db.Find(&users)
 // SELECT * FROM users;
 ```
 
-In this example, each chain of method calls is independent, ensuring clean, non-polluted SQL queries.
+在这个例子中，每个方法调用链都是独立的，确保干净、无污染的 SQL 查询。
 
-- **(Bad) Example 2: Unsafe Instance Reuse**
+- **(Bad) 示例2：不安全的实例重用**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -135,7 +135,7 @@ tx.Where("age = ?", 28).Find(&users)
 
 In this bad example, reusing the `tx` variable leads to compounded conditions, which is generally not desirable.
 
-- **Example 3: Safe Reuse with New Session Methods**
+- **例3：使用新会话方法安全重新使用**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -155,6 +155,6 @@ tx.Where("age = ?", 28).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 28;
 ```
 
-In this example, using New Session Methods `Session`, `WithContext`, `Debug` correctly initializes a `*gorm.DB` instance for each logical operation, preventing condition pollution and ensuring each query is distinct and based on the specific conditions provided.
+在这个例子中，为每个逻辑操作正确使用新建会话方法 `Session`, `WithContext`, `Debug` 初始化一个 `*gorm.DB`实例，从而防止了条件污染，确保每个查询都是独立的，并且基于所提供的特定条件。
 
 Overall, these examples illustrate the importance of understanding GORM's behavior with respect to method chaining and instance management to ensure accurate and efficient database querying.

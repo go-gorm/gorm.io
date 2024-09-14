@@ -8,7 +8,7 @@ layout: page
 AutoMigrate 用于自动迁移您的 schema，保持您的 schema 是最新的。
 
 {% note warn %}
-**注意：** AutoMigrate 会创建表、缺失的外键、约束、列和索引。 如果大小、精度、是否为空可以更改，则 AutoMigrate 会改变列的类型。 出于保护您数据的目的，它 **不会** 删除未使用的列
+**注意：** AutoMigrate 会创建表、缺失的外键、约束、列和索引。 It will change existing column's type if its size, precision changed, or if it's changing from non-nullable to nullable. 出于保护您数据的目的，它 **不会** 删除未使用的列
 {% endnote %}
 
 ```go
@@ -269,7 +269,7 @@ GORM creates constraints when auto migrating or creating table, see [Constraints
 
 [Atlas](https://atlasgo.io) is an open-source database migration tool that has an official integration with GORM.
 
-While GORM's `AutoMigrate` feature works in most cases, at some point you many need to switch to a [versioned migrations](https://atlasgo.io/concepts/declarative-vs-versioned#versioned-migrations) strategy.
+While GORM's `AutoMigrate` feature works in most cases, at some point you may need to switch to a [versioned migrations](https://atlasgo.io/concepts/declarative-vs-versioned#versioned-migrations) strategy.
 
 Once this happens, the responsibility for planning migration scripts and making sure they are in line with what GORM expects at runtime is moved to developers.
 
