@@ -116,17 +116,22 @@ type User struct {
 Для анонимных полей GORM будет включать свои поля в свою же родительскую структуру, например:
 
 ```go
-type User struct {
-  gorm.Model
-  Name string
+type Author struct {
+  Name  string
+  Email string
 }
-// эквивалентно
-type User struct {
-  ID        uint           `gorm:"primaryKey"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt gorm.DeletedAt `gorm:"index"`
-  Name string
+
+type Blog struct {
+  Author
+  ID      int
+  Upvotes int32
+}
+// equals
+type Blog struct {
+  ID      int64
+  Name    string
+  Email   string
+  Upvotes int32
 }
 ```
 

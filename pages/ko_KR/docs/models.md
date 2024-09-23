@@ -114,17 +114,22 @@ type User struct {
 For anonymous fields, GORM will include its fields into its parent struct, for example:
 
 ```go
-type User struct {
-  gorm.Model
-  Name string
+type Author struct {
+  Name  string
+  Email string
+}
+
+type Blog struct {
+  Author
+  ID      int
+  Upvotes int32
 }
 // equals
-type User struct {
-  ID        uint           `gorm:"primaryKey"`
-  CreatedAt time.Time
-  UpdatedAt time.Time
-  DeletedAt gorm.DeletedAt `gorm:"index"`
-  Name string
+type Blog struct {
+  ID      int64
+  Name    string
+  Email   string
+  Upvotes int32
 }
 ```
 
