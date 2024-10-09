@@ -38,7 +38,7 @@ func main() {
   g.ApplyBasic(model.Customer{}, model.CreditCard{}, model.Bank{}, model.Passport{})
 
   // Generate default DAO interface for those generated structs from database
-  companyGenerator := g.GenerateModelAs("company", "MyCompany"),
+  companyGenerator := g.GenerateModelAs("company", "MyCompany")
   g.ApplyBasic(
     g.GenerateModel("users"),
     companyGenerator,
