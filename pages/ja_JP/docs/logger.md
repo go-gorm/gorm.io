@@ -54,7 +54,7 @@ db.Debug().Where("name = ?", "jinzhu").First(&User{})
 
 独自のLoggerを定義する方法については、GORMの [default logger](https://github.com/go-gorm/gorm/blob/master/logger/logger.go) を参照してください。
 
-Loggerは以下ののインターフェイスを実装する必要があります。 `context`を利用できるため、ログトレースで使用することができます。
+Loggerは以下のインターフェイスを実装する必要があります。 `context`を利用できるため、ログトレースで使用することができます。
 
 ```go
 type Interface interface {
