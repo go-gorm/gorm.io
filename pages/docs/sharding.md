@@ -11,8 +11,8 @@ https://github.com/go-gorm/sharding
 
 - Non-intrusive design. Load the plugin, specify the config, and all done.
 - Lighting-fast. No network based middlewares, as fast as Go.
-- Multiple database support. PostgreSQL tested, MySQL and SQLite is coming.
-- Allows you custom the Primary Key generator (Built in keygen, Sequence, Snowflake ...).
+- Multiple database (PostgreSQL, MySQL) support.
+- Integrated primary key generator (Snowflake, PostgreSQL Sequence, Custom, ...).
 
 ## Usage
 
@@ -20,26 +20,21 @@ Config the sharding middleware, register the tables which you want to shard. See
 
 ```go
 import (
-	"fmt"
+    "fmt"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-	"gorm.io/sharding"
+    "gorm.io/driver/postgres"
+    "gorm.io/gorm"
+    "gorm.io/sharding"
 )
 
-dsn := "postgres://localhost:5432/sharding-db?sslmode=disable"
-db, err := gorm.Open(postgres.New(postgres.Config{DSN: dsn}))
+db, err := gorm.Open(postgres.New(postgres.Config{DSN: "postgres://localhost:5432/sharding-db?sslmode=disable"))
 
 db.Use(sharding.Register(sharding.Config{
     ShardingKey:         "user_id",
     NumberOfShards:      64,
     PrimaryKeyGenerator: sharding.PKSnowflake,
-}, "orders").Register(sharding.Config{
-    ShardingKey:         "user_id",
-    NumberOfShards:      256,
-    PrimaryKeyGenerator: sharding.PKSnowflake,
-    // This case for show up give notifications, audit_logs table use same sharding rule.
-}, Notification{}, AuditLog{}))
+}, "orders", Notification{}, AuditLog{}))
+// This case for show up give notifications, audit_logs table use same sharding rule.
 ```
 
 Use the db session as usual. Just note that the query should have the `Sharding Key` when operate sharding tables.
