@@ -3,11 +3,11 @@ title: Declaração de Modelos
 layout: page
 ---
 
-GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities.
+O GORM simplifica as interações com o banco de dados mapeando constructo GO para tabelas de banco de dados. Entender como declarar modelos no GORM é fundamental para aproveitar todas as suas capacidades.
 
 ## Declaração de Modelos
 
-Os modelos são definidos usando constructo normal. These structs can contain fields with basic Go types, pointers or aliases of these types, or even custom types, as long as they implement the [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces from the `database/sql` package
+Os modelos são definidos usando constructo normal. Essas structs podem conter campos com tipos básicos do Go, ponteiros ou aliases desses tipos, ou até tipos personalizados, desde que implementem as interfaces [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) e [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) do pacote `database/sql`.
 
 Consider the following example of a `User` model:
 
@@ -52,13 +52,15 @@ O GORM fornece uma struct predefinida chamada `gorm.Model`, que inclui campos co
 
 ```go
 // definição de gorm.Model
-type Model struct {
+<code>type Model struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
   UpdatedAt time.Time
   DeletedAt gorm.DeletedAt `gorm:"index"`
-}
+}</code>
 ```
+
+</code>
 
 - **Embedding in Your Struct**: You can embed `gorm.Model` directly in your structs to include these fields automatically. This is useful for maintaining consistency across different models and leveraging GORM's built-in conventions, refer [Embedded Struct](#embedded_struct)
 
@@ -165,17 +167,17 @@ type Blog struct {
   Author  Author `gorm:"embedded;embeddedPrefix:author_"`
   Upvotes int32
 }
-// equals
+// equivalente
 type Blog struct {
   ID          int64
-    AuthorName  string
-    AuthorEmail string
+  AuthorName  string
+  AuthorEmail string
   Upvotes     int32
 }
 ```
 
 
-### <span id="tags">Fields Tags</span>
+### <span id="tags">Tags de Campos</span>
 
 Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however `camelCase` is preferred. If multiple tags are used they should be separated by a semicolon (`;`). Characters that have special meaning to the parser can be escaped with a backslash (`\`) allowing them to be used as parameter values.
 
