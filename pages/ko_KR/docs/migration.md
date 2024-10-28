@@ -1,6 +1,6 @@
 ---
 title: Migration
-layout: page
+layout: 페이지
 ---
 
 ## Auto Migration
@@ -272,7 +272,7 @@ While GORM's `AutoMigrate` feature works in most cases, at some point you may ne
 
 Once this happens, the responsibility for planning migration scripts and making sure they are in line with what GORM expects at runtime is moved to developers.
 
-Atlas can automatically plan database schema migrations for developers using the official [GORM Provider](https://github.com/ariga/atlas-provider-gorm).  After configuring the provider you can automatically plan migrations by running:
+Atlas can automatically plan database schema migrations for developers using the official [GORM Provider](https://github.com/ariga/atlas-provider-gorm).  공급자(Provider) 를 구성한 후에는 실행하여 마이그레이션을 자동으로 계획할 수 있습니다:
 ```bash
 atlas migrate diff --env gorm
 ```
