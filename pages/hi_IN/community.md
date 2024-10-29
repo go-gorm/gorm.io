@@ -26,6 +26,8 @@ layout: पृष्ठ
 
 * [GORM का एक साथ (concurrently) उपयोग करना सुरक्षित नहीं है](https://zhuanlan.zhihu.com/p/556065676)
 
+* A multi-tenant iot platform based on gorm - [联犀](https://github.com/unitedrhino/things)
+
 ## Videos
 
 * [piexlmax](https://github.com/piexlmax) द्वारा Gorm quick स्टार्ट ट्यूटोरियल - [GORM V2 quick स्टार्ट](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
