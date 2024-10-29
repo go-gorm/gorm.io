@@ -26,6 +26,8 @@ layout: page
 
 * [GORM不并发安全](https://zhuanlan.zhihu.com/p/556065676)
 
+* A multi-tenant iot platform based on gorm - [联犀](https://github.com/unitedrhino/things)
+
 ## 视频
 
 * Gorm 快速入门GORM- [piexlmax](https://github.com/piexlmax) - [GORM V2 快速入门](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
