@@ -47,6 +47,7 @@ layout: page
 * [Go ORM Helper - Plugin do Goland para autocompletar código GORM](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
 * [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
+* [DuckDB- GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
 * [gorm4gaussdb - GORM GaussDB Driver](https://github.com/okyer/gorm4gaussdb)
 
 ## <span id="contribute">Contribua para esta página</span>
