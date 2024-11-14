@@ -80,8 +80,8 @@ type Company struct {
 type User struct {
   gorm.Model
   Name      string
-  CompanyID string
-  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID como referência
+  CompanyID int
+  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID as references
 }
 
 type Company struct {
