@@ -11,8 +11,8 @@ https://github.com/go-gorm/sharding
 
 - シンプルなデザイン。 プラグインをロードして設定を指定するだけで使用できます。
 - 高速な動作。 Goと同じくらい速く、ネットワークに依存しないミドルウェア。
-- 複数のデータベースのサポート。 PostgreSQLは動作検証済み、MySQLとSQLiteは今後追加されます。
-- プライマリキージェネレータをカスタマイズできます(ビルトインのkeygen、Sequence、Snowflake...)
+- Multiple database (PostgreSQL, MySQL) support.
+- Integrated primary key generator (Snowflake, PostgreSQL Sequence, Custom, ...).
 
 ## 使用方法
 
@@ -27,19 +27,14 @@ import (
     "gorm.io/sharding"
 )
 
-dsn := "postgres://localhost:5432/sharding-db?sslmode=disable"
-db, err := gorm.Open(postgres.New(postgres.Config{DSN: dsn}))
+db, err := gorm.Open(postgres.New(postgres.Config{DSN: "postgres://localhost:5432/sharding-db?sslmode=disable"))
 
 db.Use(sharding.Register(sharding.Config{
     ShardingKey:         "user_id",
     NumberOfShards:      64,
     PrimaryKeyGenerator: sharding.PKSnowflake,
-}, "orders").Register(sharding.Config{
-    ShardingKey:         "user_id",
-    NumberOfShards:      256,
-    PrimaryKeyGenerator: sharding.PKSnowflake,
-    // このケースでは、notificationsとaudit_logsテーブルに同じシャーディングルールを適用します。
-}, Notification{}, AuditLog{}))
+}, "orders", Notification{}, AuditLog{}))
+// This case for show up give notifications, audit_logs table use same sharding rule.
 ```
 
 通常通りdbセッションを使用します。 シャーディング対象のテーブルを操作する場合は、クエリに `Sharding Key` を持つ必要があることに注意してください。
