@@ -13,15 +13,16 @@ GORMは、Goの構造体をデータベーステーブルにマッピングす�
 
 ```go
 type User struct {
-  ID           uint           // 主キーの標準フィールド
-  Name         string         // 通常の文字列フィールド
-  Email        *string        // 文字列へのポインタ、nullを許可
-  Age          uint8          // 符号なし8ビット整数
-  Birthday     *time.Time     // time.Timeへのポインタ。nullを許可
-  MemberNumber sql.NullString // sql.NullStringを使用して、null可能な文字列をハンドリング
-  ActivatedAt  sql.NullTime   // sql.NullTimeを使用したnull可能な時間フィールド
-  CreatedAt    time.Time      // GORMによって自動的に管理される作成時間
-  UpdatedAt    time.Time      // GORMによって自動的に管理される更新時間
+  ID           uint           // Standard field for the primary key
+  Name         string         // A regular string field
+  Email        *string        // A pointer to a string, allowing for null values
+  Age          uint8          // An unsigned 8-bit integer
+  Birthday     *time.Time     // A pointer to time.Time, can be null
+  MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
+  ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
+  CreatedAt    time.Time      // Automatically managed by GORM for creation time
+  UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  ignored      string         // fields that aren't exported are ignored
 }
 ```
 
@@ -31,6 +32,7 @@ type User struct {
 - `*string` や `*time.Time` のような型へのポインタは、null可能フィールドを示します。
 - `sql.NullString` と `sql.NullTime` の `database/sql` パッケージは null可能フィールドでより多くの制御が可能です。
 - `CreatedAt` と `UpdatedAt` は、レコードが作成または更新されたときにGORMが自動的に現在の時刻を入力する特別なフィールドです。
+- Non-exported fields (starting with a small letter) are not mapped
 
 GORMにおけるモデル宣言の基本的な機能に加えて、シリアライザタグによるシリアライズのサポートに注目することが重要です。 この機能により、特にカスタム・シリアライズ・ロジックを必要とするフィールドについて、データの格納方法とデータベースからの取得方法の柔軟性が高まります。詳細な説明については [シリアライザー](serializer.html) を参照してください。
 
