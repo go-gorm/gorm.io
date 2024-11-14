@@ -47,6 +47,7 @@ layout: page
 * [Go ORM 助手 - GORM 代码补全 Goland 插件](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
 * [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
+* [DuckDB- GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
 * [gorm4gaussdb - GORM GaussDB Driver](https://github.com/okyer/gorm4gaussdb)
 
 ## <span id="contribute">完善本页面</span>
