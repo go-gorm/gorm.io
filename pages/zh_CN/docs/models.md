@@ -14,14 +14,15 @@ GORM 通过将 Go 结构体（Go structs） 映射到数据库表来简化数据
 ```go
 type User struct {
   ID           uint           // Standard field for the primary key
-  Name         string         // 一个常规字符串字段
-  Email        *string        // 一个指向字符串的指针, allowing for null values
-  Age          uint8          // 一个未签名的8位整数
+  Name         string         // A regular string field
+  Email        *string        // A pointer to a string, allowing for null values
+  Age          uint8          // An unsigned 8-bit integer
   Birthday     *time.Time     // A pointer to time.Time, can be null
   MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
   ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
-  CreatedAt    time.Time      // 创建时间（由GORM自动管理）
-  UpdatedAt    time.Time      // 最后一次更新时间（由GORM自动管理）
+  CreatedAt    time.Time      // Automatically managed by GORM for creation time
+  UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  ignored      string         // fields that aren't exported are ignored
 }
 ```
 
@@ -31,6 +32,7 @@ type User struct {
 - 指向 `*string` 和 `*time.Time` 类型的指针表示可空字段。
 - 来自 `database/sql` 包的 `sql.NullString` 和 `sql.NullTime` 用于具有更多控制的可空字段。
 - `CreatedAt` 和 `UpdatedAt` 是特殊字段，当记录被创建或更新时，GORM 会自动向内填充当前时间。
+- Non-exported fields (starting with a small letter) are not mapped
 
 除了 GORM 中模型声明的基本特性外，强调下通过 serializer 标签支持序列化也很重要。 此功能增强了数据存储和检索的灵活性，特别是对于需要自定义序列化逻辑的字段。详细说明请参见 [Serializer](serializer.html)。
 
