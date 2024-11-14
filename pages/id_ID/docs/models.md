@@ -13,15 +13,16 @@ Pertimbangkan contoh model `User` berikut ini:
 
 ```go
 type User struct {
-  ID           uint           // Bidang standar untuk primary key
-  Name         string         // Bidang string biasa
-  Email        *string        // Sebuah pointer string, yang memungkinkan nilai null
-  Age          uint8          // Bilangan bulat positif 8-bit
-  Birthday     *time.Time     // Sebuah pointer time.Time, bisa berupa nilai null
-  MemberNumber sql.NullString // Menggunakan sql.NullString untuk menangani string yang bisa bernilai null
-  ActivatedAt  sql.NullTime   // Menggunakan sql.NullTime untuk bidang waktu yang bisa bernilai null
-  CreatedAt    time.Time      // Dikelola secara otomatis oleh GORM untuk waktu pembuatan
-  UpdatedAt    time.Time      // Dikelola secara otomatis oleh GORM untuk waktu pembaruan
+  ID           uint           // Standard field for the primary key
+  Name         string         // A regular string field
+  Email        *string        // A pointer to a string, allowing for null values
+  Age          uint8          // An unsigned 8-bit integer
+  Birthday     *time.Time     // A pointer to time.Time, can be null
+  MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
+  ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
+  CreatedAt    time.Time      // Automatically managed by GORM for creation time
+  UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  ignored      string         // fields that aren't exported are ignored
 }
 ```
 
@@ -31,6 +32,7 @@ Dalam model ini:
 - Sebuah pointer ke tipe seperti `*string` dan `*time.Time` mengindikasikan bidang yang dapat bernilai null.
 - `sql.NullString` dan `sql.NullTime` dari package `database/sql` digunakan untuk bidang yang dapat bernilai null dengan kontrol yang lebih luas.
 - `CreatedAt` dan `UpdatedAt` adalah bidang khusus yang secara otomatis diisi oleh GORM dengan waktu saat ini ketika record dibuat atau diperbarui.
+- Non-exported fields (starting with a small letter) are not mapped
 
 Selain fitur dasar deklarasi model di GORM, penting untuk menyoroti dukungan serialisasi melalui tag serializer. Fitur ini meningkatkan fleksibilitas bagaimana data disimpan dan diambil dari database, terutama untuk bidang yang memerlukan logika serialisasi khusus, Lihat [Serializer](serializer.html) untuk penjelasan yang lebih rinci
 
