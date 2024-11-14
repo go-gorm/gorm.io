@@ -13,15 +13,16 @@ Consider the following example of a `User` model:
 
 ```go
 type User struct {
-  ID           uint           // Campo padrão para a chave primária
-  Name         string         // Um campo de string comum
-  Email        *string        // Um ponteiro para uma string, permitindo valores nulos
-  Age          uint8          // Um inteiro sem sinal de 8 bits.
-  Birthday     *time.Time     // Um ponteiro para time.Time, pode ser nulo.
-  MemberNumber sql.NullString // Usa sql.NullString para lidar com strings que podem ser nulas.
-  ActivatedAt  sql.NullTime   // Usa sql.NullTime para campos de tempo que podem ser nulos.
-  CreatedAt    time.Time      // Gerenciado automaticamente pelo GORM para o tempo de criação.
-  UpdatedAt    time.Time      // Gerenciado automaticamente pelo GORM para o tempo de atualização.
+  ID           uint           // Standard field for the primary key
+  Name         string         // A regular string field
+  Email        *string        // A pointer to a string, allowing for null values
+  Age          uint8          // An unsigned 8-bit integer
+  Birthday     *time.Time     // A pointer to time.Time, can be null
+  MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
+  ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
+  CreatedAt    time.Time      // Automatically managed by GORM for creation time
+  UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  ignored      string         // fields that aren't exported are ignored
 }
 ```
 
@@ -31,6 +32,7 @@ In this model:
 - Ponteiros para tipos como `*‘strings’` e `*time. Time` indicam campos que podem ser nulos.
 - `Sal. Ligustrina` e `sal. Ultime` do pacote `database/sal` são usados para campos que podem ser nulos, oferecendo mais controle.
 - `CreatedAt` e `UpdatedAt` são campos especiais que o GORM preenche automaticamente com o horário atual quando um registro é criado ou atualizado.
+- Non-exported fields (starting with a small letter) are not mapped
 
 In addition to the fundamental features of model declaration in GORM, it's important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See [Serializer](serializer.html) for a detailed explanation
 
