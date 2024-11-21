@@ -1,14 +1,14 @@
 ---
-title: Migration
-layout: page
+title: 마이그레이션
+layout: 페이지
 ---
 
-## Auto Migration
+## 자동 마이그레이션
 
-Automatically migrate your schema, to keep your schema up to date.
+스키마를 자동으로 마이그레이션하여 스키마를 최신 상태로 유지하세요.
 
 {% note warn %}
-**NOTE:** AutoMigrate will create tables, missing foreign keys, constraints, columns and indexes. It will change existing column's type if its size, precision changed, or if it's changing from non-nullable to nullable. It **WON'T** delete unused columns to protect your data.
+**참고:** 자동 마이그레이션은 테이블, 누락된 외래 키, 제약 조건, 열 및 인덱스를 생성합니다. 기존 열의 크기, 정밀도가 변경되거나 null이 아닌 열에서 null로 변경되는 경우 기존 열의 유형을 변경합니다. 데이터를 보호하기 위해 사용하지 않는 열을  **삭제하지 않습니다.**
 {% endnote %}
 
 ```go
@@ -16,12 +16,13 @@ db.AutoMigrate(&User{})
 
 db.AutoMigrate(&User{}, &Product{}, &Order{})
 
-// Add table suffix when creating tables
+// 테이블 생성 시 테이블 접미사(Suffix) 추가
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
+
 ```
 
 {% note warn %}
-**NOTE** AutoMigrate creates database foreign key constraints automatically, you can disable this feature during initialization, for example:
+**참고:** 데이터베이스의 외래 키 제약 조건을 자동으로 생성합니다. 이 기능은 초기화 시 비활성화할 수 있습니다. 예를 들어
 {% endnote %}
 
 ```go
@@ -30,13 +31,13 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
 })
 ```
 
-## Migrator Interface
+## 마이그레이션 인터페이스
 
-GORM provides a migrator interface, which contains unified API interfaces for each database that could be used to build your database-independent migrations, for example:
+GORM은 각 데이터베이스에 대해 통합된 API 인터페이스를 포함하는 마이그레이터 인터페이스를 제공하며, 이를 사용해 데이터베이스에 종속되지 않는 마이그레이션을 구축할 수 있습니다. 예를 들어:
 
-SQLite doesn't support `ALTER COLUMN`, `DROP COLUMN`, GORM will create a new table as the one you are trying to change, copy all data, drop the old table, rename the new table
+SQLite는 ALTER COLUMN, DROP COLUMN을 지원하지 않으므로, GORM은 변경하려는 테이블과 동일한 새 테이블을 생성한 다음 모든 데이터를 복사하고, 기존 테이블을 삭제한 후 새 테이블의 이름을 변경합니다.
 
-MySQL doesn't support rename column, index for some versions, GORM will perform different SQL based on the MySQL version you are using
+MySQL은 일부 버전에서 컬럼이나 인덱스 이름 변경을 지원하지 않으므로, GORM은 사용하는 MySQL 버전에 따라 다른 SQL을 수행합니다.
 
 ```go
 type Migrator interface {
@@ -80,15 +81,15 @@ type Migrator interface {
 }
 ```
 
-### CurrentDatabase
+### 현재 데이터베이스
 
-Returns current using database name
+데이터베이스 이름을 사용하여 현재를 반환합니다.
 
 ```go
 db.Migrator().CurrentDatabase()
 ```
 
-### Tables
+### 테이블들
 
 ```go
 // Create table for `User`
@@ -110,7 +111,7 @@ db.Migrator().RenameTable(&User{}, &UserInfo{})
 db.Migrator().RenameTable("users", "user_infos")
 ```
 
-### Columns
+### 열들 (Columns)
 
 ```go
 type User struct {
@@ -154,16 +155,16 @@ type ColumnType interface {
 }
 ```
 
-### Views
+### 뷰 (Views)
 
-Create views by `ViewOption`. About `ViewOption`:
+`ViewOption`을 사용하여 뷰를 생성합니다. `View Option`에 대한 설명은 다음과 같습니다.
 
-- `Query` is a [subquery](https://gorm.io/docs/advanced_query.html#SubQuery), which is required.
-- If `Replace` is true, exec `CREATE OR REPLACE` otherwise exec `CREATE`.
-- If `CheckOption` is not empty, append to sql, e.g. `WITH LOCAL CHECK OPTION`.
+- `쿼리(Query)`는 필수적인  [서브쿼리(subquery)입니다.](https://gorm.io/docs/advanced_query.html#SubQuery)
+- 만약 `리플레이스(Replace)`가 true이면 `CREATE OR REPLACE`를 실행하고, 그렇지 않으면 `CREATE`를 실행합니다.
+- 만약 `CheckOption`이 비어 있지 않다면 SQL을 추가하게 됩니다. 예를 들어  `WITH LOCAL CHECK OPTION`과 같이 사용됩니다.
 
 {% note warn %}
-**NOTE** SQLite currently does not support `Replace` in `ViewOption`
+**참고:** SQLite는 현재 `ViewOption`에서 리플레이스(Replace)</code>를 지원하지 않습니다.
 {% endnote %}
 
 ```go
@@ -186,24 +187,24 @@ db.Migrator().DropView("users_pets")
 // DROP VIEW IF EXISTS "users_pets"
 ```
 
-### Constraints
+### 제약 조건(Constraints)
 
 ```go
 type UserIndex struct {
   Name  string `gorm:"check:name_checker,name <> 'jinzhu'"`
 }
 
-// Create constraint
+// 제약 조건을 생성합니다.
 db.Migrator().CreateConstraint(&User{}, "name_checker")
 
-// Drop constraint
+// 제약 조건을 삭제합니다.
 db.Migrator().DropConstraint(&User{}, "name_checker")
 
-// Check constraint exists
+// 제약 조건이 있는지 확인합니다.
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
-Create foreign keys for relations
+관계에 대한 외래 키 만들기
 
 ```go
 type User struct {
@@ -217,21 +218,22 @@ type CreditCard struct {
   UserID uint
 }
 
-// create database foreign key for user & credit_cards
+// 사용자 및 신용카드에 대한 외래 키 생성
 db.Migrator().CreateConstraint(&User{}, "CreditCards")
 db.Migrator().CreateConstraint(&User{}, "fk_users_credit_cards")
+// credit_cards 테이블에 fk_users_credit_cards 외래 키 제약 조건 추가
 // ALTER TABLE `credit_cards` ADD CONSTRAINT `fk_users_credit_cards` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 
-// check database foreign key for user & credit_cards exists or not
+// 사용자 및 신용카드에 대한 외래 키가 존재하는지 확인
 db.Migrator().HasConstraint(&User{}, "CreditCards")
 db.Migrator().HasConstraint(&User{}, "fk_users_credit_cards")
 
-// drop database foreign key for user & credit_cards
+// 사용자 및 신용카드에 대한 외래 키 삭제
 db.Migrator().DropConstraint(&User{}, "CreditCards")
 db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
 ```
 
-### Indexes
+### 인덱스 (Indexes)
 
 ```go
 type User struct {
@@ -239,15 +241,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// Create index for Name field
+// Name 필드에 대한 인덱스 생성
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// Drop index for Name field
+// Name 필드에 대한 인덱스 삭제
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// Check Index exists
+// 인덱스 존재 여부 확인
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -256,39 +258,41 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// Rename index name
+
+// 인덱스 이름 변경
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
+
 ```
 
-## Constraints
+## 제약 조건
 
-GORM creates constraints when auto migrating or creating table, see [Constraints](constraints.html) or [Database Indexes](indexes.html) for details
+GORM은 자동 마이그레이션이나 테이블 생성 시 제약 조건을 생성합니다. 자세한 내용은 [제약 조건](constraints.html) 또는 [데이터베이스 인덱스](indexes.html)를 참조하세요."
 
-## Atlas Integration
+## 아틀라스 통합 (Atlas Integration)
 
-[Atlas](https://atlasgo.io) is an open-source database migration tool that has an official integration with GORM.
+[Atlas](https://atlasgo.io)는 GORM과 공식적으로 통합된 오픈 소스 데이터베이스 마이그레이션 도구입니다.
 
-While GORM's `AutoMigrate` feature works in most cases, at some point you may need to switch to a [versioned migrations](https://atlasgo.io/concepts/declarative-vs-versioned#versioned-migrations) strategy.
+GORM의 `AutoMigrate` 기능은 대부분의 경우에 작동하지만, 언젠가는 [버전 관리 마이그레이션](https://atlasgo.io/concepts/declarative-vs-versioned#versioned-migrations) 전략으로 전환해야 할 수도 있습니다.
 
-Once this happens, the responsibility for planning migration scripts and making sure they are in line with what GORM expects at runtime is moved to developers.
+이럴 경우, 마이그레이션 스크립트를 계획하고 GORM이 런타임에 기대하는 것과 일치하도록 하는 책임은 개발자에게 넘어갑니다.
 
-Atlas can automatically plan database schema migrations for developers using the official [GORM Provider](https://github.com/ariga/atlas-provider-gorm).  After configuring the provider you can automatically plan migrations by running:
+Atlas는 공식 [GORM Provider](https://github.com/ariga/atlas-provider-gorm)를 사용하여 개발자를 위한 데이터베이스 스키마 마이그레이션을 자동으로 계획할 수 있습니다.  공급자(Provider)를 구성한 후에는 실행하여 마이그레이션을 자동으로 계획할 수 있습니다:
 ```bash
 atlas migrate diff --env gorm
 ```
 
-To learn how to use Atlas with GORM, check out the [official documentation](https://atlasgo.io/guides/orms/gorm).
+GORM과 함께 Atlas를 사용하는 방법을 배우려면 [공식 문서](https://atlasgo.io/guides/orms/gorm)를 확인하세요.
 
 
 
-## Other Migration Tools
+## 기타 마이그레이션 도구
 
-To use GORM with other Go-based migration tools, GORM provides a generic DB interface that might be helpful for you.
+GORM을 다른 Go 기반 마이그레이션 도구와 함께 사용하려면, GORM은 여러분에게 유용할 수 있는 일반 DB 인터페이스를 제공합니다.
 
 ```go
 // returns `*sql.DB`
 db.DB()
 ```
 
-Refer to [Generic Interface](generic_interface.html) for more details.
+자세한 내용은 [일반 인터페이스](generic_interface.html)를 참조하세요.

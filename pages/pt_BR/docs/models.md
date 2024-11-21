@@ -3,11 +3,11 @@ title: Declaração de Modelos
 layout: page
 ---
 
-GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities.
+O GORM simplifica as interações com o banco de dados mapeando constructo GO para tabelas de banco de dados. Entender como declarar modelos no GORM é fundamental para aproveitar todas as suas capacidades.
 
 ## Declaração de Modelos
 
-Models are defined using normal structs. These structs can contain fields with basic Go types, pointers or aliases of these types, or even custom types, as long as they implement the [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces from the `database/sql` package
+Os modelos são definidos usando constructo normal. Essas structs podem conter campos com tipos básicos do Go, ponteiros ou aliases desses tipos, ou até tipos personalizados, desde que implementem as interfaces [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) e [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) do pacote `database/sql`.
 
 Consider the following example of a `User` model:
 
@@ -22,15 +22,17 @@ type User struct {
   ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
   CreatedAt    time.Time      // Automatically managed by GORM for creation time
   UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  ignored      string         // fields that aren't exported are ignored
 }
 ```
 
 In this model:
 
 - Basic data types like `uint`, `string`, and `uint8` are used directly.
-- Pointers to types like `*string` and `*time.Time` indicate nullable fields.
-- `sql.NullString` and `sql.NullTime` from the `database/sql` package are used for nullable fields with more control.
-- `CreatedAt` and `UpdatedAt` are special fields that GORM automatically populates with the current time when a record is created or updated.
+- Ponteiros para tipos como `*‘strings’` e `*time. Time` indicam campos que podem ser nulos.
+- `Sal. Ligustrina` e `sal. Ultime` do pacote `database/sal` são usados para campos que podem ser nulos, oferecendo mais controle.
+- `CreatedAt` e `UpdatedAt` são campos especiais que o GORM preenche automaticamente com o horário atual quando um registro é criado ou atualizado.
+- Non-exported fields (starting with a small letter) are not mapped
 
 In addition to the fundamental features of model declaration in GORM, it's important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See [Serializer](serializer.html) for a detailed explanation
 
@@ -38,27 +40,29 @@ In addition to the fundamental features of model declaration in GORM, it's impor
 
 1. **Primary Key**: GORM uses a field named `ID` as the default primary key for each model.
 
-2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database.
+2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instancie, a `Ser` constructo recomes `uses` in toe base de dados.
 
 3. **Column Names**: GORM automatically converts struct field names to `snake_case` for column names in the database.
 
-4. **Timestamp Fields**: GORM uses fields named `CreatedAt` and `UpdatedAt` to automatically track the creation and update times of records.
+4. **Campos de Estamparia**: O GORM usa campos chamados `CreatedAt` e `UpdatedAt` para rastrear automaticamente os horários de criação e atualização dos registros.
 
-Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don't fit your requirements. You can learn more about customizing these conventions in GORM's documentation on [conventions](conventions.html).
+Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don't fit your requirements.
 
 ### `gorm.Model`
 
-GORM provides a predefined struct named `gorm.Model`, which includes commonly used fields:
+O GORM fornece uma struct predefinida chamada `gorm.Model`, que inclui campos comumente usados:
 
 ```go
-// gorm.Model definition
-type Model struct {
+// definição de gorm.Model
+<code>type Model struct {
   ID        uint           `gorm:"primaryKey"`
   CreatedAt time.Time
   UpdatedAt time.Time
   DeletedAt gorm.DeletedAt `gorm:"index"`
-}
+}</code>
 ```
+
+</code>
 
 - **Embedding in Your Struct**: You can embed `gorm.Model` directly in your structs to include these fields automatically. This is useful for maintaining consistency across different models and leveraging GORM's built-in conventions, refer [Embedded Struct](#embedded_struct)
 
@@ -165,17 +169,17 @@ type Blog struct {
   Author  Author `gorm:"embedded;embeddedPrefix:author_"`
   Upvotes int32
 }
-// equals
+// equivalente
 type Blog struct {
   ID          int64
-    AuthorName  string
-    AuthorEmail string
+  AuthorName  string
+  AuthorEmail string
   Upvotes     int32
 }
 ```
 
 
-### <span id="tags">Fields Tags</span>
+### <span id="tags">Tags de Campos</span>
 
 Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however `camelCase` is preferred. If multiple tags are used they should be separated by a semicolon (`;`). Characters that have special meaning to the parser can be escaped with a backslash (`\`) allowing them to be used as parameter values.
 

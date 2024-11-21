@@ -22,6 +22,7 @@ type User struct {
   ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
   CreatedAt    time.Time      // Automatically managed by GORM for creation time
   UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  ignored      string         // fields that aren't exported are ignored
 }
 ```
 
@@ -31,6 +32,7 @@ In this model:
 - Pointers to types like `*string` and `*time.Time` indicate nullable fields.
 - `sql.NullString` and `sql.NullTime` from the `database/sql` package are used for nullable fields with more control.
 - `CreatedAt` and `UpdatedAt` are special fields that GORM automatically populates with the current time when a record is created or updated.
+- Non-exported fields (starting with a small letter) are not mapped
 
 In addition to the fundamental features of model declaration in GORM, it's important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See [Serializer](serializer.html) for a detailed explanation
 

@@ -7,11 +7,11 @@ layout: page
 
 GORM leverages `Callbacks` to power its core functionalities. These callbacks provide hooks for various database operations like `Create`, `Query`, `Update`, `Delete`, `Row`, and `Raw`, allowing for extensive customization of GORM's behavior.
 
-Callbacks are registered at the global `*gorm.DB` level, not on a session basis. This means if you need different callback behaviors, you should initialize a separate `*gorm.DB` instance.
+回调是在全局的 `*gorm.DB` 级别的，不是在session级别的。 This means if you need different callback behaviors, you should initialize a separate `*gorm.DB` instance.
 
-### Registering a Callback
+### 注册 Callback
 
-You can register a callback for specific operations. For example, to add a custom image cropping functionality:
+您可以为特定操作注册回调。 例如，要添加自定义图像裁剪功能：
 
 ```go
 func cropImage(db *gorm.DB) {
@@ -114,7 +114,7 @@ db.Callback().Create().After("*").Register("update_created_at", updateCreated)
 
 ### Predefined Callbacks
 
-GORM comes with a set of predefined callbacks that drive its standard features. It's recommended to review these [defined callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) before creating custom plugins or additional callback functions.
+It's recommended to review these [defined callbacks](https://github.com/go-gorm/gorm/blob/master/callbacks/callbacks.go) before creating custom plugins or additional callback functions.
 
 ## Plugins
 

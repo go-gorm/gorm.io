@@ -26,6 +26,8 @@ layout: صفحه
 
 * [استفاده از همزمانی در GORM ایمن نیست](https://zhuanlan.zhihu.com/p/556065676)
 
+* A multi-tenant iot platform based on gorm - [联犀](https://github.com/unitedrhino/things)
+
 ## ویدیوها
 
 * آموزش شروع سریع Gorm توسط  [piexlmax](https://github.com/piexlmax) - [GORM V2 quick start](https://www.bilibili.com/video/BV1E64y1472a#reply5032293079)
@@ -45,6 +47,8 @@ layout: صفحه
 * [Go ORM Helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
 * [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
+* [DuckDB- GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
+* [gorm4gaussdb - GORM GaussDB Driver](https://github.com/okyer/gorm4gaussdb)
 
 ## <span id="contribute">مشارکت در بهبود این صفحه</span>
 

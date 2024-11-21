@@ -113,13 +113,13 @@ user := User{
   ShippingAddress: Address{Address1: "Shipping Address - Address 1", Address2: "addr2"},
 }
 
-// Create user and his BillingAddress, ShippingAddress, including only specified fields of BillingAddress
+// 创建用户和他的账单地址,邮寄地址,只包括账单地址指定的字段
 db.Select("BillingAddress.Address1", "BillingAddress.Address2").Create(&user)
-// SQL: Creates user and BillingAddress with only 'Address1' and 'Address2' fields
+// SQL: 只使用地址1和地址2来创建用户和账单地址
 
-// Create user and his BillingAddress, ShippingAddress, excluding specific fields of BillingAddress
+// 创建用户和账单地址,邮寄地址,但不包括账单地址的指定字段
 db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
-// SQL: Creates user and BillingAddress, omitting 'Address2' and 'CreatedAt' fields
+// SQL: 创建用户和账单地址,省略'地址2'和创建时间字段
 ```
 
 ## 删除关联
