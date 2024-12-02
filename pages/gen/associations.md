@@ -69,7 +69,7 @@ customer := g.GenerateModel("customers", gen.FieldRelate(field.HasMany, "CreditC
     }),
 )
 
-g.ApplyBasic(card, custormer)
+g.ApplyBasic(card, customer)
 ```
 
 GEN will generate models with associated field:
