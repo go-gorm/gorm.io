@@ -92,7 +92,7 @@ db.Create(&users)
 
 ## 作成時のHook
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORMでは、`BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` としてユーザー定義のフックを実装することができます。  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
