@@ -135,7 +135,7 @@ db.Model(&User{}).Create([]map[string]interface{}{
 **注記** map から作成する場合、hooks は呼び出されません。また、アソシエーションは保存されず、主キーの値は埋め込まれません。
 {% endnote %}
 
-## <span id="create_from_sql_expr">SQL式/Context Valuer で作成する</span>
+## <span id="create_from_sql_expr">SQL式/Context Valuer からの作成</span>
 
 GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
 
