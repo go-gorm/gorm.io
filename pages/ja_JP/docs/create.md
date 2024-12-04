@@ -29,7 +29,7 @@ result.RowsAffected // returns inserted records count
 ```
 
 {% note warn %}
-**注意** **Create()**の引数として構造体を渡すことはできません。代わりにポインタを渡すようにしてください。
+**注記** 'create' の引数として構造体を渡すことはできません。データへのポインタを渡してください。
 {% endnote %}
 
 ## フィールドを選択してレコードを作成する
@@ -90,9 +90,9 @@ db.Create(&users)
 // INSERT INTO pets xxx (15 batches)
 ```
 
-## 作成時のHook
+## 作成時の Hooks
 
-GORMでは、`BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` としてユーザー定義のフックを実装することができます。  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORMでは、`BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` としてユーザー定義の Hooks を実装することができます。  これらの Hooks メソッドはレコードの作成時に呼び出されます。ライフサイクルの詳細については [Hooks](hooks.html) を参照してください。
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -105,7 +105,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+`Hooks` メソッドをスキップしたい場合は、`SkipHooks` セッションモードを使用できます。例：
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -115,9 +115,9 @@ DB.Session(&gorm.Session{SkipHooks: true}).Create(&users)
 DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 ```
 
-## Mapを使って作成する
+## Map からの作成
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORMは `map[string]interface{}` および `[]map[string]interface{}{}` からの作成に対応しています。
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
@@ -132,7 +132,7 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**注記** map から作成する場合、hooks は呼び出されません。また、アソシエーションは保存されず、主キーの値は埋め込まれません。
 {% endnote %}
 
 ## <span id="create_from_sql_expr">SQL式/Context Valuer で作成する</span>
