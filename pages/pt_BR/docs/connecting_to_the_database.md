@@ -14,8 +14,8 @@ import (
 )
 
 func main() {
-  // refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
-  dsn := "user:pass@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
+  // referencia https://github.com/go-sql-driver/mysql#dsn-data-source-name para mais detalhes
+  dsn := "user:pass(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local"
   db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 }
 ```
@@ -28,18 +28,18 @@ O MySQL Driver fornece [algumas configurações avançadas](https://github.com/g
 
 ```go
 db, err := gorm.Open(mysql.New(mysql.Config{
-  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name
-  DefaultStringSize: 256, // default size for string fields
-  DisableDatetimePrecision: true, // disable datetime precision, which not supported before MySQL 5.6
-  DontSupportRenameIndex: true, // drop & create when rename index, rename index not supported before MySQL 5.7, MariaDB
-  DontSupportRenameColumn: true, // `change` when rename column, rename column not supported before MySQL 8, MariaDB
-  SkipInitializeWithVersion: false, // auto configure based on currently MySQL version
+  DSN: "gorm:gorm@tcp(127.0.0.1:3306)/gorm?charset=utf8&parseTime=True&loc=Local", // Nome base de dados.
+  DefaultStringSize: 256, // tamanha padrao para campo string.
+  DisableDatetimePrecision: true, //  desabilita precisão datetime , não suportado antes de MySQL 5.6.
+  DontSupportRenameIndex: true, // drop & create ao renomear index, renomear index não suportado antes de MySQL 6.7,MariaDB.
+  DontSupportRenameColumn: true, // `alterar` ao renomear coluna, renomear coluna não suportado antes de MySQL 8,MariaDB.
+  SkipInitializeWithVersion: false, // Auto-configuração baseada na atual versaro do MySQL.
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### Driver Customizado
 
-GORM allows to customize the MySQL driver with the `DriverName` option, for example:
+GORM permite a customização do driver de MySQL, com a opção `DriverName` por exemplo:
 
 ```go
 import (
@@ -50,13 +50,13 @@ import (
 
 db, err := gorm.Open(mysql.New(mysql.Config{
   DriverName: "my_mysql_driver",
-  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // data source name, refer https://github.com/go-sql-driver/mysql#dsn-data-source-name
+  DSN: "gorm:gorm@tcp(localhost:9910)/gorm?charset=utf8&parseTime=True&loc=Local", // Nome base de dados, referencia https://github.com/go-sql-driver/mysql#dsn-data-source-name
 }), &gorm.Config{})
 ```
 
-### Existing database connection
+### Conexão com base de dados existente
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM permite inicializar `*gorm.DB` com uma conexão de base de dados existente
 
 ```go
 import (
@@ -83,17 +83,17 @@ dsn := "host=localhost user=gorm password=gorm dbname=gorm port=9920 sslmode=dis
 db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 ```
 
-We are using [pgx](https://github.com/jackc/pgx) as postgres's database/sql driver, it enables prepared statement cache by default, to disable it:
+Nós estamos utilizando [pgx](https://github.com/jackc/pgx) como driver para base de dados postgres, isso permite preparar o cache da declaração por padrão, para desabilita-lo:
 
 ```go
 // https://github.com/go-gorm/postgres
 db, err := gorm.Open(postgres.New(postgres.Config{
   DSN: "user=gorm password=gorm dbname=gorm port=9920 sslmode=disable TimeZone=Asia/Shanghai",
-  PreferSimpleProtocol: true, // disables implicit prepared statement usage
+  PreferSimpleProtocol: true, //  desabilita o uso implícito de  declaração Preparada.
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### Personalizar Driver
 
 GORM allows to customize the PostgreSQL driver with the `DriverName` option, for example:
 
