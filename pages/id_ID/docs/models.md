@@ -40,7 +40,7 @@ Selain fitur dasar deklarasi model di GORM, penting untuk menyoroti dukungan ser
 
 1. **Primary Key**: GORM menggunakan bidang bernama `ID` sebagai primary key default untuk setiap model.
 
-2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database.
+2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database, and a `GormUserName` becomes `gorm_user_names`.
 
 3. **Column Names**: GORM automatically converts struct field names to `snake_case` for column names in the database.
 
