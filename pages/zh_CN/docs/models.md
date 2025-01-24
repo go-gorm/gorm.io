@@ -40,7 +40,7 @@ type User struct {
 
 1. **主键**：GORM 使用一个名为`ID` 的字段作为每个模型的默认主键。
 
-2. **表名**：默认情况下，GORM 将结构体名称转换为 `snake_case` 并为表名加上复数形式。 例如，一个 `User` 结构体在数据库中的表名变为 `users` 。
+2. **表名**：默认情况下，GORM 将结构体名称转换为 `snake_case` 并为表名加上复数形式。 For instance, a `User` struct becomes `users` in the database, and a `GormUserName` becomes `gorm_user_names`.
 
 3. **列名**：GORM 自动将结构体字段名称转换为 `snake_case` 作为数据库中的列名。
 

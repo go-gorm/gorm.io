@@ -40,7 +40,7 @@ In addition to the fundamental features of model declaration in GORM, it's impor
 
 1. **Primary Key**: GORM uses a field named `ID` as the default primary key for each model.
 
-2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database.
+2. **Table Names**: By default, GORM converts struct names to `snake_case` and pluralizes them for table names. For instance, a `User` struct becomes `users` in the database, and a `GormUserName` becomes `gorm_user_names`.
 
 3. **Column Names**: GORM automatically converts struct field names to `snake_case` for column names in the database.
 
