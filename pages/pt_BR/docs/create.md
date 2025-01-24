@@ -22,14 +22,14 @@ users := []*User{
     {Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
-result := db.Create(users) // pass a slice to insert multiple row
+result := db.Create(users) // forneça um slice para inserir no banco de dados
 
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+result.Error        // retorna error
+result.RowsAffected // retorna a quantidade de linhas adicionadas
 ```
 
 {% note warn %}
-**NOTE** You cannot pass a struct to 'create', so you should pass a pointer to the data.
+**NOTA** Você não informar uma struct para 'Create', você deve passar um pointer para os dados.
 {% endnote %}
 
 ## Criar registro com campos selecionados
