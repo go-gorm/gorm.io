@@ -197,18 +197,18 @@ db.Where(&User{Name: "jinzhu", Age: 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu";
 ```
 
-To include zero values in the query conditions, you can use a map, which will include all key-values as query conditions, for example:
+クエリ条件にゼロ値を含めるには、すべてのキーと値のペアを含んだマップをクエリ条件として使用します。例:
 
 ```go
 db.Where(map[string]interface{}{"Name": "jinzhu", "Age": 0}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 0;
 ```
 
-For more details, see [Specify Struct search fields](#specify_search_fields).
+詳細については、 [構造体の検索フィールドを指定する](#specify_search_fields) を参照してください。
 
 ### <span id="specify_search_fields">構造体の検索フィールドを指定する</span>
 
-When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant field name or the dbname to `Where()`, for example:
+構造体を使用して検索する場合、フィールド名またはテーブルのカラム名を `Where()` の引数として列挙することで、構造体の特定の値のみをクエリ条件として使用することができます。 例:
 
 ```go
 db.Where(&User{Name: "jinzhu"}, "name", "Age").Find(&users)
@@ -220,7 +220,7 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 
 ### <span id="inline_conditions">インライン条件</span>
 
-Query conditions can be inlined into methods like `First` and `Find` in a similar way to `Where`.
+クエリ条件は、`First` や `Find` のようなメソッドにおいても `Where` と同様の方法でインラインで記述することができます。
 
 ```go
 // Get by primary key if it were a non-integer type
@@ -270,11 +270,11 @@ db.Not([]int64{1,2,3}).First(&user)
 db.Where("role = ?", "admin").Or("role = ?", "super_admin").Find(&users)
 // SELECT * FROM users WHERE role = 'admin' OR role = 'super_admin';
 
-// Struct
+// 構造体
 db.Where("name = 'jinzhu'").Or(User{Name: "jinzhu 2", Age: 18}).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 
-// Map
+// マップ
 db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age": 18}).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
@@ -283,7 +283,7 @@ For more complicated SQL queries. please also refer to [Group Conditions in Adva
 
 ## 特定のフィールドのみ選択
 
-`Select` allows you to specify the fields that you want to retrieve from database. Otherwise, GORM will select all fields by default.
+データベースから取得するフィールドを指定するには `Select` を使用します。 指定がない場合、GORMではデフォルトで全フィールドが選択されます。
 
 ```go
 db.Select("name", "age").Find(&users)
@@ -296,17 +296,17 @@ db.Table("users").Select("COALESCE(age,?)", 42).Rows()
 // SELECT COALESCE(age,'42') FROM users;
 ```
 
-Also check out [Smart Select Fields](advanced_query.html#smart_select)
+[Smart Select Fields](advanced_query.html#smart_select) も参照してください。
 
 ## Order
 
-Specify order when retrieving records from the database
+データベースからレコードを取得する際の順序を指定します。
 
 ```go
 db.Order("age desc, name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
-// Multiple orders
+// 複数の順序
 db.Order("age desc").Order("name").Find(&users)
 // SELECT * FROM users ORDER BY age desc, name;
 
@@ -318,13 +318,13 @@ db.Clauses(clause.OrderBy{
 
 ## Limit & Offset
 
-`Limit` specify the max number of records to retrieve `Offset` specify the number of records to skip before starting to return the records
+`Limit`は取得するレコードの上限数を指定します。`Offset`はレコードを返す前にスキップする件数を指定します。
 
 ```go
 db.Limit(3).Find(&users)
 // SELECT * FROM users LIMIT 3;
 
-// Cancel limit condition with -1
+// -1 を指定して上限数を解除
 db.Limit(10).Find(&users1).Limit(-1).Find(&users2)
 // SELECT * FROM users LIMIT 10; (users1)
 // SELECT * FROM users; (users2)
@@ -335,13 +335,13 @@ db.Offset(3).Find(&users)
 db.Limit(10).Offset(5).Find(&users)
 // SELECT * FROM users OFFSET 5 LIMIT 10;
 
-// Cancel offset condition with -1
+// -1 を指定して上限数を解除
 db.Offset(10).Find(&users1).Offset(-1).Find(&users2)
 // SELECT * FROM users OFFSET 10; (users1)
 // SELECT * FROM users; (users2)
 ```
 
-Refer to [Pagination](scopes.html#pagination) for details on how to make a paginator
+ページネーターの作成方法については、[ページネーション](scopes.html#pagination) を参照してください。
 
 ## Group By & Having
 
@@ -379,17 +379,17 @@ db.Table("orders").Select("date(created_at) as date, sum(amount) as total").Grou
 
 ## Distinct
 
-Selecting distinct values from the model
+値が重複する行を削除して取得します。
 
 ```go
 db.Distinct("name", "age").Order("name, age desc").Find(&results)
 ```
 
-`Distinct` works with [`Pluck`](advanced_query.html#pluck) and [`Count`](advanced_query.html#count) too
+`Distinct` は [`Pluck`](advanced_query.html#pluck) および [`Count`](advanced_query.html#count) でも動作します
 
 ## Joins
 
-Specify Joins conditions
+テーブル結合の条件を指定します。
 
 ```go
 type result struct {
@@ -407,7 +407,7 @@ for rows.Next() {
 
 db.Table("users").Select("users.name, emails.email").Joins("left join emails on emails.user_id = users.id").Scan(&results)
 
-// multiple joins with parameter
+// パラメーターで複数のテーブルを結合
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
