@@ -33,33 +33,33 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 {% endnote %}
 
 {% note warn %}
-Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is not performant and nondeterministic
+単一のオブジェクトを取得する際、`db.Find(&user)` のように、上限を設定せずに `Find` を使用した場合、テーブル全体を問い合わせたのち先頭のオブジェクトのみを返すため、これは非効率的かつ非確定的な方法です。
 {% endnote %}
 
-The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
+The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. これら2つのメソッドは、対象の構造体のポインタをメソッドの引数に渡す、もしくは `db.Model()` を使用してモデルを指定した場合のみ動作します。 また、モデルに主キーが定義されていない場合、モデル内の最初のフィールドで順序付けされることになります。 例:
 
 ```go
 var user User
 var users []User
 
-// works because destination struct is passed in
+// 対象の構造体が渡されているため正しく動作
 db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// works because model is specified using `db.Model()`
+// `db.Model()` を使ってモデルを指定しているため正しく動作
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// doesn't work
+// 動作しない
 result := map[string]interface{}{}
 db.Table("users").First(&result)
 
-// works with Take
+// Takeメソッドであれば動作する
 result := map[string]interface{}{}
 db.Table("users").Take(&result)
 
-// no primary key defined, results will be ordered by first field (i.e., `Code`)
+// 主キーが未定義のため、最初のフィールド（`Code`）で順序付けされる
 type Language struct {
   Code string
   Name string
@@ -70,7 +70,7 @@ db.First(&Language{})
 
 ### プライマリキーでオブジェクトを取得する
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
+Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. 文字列を扱う場合、SQLインジェクションを避けるためにさらなる注意が必要です。詳細については[セキュリティ](security.html)セクションを参照してください。
 
 ```go
 db.First(&user, 10)
@@ -83,14 +83,14 @@ db.Find(&users, []int{1,2,3})
 // SELECT * FROM users WHERE id IN (1,2,3);
 ```
 
-If the primary key is a string (for example, like a uuid), the query will be written as follows:
+主キーが（たとえばUUIDのような）文字列の場合、クエリは以下のように書くことができます。
 
 ```go
 db.First(&user, "id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a")
 // SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
 ```
 
-When the destination object has a primary value, the primary key will be used to build the condition, for example:
+対象オブジェクトの主キーに値が入っている場合、その主キーは検索条件の構築に使用されます。例:
 
 ```go
 var user = User{ID: 10}
@@ -103,7 +103,7 @@ db.Model(User{ID: 10}).First(&result)
 ```
 
 {% note warn %}
-**NOTE:** If you use gorm's specific field types like `gorm.DeletedAt`, it will run a different query for retrieving object/s.
+**注意:** `gorm.DeletedAt` のようなGORM用のフィールドの型を使用する場合、オブジェクトの取得の際に異なるクエリが実行されます。
 {% endnote %}
 ```go
 type User struct {
@@ -119,12 +119,12 @@ db.First(&user)
 ## すべてのオブジェクトを取得する
 
 ```go
-// Get all records
+// 全レコードを取得
 result := db.Find(&users)
 // SELECT * FROM users;
 
-result.RowsAffected // returns found records count, equals `len(users)`
-result.Error        // returns error
+result.RowsAffected // 見つかったレコードの件数 `len(users)` を返す
+result.Error        // エラーを返す
 ```
 
 ## 取得条件
@@ -132,11 +132,11 @@ result.Error        // returns error
 ### 文字列条件
 
 ```go
-// Get first matched record
+// 最初に条件に合ったレコードを取得
 db.Where("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE name = 'jinzhu' ORDER BY id LIMIT 1;
 
-// Get all matched records
+// 条件にあったすべてのレコードを取得
 db.Where("name <> ?", "jinzhu").Find(&users)
 // SELECT * FROM users WHERE name <> 'jinzhu';
 
@@ -152,7 +152,7 @@ db.Where("name LIKE ?", "%jin%").Find(&users)
 db.Where("name = ? AND age >= ?", "jinzhu", "22").Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age >= 22;
 
-// Time
+// 日時
 db.Where("updated_at > ?", lastWeek).Find(&users)
 // SELECT * FROM users WHERE updated_at > '2000-01-01 00:00:00';
 
@@ -162,7 +162,7 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 ```
 
 {% note warn %}
-If the object's primary key has been set, then condition query wouldn't cover the value of primary key but use it as a 'and' condition. For example:
+If the object's primary key has been set, then condition query wouldn't cover the value of primary key but use it as a 'and' condition. 例:
 ```go
 var user = User{ID: 10}
 db.Where("id = ?", 20).First(&user)
@@ -175,15 +175,15 @@ This query would give `record not found` Error. So set the primary key attribute
 ### 構造体 & マップでの条件指定
 
 ```go
-// Struct
+// 構造体
 db.Where(&User{Name: "jinzhu", Age: 20}).First(&user)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20 ORDER BY id LIMIT 1;
 
-// Map
+// マップ
 db.Where(map[string]interface{}{"name": "jinzhu", "age": 20}).Find(&users)
 // SELECT * FROM users WHERE name = "jinzhu" AND age = 20;
 
-// Slice of primary keys
+// 主キーのスライス
 db.Where([]int64{20, 21, 22}).Find(&users)
 // SELECT * FROM users WHERE id IN (20, 21, 22);
 ```
