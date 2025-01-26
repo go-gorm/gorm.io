@@ -1,5 +1,5 @@
 ---
-title: Polymorphism
+title: ポリモーフィズム
 layout: Page
 ---
 
