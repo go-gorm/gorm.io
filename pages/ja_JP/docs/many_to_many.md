@@ -1,9 +1,9 @@
 ---
-title: Many To Many
+title: 多対多
 layout: page
 ---
 
-## Many To Many
+## 多対多 (Many-to-many)
 
 Many to Many では2つのモデル間に結合テーブルを追加します。
 
@@ -26,7 +26,7 @@ GORMの `AutoMigrate` を使用して `User` テーブルを作成する場合�
 
 ## 後方参照（Back-Reference）
 
-### Declare
+### 宣言
 ```go
 // User は複数の言語を所有し、かつ言語に属しています。`user_languages` が結合テーブルになります
 type User struct {
@@ -41,16 +41,16 @@ type Language struct {
 }
 ```
 
-### Retrieve
+### 取得
 ```go
-// Retrieve user list with eager loading languages
+// Language をイーガーロードしたのち、User のリストを取得
 func GetAllUsers(db *gorm.DB) ([]User, error) {
     var users []User
     err := db.Model(&User{}).Preload("Languages").Find(&users).Error
     return users, err
 }
 
-// Retrieve language list with eager loading users
+// User をイーガーロードしたのち、Language のリストを取得
 func GetAllLanguages(db *gorm.DB) ([]Language, error) {
     var languages []Language
     err := db.Model(&Language{}).Preload("Users").Find(&languages).Error
@@ -73,12 +73,12 @@ type Language struct {
   Name string
 }
 
-// Join Table: user_languages
-//   foreign key: user_id, reference: users.id
-//   foreign key: language_id, reference: languages.id
+// 結合テーブル user_languages
+//   外部キー: user_id, 参照先: users.id
+//   外部キー: language_id, 参照先: languages.id
 ```
 
-デフォルトの設定を上書くには、`foreignKey`、`references`、`joinForeignKey`、`joinReferences` などのタグを使用します。これらを全て指定する必要はなく、1つのみ使用して外部キー／参照の設定を上書きすることも可能です。
+デフォルトの設定を上書きするには、`foreignKey`、`references`、`joinForeignKey`、`joinReferences` タグを使用します。必ずしもこれらすべてを指定する必要はなく、1つのみを使用して外部キー／参照の設定を上書きすることも可能です。
 
 ```go
 type User struct {
@@ -93,18 +93,18 @@ type Profile struct {
     UserRefer uint `gorm:"index:,unique"`
 }
 
-// Which creates join table: user_profiles
-//   foreign key: user_refer_id, reference: users.refer
-//   foreign key: profile_refer, reference: profiles.user_refer
+// 結合テーブル user_profiles が作成される
+//   外部キー: user_refer_id, 参照先: users.refer
+//   外部キー: profile_refer, 参照先: profiles.user_refer
 ```
 
 {% note warn %}
 **注意** いくつかのデータベースでは、外部キーが参照するフィールドにユニークインデックスを設定する必要があります。そのため、それらのデータベースでのマイグレーションで外部キーを作成する場合は、`uniqueIndex` タグを指定する必要があります。
 {% endnote %}
 
-## Many2Many での自己参照
+## 自己参照型の多対多 (Many-to-many)
 
-many2manyリレーションにおける自己参照も可能です。
+自己参照型の多対多 (many-to-many) のリレーション
 
 ```go
 type User struct {
@@ -112,9 +112,9 @@ type User struct {
     Friends []*User `gorm:"many2many:user_friends"`
 }
 
-// Which creates join table: user_friends
-//   foreign key: user_id, reference: users.id
-//   foreign key: friend_id, reference: users.id
+// 結合テーブル user_friends が作成される
+//   外部キー: user_id, 参照先: users.id
+//   外部キー: friend_id,参照先: users.id
 ```
 
 ## Eager Loading
@@ -127,7 +127,7 @@ many2many リレーションを使った処理の詳細については [Associat
 
 ## 結合テーブルをカスタマイズする
 
-`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can set it up with `SetupJoinTable`, for example:
+`JoinTable`（結合テーブル）は、`Soft Delete`、`Hooks`、追加のフィールドを持つフル機能のモデルとして定義できます。これの設定には `SetupJoinTable` を使用します。例:
 
 {% note warn %}
 **注意：** 結合テーブルをカスタマイズする場合、結合テーブルの外部キーを複合主キーにする、あるいは外部キーに複合ユニークインデックスを貼る必要があります。
@@ -156,8 +156,8 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// Change model Person's field Addresses' join table to PersonAddress
-// PersonAddress must defined all required foreign keys or it will raise error
+// Person モデルの Addresses フィールドの結合テーブルを PersonAddress に変更
+// PersonAddress にすべての必要な外部キーが定義されてない場合、エラーが発生
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
@@ -204,20 +204,20 @@ type Blog struct {
   SharedTags []Tag `gorm:"many2many:shared_blog_tags;ForeignKey:id;References:id"`
 }
 
-// Join Table: blog_tags
-//   foreign key: blog_id, reference: blogs.id
-//   foreign key: blog_locale, reference: blogs.locale
-//   foreign key: tag_id, reference: tags.id
-//   foreign key: tag_locale, reference: tags.locale
+// 結合テーブル blog_tags
+//   外部キー: blog_id, 参照先: blogs.id
+//   外部キー: blog_locale, 参照先: blogs.locale
+//   外部キー: tag_id, 参照先: tags.id
+//   外部キー: tag_locale, 参照先: tags.locale
 
-// Join Table: locale_blog_tags
-//   foreign key: blog_id, reference: blogs.id
-//   foreign key: blog_locale, reference: blogs.locale
-//   foreign key: tag_id, reference: tags.id
+// 結合テーブル locale_blog_tags
+//   外部キー: blog_id, 参照先: blogs.id
+//   外部キー: blog_locale, 参照先: blogs.locale
+//   外部キー: tag_id, 参照先: tags.id
 
-// Join Table: shared_blog_tags
-//   foreign key: blog_id, reference: blogs.id
-//   foreign key: tag_id, reference: tags.id
+// 結合テーブル shared_blog_tags
+//   外部キー: blog_id, 参照先: blogs.id
+//   外部キー: tag_id, 参照先: tags.id
 ```
 
 [複合主キー](composite_primary_key.html) も参照するとよいでしょう。
