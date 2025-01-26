@@ -3,7 +3,7 @@ title: モデルを宣言する
 layout: page
 ---
 
-GORMは、Goの構造体をデータベーステーブルにマッピングすることで、データベースの相互作用を簡素化します。 GORMでモデルを宣言する方法を理解することは、その機能をフルに活用するための基本です。
+GORMは、Goの構造体をデータベーステーブルにマッピングすることで、データベースの相互作用を簡素化します。 GOMRの機能をフルに活用するために、基本となるモデルの宣言方法を理解しましょう。
 
 ## モデルを宣言する
 
@@ -13,26 +13,26 @@ GORMは、Goの構造体をデータベーステーブルにマッピングす�
 
 ```go
 type User struct {
-  ID           uint           // Standard field for the primary key
-  Name         string         // A regular string field
-  Email        *string        // A pointer to a string, allowing for null values
-  Age          uint8          // An unsigned 8-bit integer
-  Birthday     *time.Time     // A pointer to time.Time, can be null
-  MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
-  ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
-  CreatedAt    time.Time      // Automatically managed by GORM for creation time
-  UpdatedAt    time.Time      // Automatically managed by GORM for update time
-  ignored      string         // fields that aren't exported are ignored
+  ID           uint           // 主キーの標準フィールド
+  Name         string         // 通常の文字列フィールド
+  Email        *string        // 文字列へのポインタ、nullを許容
+  Age          uint8          // 符号なし8ビット整数
+  Birthday     *time.Time     // time.Timeへのポインタ。nullを許容
+  MemberNumber sql.NullString // sql.NullStringを使用してnull許容文字列に対応
+  ActivatedAt  sql.NullTime   // sql.NullTimeを使用したnull許容の時間フィールド
+  CreatedAt    time.Time      // GORMによって自動的に管理される作成時間
+  UpdatedAt    time.Time      // GORMによって自動的に管理される更新時間
+  ignored      string         // エクスポートされていないフィールドは無視される
 }
 ```
 
-このモデルでは:
+このモデルは次のように扱われます。
 
-- `uint`, `文字列`, および `uint8` のような基本的なデータ型が直接使用されます。
-- `*string` や `*time.Time` のような型へのポインタは、null可能フィールドを示します。
-- `sql.NullString` と `sql.NullTime` の `database/sql` パッケージは null可能フィールドでより多くの制御が可能です。
-- `CreatedAt` と `UpdatedAt` は、レコードが作成または更新されたときにGORMが自動的に現在の時刻を入力する特別なフィールドです。
-- Non-exported fields (starting with a small letter) are not mapped
+- `uint`, `string`, および `uint8` のような基本的なデータ型がそのまま使用されます。
+- `*string` や `*time.Time` のような型へのポインタは、null許容型のフィールドを示します。
+- `database/sql` パッケージの `sql.NullString` と `sql.NullTime` を使用することで、null許容フィールドを細かく制御できます。
+- `CreatedAt` と `UpdatedAt` は特別なフィールドとして扱われ、レコードが作成または更新されたとき、GORMが自動的に現在の時刻をセットします。
+- エクスポートされていないフィールド（先頭が小文字）はマップされません
 
 GORMにおけるモデル宣言の基本的な機能に加えて、シリアライザタグによるシリアライズのサポートに注目することが重要です。 この機能により、特にカスタム・シリアライズ・ロジックを必要とするフィールドについて、データの格納方法とデータベースからの取得方法の柔軟性が高まります。詳細な説明については [シリアライザー](serializer.html) を参照してください。
 
@@ -40,17 +40,17 @@ GORMにおけるモデル宣言の基本的な機能に加えて、シリアラ�
 
 1. **主キー**: GORMは各モデルのデフォルト主キーとして `ID` という名前のフィールドを使用します。
 
-2. **テーブル名**: デフォルトでは、GORMは構造体名を `スネークケース` に変換し、テーブル名を複数形にします。 For instance, a `User` struct becomes `users` in the database, and a `GormUserName` becomes `gorm_user_names`.
+2. **テーブル名**: デフォルトでは、GORMは構造体名を `スネークケース` に変換し、テーブル名を複数形にします。 たとえば、 `User` 構造体はデータベース内では `users` になり、 `GormUserName` は `gorm_user_names` になります。
 
 3. **カラム名**: GORMは、データベース内のカラム名を自動的に `スネークケース` に変換します。
 
 4. **タイムスタンプフィールド**: GORMは `Created` および `UpdatedAt` という名前のフィールドを使用して、レコードの作成と更新時間を自動的に追跡します。
 
-Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don't fit your requirements. You can learn more about customizing these conventions in GORM's documentation on [conventions](conventions.html).
+次の規約に従うことで、コンフィグやコードを書く量を大幅に減らすことができます。 もちろん、GORMには柔軟性があるため、標準の規約が要件に沿わない場合はこれらの設定をカスタマイズすることもできます。 規約のカスタマイズについては、GORMドキュメントの [規約](conventions.html)を参照してください。
 
 ### `gorm.Model`
 
-GORM provides a predefined struct named `gorm.Model`, which includes commonly used fields:
+GORMで使用できる定義済み構造体 `gorm.Model`には、一般的に使用される以下のフィールドが含まれます。
 
 ```go
 // gorm.Modelの定義
@@ -62,19 +62,19 @@ type Model struct {
 }
 ```
 
-- **構造体への埋め込み**: あなたが作成した構造体に `gorm.Model` を直接埋め込むことでこれらのフィールドを自動的に含めることができます。 This is useful for maintaining consistency across different models and leveraging GORM's built-in conventions, refer [Embedded Struct](#embedded_struct)
+- **構造体への埋め込み**: あなたが作成した構造体に `gorm.Model` を直接埋め込むことで、これらのフィールドを自動的に含めることができます。 これは、異なる複数のモデル間で一貫性を維持し、GORMの組み込み規則を活用する場合に便利です。参照: [構造体の埋め込み](#embedded_struct)
 
-- **Fields Included**:
-  - `ID`: A unique identifier for each record (primary key).
-  - `CreatedAt`: Automatically set to the current time when a record is created.
-  - `UpdatedAt`: Automatically updated to the current time whenever a record is updated.
-  - `DeletedAt`: Used for soft deletes (marking records as deleted without actually removing them from the database).
+- **フィールド**:
+  - `ID`: 各レコードの一意の識別子（主キー）。
+  - `CreatedAt`: レコードの作成時に自動的に現在時刻がセットされます。
+  - `UpdatedAt`: レコードが更新されるたびに、自動的に現在の時刻に更新されます。
+  - `DeletedAt`: 論理削除（実際にはデータベースからレコードを削除せず、削除済みとしてマークする）に使用されます。
 
 ## 高度な機能
 
 ### <span id="field_permission">フィールドレベルの権限</span>
 
-Exported fields have all permissions when doing CRUD with GORM, and GORM allows you to change the field-level permission with tag, so you can make a field to be read-only, write-only, create-only, update-only or ignored
+エクスポートされたフィールドはGORMでCRUDを実行するための権限をすべて持ちます。フィールド単位で権限を変更したいときはタグを使用することにより、特定のフィールドを読み取り専用、書き込み専用、作成専用、更新専用、あるいは無視にすることができます。
 
 {% note warn %}
 **注意** GORM Migrator を使用してテーブルを作成した場合、除外設定されたフィールドは作成されません
@@ -84,9 +84,9 @@ Exported fields have all permissions when doing CRUD with GORM, and GORM allows 
 type User struct {
   Name string `gorm:"<-:create"` // 読み取り、作成が可能
   Name string `gorm:"<-:update"` // 読み取り、更新が可能
-  Name string `gorm:"<-"`       // 読み取り、書き込みが可能 (createとupdate)
+  Name string `gorm:"<-"`        // 読み取り、書き込み (createとupdate) が可能
   Name string `gorm:"<-:false"`  // 読み取り可能、書き込み無効
-  Name string `gorm:"->"`        // 読み取り専用 (変更されない限り、書き込みが無効 )
+  Name string `gorm:"->"`        // 読み取り専用 (変更されない限り、書き込みが無効)
   Name string `gorm:"->;<-:create"` // 読み取りと作成が可能
   Name string `gorm:"->:false;<-:create"` // 作成専用 (dbからの読み取りは無効)
   Name string `gorm:"-"`            // 構造体を使用した書き込みと読み込みの際にこのフィールドを無視する
@@ -108,7 +108,7 @@ type User struct {
   CreatedAt time.Time // 作成時に値がゼロ値の場合、現在時間がセットされる
   UpdatedAt int       // 更新時、または作成時の値がゼロ値の場合、現在のUNIX秒がセットされる
   Updated   int64 `gorm:"autoUpdateTime:nano"` // 更新時間としてUNIXナノ秒を使用する
-  Updated   int64 `gorm:"autoUpdateTime:milli"`// 更新時間としてUNIX msを使用する
+  Updated   int64 `gorm:"autoUpdateTime:milli"`// 更新時間としてUNIXミリ秒を使用する
   Created   int64 `gorm:"autoCreateTime"`      // 作成時間としてUNIX秒を使用する
 }
 ```
@@ -128,7 +128,7 @@ type Blog struct {
   ID      int
   Upvotes int32
 }
-// equals
+// 上記は下記と同等
 type Blog struct {
   ID      int64
   Name    string
@@ -179,33 +179,33 @@ type Blog struct {
 
 ### <span id="tags">フィールドに指定可能なタグ</span>
 
-Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however `camelCase` is preferred. If multiple tags are used they should be separated by a semicolon (`;`). Characters that have special meaning to the parser can be escaped with a backslash (`\`) allowing them to be used as parameter values.
+タグはモデル宣言時に任意で使用できます。GORMは以下のタグをサポートしています。大文字小文字は区別されませんが、`camelCase` にすることを推奨します。 複数のタグを使用するには、セミコロン (`;`)で区切ります。 パーサーにとって特別な意味を持つ文字は、バックスラッシュ (`\`) でエスケープすることでパラメーターの値として使用できます。
 
 | タグ名                    | 説明                                                                                                                                                                                                                                                                                                          |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | column                 | データベースのカラム名                                                                                                                                                                                                                                                                                                 |
 | type                   | カラムのデータ型を指定します。bool, int, uint, float, string, time, bytes などの全てのデータベースで動作する一般的なデータ型と互換性のあるものが良いでしょう。また、`not null`, `size`, `autoIncrement`... などの他のタグと併用することも可能です。 `varbinary(8)` などの特定のデータベースでのみ使用可能なデータ型もサポートしていますが、それらのデータ型を使用する場合は、データ型をフルで指定する必要があります。例： `MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT` |
-| serializer             | specifies serializer for how to serialize and deserialize data into db, e.g: `serializer:json/gob/unixtime`                                                                                                                                                                                                 |
-| size                   | specifies column data size/length, e.g: `size:256`                                                                                                                                                                                                                                                          |
+| serializer             | データを直列化および並列化するためのシリアライザを指定します。例: `serializer:json/gob/unixtime`                                                                                                                                                                                                                                            |
+| size                   | カラムのデータサイズ/長さを指定します。例: `size:256`                                                                                                                                                                                                                                                                           |
 | primaryKey             | 主キーとなるカラムを指定します                                                                                                                                                                                                                                                                                             |
-| unique                 | specifies column as unique                                                                                                                                                                                                                                                                                  |
+| unique                 | カラムを一意として指定します。                                                                                                                                                                                                                                                                                             |
 | default                | カラムのデフォルト値を指定します                                                                                                                                                                                                                                                                                            |
-| precision              | specifies column precision                                                                                                                                                                                                                                                                                  |
-| scale                  | specifies column scale                                                                                                                                                                                                                                                                                      |
+| precision              | カラムの精度を指定します                                                                                                                                                                                                                                                                                                |
+| scale                  | カラムの位取りを指定します                                                                                                                                                                                                                                                                                               |
 | not null               | カラムをNOT NULLで指定します                                                                                                                                                                                                                                                                                          |
-| autoIncrement          | specifies column auto incrementable                                                                                                                                                                                                                                                                         |
-| autoIncrementIncrement | auto increment step, controls the interval between successive column values                                                                                                                                                                                                                                 |
-| embedded               | embed the field                                                                                                                                                                                                                                                                                             |
-| embeddedPrefix         | column name prefix for embedded fields                                                                                                                                                                                                                                                                      |
-| autoCreateTime         | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                                                                                                       |
-| autoUpdateTime         | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                                                                                             |
-| index                  | create index with options, use same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                                                                                                                                                           |
-| uniqueIndex            | same as `index`, but create uniqued index                                                                                                                                                                                                                                                                   |
-| check                  | creates check constraint, eg: `check:age > 13`, refer [Constraints](constraints.html)                                                                                                                                                                                                                    |
-| <-                     | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no write permission, `<-` create and update permission                                                                                                                                   |
-| ->                     | set field's read permission, `->:false` no read permission                                                                                                                                                                                                                                               |
-| -                      | ignore this field, `-` no read/write permission, `-:migration` no migrate permission, `-:all` no read/write/migrate permission                                                                                                                                                                              |
-| comment                | add comment for field when migration                                                                                                                                                                                                                                                                        |
+| autoIncrement          | カラムが自動でインクリメントされるように指定します                                                                                                                                                                                                                                                                                   |
+| autoIncrementIncrement | 自動インクリメントによって加算される値                                                                                                                                                                                                                                                                                         |
+| embedded               | フィールドを埋め込みます                                                                                                                                                                                                                                                                                                |
+| embeddedPrefix         | 埋め込みフィールドのカラム名に付く接頭語句                                                                                                                                                                                                                                                                                       |
+| autoCreateTime         | カラムの作成時に現在日時を自動でセットします。`int` 型のフィールドに対してはUNIX秒でセットされます。ナノ秒/ミリ秒でセットしたい場合は値に `nano`/`milli` を指定します。例: `autoCreateTime:nano`                                                                                                                                                                                   |
+| autoUpdateTime         | カラムの作成時/更新時に現在日時を自動でセットします。`int` 型のフィールドに対してはUNIX秒でセットされます。ナノ秒/ミリ秒でセットしたい場合は値に `nano`/`milli` を指定します。例: `autoUpdateTime: milli`                                                                                                                                                                             |
+| index                  | インデックスを作成します。複数のフィールドで同じ名前を使用した場合は複合インデックスが作成されます。詳細は[インデックス](indexes.html)を参照してください。                                                                                                                                                                                                                       |
+| uniqueIndex            | `index` と同様です。ただし、一意なインデックスを作成します。                                                                                                                                                                                                                                                                          |
+| check                  | CHECK制約を作成します（例: `check:age > 13` ）。[制約](constraints.html)を参照のこと                                                                                                                                                                                                                                         |
+| <-                     | フィールドの書き込み権限を設定します。`<-:create`: 作成のみ可能。`<-:update`: 更新のみ可能。`<-:false`: 書き込み権限なし。`<-`: 作成/更新権限あり。                                                                                                                                                                                                |
+| ->                     | フィールドの読み込み権限を設定します。`->:false`: 読み込み権限なし。                                                                                                                                                                                                                                                                 |
+| -                      | フィールドを無視します。 `-`: 読み取り/書き込み権限なし。`-:migration`: マイグレーション権限なし。`-:all`: 読み取り/書き込み/マイグレーション権限なし。                                                                                                                                                                                                                |
+| comment                | マイグレーション実行時にフィールドにコメントを追加します                                                                                                                                                                                                                                                                                |
 
 ### アソシエーションで使用できるタグ
 
