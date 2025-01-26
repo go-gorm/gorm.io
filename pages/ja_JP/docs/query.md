@@ -419,19 +419,19 @@ You can use `Joins` eager loading associations with a single SQL, for example:
 db.Joins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 
-// inner join
+// 内部結合
 db.InnerJoins("Company").Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` INNER JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id`;
 ```
 
-Join with conditions
+条件を指定して結合する
 
 ```go
 db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 // SELECT `users`.`id`,`users`.`name`,`users`.`age`,`Company`.`id` AS `Company__id`,`Company`.`name` AS `Company__name` FROM `users` LEFT JOIN `companies` AS `Company` ON `users`.`company_id` = `Company`.`id` AND `Company`.`alive` = true;
 ```
 
-For more details, please refer to [Preloading (Eager Loading)](preload.html).
+詳細については、[事前ローディング (イーガーローディング)](preload.html) を参照してください。
 
 ### 導出表の結合
 
