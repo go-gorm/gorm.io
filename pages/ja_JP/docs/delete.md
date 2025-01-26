@@ -174,7 +174,7 @@ type User struct {
 
 #### UNIX秒
 
-Use unix second as delete flag
+UNIX秒を削除フラグとして使用
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -192,7 +192,7 @@ SELECT * FROM users WHERE deleted_at = 0;
 UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
-You can also specify to use `milli` or `nano` seconds as the value, for example:
+ミリ秒 `milli` またはナノ秒 `nano` を値として指定することもできます。例:
 
 ```go
 type User struct {
@@ -209,7 +209,7 @@ SELECT * FROM users WHERE deleted_at = 0;
 UPDATE users SET deleted_at = /* current unix milli second or nano second */ WHERE ID = 1;
 ```
 
-#### Use `1` / `0` AS Delete Flag
+#### `1` / `0` を削除フラグとして使用
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -227,9 +227,9 @@ SELECT * FROM users WHERE is_del = 0;
 UPDATE users SET is_del = 1 WHERE ID = 1;
 ```
 
-#### Mixed Mode
+#### 混在モード
 
-Mixed mode can use `0`, `1` or unix seconds to mark data as deleted or not, and save the deleted time at the same time.
+混在モードではデータが削除されているか否かを `0` と `1`、またはUNIX秒でマークし、同時に削除日時を保存することができます。
 
 ```go
 type User struct {
