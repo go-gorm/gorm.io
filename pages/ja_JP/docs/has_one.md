@@ -1,5 +1,5 @@
 ---
-title: Has One
+title: 一対一
 layout: page
 ---
 
@@ -9,9 +9,9 @@ layout: page
 
 例えば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを1枚しか持つことができないとします。
 
-### Declare
+### 宣言
 ```go
-// User has one CreditCard, UserID is the foreign key
+// UserID が外部キーとなり、User は CreditCard を1つ持つ
 type User struct {
   gorm.Model
   CreditCard CreditCard
@@ -24,9 +24,9 @@ type CreditCard struct {
 }
 ```
 
-### Retrieve
+### 取得
 ```go
-// Retrieve user list with eager loading credit card
+// CreditCard をイーガーロードしたのち User のリストを取得
 func GetAll(db *gorm.DB) ([]User, error) {
     var users []User
     err := db.Model(&User{}).Preload("CreditCard").Find(&users).Error
@@ -48,7 +48,7 @@ func GetAll(db *gorm.DB) ([]User, error) {
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // use UserName as foreign key
+  // UserName を外部キーとして使用
 }
 
 type CreditCard struct {
