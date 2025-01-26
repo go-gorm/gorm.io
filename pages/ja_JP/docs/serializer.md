@@ -132,10 +132,10 @@ type User struct {
 ```go
 type EncryptedString string
 
-// ctx: contains request-scoped values
-// field: the field using the serializer, contains GORM settings, struct tags
-// dst: current model value, `user` in the below example
-// dbValue: current field's value in database
+// ctx: リクエストスコープ内の値を格納
+// field: シリアライザーを使用するフィールド。GORMの設定とタグを持つ。
+// dst: 現在のモデルの値。以下の例における `user`
+// dbValue: 現在のデータベースにおけるフィールドの値
 func (es *EncryptedString) Scan(ctx context.Context, field *schema.Field, dst reflect.Value, dbValue interface{}) (err error) {
     switch value := dbValue.(type) {
     case []byte:
@@ -148,10 +148,10 @@ func (es *EncryptedString) Scan(ctx context.Context, field *schema.Field, dst re
     return nil
 }
 
-// ctx: contains request-scoped values
-// field: the field using the serializer, contains GORM settings, struct tags
-// dst: current model value, `user` in the below example
-// fieldValue: current field's value of the dst
+// ctx: リクエストスコープ内の値を格納
+// field: シリアライザーを使用するフィールド。GORMの設定とタグを持つ。
+// dst: 現在のモデルの値。以下の例における `user`
+// fieldValue: 現在のdstのフィールドの値
 func (es EncryptedString) Value(ctx context.Context, field *schema.Field, dst reflect.Value, fieldValue interface{}) (interface{}, error) {
     return "hello" + string(es), nil
 }
