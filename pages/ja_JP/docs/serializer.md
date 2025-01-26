@@ -1,11 +1,11 @@
 ---
-title: Serializer
+title: シリアライザー
 layout: page
 ---
 
-Serializer is an extensible interface that allows to customize how to serialize and deserialize data with database.
+シリアライザーは拡張可能なインターフェイスで、データベースでデータを直列化および並列化する方法をカスタマイズできます。
 
-GORM provides some default serializers: `json`, `gob`, `unixtime`, here is a quick example of how to use it.
+GORMには標準でいくつかのシリアライザー `json`, `gob`, `unixtime` が備わっています。以下はシリアライザーの利用方法の簡単な例です。
 
 ```go
 type User struct {
@@ -59,9 +59,9 @@ DB.Where(User{Name: []byte("jinzhu")}).Take(&result)
 // SELECT * FROM `users` WHERE `users`.`name` = "\"amluemh1\"
 ```
 
-## Register Serializer
+## シリアライザーの登録
 
-A Serializer needs to implement how to serialize and deserialize data, so it requires to implement the the following interface
+シリアライザはデータを直列化および並列化する方法を実装する必要があります。そのため、次のインターフェースを実装する必要があります。
 
 ```go
 import "gorm.io/gorm/schema"
@@ -76,14 +76,14 @@ type SerializerValuerInterface interface {
 }
 ```
 
-For example, the default `JSONSerializer` is implemented like:
+たとえば、デフォルトの `JSONSerializer` は以下のように実装されています。
 
 ```go
-// JSONSerializer json serializer
+// JSONSerializer JSONのシリアライザー
 type JSONSerializer struct {
 }
 
-// Scan implements serializer interface
+// Scan は SerializerInterface インターフェイスを実装
 func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value, dbValue interface{}) (err error) {
     fieldValue := reflect.New(field.FieldType)
 
@@ -105,19 +105,19 @@ func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value,
     return
 }
 
-// Value implements serializer interface
+// Value は SerializerInterface インターフェイスを実装
 func (JSONSerializer) Value(ctx context.Context, field *Field, dst reflect.Value, fieldValue interface{}) (interface{}, error) {
     return json.Marshal(fieldValue)
 }
 ```
 
-And registered with the following code:
+その後、以下のコードで登録されています。
 
 ```go
 schema.RegisterSerializer("json", JSONSerializer{})
 ```
 
-After registering a serializer, you can use it with the `serializer` tag, for example:
+シリアライザーの登録後、`serializer` タグで使用できます。例:
 
 ```go
 type User struct {
@@ -125,9 +125,9 @@ type User struct {
 }
 ```
 
-## Customized Serializer Type
+## シリアライザー型のカスタマイズ
 
-You can use a registered serializer with tags, you are also allowed to create a customized struct that implements the above `SerializerInterface` and use it as a field type directly, for example:
+登録済みのシリアライザーはタグで使用できます。上記の `SerializerInterface` を実装するカスタム構造体を作成し、フィールド型として直接使用することもできます。 例:
 
 ```go
 type EncryptedString string
