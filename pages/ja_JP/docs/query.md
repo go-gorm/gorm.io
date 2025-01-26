@@ -36,7 +36,7 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 単一のオブジェクトを取得する際、`db.Find(&user)` のように、上限を設定せずに `Find` を使用した場合、テーブル全体を問い合わせたのち先頭のオブジェクトのみを返すため、これは非効率的かつ非確定的な方法です。
 {% endnote %}
 
-The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. これら2つのメソッドは、対象の構造体のポインタをメソッドの引数に渡す、もしくは `db.Model()` を使用してモデルを指定した場合のみ動作します。 また、モデルに主キーが定義されていない場合、モデル内の最初のフィールドで順序付けされることになります。 例:
+`First` メソッドと `Last` メソッドは、主キー順で（それぞれ）先頭または末尾のレコードを取得します。 これら2つのメソッドは、対象の構造体のポインタをメソッドの引数に渡す、もしくは `db.Model()` を使用してモデルを指定した場合のみ動作します。 また、モデルに主キーが定義されていない場合、モデル内の最初のフィールドで順序付けされることになります。 例:
 
 ```go
 var user User
@@ -70,7 +70,7 @@ db.First(&Language{})
 
 ### プライマリキーでオブジェクトを取得する
 
-Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. 文字列を扱う場合、SQLインジェクションを避けるためにさらなる注意が必要です。詳細については[セキュリティ](security.html)セクションを参照してください。
+主キーが数値の場合、[インライン条件](#inline_conditions) を使用してオブジェクトを取得できます。 文字列を扱う場合、SQLインジェクションを避けるためにさらなる注意が必要です。詳細については[セキュリティ](security.html)セクションを参照してください。
 
 ```go
 db.First(&user, 10)
@@ -162,13 +162,13 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 ```
 
 {% note warn %}
-If the object's primary key has been set, then condition query wouldn't cover the value of primary key but use it as a 'and' condition. 例:
+オブジェクトの主キーが設定されている場合、条件には主キーの値が代わりに使用されるのではなく、AND条件として使用されます。 例:
 ```go
 var user = User{ID: 10}
 db.Where("id = ?", 20).First(&user)
 // SELECT * FROM users WHERE id = 10 and id = 20 ORDER BY id ASC LIMIT 1
 ```
-This query would give `record not found` Error. So set the primary key attribute such as `id` to nil before you want to use the variable such as `user` to get new value from database.
+上記のクエリは `record not found` エラーになります。 そのため、データベースから新規の値を取得するときに `user` のような変数を使用したい場合は、`id` などの主キーにnilをセットしましょう。
 {% endnote %}
 
 
@@ -223,43 +223,43 @@ db.Where(&User{Name: "jinzhu"}, "Age").Find(&users)
 クエリ条件は、`First` や `Find` のようなメソッドにおいても `Where` と同様の方法でインラインで記述することができます。
 
 ```go
-// Get by primary key if it were a non-integer type
+// 主キーが非整数型の場合
 db.First(&user, "id = ?", "string_primary_key")
 // SELECT * FROM users WHERE id = 'string_primary_key';
 
-// Plain SQL
+// シンプルなSQL
 db.Find(&user, "name = ?", "jinzhu")
 // SELECT * FROM users WHERE name = "jinzhu";
 
 db.Find(&users, "name <> ? AND age > ?", "jinzhu", 20)
 // SELECT * FROM users WHERE name <> "jinzhu" AND age > 20;
 
-// Struct
+// 構造体
 db.Find(&users, User{Age: 20})
 // SELECT * FROM users WHERE age = 20;
 
-// Map
+// マップ
 db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20;
 ```
 
 ### Not条件
 
-Build NOT conditions, works similar to `Where`
+NOT条件の構築方法は `Where` と同様です。
 
 ```go
 db.Not("name = ?", "jinzhu").First(&user)
 // SELECT * FROM users WHERE NOT name = "jinzhu" ORDER BY id LIMIT 1;
 
-// Not In
+// NOT IN
 db.Not(map[string]interface{}{"name": []string{"jinzhu", "jinzhu 2"}}).Find(&users)
 // SELECT * FROM users WHERE name NOT IN ("jinzhu", "jinzhu 2");
 
-// Struct
+// 構造体
 db.Not(User{Name: "jinzhu", Age: 18}).First(&user)
 // SELECT * FROM users WHERE name <> "jinzhu" AND age <> 18 ORDER BY id LIMIT 1;
 
-// Not In slice of primary keys
+// 主キーのスライス内のいずれでもない
 db.Not([]int64{1,2,3}).First(&user)
 // SELECT * FROM users WHERE id NOT IN (1,2,3) ORDER BY id LIMIT 1;
 ```
@@ -279,7 +279,7 @@ db.Where("name = 'jinzhu'").Or(map[string]interface{}{"name": "jinzhu 2", "age":
 // SELECT * FROM users WHERE name = 'jinzhu' OR (name = 'jinzhu 2' AND age = 18);
 ```
 
-For more complicated SQL queries. please also refer to [Group Conditions in Advanced Query](advanced_query.html#group_conditions).
+より複雑なクエリについては、 [Group Conditions in Advanced Query](advanced_query.html#group_conditions) も参照してください。
 
 ## 特定のフィールドのみ選択
 
@@ -413,7 +413,7 @@ db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzh
 
 ### Joins Preloading
 
-You can use `Joins` eager loading associations with a single SQL, for example:
+`Joins` を使用することで、単一のSQLクエリで関連付けのイーガーロードを行うことができます。例:
 
 ```go
 db.Joins("Company").Find(&users)
@@ -435,7 +435,7 @@ db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 
 ### 導出表の結合
 
-You can also use `Joins` to join a derived table.
+導出テーブルの結合にも `Joins` が使用できます。
 
 ```go
 type User struct {
@@ -467,6 +467,6 @@ type Result struct {
 var result Result
 db.Table("users").Select("name", "age").Where("name = ?", "Antonio").Scan(&result)
 
-// Raw SQL
+// 生SQL
 db.Raw("SELECT name, age FROM users WHERE name = ?", "Antonio").Scan(&result)
 ```
