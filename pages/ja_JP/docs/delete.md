@@ -172,7 +172,7 @@ type User struct {
 ```
 {% endnote %}
 
-#### Unix Second
+#### UNIX秒
 
 Use unix second as delete flag
 
