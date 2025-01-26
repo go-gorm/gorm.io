@@ -258,18 +258,18 @@ type User struct {
 ```
 
 {% note warn %}
-**注意** **SQLite** はバッチ挿入時のデフォルト値をサポートしていません。 See [SQLite Insert stmt](https://www.sqlite.org/lang_insert.html). For example:
+**注意** **SQLite** はバッチ挿入時のデフォルト値をサポートしていません。 参照: [SQLite Insert stmt](https://www.sqlite.org/lang_insert.html) 例:
 
 ```go
 type Pet struct {
     Name string `gorm:"default:cat"`
 }
 
-// In SQLite, this is not supported, so GORM will build a wrong SQL to raise error:
+// SQLiteでは次の文がサポートされていないため、GORMが構築するSQLが不正となり、エラーが発生します:
 // INSERT INTO `pets` (`name`) VALUES ("dog"),(DEFAULT) RETURNING `name`
 db.Create(&[]Pet{{Name: "dog"}, {}})
 ```
-A viable alternative is to assign default value to fields in the hook, e.g.
+フック内のフィールドにデフォルト値を割り当てることで代替できます。例:
 
 ```go
 func (p *Pet) BeforeCreate(tx *gorm.DB) (err error) {
@@ -279,10 +279,10 @@ func (p *Pet) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-You can see more info in [issues#6335](https://github.com/go-gorm/gorm/issues/6335)
+[issues#6335](https://github.com/go-gorm/gorm/issues/6335) でより詳しい情報を確認できます。
 {% endnote %}
 
-When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+仮想的に生成される値を使用する場合は、そのフィールドを作成/更新する権限を無効にする必要があります。[フィールドレベル権限](models.html#field_permission) を参照してください。
 
 ### <span id="upsert">コンフリクト発生時のUpsert</span>
 
