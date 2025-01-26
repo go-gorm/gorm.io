@@ -236,14 +236,14 @@ type User struct {
   ID        uint
   Name      string
   DeletedAt time.Time
-  IsDel     soft_delete.DeletedAt `gorm:"softDelete:flag,DeletedAtField:DeletedAt"` // use `1` `0`
-  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:,DeletedAtField:DeletedAt"` // use `unix second`
-  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:nano,DeletedAtField:DeletedAt"` // use `unix nano second`
+  IsDel     soft_delete.DeletedAt `gorm:"softDelete:flag,DeletedAtField:DeletedAt"` // `1` `0` を使用
+  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:,DeletedAtField:DeletedAt"` // `unix second` を使用
+  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:nano,DeletedAtField:DeletedAt"` // `unix nano second` を使用
 }
 
 // Query
 SELECT * FROM users WHERE is_del = 0;
 
 // Delete
-UPDATE users SET is_del = 1, deleted_at = /* current unix second */ WHERE ID = 1;
+UPDATE users SET is_del = 1, deleted_at = /* 現在のUNIX秒 */ WHERE ID = 1;
 ```
