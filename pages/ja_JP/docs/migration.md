@@ -8,7 +8,7 @@ layout: page
 スキーマ定義のマイグレーションを自動で行い、スキーマを最新の状態に保ちます。
 
 {% note warn %}
-**注意:** AutoMigrate はテーブル、外部キー、制約、カラム、インデックスを作成します。 It will change existing column's type if its size, precision changed, or if it's changing from non-nullable to nullable. しかし、データを守るために、使われなくなったカラムの削除は**実行されません**。
+**注意:** AutoMigrate はテーブル、外部キー、制約、カラム、インデックスを作成します。 カラムのサイズまたは精度が変更されていた場合、および非 null 型からnull 許容型に変更されていた場合、既存のカラムの型が変更されます。 しかし、データを守るために、使われなくなったカラムの削除は**実行されません**。
 {% endnote %}
 
 ```go
