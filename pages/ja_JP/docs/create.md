@@ -124,7 +124,7 @@ db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// batch insert from `[]map[string]interface{}{}`
+// `[]map[string]interface{}{}` からバッチ挿入
 db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
@@ -284,17 +284,17 @@ func (p *Pet) BeforeCreate(tx *gorm.DB) (err error) {
 
 仮想的に生成される値を使用する場合は、そのフィールドを作成/更新する権限を無効にする必要があります。[フィールドレベル権限](models.html#field_permission) を参照してください。
 
-### <span id="upsert">コンフリクト発生時のUpsert</span>
+### <span id="upsert">衝突時の挿入/更新</span>
 
-GORM provides compatible Upsert support for different databases
+GORMは各データベースに対して互換性のあるUpsertをサポートしています。
 
 ```go
 import "gorm.io/gorm/clause"
 
-// Do nothing on conflict
+// 衝突の発生時に何もしない
 db.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// Update columns to default value on `id` conflict
+// `id` の衝突時にデフォルト値で更新する
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -302,14 +302,14 @@ db.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// Use SQL expression
+// SQL文を使用する
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"count": gorm.Expr("GREATEST(count, VALUES(count))")}),
 }).Create(&users)
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `count`=GREATEST(count, VALUES(count));
 
-// Update columns to new value on `id` conflict
+// `id` の衝突時に新しいほうの値で更新する
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
@@ -318,7 +318,7 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age); MySQL
 
-// Update all columns to new value on conflict except primary keys and those columns having default values from sql func
+// 衝突の発生時、主キーとSQLの関数によるデフォルト値を持つカラムを除いたすべての列を、新しいほうの値で更新する
 db.Clauses(clause.OnConflict{
   UpdateAll: true,
 }).Create(&users)
@@ -326,6 +326,6 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+[高度なクエリ](advanced_query.html) の `FirstOrInit`、`FirstOrCreate` も確認してください。
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+詳細については [Raw SQL and SQL Builder](sql_builder.html) を参照してください。
