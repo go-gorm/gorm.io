@@ -3,12 +3,12 @@ title: ポリモーフィズム
 layout: Page
 ---
 
-## Polymorphism Association
+## ポリモーフィズムでの関連付け
 
-GORM supports polymorphism association for `has one` and `has many`, it will save owned entity's table name into polymorphic type's field, primary key value into the polymorphic field
+GORMは `has one` と `has many` のポリモーフィズムでの関連付けをサポートします。自身のエンティティのテーブル名はポリモーフィック型のフィールドに、主キーの値はポリモーフィックフィールドにそれぞれ保存されます。
 
-By default `polymorphic:<value>` will prefix the column type and column id with `<value>`.
-The value will be the table name pluralized.
+`polymorphic:<value>`のように指定すると、デフォルトでは型とIDのカラムの名前の先頭に`<value>`が付与されます。
+値は、複数形に変換されたテーブル名になります。
 
 ```go
 type Dog struct {
@@ -29,11 +29,11 @@ db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `toys` (`name`,`owner_id`,`owner_type`) VALUES ("toy1",1,"dogs"), ("toy2",1,"dogs")
 ```
 
-You can specify polymorphism properties separately using the following GORM tags:
+以下のGORMタグを使用して、ポリモーフィズムに関するプロパティを個別に指定できます。
 
-- `polymorphicType`: Specifies the column type.
-- `polymorphicId`: Specifies the column ID.
-- `polymorphicValue`: Specifies the value of the type.
+- `polymorphicType`: カラムの型を指定します。
+- `polymorphicId`:カラムのIDになるフィールドを指定します。
+- `polymorphicValue`: 指定した型の値を指定します。
 
 ```go
 type Dog struct {
@@ -54,4 +54,4 @@ db.Create(&Dog{Name: "dog1", Toys: []Toy{{Name: "toy1"}, {Name: "toy2"}}})
 // INSERT INTO `toys` (`name`,`owner_id`,`kind`) VALUES ("toy1",1,"master"), ("toy2",1,"master")
 ```
 
-In these examples, we've used a has-many relationship, but the same principles apply to has-one relationships.
+以上は一対多のリレーションの例ですが、一対一のリレーションの場合にも同様の原則が適用されます。
