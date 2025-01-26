@@ -62,7 +62,7 @@ type Model struct {
 }
 ```
 
-- **Embedding in Your Struct**: You can embed `gorm.Model` directly in your structs to include these fields automatically. This is useful for maintaining consistency across different models and leveraging GORM's built-in conventions, refer [Embedded Struct](#embedded_struct)
+- **構造体への埋め込み**: あなたが作成した構造体に `gorm.Model` を直接埋め込むことでこれらのフィールドを自動的に含めることができます。 This is useful for maintaining consistency across different models and leveraging GORM's built-in conventions, refer [Embedded Struct](#embedded_struct)
 
 - **Fields Included**:
   - `ID`: A unique identifier for each record (primary key).
