@@ -8,11 +8,11 @@ layout: page
 レコードを1件削除する場合は、主キーを指定する必要があります。主キーを指定しない場合、 [一括削除](#batch_delete)が実行されます。例:
 
 ```go
-// Email's ID is `10`
+// Email の ID は `10`
 db.Delete(&email)
 // DELETE from emails where id = 10;
 
-// Delete with additional conditions
+// 条件を追加して削除
 db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 ```
@@ -34,7 +34,7 @@ db.Delete(&users, []int{1,2,3})
 
 ## 削除のフック処理
 
-GORMでは削除時のフック処理に `BeforeDelete`, `AfterDelete`を利用することができます。これらのメソッドはレコードを削除する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
+GORMでは `BeforeDelete` と `AfterDelete` のフックが利用できます。これらのメソッドはレコードを削除する際に呼び出されます。詳細については [Hooks](hooks.html) を参照してください。
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -94,13 +94,13 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 Returningをサポートしているデータベースであれば、削除されたデータを取得することができます。例：
 
 ```go
-// return all columns
+// 全カラムを返す
 var users []User
 DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// return specified columns
+// 特定のカラムを返す
 DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
@@ -113,15 +113,15 @@ DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "sal
 `Delete` メソッドを実行した際、レコードはデータベースから物理削除されません。代わりに、`DeletedAt` フィールドに現在の時刻が設定され、そのレコードは通常のクエリ系のメソッドでは検索できなくなります。
 
 ```go
-// user's ID is `111`
+// user の ID が `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// Batch Delete
+// 一括削除
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// Soft deleted records will be ignored when querying
+// 論理削除されたレコードはクエリの際に無視される
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
@@ -159,7 +159,7 @@ db.Unscoped().Delete(&order)
 デフォルトでは、`gorm.Model` は `*time.Time` を `DeletedAt` フィールドの値として使用します。 `gorm.io/plugin/soft_delete` を使用することで、他のデータ形式の対応も可能です。
 
 {% note warn %}
-**INFO** when creating unique composite index for the DeletedAt field, you must use other data format like unix second/flag with plugin `gorm.io/plugin/soft_delete`'s help, e.g:
+**INFO** DeletedAt フィールドに一意の複合インデックスを作成するには、`gorm.io/plugin/soft_delete` プラグインのヘルパーによるUNIX秒/フラグといった、ほかのデータ形式を使用しなければなりません。
 
 ```go
 import "gorm.io/plugin/soft_delete"
