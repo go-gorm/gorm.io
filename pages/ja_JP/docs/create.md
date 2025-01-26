@@ -8,11 +8,11 @@ layout: page
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // pass pointer of data to Create
+result := db.Create(&user) // データのポインタを渡してレコードを作成する
 
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+user.ID             // 挿入されたデータの主キーを返す
+result.Error        // エラーを返す
+result.RowsAffected // 挿入されたレコードの件数を返す
 ```
 
 `Create()` を使用して複数のレコードを作成することもできます:
@@ -22,10 +22,10 @@ users := []*User{
     {Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
-result := db.Create(users) // pass a slice to insert multiple row
+result := db.Create(users) // スライスを渡して複数の行を挿入する
 
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+result.Error        // エラーを返す
+result.RowsAffected // 挿入されたレコードの件数を返す
 ```
 
 {% note warn %}
@@ -137,24 +137,24 @@ db.Model(&User{}).Create([]map[string]interface{}{
 
 ## <span id="create_from_sql_expr">SQL式/Context Valuer からの作成</span>
 
-GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+GORMではSQL式でデータの挿入が可能です。これを行うには `map[string]interface{}` から作成する方法と [データ型のカスタマイズ](data_types.html#gorm_valuer_interface) の2つの方法があります。例:
 
 ```go
-// Create from map
+// マップから作成
 db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`location`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// Create from customized data type
+// カスタムデータ型から作成
 type Location struct {
     X, Y int
 }
 
-// Scan implements the sql.Scanner interface
+// Scan は sql.Scanner インターフェースを実装
 func (loc *Location) Scan(v interface{}) error {
-  // Scan a value into struct from database driver
+  // データベースのドライバーから構造体へscan
 }
 
 func (loc Location) GormDataType() string {
@@ -184,7 +184,7 @@ db.Create(&User{
 
 ### <span id="create_with_associations">関連データと関連付けて作成する</span>
 
-When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
+関連付けを使用してデータを作成する場合、関連付けの値がゼロ値ではない場合、これらの関連付けが作成および更新され、`Hooks` メソッドが呼び出されます。
 
 ```go
 type CreditCard struct {
@@ -207,18 +207,18 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`, for example:
+`Select` または `Omit` を使用することで関連付けをスキップできます。例:
 
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// skip all associations
+// すべての関連付けをスキップ
 db.Omit(clause.Associations).Create(&user)
 ```
 
 ### <span id="default_values">デフォルト値</span>
 
-You can define default values for fields with tag `default`, for example:
+`default` タグでフィールドのデフォルト値を定義することができます。例:
 
 ```go
 type User struct {
@@ -228,10 +228,10 @@ type User struct {
 }
 ```
 
-Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+レコードがデータベースへ挿入されるとき、[ゼロ値](https://tour.golang.org/basics/12) のフィールドにはデフォルト値が *使用されます*。
 
 {% note warn %}
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**注意** デフォルト値を定義したフィールドでは、`0`、`''`、`false` といったゼロ値がデータベースに保存されません。これを回避するには、ポインタ型か Scanner/Valuer を使用します。例:
 {% endnote %}
 
 ```go
@@ -244,12 +244,12 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+**注意** データベース内でデフォルト値や仮想的に生成される値を持つフィールドには、`default` タグを設定する必要があります。マイグレーション時にデフォルト値の定義をスキップする場合は、`default:(-)` を使用します。例:
 {% endnote %}
 
 ```go
 type User struct {
-  ID        string `gorm:"default:uuid_generate_v3()"` // db func
+  ID        string `gorm:"default:uuid_generate_v3()"` // データベース関数
   FirstName string
   LastName  string
   Age       uint8
@@ -258,7 +258,7 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** **SQLite** doesn't support some records are default values when batch insert. See [SQLite Insert stmt](https://www.sqlite.org/lang_insert.html). For example:
+**注意** **SQLite** はバッチ挿入時のデフォルト値をサポートしていません。 See [SQLite Insert stmt](https://www.sqlite.org/lang_insert.html). For example:
 
 ```go
 type Pet struct {
