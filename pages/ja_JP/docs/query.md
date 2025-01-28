@@ -189,7 +189,7 @@ db.Where([]int64{20, 21, 22}).Find(&users)
 ```
 
 {% note warn %}
-**NOTE** When querying with struct, GORM will only query with non-zero fields, that means if your field's value is `0`, `''`, `false` or other [zero values](https://tour.golang.org/basics/12), it won't be used to build query conditions, for example:
+**注意** GORMがクエリを実行するとき、構造体のフィールドのうちゼロ値ではないもののみを使用します。 すなわち、フィールドの値が `0`、 `''`、`false`、あるいはその他の[ゼロ値](https://tour.golang.org/basics/12)の場合、クエリ条件の構築に使用されません。例:
 {% endnote %}
 
 ```go
@@ -243,7 +243,7 @@ db.Find(&users, map[string]interface{}{"age": 20})
 // SELECT * FROM users WHERE age = 20;
 ```
 
-### Not条件
+### NOT条件
 
 NOT条件の構築方法は `Where` と同様です。
 
