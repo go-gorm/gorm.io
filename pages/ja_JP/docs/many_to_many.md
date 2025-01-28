@@ -43,14 +43,14 @@ type Language struct {
 
 ### 取得
 ```go
-// Language をイーガーロードしたのち、User のリストを取得
+// Retrieve user list with eager loading languages
 func GetAllUsers(db *gorm.DB) ([]User, error) {
     var users []User
     err := db.Model(&User{}).Preload("Languages").Find(&users).Error
     return users, err
 }
 
-// User をイーガーロードしたのち、Language のリストを取得
+// Retrieve language list with eager loading users
 func GetAllLanguages(db *gorm.DB) ([]Language, error) {
     var languages []Language
     err := db.Model(&Language{}).Preload("Users").Find(&languages).Error
@@ -73,9 +73,9 @@ type Language struct {
   Name string
 }
 
-// 結合テーブル user_languages
-//   外部キー: user_id, 参照先: users.id
-//   外部キー: language_id, 参照先: languages.id
+// Join Table: user_languages
+//   foreign key: user_id, reference: users.id
+//   foreign key: language_id, reference: languages.id
 ```
 
 デフォルトの設定を上書きするには、`foreignKey`、`references`、`joinForeignKey`、`joinReferences` タグを使用します。必ずしもこれらすべてを指定する必要はなく、1つのみを使用して外部キー／参照の設定を上書きすることも可能です。
@@ -93,9 +93,9 @@ type Profile struct {
     UserRefer uint `gorm:"index:,unique"`
 }
 
-// 結合テーブル user_profiles が作成される
-//   外部キー: user_refer_id, 参照先: users.refer
-//   外部キー: profile_refer, 参照先: profiles.user_refer
+// Which creates join table: user_profiles
+//   foreign key: user_refer_id, reference: users.refer
+//   foreign key: profile_refer, reference: profiles.user_refer
 ```
 
 {% note warn %}
@@ -112,9 +112,9 @@ type User struct {
     Friends []*User `gorm:"many2many:user_friends"`
 }
 
-// 結合テーブル user_friends が作成される
-//   外部キー: user_id, 参照先: users.id
-//   外部キー: friend_id,参照先: users.id
+// Which creates join table: user_friends
+//   foreign key: user_id, reference: users.id
+//   foreign key: friend_id, reference: users.id
 ```
 
 ## Eager Loading
@@ -156,8 +156,8 @@ func (PersonAddress) BeforeCreate(db *gorm.DB) error {
   // ...
 }
 
-// Person モデルの Addresses フィールドの結合テーブルを PersonAddress に変更
-// PersonAddress にすべての必要な外部キーが定義されてない場合、エラーが発生
+// Change model Person's field Addresses' join table to PersonAddress
+// PersonAddress must defined all required foreign keys or it will raise error
 err := db.SetupJoinTable(&Person{}, "Addresses", &PersonAddress{})
 ```
 
@@ -204,20 +204,20 @@ type Blog struct {
   SharedTags []Tag `gorm:"many2many:shared_blog_tags;ForeignKey:id;References:id"`
 }
 
-// 結合テーブル blog_tags
-//   外部キー: blog_id, 参照先: blogs.id
-//   外部キー: blog_locale, 参照先: blogs.locale
-//   外部キー: tag_id, 参照先: tags.id
-//   外部キー: tag_locale, 参照先: tags.locale
+// Join Table: blog_tags
+//   foreign key: blog_id, reference: blogs.id
+//   foreign key: blog_locale, reference: blogs.locale
+//   foreign key: tag_id, reference: tags.id
+//   foreign key: tag_locale, reference: tags.locale
 
-// 結合テーブル locale_blog_tags
-//   外部キー: blog_id, 参照先: blogs.id
-//   外部キー: blog_locale, 参照先: blogs.locale
-//   外部キー: tag_id, 参照先: tags.id
+// Join Table: locale_blog_tags
+//   foreign key: blog_id, reference: blogs.id
+//   foreign key: blog_locale, reference: blogs.locale
+//   foreign key: tag_id, reference: tags.id
 
-// 結合テーブル shared_blog_tags
-//   外部キー: blog_id, 参照先: blogs.id
-//   外部キー: tag_id, 参照先: tags.id
+// Join Table: shared_blog_tags
+//   foreign key: blog_id, reference: blogs.id
+//   foreign key: tag_id, reference: tags.id
 ```
 
 [複合主キー](composite_primary_key.html) も参照するとよいでしょう。
