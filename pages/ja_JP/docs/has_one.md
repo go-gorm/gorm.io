@@ -11,7 +11,7 @@ layout: page
 
 ### 宣言
 ```go
-// UserID が外部キーとなり、User は CreditCard を1つ持つ
+// User has one CreditCard, UserID is the foreign key
 type User struct {
   gorm.Model
   CreditCard CreditCard
@@ -26,7 +26,7 @@ type CreditCard struct {
 
 ### 取得
 ```go
-// CreditCard をイーガーロードしたのち User のリストを取得
+// Retrieve user list with eager loading credit card
 func GetAll(db *gorm.DB) ([]User, error) {
     var users []User
     err := db.Model(&User{}).Preload("CreditCard").Find(&users).Error
@@ -48,7 +48,7 @@ func GetAll(db *gorm.DB) ([]User, error) {
 type User struct {
   gorm.Model
   CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // UserName を外部キーとして使用
+  // use UserName as foreign key
 }
 
 type CreditCard struct {
