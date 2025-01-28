@@ -13,16 +13,16 @@ GORMは、Goの構造体をデータベーステーブルにマッピングす�
 
 ```go
 type User struct {
-  ID           uint           // 主キーの標準フィールド
-  Name         string         // 通常の文字列フィールド
-  Email        *string        // 文字列へのポインタ、nullを許容
-  Age          uint8          // 符号なし8ビット整数
-  Birthday     *time.Time     // time.Timeへのポインタ。nullを許容
-  MemberNumber sql.NullString // sql.NullStringを使用してnull許容文字列に対応
-  ActivatedAt  sql.NullTime   // sql.NullTimeを使用したnull許容の時間フィールド
-  CreatedAt    time.Time      // GORMによって自動的に管理される作成時間
-  UpdatedAt    time.Time      // GORMによって自動的に管理される更新時間
-  ignored      string         // エクスポートされていないフィールドは無視される
+  ID           uint           // Standard field for the primary key
+  Name         string         // A regular string field
+  Email        *string        // A pointer to a string, allowing for null values
+  Age          uint8          // An unsigned 8-bit integer
+  Birthday     *time.Time     // A pointer to time.Time, can be null
+  MemberNumber sql.NullString // Uses sql.NullString to handle nullable strings
+  ActivatedAt  sql.NullTime   // Uses sql.NullTime for nullable time fields
+  CreatedAt    time.Time      // Automatically managed by GORM for creation time
+  UpdatedAt    time.Time      // Automatically managed by GORM for update time
+  ignored      string         // fields that aren't exported are ignored
 }
 ```
 
