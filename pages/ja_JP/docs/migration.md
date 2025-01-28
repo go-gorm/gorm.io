@@ -16,7 +16,7 @@ db.AutoMigrate(&User{})
 
 db.AutoMigrate(&User{}, &Product{}, &Order{})
 
-// テーブル作成時、末尾に語句を追加
+// Add table suffix when creating tables
 db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&User{})
 ```
 
@@ -40,21 +40,21 @@ MySQLは、いくつかのバージョンではカラム名変更、インデッ
 
 ```go
 type Migrator interface {
-  // 自動マイグレーション
+  // AutoMigrate
   AutoMigrate(dst ...interface{}) error
 
-  // データベース
+  // Database
   CurrentDatabase() string
   FullDataTypeOf(*schema.Field) clause.Expr
 
-  // テーブル
+  // Tables
   CreateTable(dst ...interface{}) error
   DropTable(dst ...interface{}) error
   HasTable(dst interface{}) bool
   RenameTable(oldName, newName interface{}) error
   GetTables() (tableList []string, err error)
 
-  // カラム
+  // Columns
   AddColumn(dst interface{}, field string) error
   DropColumn(dst interface{}, field string) error
   AlterColumn(dst interface{}, field string) error
@@ -63,16 +63,16 @@ type Migrator interface {
   RenameColumn(dst interface{}, oldName, field string) error
   ColumnTypes(dst interface{}) ([]ColumnType, error)
 
-  // ビュー
+  // Views
   CreateView(name string, option ViewOption) error
   DropView(name string) error
 
-  // 制約
+  // Constraints
   CreateConstraint(dst interface{}, name string) error
   DropConstraint(dst interface{}, name string) error
   HasConstraint(dst interface{}, name string) bool
 
-  // インデックス
+  // Indexes
   CreateIndex(dst interface{}, name string) error
   DropIndex(dst interface{}, name string) error
   HasIndex(dst interface{}, name string) bool
@@ -117,13 +117,13 @@ type User struct {
   Name string
 }
 
-// テーブルに name カラムを追加
+// Add name field
 db.Migrator().AddColumn(&User{}, "Name")
-// テーブルから name カラムを削除
+// Drop name field
 db.Migrator().DropColumn(&User{}, "Name")
-// テーブルの name カラムの名前を変更
+// Alter name field
 db.Migrator().AlterColumn(&User{}, "Name")
-// テーブルにカラムがあることを確認
+// Check column exists
 db.Migrator().HasColumn(&User{}, "Name")
 
 type User struct {
@@ -131,7 +131,7 @@ type User struct {
   NewName string
 }
 
-// name カラムの名前を new_name カラムに変更
+// Rename column to new name
 db.Migrator().RenameColumn(&User{}, "Name", "NewName")
 db.Migrator().RenameColumn(&User{}, "name", "new_name")
 
@@ -169,19 +169,19 @@ type ColumnType interface {
 ```go
 query := db.Model(&User{}).Where("age > ?", 20)
 
-// ビューを作成
+// Create View
 db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query})
 // CREATE VIEW `users_view` AS SELECT * FROM `users` WHERE age > 20
 
-// ビューを作成または置換
+// Create or Replace View
 db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query, Replace: true})
 // CREATE OR REPLACE VIEW `users_pets` AS SELECT * FROM `users` WHERE age > 20
 
-// チェックオプション付きのビューを作成
+// Create View With Check Option
 db.Migrator().CreateView("users_pets", gorm.ViewOption{Query: query, CheckOption: "WITH CHECK OPTION"})
 // CREATE VIEW `users_pets` AS SELECT * FROM `users` WHERE age > 20 WITH CHECK OPTION
 
-// ビューを削除
+// Drop View
 db.Migrator().DropView("users_pets")
 // DROP VIEW IF EXISTS "users_pets"
 ```
@@ -193,13 +193,13 @@ type UserIndex struct {
   Name  string `gorm:"check:name_checker,name <> 'jinzhu'"`
 }
 
-// 制約を作成
+// Create constraint
 db.Migrator().CreateConstraint(&User{}, "name_checker")
 
-// 制約を削除
+// Drop constraint
 db.Migrator().DropConstraint(&User{}, "name_checker")
 
-// 制約があることを確認
+// Check constraint exists
 db.Migrator().HasConstraint(&User{}, "name_checker")
 ```
 
@@ -217,16 +217,16 @@ type CreditCard struct {
   UserID uint
 }
 
-// user と credit_cards のための外部キー制約を作成
+// create database foreign key for user & credit_cards
 db.Migrator().CreateConstraint(&User{}, "CreditCards")
 db.Migrator().CreateConstraint(&User{}, "fk_users_credit_cards")
 // ALTER TABLE `credit_cards` ADD CONSTRAINT `fk_users_credit_cards` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)
 
-// user と credit_cards のための外部キー制約が存在しているかどうかを確認
+// check database foreign key for user & credit_cards exists or not
 db.Migrator().HasConstraint(&User{}, "CreditCards")
 db.Migrator().HasConstraint(&User{}, "fk_users_credit_cards")
 
-// user と credit_cards のための外部キー制約を削除
+// drop database foreign key for user & credit_cards
 db.Migrator().DropConstraint(&User{}, "CreditCards")
 db.Migrator().DropConstraint(&User{}, "fk_users_credit_cards")
 ```
@@ -239,15 +239,15 @@ type User struct {
   Name string `gorm:"size:255;index:idx_name,unique"`
 }
 
-// Name フィールドにインデックスを作成
+// Create index for Name field
 db.Migrator().CreateIndex(&User{}, "Name")
 db.Migrator().CreateIndex(&User{}, "idx_name")
 
-// Name フィールドのインデックスを削除
+// Drop index for Name field
 db.Migrator().DropIndex(&User{}, "Name")
 db.Migrator().DropIndex(&User{}, "idx_name")
 
-// インデックスがあることを確認
+// Check Index exists
 db.Migrator().HasIndex(&User{}, "Name")
 db.Migrator().HasIndex(&User{}, "idx_name")
 
@@ -256,7 +256,7 @@ type User struct {
   Name  string `gorm:"size:255;index:idx_name,unique"`
   Name2 string `gorm:"size:255;index:idx_name_2,unique"`
 }
-// インデックスの名前を変更
+// Rename index name
 db.Migrator().RenameIndex(&User{}, "Name", "Name2")
 db.Migrator().RenameIndex(&User{}, "idx_name", "idx_name_2")
 ```
@@ -287,7 +287,7 @@ GORMでAtlasを使用する方法については、[公式ドキュメント](ht
 その他のGoベースのマイグレーションツールとともにGORMを使用するために、GORMはあなたのお役に立てるよう汎用的なDBインターフェースを提供しています。
 
 ```go
-// `*sql.DB` を返す
+// returns `*sql.DB`
 db.DB()
 ```
 
