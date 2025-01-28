@@ -3,13 +3,13 @@ title: エラーハンドリング
 layout: page
 ---
 
-効果的なエラー処理は、特にGORMを使用してデータベースとやりとりする場合において、堅牢なGoアプリケーション開発の礎石です。 GORM's approach to error handling, influenced by its chainable API, requires a nuanced understanding.
+効果的なエラー処理は、特にGORMを使用してデータベースとやりとりする場合において、堅牢なGoアプリケーション開発の礎石です。 チェーン可能なAPIから影響を受けたGORMのエラー処理に対するアプローチには、繊細な理解が必要です。
 
-## Basic Error Handling
+## 基本的なエラー処理
 
-GORM integrates error handling into its chainable method syntax. The `*gorm.DB` instance contains an `Error` field, which is set when an error occurs. The common practice is to check this field after executing database operations, especially after [Finisher Methods](method_chaining.html#finisher_method).
+GORMでは、チェーン可能なメソッドの構文にエラー処理が統合されています。 `*gorm.DB` インスタンスには `Error` フィールドが含まれており、エラーが発生したときに値が設定されます。 データベース操作の実行後、特に [Finisher Methods](method_chaining.html#finisher_method) の後に、このフィールドをチェックするのが一般的な手法です。
 
-After a chain of methods, it's crucial to check the `Error` field:
+メソッドをチェーンしたあとに `Error` フィールドを確認することが重要です。
 
 ```go
 if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
@@ -17,7 +17,7 @@ if err := db.Where("name = ?", "jinzhu").First(&user).Error; err != nil {
 }
 ```
 
-Or alternatively:
+もしくは、
 
 ```go
 if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
@@ -27,7 +27,7 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 
 ## `ErrRecordNotFound`
 
-GORM returns `ErrRecordNotFound` when no record is found using methods like `First`, `Last`, `Take`.
+`First`, `Last`, `Take` などのメソッドを使用したときにレコードが見つからなかった場合、GORM は `ErrRecordNotFound` を返します。
 
 ```go
 err := db.First(&user, 100).Error
@@ -36,11 +36,11 @@ if errors.Is(err, gorm.ErrRecordNotFound) {
 }
 ```
 
-## Handling Error Codes
+## エラーコードの対処
 
-Many databases return errors with specific codes, which can be indicative of various issues like constraint violations, connection problems, or syntax errors. Handling these error codes in GORM requires parsing the error returned by the database and extracting the relevant code
+多くのデータベースでは、制約違反、接続の問題、構文エラーなどの問題を示すコードでエラーを返します。 これらのエラーコードを処理するには、GORMはデータベースから返されたエラーをパースし、関連するコードを抽出する必要があります。
 
-- **Example: Handling MySQL Error Codes**
+- **例: MySQLで発生するエラー コードの処理**
 
 ```go
 import (
@@ -66,9 +66,9 @@ if result.Error != nil {
 }
 ```
 
-## Dialect Translated Errors
+## 方言を翻訳したエラー
 
-GORM can return specific errors related to the database dialect being used, when `TranslateError` is enabled, GORM converts database-specific errors into its own generalized errors.
+GORMは使用されているSQL方言に関する特定のエラーを返すことができます。`TranslateError` が有効な場合、GORMはデータベース固有のエラーを独自に一般化したエラーに変換します。
 
 ```go
 db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: true})
@@ -76,7 +76,7 @@ db, err := gorm.Open(postgres.Open(postgresDSN), &gorm.Config{TranslateError: tr
 
 - **ErrDuplicatedKey**
 
-This error occurs when an insert operation violates a unique constraint:
+このエラーは、レコード挿入操作がUNIQUE制約に違反した場合に発生します。
 
 ```go
 result := db.Create(&newRecord)
@@ -87,7 +87,7 @@ if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
 
 - **ErrForeignKeyViolated**
 
-This error is encountered when a foreign key constraint is violated:
+このエラーは外部キー制約に違反している場合に発生します。
 
 ```go
 result := db.Create(&newRecord)
@@ -96,8 +96,8 @@ if errors.Is(result.Error, gorm.ErrForeignKeyViolated) {
 }
 ```
 
-By enabling `TranslateError`, GORM provides a more unified way of handling errors across different databases, translating database-specific errors into common GORM error types.
+`TranslateError` を有効にすることで、GORMはデータベース固有のエラーを一般的なGORMエラータイプに翻訳し、異なるデータベース間でより統一されたエラー処理方法を提供します。
 
-## Errors
+## エラーの一覧
 
-For a complete list of errors that GORM can return, refer to the [Errors List](https://github.com/go-gorm/gorm/blob/master/errors.go) in GORM's documentation.
+GORMが返すエラーの一覧については、GORMのドキュメントの [エラーリスト](https://github.com/go-gorm/gorm/blob/master/errors.go) を参照してください。
