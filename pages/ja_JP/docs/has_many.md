@@ -26,7 +26,7 @@ type CreditCard struct {
 
 ### 取得
 ```go
-// CreditCard をイーガーロードしたのち、User のリストを取得
+// Retrieve user list with eager loading credit cards
 func GetAll(db *gorm.DB) ([]User, error) {
     var users []User
     err := db.Model(&User{}).Preload("CreditCards").Find(&users).Error
