@@ -114,7 +114,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">条件をグループ化する</span>
 
-Group Conditions in GORM provide a more readable and maintainable way to write complex SQL queries involving multiple conditions.
+GORMのグループ条件は、複数の条件を含む複雑なSQLクエリの可読性およびメンテナンス性の向上をもたらします。
 
 ```go
 // Complex SQL query using Group Conditions
@@ -128,7 +128,7 @@ db.Where(
 
 ## 複数カラムでのIN
 
-GORM supports the IN clause with multiple columns, allowing you to filter data based on multiple field values in a single query.
+GORMは複数カラムでのIN句をサポートしており、1つのクエリで複数のフィールド値に基づいたデータのフィルタリングが行えます。
 
 ```go
 // Using IN with multiple columns
@@ -138,7 +138,7 @@ db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"ji
 
 ## 名前付き引数
 
-GORM enhances the readability and maintainability of SQL queries by supporting named arguments. This feature allows for clearer and more organized query construction, especially in complex queries with multiple parameters. Named arguments can be utilized using either [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, providing flexibility in how you structure your queries.
+GORMは名前付き引数をサポートしており、SQLクエリの可読性とメンテナンス性を向上させています。 この機能により、特に複数のパラメータを持つ複雑なクエリにおいては、よりクリアかつ整理されたクエリ構造が可能となっています。 名前付き引数は [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) または `map[string]interface{}{}` のいずれかを使用することで有効になり、クエリの構成に柔軟性をもたらします。
 
 ```go
 // Example using sql.NamedArg for named arguments
@@ -150,7 +150,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SQL: SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-For more examples and details, see [Raw SQL and SQL Builder](sql_builder.html#named_argument)
+その他の例や詳細については [Raw SQL and SQL Builder](sql_builder.html#named_argument) を参照してください。
 
 ## 取得結果をマップに代入
 
