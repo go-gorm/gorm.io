@@ -27,7 +27,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 ```
 
 {% note warn %}
-**NOTE** In `QueryFields` mode, all model fields are selected by their names.
+**注意** `QueryFields` モードでは、モデル内のすべてのフィールドがフィールド名で選択されます。
 {% endnote %}
 
 ```go
@@ -44,7 +44,7 @@ db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SQL: SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking
+## ロック
 
 GORMは数種類のロック処理をサポートしています。例:
 
@@ -54,9 +54,9 @@ db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SQL: SELECT * FROM `users` FOR UPDATE
 ```
 
-The above statement will lock the selected rows for the duration of the transaction. This can be used in scenarios where you are preparing to update the rows and want to prevent other transactions from modifying them until your transaction is complete.
+上記のコードは、選択した行をトランザクションのあいだロックします。 これは、レコードの更新を準備している場合や、トランザクションが完了するまでほかのトランザクションによって変更されないようにする場合に使用できます。
 
-The `Strength` can be also set to `SHARE` which locks the rows in a way that allows other transactions to read the locked rows but not to update or delete them.
+`Strength` に `SHARE` をセットすると、ロックした行をほかのトランザクションも読み取ることができます。ただし、更新および削除はできません。
 ```go
 db.Clauses(clause.Locking{
   Strength: "SHARE",
@@ -65,9 +65,9 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-The `Table` option can be used to specify the table to lock. This is useful when you are joining multiple tables and want to lock only one of them.
+`Table` オプションを使用して、ロックするテーブルを指定できます。 これは、複数のテーブルを結合していて、そのうちの1つだけをロックしたい場合に便利です。
 
-Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
+Optionsには `NOWAIT` などを入力できます。この場合、ロックが利用できないタイミングでロックをかけようとすると、すぐにエラーが発生します。 ほかのトランザクションがロックを解除するまで待機することがなくなります。
 
 ```go
 db.Clauses(clause.Locking{
@@ -77,7 +77,7 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Another option can be `SKIP LOCKED` which skips over any rows that are already locked by other transactions. This is useful in high concurrency situations where you want to process rows that are not currently locked by other transactions.
+オプションにはもう1つ `SKIP LOCKED` もあります。これは、ほかのトランザクションによってすでにロックされている行をすべてスキップします。 This is useful in high concurrency situations where you want to process rows that are not currently locked by other transactions.
 
 For more advanced locking strategies, refer to [Raw SQL and SQL Builder](sql_builder.html).
 
