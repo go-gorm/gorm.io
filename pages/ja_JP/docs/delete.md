@@ -8,11 +8,11 @@ layout: page
 レコードを1件削除する場合は、主キーを指定する必要があります。主キーを指定しない場合、 [一括削除](#batch_delete)が実行されます。例:
 
 ```go
-// Email の ID は `10`
+// Email's ID is `10`
 db.Delete(&email)
 // DELETE from emails where id = 10;
 
-// 条件を追加して削除
+// Delete with additional conditions
 db.Where("name = ?", "jinzhu").Delete(&email)
 // DELETE from emails where id = 10 AND name = "jinzhu";
 ```
@@ -94,13 +94,13 @@ db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&User{})
 Returningをサポートしているデータベースであれば、削除されたデータを取得することができます。例：
 
 ```go
-// 全カラムを返す
+// return all columns
 var users []User
 DB.Clauses(clause.Returning{}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING *
 // users => []User{{ID: 1, Name: "jinzhu", Role: "admin", Salary: 100}, {ID: 2, Name: "jinzhu.2", Role: "admin", Salary: 1000}}
 
-// 特定のカラムを返す
+// return specified columns
 DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "salary"}}}).Where("role = ?", "admin").Delete(&users)
 // DELETE FROM `users` WHERE role = "admin" RETURNING `name`, `salary`
 // users => []User{{ID: 0, Name: "jinzhu", Role: "", Salary: 100}, {ID: 0, Name: "jinzhu.2", Role: "", Salary: 1000}}
@@ -113,15 +113,15 @@ DB.Clauses(clause.Returning{Columns: []clause.Column{{Name: "name"}, {Name: "sal
 `Delete` メソッドを実行した際、レコードはデータベースから物理削除されません。代わりに、`DeletedAt` フィールドに現在の時刻が設定され、そのレコードは通常のクエリ系のメソッドでは検索できなくなります。
 
 ```go
-// user の ID が `111`
+// user's ID is `111`
 db.Delete(&user)
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE id = 111;
 
-// 一括削除
+// Batch Delete
 db.Where("age = ?", 20).Delete(&User{})
 // UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;
 
-// 論理削除されたレコードはクエリの際に無視される
+// Soft deleted records will be ignored when querying
 db.Where("age = 20").Find(&user)
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
@@ -236,14 +236,14 @@ type User struct {
   ID        uint
   Name      string
   DeletedAt time.Time
-  IsDel     soft_delete.DeletedAt `gorm:"softDelete:flag,DeletedAtField:DeletedAt"` // `1` `0` を使用
-  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:,DeletedAtField:DeletedAt"` // `unix second` を使用
-  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:nano,DeletedAtField:DeletedAt"` // `unix nano second` を使用
+  IsDel     soft_delete.DeletedAt `gorm:"softDelete:flag,DeletedAtField:DeletedAt"` // use `1` `0`
+  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:,DeletedAtField:DeletedAt"` // use `unix second`
+  // IsDel     soft_delete.DeletedAt `gorm:"softDelete:nano,DeletedAtField:DeletedAt"` // use `unix nano second`
 }
 
 // Query
 SELECT * FROM users WHERE is_del = 0;
 
 // Delete
-UPDATE users SET is_del = 1, deleted_at = /* 現在のUNIX秒 */ WHERE ID = 1;
+UPDATE users SET is_del = 1, deleted_at = /* current unix second */ WHERE ID = 1;
 ```
