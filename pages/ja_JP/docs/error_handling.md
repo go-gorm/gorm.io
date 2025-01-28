@@ -3,7 +3,7 @@ title: エラーハンドリング
 layout: page
 ---
 
-Effective error handling is a cornerstone of robust application development in Go, particularly when interacting with databases using GORM. GORM's approach to error handling, influenced by its chainable API, requires a nuanced understanding.
+効果的なエラー処理は、特にGORMを使用してデータベースとやりとりする場合において、堅牢なGoアプリケーション開発の礎石です。 GORM's approach to error handling, influenced by its chainable API, requires a nuanced understanding.
 
 ## Basic Error Handling
 
