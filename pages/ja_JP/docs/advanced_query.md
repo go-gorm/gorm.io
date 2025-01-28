@@ -77,13 +77,13 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-オプションにはもう1つ `SKIP LOCKED` もあります。これは、ほかのトランザクションによってすでにロックされている行をすべてスキップします。 This is useful in high concurrency situations where you want to process rows that are not currently locked by other transactions.
+オプションにはもう1つ `SKIP LOCKED` もあります。これは、ほかのトランザクションによってすでにロックされている行をすべてスキップします。 これは、トランザクションによって現在ロックされていない行を処理したい場合など、同時実効性が高いケースにおいて便利です。
 
-For more advanced locking strategies, refer to [Raw SQL and SQL Builder](sql_builder.html).
+ロックを使ったより高度な戦略については、[Raw SQL and SQL Builder](sql_builder.html) を参照してください。
 
 ## サブクエリ
 
-Subqueries are a powerful feature in SQL, allowing nested queries. GORM can generate subqueries automatically when using a *gorm.DB object as a parameter.
+サブクエリはSQLの強力な機能で、クエリのネストを可能にします。 パラメータに *gorm.DB オブジェクトを使用すると、GORMは自動的にサブクエリを生成します。
 
 ```go
 // Simple subquery
