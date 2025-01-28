@@ -8,11 +8,11 @@ layout: page
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-result := db.Create(&user) // データのポインタを渡してレコードを作成する
+result := db.Create(&user) // pass pointer of data to Create
 
-user.ID             // 挿入されたデータの主キーを返す
-result.Error        // エラーを返す
-result.RowsAffected // 挿入されたレコードの件数を返す
+user.ID             // returns inserted data's primary key
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
 ```
 
 `Create()` を使用して複数のレコードを作成することもできます:
@@ -22,10 +22,10 @@ users := []*User{
     {Name: "Jackson", Age: 19, Birthday: time.Now()},
 }
 
-result := db.Create(users) // スライスを渡して複数の行を挿入する
+result := db.Create(users) // pass a slice to insert multiple row
 
-result.Error        // エラーを返す
-result.RowsAffected // 挿入されたレコードの件数を返す
+result.Error        // returns error
+result.RowsAffected // returns inserted records count
 ```
 
 {% note warn %}
@@ -124,7 +124,7 @@ db.Model(&User{}).Create(map[string]interface{}{
   "Name": "jinzhu", "Age": 18,
 })
 
-// `[]map[string]interface{}{}` からバッチ挿入
+// batch insert from `[]map[string]interface{}{}`
 db.Model(&User{}).Create([]map[string]interface{}{
   {"Name": "jinzhu_1", "Age": 18},
   {"Name": "jinzhu_2", "Age": 20},
@@ -140,21 +140,21 @@ db.Model(&User{}).Create([]map[string]interface{}{
 GORMではSQL式でデータの挿入が可能です。これを行うには `map[string]interface{}` から作成する方法と [データ型のカスタマイズ](data_types.html#gorm_valuer_interface) の2つの方法があります。例:
 
 ```go
-// マップから作成
+// Create from map
 db.Model(User{}).Create(map[string]interface{}{
   "Name": "jinzhu",
   "Location": clause.Expr{SQL: "ST_PointFromText(?)", Vars: []interface{}{"POINT(100 100)"}},
 })
 // INSERT INTO `users` (`name`,`location`) VALUES ("jinzhu",ST_PointFromText("POINT(100 100)"));
 
-// カスタムデータ型から作成
+// Create from customized data type
 type Location struct {
     X, Y int
 }
 
-// Scan は sql.Scanner インターフェースを実装
+// Scan implements the sql.Scanner interface
 func (loc *Location) Scan(v interface{}) error {
-  // データベースのドライバーから構造体へscan
+  // Scan a value into struct from database driver
 }
 
 func (loc Location) GormDataType() string {
@@ -212,7 +212,7 @@ db.Create(&User{
 ```go
 db.Omit("CreditCard").Create(&user)
 
-// すべての関連付けをスキップ
+// skip all associations
 db.Omit(clause.Associations).Create(&user)
 ```
 
@@ -249,7 +249,7 @@ type User struct {
 
 ```go
 type User struct {
-  ID        string `gorm:"default:uuid_generate_v3()"` // データベース関数
+  ID        string `gorm:"default:uuid_generate_v3()"` // db func
   FirstName string
   LastName  string
   Age       uint8
@@ -265,7 +265,7 @@ type Pet struct {
     Name string `gorm:"default:cat"`
 }
 
-// SQLiteでは次の文がサポートされていないため、GORMが構築するSQLが不正となり、エラーが発生します:
+// In SQLite, this is not supported, so GORM will build a wrong SQL to raise error:
 // INSERT INTO `pets` (`name`) VALUES ("dog"),(DEFAULT) RETURNING `name`
 db.Create(&[]Pet{{Name: "dog"}, {}})
 ```
@@ -291,10 +291,10 @@ GORMは各データベースに対して互換性のあるUpsertをサポート�
 ```go
 import "gorm.io/gorm/clause"
 
-// 衝突の発生時に何もしない
+// Do nothing on conflict
 db.Clauses(clause.OnConflict{DoNothing: true}).Create(&user)
 
-// `id` の衝突時にデフォルト値で更新する
+// Update columns to default value on `id` conflict
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"role": "user"}),
@@ -302,14 +302,14 @@ db.Clauses(clause.OnConflict{
 // MERGE INTO "users" USING *** WHEN NOT MATCHED THEN INSERT *** WHEN MATCHED THEN UPDATE SET ***; SQL Server
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE ***; MySQL
 
-// SQL文を使用する
+// Use SQL expression
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"count": gorm.Expr("GREATEST(count, VALUES(count))")}),
 }).Create(&users)
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `count`=GREATEST(count, VALUES(count));
 
-// `id` の衝突時に新しいほうの値で更新する
+// Update columns to new value on `id` conflict
 db.Clauses(clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.AssignmentColumns([]string{"name", "age"}),
@@ -318,7 +318,7 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO "users" *** ON CONFLICT ("id") DO UPDATE SET "name"="excluded"."name", "age"="excluded"."age"; PostgreSQL
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age); MySQL
 
-// 衝突の発生時、主キーとSQLの関数によるデフォルト値を持つカラムを除いたすべての列を、新しいほうの値で更新する
+// Update all columns to new value on conflict except primary keys and those columns having default values from sql func
 db.Clauses(clause.OnConflict{
   UpdateAll: true,
 }).Create(&users)
