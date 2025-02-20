@@ -3,7 +3,7 @@ title: GORM Config
 layout: page
 ---
 
-GORM provides Config can be used during initialization
+GORM proporciona configuración que puede usarse durante la inicialización
 
 ```go
 type Config struct {
@@ -22,7 +22,7 @@ type Config struct {
 
 ## SkipDefaultTransaction
 
-GORM perform write (create/update/delete) operations run inside a transaction to ensure data consistency, you can disable it during initialization if it is not required
+GORM realiza operaciones de escritura (crear/actualizar/eliminar) dentro de una transacción para asegurar la consistencia en los datos, puede desactivarse durante la inicialización en caso de no ser necesario
 
 ```go
 db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{

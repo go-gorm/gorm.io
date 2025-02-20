@@ -1,6 +1,6 @@
 ---
 title: Contribute to GORM
-layout: page
+layout: पेज
 ---
 
 **You can help to deliver a better GORM! there are many things that you can do:**

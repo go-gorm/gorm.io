@@ -1,21 +1,21 @@
 ---
-title: Method Chaining
+title: メソッドのチェーン
 layout: page
 ---
 
-GORM's method chaining feature allows for a smooth and fluent style of coding. Here's an example:
+GORMのメソッドチェーン機能は、円滑で流暢なコーディングスタイルを可能にします。 例:
 
 ```go
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 ```
 
-## Method Categories
+## メソッドのカテゴリ
 
-GORM organizes methods into three primary categories: `Chain Methods`, `Finisher Methods`, and `New Session Methods`.
+GORMにおいて、メソッドはおもに `Chain Methods`、 `Finisher Methods`、 `New Session Methods` の3つのカテゴリに分類されます。
 
 ### Chain Methods
 
-Chain methods are used to modify or append `Clauses` to the current `Statement`. Some common chain methods include:
+Chain Method は、現在の `Statement` に `Clauses`の変更または追加を行うために使用されます。 一般的なチェーンメソッドには以下のものがあります。
 
 - `Where`
 - `Select`
@@ -23,13 +23,13 @@ Chain methods are used to modify or append `Clauses` to the current `Statement`.
 - `Joins`
 - `Scopes`
 - `Preload`
-- `Raw` (Note: `Raw` cannot be used in conjunction with other chainable methods to build SQL)
+- `Raw` (注意: `Raw` は、SQLを構築する他のチェーン可能なメソッドと組み合わせて使用することはできません)
 
-For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/gorm/blob/master/chainable_api.go). Also, the [SQL Builder](sql_builder.html) documentation offers more details about `Clauses`.
+包括的なリストについては [GORM Chainable API](https://github.com/go-gorm/gorm/blob/master/chainable_api.go) をご覧ください。 また、 [SQL Builder](sql_builder.html) のドキュメントでは `Clauses` についての詳細が示されています。
 
 ### Finisher Methods
 
-Finisher methods are immediate, executing registered callbacks that generate and run SQL commands. This category includes methods:
+Finisher Method が現れると、それまでに登録されたコールバックが即実行され、SQLコマンドを生成、実行します。 このカテゴリには以下のメソッドが含まれます。
 
 - `Create`
 - `First`
@@ -42,17 +42,17 @@ Finisher methods are immediate, executing registered callbacks that generate and
 - `Row`
 - `Rows`
 
-For the full list, refer to [GORM Finisher API](https://github.com/go-gorm/gorm/blob/master/finisher_api.go).
+一覧については [GORM Finisher API](https://github.com/go-gorm/gorm/blob/master/finisher_api.go) を参照してください。
 
 ### New Session Methods
 
-GORM defines methods like `Session`, `WithContext`, and `Debug` as New Session Methods, which are essential for creating shareable and reusable `*gorm.DB` instances. For more details, see [Session](session.html) documentation.
+`Session`、`WithContext`、`Debug` といったメソッドは New Session Methods として定義されており、共有可能かつ再利用可能な `*gorm.DB` インスタンスを生み出すのに必要不可欠です。 詳細は [セッション](session.html) のドキュメントを参照してください。
 
-## Reusability and Safety
+## 再利用性と安全性
 
-A critical aspect of GORM is understanding when a `*gorm.DB` instance is safe to reuse. Following a `Chain Method` or `Finisher Method`, GORM returns an initialized `*gorm.DB` instance. This instance is not safe for reuse as it may carry over conditions from previous operations, potentially leading to contaminated SQL queries. For example:
+`*gorm.DB` インスタンスを安全に再利用することができるタイミングを理解することは、GORMにおける重要な側面の1つです。 `Chain Method` または `Finisher Method` の後ろに続けて置くことで、GORMは `*gorm.DB` インスタンスを初期化して返します。 このインスタンスは以前の操作から条件を引き継いでおり、SQLクエリの汚染につながる可能性があるため、安全に再利用することはできません。 例:
 
-### Example of Unsafe Reuse
+### 安全でない再利用の例
 
 ```go
 queryDB := DB.Where("name = ?", "jinzhu")
@@ -66,9 +66,9 @@ queryDB.Where("age > ?", 20).First(&user2)
 // SQL: SELECT * FROM users WHERE name = "jinzhu" AND age > 10 AND age > 20
 ```
 
-### Example of Safe Reuse
+### 安全な再利用の例
 
-To safely reuse a `*gorm.DB` instance, use a New Session Method:
+`*gorm.DB` インスタンスを安全に再利用するには、New Session Method を使用します。
 
 ```go
 queryDB := DB.Where("name = ?", "jinzhu").Session(&gorm.Session{})
@@ -82,13 +82,13 @@ queryDB.Where("age > ?", 20).First(&user2)
 // SQL: SELECT * FROM users WHERE name = "jinzhu" AND age > 20
 ```
 
-In this scenario, using `Session(&gorm.Session{})` ensures that each query starts with a fresh context, preventing the pollution of SQL queries with conditions from previous operations. This is crucial for maintaining the integrity and accuracy of your database interactions.
+このシナリオでは `Session(&gorm.Session{})` を使用することで、直前の操作がもたらす条件によってSQLクエリが汚染されることを防止し、毎クエリが新鮮なコンテキストから始動することを確実なものにしています。 これは、データベースとのやりとりの整合性と正確性を維持するために重要です。
 
-## Examples for Clarity
+## わかりやすい例
 
-Let's clarify with a few examples:
+いくつかの例をあげてわかりやすくしましょう。
 
-- **Example 1: Safe Instance Reuse**
+- **例1: インスタンスの安全な再利用**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -111,9 +111,9 @@ db.Find(&users)
 // SELECT * FROM users;
 ```
 
-In this example, each chain of method calls is independent, ensuring clean, non-polluted SQL queries.
+この例では、メソッド呼び出しの各チェーンは独立しており、すべてのSQLクエリがクリーンかつ汚染されていないことを確実にします。
 
-- **(Bad) Example 2: Unsafe Instance Reuse**
+- **例2 (悪い例): 安全でないインスタンスの再利用**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -133,9 +133,9 @@ tx.Where("age = ?", 28).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 28;
 ```
 
-In this bad example, reusing the `tx` variable leads to compounded conditions, which is generally not desirable.
+これは `tx` 変数の再利用によって条件が混ざってしまった悪い例です。一般的には望ましくありません。
 
-- **Example 3: Safe Reuse with New Session Methods**
+- **例3: New Session Methods による安全な再利用**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -155,6 +155,6 @@ tx.Where("age = ?", 28).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 28;
 ```
 
-In this example, using New Session Methods `Session`, `WithContext`, `Debug` correctly initializes a `*gorm.DB` instance for each logical operation, preventing condition pollution and ensuring each query is distinct and based on the specific conditions provided.
+この例では、New Session Methods である `Session`、`WithContext`、`Debug` を使用することで、論理操作ごとに `*gorm.DB` インスタンスが正しい形で初期化されています。これによって条件は汚染されることなく、各クエリが与えられた固有の条件に基づいて独立していることを確実なものにしています。
 
-Overall, these examples illustrate the importance of understanding GORM's behavior with respect to method chaining and instance management to ensure accurate and efficient database querying.
+以上の例で、正確で効率的なデータベース操作を確立するために、メソッドチェーンとインスタンス管理に関するGORMの動作を理解することの重要性が一般に示されました。

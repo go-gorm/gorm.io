@@ -27,7 +27,7 @@ db.Model(&User{}).Limit(10).Find(&APIUser{})
 ```
 
 {% note warn %}
-**NOTE** In `QueryFields` mode, all model fields are selected by their names.
+**注意** `QueryFields` モードでは、モデル内のすべてのフィールドがフィールド名で選択されます。
 {% endnote %}
 
 ```go
@@ -44,7 +44,7 @@ db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SQL: SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking
+## ロック
 
 GORMは数種類のロック処理をサポートしています。例:
 
@@ -54,9 +54,9 @@ db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SQL: SELECT * FROM `users` FOR UPDATE
 ```
 
-The above statement will lock the selected rows for the duration of the transaction. This can be used in scenarios where you are preparing to update the rows and want to prevent other transactions from modifying them until your transaction is complete.
+上記のコードは、選択した行をトランザクションのあいだロックします。 これは、レコードの更新を準備している場合や、トランザクションが完了するまでほかのトランザクションによって変更されないようにする場合に使用できます。
 
-The `Strength` can be also set to `SHARE` which locks the rows in a way that allows other transactions to read the locked rows but not to update or delete them.
+`Strength` に `SHARE` をセットすると、ロックした行をほかのトランザクションも読み取ることができます。ただし、更新および削除はできません。
 ```go
 db.Clauses(clause.Locking{
   Strength: "SHARE",
@@ -65,9 +65,9 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-The `Table` option can be used to specify the table to lock. This is useful when you are joining multiple tables and want to lock only one of them.
+`Table` オプションを使用して、ロックするテーブルを指定できます。 これは、複数のテーブルを結合していて、そのうちの1つだけをロックしたい場合に便利です。
 
-Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
+Optionsには `NOWAIT` などを入力できます。この場合、ロックが利用できないタイミングでロックをかけようとすると、すぐにエラーが発生します。 ほかのトランザクションがロックを解除するまで待機することがなくなります。
 
 ```go
 db.Clauses(clause.Locking{
@@ -77,13 +77,13 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Another option can be `SKIP LOCKED` which skips over any rows that are already locked by other transactions. This is useful in high concurrency situations where you want to process rows that are not currently locked by other transactions.
+オプションにはもう1つ `SKIP LOCKED` もあります。これは、ほかのトランザクションによってすでにロックされている行をすべてスキップします。 これは、トランザクションによって現在ロックされていない行を処理したい場合など、同時実効性が高いケースにおいて便利です。
 
-For more advanced locking strategies, refer to [Raw SQL and SQL Builder](sql_builder.html).
+ロックを使ったより高度な戦略については、[Raw SQL and SQL Builder](sql_builder.html) を参照してください。
 
 ## サブクエリ
 
-Subqueries are a powerful feature in SQL, allowing nested queries. GORM can generate subqueries automatically when using a *gorm.DB object as a parameter.
+サブクエリはSQLの強力な機能で、クエリのネストを可能にします。 パラメータに *gorm.DB オブジェクトを使用すると、GORMは自動的にサブクエリを生成します。
 
 ```go
 // Simple subquery
@@ -114,7 +114,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 
 ## <span id="group_conditions">条件をグループ化する</span>
 
-Group Conditions in GORM provide a more readable and maintainable way to write complex SQL queries involving multiple conditions.
+GORMのグループ条件は、複数の条件を含む複雑なSQLクエリの可読性およびメンテナンス性の向上をもたらします。
 
 ```go
 // Complex SQL query using Group Conditions
@@ -128,7 +128,7 @@ db.Where(
 
 ## 複数カラムでのIN
 
-GORM supports the IN clause with multiple columns, allowing you to filter data based on multiple field values in a single query.
+GORMは複数カラムでのIN句をサポートしており、1つのクエリで複数のフィールド値に基づいたデータのフィルタリングが行えます。
 
 ```go
 // Using IN with multiple columns
@@ -138,7 +138,7 @@ db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"ji
 
 ## 名前付き引数
 
-GORM enhances the readability and maintainability of SQL queries by supporting named arguments. This feature allows for clearer and more organized query construction, especially in complex queries with multiple parameters. Named arguments can be utilized using either [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, providing flexibility in how you structure your queries.
+GORMは名前付き引数をサポートしており、SQLクエリの可読性とメンテナンス性を向上させています。 この機能により、特に複数のパラメータを持つ複雑なクエリにおいては、よりクリアかつ整理されたクエリ構造が可能となっています。 名前付き引数は [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) または `map[string]interface{}{}` のいずれかを使用することで有効になり、クエリの構成に柔軟性をもたらします。
 
 ```go
 // Example using sql.NamedArg for named arguments
@@ -150,7 +150,7 @@ db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzh
 // SQL: SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-For more examples and details, see [Raw SQL and SQL Builder](sql_builder.html#named_argument)
+その他の例や詳細については [Raw SQL and SQL Builder](sql_builder.html#named_argument) を参照してください。
 
 ## 取得結果をマップに代入
 

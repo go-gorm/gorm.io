@@ -68,7 +68,7 @@ customer := g.GenerateModel("customers", gen.FieldRelate(field.HasMany, "CreditC
     }),
 )
 
-g.ApplyBasic(card, custormer)
+g.ApplyBasic(card, customer)
 ```
 
 GEN 将生成带有关联字段的model：

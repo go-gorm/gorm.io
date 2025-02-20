@@ -1,5 +1,5 @@
 ---
-title: Advanced Query
+title: उन्नत प्रश्न
 layout: page
 ---
 
@@ -65,7 +65,7 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-The `Table` option can be used to specify the table to lock. This is useful when you are joining multiple tables and want to lock only one of them.
+यह उन परिस्थितियों में विशेष रूप से सहायक होता है जब आप कई तालिकाओं को जोड़ रहे होते हैं और केवल एक को लॉक करना चाहते हैं।
 
 Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
 

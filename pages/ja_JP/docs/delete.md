@@ -34,7 +34,7 @@ db.Delete(&users, []int{1,2,3})
 
 ## 削除のフック処理
 
-GORMでは削除時のフック処理に `BeforeDelete`, `AfterDelete`を利用することができます。これらのメソッドはレコードを削除する際に呼び出されます。 [Hooks](hooks.html)を参照してください。
+GORMでは `BeforeDelete` と `AfterDelete` のフックが利用できます。これらのメソッドはレコードを削除する際に呼び出されます。詳細については [Hooks](hooks.html) を参照してください。
 
 ```go
 func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
@@ -159,7 +159,7 @@ db.Unscoped().Delete(&order)
 デフォルトでは、`gorm.Model` は `*time.Time` を `DeletedAt` フィールドの値として使用します。 `gorm.io/plugin/soft_delete` を使用することで、他のデータ形式の対応も可能です。
 
 {% note warn %}
-**INFO** when creating unique composite index for the DeletedAt field, you must use other data format like unix second/flag with plugin `gorm.io/plugin/soft_delete`'s help, e.g:
+**INFO** DeletedAt フィールドに一意の複合インデックスを作成するには、`gorm.io/plugin/soft_delete` プラグインのヘルパーによるUNIX秒/フラグといった、ほかのデータ形式を使用しなければなりません。
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -172,9 +172,9 @@ type User struct {
 ```
 {% endnote %}
 
-#### Unix Second
+#### UNIX秒
 
-Use unix second as delete flag
+UNIX秒を削除フラグとして使用
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -192,7 +192,7 @@ SELECT * FROM users WHERE deleted_at = 0;
 UPDATE users SET deleted_at = /* current unix second */ WHERE ID = 1;
 ```
 
-You can also specify to use `milli` or `nano` seconds as the value, for example:
+ミリ秒 `milli` またはナノ秒 `nano` を値として指定することもできます。例:
 
 ```go
 type User struct {
@@ -209,7 +209,7 @@ SELECT * FROM users WHERE deleted_at = 0;
 UPDATE users SET deleted_at = /* current unix milli second or nano second */ WHERE ID = 1;
 ```
 
-#### Use `1` / `0` AS Delete Flag
+#### `1` / `0` を削除フラグとして使用
 
 ```go
 import "gorm.io/plugin/soft_delete"
@@ -227,9 +227,9 @@ SELECT * FROM users WHERE is_del = 0;
 UPDATE users SET is_del = 1 WHERE ID = 1;
 ```
 
-#### Mixed Mode
+#### 混在モード
 
-Mixed mode can use `0`, `1` or unix seconds to mark data as deleted or not, and save the deleted time at the same time.
+混在モードではデータが削除されているか否かを `0` と `1`、またはUNIX秒でマークし、同時に削除日時を保存することができます。
 
 ```go
 type User struct {
