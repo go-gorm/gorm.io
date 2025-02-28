@@ -81,4 +81,4 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 
 GORM's logger also accepts `Context`, which can be used for log tracking and integrating with existing logging infrastructures.
 
-Refer to [Logger documentation](logger.html) for more details.
+詳細については、[ Logger ](logger.html)を参照してください。
