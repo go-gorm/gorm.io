@@ -3,7 +3,7 @@ title: Context
 layout: page
 ---
 
-GORM's context support, enabled by the `WithContext` method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management across different operational modes, timeout settings, and even integration into hooks/callbacks and middlewares. Let's delve into these various aspects:
+GORM's context support, enabled by the `WithContext` method, is a powerful feature that enhances the flexibility and control of database operations in Go applications.  Let's delve into these various aspects:
 
 ### シングルセッション
 
