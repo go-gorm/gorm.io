@@ -206,9 +206,9 @@ db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "4111111111
 Replace current associations with new ones.
 
 ```go
-// Replace existing languages
+// ユーザーの言語を置き換える（既存の言語を全て削除し、新しい言語に変更）
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
-
+// ユーザーの言語を置き換える（ドイツ語と英語に変更）
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
