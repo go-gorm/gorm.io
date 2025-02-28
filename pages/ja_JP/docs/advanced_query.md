@@ -308,7 +308,7 @@ These hints can significantly impact query performance and behavior, especially 
 
 ## Iteration
 
-GORM supports the iteration over query results using the `Rows` method. This feature is particularly useful when you need to process large datasets or perform operations on each record individually.
+GORM は、クエリ結果を反復処理できる `Rows` メソッド をサポートしています。 This feature is particularly useful when you need to process large datasets or perform operations on each record individually.
 
 You can iterate through rows returned by a query, scanning each row into a struct. This method provides granular control over how each record is handled.
 
@@ -354,7 +354,7 @@ result := db.Where("processed = ?", false).FindInBatches(&results, 100, func(tx 
 // result.RowsAffected provides the count of all processed records across batches
 ```
 
-`FindInBatches` is an effective tool for processing large volumes of data in manageable chunks, optimizing resource usage and performance.
+。
 
 ## Query Hooks
 
@@ -479,15 +479,15 @@ db.Table("deleted_users").Count(&count)
 GORM also allows counting distinct values and grouping results.
 
 ```go
-// Counting distinct names
+// 重複しない名前の数をカウント
 db.Model(&User{}).Distinct("name").Count(&count)
 // SQL: SELECT COUNT(DISTINCT(`name`)) FROM `users`
 
-// Counting distinct values with a custom select
+// カスタム SELECT で 重複しない名前の数をカウント
 db.Table("deleted_users").Select("count(distinct(name))").Count(&count)
 // SQL: SELECT count(distinct(name)) FROM deleted_users
 
-// Counting grouped records
+// グループ化されたレコードのカウント
 users := []User{
   {Name: "name1"},
   {Name: "name2"},
@@ -496,6 +496,6 @@ users := []User{
 }
 
 db.Model(&User{}).Group("name").Count(&count)
-// Count after grouping by name
+// name でグループ化した後のカウント
 // count => 3
 ```
