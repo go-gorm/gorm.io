@@ -129,21 +129,21 @@ GORM 能在删除主模型时使用`Select`方法来删除关联关系(一对一
 你可以用`Select`来指定哪些关联应该随着主模型被删除
 
 ```go
-// Delete a user's account when deleting the user
+//删除用户时，也删除用户的帐户
 db.Select("Account").Delete(&user)
 
-// Delete a user's Orders and CreditCards associations when deleting the user
+// 删除 user 时，也删除 user 的 Orders、CreditCards 关联记录
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// Delete all of a user's has one, has many, and many2many associations
+// 删除用户 时，也删除用户的所有一对一、一对多和多对多关联
 db.Select(clause.Associations).Delete(&user)
 
-// Delete each user's account when deleting multiple users
+// 删除多个用户时，也同步删除每个用户的账户信息。
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** It's important to note that associations will be deleted only if the primary key of the deleting record is not zero. GORM 使用这些主键作为删除所选关联的条件。
+**注意：**请务必注意，仅当删除记录的主键不为零时，才会删除关联。 GORM 使用这些主键作为删除所选关联的条件。
 
 ```go
 // This will not work as intended
