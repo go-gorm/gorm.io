@@ -26,7 +26,7 @@ layout: page
 
 * [GORM不并发安全](https://zhuanlan.zhihu.com/p/556065676)
 
-* A multi-tenant iot platform based on gorm - [联犀](https://github.com/unitedrhino/things)
+* 基于 gorm 的多租户 IoT（物联网）平台 - [联犀](https://github.com/unitedrhino/things)
 
 ## 视频
 
