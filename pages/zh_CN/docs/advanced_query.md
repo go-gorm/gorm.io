@@ -410,22 +410,22 @@ GORM中的 `Scopes` 是一个强大的特性，它允许您将常用的查询条
 `Scopes` 被定义为被修改后返回一个 `gorm.DB` 实例的函数。 您可以根据您的应用程序的需要定义各种条件作为范围。
 
 ```go
-// Scope for filtering records where amount is greater than 1000
+// 用于筛选 amount 大于 1000 的记录范围
 func AmountGreaterThan1000(db *gorm.DB) *gorm.DB {
   return db.Where("amount > ?", 1000)
 }
 
-// Scope for orders paid with a credit card
+// 用于 订单使用信用卡支付 的 Scope
 func PaidWithCreditCard(db *gorm.DB) *gorm.DB {
   return db.Where("pay_mode_sign = ?", "C")
 }
 
-// Scope for orders paid with cash on delivery (COD)
+// 用于 订单货到付款(COD)的 Scope
 func PaidWithCod(db *gorm.DB) *gorm.DB {
-  return db.Where("pay_mode_sign = ?", "COD")
+  return db.Where("pay_mode_sign = ?", "C")
 }
 
-// Scope for filtering orders by status
+//  用于按状态筛选订单的 Scope
 func OrderStatus(status []string) func(db *gorm.DB) *gorm.DB {
   return func(db *gorm.DB) *gorm.DB {
     return db.Where("status IN (?)", status)
