@@ -146,17 +146,16 @@ db.Select("Account").Delete(&users)
 **注意：**请务必注意，仅当删除记录的主键不为零时，才会删除关联。 GORM 使用这些主键作为删除所选关联的条件。
 
 ```go
-// This will not work as intended
+// 这样无法实现预期效果
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// SQL: Deletes all users with name 'jinzhu', but their accounts won't be deleted
+// SQL: 删除所有名为 'jinzhu' 的用户，但这些用户的关联账户不会被删除
 
-// Correct way to delete a user and their account
+// 正确删除用户及其账户的方式
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// SQL: Deletes the user with name 'jinzhu' and ID '1', and the user's account
+// SQL: 删除名为 'jinzhu' 且 ID 为 '1' 的用户及其关联账户
 
-// Deleting a user with a specific ID and their account
-db.Select("Account").Delete(&User{ID: 1})
-// SQL: Deletes the user with ID '1', and the user's account
+// 删除指定 ID 用户及其账户db.Select("Account").Delete(&User{ID: 1})
+// SQL: 删除 ID 为 '1' 的用户及其关联账户
 ```
 {% endnote %}
 
@@ -191,17 +190,10 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 Add new associations for `many to many`, `has many`, or replace the current association for `has one`, `belongs to`.
 
 ```go
-// Append new languages
-db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 
-db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
-
-db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
 ### 替换关联
-
-Replace current associations with new ones.
 
 ```go
 // Replace existing languages
