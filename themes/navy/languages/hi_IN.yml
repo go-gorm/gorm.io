@@ -7,7 +7,7 @@ menu:
   github: <i class="fa fa-github"></i>Github
   community: <i class="fab fa-slack"></i>Community
   contribute: <i class="fa fa-rocket"></i>Contribute
-  search: Search documents...
+  search:
 index:
   get_started: Get started
 page:

@@ -1,9 +1,9 @@
 ---
-title: Many To Many
+title: 多対多
 layout: page
 ---
 
-## Many To Many
+## 多対多 (Many-to-many)
 
 Many to Many では2つのモデル間に結合テーブルを追加します。
 
@@ -26,7 +26,7 @@ GORMの `AutoMigrate` を使用して `User` テーブルを作成する場合�
 
 ## 後方参照（Back-Reference）
 
-### Declare
+### 宣言
 ```go
 // User は複数の言語を所有し、かつ言語に属しています。`user_languages` が結合テーブルになります
 type User struct {
@@ -41,7 +41,7 @@ type Language struct {
 }
 ```
 
-### Retrieve
+### 取得
 ```go
 // Retrieve user list with eager loading languages
 func GetAllUsers(db *gorm.DB) ([]User, error) {
@@ -78,7 +78,7 @@ type Language struct {
 //   foreign key: language_id, reference: languages.id
 ```
 
-デフォルトの設定を上書くには、`foreignKey`、`references`、`joinForeignKey`、`joinReferences` などのタグを使用します。これらを全て指定する必要はなく、1つのみ使用して外部キー／参照の設定を上書きすることも可能です。
+デフォルトの設定を上書きするには、`foreignKey`、`references`、`joinForeignKey`、`joinReferences` タグを使用します。必ずしもこれらすべてを指定する必要はなく、1つのみを使用して外部キー／参照の設定を上書きすることも可能です。
 
 ```go
 type User struct {
@@ -102,9 +102,9 @@ type Profile struct {
 **注意** いくつかのデータベースでは、外部キーが参照するフィールドにユニークインデックスを設定する必要があります。そのため、それらのデータベースでのマイグレーションで外部キーを作成する場合は、`uniqueIndex` タグを指定する必要があります。
 {% endnote %}
 
-## Many2Many での自己参照
+## 自己参照型の多対多 (Many-to-many)
 
-many2manyリレーションにおける自己参照も可能です。
+自己参照型の多対多 (many-to-many) のリレーション
 
 ```go
 type User struct {
@@ -127,7 +127,7 @@ many2many リレーションを使った処理の詳細については [Associat
 
 ## 結合テーブルをカスタマイズする
 
-`JoinTable` can be a full-featured model, like having `Soft Delete`，`Hooks` supports and more fields, you can set it up with `SetupJoinTable`, for example:
+`JoinTable`（結合テーブル）は、`Soft Delete`、`Hooks`、追加のフィールドを持つフル機能のモデルとして定義できます。これの設定には `SetupJoinTable` を使用します。例:
 
 {% note warn %}
 **注意：** 結合テーブルをカスタマイズする場合、結合テーブルの外部キーを複合主キーにする、あるいは外部キーに複合ユニークインデックスを貼る必要があります。

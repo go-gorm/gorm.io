@@ -206,9 +206,9 @@ db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "4111111111
 Replace current associations with new ones.
 
 ```go
-// Replace existing languages
+// ユーザーの言語を置き換える（既存の言語を全て削除し、新しい言語に変更）
 db.Model(&user).Association("Languages").Replace([]Language{languageZH, languageEN})
-
+// ユーザーの言語を置き換える（ドイツ語と英語に変更）
 db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageEN)
 ```
 
@@ -315,7 +315,7 @@ Association tags in GORM are used to specify how associations between models are
 | `references`       | Indicates the column name in the reference table that the foreign key of the join table maps to. |
 | `polymorphic`      | Defines the polymorphic type, typically the model name.                                          |
 | `polymorphicValue` | Sets the polymorphic value, usually the table name, if not specified otherwise.                  |
-| `many2many`        | Names the join table used in a many-to-many relationship.                                        |
+| `many2many`        | 多対多の関連で使用される結合テーブルの名前を指定します。                                                                     |
 | `joinForeignKey`   | Identifies the foreign key column in the join table that maps back to the current model's table. |
 | `joinReferences`   | Points to the foreign key column in the join table that links to the reference model's table.    |
 | `constraint`       | Specifies relational constraints like `OnUpdate`, `OnDelete` for the association.                |

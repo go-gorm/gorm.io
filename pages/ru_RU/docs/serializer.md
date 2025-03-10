@@ -83,8 +83,8 @@ type SerializerValuerInterface interface {
 type JSONSerializer struct {
 }
 
-// Scan реализует интерфейс сериализатора
-func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value, dbValue interface{}) (err error) {
+// Scan implements serializer interface
+func (JSONSerializer) Scan(ctx context.Context, field *schema.Field, dst reflect.Value, dbValue interface{}) (err error) {
     fieldValue := reflect.New(field.FieldType)
 
     if dbValue != nil {
@@ -105,7 +105,7 @@ func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value,
     return
 }
 
-// Value реализует интерфейс сериализатора
+// Value implements serializer interface
 func (JSONSerializer) Value(ctx context.Context, field *Field, dst reflect.Value, fieldValue interface{}) (interface{}, error) {
     return json.Marshal(fieldValue)
 }

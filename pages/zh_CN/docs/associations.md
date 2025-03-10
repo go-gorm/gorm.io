@@ -129,34 +129,33 @@ GORM 能在删除主模型时使用`Select`方法来删除关联关系(一对一
 你可以用`Select`来指定哪些关联应该随着主模型被删除
 
 ```go
-// Delete a user's account when deleting the user
+//删除用户时，也删除用户的帐户
 db.Select("Account").Delete(&user)
 
-// Delete a user's Orders and CreditCards associations when deleting the user
+// 删除 user 时，也删除 user 的 Orders、CreditCards 关联记录
 db.Select("Orders", "CreditCards").Delete(&user)
 
-// Delete all of a user's has one, has many, and many2many associations
+// 删除用户 时，也删除用户的所有一对一、一对多和多对多关联
 db.Select(clause.Associations).Delete(&user)
 
-// Delete each user's account when deleting multiple users
+// 删除多个用户时，也同步删除每个用户的账户信息。
 db.Select("Account").Delete(&users)
 ```
 
 {% note warn %}
-**NOTE:** It's important to note that associations will be deleted only if the primary key of the deleting record is not zero. GORM uses these primary keys as conditions to delete the selected associations.
+**注意：**请务必注意，仅当删除记录的主键不为零时，才会删除关联。 GORM 使用这些主键作为删除所选关联的条件。
 
 ```go
-// This will not work as intended
+// 这样无法实现预期效果
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{})
-// SQL: Deletes all users with name 'jinzhu', but their accounts won't be deleted
+// SQL: 删除所有名为 'jinzhu' 的用户，但这些用户的关联账户不会被删除
 
-// Correct way to delete a user and their account
+// 正确删除用户及其账户的方式
 db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
-// SQL: Deletes the user with name 'jinzhu' and ID '1', and the user's account
+// SQL: 删除名为 'jinzhu' 且 ID 为 '1' 的用户及其关联账户
 
-// Deleting a user with a specific ID and their account
-db.Select("Account").Delete(&User{ID: 1})
-// SQL: Deletes the user with ID '1', and the user's account
+// 删除指定 ID 用户及其账户db.Select("Account").Delete(&User{ID: 1})
+// SQL: 删除 ID 为 '1' 的用户及其关联账户
 ```
 {% endnote %}
 
@@ -191,17 +190,10 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 Add new associations for `many to many`, `has many`, or replace the current association for `has one`, `belongs to`.
 
 ```go
-// Append new languages
-db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 
-db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
-
-db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
 ### 替换关联
-
-Replace current associations with new ones.
 
 ```go
 // Replace existing languages

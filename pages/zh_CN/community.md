@@ -26,7 +26,7 @@ layout: page
 
 * [GORM不并发安全](https://zhuanlan.zhihu.com/p/556065676)
 
-* A multi-tenant iot platform based on gorm - [联犀](https://github.com/unitedrhino/things)
+* 基于 gorm 的多租户 IoT（物联网）平台 - [联犀](https://github.com/unitedrhino/things)
 
 ## 视频
 
@@ -42,7 +42,7 @@ layout: page
 * [纯 Go sqlite 驱动](https://github.com/glebarez/sqlite)
 * [关联用户的角色和权限](https://github.com/Permify/permify-gorm)
 * [gorm-cache - GORM 查询缓存插件](https://github.com/liyuan1125/gorm-cache)
-* [deepgorm - Nested map filtering](https://github.com/survivorbat/gorm-deep-filtering)
+* [deepgorm - 嵌套映射过滤](https://github.com/survivorbat/gorm-deep-filtering)
 * [oracle - GORM Oracle driver](https://github.com/CengSin/oracle)
 * [Go ORM 助手 - GORM 代码补全 Goland 插件](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)

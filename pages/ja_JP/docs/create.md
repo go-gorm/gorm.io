@@ -29,7 +29,7 @@ result.RowsAffected // returns inserted records count
 ```
 
 {% note warn %}
-**注意** **Create()**の引数として構造体を渡すことはできません。代わりにポインタを渡すようにしてください。
+**注記** 'create' の引数として構造体を渡すことはできません。データへのポインタを渡してください。
 {% endnote %}
 
 ## フィールドを選択してレコードを作成する
@@ -90,9 +90,9 @@ db.Create(&users)
 // INSERT INTO pets xxx (15 batches)
 ```
 
-## 作成時のHook
+## 作成時の Hooks
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORMでは、`BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate` としてユーザー定義の Hooks を実装することができます。  これらの Hooks メソッドはレコードの作成時に呼び出されます。ライフサイクルの詳細については [Hooks](hooks.html) を参照してください。
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -105,7 +105,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+`Hooks` メソッドをスキップしたい場合は、`SkipHooks` セッションモードを使用できます。例：
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -115,9 +115,9 @@ DB.Session(&gorm.Session{SkipHooks: true}).Create(&users)
 DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 ```
 
-## Mapを使って作成する
+## Map からの作成
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORMは `map[string]interface{}` および `[]map[string]interface{}{}` からの作成に対応しています。
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
@@ -132,12 +132,12 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**注記** map から作成する場合、hooks は呼び出されません。また、アソシエーションは保存されず、主キーの値は埋め込まれません。
 {% endnote %}
 
-## <span id="create_from_sql_expr">SQL式/Context Valuer で作成する</span>
+## <span id="create_from_sql_expr">SQL式/Context Valuer からの作成</span>
 
-GORM allows insert data with SQL expression, there are two ways to achieve this goal, create from `map[string]interface{}` or [Customized Data Types](data_types.html#gorm_valuer_interface), for example:
+GORMではSQL式でデータの挿入が可能です。これを行うには `map[string]interface{}` から作成する方法と [データ型のカスタマイズ](data_types.html#gorm_valuer_interface) の2つの方法があります。例:
 
 ```go
 // Create from map
@@ -184,7 +184,7 @@ db.Create(&User{
 
 ### <span id="create_with_associations">関連データと関連付けて作成する</span>
 
-When creating some data with associations, if its associations value is not zero-value, those associations will be upserted, and its `Hooks` methods will be invoked.
+関連付けを使用してデータを作成する場合、関連付けの値がゼロ値ではない場合、これらの関連付けが作成および更新され、`Hooks` メソッドが呼び出されます。
 
 ```go
 type CreditCard struct {
@@ -207,7 +207,7 @@ db.Create(&User{
 // INSERT INTO `credit_cards` ...
 ```
 
-You can skip saving associations with `Select`, `Omit`, for example:
+`Select` または `Omit` を使用することで関連付けをスキップできます。例:
 
 ```go
 db.Omit("CreditCard").Create(&user)
@@ -218,7 +218,7 @@ db.Omit(clause.Associations).Create(&user)
 
 ### <span id="default_values">デフォルト値</span>
 
-You can define default values for fields with tag `default`, for example:
+`default` タグでフィールドのデフォルト値を定義することができます。例:
 
 ```go
 type User struct {
@@ -228,10 +228,10 @@ type User struct {
 }
 ```
 
-Then the default value *will be used* when inserting into the database for [zero-value](https://tour.golang.org/basics/12) fields
+レコードがデータベースへ挿入されるとき、[ゼロ値](https://tour.golang.org/basics/12) のフィールドにはデフォルト値が *使用されます*。
 
 {% note warn %}
-**NOTE** Any zero value like `0`, `''`, `false` won't be saved into the database for those fields defined default value, you might want to use pointer type or Scanner/Valuer to avoid this, for example:
+**注意** デフォルト値を定義したフィールドでは、`0`、`''`、`false` といったゼロ値がデータベースに保存されません。これを回避するには、ポインタ型か Scanner/Valuer を使用します。例:
 {% endnote %}
 
 ```go
@@ -244,7 +244,7 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** You have to setup the `default` tag for fields having default or virtual/generated value in database, if you want to skip a default value definition when migrating, you could use `default:(-)`, for example:
+**注意** データベース内でデフォルト値や仮想的に生成される値を持つフィールドには、`default` タグを設定する必要があります。マイグレーション時にデフォルト値の定義をスキップする場合は、`default:(-)` を使用します。例:
 {% endnote %}
 
 ```go
@@ -258,7 +258,7 @@ type User struct {
 ```
 
 {% note warn %}
-**NOTE** **SQLite** doesn't support some records are default values when batch insert. See [SQLite Insert stmt](https://www.sqlite.org/lang_insert.html). For example:
+**注意** **SQLite** はバッチ挿入時のデフォルト値をサポートしていません。 参照: [SQLite Insert stmt](https://www.sqlite.org/lang_insert.html) 例:
 
 ```go
 type Pet struct {
@@ -269,7 +269,7 @@ type Pet struct {
 // INSERT INTO `pets` (`name`) VALUES ("dog"),(DEFAULT) RETURNING `name`
 db.Create(&[]Pet{{Name: "dog"}, {}})
 ```
-A viable alternative is to assign default value to fields in the hook, e.g.
+フック内のフィールドにデフォルト値を割り当てることで代替できます。例:
 
 ```go
 func (p *Pet) BeforeCreate(tx *gorm.DB) (err error) {
@@ -279,14 +279,14 @@ func (p *Pet) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-You can see more info in [issues#6335](https://github.com/go-gorm/gorm/issues/6335)
+[issues#6335](https://github.com/go-gorm/gorm/issues/6335) でより詳しい情報を確認できます。
 {% endnote %}
 
-When using virtual/generated value, you might need to disable its creating/updating permission, check out [Field-Level Permission](models.html#field_permission)
+仮想的に生成される値を使用する場合は、そのフィールドを作成/更新する権限を無効にする必要があります。[フィールドレベル権限](models.html#field_permission) を参照してください。
 
-### <span id="upsert">コンフリクト発生時のUpsert</span>
+### <span id="upsert">衝突時の挿入/更新</span>
 
-GORM provides compatible Upsert support for different databases
+GORMは各データベースに対して互換性のあるUpsertをサポートしています。
 
 ```go
 import "gorm.io/gorm/clause"
@@ -326,6 +326,6 @@ db.Clauses(clause.OnConflict{
 // INSERT INTO `users` *** ON DUPLICATE KEY UPDATE `name`=VALUES(name),`age`=VALUES(age), ...; MySQL
 ```
 
-Also checkout `FirstOrInit`, `FirstOrCreate` on [Advanced Query](advanced_query.html)
+[高度なクエリ](advanced_query.html) の `FirstOrInit`、`FirstOrCreate` も確認してください。
 
-Checkout [Raw SQL and SQL Builder](sql_builder.html) for more details
+詳細については [Raw SQL and SQL Builder](sql_builder.html) を参照してください。

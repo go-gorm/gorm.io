@@ -415,7 +415,7 @@ name.Concat("[", "]")
 #### Time Fields
 
 ```go
-birth := field.NewTime("user", "biring")
+birth := field.NewTime("user", "birth")
 // `user`.`birth` = ? (now)
 birth.Eq(time.Now())
 // DATE_ADD(`user`.`birth`, INTERVAL ? MICROSECOND)

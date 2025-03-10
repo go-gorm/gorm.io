@@ -1,5 +1,5 @@
 ---
-title: Has Many
+title: 一対多
 layout: page
 ---
 
@@ -9,7 +9,7 @@ layout: page
 
 例えば、ユーザーとクレジットカードのモデルがあり、各ユーザーはクレジットカードを複数持つことができる場合は以下のようになります。
 
-### Declare
+### 宣言
 ```go
 // User は複数の CreditCards を持ちます。UserID は外部キーとなります。
 type User struct {
@@ -24,7 +24,7 @@ type CreditCard struct {
 }
 ```
 
-### Retrieve
+### 取得
 ```go
 // Retrieve user list with eager loading credit cards
 func GetAll(db *gorm.DB) ([]User, error) {
