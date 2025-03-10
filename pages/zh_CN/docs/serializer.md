@@ -45,12 +45,12 @@ type SerializerValuerInterface interface {
 例如，默认 JSONSerializer 的实现如下：
 
 ```go
-// JSONSerializer json序列化器
+// JSONSerializer json serializer
 type JSONSerializer struct {
 }
 
-// 实现 Scan 方法
-func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value, dbValue interface{}) (err error) {
+// Scan implements serializer interface
+func (JSONSerializer) Scan(ctx context.Context, field *schema.Field, dst reflect.Value, dbValue interface{}) (err error) {
     fieldValue := reflect.New(field.FieldType)
 
     if dbValue != nil {
@@ -71,7 +71,7 @@ func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value,
     return
 }
 
-// 实现 Value 方法
+// Value implements serializer interface
 func (JSONSerializer) Value(ctx context.Context, field *Field, dst reflect.Value, fieldValue interface{}) (interface{}, error) {
     return json.Marshal(fieldValue)
 }
