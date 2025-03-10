@@ -84,7 +84,7 @@ type JSONSerializer struct {
 }
 
 // Scan implements serializer interface
-func (JSONSerializer) Scan(ctx context.Context, field *Field, dst reflect.Value, dbValue interface{}) (err error) {
+func (JSONSerializer) Scan(ctx context.Context, field *schema.Field, dst reflect.Value, dbValue interface{}) (err error) {
     fieldValue := reflect.New(field.FieldType)
 
     if dbValue != nil {
