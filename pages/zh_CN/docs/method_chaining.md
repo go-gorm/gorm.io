@@ -94,7 +94,7 @@ Let's clarify with a few examples:
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 // 'db' is a newly initialized `*gorm.DB`, which is safe to reuse.
 
-db.where ("name = ?", "jinzhu").Where("age = ?", 18). ind(&用户)
+db.where ("name = ?", "jinzhu").Where("age = ?", 18).Find(&users)
 // 第一个`Where ("name = ?", "jinzhu")`是一个启动一个 `*gorm.DB` 实例或`*gorm.Statement`的链式方法。
 // The second `Where("age = ?", 18)` call adds a new condition to the existing `*gorm.Statement`.
 // `Find(&users)` is a finisher method, executing registered Query Callbacks, generating and running:
