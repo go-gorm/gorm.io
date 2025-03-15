@@ -1,9 +1,9 @@
 ---
-title: Belongs To
+title: 多对一
 layout: page
 ---
 
-## Belongs To
+## 多对一
 
 `belongs to` 会与另一个模型建立了一对一的连接。 这种模型的每一个实例都“属于”另一个模型的一个实例。
 
