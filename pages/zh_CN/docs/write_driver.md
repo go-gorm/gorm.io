@@ -47,9 +47,9 @@ type SavePointerDialectorInterface interface {
 
 - **第一步: 定义一个自定义子句构建器函数：**
 
-要创建一个自定义子句构建器，您需要定义一个符合 `clause.ClauseBuilder` 接口的函数。 This function will be responsible for constructing the SQL clause for a specific operation. In our example, we'll create a custom "LIMIT" clause builder.
+要创建一个自定义子句构建器，您需要定义一个符合 `clause.ClauseBuilder` 接口的函数。 这个函数将负责构建特定操作的 SQL 子句。 在我们的示例中，我们将创建一个自定义的 "LIMIT" 子句构建器。
 
-Here's the basic structure of a custom "LIMIT" clause builder function:
+这是一个自定义 "LIMIT" 子句构建器函数的基本结构：
 
 ```go
 func MyCustomLimitBuilder(c clause.Clause, builder clause.Builder) {
