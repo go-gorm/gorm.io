@@ -308,4 +308,4 @@ GORM中的关联标签通常用于指定如何处理模型之间的关联。 这
 | `many2many`        | Names the join table used in a many-to-many relationship.                                        |
 | `joinForeignKey`   | Identifies the foreign key column in the join table that maps back to the current model's table. |
 | `joinReferences`   | Points to the foreign key column in the join table that links to the reference model's table.    |
-| `constraint`       | Specifies relational constraints like `OnUpdate`, `OnDelete` for the association.                |
+| `constraint`       | 为关联指定诸如 `OnUpdate`、`OnDelete` 之类的关系约束。                                                           |
