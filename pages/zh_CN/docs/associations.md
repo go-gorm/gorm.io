@@ -161,20 +161,20 @@ db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
 
 ## 关联模式
 
-Association Mode in GORM offers various helper methods to handle relationships between models, providing an efficient way to manage associated data.
+GORM 中的关联模式提供了多种辅助方法来处理模型之间的关系，为管理关联数据提供了高效的方式。
 
-To start Association Mode, specify the source model and the relationship's field name. The source model must contain a primary key, and the relationship's field name should match an existing association.
+要启动关联模式，您需要指定源模型和关系的字段名称。 源模型必须包含主键，并且关系的字段名称应与现有的关联字段相匹配。
 
 ```go
 var user User
 db.Model(&user).Association("Languages")
-// Check for errors
+// 检查error
 error := db.Model(&user).Association("Languages").Error
 ```
 
 ### 查询关联
 
-Retrieve associated records with or without additional conditions.
+检索关联记录，可以带有或不带有额外的条件。
 
 ```go
 // Simple find
@@ -187,13 +187,15 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 
 ### 追加关联
 
-Add new associations for `many to many`, `has many`, or replace the current association for `has one`, `belongs to`.
+为 `多对多`、`一对多` 添加新的关联，或者替换 `一对一`、`属于` 关系中的当前关联。
 
 ```go
 
 ```
 
 ### 替换关联
+
+用新的关联替换当前的关联。
 
 ```go
 // Replace existing languages
@@ -204,7 +206,7 @@ db.Model(&user).Association("Languages").Replace(Language{Name: "DE"}, languageE
 
 ### 删除关联
 
-Remove the relationship between the source and arguments, only deleting the reference.
+删除源模型和目标模型之间的关系，只删除引用。
 
 ```go
 // Delete specific languages
@@ -215,7 +217,7 @@ db.Model(&user).Association("Languages").Delete(languageZH, languageEN)
 
 ### 清空关联
 
-Remove all references between the source and association.
+删除源模型和关联之间的所有引用。
 
 ```go
 // Clear all languages
@@ -224,7 +226,7 @@ db.Model(&user).Association("Languages").Clear()
 
 ### 关联计数
 
-Get the count of current associations, with or without conditions.
+获取当前关联的数量，可以带有或不带有条件。
 
 ```go
 // Count all languages
@@ -237,27 +239,27 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 
 ### 批量数据处理
 
-Association Mode allows you to handle relationships for multiple records in a batch. This includes finding, appending, replacing, deleting, and counting operations for associated data.
+关联模式允许您批量处理多个记录的关系。 这包括查找、追加、替换、删除和计数操作，以便操作关联数据。
 
-- **Finding Associations**: Retrieve associated data for a collection of records.
+- **查找关联**：检索一组记录的关联数据。
 
 ```go
 db.Model(&users).Association("Role").Find(&roles)
 ```
 
-- **Deleting Associations**: Remove specific associations across multiple records.
+- **删除关联**：删除多个记录之间的特定关联。
 
 ```go
 db.Model(&users).Association("Team").Delete(&userA)
 ```
 
-- **Counting Associations**: Get the count of associations for a batch of records.
+- **计数关联**：获取一批记录的关联数量。
 
 ```go
 db.Model(&users).Association("Team").Count()
 ```
 
-- **Appending/Replacing Associations**: Manage associations for multiple records. Note the need for matching argument lengths with the data.
+- **追加/替换关联**：管理多个记录的关联。 请注意，参数的长度需要与数据匹配。
 
 ```go
 var users = []User{user1, user2, user3}
