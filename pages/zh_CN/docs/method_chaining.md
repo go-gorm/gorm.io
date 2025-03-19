@@ -9,11 +9,11 @@ GORM 的方法链功能可实现平滑流畅的编码风格。 Here's an example
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 ```
 
-## Method Categories
+## 方法类别
 
 GORM 将方法分为三大类： `Chain Methods`, `Finisher Methods`, and `New Session Methods`.
 
-### Chain Methods
+### 链式方法
 
 用于修改或追加目前 `Clauses` 的 `Statement`。 一些常见的链式方法包括：
 
@@ -25,11 +25,11 @@ GORM 将方法分为三大类： `Chain Methods`, `Finisher Methods`, and `New S
 - `Preload`
 - `Raw` (Note: `Raw` cannot be used in conjunction with other chainable methods to build SQL)
 
-For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/gorm/blob/master/chainable_api.go). Also, the [SQL Builder](sql_builder.html) documentation offers more details about `Clauses`.
+For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/gorm/blob/master/chainable_api.go). 另外， [SQL Builder](sql_builder.html) 文档提供了更多关于 `` 的详细信息。
 
-### Finisher Methods
+### Finisher 方法
 
-终结方法是即时的，执行生成和运行 SQL 命令的注册回调。 This category includes methods:
+终结方法是即时的，执行生成和运行 SQL 命令的注册回调。 此类别包括方法：
 
 - `Create`
 - `First`
@@ -44,7 +44,7 @@ For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/
 
 For the full list, refer to [GORM Finisher API](https://github.com/go-gorm/gorm/blob/master/finisher_api.go).
 
-### New Session Methods
+### 新建会话方法
 
 更多详情，请参阅 [Session](session.html) 文档。
 
