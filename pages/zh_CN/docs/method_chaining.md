@@ -44,7 +44,7 @@ For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/
 
 For the full list, refer to [GORM Finisher API](https://github.com/go-gorm/gorm/blob/master/finisher_api.go).
 
-### 新建会话方法
+### 新的Session方法
 
 更多详情，请参阅 [Session](session.html) 文档。
 
