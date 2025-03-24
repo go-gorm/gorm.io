@@ -1,9 +1,9 @@
 ---
-title: Belongs To
+title: 多对一
 layout: page
 ---
 
-## Belongs To
+## 多对一
 
 `belongs to` 会与另一个模型建立了一对一的连接。 这种模型的每一个实例都“属于”另一个模型的一个实例。
 
@@ -80,8 +80,8 @@ type Company struct {
 type User struct {
   gorm.Model
   Name      string
-  CompanyID int
-  Company   Company `gorm:"references:CompanyID"` // use Company.CompanyID as references
+  CompanyID string
+  Company   Company `gorm:"references:CompanyID"` // 使用 Company.CompanyID 作为引用
 }
 
 type Company struct {

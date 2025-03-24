@@ -7,15 +7,15 @@ GORM 的上下文支持由 `WithContext` 方法启用，是一项强大的功能
 
 ### 单会话模式
 
-Single session mode is appropriate for executing individual operations. It ensures that the specific operation is executed within the context's scope, allowing for better control and monitoring.
+单会话模式适用于执行单独的操作。 它确保特定操作在上下文的范围内执行，从而提供更好的控制和监控。
 
 ```go
 db.WithContext(ctx).Find(&users)
 ```
 
-### Continuous Session Mode
+### 持续会话模式
 
-Continuous session mode is ideal for performing a series of related operations. It maintains the context across these operations, which is particularly useful in scenarios like transactions.
+持续会话模式非常适合执行一系列相关的操作。 它在这些操作之间保持上下文，对于事务等场景特别有用。
 
 ```go
 tx := db.WithContext(ctx)
@@ -23,9 +23,9 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-### Context Timeout
+### Context超时
 
-Setting a timeout on the context passed to `db.WithContext` can control the duration of long-running queries. This is crucial for maintaining performance and avoiding resource lock-ups in database interactions.
+在传递给 `db.WithContext` 的上下文上设置超时可以控制长时间运行的查询的持续时间。 这对于保持性能和避免数据库交互中的资源锁定至关重要。
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -36,19 +36,19 @@ db.WithContext(ctx).Find(&users)
 
 ### Hooks/Callbacks 中的 Context
 
-The context can also be accessed within GORM's hooks/callbacks. This enables contextual information to be used during these lifecycle events.
+Context也可以在 GORM 的Hook/Callbacks中访问。 这使得在这些生命周期事件中可以使用上下文信息。
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
   ctx := tx.Statement.Context
-  // ... use context
+  // ...使用ctx做一些你想做的事
   return
 }
 ```
 
-### Integration with Chi Middleware
+### 在Chi 中间件的集成
 
-GORM's context support extends to web server middlewares, such as those in the Chi router. This allows setting a context with a timeout for all database operations within the scope of a web request.
+GORM 的Context支持扩展到 web 服务器中间件，例如 Chi 路由器中的中间件。 这允许为 web 请求范围内的所有数据库操作设置一个带有超时的上下文。
 
 ```go
 func SetDBMiddleware(next http.Handler) http.Handler {
@@ -59,26 +59,26 @@ func SetDBMiddleware(next http.Handler) http.Handler {
   })
 }
 
-// Router setup
+// 路由初始化
 r := chi.NewRouter()
 r.Use(SetDBMiddleware)
 
-// Route handlers
+// 路由接口
 r.Get("/", func(w http.ResponseWriter, r *http.Request) {
   db, ok := r.Context().Value("DB").(*gorm.DB)
-  // ... db operations
+  // ... db操作
 })
 
 r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
   db, ok := r.Context().Value("DB").(*gorm.DB)
-  // ... db operations
+  // ... db操作
 })
 ```
 
-**Note**: Setting the `Context` with `WithContext` is goroutine-safe. This ensures that database operations are safely managed across multiple goroutines. For more details, refer to the [Session documentation](session.html) in GORM.
+**注意**：使用 `WithContext` 设置`Context`是 goroutine 安全的。 这确保了数据库操作在多个 goroutine 中被安全地管理。 如需更多详细信息，请参考 GORM 的[Session文档](session.html)。
 
-### Logger Integration
+### 日志记录器集成
 
-GORM's logger also accepts `Context`, which can be used for log tracking and integrating with existing logging infrastructures.
+GORM 的日志记录器也接受`Context`，这可以用于日志跟踪，并与现有的日志基础设施集成。
 
-Refer to [Logger documentation](logger.html) for more details.
+有关更多详细信息，请参考 [Logger](logger.html)文档

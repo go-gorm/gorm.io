@@ -3,15 +3,15 @@ title: 编写驱动
 layout: page
 ---
 
-GORM offers built-in support for popular databases like `SQLite`, `MySQL`, `Postgres`, `SQLServer`, and `ClickHouse`. However, when you need to integrate GORM with databases that are not directly supported or have unique features, you can create a custom driver. This involves implementing the `Dialector` interface provided by GORM.
+GORM 为热门数据库提供内置支持，例如 `SQLite`, `MySQL`, `Postgres`, `SQLServer`,`ClickHouse`.。 当然了，当您需要将 GORM 集成到不直接支持的数据库或具有独特功能的数据库时，您可以创建自定义驱动。 这涉及实现GORM提供的`Dialector ` 接口。
 
-## Compatibility with MySQL or Postgres Dialects
+## 兼容 MySQL 或 Postgres 方言
 
 For databases that closely resemble the behavior of `MySQL` or `Postgres`, you can often use the respective dialects directly. However, if your database significantly deviates from these dialects or offers additional features, developing a custom driver is recommended.
 
-## Implementing the Dialector
+## 实现Dialector接口
 
-The `Dialector` interface in GORM consists of methods that a database driver must implement to facilitate communication between the database and GORM. Let's break down the key methods:
+GORM 中的 `Dialector` 接口包含一组方法，数据库驱动必须实现这些方法，以便在数据库与 GORM 之间进行通信。 让我们来看看怎么实现这些关键方法：
 
 ```go
 type Dialector interface {
@@ -26,30 +26,30 @@ type Dialector interface {
 }
 ```
 
-Each method in this interface serves a crucial role in how GORM interacts with the database, from establishing connections to handling queries and migrations.
+这个接口中的每个方法在 GORM 与数据库的交互中都起着至关重要的作用，从建立连接到处理查询和迁移。
 
-### Nested Transaction Support
+### 嵌套事务支持
 
-If your database supports savepoints, you can implement the `SavePointerDialectorInterface` to get the `Nested Transaction Support` and `SavePoint` support.
+如果您的数据库支持保存点，您可以实现 `SavePointerDialectorInterface` 以获得嵌套事务支持和 `SavePoint`支持。
 
 ```go
 type SavePointerDialectorInterface interface {
-    SavePoint(tx *DB, name string) error // Saves a savepoint within a transaction
-    RollbackTo(tx *DB, name string) error // Rolls back a transaction to the specified savepoint
+    SavePoint(tx *DB, name string) error // 在事务中保存一个保存点
+    RollbackTo(tx *DB, name string) error // 将事务回滚到指定的保存点
 }
 ```
 
-By implementing these methods, you enable support for savepoints and nested transactions, offering advanced transaction management capabilities.
+通过实现这些方法，您可以启用保存点和嵌套事务的支持，从而提供高级的事务管理功能。
 
-### Custom Clause Builders
+### 自定义子句构建器
 
-Defining custom clause builders in GORM allows you to extend the query capabilities for specific database operations. In this example, we'll go through the steps to define a custom clause builder for the "LIMIT" clause, which may have database-specific behavior.
+在 GORM 中定义自定义子句构建器允许您扩展特定数据库操作的查询功能。 在这个示例中，我们将通过步骤定义一个自定义子句构建器，用于 "LIMIT" 子句，这个子句可能具有特定数据库的行为。
 
-- **Step 1: Define a Custom Clause Builder Function**:
+- **第一步: 定义一个自定义子句构建器函数：**
 
-To create a custom clause builder, you need to define a function that adheres to the `clause.ClauseBuilder` interface. This function will be responsible for constructing the SQL clause for a specific operation. In our example, we'll create a custom "LIMIT" clause builder.
+要创建一个自定义子句构建器，您需要定义一个符合 `clause.ClauseBuilder` 接口的函数。 这个函数将负责构建特定操作的 SQL 子句。 在我们的示例中，我们将创建一个自定义的 "LIMIT" 子句构建器。
 
-Here's the basic structure of a custom "LIMIT" clause builder function:
+这是一个自定义 "LIMIT" 子句构建器函数的基本结构：
 
 ```go
 func MyCustomLimitBuilder(c clause.Clause, builder clause.Builder) {
