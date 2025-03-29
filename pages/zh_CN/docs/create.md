@@ -29,7 +29,7 @@ result.RowsAffected // returns inserted records count
 ```
 
 {% note warn %}
-**NOTE** 你无法向 'create' 传递结构体，所以你应该传入数据的指针.
+**NOTE** 你无法向 'create' 传递结构体，因此你应该传入数据的指针.
 {% endnote %}
 
 ## 用指定的字段创建记录
