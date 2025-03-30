@@ -29,7 +29,7 @@ result.RowsAffected // returns inserted records count
 ```
 
 {% note warn %}
-**NOTE** 你无法向 'create' 传递结构体，所以你应该传入数据的指针.
+**NOTE** 你无法向 'create' 传递结构体，因此你应该传入数据的指针.
 {% endnote %}
 
 ## 用指定的字段创建记录
@@ -50,7 +50,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">批量插入</span>
 
-要高效地插入大量记录，请将切片传递给`Create`方法。 GORM 将生成一条 SQL 来插入所有数据，以返回所有主键值，并触发 `Hook` 方法。 当这些记录可以被分割成多个批次时，GORM会开启一个</strong>事务</0>来处理它们。
+要高效地插入大量记录，请将切片传递给`Create`方法。 GORM 将生成一条 SQL 来插入所有数据，以返回所有主键值，并触发 `Hook` 方法。 当这些记录可以被分割成多个批次时，GORM会开启一个**事务**来处理它们。
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -73,7 +73,7 @@ db.CreateInBatches(users, 100)
 [Upsert](#upsert) 和 [Create With Associations](#create_with_associations)同样支持批量插入
 
 {% note warn %}
-**注意** 使用`CreateBatchSize` 选项初始化GORM实例后，此后进行创建& 关联操作时所有的`INSERT`行为都会遵循初始化时的配置。
+**注意** 使用`CreateBatchSize` 选项初始化GORM实例，此后进行创建和关联操作时所有的`INSERT`行为都会遵循初始化时的配置。
 {% endnote %}
 
 ```go
