@@ -73,7 +73,7 @@ db.CreateInBatches(users, 100)
 [Upsert](#upsert) 和 [Create With Associations](#create_with_associations)同样支持批量插入
 
 {% note warn %}
-**注意** 使用`CreateBatchSize` 选项初始化GORM实例后，此后进行创建& 关联操作时所有的`INSERT`行为都会遵循初始化时的配置。
+**注意** 使用`CreateBatchSize` 选项初始化GORM实例，此后进行创建和关联操作时所有的`INSERT`行为都会遵循初始化时的配置。
 {% endnote %}
 
 ```go
