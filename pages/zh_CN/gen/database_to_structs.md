@@ -51,7 +51,7 @@ g.GenerateAllTable()...,
 
 ## 模板方法
 
-当从数据库生成结构时，您也可以通过面的方式，给生成的model添加模板方法，例如：
+当从数据库生成结构时，您顺便也可以使用模板为它们生成方法，例如：
 
 ```Go
 type CommonMethod struct {
