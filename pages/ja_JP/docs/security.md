@@ -68,6 +68,8 @@ db.Raw("select name from users; drop table users;").First(&user)
 db.Exec("select name from users; drop table users;")
 
 db.Order("name; drop table users;").First(&user)
+
+db.Table("users; drop table users;-- ").Where("id = 1").Find(&users)
 ```
 
 SQLインジェクションを避けるための一般的なルールは、ユーザーが送信したデータを信頼しないことです。 あらかじめ用意された入力データセットと比較することで、許可されたデータであるかを検証することができます。またユーザーの入力を使用する場合は、引数としてのみ使用するようにしてください。
