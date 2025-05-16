@@ -9,7 +9,8 @@ jobs:
   pages:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v4
       - name: Use Node.js 16.x
         uses: actions/setup-node@v2
         with:
