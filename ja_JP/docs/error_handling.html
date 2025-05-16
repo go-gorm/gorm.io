@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="Effective error handling is a cornerstone of robust application development in Go, particularly when interacting with databases using GORM. GORM’s approach to error handling, influenced by its chainab">
+  <meta name="description" content="効果的なエラー処理は、特にGORMを使用してデータベースとやりとりする場合において、堅牢なGoアプリケーション開発の礎石です。 チェーン可能なAPIから影響を受けたGORMのエラー処理に対するアプローチには、繊細な理解が必要です。 基本的なエラー処理GORMでは、チェーン可能なメソッドの構文にエラー処理が統合されています。 *gorm.DB インスタンスには Error フィールドが含まれており、">
 <meta property="og:type" content="website">
 <meta property="og:title" content="エラーハンドリング">
 <meta property="og:url" content="https://gorm.io/ja_JP/docs/error_handling.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="Effective error handling is a cornerstone of robust application development in Go, particularly when interacting with databases using GORM. GORM’s approach to error handling, influenced by its chainab">
+<meta property="og:description" content="効果的なエラー処理は、特にGORMを使用してデータベースとやりとりする場合において、堅牢なGoアプリケーション開発の礎石です。 チェーン可能なAPIから影響を受けたGORMのエラー処理に対するアプローチには、繊細な理解が必要です。 基本的なエラー処理GORMでは、チェーン可能なメソッドの構文にエラー処理が統合されています。 *gorm.DB インスタンスには Error フィールドが含まれており、">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2025-01-12T11:50:44.882Z">
-<meta property="article:modified_time" content="2025-01-12T11:50:44.882Z">
+<meta property="article:published_time" content="2025-05-16T06:47:15.903Z">
+<meta property="article:modified_time" content="2025-05-16T06:47:15.903Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -141,40 +141,40 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>Effective error handling is a cornerstone of robust application development in Go, particularly when interacting with databases using GORM. GORM’s approach to error handling, influenced by its chainable API, requires a nuanced understanding.</p>
-<h2 id="Basic-Error-Handling" class="article-heading"><a href="#Basic-Error-Handling" class="headerlink" title="Basic Error Handling"></a>Basic Error Handling<a class="article-anchor" href="#Basic-Error-Handling" aria-hidden="true"></a></h2><p>GORM integrates error handling into its chainable method syntax. The <code>*gorm.DB</code> instance contains an <code>Error</code> field, which is set when an error occurs. The common practice is to check this field after executing database operations, especially after <a href="method_chaining.html#finisher_method">Finisher Methods</a>.</p>
-<p>After a chain of methods, it’s crucial to check the <code>Error</code> field:</p>
+                <html><head></head><body><p>効果的なエラー処理は、特にGORMを使用してデータベースとやりとりする場合において、堅牢なGoアプリケーション開発の礎石です。 チェーン可能なAPIから影響を受けたGORMのエラー処理に対するアプローチには、繊細な理解が必要です。</p>
+<h2 id="基本的なエラー処理" class="article-heading"><a href="#基本的なエラー処理" class="headerlink" title="基本的なエラー処理"></a>基本的なエラー処理<a class="article-anchor" href="#基本的なエラー処理" aria-hidden="true"></a></h2><p>GORMでは、チェーン可能なメソッドの構文にエラー処理が統合されています。 <code>*gorm.DB</code> インスタンスには <code>Error</code> フィールドが含まれており、エラーが発生したときに値が設定されます。 データベース操作の実行後、特に <a href="method_chaining.html#finisher_method">Finisher Methods</a> の後に、このフィールドをチェックするのが一般的な手法です。</p>
+<p>メソッドをチェーンしたあとに <code>Error</code> フィールドを確認することが重要です。</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> err := db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).First(&amp;user).Error; err != <span class="literal">nil</span> {</span><br><span class="line">  <span class="comment">// Handle error...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>Or alternatively:</p>
+<p>もしくは、</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> result := db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).First(&amp;user); result.Error != <span class="literal">nil</span> {</span><br><span class="line">  <span class="comment">// Handle error...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="ErrRecordNotFound" class="article-heading"><a href="#ErrRecordNotFound" class="headerlink" title="ErrRecordNotFound"></a><code>ErrRecordNotFound</code><a class="article-anchor" href="#ErrRecordNotFound" aria-hidden="true"></a></h2><p>GORM returns <code>ErrRecordNotFound</code> when no record is found using methods like <code>First</code>, <code>Last</code>, <code>Take</code>.</p>
+<h2 id="ErrRecordNotFound" class="article-heading"><a href="#ErrRecordNotFound" class="headerlink" title="ErrRecordNotFound"></a><code>ErrRecordNotFound</code><a class="article-anchor" href="#ErrRecordNotFound" aria-hidden="true"></a></h2><p><code>First</code>, <code>Last</code>, <code>Take</code> などのメソッドを使用したときにレコードが見つからなかった場合、GORM は <code>ErrRecordNotFound</code> を返します。</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">err := db.First(&amp;user, <span class="number">100</span>).Error</span><br><span class="line"><span class="keyword">if</span> errors.Is(err, gorm.ErrRecordNotFound) {</span><br><span class="line">  <span class="comment">// Handle record not found error...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Handling-Error-Codes" class="article-heading"><a href="#Handling-Error-Codes" class="headerlink" title="Handling Error Codes"></a>Handling Error Codes<a class="article-anchor" href="#Handling-Error-Codes" aria-hidden="true"></a></h2><p>Many databases return errors with specific codes, which can be indicative of various issues like constraint violations, connection problems, or syntax errors. Handling these error codes in GORM requires parsing the error returned by the database and extracting the relevant code</p>
+<h2 id="エラーコードの対処" class="article-heading"><a href="#エラーコードの対処" class="headerlink" title="エラーコードの対処"></a>エラーコードの対処<a class="article-anchor" href="#エラーコードの対処" aria-hidden="true"></a></h2><p>多くのデータベースでは、制約違反、接続の問題、構文エラーなどの問題を示すコードでエラーを返します。 これらのエラーコードを処理するには、GORMはデータベースから返されたエラーをパースし、関連するコードを抽出する必要があります。</p>
 <ul>
-<li><strong>Example: Handling MySQL Error Codes</strong></li>
+<li><strong>例: MySQLで発生するエラー コードの処理</strong></li>
 </ul>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"github.com/go-sql-driver/mysql"</span></span><br><span class="line">    <span class="string">"gorm.io/gorm"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">result := db.Create(&amp;newRecord)</span><br><span class="line"><span class="keyword">if</span> result.Error != <span class="literal">nil</span> {</span><br><span class="line">    <span class="keyword">if</span> mysqlErr, ok := result.Error.(*mysql.MySQLError); ok {</span><br><span class="line">        <span class="keyword">switch</span> mysqlErr.Number {</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1062</span>: <span class="comment">// MySQL code for duplicate entry</span></span><br><span class="line">            <span class="comment">// Handle duplicate entry</span></span><br><span class="line">        <span class="comment">// Add cases for other specific error codes</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="comment">// Handle other errors</span></span><br><span class="line">        }</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="comment">// Handle non-MySQL errors or unknown errors</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Dialect-Translated-Errors" class="article-heading"><a href="#Dialect-Translated-Errors" class="headerlink" title="Dialect Translated Errors"></a>Dialect Translated Errors<a class="article-anchor" href="#Dialect-Translated-Errors" aria-hidden="true"></a></h2><p>GORM can return specific errors related to the database dialect being used, when <code>TranslateError</code> is enabled, GORM converts database-specific errors into its own generalized errors.</p>
+<h2 id="方言を翻訳したエラー" class="article-heading"><a href="#方言を翻訳したエラー" class="headerlink" title="方言を翻訳したエラー"></a>方言を翻訳したエラー<a class="article-anchor" href="#方言を翻訳したエラー" aria-hidden="true"></a></h2><p>GORMは使用されているSQL方言に関する特定のエラーを返すことができます。<code>TranslateError</code> が有効な場合、GORMはデータベース固有のエラーを独自に一般化したエラーに変換します。</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(postgres.Open(postgresDSN), &amp;gorm.Config{TranslateError: <span class="literal">true</span>})</span><br></pre></td></tr></tbody></table></figure>
 
 <ul>
 <li><strong>ErrDuplicatedKey</strong></li>
 </ul>
-<p>This error occurs when an insert operation violates a unique constraint:</p>
+<p>このエラーは、レコード挿入操作がUNIQUE制約に違反した場合に発生します。</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">result := db.Create(&amp;newRecord)</span><br><span class="line"><span class="keyword">if</span> errors.Is(result.Error, gorm.ErrDuplicatedKey) {</span><br><span class="line">    <span class="comment">// Handle duplicated key error...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <ul>
 <li><strong>ErrForeignKeyViolated</strong></li>
 </ul>
-<p>This error is encountered when a foreign key constraint is violated:</p>
+<p>このエラーは外部キー制約に違反している場合に発生します。</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">result := db.Create(&amp;newRecord)</span><br><span class="line"><span class="keyword">if</span> errors.Is(result.Error, gorm.ErrForeignKeyViolated) {</span><br><span class="line">    <span class="comment">// Handle foreign key violation error...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>By enabling <code>TranslateError</code>, GORM provides a more unified way of handling errors across different databases, translating database-specific errors into common GORM error types.</p>
-<h2 id="Errors" class="article-heading"><a href="#Errors" class="headerlink" title="Errors"></a>Errors<a class="article-anchor" href="#Errors" aria-hidden="true"></a></h2><p>For a complete list of errors that GORM can return, refer to the <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm/blob/master/errors.go">Errors List</a> in GORM’s documentation.</p>
+<p><code>TranslateError</code> を有効にすることで、GORMはデータベース固有のエラーを一般的なGORMエラータイプに翻訳し、異なるデータベース間でより統一されたエラー処理方法を提供します。</p>
+<h2 id="エラーの一覧" class="article-heading"><a href="#エラーの一覧" class="headerlink" title="エラーの一覧"></a>エラーの一覧<a class="article-anchor" href="#エラーの一覧" aria-hidden="true"></a></h2><p>GORMが返すエラーの一覧については、GORMのドキュメントの <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm/blob/master/errors.go">エラーリスト</a> を参照してください。</p>
 </body></html>
               </div>
 
@@ -187,7 +187,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2025-01-12T11:50:44.882Z" itemprop="dateModified">最終更新: 2025-01-12</time>
+                <time class="article-footer-updated" datetime="2025-05-16T06:47:15.903Z" itemprop="dateModified">最終更新: 2025-05-16</time>
 <a href="context.html" class="article-footer-prev" title="Context"><i class="fa fa-chevron-left"></i><span>前へ</span></a><a href="method_chaining.html" class="article-footer-next" title="Method Chaining"><span>次へ</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -306,7 +306,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">内容</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Basic-Error-Handling"><span class="toc-text">Basic Error Handling</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ErrRecordNotFound"><span class="toc-text">ErrRecordNotFound</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Handling-Error-Codes"><span class="toc-text">Handling Error Codes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dialect-Translated-Errors"><span class="toc-text">Dialect Translated Errors</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Errors"><span class="toc-text">Errors</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%9A%84%E3%81%AA%E3%82%A8%E3%83%A9%E3%83%BC%E5%87%A6%E7%90%86"><span class="toc-text">基本的なエラー処理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ErrRecordNotFound"><span class="toc-text">ErrRecordNotFound</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%82%A8%E3%83%A9%E3%83%BC%E3%82%B3%E3%83%BC%E3%83%89%E3%81%AE%E5%AF%BE%E5%87%A6"><span class="toc-text">エラーコードの対処</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E8%A8%80%E3%82%92%E7%BF%BB%E8%A8%B3%E3%81%97%E3%81%9F%E3%82%A8%E3%83%A9%E3%83%BC"><span class="toc-text">方言を翻訳したエラー</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%82%A8%E3%83%A9%E3%83%BC%E3%81%AE%E4%B8%80%E8%A6%A7"><span class="toc-text">エラーの一覧</span></a></li></ol>
 
               
                 <a href="https://translate.gorm.io/project/go-gorm/ja" target="_blank" id="article-improve">

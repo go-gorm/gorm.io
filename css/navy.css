@@ -1452,7 +1452,8 @@ pre code {
   background: #eee;
   padding: 12px 12px;
   color: #4d4d4c;
-  overflow: hidden;
+  overflow-x: auto;
+  max-width: 100%;
   position: relative;
   z-index: 95;
   margin: 0;

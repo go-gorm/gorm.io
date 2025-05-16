@@ -2,7 +2,7 @@
 <html lang="ja_JP">
 <head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
-  <title>Method Chaining | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <title>メソッドのチェーン | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
   <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Canonical links -->
@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORM’s method chaining feature allows for a smooth and fluent style of coding. Here’s an example: db.Where(&quot;name &#x3D; ?&quot;, &quot;jinzhu&quot;).Where(&quot;age &#x3D; ?&quot;, 18).First(&amp;user)  Me">
+  <meta name="description" content="GORMのメソッドチェーン機能は、円滑で流暢なコーディングスタイルを可能にします。 例: db.Where(&quot;name &#x3D; ?&quot;, &quot;jinzhu&quot;).Where(&quot;age &#x3D; ?&quot;, 18).First(&amp;user)  メソッドのカテゴリGORMにおいて、メソッドはおもに Chain Methods、 Finisher Meth">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Method Chaining">
+<meta property="og:title" content="メソッドのチェーン">
 <meta property="og:url" content="https://gorm.io/ja_JP/docs/method_chaining.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORM’s method chaining feature allows for a smooth and fluent style of coding. Here’s an example: db.Where(&quot;name &#x3D; ?&quot;, &quot;jinzhu&quot;).Where(&quot;age &#x3D; ?&quot;, 18).First(&amp;user)  Me">
+<meta property="og:description" content="GORMのメソッドチェーン機能は、円滑で流暢なコーディングスタイルを可能にします。 例: db.Where(&quot;name &#x3D; ?&quot;, &quot;jinzhu&quot;).Where(&quot;age &#x3D; ?&quot;, 18).First(&amp;user)  メソッドのカテゴリGORMにおいて、メソッドはおもに Chain Methods、 Finisher Meth">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:published_time" content="2025-01-12T11:50:44.882Z">
-<meta property="article:modified_time" content="2025-01-12T11:50:44.882Z">
+<meta property="article:published_time" content="2025-05-16T06:47:15.904Z">
+<meta property="article:modified_time" content="2025-05-16T06:47:15.904Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -135,17 +135,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <div class="article">
             <div class="inner">
               <header class="article-header">
-                <h1 class="article-title" itemprop="name">Method Chaining</h1>
+                <h1 class="article-title" itemprop="name">メソッドのチェーン</h1>
                 
                 <a target="_blank" rel="noopener" href="https://translate.gorm.io/project/go-gorm/ja" class="article-edit-link" title="このページを改善する"><i class="fa fa-pencil"></i></a>
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>GORM’s method chaining feature allows for a smooth and fluent style of coding. Here’s an example:</p>
+                <html><head></head><body><p>GORMのメソッドチェーン機能は、円滑で流暢なコーディングスタイルを可能にします。 例:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Where(<span class="string">"age = ?"</span>, <span class="number">18</span>).First(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="Method-Categories" class="article-heading"><a href="#Method-Categories" class="headerlink" title="Method Categories"></a>Method Categories<a class="article-anchor" href="#Method-Categories" aria-hidden="true"></a></h2><p>GORM organizes methods into three primary categories: <code>Chain Methods</code>, <code>Finisher Methods</code>, and <code>New Session Methods</code>.</p>
-<h3 id="Chain-Methods" class="article-heading"><a href="#Chain-Methods" class="headerlink" title="Chain Methods"></a>Chain Methods<a class="article-anchor" href="#Chain-Methods" aria-hidden="true"></a></h3><p>Chain methods are used to modify or append <code>Clauses</code> to the current <code>Statement</code>. Some common chain methods include:</p>
+<h2 id="メソッドのカテゴリ" class="article-heading"><a href="#メソッドのカテゴリ" class="headerlink" title="メソッドのカテゴリ"></a>メソッドのカテゴリ<a class="article-anchor" href="#メソッドのカテゴリ" aria-hidden="true"></a></h2><p>GORMにおいて、メソッドはおもに <code>Chain Methods</code>、 <code>Finisher Methods</code>、 <code>New Session Methods</code> の3つのカテゴリに分類されます。</p>
+<h3 id="Chain-Methods" class="article-heading"><a href="#Chain-Methods" class="headerlink" title="Chain Methods"></a>Chain Methods<a class="article-anchor" href="#Chain-Methods" aria-hidden="true"></a></h3><p>Chain Method は、現在の <code>Statement</code> に <code>Clauses</code>の変更または追加を行うために使用されます。 一般的なチェーンメソッドには以下のものがあります。</p>
 <ul>
 <li><code>Where</code></li>
 <li><code>Select</code></li>
@@ -153,10 +153,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li><code>Joins</code></li>
 <li><code>Scopes</code></li>
 <li><code>Preload</code></li>
-<li><code>Raw</code> (Note: <code>Raw</code> cannot be used in conjunction with other chainable methods to build SQL)</li>
+<li><code>Raw</code> (注意: <code>Raw</code> は、SQLを構築する他のチェーン可能なメソッドと組み合わせて使用することはできません)</li>
 </ul>
-<p>For a comprehensive list, visit <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm/blob/master/chainable_api.go">GORM Chainable API</a>. Also, the <a href="sql_builder.html">SQL Builder</a> documentation offers more details about <code>Clauses</code>.</p>
-<h3 id="Finisher-Methods" class="article-heading"><a href="#Finisher-Methods" class="headerlink" title="Finisher Methods"></a>Finisher Methods<a class="article-anchor" href="#Finisher-Methods" aria-hidden="true"></a></h3><p>Finisher methods are immediate, executing registered callbacks that generate and run SQL commands. This category includes methods:</p>
+<p>包括的なリストについては <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm/blob/master/chainable_api.go">GORM Chainable API</a> をご覧ください。 また、 <a href="sql_builder.html">SQL Builder</a> のドキュメントでは <code>Clauses</code> についての詳細が示されています。</p>
+<h3 id="Finisher-Methods" class="article-heading"><a href="#Finisher-Methods" class="headerlink" title="Finisher Methods"></a>Finisher Methods<a class="article-anchor" href="#Finisher-Methods" aria-hidden="true"></a></h3><p>Finisher Method が現れると、それまでに登録されたコールバックが即実行され、SQLコマンドを生成、実行します。 このカテゴリには以下のメソッドが含まれます。</p>
 <ul>
 <li><code>Create</code></li>
 <li><code>First</code></li>
@@ -169,35 +169,35 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <li><code>Row</code></li>
 <li><code>Rows</code></li>
 </ul>
-<p>For the full list, refer to <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm/blob/master/finisher_api.go">GORM Finisher API</a>.</p>
-<h3 id="New-Session-Methods" class="article-heading"><a href="#New-Session-Methods" class="headerlink" title="New Session Methods"></a>New Session Methods<a class="article-anchor" href="#New-Session-Methods" aria-hidden="true"></a></h3><p>GORM defines methods like <code>Session</code>, <code>WithContext</code>, and <code>Debug</code> as New Session Methods, which are essential for creating shareable and reusable <code>*gorm.DB</code> instances. For more details, see <a href="session.html">Session</a> documentation.</p>
-<h2 id="Reusability-and-Safety" class="article-heading"><a href="#Reusability-and-Safety" class="headerlink" title="Reusability and Safety"></a>Reusability and Safety<a class="article-anchor" href="#Reusability-and-Safety" aria-hidden="true"></a></h2><p>A critical aspect of GORM is understanding when a <code>*gorm.DB</code> instance is safe to reuse. Following a <code>Chain Method</code> or <code>Finisher Method</code>, GORM returns an initialized <code>*gorm.DB</code> instance. This instance is not safe for reuse as it may carry over conditions from previous operations, potentially leading to contaminated SQL queries. For example:</p>
-<h3 id="Example-of-Unsafe-Reuse" class="article-heading"><a href="#Example-of-Unsafe-Reuse" class="headerlink" title="Example of Unsafe Reuse"></a>Example of Unsafe Reuse<a class="article-anchor" href="#Example-of-Unsafe-Reuse" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">queryDB := DB.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// First query</span></span><br><span class="line">queryDB.Where(<span class="string">"age &gt; ?"</span>, <span class="number">10</span>).First(&amp;user)</span><br><span class="line"><span class="comment">// SQL: SELECT * FROM users WHERE name = "jinzhu" AND age &gt; 10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Second query with unintended compounded condition</span></span><br><span class="line">queryDB.Where(<span class="string">"age &gt; ?"</span>, <span class="number">20</span>).First(&amp;user2)</span><br><span class="line"><span class="comment">// SQL: SELECT * FROM users WHERE name = "jinzhu" AND age &gt; 10 AND age &gt; 20</span></span><br></pre></td></tr></tbody></table></figure>
+<p>一覧については <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm/blob/master/finisher_api.go">GORM Finisher API</a> を参照してください。</p>
+<h3 id="New-Session-Methods" class="article-heading"><a href="#New-Session-Methods" class="headerlink" title="New Session Methods"></a>New Session Methods<a class="article-anchor" href="#New-Session-Methods" aria-hidden="true"></a></h3><p><code>Session</code>、<code>WithContext</code>、<code>Debug</code> といったメソッドは New Session Methods として定義されており、共有可能かつ再利用可能な <code>*gorm.DB</code> インスタンスを生み出すのに必要不可欠です。 詳細は <a href="session.html">セッション</a> のドキュメントを参照してください。</p>
+<h2 id="再利用性と安全性" class="article-heading"><a href="#再利用性と安全性" class="headerlink" title="再利用性と安全性"></a>再利用性と安全性<a class="article-anchor" href="#再利用性と安全性" aria-hidden="true"></a></h2><p><code>*gorm.DB</code> インスタンスを安全に再利用することができるタイミングを理解することは、GORMにおける重要な側面の1つです。 <code>Chain Method</code> または <code>Finisher Method</code> の後ろに続けて置くことで、GORMは <code>*gorm.DB</code> インスタンスを初期化して返します。 このインスタンスは以前の操作から条件を引き継いでおり、SQLクエリの汚染につながる可能性があるため、安全に再利用することはできません。 例:</p>
+<h3 id="安全でない再利用の例" class="article-heading"><a href="#安全でない再利用の例" class="headerlink" title="安全でない再利用の例"></a>安全でない再利用の例<a class="article-anchor" href="#安全でない再利用の例" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">queryDB := DB.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// First query</span></span><br><span class="line">queryDB.Where(<span class="string">"age &gt; ?"</span>, <span class="number">10</span>).First(&amp;user)</span><br><span class="line"><span class="comment">// SQL: SELECT * FROM users WHERE name = "jinzhu" AND age &gt; 10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Second query with unintended compounded condition</span></span><br><span class="line">queryDB.Where(<span class="string">"age &gt; ?"</span>, <span class="number">20</span>).First(&amp;user2)</span><br><span class="line"><span class="comment">// SQL: SELECT * FROM users WHERE name = "jinzhu" AND age &gt; 10 AND age &gt; 20</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Example-of-Safe-Reuse" class="article-heading"><a href="#Example-of-Safe-Reuse" class="headerlink" title="Example of Safe Reuse"></a>Example of Safe Reuse<a class="article-anchor" href="#Example-of-Safe-Reuse" aria-hidden="true"></a></h3><p>To safely reuse a <code>*gorm.DB</code> instance, use a New Session Method:</p>
+<h3 id="安全な再利用の例" class="article-heading"><a href="#安全な再利用の例" class="headerlink" title="安全な再利用の例"></a>安全な再利用の例<a class="article-anchor" href="#安全な再利用の例" aria-hidden="true"></a></h3><p><code>*gorm.DB</code> インスタンスを安全に再利用するには、New Session Method を使用します。</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">queryDB := DB.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Session(&amp;gorm.Session{})</span><br><span class="line"></span><br><span class="line"><span class="comment">// First query</span></span><br><span class="line">queryDB.Where(<span class="string">"age &gt; ?"</span>, <span class="number">10</span>).First(&amp;user)</span><br><span class="line"><span class="comment">// SQL: SELECT * FROM users WHERE name = "jinzhu" AND age &gt; 10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Second query, safely isolated</span></span><br><span class="line">queryDB.Where(<span class="string">"age &gt; ?"</span>, <span class="number">20</span>).First(&amp;user2)</span><br><span class="line"><span class="comment">// SQL: SELECT * FROM users WHERE name = "jinzhu" AND age &gt; 20</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>In this scenario, using <code>Session(&amp;gorm.Session{})</code> ensures that each query starts with a fresh context, preventing the pollution of SQL queries with conditions from previous operations. This is crucial for maintaining the integrity and accuracy of your database interactions.</p>
-<h2 id="Examples-for-Clarity" class="article-heading"><a href="#Examples-for-Clarity" class="headerlink" title="Examples for Clarity"></a>Examples for Clarity<a class="article-anchor" href="#Examples-for-Clarity" aria-hidden="true"></a></h2><p>Let’s clarify with a few examples:</p>
+<p>このシナリオでは <code>Session(&amp;gorm.Session{})</code> を使用することで、直前の操作がもたらす条件によってSQLクエリが汚染されることを防止し、毎クエリが新鮮なコンテキストから始動することを確実なものにしています。 これは、データベースとのやりとりの整合性と正確性を維持するために重要です。</p>
+<h2 id="わかりやすい例" class="article-heading"><a href="#わかりやすい例" class="headerlink" title="わかりやすい例"></a>わかりやすい例<a class="article-anchor" href="#わかりやすい例" aria-hidden="true"></a></h2><p>いくつかの例をあげてわかりやすくしましょう。</p>
 <ul>
-<li><strong>Example 1: Safe Instance Reuse</strong></li>
+<li><strong>例1: インスタンスの安全な再利用</strong></li>
 </ul>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"test.db"</span>), &amp;gorm.Config{})</span><br><span class="line"><span class="comment">// 'db' is a newly initialized `*gorm.DB`, which is safe to reuse.</span></span><br><span class="line"></span><br><span class="line">db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Where(<span class="string">"age = ?"</span>, <span class="number">18</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// The first `Where("name = ?", "jinzhu")` call is a chain method that initializes a `*gorm.DB` instance, or `*gorm.Statement`.</span></span><br><span class="line"><span class="comment">// The second `Where("age = ?", 18)` call adds a new condition to the existing `*gorm.Statement`.</span></span><br><span class="line"><span class="comment">// `Find(&amp;users)` is a finisher method, executing registered Query Callbacks, generating and running:</span></span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18;</span></span><br><span class="line"></span><br><span class="line">db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu2"</span>).Where(<span class="string">"age = ?"</span>, <span class="number">20</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// Here, `Where("name = ?", "jinzhu2")` starts a new chain, creating a fresh `*gorm.Statement`.</span></span><br><span class="line"><span class="comment">// `Where("age = ?", 20)` adds to this new statement.</span></span><br><span class="line"><span class="comment">// `Find(&amp;users)` again finalizes the query, executing and generating:</span></span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu2' AND age = 20;</span></span><br><span class="line"></span><br><span class="line">db.Find(&amp;users)</span><br><span class="line"><span class="comment">// Directly calling `Find(&amp;users)` without any `Where` starts a new chain and executes:</span></span><br><span class="line"><span class="comment">// SELECT * FROM users;</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>In this example, each chain of method calls is independent, ensuring clean, non-polluted SQL queries.</p>
+<p>この例では、メソッド呼び出しの各チェーンは独立しており、すべてのSQLクエリがクリーンかつ汚染されていないことを確実にします。</p>
 <ul>
-<li><strong>(Bad) Example 2: Unsafe Instance Reuse</strong></li>
+<li><strong>例2 (悪い例): 安全でないインスタンスの再利用</strong></li>
 </ul>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"test.db"</span>), &amp;gorm.Config{})</span><br><span class="line"><span class="comment">// 'db' is a newly initialized *gorm.DB, safe for initial reuse.</span></span><br><span class="line"></span><br><span class="line">tx := db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>)</span><br><span class="line"><span class="comment">// `Where("name = ?", "jinzhu")` initializes a `*gorm.Statement` instance, which should not be reused across different logical operations.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Good case</span></span><br><span class="line">tx.Where(<span class="string">"age = ?"</span>, <span class="number">18</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// Reuses 'tx' correctly for a single logical operation, executing:</span></span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Bad case</span></span><br><span class="line">tx.Where(<span class="string">"age = ?"</span>, <span class="number">28</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// Incorrectly reuses 'tx', compounding conditions and leading to a polluted query:</span></span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 AND age = 28;</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>In this bad example, reusing the <code>tx</code> variable leads to compounded conditions, which is generally not desirable.</p>
+<p>これは <code>tx</code> 変数の再利用によって条件が混ざってしまった悪い例です。一般的には望ましくありません。</p>
 <ul>
-<li><strong>Example 3: Safe Reuse with New Session Methods</strong></li>
+<li><strong>例3: New Session Methods による安全な再利用</strong></li>
 </ul>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"test.db"</span>), &amp;gorm.Config{})</span><br><span class="line"><span class="comment">// 'db' is a newly initialized *gorm.DB, safe to reuse.</span></span><br><span class="line"></span><br><span class="line">tx := db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Session(&amp;gorm.Session{})</span><br><span class="line">tx := db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).WithContext(context.Background())</span><br><span class="line">tx := db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).Debug()</span><br><span class="line"><span class="comment">// `Session`, `WithContext`, `Debug` methods return a `*gorm.DB` instance marked as safe for reuse. They base a newly initialized `*gorm.Statement` on the current conditions.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Good case</span></span><br><span class="line">tx.Where(<span class="string">"age = ?"</span>, <span class="number">18</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Good case</span></span><br><span class="line">tx.Where(<span class="string">"age = ?"</span>, <span class="number">28</span>).Find(&amp;users)</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE name = 'jinzhu' AND age = 28;</span></span><br></pre></td></tr></tbody></table></figure>
 
-<p>In this example, using New Session Methods <code>Session</code>, <code>WithContext</code>, <code>Debug</code> correctly initializes a <code>*gorm.DB</code> instance for each logical operation, preventing condition pollution and ensuring each query is distinct and based on the specific conditions provided.</p>
-<p>Overall, these examples illustrate the importance of understanding GORM’s behavior with respect to method chaining and instance management to ensure accurate and efficient database querying.</p>
+<p>この例では、New Session Methods である <code>Session</code>、<code>WithContext</code>、<code>Debug</code> を使用することで、論理操作ごとに <code>*gorm.DB</code> インスタンスが正しい形で初期化されています。これによって条件は汚染されることなく、各クエリが与えられた固有の条件に基づいて独立していることを確実なものにしています。</p>
+<p>以上の例で、正確で効率的なデータベース操作を確立するために、メソッドチェーンとインスタンス管理に関するGORMの動作を理解することの重要性が一般に示されました。</p>
 </body></html>
               </div>
 
@@ -210,7 +210,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2025-01-12T11:50:44.882Z" itemprop="dateModified">最終更新: 2025-01-12</time>
+                <time class="article-footer-updated" datetime="2025-05-16T06:47:15.904Z" itemprop="dateModified">最終更新: 2025-05-16</time>
 <a href="error_handling.html" class="article-footer-prev" title="エラーハンドリング"><i class="fa fa-chevron-left"></i><span>前へ</span></a><a href="session.html" class="article-footer-next" title="Session"><span>次へ</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -329,7 +329,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">内容</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Method-Categories"><span class="toc-text">Method Categories</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Chain-Methods"><span class="toc-text">Chain Methods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Finisher-Methods"><span class="toc-text">Finisher Methods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#New-Session-Methods"><span class="toc-text">New Session Methods</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Reusability-and-Safety"><span class="toc-text">Reusability and Safety</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-of-Unsafe-Reuse"><span class="toc-text">Example of Unsafe Reuse</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Example-of-Safe-Reuse"><span class="toc-text">Example of Safe Reuse</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Examples-for-Clarity"><span class="toc-text">Examples for Clarity</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%81%AE%E3%82%AB%E3%83%86%E3%82%B4%E3%83%AA"><span class="toc-text">メソッドのカテゴリ</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Chain-Methods"><span class="toc-text">Chain Methods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Finisher-Methods"><span class="toc-text">Finisher Methods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#New-Session-Methods"><span class="toc-text">New Session Methods</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%8D%E5%88%A9%E7%94%A8%E6%80%A7%E3%81%A8%E5%AE%89%E5%85%A8%E6%80%A7"><span class="toc-text">再利用性と安全性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E3%81%A7%E3%81%AA%E3%81%84%E5%86%8D%E5%88%A9%E7%94%A8%E3%81%AE%E4%BE%8B"><span class="toc-text">安全でない再利用の例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E5%85%A8%E3%81%AA%E5%86%8D%E5%88%A9%E7%94%A8%E3%81%AE%E4%BE%8B"><span class="toc-text">安全な再利用の例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E3%82%8F%E3%81%8B%E3%82%8A%E3%82%84%E3%81%99%E3%81%84%E4%BE%8B"><span class="toc-text">わかりやすい例</span></a></li></ol>
 
               
                 <a href="https://translate.gorm.io/project/go-gorm/ja" target="_blank" id="article-improve">

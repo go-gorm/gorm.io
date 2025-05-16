@@ -56,8 +56,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="创建记录user :&#x3D; User&amp;#123;Name: &quot;Jinzhu&quot;, Age: 18, Birthday: time.Now()&amp;#125;result :&#x3D; db.Create(&amp;user) &#x2F;&#x2F; 通过数据的指针来创建user.ID             &#x2F;&#x2F; 返回插入数据的主键result.Error        &#x2F;&#x2F; 返回 errorresult.Row">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-01-12T11:50:44.900Z">
-<meta property="article:modified_time" content="2025-01-12T11:50:44.900Z">
+<meta property="article:published_time" content="2025-05-16T06:47:15.922Z">
+<meta property="article:modified_time" content="2025-05-16T06:47:15.922Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -146,7 +146,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>我们还可以使用 <code>Create()</code> 创建多项记录：</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">users := []*User{</span><br><span class="line">    {Name: <span class="string">"Jinzhu"</span>, Age: <span class="number">18</span>, Birthday: time.Now()},</span><br><span class="line">    {Name: <span class="string">"Jackson"</span>, Age: <span class="number">19</span>, Birthday: time.Now()},</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line">result := db.Create(users) <span class="comment">// pass a slice to insert multiple row</span></span><br><span class="line"></span><br><span class="line">result.Error        <span class="comment">// returns error</span></span><br><span class="line">result.RowsAffected <span class="comment">// returns inserted records count</span></span><br></pre></td></tr></tbody></table></figure>
 
-<blockquote class="note warn"><p><strong>NOTE</strong> 你无法向 ‘create’ 传递结构体，所以你应该传入数据的指针.</p>
+<blockquote class="note warn"><p><strong>NOTE</strong> 你无法向 ‘create’ 传递结构体，因此你应该传入数据的指针.</p>
 </blockquote>
 
 <h2 id="用指定的字段创建记录" class="article-heading"><a href="#用指定的字段创建记录" class="headerlink" title="用指定的字段创建记录"></a>用指定的字段创建记录<a class="article-anchor" href="#用指定的字段创建记录" aria-hidden="true"></a></h2><p>创建记录并为指定字段赋值。</p>
@@ -155,14 +155,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>创建记录并忽略传递给 ‘Omit’ 的字段值</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db.Omit(<span class="string">"Name"</span>, <span class="string">"Age"</span>, <span class="string">"CreatedAt"</span>).Create(&amp;user)</span><br><span class="line"><span class="comment">// INSERT INTO `users` (`birthday`,`updated_at`) VALUES ("2020-01-01 00:00:00.000", "2020-07-04 11:05:21.775")</span></span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="批量插入" class="article-heading"><a href="#批量插入" class="headerlink" title="批量插入"></a><span id="batch_insert">批量插入</span><a class="article-anchor" href="#批量插入" aria-hidden="true"></a></h2><p>要高效地插入大量记录，请将切片传递给<code>Create</code>方法。 GORM 将生成一条 SQL 来插入所有数据，以返回所有主键值，并触发 <code>Hook</code> 方法。 当这些记录可以被分割成多个批次时，GORM会开启一个事务&lt;/0&gt;来处理它们。</p>
+<h2 id="批量插入" class="article-heading"><a href="#批量插入" class="headerlink" title="批量插入"></a><span id="batch_insert">批量插入</span><a class="article-anchor" href="#批量插入" aria-hidden="true"></a></h2><p>要高效地插入大量记录，请将切片传递给<code>Create</code>方法。 GORM 将生成一条 SQL 来插入所有数据，以返回所有主键值，并触发 <code>Hook</code> 方法。 当这些记录可以被分割成多个批次时，GORM会开启一个<strong>事务</strong>来处理它们。</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> users = []User{{Name: <span class="string">"jinzhu1"</span>}, {Name: <span class="string">"jinzhu2"</span>}, {Name: <span class="string">"jinzhu3"</span>}}</span><br><span class="line">db.Create(&amp;users)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> _, user := <span class="keyword">range</span> users {</span><br><span class="line">  user.ID <span class="comment">// 1,2,3</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <p>你可以通过<code>db.CreateInBatches</code>方法来指定批量插入的批次大小</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> users = []User{{Name: <span class="string">"jinzhu_1"</span>}, ...., {Name: <span class="string">"jinzhu_10000"</span>}}</span><br><span class="line"></span><br><span class="line"><span class="comment">// batch size 100</span></span><br><span class="line">db.CreateInBatches(users, <span class="number">100</span>)</span><br></pre></td></tr></tbody></table></figure>
 
 <p><a href="#upsert">Upsert</a> 和 <a href="#create_with_associations">Create With Associations</a>同样支持批量插入</p>
-<blockquote class="note warn"><p><strong>注意</strong> 使用<code>CreateBatchSize</code> 选项初始化GORM实例后，此后进行创建&amp; 关联操作时所有的<code>INSERT</code>行为都会遵循初始化时的配置。</p>
+<blockquote class="note warn"><p><strong>注意</strong> 使用<code>CreateBatchSize</code> 选项初始化GORM实例，此后进行创建和关联操作时所有的<code>INSERT</code>行为都会遵循初始化时的配置。</p>
 </blockquote>
 
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">db, err := gorm.Open(sqlite.Open(<span class="string">"gorm.db"</span>), &amp;gorm.Config{</span><br><span class="line">  CreateBatchSize: <span class="number">1000</span>,</span><br><span class="line">})</span><br><span class="line"></span><br><span class="line">db := db.Session(&amp;gorm.Session{CreateBatchSize: <span class="number">1000</span>})</span><br><span class="line"></span><br><span class="line">users = [<span class="number">5000</span>]User{{Name: <span class="string">"jinzhu"</span>, Pets: []Pet{pet1, pet2, pet3}}...}</span><br><span class="line"></span><br><span class="line">db.Create(&amp;users)</span><br><span class="line"><span class="comment">// INSERT INTO users xxx (5 batches)</span></span><br><span class="line"><span class="comment">// INSERT INTO pets xxx (15 batches)</span></span><br></pre></td></tr></tbody></table></figure>
@@ -228,7 +228,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2025-01-12T11:50:44.900Z" itemprop="dateModified">最后更新于 2025-01-12</time>
+                <time class="article-footer-updated" datetime="2025-05-16T06:47:15.922Z" itemprop="dateModified">最后更新于 2025-05-16</time>
 <a href="connecting_to_the_database.html" class="article-footer-prev" title="连接到数据库"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="query.html" class="article-footer-next" title="查询"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
