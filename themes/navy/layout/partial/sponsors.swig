@@ -29,6 +29,11 @@
           <img src="{{ url_for('/sponsors-imgs/incident-io.svg') }}" alt="Incident.io">
         </a>
       </div>
+      <div class="sponsor_item sponsor_item_link">
+        <a href="https://seats.aero" target="_blank" rel="sponsored noopener" title="Seats.aero">
+          <img src="{{ url_for('/sponsors-imgs/seats.aero.svg') }}" alt="Seats.aero">
+        </a>
+      </div>
 
       <div class="sponsor_item" title="Help to deliver a better GORM!">
         <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
@@ -83,6 +88,11 @@
       <div class="sponsor_item">
         <a href="https://incident.io" target="_blank" rel="sponsored noopener" title="Incident.io">
           <img src="{{ url_for('/sponsors-imgs/incident-io.svg') }}" alt="Incident.io">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://seats.aero" target="_blank" rel="sponsored noopener" title="Seats.aero">
+          <img src="{{ url_for('/sponsors-imgs/seats.aero.svg') }}" alt="Seats.aero">
         </a>
       </div>
 
