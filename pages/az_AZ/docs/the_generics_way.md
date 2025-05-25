@@ -3,8 +3,7 @@ title: The Generics Way to Use GORM
 layout: page
 ---
 
-
-GORM has officially introduced support for **Go Generics** in its latest version. This addition significantly enhances usability and type safety while reducing issues such as SQL pollution caused by reusing `gorm.DB` instances. Additionally, we've improved the behaviors of `Joins` and `Preload` and incorporated transaction timeout handling to prevent connection pool leaks.
+GORM has officially introduced support for **Go Generics** in its latest version (>= `v1.30.0`). This addition significantly enhances usability and type safety while reducing issues such as SQL pollution caused by reusing `gorm.DB` instances. Additionally, we've improved the behaviors of `Joins` and `Preload` and incorporated transaction timeout handling to prevent connection pool leaks.
 
 This update introduces generic APIs in a carefully designed way that maintains full backward compatibility with existing APIs. You can freely mix traditional and generic APIs in your projects—just use generics for new code without worrying about compatibility with existing logic or GORM plugins (such as encryption/decryption, sharding, read/write splitting, tracing, etc.).
 
@@ -66,7 +65,7 @@ err := gorm.G[User](DB, result).CreateInBatches(ctx, &users, 2)
 
 The new GORM generics interface brings enhanced support for association queries (`Joins`) and eager loading (`Preload`), offering more flexible association methods, more expressive query capabilities, and a significantly simplified approach to building complex queries.
 
-* **Joins**: Easily specify different join types (e.g., `InnerJoin`, `LeftJoin`) and customize join conditions based on associations, making complex cross-table queries clearer and more intuitive.
+- **Joins**: Easily specify different join types (e.g., `InnerJoin`, `LeftJoin`) and customize join conditions based on associations, making complex cross-table queries clearer and more intuitive.
 
 ```go
 // Load only users who have a company
@@ -87,7 +86,7 @@ users, err = gorm.G[User](db).Joins(clause.LeftJoin.AssociationFrom("Company", g
 ).Find(ctx)
 ```
 
-* **Preload**: Simplifies conditions for eager loading and introduces the `LimitPerRecord` option, which allows limiting the number of related records loaded per primary record when eager loading collections.
+- **Preload**: Simplifies conditions for eager loading and introduces the `LimitPerRecord` option, which allows limiting the number of related records loaded per primary record when eager loading collections.
 
 ```go
 // A basic Preload example
@@ -121,13 +120,13 @@ However, we **strongly recommend** using our new **code generation tool** to ach
 
 ### Code Generator Workflow
 
-* **1. Install the CLI tool:**
+- **1. Install the CLI tool:**
 
 ```bash
 go install gorm.io/cmd/gorm@latest
 ```
 
-* **2. Define query interfaces:**
+- **2. Define query interfaces:**
 
 Simply define your query interface using Go’s `interface` syntax, embedding SQL templates as comments:
 
@@ -184,13 +183,13 @@ type Query[T any] interface {
 }
 ```
 
-* **3. Run the generator:**
+- **3. Run the generator:**
 
 ```bash
 gorm gen -i ./examples/example.go -o query
 ```
 
-* **4. Use the generated API:**
+- **4. Use the generated API:**
 
 ```go
 import "your_project/query"
