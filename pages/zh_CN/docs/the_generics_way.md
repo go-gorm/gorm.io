@@ -3,83 +3,81 @@ title: The Generics Way to Use GORM
 layout: page
 ---
 
-# The Generics Way to Use GORM
+GORM has officially introduced support for **Go Generics** in its latest version (>= `v1.30.0`). 为日常开发带来了更高的可用性与类型安全，并避免 SQL 污染风险等等。 此外，我们还优化了 Joins 和 Preload 的功能表现，并新增事务超时处理机制，以帮助开发者更好地应对连接泄漏等常见异常场景。
 
-GORM has officially introduced support for **Go Generics** in its latest version. This addition significantly enhances usability and type safety while reducing issues such as SQL pollution caused by reusing `gorm.DB` instances. Additionally, we've improved the behaviors of `Joins` and `Preload` and incorporated transaction timeout handling to prevent connection pool leaks.
+本次更新在保持原有 API 完全兼容的前提下，较为克制地引入了泛型接口。 你可以在项目中灵活混用传统与泛型两种接口形式，只需在新代码中引入泛型方式，无需担心与现有逻辑或 GORM 插件（如数据加解密、分库分表、读写分离、Tracing 等）之间的兼容性问题。
 
-This update introduces generic APIs in a carefully designed way that maintains full backward compatibility with existing APIs. You can freely mix traditional and generic APIs in your projects—just use generics for new code without worrying about compatibility with existing logic or GORM plugins (such as encryption/decryption, sharding, read/write splitting, tracing, etc.).
+为了避免误用，我们在泛型版本中有意移除了一些容易引发歧义或并发问题的接口，如 `FirstOrCreate`、`Save` 等。 同时，我们也在规划全新的 `gorm` 命令行工具，未来将提供更强的代码生成、类型安全支持、静态检查 (lint) 能力，进一步减少误用带来的风险。
 
-To prevent misuse, we have intentionally removed certain APIs in the generics version that are prone to ambiguity or concurrency issues, such as `FirstOrCreate` and `Save`. At the same time, we are designing a brand new `gorm` CLI tool, which will offer stronger code generation capabilities, enhanced type safety, and lint support in the future — further reducing the risk of incorrect usage.
+我们强烈建议你在新项目或重构工作中优先采用泛型版本接口，以获得更好的开发体验、更强的类型保障，以及更易维护的代码结构。
 
-We strongly recommend using the new generics-based API in new projects or during refactoring efforts to enjoy a better development experience, improved type guarantees, and a more maintainable codebase.
+## Generic APIs
 
-## Introduction to Generic APIs
-
-GORM's generic APIs closely mirror the functionality of the original ones. Here are some common operations using the new generics APIs:
+GORM 泛型接口与原接口功能基本不变。 以下是一些最常用操作在泛型接口下的写法：
 
 ```go
 ctx := context.Background()
 
-// Create records
+// 创建记录
 gorm.G[User](db).Create(ctx, &User{Name: "Alice"})
 gorm.G[User](db).CreateInBatches(ctx, users, 10)
 
-// Query records
+// 查询记录
 user, err := gorm.G[User](db).Where("name = ?", "Jinzhu").First(ctx)
 users, err := gorm.G[User](db).Where("age <= ?", 18).Find(ctx)
 
-// Update records
+// 更新记录
 gorm.G[User](db).Where("id = ?", u.ID).Update(ctx, "age", 18)
 gorm.G[User](db).Where("id = ?", u.ID).Updates(ctx, User{Name: "Jinzhu", Age: 18})
 
-// Delete records
+// 删除记录
 gorm.G[User](db).Where("id = ?", u.ID).Delete(ctx)
 ```
 
-The generics APIs fully support GORM’s advanced features by accepting optional parameters, such as clause configurations or plugin-based options (e.g., hints, resolvers), enabling powerful and flexible behaviors.
+泛型接口也完整支持 GORM 的高级特性，通过可选参数传入子句(clause)或插件(plugin)扩展，示例如下。
 
 ```go
-// OnConflict: Handle conflict during insert
+// OnConflict：插入冲突时的异常
 err := gorm.G[Language](DB, clause.OnConflict{DoNothing: true}).Create(ctx, &lang)
 err := gorm.G[Language](DB, clause.OnConflict{
   Columns:   []clause.Column{{Name: "id"}},
   DoUpdates: clause.Assignments(map[string]interface{}{"count": gorm.Expr("GREATEST(count, VALUES(count))")}),
 }).Create(ctx, &lang)
 
-// Execution hints
+// Hints 执行计划
 err := gorm.G[User](DB,
   hints.New("MAX_EXECUTION_TIME(100)"),
   hints.New("USE_INDEX(t1, idx1)"),
 ).Find(ctx)
 // SELECT /*+ MAX_EXECUTION_TIME(100) USE_INDEX(t1, idx1) */ * FROM `users`
 
-// Read from master in read/write splitting mode
+// 读写分离，强制使用写库进行读操作
 err := gorm.G[User](DB, dbresolver.Write).Find(ctx)
 
-// Retrieve raw result metadata
+// 获取原始执行结果信息
 result := gorm.WithResult()
 err := gorm.G[User](DB, result).CreateInBatches(ctx, &users, 2)
 // result.RowsAffected
 // result.Result.LastInsertId()
 ```
 
-## Joins / Preload Enhancements
+## Joins / Preload 介绍
 
-The new GORM generics interface brings enhanced support for association queries (`Joins`) and eager loading (`Preload`), offering more flexible association methods, more expressive query capabilities, and a significantly simplified approach to building complex queries.
+新版 GORM 泛型接口在关联查询(Joins)与预加载(Preload)方面进行了增强，支持更灵活的关联方式、更强大的查询表达能力，并显著简化了复杂查询的构造流程。
 
-- **Joins**: Easily specify different join types (e.g., `InnerJoin`, `LeftJoin`) and customize join conditions based on associations, making complex cross-table queries clearer and more intuitive.
+- **Joins 接口**: 轻松指定不同的 Join 类型(如 InnerJoin、LeftJoin 等)，同时支持基于关联关系自定义 Join 条件，使复杂的跨表查询更加简洁直观。
 
 ```go
-// Load only users who have a company
+// 只加载拥有公司信息的用户
 users, err := gorm.G[User](db).Joins(clause.Has("Company"), nil).Find(ctx)
 
-// Use Left Join with custom filter on joined table
+// 使用 Left Join 并自定义关联表的过滤条件
 user, err = gorm.G[User](db).Joins(clause.LeftJoin.Association("Company"), func(db gorm.JoinBuilder, joinTable clause.Table, curTable clause.Table) error {
     db.Where(map[string]any{"name": company.Name})
     return nil
 }).Where(map[string]any{"name": user.Name}).First(ctx)
 
-// Join using a subquery
+// 从 SubQuery 中构建 Join
 users, err = gorm.G[User](db).Joins(clause.LeftJoin.AssociationFrom("Company", gorm.G[Company](DB).Select("Name")).As("t"),
     func(db gorm.JoinBuilder, joinTable clause.Table, curTable clause.Table) error {
         db.Where("?.name = ?", joinTable, u.Company.Name)
@@ -88,19 +86,19 @@ users, err = gorm.G[User](db).Joins(clause.LeftJoin.AssociationFrom("Company", g
 ).Find(ctx)
 ```
 
-- **Preload**: Simplifies conditions for eager loading and introduces the `LimitPerRecord` option, which allows limiting the number of related records loaded per primary record when eager loading collections.
+- **Preload 接口**: 简化自定义查询条件流程，新增了 `LimitPerRecord` 选项，允许在预加载集合关联时为每条主记录限制子项数量。
 
 ```go
-// A basic Preload example
+// 普通的关联加载
 users, err := gorm.G[User](db).Preload("Friends", func(db gorm.PreloadBuilder) error {
     db.Where("age > ?", 14)
     return nil
 }).Where("age > ?", 18).Find(ctx)
 
-// Preload nested associations
+// 预加载朋友及其宠物
 users, err := gorm.G[User](db).Preload("Friends.Pets", nil).Where("age > ?", 18).Find(ctx)
 
-// Preload with sort and per-record limit
+// 预加载朋友及其宠物信息，年龄从大到小排序，每个朋友最多预加载 2 个宠物
 users, err = gorm.G[User](db).Preload("Friends", func(db gorm.PreloadBuilder) error {
     db.Select("id", "name").Order("age desc")
     return nil
@@ -110,27 +108,27 @@ users, err = gorm.G[User](db).Preload("Friends", func(db gorm.PreloadBuilder) er
 }).Find(ctx)
 ```
 
-## Recommended Raw SQL Usage
+## Complex Raw SQL
 
-The generics interface continues to support `Raw` SQL execution for complex or edge-case scenarios:
+GORM 泛型版本依然支持通过 Raw 方法执行原始 SQL 查询，适用于某些非常规或复杂语句的场景：
 
 ```go
 users, err := gorm.G[User](DB).Raw("SELECT name FROM users WHERE id = ?", user.ID).Find(ctx)
 ```
 
-However, we **strongly recommend** using our new **code generation tool** to achieve type-safe, maintainable, and secure raw queries—reducing risks like syntax errors or SQL injection.
+不过，我们更推荐使用全新的代码生成工具来实现类型安全、可维护性强的原生查询，避免手写 SQL 带来的易错和 SQL 注入等风险。
 
-### Code Generator Workflow
+### 代码生成工具使用流程
 
-- **1. Install the CLI tool:**
+- **1. 安装命令行工具**
 
 ```bash
 go install gorm.io/cmd/gorm@latest
 ```
 
-- **2. Define query interfaces:**
+- **2. 定义查询接口**
 
-Simply define your query interface using Go’s `interface` syntax, embedding SQL templates as comments:
+你只需将查询接口定义为标准的 Go interface，通过注释或模板语法标注 SQL，生成器将自动生成类型安全的实现：
 
 ```go
 type Query[T any] interface {
@@ -185,13 +183,13 @@ type Query[T any] interface {
 }
 ```
 
-- **3. Run the generator:**
+- **3. 运行代码生成命令**
 
 ```bash
 gorm gen -i ./examples/example.go -o query
 ```
 
-- **4. Use the generated API:**
+- **4. 调用生成的查询 API**
 
 ```go
 import "your_project/query"
@@ -211,8 +209,8 @@ users, err := query.Query[User].FilterByNameAndAge("jinzhu", 18).Find(ctx)
 
 ## Summary
 
-This release marks a significant step forward for GORM in both generics support and the brand-new `gorm` command-line tool. These features have been in the planning stage for quite some time, and we’re excited to finally bring an initial implementation to the community.
+本次发布是 GORM 在泛型支持与全新 `gorm` 命令工具方向上的新一步。 该系列功能我们已筹划许久，此次终于得以抽出时间，将其初步落地并面向社区发布。
 
-In the coming updates, we’ll continue refining the generics API, enhancing the CLI tool, and updating the official [https://gorm.io](https://gorm.io) documentation accordingly—aiming to provide a clearer, more efficient developer experience.
+接下来，我们将持续优化和迭代泛型 API 体系、全新 `gorm` 命令工具，并重构和完善 gorm.io 的官方文档，为开发者带来更清晰、更高效的使用体验。
 
-We deeply appreciate the support from all GORM users and sponsors over the years. GORM’s growth over the past 12 years simply wouldn’t have been possible without you ❤️
+感谢 GORM 多年来众多使用者与 Sponsors 的支持。 GORM 过去 12 年的发展与你们离不开你们的支持 ❤️
