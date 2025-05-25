@@ -61,7 +61,7 @@ err := gorm.G[User](DB, result).CreateInBatches(ctx, &users, 2)
 // result.Result.LastInsertId()
 ```
 
-## Joins / Preload 介绍
+## Joins / Preload 优化
 
 新版 GORM 泛型接口在关联查询(Joins)与预加载(Preload)方面进行了增强，支持更灵活的关联方式、更强大的查询表达能力，并显著简化了复杂查询的构造流程。
 
@@ -108,7 +108,7 @@ users, err = gorm.G[User](db).Preload("Friends", func(db gorm.PreloadBuilder) er
 }).Find(ctx)
 ```
 
-## Complex Raw SQL
+## 复杂 Raw SQL 支持
 
 GORM 泛型版本依然支持通过 Raw 方法执行原始 SQL 查询，适用于某些非常规或复杂语句的场景：
 
@@ -118,7 +118,7 @@ users, err := gorm.G[User](DB).Raw("SELECT name FROM users WHERE id = ?", user.I
 
 不过，我们更推荐使用全新的代码生成工具来实现类型安全、可维护性强的原生查询，避免手写 SQL 带来的易错和 SQL 注入等风险。
 
-### 代码生成工具使用流程
+### 代码生成工具
 
 - **1. 安装命令行工具**
 
