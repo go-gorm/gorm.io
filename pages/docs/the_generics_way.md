@@ -3,7 +3,6 @@ title: The Generics Way to Use GORM
 layout: page
 ---
 
-# The Generics Way to Use GORM
 
 GORM has officially introduced support for **Go Generics** in its latest version. This addition significantly enhances usability and type safety while reducing issues such as SQL pollution caused by reusing `gorm.DB` instances. Additionally, we've improved the behaviors of `Joins` and `Preload` and incorporated transaction timeout handling to prevent connection pool leaks.
 
@@ -13,7 +12,7 @@ To prevent misuse, we have intentionally removed certain APIs in the generics ve
 
 We strongly recommend using the new generics-based API in new projects or during refactoring efforts to enjoy a better development experience, improved type guarantees, and a more maintainable codebase.
 
-## Introduction to Generic APIs
+## Generic APIs
 
 GORM's generic APIs closely mirror the functionality of the original ones. Here are some common operations using the new generics APIs:
 
@@ -110,7 +109,7 @@ users, err = gorm.G[User](db).Preload("Friends", func(db gorm.PreloadBuilder) er
 }).Find(ctx)
 ```
 
-## Recommended Raw SQL Usage
+## Complex Raw SQL
 
 The generics interface continues to support `Raw` SQL execution for complex or edge-case scenarios:
 
