@@ -3,7 +3,7 @@ title: The Generics Way to Use GORM
 layout: page
 ---
 
-GORM has officially introduced support for **Go Generics** in its latest version (>= `v1.30.0`). 为日常开发带来了更高的可用性与类型安全，并避免 SQL 污染风险等等。 此外，我们还优化了 Joins 和 Preload 的功能表现，并新增事务超时处理机制，以帮助开发者更好地应对连接泄漏等常见异常场景。
+GORM has officially introduced support for **Go Generics** in its latest version. 为日常开发带来了更高的可用性与类型安全，并避免 SQL 污染风险等等。 此外，我们还优化了 Joins 和 Preload 的功能表现，并新增事务超时处理机制，以帮助开发者更好地应对连接泄漏等常见异常场景。
 
 本次更新在保持原有 API 完全兼容的前提下，较为克制地引入了泛型接口。 你可以在项目中灵活混用传统与泛型两种接口形式，只需在新代码中引入泛型方式，无需担心与现有逻辑或 GORM 插件（如数据加解密、分库分表、读写分离、Tracing 等）之间的兼容性问题。
 
@@ -61,7 +61,7 @@ err := gorm.G[User](DB, result).CreateInBatches(ctx, &users, 2)
 // result.Result.LastInsertId()
 ```
 
-## Joins / Preload 介绍
+## Joins / Preload 优化
 
 新版 GORM 泛型接口在关联查询(Joins)与预加载(Preload)方面进行了增强，支持更灵活的关联方式、更强大的查询表达能力，并显著简化了复杂查询的构造流程。
 
@@ -108,7 +108,7 @@ users, err = gorm.G[User](db).Preload("Friends", func(db gorm.PreloadBuilder) er
 }).Find(ctx)
 ```
 
-## Complex Raw SQL
+## 复杂 Raw SQL 支持
 
 GORM 泛型版本依然支持通过 Raw 方法执行原始 SQL 查询，适用于某些非常规或复杂语句的场景：
 
@@ -118,7 +118,7 @@ users, err := gorm.G[User](DB).Raw("SELECT name FROM users WHERE id = ?", user.I
 
 不过，我们更推荐使用全新的代码生成工具来实现类型安全、可维护性强的原生查询，避免手写 SQL 带来的易错和 SQL 注入等风险。
 
-### 代码生成工具使用流程
+### 代码生成工具
 
 - **1. 安装命令行工具**
 
