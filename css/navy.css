@@ -1755,6 +1755,7 @@ pre .javascript .function {
 #content-wrap .sponsors-wrapper-pc .sponsor_item img,
 #content-wrap .sponsors-wrapper-mobile .sponsor_item img {
   width: 180px;
+  max-height: 60px;
   display: inline-block;
   vertical-align: middle;
 }
