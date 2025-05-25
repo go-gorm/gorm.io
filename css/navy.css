@@ -1680,10 +1680,12 @@ pre .javascript .function {
   margin: 0 !important;
 }
 #content-wrap .post_sponsors .sponsors-wrapper-pc .inner .sponsor_item a,
-#content-wrap .post_sponsors .sponsors-wrapper-mobile .inner .sponsor_item a,
+#content-wrap .post_sponsors .sponsors-wrapper-mobile .inner .sponsor_item a {
+  width: 140px;
+}
 #content-wrap .post_sponsors .sponsors-wrapper-pc .inner .sponsor_item img,
 #content-wrap .post_sponsors .sponsors-wrapper-mobile .inner .sponsor_item img {
-  width: 140px;
+  max-height: 60px;
 }
 #content-wrap .post_sponsors .sponsors-wrapper-pc .inner .become-sponsor,
 #content-wrap .post_sponsors .sponsors-wrapper-mobile .inner .become-sponsor {
