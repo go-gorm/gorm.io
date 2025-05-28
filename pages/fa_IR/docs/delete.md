@@ -1,11 +1,11 @@
 ---
-title: Delete
+title: حذف
 layout: page
 ---
 
 ## Delete a Record
 
-When deleting a record, the deleted value needs to have primary key or it will trigger a [Batch Delete](#batch_delete), for example:
+وقتی یک رکورد حذف شود،مقدار حذف شده باید کلید اصلی داشته باشد در غیر این صورت [ حذف گروهی ](#batch_delete) میشود ، برای مثال:
 
 ```go
 // Email's ID is `10`
