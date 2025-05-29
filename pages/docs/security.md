@@ -86,6 +86,7 @@ db.Where("id=1").Or("name = 'alice'; drop table users;").Find(&users)
 
 db.Find(&User{}, "name = 'alice'; drop table users;")
 
+// The following functions can only be injected by blind SQL injection methods
 db.First(&users, "2 or 1=1-- ")
 
 db.FirstOrCreate(&users, "2 or 1=1-- ")
