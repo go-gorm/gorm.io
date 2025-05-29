@@ -70,6 +70,31 @@ db.Exec("select name from users; drop table users;")
 db.Order("name; drop table users;").First(&user)
 
 db.Table("users; drop table users;-- ").Where("id = 1").Find(&users)
+
+db.Delete(&User{}, "id=1; drop table users;")
+
+db.Joins("inner join orders; drop table users;").Find(&users)
+
+db.InnerJoins("inner join orders; drop table users;").Find(&users)
+
+//Despite being parameterized in Exec() function, gorm.Expr is still injectable
+db.Exec("UPDATE users SET name = '?' WHERE id = 1", gorm.Expr("alice'; drop table users;-- "))
+
+db.Where("id=1").Not("name = 'alice'; drop table users;").Find(&users)
+
+db.Where("id=1").Or("name = 'alice'; drop table users;").Find(&users)
+
+db.Find(&User{}, "name = 'alice'; drop table users;")
+
+db.First(&users, "2 or 1=1-- ")
+
+db.FirstOrCreate(&users, "2 or 1=1-- ")
+
+db.FirstOrInit(&users, "2 or 1=1-- ")
+
+db.Last(&users, "2 or 1=1-- ")
+
+db.Take(&users, "2 or 1=1-- ")
 ```
 
 The general rule to avoid SQL injection is don't trust user-submitted data, you can perform whitelist validation to test user input against an existing set of known, approved, and defined input, and when using user's input, only use them as an argument.
