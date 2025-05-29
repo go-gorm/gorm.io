@@ -69,7 +69,7 @@ db.Exec("select name from users; drop table users;")
 
 db.Order("name; drop table users;").First(&user)
 
-db.Table("users; drop table users;-- ").Where("id = 1").Find(&users)
+db.Table("users; drop table users;").Find(&users)
 
 db.Delete(&User{}, "id=1; drop table users;")
 
