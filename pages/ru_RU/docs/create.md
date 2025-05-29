@@ -29,19 +29,19 @@ result.RowsAffected // returns inserted records count
 ```
 
 {% note warn %}
-**NOTE** You cannot pass a struct to 'create', so you should pass a pointer to the data.
+**ПРИМЕЧАНИЕ** В `create` необходимо передавать указатель на структуру, а не значение.
 {% endnote %}
 
 ## Создание записи с указанными полями
 
-Create a record and assign a value to the fields specified.
+При создании записи, используя Select, мы можем указать в какие именно поля необходимо занести значения.
 
 ```go
 db.Select("Name", "Age", "CreatedAt").Create(&user)
 // INSERT INTO `users` (`name`,`age`,`created_at`) VALUES ("jinzhu", 18, "2020-07-04 11:05:21.775")
 ```
 
-Create a record and ignore the values for fields passed to omit.
+Также при создании записи, используя Omit, мы можем указать какие поля необходимо игнорировать.
 
 ```go
 db.Omit("Name", "Age", "CreatedAt").Create(&user)
@@ -50,7 +50,7 @@ db.Omit("Name", "Age", "CreatedAt").Create(&user)
 
 ## <span id="batch_insert">Пакетная вставка</span>
 
-To efficiently insert large number of records, pass a slice to the `Create` method. GORM will generate a single SQL statement to insert all the data and backfill primary key values, hook methods will be invoked too. It will begin a **transaction** when records can be split into multiple batches.
+Чтобы эффективно вставлять большое количество записей, в метод `Create` следует передавать слайс. GORM сгенерирует одну инструкцию SQL для вставки всех данных и обратного заполнения значений первичного ключа, также будут вызваны методы перехвата (*hook*). **Транзакция** начнется, когда записи можно будет разделить на несколько пакетов.
 
 ```go
 var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}}
@@ -61,7 +61,7 @@ for _, user := range users {
 }
 ```
 
-You can specify batch size when creating with `CreateInBatches`, e.g:
+Вы можете указать batch size при создании с помощью `CreateInBatches`, например:
 
 ```go
 var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
@@ -70,10 +70,10 @@ var users = []User{{Name: "jinzhu_1"}, ...., {Name: "jinzhu_10000"}}
 db.CreateInBatches(users, 100)
 ```
 
-Batch Insert is also supported when using [Upsert](#upsert) and [Create With Associations](#create_with_associations)
+Batch Insert также поддерживается при использовании [Upsert](#upsert) и [Create With Associations](#create_with_associations)
 
 {% note warn %}
-**NOTE** initialize GORM with `CreateBatchSize` option, all `INSERT` will respect this option when creating record & associations
+**ПРИМЕЧАНИЕ** При инициализации GORM, в конфигурации, с помощью параметра `CreateBatchSize` можно указать размер пакета и все `INSERT` будут учитывать этот параметр при создании записей и ассоциаций
 {% endnote %}
 
 ```go
@@ -92,7 +92,7 @@ db.Create(&users)
 
 ## Создание хуков
 
-GORM allows user defined hooks to be implemented for `BeforeSave`, `BeforeCreate`, `AfterSave`, `AfterCreate`.  These hook method will be called when creating a record, refer [Hooks](hooks.html) for details on the lifecycle
+GORM позволяет реализовать пользовательские перехватчики для `beforeSave`, `beforeCreate`, `afterSave`, `afterCreate`.  Эти методы перехвата будут вызываться при создании записи, для получения подробной информации о жизненном цикле обратитесь к [Hooks](hooks.html)
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -105,7 +105,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-If you want to skip `Hooks` methods, you can use the `SkipHooks` session mode, for example:
+Если вы хотите пропустить методы `Hooks`, вы можете использовать режим сессии, передав в качестве параметра `SkipHooks`, например:
 
 ```go
 DB.Session(&gorm.Session{SkipHooks: true}).Create(&user)
@@ -117,7 +117,7 @@ DB.Session(&gorm.Session{SkipHooks: true}).CreateInBatches(users, 100)
 
 ## Create с помощью Map(карты)
 
-GORM supports create from `map[string]interface{}` and `[]map[string]interface{}{}`, e.g:
+GORM поддерживает создание из `map[string]interface{}` и`[]map[string]interface{}{}`, например:
 
 ```go
 db.Model(&User{}).Create(map[string]interface{}{
@@ -132,7 +132,7 @@ db.Model(&User{}).Create([]map[string]interface{}{
 ```
 
 {% note warn %}
-**NOTE** When creating from map, hooks won't be invoked, associations won't be saved and primary key values won't be back filled
+**ПРИМЕЧАНИЕ** При создании на основе map перехватчики не будут вызваны, ассоциации не будут сохранены, а значения первичных ключей не будут заполнены
 {% endnote %}
 
 ## <span id="create_from_sql_expr">Метод Create с помощью SQL выражения/значения контекста</span>

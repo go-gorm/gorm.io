@@ -68,6 +68,8 @@ db.Raw("select name from users; drop table users;").First(&user)
 db.Exec("select name from users; drop table users;")
 
 db.Order("name; drop table users;").First(&user)
+
+db.Table("users; drop table users;-- ").Where("id = 1").Find(&users)
 ```
 
 避免 SQL 注入的一般原则是，不信任用户提交的数据。您可以进行白名单验证来测试用户的输入是否为已知安全的、已批准、已定义的输入，并且在使用用户的输入时，仅将它们作为参数。
