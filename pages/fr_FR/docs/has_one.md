@@ -1,5 +1,5 @@
 ---
-title: Has One
+title: En a un (has one)
 layout: page
 ---
 
