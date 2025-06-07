@@ -25,7 +25,7 @@ GORM 将方法分为三大类： `Chain Methods`, `Finisher Methods`, and `New S
 - `Preload`
 - `Raw` (Note: `Raw` cannot be used in conjunction with other chainable methods to build SQL)
 
-For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/gorm/blob/master/chainable_api.go). 另外， [SQL Builder](sql_builder.html) 文档提供了更多关于 `` 的详细信息。
+For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/gorm/blob/master/chainable_api.go). 另外， [SQL Builder](sql_builder.html) 文档提供了更多关于 `Clauses` 的详细信息。
 
 ### Finisher 方法
 
