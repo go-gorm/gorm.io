@@ -1,15 +1,15 @@
 ---
-title: Has One
+title: En a un (has one)
 layout: page
 ---
 
-## Has One
+## En a un (has one)
 
-A `has one` association sets up a one-to-one connection with another model, but with somewhat different semantics (and consequences). This association indicates that each instance of a model contains or possesses one instance of another model.
+Une association `en a un` met en place une relation un à un avec un autre modèle, mais avec une sémantique quelque peu différente (et des conséquences). Cette association indique que chaque instance d'un modèle contient ou possède une instance d'un autre modèle.
 
-For example, if your application includes users and credit cards, and each user can only have one credit card.
+Par exemple, si votre application contient des utilisateurs et des cartes de crédit, et que chaque utilisateur peu avoir qu'une seule carte de crédit.
 
-### Declare
+### Déclarer
 ```go
 // User has one CreditCard, UserID is the foreign key
 type User struct {
@@ -26,17 +26,12 @@ type CreditCard struct {
 
 ### Retrieve
 ```go
-// Retrieve user list with eager loading credit card
-func GetAll(db *gorm.DB) ([]User, error) {
-    var users []User
-    err := db.Model(&User{}).Preload("CreditCard").Find(&users).Error
-    return users, err
-}
+
 ```
 
 ## Override Foreign Key
 
-For a `has one` relationship, a foreign key field must also exist, the owner will save the primary key of the model belongs to it into this field.
+.
 
 The field's name is usually generated with `has one` model's type plus its `primary key`, for the above example it is `UserID`.
 

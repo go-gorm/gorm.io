@@ -69,7 +69,33 @@ db.Exec("select name from users; drop table users;")
 
 db.Order("name; drop table users;").First(&user)
 
-db.Table("users; drop table users;-- ").Where("id = 1").Find(&users)
+db.Table("users; drop table users;").Find(&users)
+
+db.Delete(&User{}, "id=1; drop table users;")
+
+db.Joins("inner join orders; drop table users;").Find(&users)
+
+db.InnerJoins("inner join orders; drop table users;").Find(&users)
+
+//Despite being parameterized in Exec() function, gorm.Expr is still injectable
+db.Exec("UPDATE users SET name = '?' WHERE id = 1", gorm.Expr("alice'; drop table users;-- "))
+
+db.Where("id=1").Not("name = 'alice'; drop table users;").Find(&users)
+
+db.Where("id=1").Or("name = 'alice'; drop table users;").Find(&users)
+
+db.Find(&User{}, "name = 'alice'; drop table users;")
+
+// The following functions can only be injected by blind SQL injection methods
+db.First(&users, "2 or 1=1-- ")
+
+db.FirstOrCreate(&users, "2 or 1=1-- ")
+
+db.FirstOrInit(&users, "2 or 1=1-- ")
+
+db.Last(&users, "2 or 1=1-- ")
+
+db.Take(&users, "2 or 1=1-- ")
 ```
 
 避免 SQL 注入的一般原则是，不信任用户提交的数据。您可以进行白名单验证来测试用户的输入是否为已知安全的、已批准、已定义的输入，并且在使用用户的输入时，仅将它们作为参数。
