@@ -138,7 +138,7 @@ dsn := "host=localhost user=gorm password=gorm dbname=gorm port=8000 sslmode=dis
 db, err := gorm.Open(gaussdb.Open(dsn), &gorm.Config{})
 ```
 
-Daussdbのdatabase/sqlドライバとして [gaussdb-go](https://github.com/HuaweiCloudDeveloper/gaussdb-go) を使用しています。これはデフォルトでprepared statement cacheを有効にしています。無効にするには:
+Gaussdbのdatabase/sqlドライバとして [gaussdb-go](https://github.com/HuaweiCloudDeveloper/gaussdb-go) を使用しています。これはデフォルトでprepared statement cacheを有効にしています。無効にするには:
 
 ```go
 // https://github.com/go-gorm/gaussdb
