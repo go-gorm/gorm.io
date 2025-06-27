@@ -126,6 +126,61 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
+## GaussDB
+
+```go
+import (
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+)
+
+dsn := "host=localhost user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai"
+db, err := gorm.Open(gaussdb.Open(dsn), &gorm.Config{})
+```
+
+Estamos usando [gaussdb-go](https://github.com/HuaweiCloudDeveloper/gaussdb-go) como controlador de base de datos/sql de gaussdb, la caché de declaración se habilita por defecto, para deshabilitarla:
+
+```go
+// https://github.com/go-gorm/gaussdb
+db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  DSN: "user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai",
+  PreferSimpleProtocol: true, // disables implicit prepared statement usage
+}), &gorm.Config{})
+```
+
+### Driver Personalizado
+
+GORM permite personalizar el controlador de GaussDB con la opción `DriverName`, por ejemplo:
+
+```go
+import (
+  _ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/gaussdb"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  DriverName: "cloudsqlgaussdb",
+  DSN: "host=project:region:instance user=gaussdb dbname=gaussdb password=password sslmode=disable",
+})
+```
+
+### Conexión de base de datos existente
+
+GORM permite inicializar `*gorm.DB` con una conexión de base de datos existente
+
+```go
+import (
+  "database/sql"
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("gaussdbgo", "mydb_dsn")
+gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  Conn: sqlDB,
+}), &gorm.Config{})
+```
+
 ## SQLite
 
 ```go
