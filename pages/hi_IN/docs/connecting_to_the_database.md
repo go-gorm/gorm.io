@@ -178,7 +178,7 @@ import (
 )
 
 sqlDB, err := sql.Open("gaussdbgo", "mydb_dsn")
-gormDB, err := gorm.Open(postgres.New(postgres.Config{
+gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config{
   Conn: sqlDB,
 }), &gorm.Config{})
 ```
