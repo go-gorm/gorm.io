@@ -161,7 +161,7 @@ import (
 )
 
 db, err := gorm.Open(gaussdb.New(gaussdb.Config{
-  DriverName: "cloudsqgaussdb",
+  DriverName: "cloudsqlgaussdb",
   DSN: "host=project:region:instance user=gaussdb dbname=gaussdb password=password sslmode=disable",
 })
 ```
