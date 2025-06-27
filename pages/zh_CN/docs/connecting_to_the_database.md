@@ -126,6 +126,61 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
+## GaussDB
+
+```go
+import (
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+)
+
+dsn := "host=localhost user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai"
+db, err := gorm.Open(gaussdb.Open(dsn), &gorm.Config{})
+```
+
+我们使用 [gaussdb-go](https://github.com/HuaweiCloudDeveloper/gaussdb-go) 作为 gaussdb 的 database/sql 驱动，默认情况下，它会启用 prepared statement 缓存，你可以这样禁用它：
+
+```go
+// https://github.com/go-gorm/gaussdb
+db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  DSN: "user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai",
+  PreferSimpleProtocol: true, // disables implicit prepared statement usage
+}), &gorm.Config{})
+```
+
+### 自定义驱动
+
+GORM 允许通过 `DriverName` 选项自定义 GaussDB 驱动，例如：
+
+```go
+import (
+  _ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/gaussdb"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  DriverName: "cloudsqlgaussdb",
+  DSN: "host=project:region:instance user=gaussdb dbname=gaussdb password=password sslmode=disable",
+})
+```
+
+### 现有的数据库连接
+
+GORM 允许通过一个现有的数据库连接来初始化 `*gorm.DB`
+
+```go
+import (
+"database/sql"
+"gorm.io/driver/gaussdb"
+"gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("gaussdbgo", "mydb_dsn")
+gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config{
+Conn: sqlDB,
+}), &gorm.Config{})
+```
+
 ## SQLite
 
 ```go

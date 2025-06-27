@@ -128,6 +128,61 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
+## GaussDB
+
+```go
+import (
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+)
+
+dsn := "host=localhost user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai"
+db, err := gorm.Open(gaussdb.Open(dsn), &gorm.Config{})
+```
+
+हम [gaussdb-go](https://github.com/HuaweiCloudDeveloper/gaussdb-go) (गॉसडीबी-गो) का उपयोग gaussdb (गॉसडीबी) के डेटाबेस/SQL ड्राइवर के रूप में कर रहे हैं। यह डिफ़ॉल्ट रूप से प्रीकंपाइल्ड स्टेटमेंट कैश (तैयार कथन कैश) को सक्षम करता है, जिसके कारण यह अप्रभावी (निष्क्रिय) हो जाता है।:
+
+```go
+// https://github.com/go-gorm/gaussdb
+db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  DSN: "user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai",
+  PreferSimpleProtocol: true, // disables implicit prepared statement usage
+}), &gorm.Config{})
+```
+
+### Customize Driver
+
+GORM उदाहरण के लिए, `DriverName` विकल्प के साथ GaussDB ड्राइवर को अनुकूलित करने की अनुमति देता है:
+
+```go
+import (
+  _ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/gaussdb"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  DriverName: "cloudsqlgaussdb",
+  DSN: "host=project:region:instance user=gaussdb dbname=gaussdb password=password sslmode=disable",
+})
+```
+
+### Existing database connection
+
+GORM किसी मौजूदा डेटाबेस कनेक्शन के साथ `*gorm.DB` प्रारंभ करने की अनुमति देता है
+
+```go
+import (
+  "database/sql"
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("gaussdbgo", "mydb_dsn")
+gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  Conn: sqlDB,
+}), &gorm.Config{})
+```
+
 ## SQLite
 
 ```go
