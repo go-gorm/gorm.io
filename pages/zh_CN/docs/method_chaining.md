@@ -3,7 +3,7 @@ title: 链式方法
 layout: page
 ---
 
-GORM 的方法链功能可实现平滑流畅的编码风格。 Here's an example:
+GORM 的链式方法特性可让编码更加流畅自然。 这里有一个例子：
 
 ```go
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
@@ -17,15 +17,15 @@ GORM 将方法分为三大类： `Chain Methods`, `Finisher Methods`, and `New S
 
 用于修改或追加目前 `Clauses` 的 `Statement`。 一些常见的链式方法包括：
 
-- `Where`
+- ``
 - `Select`
 - `Omit`
 - `Joins`
 - `Scopes`
 - `Preload`
-- `Raw` (Note: `Raw` cannot be used in conjunction with other chainable methods to build SQL)
+- `Raw` (提示：`Raw` 不能与其他链式方法结合使用来构建 SQL）
 
-For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/gorm/blob/master/chainable_api.go). 另外， [SQL Builder](sql_builder.html) 文档提供了更多关于 `Clauses` 的详细信息。
+完整列表，访问 [GORM Chainable API](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)。 另外， [SQL Builder](sql_builder.html) 文档提供了更多关于 `Clauses` 的详细信息。
 
 ### Finisher 方法
 
@@ -42,15 +42,15 @@ For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/
 - `Row`
 - `Rows`
 
-For the full list, refer to [GORM Finisher API](https://github.com/go-gorm/gorm/blob/master/finisher_api.go).
+完整列表, 参考 [GORM Finisher API](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)。
 
 ### 新的Session方法
 
-更多详情，请参阅 [Session](session.html) 文档。
+GORM 将 `Session`、`WithContext` 和 `Debug` 等方法定义为“新会话方法”，它们对于创建可共享和可复用的 `*gorm.DB` 实例非常重要。 更多详情，请参阅 [Session](session.html) 文档。
 
-## Reusability and Safety
+## 可复用性与安全性
 
-A critical aspect of GORM is understanding when a `*gorm.DB` instance is safe to reuse. Following a `Chain Method` or `Finisher Method`, GORM returns an initialized `*gorm.DB` instance. 这个实例无法安全地重新使用，因为它可能会将先前操作中的状况带回，有可能导致被污染的 SQL 查询。 For example:
+GORM 的一个关键方面是要弄清楚什么时候可以安全地重复使用 `*gorm.DB` 实例。 Following a `Chain Method` or `Finisher Method`, GORM returns an initialized `*gorm.DB` instance. 这个实例无法安全地重新使用，因为它可能会将先前操作中的状况带回，有可能导致被污染的 SQL 查询。 For example:
 
 ### Example of Unsafe Reuse
 
