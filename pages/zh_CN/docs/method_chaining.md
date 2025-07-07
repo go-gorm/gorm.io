@@ -3,13 +3,13 @@ title: 链式方法
 layout: page
 ---
 
-GORM 的方法链功能可实现平滑流畅的编码风格。 Here's an example:
+GORM 的链式方法特性可让编码更加流畅自然。 这里有一个例子：
 
 ```go
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 ```
 
-## 方法类别
+## 方法分类
 
 GORM 将方法分为三大类： `Chain Methods`, `Finisher Methods`, and `New Session Methods`.
 
@@ -17,15 +17,15 @@ GORM 将方法分为三大类： `Chain Methods`, `Finisher Methods`, and `New S
 
 用于修改或追加目前 `Clauses` 的 `Statement`。 一些常见的链式方法包括：
 
-- `Where`
+- ``
 - `Select`
 - `Omit`
 - `Joins`
 - `Scopes`
 - `Preload`
-- `Raw` (Note: `Raw` cannot be used in conjunction with other chainable methods to build SQL)
+- `Raw` (提示：`Raw` 不能与其他链式方法结合使用来构建 SQL）
 
-For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/gorm/blob/master/chainable_api.go). 另外， [SQL Builder](sql_builder.html) 文档提供了更多关于 `Clauses` 的详细信息。
+完整列表，访问 [GORM Chainable API](https://github.com/go-gorm/gorm/blob/master/chainable_api.go)。 另外， [SQL Builder](sql_builder.html) 文档提供了更多关于 `Clauses` 的详细信息。
 
 ### Finisher 方法
 
@@ -42,17 +42,17 @@ For a comprehensive list, visit [GORM Chainable API](https://github.com/go-gorm/
 - `Row`
 - `Rows`
 
-For the full list, refer to [GORM Finisher API](https://github.com/go-gorm/gorm/blob/master/finisher_api.go).
+完整列表, 参考 [GORM Finisher API](https://github.com/go-gorm/gorm/blob/master/finisher_api.go)。
 
 ### 新的Session方法
 
-更多详情，请参阅 [Session](session.html) 文档。
+GORM 将 `Session`、`WithContext` 和 `Debug` 等方法定义为“新会话方法”，它们对于创建可共享和可复用的 `*gorm.DB` 实例非常重要。 更多详情，请参阅 [Session](session.html) 文档。
 
-## Reusability and Safety
+## 可复用性与安全性
 
-A critical aspect of GORM is understanding when a `*gorm.DB` instance is safe to reuse. Following a `Chain Method` or `Finisher Method`, GORM returns an initialized `*gorm.DB` instance. 这个实例无法安全地重新使用，因为它可能会将先前操作中的状况带回，有可能导致被污染的 SQL 查询。 For example:
+GORM 的一个关键方面是要弄清楚什么时候可以安全地重复使用 `*gorm.DB` 实例。 在调用 链式方法`Chain Method` 或 终结方法`Finisher Method` 之后，GORM 会返回一个已初始化的 `*gorm.DB` 实例。 这个实例无法安全地重新使用，因为它可能会将先前操作中的状况带回，有可能导致被污染的 SQL 查询。 例如
 
-### Example of Unsafe Reuse
+### 不安全地复用的例子
 
 ```go
 queryDB := DB.Where("name = ?", "jinzhu")
@@ -68,7 +68,7 @@ queryDB.Where("age > ?", 20).First(&user2)
 
 ### 安全再利用的例子
 
-To safely reuse a `*gorm.DB` instance, use a New Session Method:
+安全地复用 `*gorm.DB` 实例，通过使用新会话方法：
 
 ```go
 queryDB := DB.Where("name = ?", "jinzhu").Session(&gorm.Session{})
@@ -82,13 +82,13 @@ queryDB.Where("age > ?", 20).First(&user2)
 // SQL: SELECT * FROM users WHERE name = "jinzhu" AND age > 20
 ```
 
-In this scenario, using `Session(&gorm.Session{})` ensures that each query starts with a fresh context, preventing the pollution of SQL queries with conditions from previous operations. This is crucial for maintaining the integrity and accuracy of your database interactions.
+在这种情况下，使用 `Session(gorm.Session{})` 可以确保每次查询都从全新的上下文开始，避免前一次操作&的条件污染后续 SQL 查询。 这对于维护数据库操作的完整性和准确性至关重要。
 
-## Examples for Clarity
+## 清晰示例
 
-Let's clarify with a few examples:
+让我们通过几个例子来解释一下：
 
-- **Example 1: Safe Instance Reuse**
+- **例子1：安全复用实例**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -113,7 +113,7 @@ db.Find(&users)
 
 在这个例子中，每个方法调用链都是独立的，确保干净、无污染的 SQL 查询。
 
-- **(Bad) 示例2：不安全的实例重用**
+- **(Bad) 示例2：不安全的实例复用**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -135,7 +135,7 @@ tx.Where("age = ?", 28).Find(&users)
 
 In this bad example, reusing the `tx` variable leads to compounded conditions, which is generally not desirable.
 
-- **例3：使用新会话方法安全重新使用**
+- **例3：使用新会话方法安全复用**
 
 ```go
 db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -155,6 +155,6 @@ tx.Where("age = ?", 28).Find(&users)
 // SELECT * FROM users WHERE name = 'jinzhu' AND age = 28;
 ```
 
-在这个例子中，为每个逻辑操作正确使用新建会话方法 `Session`, `WithContext`, `Debug` 初始化一个 `*gorm.DB`实例，从而防止了条件污染，确保每个查询都是独立的，并且基于所提供的特定条件。
+在这个例子中，使用新会话方法 `Session`, `WithContext`, `Debug` 为每个逻辑操作正确地初始化一个 `*gorm.DB`实例，从而防止了条件污染，确保每个查询都是独立的，并且基于所提供的特定条件。
 
 Overall, these examples illustrate the importance of understanding GORM's behavior with respect to method chaining and instance management to ensure accurate and efficient database querying.
