@@ -16,7 +16,13 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-`Save` - это комбинированная функция. Если сохраняемое значение не содержит первичного ключа, оно выполнит `Create`, в противном случае оно выполнит `Update` (со всеми полями).
+`Save` is an upsert function:
+- If the value contains no primary key, it performs `Create`
+- If the value has a primary key, it first executes **Update** (all fields, by `Select(*)`).
+- If `rows affected = 0` after **Update**, it automatically falls back to `Create`.
+
+> 💡 **Note**: `Save` guarantees either an update or insert will occur.  
+> To prevent unintended creation when no rows match, use [ `Select(*).Updates()` ](update.html#Update-Selected-Fields).
 
 ```go
 db.Save(&User{Name: "jinzhu", Age: 100})
