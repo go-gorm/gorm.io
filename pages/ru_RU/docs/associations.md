@@ -5,11 +5,11 @@ layout: страница
 
 ## Автоматические Create/Update
 
-GORM automates the saving of associations and their references when creating or updating records, using an upsert technique that primarily updates foreign key references for existing associations.
+GORM автоматизирует сохранение связей и их ссылок при создании или обновлении записей, с использованием метода upsert, который в первую очередь обновляет внешние ссылки на существующие связи.
 
-### Auto-Saving Associations on Create
+### Авто сохранение связей при создании
 
-When you create a new record, GORM will automatically save its associated data. This includes inserting data into related tables and managing foreign key references.
+При создании новой записи GORM будет автоматически сохранять связанные с ней данные. Это включает в себя вставку данных в связанные таблицы и управление ссылками на внешние ключи.
 
 ```go
 user := User{
@@ -26,7 +26,7 @@ user := User{
   },
 }
 
-// Creating a user along with its associated addresses, emails, and languages
+// Создание пользователя с указанием его адресов, электронной почты и языка
 db.Create(&user)
 // BEGIN TRANSACTION;
 // INSERT INTO "addresses" (address1) VALUES ("Billing Address - Address 1"), ("Shipping Address - Address 1") ON DUPLICATE KEY DO NOTHING;
@@ -39,21 +39,21 @@ db.Create(&user)
 db.Save(&user)
 ```
 
-### Updating Associations with `FullSaveAssociations`
+### Обновление связей с `FullSaveAssociations`
 
-For scenarios where a full update of the associated data is required (not just the foreign key references), the `FullSaveAssociations` mode should be used.
+Для сценариев, в которых требуется полное обновление связанных данных (а не только ссылок на внешние ключи), следует использовать режим `FullSaveAssociations`.
 
 ```go
-// Update a user and fully update all its associations
+// Обновить данные пользователя и полностью обновить все его связи
 db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
-// SQL: Fully updates addresses, users, emails tables, including existing associated records
+// SQL: Полностью обновляет таблицы адресов, пользователей, электронной почты, включая существующие связанные записи
 ```
 
-Using `FullSaveAssociations` ensures that the entire state of the model, including all its associations, is reflected in the database, maintaining data integrity and consistency throughout the application.
+Использование `FullSaveAssociations` гарантирует, что все состояние модели, включая все её связи, будет отражено в базе данных, что обеспечит целостность и согласованность данных во всём приложении.
 
 ## Пропуск автоматических Create/Update
 
-GORM provides flexibility to skip automatic saving of associations during create or update operations. This can be achieved using the `Select` or `Omit` methods, which allow you to specify exactly which fields or associations should be included or excluded in the operation.
+GORM обеспечивает гибкость, позволяющую пропустить автоматическое сохранение связей во время операций создания или обновления. This can be achieved using the `Select` or `Omit` methods, which allow you to specify exactly which fields or associations should be included or excluded in the operation.
 
 ### Using `Select` to Include Specific Fields
 
