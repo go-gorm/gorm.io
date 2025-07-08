@@ -148,7 +148,7 @@ db, err := gorm.Open(gaussdb.New(gaussdb.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### Настройка драйвера
 
 GORM allows to customize the GaussDB driver with the `DriverName` option, for example:
 
