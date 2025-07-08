@@ -126,7 +126,7 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
-## GaussDB
+##
 
 ```go
 import (
