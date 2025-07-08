@@ -53,9 +53,9 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## Пропуск автоматических Create/Update
 
-GORM обеспечивает гибкость, позволяющую пропустить автоматическое сохранение связей во время операций создания или обновления. This can be achieved using the `Select` or `Omit` methods, which allow you to specify exactly which fields or associations should be included or excluded in the operation.
+GORM обеспечивает гибкость, позволяющую пропустить автоматическое сохранение связей во время операций создания или обновления. Этого можно добиться с помощью методов `Select` или `Omit`, которые позволяют точно указать, какие поля или связи следует включить или исключить из операции.
 
-### Using `Select` to Include Specific Fields
+### Использование `Select` для включения конкретных полей
 
 The `Select` method lets you specify which fields of the model should be saved. This means that only the selected fields will be included in the SQL operation.
 
