@@ -138,19 +138,19 @@ dsn := "host=localhost user=gorm password=gorm dbname=gorm port=8000 sslmode=dis
 db, err := gorm.Open(gaussdb.Open(dsn), &gorm.Config{})
 ```
 
-We are using [gaussdb-go](https://github.com/HuaweiCloudDeveloper/gaussdb-go) as gaussdb's database/sql driver, it enables prepared statement cache by default, to disable it:
+Мы используем [gaussdb-go](https://github. com/HuaweiCloudDeveloper/gaussdb-go) в качестве драйвера sql базы данных gaussdb, он включает кэш подготовленных выражений по умолчанию, чтобы отключить его:
 
 ```go
 // https://github.com/go-gorm/gaussdb
 db, err := gorm.Open(gaussdb.New(gaussdb.Config{
   DSN: "user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai",
-  PreferSimpleProtocol: true, // disables implicit prepared statement usage
+  PreferSimpleProtocol: true, // отключает неявное использование подготовленных инструкций
 }), &gorm.Config{})
 ```
 
 ### Настройка драйвера
 
-GORM allows to customize the GaussDB driver with the `DriverName` option, for example:
+GORM позволяет настроить драйвер GaussDB, используя опции `DriverName`, например:
 
 ```go
 import (
@@ -158,15 +158,15 @@ import (
   "gorm.io/gorm"
 )
 
-db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+db, err := gorm.Open(gaussdb.New(gaussdb. onfig{
   DriverName: "cloudsqlgaussdb",
   DSN: "host=project:region:instance user=gaussdb dbname=gaussdb password=password sslmode=disable",
 })
 ```
 
-### Existing database connection
+### Существующие подключения к базе данных
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+GORM позволяет инициализировать `*gorm.DB` с существующим соединением с базой данных
 
 ```go
 import (
@@ -175,7 +175,7 @@ import (
   "gorm.io/gorm"
 )
 
-sqlDB, err := sql.Open("gaussdbgo", "mydb_dsn")
+sqlDB, err := sql. pen("gaussdbgo", "mydb_dsn")
 gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config{
   Conn: sqlDB,
 }), &gorm.Config{})
@@ -237,7 +237,7 @@ type Product struct {
 func main() {
   db, err := gorm.Open(mysql.Open("root:@tcp(127.0.0.1:4000)/test"), &gorm.Config{})
   if err != nil {
-    panic("failed to connect database")
+    panic("ошибка подключения к базе данных")
   }
 
   db.AutoMigrate(&Product{})
@@ -249,7 +249,7 @@ func main() {
     insertProduct.ID, insertProduct.Code, insertProduct.Price)
 
   readProduct := &Product{}
-  db.First(&readProduct, "code = ?", "D42") // find product with code D42
+  db.First(&readProduct, "code = ?", "D42") // найти продукт с кодом D42
 
   fmt.Printf("read ID: %d, Code: %s, Price: %d\n",
     readProduct.ID, readProduct.Code, readProduct.Price)
