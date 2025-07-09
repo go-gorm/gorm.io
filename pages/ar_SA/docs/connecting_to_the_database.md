@@ -130,13 +130,13 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 import (
   "gorm.io/driver/gaussdb"
   "gorm.io/gorm"
-)
+
 
 dsn := "host=localhost user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai"
-db, err := gorm.Open(gaussdb.Open(dsn), &gorm.Config{})
+db, err := gorm.Open(gaussdb.Open(dsn), &gorm.Config.{})
 ```
 
-We are using [gaussdb-go](https://github.com/HuaweiCloudDeveloper/gaussdb-go) as gaussdb's database/sql driver, it enables prepared statement cache by default, to disable it:
+نحن نستخدم [gaussdb-go](https://github.com/HuaweiCloudDeveloper/gaussdb-go) كمشغل قاعدة بيانات Gussdb، و Sql، يمكنك من إعداد ذاكرة التخزين المؤقت للبيانات بشكل افتراضي، لتعطيلها:
 
 ```go
 // https://github.com/go-gorm/gaussdb
@@ -146,9 +146,9 @@ db, err := gorm.Open(gaussdb.New(gaussdb.Config{
 }), &gorm.Config{})
 ```
 
-### Customize Driver
+### تخصيص السائق
 
-GORM allows to customize the GaussDB driver with the `DriverName` option, for example:
+يسمح GORM بتخصيص مشغل GaussDB باستخدام خيار `DriverName` على سبيل المثال:
 
 ```go
 import (
@@ -162,9 +162,9 @@ db, err := gorm.Open(gaussdb.New(gaussdb.Config{
 })
 ```
 
-### Existing database connection
+### اتصال قاعدة البيانات الحالية
 
-GORM allows to initialize `*gorm.DB` with an existing database connection
+يسمح GORM بتهيئة `*gorm.DB` مع اتصال قاعدة بيانات موجودة
 
 ```go
 import (
