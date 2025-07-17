@@ -16,7 +16,13 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-`保存` 是一个组合函数。 如果保存值不包含主键，它将执行 `Create`，否则它将执行 `Update` (包含所有字段)。
+`Save` is an upsert function:
+- If the value contains no primary key, it performs `Create`
+- If the value has a primary key, it first executes **Update** (all fields, by `Select(*)`).
+- If `rows affected = 0` after **Update**, it automatically falls back to `Create`.
+
+> 💡 **Note**: `Save` guarantees either an update or insert will occur.  
+> To prevent unintended creation when no rows match, use [ `Select(*).Updates()` ](update.html#Update-Selected-Fields).
 
 ```go
 db.Save(&User{Name: "jinzhu", Age: 100})

@@ -1,9 +1,9 @@
 ---
 title: Сериализатор
-layout: page
+layout: страница
 ---
 
-Serializer is an extensible interface that allows to customize how to serialize and deserialize data with database.
+Serializer - это расширяемый интерфейс, позволяющий настраивать как сериализовать и десериализовать данные с помощью базы данных.
 
 GORM предоставляет несколько сериализаторов по умолчанию: `json`, `gob`, `unixtime`, вот краткий пример того, как их использовать.
 
@@ -79,11 +79,11 @@ type SerializerValuerInterface interface {
 Например, по умолчанию `JsonSerializer` реализован следующим образом:
 
 ```go
-// JSONSerializer json serializer
+// JSONSerializer сериализатор json
 type JSONSerializer struct {
 }
 
-// Scan implements serializer interface
+// Scan реализует интерфейс сериализатора
 func (JSONSerializer) Scan(ctx context.Context, field *schema.Field, dst reflect.Value, dbValue interface{}) (err error) {
     fieldValue := reflect.New(field.FieldType)
 
@@ -105,7 +105,7 @@ func (JSONSerializer) Scan(ctx context.Context, field *schema.Field, dst reflect
     return
 }
 
-// Value implements serializer interface
+// Value реализует интерфейс сериализатора
 func (JSONSerializer) Value(ctx context.Context, field *Field, dst reflect.Value, fieldValue interface{}) (interface{}, error) {
     return json.Marshal(fieldValue)
 }

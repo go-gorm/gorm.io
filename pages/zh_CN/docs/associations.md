@@ -262,15 +262,7 @@ db.Model(&users).Association("Team").Count()
 - **追加/替换关联**：管理多个记录的关联。 请注意，参数的长度需要与数据匹配。
 
 ```go
-var users = []User{user1, user2, user3}
 
-// Append different teams to different users in a batch
-// Append userA to user1's team, userB to user2's team, and userA, userB, userC to user3's team
-db.Model(&users).Association("Team").Append(&userA, &userB, &[]User{userA, userB, userC})
-
-// Replace teams for multiple users in a batch
-// Reset user1's team to userA, user2's team to userB, and user3's team to userA, userB, and userC
-db.Model(&users).Association("Team").Replace(&userA, &userB, &[]User{userA, userB, userC})
 ```
 
 ## <span id="delete_association_record">删除关联记录</span>
@@ -301,13 +293,13 @@ db.Unscoped().Model(&user).Association("Languages").Unscoped().Clear()
 
 GORM中的关联标签通常用于指定如何处理模型之间的关联。 这些标签定义了一些关系细节，比如外键，引用和约束。 理解这些标签对于有效地建立和管理模型之间的关系而言至关重要。
 
-| 标签                 | 描述                                                                                               |
-| ------------------ | ------------------------------------------------------------------------------------------------ |
-| `foreignKey`       | Specifies the column name of the current model used as a foreign key in the join table.          |
-| `references`       | Indicates the column name in the reference table that the foreign key of the join table maps to. |
-| `polymorphic`      | Defines the polymorphic type, typically the model name.                                          |
-| `polymorphicValue` | Sets the polymorphic value, usually the table name, if not specified otherwise.                  |
-| `many2many`        | Names the join table used in a many-to-many relationship.                                        |
-| `joinForeignKey`   | Identifies the foreign key column in the join table that maps back to the current model's table. |
-| `joinReferences`   | Points to the foreign key column in the join table that links to the reference model's table.    |
-| `constraint`       | 为关联指定诸如 `OnUpdate`、`OnDelete` 之类的关系约束。                                                           |
+| 标签                 | 描述                                                                                            |
+| ------------------ | --------------------------------------------------------------------------------------------- |
+| `foreignKey`       | Specifies the column name of the current model used as a foreign key in the join table.       |
+| `references`       |                                                                                               |
+| `polymorphic`      | Defines the polymorphic type, typically the model name.                                       |
+| `polymorphicValue` | Sets the polymorphic value, usually the table name, if not specified otherwise.               |
+| `many2many`        | Names the join table used in a many-to-many relationship.                                     |
+| `joinForeignKey`   |                                                                                               |
+| `joinReferences`   | Points to the foreign key column in the join table that links to the reference model's table. |
+| `constraint`       | 为关联指定诸如 `OnUpdate`、`OnDelete` 之类的关系约束。                                                        |
