@@ -3,7 +3,7 @@ title: एक डेटाबेस से जुड़ना //Connecting to a 
 layout: page
 ---
 
-GORM आधिकारिक तौर पर MySQL, PostgreSQL, SQLite, SQL Server और TiDB डेटाबेस का supports करता है
+GORM officially supports the databases MySQL, PostgreSQL, GaussDB, SQLite, SQL Server, and TiDB
 
 ## MySQL
 
