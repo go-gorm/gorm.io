@@ -3,7 +3,7 @@ title: データベースに接続する
 layout: page
 ---
 
-GORMは公式にMySQL、PostgreSQL、SQLite、SQL Server をサポートしています
+GORM officially supports the databases MySQL, PostgreSQL, GaussDB, SQLite, SQL Server, and TiDB
 
 ## MySQL
 
