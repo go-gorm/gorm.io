@@ -33,7 +33,7 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 {% endnote %}
 
 {% note warn %}
-単一のオブジェクトを取得する際、`db.Find(&user)` のように、上限を設定せずに `Find` を使用した場合、テーブル全体を問い合わせたのち先頭のオブジェクトのみを返すため、これは非効率的かつ非確定的な方法です。
+Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is non-deterministic and not performant
 {% endnote %}
 
 `First` メソッドと `Last` メソッドは、主キー順で（それぞれ）先頭または末尾のレコードを取得します。 これら2つのメソッドは、対象の構造体のポインタをメソッドの引数に渡す、もしくは `db.Model()` を使用してモデルを指定した場合のみ動作します。 また、モデルに主キーが定義されていない場合、モデル内の最初のフィールドで順序付けされることになります。 例:
