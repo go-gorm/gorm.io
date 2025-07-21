@@ -3,7 +3,7 @@ title: 连接到数据库
 layout: page
 ---
 
-GORM 官方支持的数据库类型有：MySQL, PostgreSQL, GaussDB, SQLite, SQL Server 和 TiDB
+GORM officially supports the databases MySQL, PostgreSQL, GaussDB, SQLite, SQL Server, and TiDB
 
 ## MySQL
 
