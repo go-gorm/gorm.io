@@ -33,7 +33,7 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 {% endnote %}
 
 {% note warn %}
-Использование `Find` без лимита для одного объекта `db.Find(&user)` запросит полную таблицу и вернет только первый объект, который не является исполнительным и недетерминированным
+Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is non-deterministic and not performant
 {% endnote %}
 
 Методы `First` и `Last` найдут первую и последнюю запись (соответственно) в порядке, установленном первичным ключом. Они работают только тогда, когда указатель на целевую структуру передается методам в качестве аргумента или когда модель указана с помощью `db.Model()`. Кроме того, если для соответствующей модели не определен первичный ключ, то модель будет упорядочена по первому полю. Например:
