@@ -33,7 +33,7 @@ Se você quer evitar o erro `ErrRecordNotFound`, você pode usar `Find` como `db
 {% endnote %}
 
 {% note warn %}
-Usando `Find` sem um limite para um único objeto `db.Find(&user)` consultará a tabela completa e retornará apenas o primeiro objeto no qual não é performático e não é determinístico
+Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is non-deterministic and not performant
 {% endnote %}
 
 Os métodos `First` e `Last` encontrarão o primeiro e último registro (respectivamente), ordenado pela chave primária. Eles só funcionam quando um ponteiro para a struct de destino é passado para os métodos como argumento ou quando o modelo é especificado usando `db.Model()`. Além disso, se nenhuma chave primária for definida para modelo relevante, então o modelo será ordenado pelo primeiro campo. Por exemplo:
