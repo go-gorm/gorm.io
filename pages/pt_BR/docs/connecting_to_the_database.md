@@ -3,7 +3,7 @@ title: Conectando ao banco de dados
 layout: page
 ---
 
-GORM suporta oficialmente os bancos de dados MySQL, PostgreSQL, SQLite, SQL Server
+GORM officially supports the databases MySQL, PostgreSQL, GaussDB, SQLite, SQL Server, and TiDB
 
 ## MySQL
 
