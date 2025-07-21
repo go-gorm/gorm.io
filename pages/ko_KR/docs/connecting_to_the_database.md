@@ -3,7 +3,7 @@ title: 데이터베이스에 연결하기
 layout: page
 ---
 
-GORM은 공식적으로 MYSQL, PostreSQL, SQLite, SQL Server 그리고 TiDB를 지원합니다.
+GORM officially supports the databases MySQL, PostgreSQL, GaussDB, SQLite, SQL Server, and TiDB
 
 ## MySQL
 
