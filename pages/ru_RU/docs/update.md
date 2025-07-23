@@ -5,6 +5,8 @@ layout: страница
 
 ## Сохранить все поля
 
+### Traditional API
+
 `Save` сохранит все поля при выполнении SQL
 
 ```go
@@ -36,9 +38,35 @@ db.Save(&User{ID: 1, Name: "jinzhu", Age: 100})
 **ПРИМЕЧАНИЕ** Не используйте `Save` с `Model`, это **Неопределенное поведение**.
 {% endnote %}
 
+{% note warn %}
+**NOTE** The `Save` method is intentionally removed from the Generics API to prevent ambiguity and concurrency issues. Please use `Create` or `Updates` methods instead.
+{% endnote %}
+
 ## Обновление одного столбца
 
-При обновлении одного столбца с помощью `Update` для него должны быть какие-либо условия, иначе возникнет ошибка `ErrMissingWhereClause`, проверьте [Блокировка глобальных обновлений](#block_global_updates) для получения подробной информации. При использовании `Model` метод и его значение имеет первичное значение, первичный ключ будет использоваться для построения условия, например:
+При обновлении одного столбца с помощью `Update` для него должны быть какие-либо условия, иначе возникнет ошибка `ErrMissingWhereClause`, проверьте [Блокировка глобальных обновлений](#block_global_updates) для получения подробной информации.
+
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Update with conditions
+err := gorm.G[User](db).Where("active = ?", true).Update(ctx, "name", "hello")
+// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE active=true;
+
+// Update with ID condition
+err := gorm.G[User](db).Where("id = ?", 111).Update(ctx, "name", "hello")
+// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111;
+
+// Update with multiple conditions
+err := gorm.G[User](db).Where("id = ? AND active = ?", 111, true).Update(ctx, "name", "hello")
+// UPDATE users SET name='hello', updated_at='2013-11-17 21:34:10' WHERE id=111 AND active=true;
+```
+
+### Traditional API
+
+При использовании `Model` метод и его значение имеет первичное значение, первичный ключ будет использоваться для построения условия, например:
 
 ```go
 // Обновление с условием
@@ -58,6 +86,22 @@ db.Model(&user).Where("active = ?", true).Update("name", "hello")
 
 `Updates` поддерживает обновление с помощью `struct` или `map[string]interface{}`, при обновлении с помощью `struct` по умолчанию обновляются только ненулевые поля
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Update attributes with `struct`, will only update non-zero fields
+err := gorm.G[User](db).Where("id = ?", 111).Updates(ctx, User{Name: "hello", Age: 18, Active: false})
+// UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
+
+// Update attributes with `map`
+err := gorm.G[User](db).Where("id = ?", 111).Updates(ctx, map[string]interface{}{"name": "hello", "age": 18, "active": false})
+// UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
+```
+
+### Traditional API
+
 ```go
 // Обновление атрибутов с помощью `struct`, обновятся только ненулевые поля
 db.Model(&user).Updates(User{Name: "hello", Age: 18, Active: false})
@@ -75,6 +119,31 @@ db.Model(&user).Updates(map[string]interface{}{"name": "hello", "age": 18, "acti
 ## Обновить выбранные поля
 
 Если вы хотите обновить выбранные поля или проигнорировать некоторые поля при обновлении, вы можете использовать `Select`, `Omit`
+
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Select with Map
+err := gorm.G[User](db).Where("id = ?", 111).Select("name").Updates(ctx, map[string]interface{}{"name": "hello", "age": 18, "active": false})
+// UPDATE users SET name='hello' WHERE id=111;
+
+err := gorm.G[User](db).Where("id = ?", 111).Omit("name").Updates(ctx, map[string]interface{}{"name": "hello", "age": 18, "active": false})
+// UPDATE users SET age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
+
+// Select with Struct (select zero value fields)
+err := gorm.G[User](db).Where("id = ?", 111).Select("Name", "Age").Updates(ctx, User{Name: "new_name", Age: 0})
+// UPDATE users SET name='new_name', age=0 WHERE id=111;
+
+// Select all fields (select all fields include zero value fields)
+err := gorm.G[User](db).Where("id = ?", 111).Select("*").Updates(ctx, User{Name: "jinzhu", Role: "admin", Age: 0})
+
+// Select all fields but omit Role (select all fields include zero value fields)
+err := gorm.G[User](db).Where("id = ?", 111).Select("*").Omit("Role").Updates(ctx, User{Name: "jinzhu", Role: "admin", Age: 0})
+```
+
+### Traditional API
 
 ```go
 // Выбрать c Map
