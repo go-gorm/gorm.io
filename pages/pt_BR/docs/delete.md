@@ -7,6 +7,22 @@ layout: page
 
 Quando for remover um registro, o valor a ser removido precisa ter uma chave primária ou ele vai disparar uma [Remoção em lote](#batch_delete), por exemplo:
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Delete by ID
+err := gorm.G[Email](db).Where("id = ?", 10).Delete(ctx)
+// DELETE from emails where id = 10;
+
+// Delete with additional conditions
+err := gorm.G[Email](db).Where("id = ? AND name = ?", 10, "jinzhu").Delete(ctx)
+// DELETE from emails where id = 10 AND name = "jinzhu";
+```
+
+### Traditional API
+
 ```go
 // O ID do Email é `10`
 db.Delete(&email)
@@ -49,6 +65,18 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 Se o valor especificado não estiver dentro uma chave primária, GORM vai executar uma remoção em massa, ele vai remover todos os registros que satisfaçam a condição
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Batch delete with conditions
+err := gorm.G[Email](db).Where("email LIKE ?", "%jinzhu%").Delete(ctx)
+// DELETE from emails where email LIKE "%jinzhu%";
+```
+
+### Traditional API
+
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
 // DELETE from emails where email LIKE "%jinzhu%";
@@ -73,6 +101,21 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 Se você tentar executar uma remoção em massa sem nenhuma condição, GORMO NÃO vai executar a instrução, e irá retornar o erro `ErrMissingWhereClause`
 
 Você precisa inserir alguma condição, usar uma instrução SQL nativa ou habilitar o modo `AllowGlobalUpdate`, por exemplo:
+
+#### Generics API
+
+```go
+ctx := context.Background()
+
+// These will return error
+err := gorm.G[User](db).Delete(ctx) // gorm.ErrMissingWhereClause
+
+// These will work
+err := gorm.G[User](db).Where("1 = 1").Delete(ctx)
+// DELETE FROM `users` WHERE 1=1
+```
+
+#### Traditional API
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
