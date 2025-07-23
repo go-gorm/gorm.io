@@ -7,6 +7,22 @@ layout: page
 
 删除一条记录时，删除对象需要指定主键，否则会触发 [批量删除](#batch_delete)，例如：
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Delete by ID
+err := gorm.G[Email](db).Where("id = ?", 10).Delete(ctx)
+// DELETE from emails where id = 10;
+
+// Delete with additional conditions
+err := gorm.G[Email](db).Where("id = ? AND name = ?", 10, "jinzhu").Delete(ctx)
+// DELETE from emails where id = 10 AND name = "jinzhu";
+```
+
+### Traditional API
+
 ```go
 // Email 的 ID 是 `10`
 db.Delete(&email)
@@ -49,6 +65,18 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 如果指定的值不包括主属性，那么 GORM 会执行批量删除，它将删除所有匹配的记录
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Batch delete with conditions
+err := gorm.G[Email](db).Where("email LIKE ?", "%jinzhu%").Delete(ctx)
+// DELETE from emails where email LIKE "%jinzhu%";
+```
+
+### Traditional API
+
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
 // DELETE from emails where email LIKE "%jinzhu%";
@@ -73,6 +101,21 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 当你试图执行不带任何条件的批量删除时，GORM将不会运行并返回`ErrMissingWhereClause` 错误
 
 如果一定要这么做，你必须添加一些条件，或者使用原生SQL，或者开启`AllowGlobalUpdate` 模式，如下例：
+
+#### Generics API
+
+```go
+ctx := context.Background()
+
+// These will return error
+err := gorm.G[User](db).Delete(ctx) // gorm.ErrMissingWhereClause
+
+// These will work
+err := gorm.G[User](db).Where("1 = 1").Delete(ctx)
+// DELETE FROM `users` WHERE 1=1
+```
+
+#### Traditional API
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
