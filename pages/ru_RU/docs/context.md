@@ -3,17 +3,29 @@ title: Контекст
 layout: страница
 ---
 
-GORM's context support, enabled by the `WithContext` method, is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management across different operational modes, timeout settings, and even integration into hooks/callbacks and middlewares. Let's delve into these various aspects:
+GORM's context support is a powerful feature that enhances the flexibility and control of database operations in Go applications. It allows for context management across different operational modes, timeout settings, and even integration into hooks/callbacks and middlewares. Let's delve into these various aspects:
 
-### Режим одной сессии
+## Single Session Mode
 
 Single session mode is appropriate for executing individual operations. It ensures that the specific operation is executed within the context's scope, allowing for better control and monitoring.
+
+### Generics API
+
+With the Generics API, context is passed directly as the first parameter to the operation methods:
+
+```go
+users, err := gorm.G[User](db).Find(ctx)
+```
+
+### Traditional API
+
+With the Traditional API, context is passed using the `WithContext` method:
 
 ```go
 db.WithContext(ctx).Find(&users)
 ```
 
-### Continuous Session Mode
+## Continuous Session Mode
 
 Continuous session mode is ideal for performing a series of related operations. It maintains the context across these operations, which is particularly useful in scenarios like transactions.
 
@@ -23,9 +35,24 @@ tx.First(&user, 1)
 tx.Model(&user).Update("role", "admin")
 ```
 
-### Context Timeout
+## Context Timeout
 
-Setting a timeout on the context passed to `db.WithContext` can control the duration of long-running queries. This is crucial for maintaining performance and avoiding resource lock-ups in database interactions.
+Setting a timeout on the context can control the duration of long-running queries. This is crucial for maintaining performance and avoiding resource lock-ups in database interactions.
+
+### Generics API
+
+With the Generics API, you pass the timeout context directly to the operation:
+
+```go
+ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+defer cancel()
+
+users, err := gorm.G[User](db).Find(ctx)
+```
+
+### Traditional API
+
+With the Traditional API, you pass the timeout context to `WithContext`:
 
 ```go
 ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
@@ -34,9 +61,9 @@ defer cancel()
 db.WithContext(ctx).Find(&users)
 ```
 
-### Контекст в Hooks/Callbacks
+## Контекст в Hooks/Callbacks
 
-The context can also be accessed within GORM's hooks/callbacks. This enables contextual information to be used during these lifecycle events.
+The context can also be accessed within GORM's hooks/callbacks. This enables contextual information to be used during these lifecycle events. The context is accessible through the `Statement.Context` field:
 
 ```go
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
@@ -46,7 +73,7 @@ func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
 }
 ```
 
-### Integration with Chi Middleware
+## Integration with Chi Middleware
 
 GORM's context support extends to web server middlewares, such as those in the Chi router. This allows setting a context with a timeout for all database operations within the scope of a web request.
 
@@ -77,7 +104,7 @@ r.Get("/user", func(w http.ResponseWriter, r *http.Request) {
 
 **Note**: Setting the `Context` with `WithContext` is goroutine-safe. This ensures that database operations are safely managed across multiple goroutines. For more details, refer to the [Session documentation](session.html) in GORM.
 
-### Logger Integration
+## Logger Integration
 
 GORM's logger also accepts `Context`, which can be used for log tracking and integrating with existing logging infrastructures.
 
