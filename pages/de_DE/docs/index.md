@@ -18,7 +18,8 @@ Die fantastische ORM Bibliothek für Golang, stets auf Entwickler-Freundlichkeit
 * Zusammen gesetzte Primärschlüssel, Indizes, Einschränkungen
 * Automatische Datenbank Migrationen
 * Logger
-* Extendable, flexible plugin API: Database Resolver (Multiple Databases, Read/Write Splitting) / Prometheus...
+* Generics API for type-safe queries and operations
+* Extendable, flexible plugin API: Database Resolver (multiple databases, read/write splitting) / Prometheus...
 * Jedes Feature wurde getestet
 * Entwickler-freundlich
 
@@ -31,12 +32,15 @@ go get -u gorm.io/driver/sqlite
 
 ## Schnelleinstieg
 
+### Generics API (>= v1.30.0)
+
 ```go
 package main
 
 import (
-  "gorm.io/gorm"
+  "context"
   "gorm.io/driver/sqlite"
+  "gorm.io/gorm"
 )
 
 type Product struct {
@@ -48,27 +52,71 @@ type Product struct {
 func main() {
   db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
   if err != nil {
-    panic("Fehler bei der Verbindung zur Datenbank")
+    panic("failed to connect database")
   }
 
-  // Migrieren des Schemas
+  ctx := context.Background()
+
+  // Migrate the schema
   db.AutoMigrate(&Product{})
 
-  // Erstellen
+  // Create
+  err = gorm.G[Product](db).Create(ctx, &Product{Code: "D42", Price: 100})
+
+  // Read
+  product, err := gorm.G[Product](db).Where("id = ?", 1).First(ctx) // find product with integer primary key
+  products, err := gorm.G[Product](db).Where("code = ?", "D42").Find(ctx) // find product with code D42
+
+  // Update - update product's price to 200
+  err = gorm.G[Product](db).Where("id = ?", product.ID).Update(ctx, "Price", 200)
+  // Update - update multiple fields
+  err = gorm.G[Product](db).Where("id = ?", product.ID).Updates(ctx, map[string]interface{}{"Price": 200, "Code": "F42"})
+
+  // Delete - delete product
+  err = gorm.G[Product](db).Where("id = ?", product.ID).Delete(ctx)
+}
+```
+
+### Traditional API
+
+```go
+package main
+
+import (
+  "gorm.io/driver/sqlite"
+  "gorm.io/gorm"
+)
+
+type Product struct {
+  gorm.Model
+  Code  string
+  Price uint
+}
+
+func main() {
+  db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+  if err != nil {
+    panic("failed to connect database")
+  }
+
+  // Migrate the schema
+  db.AutoMigrate(&Product{})
+
+  // Create
   db.Create(&Product{Code: "D42", Price: 100})
 
-  // Auslesen
+  // Read
   var product Product
   db.First(&product, 1) // find product with integer primary key
   db.First(&product, "code = ?", "D42") // find product with code D42
 
-  // Bearbeiten - ändern des Produkt-Preises auf 200
+  // Update - update product's price to 200
   db.Model(&product).Update("Price", 200)
-  // Bearbeiten - ändern mehrerer Felder
+  // Update - update multiple fields
   db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
   db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
 
-  // Löschen - Produkt löschen
+  // Delete - delete product
   db.Delete(&product, 1)
 }
 ```
