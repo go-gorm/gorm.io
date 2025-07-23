@@ -18,7 +18,8 @@ layout: page
 * Composite Primary Key, Indexes, Constraints
 * Auto Migrations
 * Logger
-* 확장 가능하고 유연한 플러그인 API: Database Resolver (다중 데이터베이스, 읽기 / 쓰기 분할) / Prometheus...
+* Generics API for type-safe queries and operations
+* Extendable, flexible plugin API: Database Resolver (multiple databases, read/write splitting) / Prometheus...
 * 모든 기능들은 테스트와 함께 제공됩니다
 * 개발자 친화적
 
@@ -31,12 +32,15 @@ go get -u gorm.io/driver/sqlite
 
 ## 빠르게 시작하기
 
+### Generics API (>= v1.30.0)
+
 ```go
 package main
 
 import (
-  "gorm.io/gorm"
+  "context"
   "gorm.io/driver/sqlite"
+  "gorm.io/gorm"
 )
 
 type Product struct {
@@ -48,27 +52,71 @@ type Product struct {
 func main() {
   db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
   if err != nil {
-    panic("Db 연결에 실패하였습니다.")
+    panic("failed to connect database")
   }
 
-  // 테이블 자동 생성
+  ctx := context.Background()
+
+  // Migrate the schema
   db.AutoMigrate(&Product{})
 
-  // 생성
+  // Create
+  err = gorm.G[Product](db).Create(ctx, &Product{Code: "D42", Price: 100})
+
+  // Read
+  product, err := gorm.G[Product](db).Where("id = ?", 1).First(ctx) // find product with integer primary key
+  products, err := gorm.G[Product](db).Where("code = ?", "D42").Find(ctx) // find product with code D42
+
+  // Update - update product's price to 200
+  err = gorm.G[Product](db).Where("id = ?", product.ID).Update(ctx, "Price", 200)
+  // Update - update multiple fields
+  err = gorm.G[Product](db).Where("id = ?", product.ID).Updates(ctx, map[string]interface{}{"Price": 200, "Code": "F42"})
+
+  // Delete - delete product
+  err = gorm.G[Product](db).Where("id = ?", product.ID).Delete(ctx)
+}
+```
+
+### Traditional API
+
+```go
+package main
+
+import (
+  "gorm.io/driver/sqlite"
+  "gorm.io/gorm"
+)
+
+type Product struct {
+  gorm.Model
+  Code  string
+  Price uint
+}
+
+func main() {
+  db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+  if err != nil {
+    panic("failed to connect database")
+  }
+
+  // Migrate the schema
+  db.AutoMigrate(&Product{})
+
+  // Create
   db.Create(&Product{Code: "D42", Price: 100})
 
-  // 읽기
+  // Read
   var product Product
-  db.First(&product, 1) // primary key기준으로 product 찾기
-  db.First(&product, "code = ?", "D42") // code가 D42인 product 찾기
+  db.First(&product, 1) // find product with integer primary key
+  db.First(&product, "code = ?", "D42") // find product with code D42
 
-  // 수정 - product의 price를 200으로
+  // Update - update product's price to 200
   db.Model(&product).Update("Price", 200)
-  // 수정 - 여러개의 필드를 수정하기
-  db.Model(&product).Updates(Product{Price: 200, Code: "F42"})
+  // Update - update multiple fields
+  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
   db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
 
-  // 삭제 - product 삭제하기
+  // Delete - delete product
   db.Delete(&product, 1)
 }
 ```
