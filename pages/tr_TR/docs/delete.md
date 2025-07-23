@@ -7,6 +7,22 @@ layout: sayfa
 
 Bir kaydı silerken, silinen değerin birincil anahtara sahip olması gerekir, aksi takdirde [toplu silme](#batch_delete) işlemini tetiklenir. Örneğin:
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Delete by ID
+err := gorm.G[Email](db).Where("id = ?", 10).Delete(ctx)
+// DELETE from emails where id = 10;
+
+// Delete with additional conditions
+err := gorm.G[Email](db).Where("id = ? AND name = ?", 10, "jinzhu").Delete(ctx)
+// DELETE from emails where id = 10 AND name = "jinzhu";
+```
+
+### Traditional API
+
 ```go
 // Email Id değerimizin '10' olduğunu varsayalım
 db.Delete(&email)
@@ -49,6 +65,18 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 Belirtilen değerin birincil değeri yoksa, GORM bir toplu silme işlemi gerçekleştirir, koşulla eşleşen tüm kayıtları siler
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Batch delete with conditions
+err := gorm.G[Email](db).Where("email LIKE ?", "%jinzhu%").Delete(ctx)
+// DELETE from emails where email LIKE "%jinzhu%";
+```
+
+### Traditional API
+
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
 // DELETE from emails where email LIKE "%jinzhu%";
@@ -73,6 +101,21 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 Herhangi bir koşul olmadan bir toplu silme işlemi gerçekleştirirseniz, GORM bunu çalıştırmaz ve `ErrMissingWhereClause` hatası döndürür
 
 Eğer kullanmak istiyorsanız, bazı koşulları eklemelisiniz, Saf (Raw) SQL sorgusu kullanmalısınız veya `AllowGlobalUpdate` modunu aktif etmeniz gerekiyor. Örneğin:
+
+#### Generics API
+
+```go
+ctx := context.Background()
+
+// These will return error
+err := gorm.G[User](db).Delete(ctx) // gorm.ErrMissingWhereClause
+
+// These will work
+err := gorm.G[User](db).Where("1 = 1").Delete(ctx)
+// DELETE FROM `users` WHERE 1=1
+```
+
+#### Traditional API
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause hatası döndürür.
