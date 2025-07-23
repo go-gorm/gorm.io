@@ -7,6 +7,29 @@ layout: страница
 
 GORM предоставляет методы `First`, `Take`, `Last` для получения одного объекта из базы данных. Эти методы добавляют условие `LIMIT 1` при запросе к базе данных, но если запись не найдена, вернется ошибка `ErrRecordNotFound`.
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Get the first record ordered by primary key
+user, err := gorm.G[User](db).First(ctx)
+// SELECT * FROM users ORDER BY id LIMIT 1;
+
+// Get one record, no specified order
+user, err := gorm.G[User](db).Take(ctx)
+// SELECT * FROM users LIMIT 1;
+
+// Get last record, ordered by primary key desc
+user, err := gorm.G[User](db).Last(ctx)
+// SELECT * FROM users ORDER BY id DESC LIMIT 1;
+
+// check error ErrRecordNotFound
+errors.Is(err, gorm.ErrRecordNotFound)
+```
+
+### Traditional API
+
 ```go
 // Получение первой записи при сортировке по первичному ключу "id"
 db.First(&user)
@@ -71,6 +94,30 @@ db.First(&Language{})
 ### Получение объектов по первичному ключу
 
 Объекты могут быть извлечены с использованием первичного ключа с помощью [Встроенных условий](#inline_conditions), если первичным ключом является число. При работе со строками необходимо соблюдать особую осторожность, чтобы избежать SQL-инъекции; ознакомьтесь с [Раздел "Безопасность"](security.html) для получения подробной информации.
+
+#### Generics API
+
+```go
+ctx := context.Background()
+
+// Using numeric primary key
+user, err := gorm.G[User](db).Where("id = ?", 10).First(ctx)
+// SELECT * FROM users WHERE id = 10;
+
+// Using string primary key
+user, err := gorm.G[User](db).Where("id = ?", "10").First(ctx)
+// SELECT * FROM users WHERE id = 10;
+
+// Using multiple primary keys
+users, err := gorm.G[User](db).Where("id IN ?", []int{1,2,3}).Find(ctx)
+// SELECT * FROM users WHERE id IN (1,2,3);
+
+// If the primary key is a string (for example, like a uuid)
+user, err := gorm.G[User](db).Where("id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a").First(ctx)
+// SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
+```
+
+#### Traditional API
 
 ```go
 db.First(&user, 10)
