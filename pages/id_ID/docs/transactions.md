@@ -24,6 +24,30 @@ tx.Model(&user).Update("Age", 18)
 
 Untuk melakukan serangkaian operasi dalam suatu transaction, pada umumnya seperti metode di bawah ini.
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Basic transaction
+err := db.Transaction(func(tx *gorm.DB) error {
+  // Use Generics API inside the transaction
+  if err := gorm.G[Animal](tx).Create(ctx, &Animal{Name: "Giraffe"}); err != nil {
+    // return any error will rollback
+    return err
+  }
+
+  if err := gorm.G[Animal](tx).Create(ctx, &Animal{Name: "Lion"}); err != nil {
+    return err
+  }
+
+  // return nil will commit the whole transaction
+  return nil
+})
+```
+
+### Traditional API
+
 ```go
 db.Transaction(func(tx *gorm.DB) error {
   // do some database operations in the transaction (use 'tx' from this point, not 'db')
