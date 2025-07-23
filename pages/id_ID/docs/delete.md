@@ -7,6 +7,22 @@ layout: page
 
 Saat menghapus  data, nilai yang di hapus perlu memiliki kunci utama atau itu akan memicu  [Batch Delete](#batch_delete), sebagai contoh
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Delete by ID
+err := gorm.G[Email](db).Where("id = ?", 10).Delete(ctx)
+// DELETE from emails where id = 10;
+
+// Delete with additional conditions
+err := gorm.G[Email](db).Where("id = ? AND name = ?", 10, "jinzhu").Delete(ctx)
+// DELETE from emails where id = 10 AND name = "jinzhu";
+```
+
+### Traditional API
+
 ```go
 // Email's ID is `10`
 db.Delete(&email)
@@ -49,6 +65,18 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 The specified value has no primary value, GORM will perform a batch delete, it will delete all matched records
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Batch delete with conditions
+err := gorm.G[Email](db).Where("email LIKE ?", "%jinzhu%").Delete(ctx)
+// DELETE from emails where email LIKE "%jinzhu%";
+```
+
+### Traditional API
+
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
 // DELETE from emails where email LIKE "%jinzhu%";
@@ -73,6 +101,21 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 If you perform a batch delete without any conditions, GORM WON'T run it, and will return `ErrMissingWhereClause` error
 
 You have to use some conditions or use raw SQL or enable `AllowGlobalUpdate` mode, for example:
+
+#### Generics API
+
+```go
+ctx := context.Background()
+
+// These will return error
+err := gorm.G[User](db).Delete(ctx) // gorm.ErrMissingWhereClause
+
+// These will work
+err := gorm.G[User](db).Where("1 = 1").Delete(ctx)
+// DELETE FROM `users` WHERE 1=1
+```
+
+#### Traditional API
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause
