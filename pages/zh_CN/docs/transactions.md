@@ -24,6 +24,30 @@ tx.Model(&user).Update("Age", 18)
 
 要在事务中执行一系列操作，一般流程如下：
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Basic transaction
+err := db.Transaction(func(tx *gorm.DB) error {
+  // Use Generics API inside the transaction
+  if err := gorm.G[Animal](tx).Create(ctx, &Animal{Name: "Giraffe"}); err != nil {
+    // return any error will rollback
+    return err
+  }
+
+  if err := gorm.G[Animal](tx).Create(ctx, &Animal{Name: "Lion"}); err != nil {
+    return err
+  }
+
+  // return nil will commit the whole transaction
+  return nil
+})
+```
+
+### Traditional API
+
 ```go
 db.Transaction(func(tx *gorm.DB) error {
   // 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）

@@ -7,6 +7,29 @@ layout: page
 
 GORMは、データベースから１つのオブジェクトを取得するために`First`, `Take`, `Last`メソッドを提供しています。それらのメソッドは、データベースにクエリを実行する際に`LIMIT 1`の条件を追加し、レコードが見つからなかった場合、`ErrRecordNotFound`エラーを返します。
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Get the first record ordered by primary key
+user, err := gorm.G[User](db).First(ctx)
+// SELECT * FROM users ORDER BY id LIMIT 1;
+
+// Get one record, no specified order
+user, err := gorm.G[User](db).Take(ctx)
+// SELECT * FROM users LIMIT 1;
+
+// Get last record, ordered by primary key desc
+user, err := gorm.G[User](db).Last(ctx)
+// SELECT * FROM users ORDER BY id DESC LIMIT 1;
+
+// check error ErrRecordNotFound
+errors.Is(err, gorm.ErrRecordNotFound)
+```
+
+### Traditional API
+
 ```go
 // Get the first record ordered by primary key
 db.First(&user)
@@ -33,7 +56,7 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 {% endnote %}
 
 {% note warn %}
-単一のオブジェクトを取得する際、`db.Find(&user)` のように、上限を設定せずに `Find` を使用した場合、テーブル全体を問い合わせたのち先頭のオブジェクトのみを返すため、これは非効率的かつ非確定的な方法です。
+Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is non-deterministic and not performant
 {% endnote %}
 
 `First` メソッドと `Last` メソッドは、主キー順で（それぞれ）先頭または末尾のレコードを取得します。 これら2つのメソッドは、対象の構造体のポインタをメソッドの引数に渡す、もしくは `db.Model()` を使用してモデルを指定した場合のみ動作します。 また、モデルに主キーが定義されていない場合、モデル内の最初のフィールドで順序付けされることになります。 例:
@@ -71,6 +94,30 @@ db.First(&Language{})
 ### プライマリキーでオブジェクトを取得する
 
 主キーが数値の場合、[インライン条件](#inline_conditions) を使用してオブジェクトを取得できます。 文字列を扱う場合、SQLインジェクションを避けるためにさらなる注意が必要です。詳細については[セキュリティ](security.html)セクションを参照してください。
+
+#### Generics API
+
+```go
+ctx := context.Background()
+
+// Using numeric primary key
+user, err := gorm.G[User](db).Where("id = ?", 10).First(ctx)
+// SELECT * FROM users WHERE id = 10;
+
+// Using string primary key
+user, err := gorm.G[User](db).Where("id = ?", "10").First(ctx)
+// SELECT * FROM users WHERE id = 10;
+
+// Using multiple primary keys
+users, err := gorm.G[User](db).Where("id IN ?", []int{1,2,3}).Find(ctx)
+// SELECT * FROM users WHERE id IN (1,2,3);
+
+// If the primary key is a string (for example, like a uuid)
+user, err := gorm.G[User](db).Where("id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a").First(ctx)
+// SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
+```
+
+#### Traditional API
 
 ```go
 db.First(&user, 10)

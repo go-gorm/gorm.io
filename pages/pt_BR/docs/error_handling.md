@@ -3,11 +3,33 @@ title: Tratamento de Erro
 layout: page
 ---
 
-Manipular os erros corretamente é um pilar no desenvolvimento de aplicações robustas em GO, particularmente quando estamos interagindo com banco de dados usando GORM. A abordagem de como manipular erros em GORM, influenciado pela sua chamada encadeada da API, necessita uma abordagem diferenciada.
+Manipular os erros corretamente é um pilar no desenvolvimento de aplicações robustas em GO, particularmente quando estamos interagindo com banco de dados usando GORM. GORM's approach to error handling requires a nuanced understanding based on the API style you're using.
 
 ## Manipulação básica de erros
 
-GORM integra a manipulação de erros em sua sintaxe de métodos encadeáveis. A instância `*gorm.DB` contém o campo  `Error`, que é definido quando um erro acontece. Uma prática comum é verificar esse campo após executar uma operação no banco de dados, especialmente após [Finisher Methods](method_chaining.html#finisher_method).
+### Generics API
+
+With the Generics API, errors are returned directly from the operation methods, following Go's standard error handling pattern:
+
+```go
+ctx := context.Background()
+
+// Error handling with direct return values
+user, err := gorm.G[User](db).Where("name = ?", "jinzhu").First(ctx)
+if err != nil {
+  // Handle error...
+}
+
+// For operations that don't return a result
+err := gorm.G[User](db).Where("id = ?", 1).Delete(ctx)
+if err != nil {
+  // Handle error...
+}
+```
+
+### Traditional API
+
+With the Traditional API, GORM integrates error handling into its chainable method syntax. A instância `*gorm.DB` contém o campo  `Error`, que é definido quando um erro acontece. Uma prática comum é verificar esse campo após executar uma operação no banco de dados, especialmente após [Finisher Methods](method_chaining.html#finisher_method).
 
 Depois de uma cadeia de métodos, é crucial verificar o campo `Error`:
 
@@ -29,6 +51,19 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 
 GORM retorna `ErrRecordNotFound` quando nenhum registro é encontrado quando métodos como `First`, `Last`, `Take` são utilizados.
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+user, err := gorm.G[User](db).First(ctx)
+if errors.Is(err, gorm.ErrRecordNotFound) {
+  // Handle record not found error...
+}
+```
+
+### Traditional API
+
 ```go
 err := db.First(&user, 100).Error
 if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -38,9 +73,8 @@ if errors.Is(err, gorm.ErrRecordNotFound) {
 
 ## Manipulando Códigos de Erro
 
-Muitos bancos de dados retornam erros com códigos específicos, que podem indicar várias categorias de problemas como violação de constraints, problemas de conexão, ou erros de sintaxe. Manipular esses códigos de erro no GORM requer análise do erro retornado pelo banco de dados e extrair o código relevante
+Muitos bancos de dados retornam erros com códigos específicos, que podem indicar várias categorias de problemas como violação de constraints, problemas de conexão, ou erros de sintaxe. Handling these error codes in GORM requires parsing the error returned by the database and extracting the relevant code.
 
-- **Exemplo: Manipulando Códigos de Erro do MySQL**
 
 ```go
 import (

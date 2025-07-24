@@ -3,11 +3,33 @@ title: 错误处理
 layout: 页面
 ---
 
-在Go语言的应用开发中，特别是在使用GORM与数据库交互时，有效的错误处理是构建稳健应用的基石。 GORM对错误处理的方法，受到其可链式API的影响，需要细致地理解。
+在Go语言的应用开发中，特别是在使用GORM与数据库交互时，有效的错误处理是构建稳健应用的基石。 GORM's approach to error handling requires a nuanced understanding based on the API style you're using.
 
 ## 基本错误处理
 
-GORM将错误处理集成到其可链式方法语法中。 `*gorm.DB`实例包含一个`Error`字段，当发生错误时会被设置。 通常的做法是在执行数据库操作后，特别是在[完成方法（Finisher Methods）](method_chaining.html#finisher_method)后，检查这个字段。
+### Generics API
+
+With the Generics API, errors are returned directly from the operation methods, following Go's standard error handling pattern:
+
+```go
+ctx := context.Background()
+
+// Error handling with direct return values
+user, err := gorm.G[User](db).Where("name = ?", "jinzhu").First(ctx)
+if err != nil {
+  // Handle error...
+}
+
+// For operations that don't return a result
+err := gorm.G[User](db).Where("id = ?", 1).Delete(ctx)
+if err != nil {
+  // Handle error...
+}
+```
+
+### Traditional API
+
+With the Traditional API, GORM integrates error handling into its chainable method syntax. `*gorm.DB`实例包含一个`Error`字段，当发生错误时会被设置。 通常的做法是在执行数据库操作后，特别是在[完成方法（Finisher Methods）](method_chaining.html#finisher_method)后，检查这个字段。
 
 在一系列方法之后，检查`Error`字段是至关重要的：
 
@@ -29,6 +51,19 @@ if result := db.Where("name = ?", "jinzhu").First(&user); result.Error != nil {
 
 当使用`First`、`Last`、`Take`等方法未找到记录时，GORM会返回`ErrRecordNotFound`。
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+user, err := gorm.G[User](db).First(ctx)
+if errors.Is(err, gorm.ErrRecordNotFound) {
+  // Handle record not found error...
+}
+```
+
+### Traditional API
+
 ```go
 err := db.First(&user, 100).Error
 if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -38,9 +73,8 @@ if errors.Is(err, gorm.ErrRecordNotFound) {
 
 ## 处理错误代码
 
-许多数据库返回带有特定代码的错误，这些代码可能表明各种问题，如约束违规、连接问题或语法错误。 在GORM中处理这些错误代码需要解析数据库返回的错误并提取相关代码。
+许多数据库返回带有特定代码的错误，这些代码可能表明各种问题，如约束违规、连接问题或语法错误。 Handling these error codes in GORM requires parsing the error returned by the database and extracting the relevant code.
 
-- **例如：处理MySQL错误代码**
 
 ```go
 import (

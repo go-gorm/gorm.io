@@ -3,7 +3,7 @@ title: Подключение к базе данных
 layout: страница
 ---
 
-GORM официально поддерживает базы данных MySQL, PostgreSQL, SQlite, SQL Server и TiDB
+GORM officially supports the databases MySQL, PostgreSQL, GaussDB, SQLite, SQL Server, and TiDB
 
 ## MySQL
 
@@ -126,6 +126,61 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
+## GaussDB
+
+```go
+import (
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+)
+
+dsn := "host=localhost user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai"
+db, err := gorm.Open(gaussdb.Open(dsn), &gorm.Config{})
+```
+
+Мы используем [gaussdb-go](https://github. com/HuaweiCloudDeveloper/gaussdb-go) в качестве драйвера sql базы данных gaussdb, он включает кэш подготовленных выражений по умолчанию, чтобы отключить его:
+
+```go
+// https://github.com/go-gorm/gaussdb
+db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  DSN: "user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai",
+  PreferSimpleProtocol: true, // отключает неявное использование подготовленных инструкций
+}), &gorm.Config{})
+```
+
+### Настройка драйвера
+
+GORM позволяет настроить драйвер GaussDB, используя опции `DriverName`, например:
+
+```go
+import (
+  _ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/gaussdb"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(gaussdb.New(gaussdb. onfig{
+  DriverName: "cloudsqlgaussdb",
+  DSN: "host=project:region:instance user=gaussdb dbname=gaussdb password=password sslmode=disable",
+})
+```
+
+### Существующие подключения к базе данных
+
+GORM позволяет инициализировать `*gorm.DB` с существующим соединением с базой данных
+
+```go
+import (
+  "database/sql"
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql. pen("gaussdbgo", "mydb_dsn")
+gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  Conn: sqlDB,
+}), &gorm.Config{})
+```
+
 ## SQLite
 
 ```go
@@ -182,7 +237,7 @@ type Product struct {
 func main() {
   db, err := gorm.Open(mysql.Open("root:@tcp(127.0.0.1:4000)/test"), &gorm.Config{})
   if err != nil {
-    panic("failed to connect database")
+    panic("ошибка подключения к базе данных")
   }
 
   db.AutoMigrate(&Product{})
@@ -194,7 +249,7 @@ func main() {
     insertProduct.ID, insertProduct.Code, insertProduct.Price)
 
   readProduct := &Product{}
-  db.First(&readProduct, "code = ?", "D42") // find product with code D42
+  db.First(&readProduct, "code = ?", "D42") // найти продукт с кодом D42
 
   fmt.Printf("read ID: %d, Code: %s, Price: %d\n",
     readProduct.ID, readProduct.Code, readProduct.Price)

@@ -7,6 +7,22 @@ layout: страница
 
 При удалении записи, удаляемое значение должно иметь первичный ключ или сработает [пакетное удаление](#batch_delete), например:
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Delete by ID
+err := gorm.G[Email](db).Where("id = ?", 10).Delete(ctx)
+// DELETE from emails where id = 10;
+
+// Delete with additional conditions
+err := gorm.G[Email](db).Where("id = ? AND name = ?", 10, "jinzhu").Delete(ctx)
+// DELETE from emails where id = 10 AND name = "jinzhu";
+```
+
+### Traditional API
+
 ```go
 // ID в struct Email равно `10`
 db.Delete(&email)
@@ -49,6 +65,18 @@ func (u *User) BeforeDelete(tx *gorm.DB) (err error) {
 
 Первичный ключ не указан и GORM выполнит пакетное удаление, при этом будут удалены все совпадающие записи
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Batch delete with conditions
+err := gorm.G[Email](db).Where("email LIKE ?", "%jinzhu%").Delete(ctx)
+// DELETE from emails where email LIKE "%jinzhu%";
+```
+
+### Traditional API
+
 ```go
 db.Where("email LIKE ?", "%jinzhu%").Delete(&Email{})
 // DELETE from emails where email LIKE "%jinzhu%";
@@ -73,6 +101,21 @@ db.Delete(&users, "name LIKE ?", "%jinzhu%")
 Если вы выполните пакетное удаление без каких-либо условий, GORM НЕ запустит его и вернет ошибку `ErrMissingWhereClause`
 
 Вы должны использовать некоторые условия, или использовать необработанный SQL, или включить режим `AllowGlobalUpdate`, например:
+
+#### Generics API
+
+```go
+ctx := context.Background()
+
+// These will return error
+err := gorm.G[User](db).Delete(ctx) // gorm.ErrMissingWhereClause
+
+// These will work
+err := gorm.G[User](db).Where("1 = 1").Delete(ctx)
+// DELETE FROM `users` WHERE 1=1
+```
+
+#### Traditional API
 
 ```go
 db.Delete(&User{}).Error // gorm.ErrMissingWhereClause

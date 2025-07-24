@@ -7,6 +7,29 @@ layout: sayfa
 
 GORM provides `First`, `Take`, `Last` methods to retrieve a single object from the database, it adds `LIMIT 1` condition when querying the database, and it will return the error `ErrRecordNotFound` if no record is found.
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Get the first record ordered by primary key
+user, err := gorm.G[User](db).First(ctx)
+// SELECT * FROM users ORDER BY id LIMIT 1;
+
+// Get one record, no specified order
+user, err := gorm.G[User](db).Take(ctx)
+// SELECT * FROM users LIMIT 1;
+
+// Get last record, ordered by primary key desc
+user, err := gorm.G[User](db).Last(ctx)
+// SELECT * FROM users ORDER BY id DESC LIMIT 1;
+
+// check error ErrRecordNotFound
+errors.Is(err, gorm.ErrRecordNotFound)
+```
+
+### Traditional API
+
 ```go
 // Get the first record ordered by primary key
 db.First(&user)
@@ -33,7 +56,7 @@ Eğer `ErrRecordNotFound` hatasından sakınmak istiyorsan, `Find`'ı `db.Limit(
 {% endnote %}
 
 {% note warn %}
-Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is not performant and nondeterministic
+Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is non-deterministic and not performant
 {% endnote %}
 
 The `First` and `Last` methods will find the first and last record (respectively) as ordered by primary key. They only work when a pointer to the destination struct is passed to the methods as argument or when the model is specified using `db.Model()`. Additionally, if no primary key is defined for relevant model, then the model will be ordered by the first field. For example:
@@ -71,6 +94,30 @@ db.First(&Language{})
 ### Retrieving objects with primary key
 
 Objects can be retrieved using primary key by using [Inline Conditions](#inline_conditions) if the primary key is a number. When working with strings, extra care needs to be taken to avoid SQL Injection; check out [Security](security.html) section for details.
+
+#### Generics API
+
+```go
+ctx := context.Background()
+
+// Using numeric primary key
+user, err := gorm.G[User](db).Where("id = ?", 10).First(ctx)
+// SELECT * FROM users WHERE id = 10;
+
+// Using string primary key
+user, err := gorm.G[User](db).Where("id = ?", "10").First(ctx)
+// SELECT * FROM users WHERE id = 10;
+
+// Using multiple primary keys
+users, err := gorm.G[User](db).Where("id IN ?", []int{1,2,3}).Find(ctx)
+// SELECT * FROM users WHERE id IN (1,2,3);
+
+// If the primary key is a string (for example, like a uuid)
+user, err := gorm.G[User](db).Where("id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a").First(ctx)
+// SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
+```
+
+#### Traditional API
 
 ```go
 db.First(&user, 10)

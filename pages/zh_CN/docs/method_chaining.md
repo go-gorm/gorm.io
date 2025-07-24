@@ -3,15 +3,26 @@ title: 链式方法
 layout: page
 ---
 
-GORM 的链式方法特性可让编码更加流畅自然。 这里有一个例子：
+GORM 的链式方法特性可让编码更加流畅自然。 Here are examples using both the Traditional API and the Generics API:
+
+### Traditional API
 
 ```go
 db.Where("name = ?", "jinzhu").Where("age = ?", 18).First(&user)
 ```
 
+### Generics API (>= v1.30.0)
+
+```go
+ctx := context.Background()
+user, err := gorm.G[User](db).Where("name = ?", "jinzhu").Where("age = ?", 18).First(ctx)
+```
+
+Both APIs support method chaining, but the Generics API provides enhanced type safety and returns errors directly from operation methods.
+
 ## 方法分类
 
-GORM 将方法分为三大类： `Chain Methods`, `Finisher Methods`, and `New Session Methods`.
+GORM 将方法分为三大类： `Chain Methods`, `Finisher Methods`, and `New Session Methods`. These categories apply to both the Traditional API and the Generics API.
 
 ### 链式方法
 
@@ -50,7 +61,9 @@ GORM 将 `Session`、`WithContext` 和 `Debug` 等方法定义为“新会话方
 
 ## 可复用性与安全性
 
-GORM 的一个关键方面是要弄清楚什么时候可以安全地重复使用 `*gorm.DB` 实例。 在调用 链式方法`Chain Method` 或 终结方法`Finisher Method` 之后，GORM 会返回一个已初始化的 `*gorm.DB` 实例。 这个实例无法安全地重新使用，因为它可能会将先前操作中的状况带回，有可能导致被污染的 SQL 查询。 例如
+### Traditional API
+
+A critical aspect of GORM's Traditional API is understanding when a `*gorm.DB` instance is safe to reuse. 在调用 链式方法`Chain Method` 或 终结方法`Finisher Method` 之后，GORM 会返回一个已初始化的 `*gorm.DB` 实例。 这个实例无法安全地重新使用，因为它可能会将先前操作中的状况带回，有可能导致被污染的 SQL 查询。 例如
 
 ### 不安全地复用的例子
 
@@ -84,9 +97,38 @@ queryDB.Where("age > ?", 20).First(&user2)
 
 在这种情况下，使用 `Session(gorm.Session{})` 可以确保每次查询都从全新的上下文开始，避免前一次操作&的条件污染后续 SQL 查询。 这对于维护数据库操作的完整性和准确性至关重要。
 
+### Generics API
+
+One of the significant advantages of GORM's Generics API is that it inherently addresses the SQL pollution issue. With the Generics API, you don't need to worry about reusing instances unsafely because:
+
+1. The context is passed directly to each operation method
+2. Errors are returned directly from operation methods
+3. The generic interface design prevents condition pollution
+
+Here's an example of how the Generics API handles method chaining safely:
+
+```go
+ctx := context.Background()
+
+// Define a reusable query base
+genericDB := gorm.G[User](db).Where("name = ?", "jinzhu")
+
+// First query
+user1, err1 := genericDB.Where("age > ?", 10).First(ctx)
+// SQL: SELECT * FROM users WHERE name = "jinzhu" AND age > 10 LIMIT 1
+
+// Second query, no condition pollution
+user2, err2 := genericDB.Where("age > ?", 20).First(ctx)
+// SQL: SELECT * FROM users WHERE name = "jinzhu" AND age > 20 LIMIT 1
+```
+
+The Generics API design significantly reduces the risk of SQL pollution, making your database interactions more reliable and predictable.
+
 ## 清晰示例
 
-让我们通过几个例子来解释一下：
+Let's clarify with a few examples using both the Traditional API and the Generics API:
+
+### Traditional API Examples
 
 - **例子1：安全复用实例**
 
@@ -157,4 +199,34 @@ tx.Where("age = ?", 28).Find(&users)
 
 在这个例子中，使用新会话方法 `Session`, `WithContext`, `Debug` 为每个逻辑操作正确地初始化一个 `*gorm.DB`实例，从而防止了条件污染，确保每个查询都是独立的，并且基于所提供的特定条件。
 
-Overall, these examples illustrate the importance of understanding GORM's behavior with respect to method chaining and instance management to ensure accurate and efficient database querying.
+### Generics API Examples
+
+- **Example 4: Method Chaining with Generics API**
+
+```go
+ctx := context.Background()
+
+// Initialize a generic DB instance
+db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+
+// Chain methods with type safety
+user, err := gorm.G[User](db).Where("name = ?", "jinzhu").Where("age = ?", 18).First(ctx)
+// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 LIMIT 1;
+
+// Reuse the generic DB instance safely
+genericDB := gorm.G[User](db).Where("name = ?", "jinzhu")
+
+// Multiple operations with the same base conditions
+user1, err1 := genericDB.Where("age = ?", 18).First(ctx)
+// SELECT * FROM users WHERE name = 'jinzhu' AND age = 18 LIMIT 1;
+
+users, err2 := genericDB.Where("age > ?", 20).Find(ctx)
+// SELECT * FROM users WHERE name = 'jinzhu' AND age > 20;
+
+// Raw SQL with type safety
+users, err3 := gorm.G[User](db).Raw("SELECT * FROM users WHERE name = ? AND age > ?", "jinzhu", 18).Find(ctx)
+```
+
+In this example, the Generics API provides type safety while maintaining the fluent method chaining style. The context is passed directly to the finisher methods (`First`, `Find`), and errors are returned directly from these methods, following Go's standard error handling pattern.
+
+Overall, these examples illustrate the importance of understanding GORM's behavior with respect to method chaining and instance management to ensure accurate and efficient database querying. The Generics API offers a more type-safe and less error-prone approach to method chaining compared to the Traditional API.

@@ -24,6 +24,30 @@ tx.Model(&user).Update("Age", 18)
 
 Для выполнения ряда операций в рамках транзакции, общий шаблон выполнения приводится ниже.
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Basic transaction
+err := db.Transaction(func(tx *gorm.DB) error {
+  // Use Generics API inside the transaction
+  if err := gorm.G[Animal](tx).Create(ctx, &Animal{Name: "Giraffe"}); err != nil {
+    // return any error will rollback
+    return err
+  }
+
+  if err := gorm.G[Animal](tx).Create(ctx, &Animal{Name: "Lion"}); err != nil {
+    return err
+  }
+
+  // return nil will commit the whole transaction
+  return nil
+})
+```
+
+### Traditional API
+
 ```go
 db.Transaction(func(tx *gorm.DB) error {
   // выполняем операции с БД в транзакции (используйте 'tx' вмсето 'db')

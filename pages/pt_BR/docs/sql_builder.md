@@ -5,6 +5,43 @@ layout: page
 
 ## Raw SQL
 
+### Generics API
+
+Query Raw SQL with `Scan`
+
+```go
+type Result struct {
+  ID   int
+  Name string
+  Age  int
+}
+
+// Scan into a single result
+result, err := gorm.G[Result](db).Raw("SELECT id, name, age FROM users WHERE id = ?", 3).Find(context.Background())
+
+// Scan into a primitive type
+age, err := gorm.G[int](db).Raw("SELECT SUM(age) FROM users WHERE role = ?", "admin").Find(context.Background())
+
+// Scan into a slice
+users, err := gorm.G[User](db).Raw("UPDATE users SET name = ? WHERE age = ? RETURNING id, name", "jinzhu", 20).Find(context.Background())
+```
+
+`Exec` with Raw SQL
+
+```go
+// Execute raw SQL
+result := gorm.WithResult()
+err := gorm.G[any](db, result).Exec(context.Background(), "DROP TABLE users")
+
+// Execute with parameters
+err = gorm.G[any](db).Exec(context.Background(), "UPDATE orders SET shipped_at = ? WHERE id IN ?", time.Now(), []int64{1, 2, 3})
+
+// Exec with SQL Expression
+err = gorm.G[any](db).Exec(context.Background(), "UPDATE users SET money = ? WHERE name = ?", gorm.Expr("money * ? + ?", 10000, 1), "jinzhu")
+```
+
+### Traditional API
+
 Query Raw SQL with `Scan`
 
 ```go
@@ -41,6 +78,42 @@ db.Exec("UPDATE users SET money = ? WHERE name = ?", gorm.Expr("money * ? + ?", 
 {% endnote %}
 
 ## <span id="named_argument">Named Argument</span>
+
+### Generics API
+
+GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg), `map[string]interface{}{}` or struct, for example:
+
+```go
+users, err := gorm.G[User](db).Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(context.Background())
+// SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
+
+result3, err := gorm.G[User](db).Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu2"}).First(context.Background())
+// SELECT * FROM `users` WHERE name1 = "jinzhu2" OR name2 = "jinzhu2" ORDER BY `users`.`id` LIMIT 1
+
+// Named Argument with Raw SQL
+users, err := gorm.G[User](db).Raw("SELECT * FROM users WHERE name1 = @name OR name2 = @name2 OR name3 = @name",
+   sql.Named("name", "jinzhu1"), sql.Named("name2", "jinzhu2")).Find(context.Background())
+// SELECT * FROM users WHERE name1 = "jinzhu1" OR name2 = "jinzhu2" OR name3 = "jinzhu1"
+
+err := gorm.G[any](db).Exec(context.Background(), "UPDATE users SET name1 = @name, name2 = @name2, name3 = @name",
+   sql.Named("name", "jinzhunew"), sql.Named("name2", "jinzhunew2"))
+// UPDATE users SET name1 = "jinzhunew", name2 = "jinzhunew2", name3 = "jinzhunew"
+
+users, err := gorm.G[User](db).Raw("SELECT * FROM users WHERE (name1 = @name AND name3 = @name) AND name2 = @name2",
+   map[string]interface{}{"name": "jinzhu", "name2": "jinzhu2"}).Find(context.Background())
+// SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
+
+type NamedArgument struct {
+    Name string
+    Name2 string
+}
+
+users, err := gorm.G[User](db).Raw("SELECT * FROM users WHERE (name1 = @Name AND name3 = @Name) AND name2 = @Name2",
+     NamedArgument{Name: "jinzhu", Name2: "jinzhu2"}).Find(context.Background())
+// SELECT * FROM users WHERE (name1 = "jinzhu" AND name3 = "jinzhu") AND name2 = "jinzhu2"
+```
+
+### Traditional API
 
 GORM supports named arguments with [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg), `map[string]interface{}{}` or struct, for example:
 
@@ -98,6 +171,44 @@ sql //=> SELECT * FROM "users" WHERE id = 100 AND "users"."deleted_at" IS NULL O
 ```
 
 ## `Row` & `Rows`
+
+### Generics API
+
+Get result as `*sql.Row`
+
+```go
+// Use GORM API build SQL
+row := gorm.G[any](db).Table("users").Where("name = ?", "jinzhu").Select("name", "age").Row(context.Background())
+row.Scan(&name, &age)
+
+// Use Raw SQL
+row := gorm.G[any](db).Raw("select name, age, email from users where name = ?", "jinzhu").Row(context.Background())
+row.Scan(&name, &age, &email)
+```
+
+Get result as `*sql.Rows`
+
+```go
+// Use GORM API build SQL
+rows, err := gorm.G[User](db).Where("name = ?", "jinzhu").Select("name, age, email").Rows(context.Background())
+defer rows.Close()
+for rows.Next() {
+  rows.Scan(&name, &age, &email)
+
+  // do something
+}
+
+// Raw SQL
+rows, err := gorm.G[any](db).Raw("select name, age, email from users where name = ?", "jinzhu").Rows(context.Background())
+defer rows.Close()
+for rows.Next() {
+  rows.Scan(&name, &age, &email)
+
+  // do something
+}
+```
+
+### Traditional API
 
 Get result as `*sql.Row`
 

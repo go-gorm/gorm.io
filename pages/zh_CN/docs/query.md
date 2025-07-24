@@ -7,6 +7,29 @@ layout: page
 
 GORM 提供了 `First`、`Take`、`Last` 方法，以便从数据库中检索单个对象。当查询数据库时它添加了 `LIMIT 1` 条件，且没有找到记录时，它会返回 `ErrRecordNotFound` 错误
 
+### Generics API
+
+```go
+ctx := context.Background()
+
+// Get the first record ordered by primary key
+user, err := gorm.G[User](db).First(ctx)
+// SELECT * FROM users ORDER BY id LIMIT 1;
+
+// Get one record, no specified order
+user, err := gorm.G[User](db).Take(ctx)
+// SELECT * FROM users LIMIT 1;
+
+// Get last record, ordered by primary key desc
+user, err := gorm.G[User](db).Last(ctx)
+// SELECT * FROM users ORDER BY id DESC LIMIT 1;
+
+// check error ErrRecordNotFound
+errors.Is(err, gorm.ErrRecordNotFound)
+```
+
+### Traditional API
+
 ```go
 // 获取第一条记录（主键升序）
 db.First(&user)
@@ -33,7 +56,7 @@ errors.Is(result.Error, gorm.ErrRecordNotFound)
 {% endnote %}
 
 {% note warn %}
-对单个对象使用`Find`而不带limit，`db.Find(&user)`将会查询整个表并且只返回第一个对象，只是性能不高并且不确定的。
+Using `Find` without a limit for single object `db.Find(&user)` will query the full table and return only the first object which is non-deterministic and not performant
 {% endnote %}
 
 `First` and `Last` 方法会按主键排序找到第一条记录和最后一条记录 (分别)。 只有在目标 struct 是指针或者通过 `db.Model()` 指定 model 时，该方法才有效。 此外，如果相关 model 没有定义主键，那么将按 model 的第一个字段进行排序。 例如：
@@ -71,6 +94,30 @@ db.First(&Language{})
 ### 根据主键检索
 
 如果主键是数字类型，您可以使用 [内联条件](#inline_conditions) 来检索对象。 当使用字符串时，需要额外的注意来避免SQL注入；查看 [Security](security.html) 部分来了解详情。
+
+#### Generics API
+
+```go
+ctx := context.Background()
+
+// Using numeric primary key
+user, err := gorm.G[User](db).Where("id = ?", 10).First(ctx)
+// SELECT * FROM users WHERE id = 10;
+
+// Using string primary key
+user, err := gorm.G[User](db).Where("id = ?", "10").First(ctx)
+// SELECT * FROM users WHERE id = 10;
+
+// Using multiple primary keys
+users, err := gorm.G[User](db).Where("id IN ?", []int{1,2,3}).Find(ctx)
+// SELECT * FROM users WHERE id IN (1,2,3);
+
+// If the primary key is a string (for example, like a uuid)
+user, err := gorm.G[User](db).Where("id = ?", "1b74413f-f3b8-409f-ac47-e8c062e3472a").First(ctx)
+// SELECT * FROM users WHERE id = "1b74413f-f3b8-409f-ac47-e8c062e3472a";
+```
+
+#### Traditional API
 
 ```go
 db.First(&user, 10)

@@ -3,7 +3,7 @@ title: Connecting to a Database
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, SQLite, SQL Server, and TiDB
+GORM officially supports the databases MySQL, PostgreSQL, GaussDB, SQLite, SQL Server, and TiDB
 
 ## MySQL
 
@@ -120,6 +120,61 @@ import (
 
 sqlDB, err := sql.Open("pgx", "mydb_dsn")
 gormDB, err := gorm.Open(postgres.New(postgres.Config{
+  Conn: sqlDB,
+}), &gorm.Config{})
+```
+
+## GaussDB
+
+```go
+import (
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+
+
+dsn := "host=localhost user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai"
+db, err := gorm.Open(gaussdb.Open(dsn), &gorm.Config.{})
+```
+
+نحن نستخدم [gaussdb-go](https://github.com/HuaweiCloudDeveloper/gaussdb-go) كمشغل قاعدة بيانات Gussdb، و Sql، يمكنك من إعداد ذاكرة التخزين المؤقت للبيانات بشكل افتراضي، لتعطيلها:
+
+```go
+// https://github.com/go-gorm/gaussdb
+db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  DSN: "user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai",
+  PreferSimpleProtocol: true, // disables implicit prepared statement usage
+}), &gorm.Config{})
+```
+
+### تخصيص السائق
+
+يسمح GORM بتخصيص مشغل GaussDB باستخدام خيار `DriverName` على سبيل المثال:
+
+```go
+import (
+  _ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/gaussdb"
+  "gorm.io/gorm"
+)
+
+db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  DriverName: "cloudsqlgaussdb",
+  DSN: "host=project:region:instance user=gaussdb dbname=gaussdb password=password sslmode=disable",
+})
+```
+
+### اتصال قاعدة البيانات الحالية
+
+يسمح GORM بتهيئة `*gorm.DB` مع اتصال قاعدة بيانات موجودة
+
+```go
+import (
+  "database/sql"
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql.Open("gaussdbgo", "mydb_dsn")
+gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config{
   Conn: sqlDB,
 }), &gorm.Config{})
 ```

@@ -3,7 +3,7 @@ title: 连接到数据库
 layout: page
 ---
 
-GORM 官方支持的数据库类型有：MySQL, PostgreSQL, SQLite, SQL Server 和 TiDB
+GORM officially supports the databases MySQL, PostgreSQL, GaussDB, SQLite, SQL Server, and TiDB
 
 ## MySQL
 
@@ -126,6 +126,61 @@ gormDB, err := gorm.Open(postgres.New(postgres.Config{
 }), &gorm.Config{})
 ```
 
+## GaussDB
+
+```go
+import (
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+)
+
+dsn := "host=localhost user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai"
+db, err := = gorm. Open(gaussdb.Open(dsn), &gorm.Config{})
+```
+
+我们正在使用 [gaussdb-go](https://github.com/HuaweiCloudDeveloper/gaussdb-go) 作为gaussdb's database/sql 驱动器，它默认允许准备好的语句缓存以禁用它：
+
+```go
+// https://github.com/go-gorm/gaussdb
+db, err := gorm.Open(gaussdb.New(gaussdb.Config{
+  DSN: "user=gorm password=gorm dbname=gorm port=8000 sslmode=disable TimeZone=Asia/Shanghai",
+  PreferSimpleProtocol: true, // 禁用隐式 prepared statement
+}), &gorm.Config{})
+```
+
+### 自定义驱动程序
+
+GORM 允许使用 `DriverName` 自定义GaussDB 驱动程序，例如：
+
+```go
+import (
+  _ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialars/gaussdb"
+  "gorm.io/gorm"
+)
+
+db, err := gorm. Open(gaussdb.Newsdb. onfig@un.org
+  DriverName: "cloudsqlgaussdb",
+  DSN: "host=project:region:instance user=gaussdb dbname=gaussdb password=password=disable",
+})
+```
+
+### 现有数据库连接
+
+GORM 允许使用现有数据库连接初始化 `*gorm.DB`
+
+```go
+import (
+  "database/sql"
+  "gorm.io/driver/gaussdb"
+  "gorm.io/gorm"
+)
+
+sqlDB, err := sql. pen("gaussdbgo", "mydb_dsn")
+gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config
+  Conn: sqlDB,
+}), &gorm.Config{})
+```
+
 ## SQLite
 
 ```go
@@ -163,8 +218,8 @@ TiDB 兼容 MySQL 协议。 因此你可以按照 [MySQL](#mysql)  一节来创�
 在使用 TiDB 时有一些值得注意的内容：
 
 - 您可以在结构体中使用 `gorm:"primaryKey;default:auto_random()"` 标签从而调用 TiDB 的 [`AUTO_RANDOM`](https://docs.pingcap.com/zh/tidb/stable/auto-random)  功能。
-- TiDB supported [`SAVEPOINT`](https://docs.pingcap.com/tidb/stable/sql-statement-savepoint) from `v6.2.0`, please notice the version of TiDB when you use this feature.
-- TiDB supported [`FOREIGN KEY`](https://docs.pingcap.com/tidb/dev/foreign-key) from `v6.6.0`, please notice the version of TiDB when you use this feature.
+- 。
+- 。
 
 ```go
 import (
@@ -190,13 +245,13 @@ func main() {
   insertProduct := &Product{Code: "D42", Price: 100}
 
   db.Create(insertProduct)
-  fmt.Printf("insert ID: %d, Code: %s, Price: %d\n",
+  fmt.Printf("insert ID: %d, Code: %s, Prict: %d\n",
     insertProduct.ID, insertProduct.Code, insertProduct.Price)
 
   readProduct := &Product{}
   db.First(&readProduct, "code = ?", "D42") // find product with code D42
 
-  fmt.Printf("read ID: %d, Code: %s, Price: %d\n",
+  fmt.Printf("read ID: %d, Code: %s, Prict: %d\n",
     readProduct.ID, readProduct.Code, readProduct.Price)
 }
 ```
@@ -240,13 +295,13 @@ GORM 使用 [database/sql](https://pkg.go.dev/database/sql) 来维护连接池
 ```go
 sqlDB, err := db.DB()
 
-// SetMaxIdleConns sets the maximum number of connections in the idle connection pool.
-sqlDB.SetMaxIdleConns(10)
+// SetMaxIdleConns 设置空闲连接池中连接的最大数量。
+sqlDB.SetMaxIgleConns(10)
 
-// SetMaxOpenConns sets the maximum number of open connections to the database.
+// SetMaxOpenConns 设置打开数据库连接的最大数量。
 sqlDB.SetMaxOpenConns(100)
 
-// SetConnMaxLifetime sets the maximum amount of time a connection may be reused.
+// SetConnMaxLifetime 设置了可以重新使用连接的最大时间。
 sqlDB.SetConnMaxLifetime(time.Hour)
 ```
 
