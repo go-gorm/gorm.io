@@ -25,15 +25,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="在Go语言的应用开发中，特别是在使用GORM与数据库交互时，有效的错误处理是构建稳健应用的基石。 GORM对错误处理的方法，受到其可链式API的影响，需要细致地理解。 基本错误处理GORM将错误处理集成到其可链式方法语法中。 *gorm.DB实例包含一个Error字段，当发生错误时会被设置。 通常的做法是在执行数据库操作后，特别是在完成方法（Finisher Methods）后，检查这个字段。 在">
+  <meta name="description" content="在Go语言的应用开发中，特别是在使用GORM与数据库交互时，有效的错误处理是构建稳健应用的基石。 GORM’s approach to error handling requires a nuanced understanding based on the API style you’re using. 基本错误处理Generics APIWith the Generics API, errors">
 <meta property="og:type" content="website">
 <meta property="og:title" content="错误处理">
 <meta property="og:url" content="https://gorm.io/zh_CN/docs/error_handling.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="在Go语言的应用开发中，特别是在使用GORM与数据库交互时，有效的错误处理是构建稳健应用的基石。 GORM对错误处理的方法，受到其可链式API的影响，需要细致地理解。 基本错误处理GORM将错误处理集成到其可链式方法语法中。 *gorm.DB实例包含一个Error字段，当发生错误时会被设置。 通常的做法是在执行数据库操作后，特别是在完成方法（Finisher Methods）后，检查这个字段。 在">
+<meta property="og:description" content="在Go语言的应用开发中，特别是在使用GORM与数据库交互时，有效的错误处理是构建稳健应用的基石。 GORM’s approach to error handling requires a nuanced understanding based on the API style you’re using. 基本错误处理Generics APIWith the Generics API, errors">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-07-23T04:21:57.296Z">
-<meta property="article:modified_time" content="2025-07-23T04:21:57.296Z">
+<meta property="article:published_time" content="2025-07-24T02:40:22.507Z">
+<meta property="article:modified_time" content="2025-07-24T02:40:22.507Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -117,8 +117,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>在Go语言的应用开发中，特别是在使用GORM与数据库交互时，有效的错误处理是构建稳健应用的基石。 GORM对错误处理的方法，受到其可链式API的影响，需要细致地理解。</p>
-<h2 id="基本错误处理" class="article-heading"><a href="#基本错误处理" class="headerlink" title="基本错误处理"></a>基本错误处理<a class="article-anchor" href="#基本错误处理" aria-hidden="true"></a></h2><p>GORM将错误处理集成到其可链式方法语法中。 <code>*gorm.DB</code>实例包含一个<code>Error</code>字段，当发生错误时会被设置。 通常的做法是在执行数据库操作后，特别是在<a href="method_chaining.html#finisher_method">完成方法（Finisher Methods）</a>后，检查这个字段。</p>
+                <html><head></head><body><p>在Go语言的应用开发中，特别是在使用GORM与数据库交互时，有效的错误处理是构建稳健应用的基石。 GORM’s approach to error handling requires a nuanced understanding based on the API style you’re using.</p>
+<h2 id="基本错误处理" class="article-heading"><a href="#基本错误处理" class="headerlink" title="基本错误处理"></a>基本错误处理<a class="article-anchor" href="#基本错误处理" aria-hidden="true"></a></h2><h3 id="Generics-API" class="article-heading"><a href="#Generics-API" class="headerlink" title="Generics API"></a>Generics API<a class="article-anchor" href="#Generics-API" aria-hidden="true"></a></h3><p>With the Generics API, errors are returned directly from the operation methods, following Go’s standard error handling pattern:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">ctx := context.Background()</span><br><span class="line"></span><br><span class="line"><span class="comment">// Error handling with direct return values</span></span><br><span class="line">user, err := gorm.G[User](db).Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).First(ctx)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">  <span class="comment">// Handle error...</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// For operations that don't return a result</span></span><br><span class="line">err := gorm.G[User](db).Where(<span class="string">"id = ?"</span>, <span class="number">1</span>).Delete(ctx)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> {</span><br><span class="line">  <span class="comment">// Handle error...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="Traditional-API" class="article-heading"><a href="#Traditional-API" class="headerlink" title="Traditional API"></a>Traditional API<a class="article-anchor" href="#Traditional-API" aria-hidden="true"></a></h3><p>With the Traditional API, GORM integrates error handling into its chainable method syntax. <code>*gorm.DB</code>实例包含一个<code>Error</code>字段，当发生错误时会被设置。 通常的做法是在执行数据库操作后，特别是在<a href="method_chaining.html#finisher_method">完成方法（Finisher Methods）</a>后，检查这个字段。</p>
 <p>在一系列方法之后，检查<code>Error</code>字段是至关重要的：</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> err := db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).First(&amp;user).Error; err != <span class="literal">nil</span> {</span><br><span class="line">  <span class="comment">// 处理错误...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
@@ -126,12 +129,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> result := db.Where(<span class="string">"name = ?"</span>, <span class="string">"jinzhu"</span>).First(&amp;user); result.Error != <span class="literal">nil</span> {</span><br><span class="line">  <span class="comment">// 处理错误...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="ErrRecordNotFound" class="article-heading"><a href="#ErrRecordNotFound" class="headerlink" title="ErrRecordNotFound"></a><code>ErrRecordNotFound</code><a class="article-anchor" href="#ErrRecordNotFound" aria-hidden="true"></a></h2><p>当使用<code>First</code>、<code>Last</code>、<code>Take</code>等方法未找到记录时，GORM会返回<code>ErrRecordNotFound</code>。</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">err := db.First(&amp;user, <span class="number">100</span>).Error</span><br><span class="line"><span class="keyword">if</span> errors.Is(err, gorm.ErrRecordNotFound) {</span><br><span class="line">  <span class="comment">// 处理未找到记录的错误...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="Generics-API-1" class="article-heading"><a href="#Generics-API-1" class="headerlink" title="Generics API"></a>Generics API<a class="article-anchor" href="#Generics-API-1" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">ctx := context.Background()</span><br><span class="line"></span><br><span class="line">user, err := gorm.G[User](db).First(ctx)</span><br><span class="line"><span class="keyword">if</span> errors.Is(err, gorm.ErrRecordNotFound) {</span><br><span class="line">  <span class="comment">// Handle record not found error...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h2 id="处理错误代码" class="article-heading"><a href="#处理错误代码" class="headerlink" title="处理错误代码"></a>处理错误代码<a class="article-anchor" href="#处理错误代码" aria-hidden="true"></a></h2><p>许多数据库返回带有特定代码的错误，这些代码可能表明各种问题，如约束违规、连接问题或语法错误。 在GORM中处理这些错误代码需要解析数据库返回的错误并提取相关代码。</p>
-<ul>
-<li><strong>例如：处理MySQL错误代码</strong></li>
-</ul>
+<h3 id="Traditional-API-1" class="article-heading"><a href="#Traditional-API-1" class="headerlink" title="Traditional API"></a>Traditional API<a class="article-anchor" href="#Traditional-API-1" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">err := db.First(&amp;user, <span class="number">100</span>).Error</span><br><span class="line"><span class="keyword">if</span> errors.Is(err, gorm.ErrRecordNotFound) {</span><br><span class="line">  <span class="comment">// 处理未找到记录的错误...</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="处理错误代码" class="article-heading"><a href="#处理错误代码" class="headerlink" title="处理错误代码"></a>处理错误代码<a class="article-anchor" href="#处理错误代码" aria-hidden="true"></a></h2><p>许多数据库返回带有特定代码的错误，这些代码可能表明各种问题，如约束违规、连接问题或语法错误。 Handling these error codes in GORM requires parsing the error returned by the database and extracting the relevant code.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">"github.com/go-sql-driver/mysql"</span></span><br><span class="line">    <span class="string">"gorm.io/gorm"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">result := db.Create(&amp;newRecord)</span><br><span class="line"><span class="keyword">if</span> result.Error != <span class="literal">nil</span> {</span><br><span class="line">    <span class="keyword">if</span> mysqlErr, ok := result.Error.(*mysql.MySQLError); ok {</span><br><span class="line">        <span class="keyword">switch</span> mysqlErr.Number {</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1062</span>: <span class="comment">// MySQL中表示重复条目的代码</span></span><br><span class="line">            <span class="comment">// 处理重复条目</span></span><br><span class="line">        <span class="comment">// 为其他特定错误代码添加案例</span></span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="comment">// 处理其他错误</span></span><br><span class="line">        }</span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="comment">// 处理非MySQL错误或未知错误</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="方言转换错误" class="article-heading"><a href="#方言转换错误" class="headerlink" title="方言转换错误"></a>方言转换错误<a class="article-anchor" href="#方言转换错误" aria-hidden="true"></a></h2><p>当启用<code>TranslateError</code>时，GORM可以返回与所使用的数据库方言相关的特定错误，GORM将数据库特有的错误转换为其自己的通用错误。</p>
@@ -163,7 +165,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2025-07-23T04:21:57.296Z" itemprop="dateModified">最后更新于 2025-07-23</time>
+                <time class="article-footer-updated" datetime="2025-07-24T02:40:22.507Z" itemprop="dateModified">最后更新于 2025-07-24</time>
 <a href="context.html" class="article-footer-prev" title="Context"><i class="fa fa-chevron-left"></i><span>上一个</span></a><a href="method_chaining.html" class="article-footer-next" title="链式操作"><span>接下来</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
@@ -292,7 +294,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">内容</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-text">基本错误处理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ErrRecordNotFound"><span class="toc-text">ErrRecordNotFound</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E9%94%99%E8%AF%AF%E4%BB%A3%E7%A0%81"><span class="toc-text">处理错误代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E8%A8%80%E8%BD%AC%E6%8D%A2%E9%94%99%E8%AF%AF"><span class="toc-text">方言转换错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Errors"><span class="toc-text">Errors</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86"><span class="toc-text">基本错误处理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Generics-API"><span class="toc-text">Generics API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Traditional-API"><span class="toc-text">Traditional API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ErrRecordNotFound"><span class="toc-text">ErrRecordNotFound</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Generics-API-1"><span class="toc-text">Generics API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Traditional-API-1"><span class="toc-text">Traditional API</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E9%94%99%E8%AF%AF%E4%BB%A3%E7%A0%81"><span class="toc-text">处理错误代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B9%E8%A8%80%E8%BD%AC%E6%8D%A2%E9%94%99%E8%AF%AF"><span class="toc-text">方言转换错误</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Errors"><span class="toc-text">Errors</span></a></li></ol>
 
               
                 <a href="https://translate.gorm.io/project/go-gorm/zh-CN" target="_blank" id="article-improve">
