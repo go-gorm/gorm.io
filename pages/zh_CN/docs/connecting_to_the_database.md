@@ -296,7 +296,7 @@ GORM 使用 [database/sql](https://pkg.go.dev/database/sql) 来维护连接池
 sqlDB, err := db.DB()
 
 // SetMaxIdleConns 设置空闲连接池中连接的最大数量。
-sqlDB.SetMaxIgleConns(10)
+sqlDB.SetMaxIdleConns(10)
 
 // SetMaxOpenConns 设置打开数据库连接的最大数量。
 sqlDB.SetMaxOpenConns(100)
