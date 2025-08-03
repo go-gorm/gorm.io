@@ -24,7 +24,7 @@ type Order struct {
 
 
 // Preload Orders when find users
-user, err := gorm.G[User](db).Preload("Order", nil).First(ctx)
+user, err := gorm.G[User](db).Preload("Order", nil).Find(ctx)
 // SELECT * FROM users;
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4);
 
