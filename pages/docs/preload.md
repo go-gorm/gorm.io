@@ -194,13 +194,13 @@ type Org struct {
 	Address         struct {
 		ID int
 		Address
-	}
+	} `gorm:"embedded;embeddedPrefix:nested_address_"`
 }
 
 // Only preload Org.Address and Org.Address.Country
 db.Preload("Address.Country")  // "Address" is has_one, "Country" is belongs_to (nested association)
 
-// Only preload Org.VisitingAddress
+// Only preload Org.PostalAddress
 db.Preload("PostalAddress.Country") // "PostalAddress.Country" is belongs_to (embedded association)
 
 // Only preload Org.NestedAddress
