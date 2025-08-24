@@ -7,6 +7,8 @@ layout: page
 
 GORM allows eager loading relations in other SQL with `Preload`, for example:
 
+### Generics API
+
 ```go
 type User struct {
   gorm.Model
@@ -20,6 +22,26 @@ type Order struct {
   Price  float64
 }
 
+
+// Preload Orders when find users
+user, err := gorm.G[User](db).Preload("Order", nil).Find(ctx)
+// SELECT * FROM users;
+// SELECT * FROM orders WHERE user_id IN (1,2,3,4);
+
+
+// Custom Preloading SQL 
+user, err = gorm.G[User](db).Preload("Orders", func(db gorm.PreloadBuilder) error {
+  db.Order("orders.price DESC")
+  return nil
+}).Find(ctx)
+// SELECT * FROM users;
+// SELECT * FROM orders WHERE user_id IN (1,2,3,4) order by orders.price DESC;
+
+```
+
+### Traditional API
+
+```go
 // Preload Orders when find users
 db.Preload("Orders").Find(&users)
 // SELECT * FROM users;
@@ -35,6 +57,37 @@ db.Preload("Orders").Preload("Profile").Preload("Role").Find(&users)
 ## Joins Preloading
 
 `Preload` loads the association data in a separate query, `Join Preload` will loads association data using left join, for example:
+
+### Generics API
+
+```go
+type User struct {
+  gorm.Model
+  Username string
+  Order    Order
+}
+
+type Order struct {
+  gorm.Model
+  UserID uint
+  Price  float64
+}
+
+users, err := gorm.G[User](db).Joins(clause.JoinTarget{Association: "Order"}, nil).Find(ctx)
+// SELECT `users`.`id`,`users`.`username`,`Order`.`id` AS `Order__id`,`Order`.`user_id` AS `Order__user_id`,`Order`.`price` AS `Order__price` FROM `users` JOIN `orders` `Order` ON `users`.`id` = `Order`.`user_id`
+
+// Custom Preloading SQL 
+users, err := gorm.G[User](db).Joins(
+  clause.JoinTarget{Association: "Order"},
+  func(db gorm.JoinBuilder, joinTable clause.Table, curTable clause.Table) error {
+    db.Where(Order{Price: 1000})
+    return nil
+}).Find(ctx)
+// SELECT `users`.`id`,`users`.`username`,`Order`.`id` AS `Order__id`,`Order`.`user_id` AS `Order__user_id`,`Order`.`price` AS `Order__price` FROM `users` JOIN `orders` `Order` ON `users`.`id` = `Order`.`user_id` AND `Order`.`price` = 1000
+
+```
+
+### Traditional API
 
 ```go
 db.Joins("Company").Joins("Manager").Joins("Account").First(&user, 1)
@@ -140,13 +193,13 @@ type Org struct {
     Address         struct {
         ID int
         Address
-    }
+    } `gorm:"embedded;embeddedPrefix:nested_address_"`
 }
 
 // Only preload Org.Address and Org.Address.Country
 db.Preload("Address.Country")  // "Address" is has_one, "Country" is belongs_to (nested association)
 
-// Only preload Org.VisitingAddress
+// Only preload Org.PostalAddress
 db.Preload("PostalAddress.Country") // "PostalAddress.Country" is belongs_to (embedded association)
 
 // Only preload Org.NestedAddress
