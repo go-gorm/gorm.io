@@ -5,7 +5,7 @@ layout: страница
 
 ## <span id="smart_select">Умный выбор полей</span>
 
-В GORM вы можете эффективно выбирать конкретные поля, используя метод [`Select`](query.html). This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+В GORM вы можете эффективно выбирать конкретные поля, используя метод [`Select`](query.html). Это особенно полезно при работе с большими моделями, когда требуется только подмножество полей, особенно в ответах API.
 
 ```go
 type User struct {
@@ -13,7 +13,7 @@ type User struct {
   Name   string
   Age    int
   Gender string
-  // hundreds of fields
+  // сотни полей
 }
 
 type APIUser struct {
@@ -21,13 +21,13 @@ type APIUser struct {
   Name string
 }
 
-// GORM will automatically select `id`, `name` fields when querying
+// GORM автоматически выберет поля 'id', 'name' при выполнении запроса
 db.Model(&User{}).Limit(10).Find(&APIUser{})
 // SQL: SELECT `id`, `name` FROM `users` LIMIT 10
 ```
 
 {% note warn %}
-**NOTE** In `QueryFields` mode, all model fields are selected by their names.
+**ПРИМЕЧАНИЕ** В режиме `QueryFields`, все поля модели выбираются по их именам.
 {% endnote %}
 
 ```go
@@ -35,28 +35,28 @@ db, err := gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{
   QueryFields: true,
 })
 
-// Default behavior with QueryFields set to true
+// Поведение по умолчанию при QueryFields = true
 db.Find(&user)
 // SQL: SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 
-// Using Session Mode with QueryFields
+// Использование режима Session с QueryFields
 db.Session(&gorm.Session{QueryFields: true}).Find(&user)
 // SQL: SELECT `users`.`name`, `users`.`age`, ... FROM `users`
 ```
 
-## Locking
+## Блокировка
 
 GORM поддерживает различные типы блокировок, например:
 
 ```go
-// Basic FOR UPDATE lock
+// Базовая блокировка FOR UPDATE
 db.Clauses(clause.Locking{Strength: "UPDATE"}).Find(&users)
 // SQL: SELECT * FROM `users` FOR UPDATE
 ```
 
-The above statement will lock the selected rows for the duration of the transaction. This can be used in scenarios where you are preparing to update the rows and want to prevent other transactions from modifying them until your transaction is complete.
+Приведённое выше выражение заблокирует выбранные строки на протяжении всей транзакции. Это может быть полезно в сценариях, когда вы готовитесь обновить строки и хотите предотвратить их изменение другими транзакциями до завершения вашей транзакции.
 
-The `Strength` can be also set to `SHARE` which locks the rows in a way that allows other transactions to read the locked rows but not to update or delete them.
+Параметр `Strength` также можно установить в значение `SHARE`, который блокирует строки таким образом, чтобы другие транзакции могли читать заблокированные строки, но не могли их обновлять или удалять.
 ```go
 db.Clauses(clause.Locking{
   Strength: "SHARE",
@@ -65,7 +65,7 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR SHARE OF `users`
 ```
 
-The `Table` option can be used to specify the table to lock. This is useful when you are joining multiple tables and want to lock only one of them.
+Параметр `Table` может быть использован для указания таблицы для блокировки. Это полезно, когда вы объединяете несколько таблиц и хотите заблокировать только одну из них.
 
 Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
 
