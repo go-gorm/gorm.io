@@ -67,7 +67,7 @@ db.Clauses(clause.Locking{
 
 Параметр `Table` может быть использован для указания таблицы для блокировки. Это полезно, когда вы объединяете несколько таблиц и хотите заблокировать только одну из них.
 
-Options can be provided like `NOWAIT` which  tries to acquire a lock and fails immediately with an error if the lock is not available. It prevents the transaction from waiting for other transactions to release their locks.
+Можно указать опцию `NOWAIT`, которая пытается получить блокировку и немедленно завершится с ошибкой, если блокировка недоступна. Это предотвращает ожидание транзакцией других транзакций для освобождения их блокировок.
 
 ```go
 db.Clauses(clause.Locking{
@@ -77,20 +77,20 @@ db.Clauses(clause.Locking{
 // SQL: SELECT * FROM `users` FOR UPDATE NOWAIT
 ```
 
-Another option can be `SKIP LOCKED` which skips over any rows that are already locked by other transactions. This is useful in high concurrency situations where you want to process rows that are not currently locked by other transactions.
+Другая опция `SKIP LOCKED` пропускает строки, уже заблокированные другими транзакциями. Это полезно в условиях высокой конкуренции, когда вы хотите обрабатывать строки, которые в данный момент не заблокированы другими транзакциями.
 
-For more advanced locking strategies, refer to [Raw SQL and SQL Builder](sql_builder.html).
+Более продвинутые стратегии блокировки смотрите в [Raw SQL и SQL Builder](sql_builder.html).
 
 ## Подзапрос
 
-Subqueries are a powerful feature in SQL, allowing nested queries. GORM can generate subqueries automatically when using a *gorm.DB object as a parameter.
+Подзапросы — это мощная функция в SQL, позволяющая использовать вложенные запросы. GORM может автоматически генерировать подзапросы при использовании объекта *gorm.DB в качестве параметра.
 
 ```go
-// Simple subquery
+// Простой подзапрос
 db.Where("amount > (?)", db.Table("orders").Select("AVG(amount)")).Find(&orders)
 // SQL: SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
-// Nested subquery
+// Вложенный подзапрос
 subQuery := db.Select("AVG(age)").Where("name LIKE ?", "name%").Table("users")
 db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery).Find(&results)
 // SQL: SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
@@ -101,11 +101,11 @@ db.Select("AVG(age) as avgage").Group("name").Having("AVG(age) > (?)", subQuery)
 GORM позволяет использовать подзапросы в оговорке "FROM", позволяя сложные запросы и организацию данных.
 
 ```go
-// Using subquery in FROM clause
+// Использование подзапроса в FROM
 db.Table("(?) as u", db.Model(&User{}).Select("name", "age")).Where("age = ?", 18).Find(&User{})
 // SQL: SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
-// Combining multiple subqueries in FROM clause
+// Комбинирование нескольких подзапросов в FROM
 subQuery1 := db.Model(&User{}).Select("name")
 subQuery2 := db.Model(&Pet{}).Select("name")
 db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
@@ -117,7 +117,7 @@ db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
 Групповые условия в GORM обеспечивают более читаемый и поддерживаемый способ записи сложных SQL-запросов с несколькими условиями.
 
 ```go
-// Сложны SQL запросы использую групповые условия
+// Сложный SQL запрос с использованием групповых условий
 db.Where(
     db.Where("pizza = ?", "pepperoni").Where(db.Where("size = ?", "small").Or("size = ?", "medium")),
 ).Or(
@@ -132,26 +132,26 @@ db.Where(
 GORM поддерживает оператор IN с несколькими колонками, позволяя фильтровать данные на основе нескольких значений полей в одном запросе.
 
 ```go
-// Using IN with multiple columns
+// Использование IN с несколькими столбцами
 db.Where("(name, age, role) IN ?", [][]interface{}{{"jinzhu", 18, "admin"}, {"jinzhu2", 19, "user"}}).Find(&users)
 // SQL: SELECT * FROM users WHERE (name, age, role) IN (("jinzhu", 18, "admin"), ("jinzhu 2", 19, "user"));
 ```
 
 ## Именованные аргументы
 
-GORM enhances the readability and maintainability of SQL queries by supporting named arguments. This feature allows for clearer and more organized query construction, especially in complex queries with multiple parameters. Named arguments can be utilized using either [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg) or `map[string]interface{}{}`, providing flexibility in how you structure your queries.
+GORM улучшает читаемость и сопровождаемость SQL-запросов, поддерживая именованные аргументы. Эта функция позволяет создавать более понятные и организованные запросы, особенно в сложных запросах с множественными параметрами. Именованные аргументы можно использовать либо через [`sql.NamedArg`](https://tip.golang.org/pkg/database/sql/#NamedArg), либо через `map[string]interface{}{}`, что обеспечивает гибкость при построении запросов.
 
 ```go
-// Example using sql.NamedArg for named arguments
+// Пример использования sql.NamedArg для именованных аргументов
 db.Where("name1 = @name OR name2 = @name", sql.Named("name", "jinzhu")).Find(&user)
 // SQL: SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu"
 
-// Example using a map for named arguments
+// Пример использования map для именованных аргументов
 db.Where("name1 = @name OR name2 = @name", map[string]interface{}{"name": "jinzhu"}).First(&user)
 // SQL: SELECT * FROM `users` WHERE name1 = "jinzhu" OR name2 = "jinzhu" ORDER BY `users`.`id` LIMIT 1
 ```
 
-For more examples and details, see [Raw SQL and SQL Builder](sql_builder.html#named_argument)
+Для дополнительных примеров и подробностей смотрите [Raw SQL и SQL Builder](sql_builder.html#named_argument)
 
 ## Find с картами
 
