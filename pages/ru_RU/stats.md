@@ -1,6 +1,6 @@
 ---
 title: GORM Stats
-layout: страница
+layout: page
 ---
 
 <style>
