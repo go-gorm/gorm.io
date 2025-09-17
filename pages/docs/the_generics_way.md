@@ -119,7 +119,7 @@ users, err := gorm.G[User](DB).Raw("SELECT name FROM users WHERE id = ?", user.I
 
 However, we **strongly recommend** using our new **code generation tool** to achieve type-safe, maintainable, and secure raw queries—reducing risks like syntax errors or SQL injection.
 
-### Code Generator Workflow
+## Code Generator Workflow
 
 * **1. Install the CLI tool:**
 
