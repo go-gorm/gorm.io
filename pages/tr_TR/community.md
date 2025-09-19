@@ -14,6 +14,10 @@ layout: sayfa
 
 * Gitter - [https://gitter.im/jinzhu/gorm](https://gitter.im/jinzhu/gorm)
 
+## Learning Resources
+
+* **Interactive Learning Platform** - [Go Interview Practice](https://app.gointerview.dev/packages/gorm) - Web-based IDE with progressive GORM challenges covering CRUD operations, associations, migrations, advanced queries, and the new Generics API. Features community leaderboards, real-world scenarios, and hands-on practice.
+
 ## Linkler
 
 * GORM V2 üzerine kurulmuş bir admin sistemi - [GIN-VUE-ADMIN](https://github.com/flipped-aurora/gin-vue-admin)
