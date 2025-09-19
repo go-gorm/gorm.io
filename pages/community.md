@@ -16,7 +16,7 @@ layout: page
 
 ## Learning Resources
 
-* **Interactive Learning Platform** - [Go Interview Practice](https://github.com/RezaSi/go-interview-practice) - Web-based IDE with progressive GORM challenges covering CRUD operations, associations, migrations, advanced queries, and the new Generics API. Features community leaderboards, real-world scenarios, and hands-on practice.
+* **Interactive Learning Platform** - [Go Interview Practice](https://app.gointerview.dev/packages/gorm) - Web-based IDE with progressive GORM challenges covering CRUD operations, associations, migrations, advanced queries, and the new Generics API. Features community leaderboards, real-world scenarios, and hands-on practice.
 
 ## Links
 
