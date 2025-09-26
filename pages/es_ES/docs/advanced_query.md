@@ -5,7 +5,7 @@ layout: página
 
 ## <span id="smart_select">Campos de selección inteligentes</span>
 
-In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. This is particularly useful when dealing with large models but requiring only a subset of fields, especially in API responses.
+In GORM, you can efficiently select specific fields using the [`Select`](query.html) method. .
 
 ```go
 type User struct {

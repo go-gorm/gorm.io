@@ -7,7 +7,7 @@ GORM permite crear restricciones de base de datos con [tag](https://pkg.go.dev/r
 
 ## Restricción CHECK
 
-Crear restricción CHECK con tag `check`
+Crear restricción CHECK con el tag `check`
 
 ```go
 type UserIndex struct {
