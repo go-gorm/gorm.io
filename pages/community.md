@@ -53,6 +53,7 @@ layout: page
 * [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
 * [DuckDB- GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
 * [gorm4gaussdb - GORM GaussDB Driver](https://github.com/okyer/gorm4gaussdb)
+* [GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
 
 ## <span id="contribute">Contribute to this page</span>
 
