@@ -3,7 +3,7 @@ title: Connecting to a Database
 layout: page
 ---
 
-GORM officially supports the databases MySQL, PostgreSQL, GaussDB, SQLite, SQL Server TiDB and Oracle Database
+GORM officially supports the databases MySQL, PostgreSQL, GaussDB, SQLite, SQL Server TiDB, and Oracle Database
 
 ## MySQL
 
@@ -183,14 +183,14 @@ gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config{
 }), &gorm.Config{})
 ```
 ## Oracle Database
-The GORM Driver for Oracle provides support for Oracle databases, enabling full compatibility with GORM's ORM capabilities. It is built on top of the [Go DRiver for ORacle (Godror)](https://github.com/godror/godror) and supports key features such as auto migrations, associations, transactions, and advanced querying.
+The GORM Driver for Oracle provides support for Oracle databases, enabling full compatibility with GORM's ORM capabilities. It is built on top of the [Go Driver for Oracle (Godror)](https://github.com/godror/godror) and supports key features such as auto migrations, associations, transactions, and advanced querying.
 
 ### Prerequisite: Install Instant Client
 To use ODPI-C with Godror, you’ll need to install the Oracle Instant Client on your system.
 
-Follow the steps on [this page](https://odpi-c.readthedocs.io/en/latest/user_guide/installation.html) complete the installation.
+Follow the steps on [this page](https://odpi-c.readthedocs.io/en/latest/user_guide/installation.html) to complete the installation.
 
-After that, use a logfmt-encoded parameter list to specify the instanct client directory in the `dataSourceName` when you connect to the database. For example:
+After that, use a logfmt-encoded parameter list to specify the instant client directory in the `dataSourceName` when you connect to the database. For example:
 
 ```go
 dsn := `user="scott" password="tiger" 
