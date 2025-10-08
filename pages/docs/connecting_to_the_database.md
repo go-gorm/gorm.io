@@ -182,7 +182,19 @@ gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config{
   Conn: sqlDB,
 }), &gorm.Config{})
 ```
+## Oracle
 
+```go
+import (
+  "github.com/oracle-samples/gorm-oracle/oracle"
+  "gorm.io/gorm"
+)
+
+dsn := `user="scott" password="tiger"
+        connectString="[host]:[port]/cdb1_pdb1.regress.rdbms.dev.us.oracle.com"
+        libDir="/Path/to/your/instantclient_23_8"`
+db, err := gorm.Open(oracle.Open(dsn), &gorm.Config{})
+```
 ## SQLite
 
 ```go
