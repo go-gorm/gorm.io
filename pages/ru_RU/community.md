@@ -47,12 +47,12 @@ layout: страница
 * [Связь пользователей с ролями и разрешениями](https://github.com/Permify/permify-gorm)
 * [gorm-cache - Плагин для кэширования запросов Gorm](https://github.com/liyuan1125/gorm-cache)
 * [deepgorm - фильтрация вложенной карты](https://github.com/survivorbat/gorm-deep-filtering)
-* [oracle - Драйвер Gorm Oracle](https://github.com/CengSin/oracle)
 * [Go ORM Helper - Плагин Gorm для автодополнения кода в Goland](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - Драйвер Gorm DynamoDB](https://github.com/miyamo2/dynmgrm)
 * [immugorm - Драйвер Gorm immudb](https://github.com/codenotary/immugorm)
 * [DuckDB - Драйвер Gorm DuckDB](https://github.com/alifiroozi80/duckdb)
 * [gorm4gaussdb - Драйвер Gorm GaussDB](https://github.com/okyer/gorm4gaussdb)
+* [GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
 
 ## <span id="contribute">Внести изменения в эту страницу</span>
 
