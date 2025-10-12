@@ -20,18 +20,24 @@
       <!--   </a> -->
       <!-- </div> -->
       <div class="sponsor_item sponsor_item_link">
-        <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" rel="sponsored noopener" title="Encore">
+        <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" title="Encore">
           <img src="{{ url_for('/sponsors-imgs/encore.png') }}" alt="Encore">
         </a>
       </div>
       <div class="sponsor_item sponsor_item_link">
-        <a href="https://incident.io" target="_blank" rel="sponsored noopener" title="Incident.io">
+        <a href="https://incident.io" target="_blank" title="Incident.io">
           <img src="{{ url_for('/sponsors-imgs/incident-io.svg') }}" alt="Incident.io">
         </a>
       </div>
       <div class="sponsor_item sponsor_item_link">
-        <a href="https://seats.aero" target="_blank" rel="sponsored noopener" title="Seats.aero">
+        <a href="https://seats.aero" target="_blank" title="Seats.aero">
           <img src="{{ url_for('/sponsors-imgs/seats.aero.svg') }}" alt="Seats.aero">
+        </a>
+      </div>
+      <div class="sponsor_item sponsor_item_link">
+        <a href="https://www.bytebase.com/?utm_source=gorm.io" target="_blank" title="Bytebase">
+          <img src="{{ url_for('/sponsors-imgs/bytebase.png') }}" alt="Bytebase">
+        </a>
         </a>
       </div>
 
