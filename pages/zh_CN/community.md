@@ -47,12 +47,12 @@ layout: page
 * [关联用户的角色和权限](https://github.com/Permify/permify-gorm)
 * [gorm-cache - GORM 查询缓存插件](https://github.com/liyuan1125/gorm-cache)
 * [deepgorm - 嵌套映射过滤](https://github.com/survivorbat/gorm-deep-filtering)
-* [oracle - GORM Oracle driver](https://github.com/CengSin/oracle)
 * [Go ORM 助手 - GORM 代码补全 Goland 插件](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
 * [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
 * [DuckDB- GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
 * [gorm4gaussdb - GORM GaussDB Driver](https://github.com/okyer/gorm4gaussdb)
+* [GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
 
 ## <span id="contribute">完善本页面</span>
 
