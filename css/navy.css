@@ -1676,12 +1676,13 @@ pre .javascript .function {
 }
 #content-wrap .post_sponsors .sponsors-wrapper-pc .inner .sponsor_item,
 #content-wrap .post_sponsors .sponsors-wrapper-mobile .inner .sponsor_item {
-  padding: 15px 8px;
-  margin: 0 !important;
+  padding: 10px 8px;
+  margin: 0 0 10px 0 !important;
 }
 #content-wrap .post_sponsors .sponsors-wrapper-pc .inner .sponsor_item a,
 #content-wrap .post_sponsors .sponsors-wrapper-mobile .inner .sponsor_item a {
   width: 140px;
+  line-height: 60px;
 }
 #content-wrap .post_sponsors .sponsors-wrapper-pc .inner .sponsor_item img,
 #content-wrap .post_sponsors .sponsors-wrapper-mobile .inner .sponsor_item img {
@@ -1749,6 +1750,7 @@ pre .javascript .function {
   height: 80px;
   vertical-align: middle;
   width: 200px;
+  line-height: 60px;
 }
 #content-wrap .sponsors-wrapper-pc .sponsor_item a,
 #content-wrap .sponsors-wrapper-mobile .sponsor_item a,
