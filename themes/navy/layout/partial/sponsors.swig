@@ -61,7 +61,7 @@
     <div class="sponsors gold-sponsors">
       <h1>Gold Sponsors</h1>
       <!-- <div class="sponsor_item"> -->
-      <!--   <a href="https://chainlinklabs.com" target="_blank" title="hubuc"> -->
+      <!--   <a href="https://hubuc.com" target="_blank" title="hubuc"> -->
       <!--     <img src="{{ url_for('/sponsors-imgs/hubuc.svg') }}" alt="hubuc"> -->
       <!--   </a> -->
       <!-- </div> -->
