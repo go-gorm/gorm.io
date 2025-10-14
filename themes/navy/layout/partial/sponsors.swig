@@ -1,110 +1,101 @@
 <div class="sponsors-wrapper-pc open-collective-sponsors">
   <div class="inner">
-    <div class="sponsors">
-      <h1>Platinum Sponsors {% if !homepage %}<i class="far fa-kiss-wink-heart"></i>{% endif %}</h1>
-      <!-- <div class="sponsor_item"> -->
-      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
-      <!--     <img src="{{ url_for('/sponsors-imgs/chainlink.png') }}" alt="chainlink"> -->
-      <!--   </a> -->
-      <!-- </div> -->
-      <div class="sponsor_item" title="Help to deliver a better GORM!">
-        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
-      </div>
-    </div>
-
-    <div class="sponsors">
+    <div class="sponsors gold-sponsors">
       <h1>Gold Sponsors {% if !homepage %}<i class="far fa-kiss-wink-heart"></i>{% endif %}</h1>
       <!-- <div class="sponsor_item"> -->
       <!--   <a href="https://hubuc.com" target="_blank" rel="sponsored noopener" title="hubuc"> -->
       <!--     <img src="{{ url_for('/sponsors-imgs/hubuc.svg') }}" alt="hubuc"> -->
       <!--   </a> -->
       <!-- </div> -->
-      <div class="sponsor_item sponsor_item_link">
+      <div class="sponsor_item">
         <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" title="Encore">
           <img src="{{ url_for('/sponsors-imgs/encore.png') }}" alt="Encore">
         </a>
       </div>
-      <div class="sponsor_item sponsor_item_link">
+      <div class="sponsor_item">
         <a href="https://incident.io" target="_blank" title="Incident.io">
           <img src="{{ url_for('/sponsors-imgs/incident-io.svg') }}" alt="Incident.io">
         </a>
       </div>
-      <div class="sponsor_item sponsor_item_link">
+      <div class="sponsor_item">
         <a href="https://seats.aero" target="_blank" title="Seats.aero">
           <img src="{{ url_for('/sponsors-imgs/seats.aero.svg') }}" alt="Seats.aero">
         </a>
       </div>
-      <div class="sponsor_item sponsor_item_link">
+      <div class="sponsor_item">
         <a href="https://www.bytebase.com/?utm_source=gorm.io" target="_blank" title="Bytebase">
           <img src="{{ url_for('/sponsors-imgs/bytebase.png') }}" alt="Bytebase">
         </a>
-        </a>
       </div>
+      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
+    </div>
 
-      <div class="sponsor_item" title="Help to deliver a better GORM!">
-        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
-      </div>
-
-      {% if page.path.match("contribute") %}
-      <h1>Github Backers <i class="far fa-kiss-wink-heart"></i></h1>
-      <div class="backers_link">
-      View Github Backers on <a href="https://github.com/sponsors/jinzhu">https://github.com/sponsors/jinzhu</a>
-      </div>
-
-      <h1>Patreon Backers <i class="far fa-kiss-wink-heart"></i></h1>
-      <div class="backers_link">
-      View Patreon Backers on <a href="https://www.patreon.com/jinzhu">https://www.patreon.com/jinzhu</a>
-      </div>
-      {% endif %}
+    <div class="sponsors platinum-sponsors">
+      <h1>Platinum Sponsors {% if !homepage %}<i class="far fa-kiss-wink-heart"></i>{% endif %}</h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="{{ url_for('/sponsors-imgs/chainlink.png') }}" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
     </div>
   </div>
+
+  {% if page.path.match("contribute") %}
+  <div class="backers-section">
+    <h1>Github Backers <i class="far fa-kiss-wink-heart"></i></h1>
+    <div class="backers_link">
+    View Github Backers on <a href="https://github.com/sponsors/jinzhu">https://github.com/sponsors/jinzhu</a>
+    </div>
+
+    <h1>Patreon Backers <i class="far fa-kiss-wink-heart"></i></h1>
+    <div class="backers_link">
+    View Patreon Backers on <a href="https://www.patreon.com/jinzhu">https://www.patreon.com/jinzhu</a>
+    </div>
+  </div>
+  {% endif %}
 </div>
 
 <div class="sponsors-wrapper-mobile open-collective-sponsors">
   <div class="inner">
-    <div class="sponsors">
+    <div class="sponsors gold-sponsors">
+      <h1>Gold Sponsors</h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://hubuc.com" target="_blank" title="hubuc"> -->
+      <!--     <img src="{{ url_for('/sponsors-imgs/hubuc.svg') }}" alt="hubuc"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <div class="sponsor_item">
+        <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" title="Encore">
+          <img src="{{ url_for('/sponsors-imgs/encore.png') }}" alt="Encore">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://incident.io" target="_blank" title="Incident.io">
+          <img src="{{ url_for('/sponsors-imgs/incident-io.svg') }}" alt="Incident.io">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://seats.aero" target="_blank" title="Seats.aero">
+          <img src="{{ url_for('/sponsors-imgs/seats.aero.svg') }}" alt="Seats.aero">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://www.bytebase.com/?utm_source=gorm.io" target="_blank" title="Bytebase">
+          <img src="{{ url_for('/sponsors-imgs/bytebase.png') }}" alt="Bytebase">
+        </a>
+      </div>
+      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
+    </div>
+
+    <div class="sponsors platinum-sponsors">
       <h1>Platinum Sponsors</h1>
       <!-- <div class="sponsor_item"> -->
       <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
       <!--     <img src="{{ url_for('/sponsors-imgs/chainlink.png') }}" alt="chainlink"> -->
       <!--   </a> -->
       <!-- </div> -->
-      <div class="sponsor_item" title="Help to deliver a better GORM!">
-        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
-      </div>
-    </div>
-
-    <div class="sponsors">
-      <h1>Gold Sponsors</h1>
-      <div class="sponsor_item">
-        <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" title="Encore">
-          <img src="{{ url_for('/sponsors-imgs/encore.png') }}" alt="Encore">
-        </a>
-      </div>
-      <div class="sponsor_item">
-        <a href="https://incident.io" target="_blank" title="Incident.io">
-          <img src="{{ url_for('/sponsors-imgs/incident-io.svg') }}" alt="Incident.io">
-        </a>
-      </div>
-      <div class="sponsor_item">
-        <a href="https://seats.aero" target="_blank" title="Seats.aero">
-          <img src="{{ url_for('/sponsors-imgs/seats.aero.svg') }}" alt="Seats.aero">
-        </a>
-      </div>
-      <!-- <div class="sponsor_item"> -->
-      <!--   <a href="https://chainlinklabs.com" target="_blank" title="hubuc"> -->
-      <!--     <img src="{{ url_for('/sponsors-imgs/hubuc.svg') }}" alt="hubuc"> -->
-      <!--   </a> -->
-      <!-- </div> -->
-      <div class="sponsor_item">
-        <a href="https://www.bytebase.com/?utm_source=gorm.io" target="_blank" title="Bytebase">
-          <img src="{{ url_for('/sponsors-imgs/bytebase.png') }}" alt="Bytebase">
-        </a>
-      </div>
-
-      <div class="sponsor_item" title="Help to deliver a better GORM!">
-        <a class="become-sponsor" href="/contribute.html#Donations">Become a Sponsor!</a>
-      </div>
+      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
     </div>
   </div>
 </div>
