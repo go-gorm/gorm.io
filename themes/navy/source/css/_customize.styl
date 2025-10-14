@@ -112,6 +112,14 @@
           padding: 8px 12px;
           width: auto !important;
           font-size: 0.9em;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            background: #fb7d00;
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(251, 125, 0, 0.3);
+          }
         }
       }
 
@@ -190,6 +198,18 @@
           border-color: #ff300e !important;
         }
       }
+
+      // Prevent hover effect on sponsor_item containing become-sponsor button
+      &:has(.become-sponsor) {
+        &:hover {
+          background: transparent !important;
+          a {
+            font-weight: 700;
+            color: inherit;
+            border-color: inherit;
+          }
+        }
+      }
     }
 
     .become-sponsor {
@@ -202,6 +222,17 @@
       width: auto !important;
       border-radius: 2em;
       border: 1px solid #fb7d00;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+      
+      &:hover {
+        background: #fb7d00;
+        color: white !important;
+        border-color: #fb7d00 !important;
+        font-weight: 700 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(251, 125, 0, 0.3);
+      }
     }
 
     @media mq-mobile {
