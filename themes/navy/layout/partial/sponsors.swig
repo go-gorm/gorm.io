@@ -1,15 +1,5 @@
 <div class="sponsors-wrapper-pc open-collective-sponsors">
   <div class="inner">
-    <div class="sponsors platinum-sponsors">
-      <h1>Platinum Sponsors {% if !homepage %}<i class="far fa-kiss-wink-heart"></i>{% endif %}</h1>
-      <!-- <div class="sponsor_item"> -->
-      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
-      <!--     <img src="{{ url_for('/sponsors-imgs/chainlink.png') }}" alt="chainlink"> -->
-      <!--   </a> -->
-      <!-- </div> -->
-      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
-    </div>
-
     <div class="sponsors gold-sponsors">
       <h1>Gold Sponsors {% if !homepage %}<i class="far fa-kiss-wink-heart"></i>{% endif %}</h1>
       <!-- <div class="sponsor_item"> -->
@@ -39,6 +29,16 @@
       </div>
       <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
     </div>
+
+    <div class="sponsors platinum-sponsors">
+      <h1>Platinum Sponsors {% if !homepage %}<i class="far fa-kiss-wink-heart"></i>{% endif %}</h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="{{ url_for('/sponsors-imgs/chainlink.png') }}" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
+    </div>
   </div>
 
   {% if page.path.match("contribute") %}
@@ -58,16 +58,6 @@
 
 <div class="sponsors-wrapper-mobile open-collective-sponsors">
   <div class="inner">
-    <div class="sponsors platinum-sponsors">
-      <h1>Platinum Sponsors</h1>
-      <!-- <div class="sponsor_item"> -->
-      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
-      <!--     <img src="{{ url_for('/sponsors-imgs/chainlink.png') }}" alt="chainlink"> -->
-      <!--   </a> -->
-      <!-- </div> -->
-      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
-    </div>
-
     <div class="sponsors gold-sponsors">
       <h1>Gold Sponsors</h1>
       <!-- <div class="sponsor_item"> -->
@@ -95,6 +85,16 @@
           <img src="{{ url_for('/sponsors-imgs/bytebase.png') }}" alt="Bytebase">
         </a>
       </div>
+      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
+    </div>
+
+    <div class="sponsors platinum-sponsors">
+      <h1>Platinum Sponsors</h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="{{ url_for('/sponsors-imgs/chainlink.png') }}" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
       <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
     </div>
   </div>
