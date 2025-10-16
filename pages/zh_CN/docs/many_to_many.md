@@ -78,7 +78,7 @@ type Language struct {
 //   foreign key: language_id, reference: languages.id
 ```
 
-若要重写它们，可以使用标签 `foreignKey`、`references`、`joinforeignKey`、`joinReferences`。当然，您不需要使用全部的标签，你可以仅使用其中的一个重写部分的外键、引用。
+若要重写它们，可以使用标签 `foreignKey`、`references`、`joinForeignKey`、`joinReferences`。当然，您不需要使用全部的标签，你可以仅使用其中的一个重写部分的外键、引用
 
 ```go
 type User struct {
