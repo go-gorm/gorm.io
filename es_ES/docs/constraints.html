@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORM permite crear restricciones de base de datos con tag, las restricciones serán creadas al usar AutoMigrate or CreateTable con GORM Restricción CHECKCrear restricción CHECK con tag check type UserI">
+  <meta name="description" content="GORM permite crear restricciones de base de datos con tag, las restricciones serán creadas al usar AutoMigrate or CreateTable con GORM Restricción CHECKCrear restricción CHECK con el tag check type Us">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Restricciones">
 <meta property="og:url" content="https://gorm.io/es_ES/docs/constraints.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORM permite crear restricciones de base de datos con tag, las restricciones serán creadas al usar AutoMigrate or CreateTable con GORM Restricción CHECKCrear restricción CHECK con tag check type UserI">
+<meta property="og:description" content="GORM permite crear restricciones de base de datos con tag, las restricciones serán creadas al usar AutoMigrate or CreateTable con GORM Restricción CHECKCrear restricción CHECK con el tag check type Us">
 <meta property="og:locale" content="es_ES">
-<meta property="article:published_time" content="2025-10-14T13:45:46.556Z">
-<meta property="article:modified_time" content="2025-10-14T13:45:46.556Z">
+<meta property="article:published_time" content="2025-10-26T12:35:43.396Z">
+<meta property="article:modified_time" content="2025-10-26T12:35:43.396Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -142,7 +142,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               </header>
               <div class="article-content" itemprop="articleBody">
                 <html><head></head><body><p>GORM permite crear restricciones de base de datos con <a target="_blank" rel="noopener" href="https://pkg.go.dev/reflect#StructTag">tag</a>, las restricciones serán creadas al usar <a href="migration.html">AutoMigrate or CreateTable con GORM</a></p>
-<h2 id="Restriccion-CHECK" class="article-heading"><a href="#Restriccion-CHECK" class="headerlink" title="Restricción CHECK"></a>Restricción CHECK<a class="article-anchor" href="#Restriccion-CHECK" aria-hidden="true"></a></h2><p>Crear restricción CHECK con tag <code>check</code></p>
+<h2 id="Restriccion-CHECK" class="article-heading"><a href="#Restriccion-CHECK" class="headerlink" title="Restricción CHECK"></a>Restricción CHECK<a class="article-anchor" href="#Restriccion-CHECK" aria-hidden="true"></a></h2><p>Crear restricción CHECK con el tag <code>check</code></p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> UserIndex <span class="keyword">struct</span> {</span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`gorm:"check:name_checker,name &lt;&gt; 'jinzhu'"`</span></span><br><span class="line">    Name2 <span class="type">string</span> <span class="string">`gorm:"check:name &lt;&gt; 'jinzhu'"`</span></span><br><span class="line">    Name3 <span class="type">string</span> <span class="string">`gorm:"check:,name &lt;&gt; 'jinzhu'"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Restriccion-INDEX" class="article-heading"><a href="#Restriccion-INDEX" class="headerlink" title="Restricción INDEX"></a>Restricción INDEX<a class="article-anchor" href="#Restriccion-INDEX" aria-hidden="true"></a></h2><p>Ver <a href="indexes.html">Índices Base de Datos</a></p>
@@ -163,7 +163,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2025-10-14T13:45:46.556Z" itemprop="dateModified">Última actualización: 2025-10-14</time>
+                <time class="article-footer-updated" datetime="2025-10-26T12:35:43.396Z" itemprop="dateModified">Última actualización: 2025-10-26</time>
 <a href="indexes.html" class="article-footer-prev" title="Índices"><i class="fa fa-chevron-left"></i><span>Anterior</span></a><a href="composite_primary_key.html" class="article-footer-next" title="Clave primaria compuesta"><span>Siguiente</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
