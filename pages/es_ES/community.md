@@ -47,12 +47,12 @@ layout: page
 * [Asociar usuarios con roles y permisos](https://github.com/Permify/permify-gorm)
 * [gorm-cache - GORM query cache plugin](https://github.com/liyuan1125/gorm-cache)
 * [deepgorm - Filtrado de mapas anidados](https://github.com/survivorbat/gorm-deep-filtering)
-* [oracle - GORM Oracle driver](https://github.com/CengSin/oracle)
 * [Go ORM Helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
 * [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
 * [DuckDB- GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
 * [gorm4gaussdb - GORM GaussDB Driver](https://github.com/okyer/gorm4gaussdb)
+* [GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
 
 ## <span id="contribute">Contribuye a esta página</span>
 
