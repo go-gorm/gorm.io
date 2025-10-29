@@ -199,7 +199,7 @@ company, err := query.Query[Company].GetByID(ctx, 10)
 user, err := query.Query[User].GetByID(ctx, 10)
 // SELECT * FROM `users` WHERE id=10
 
-// 与其它的范型 API 协作
+// 与其它的泛型 API 协作
 err := query.Query[User].FilterByNameAndAge("jinzhu", 18).Delete(ctx)
 // DELETE FROM `users` WHERE name='jinzhu' AND age=18
 
