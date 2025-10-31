@@ -202,8 +202,8 @@ The way you specify the Instant Client directory differes by platform:
 
 ``` go
 dataSourceName := `user="scott" password="tiger" 
-        connectString="dbhost:1521/orclpdb1"
-        libDir="/Path/to/your/instantclient_23_26"`
+                   connectString="dbhost:1521/orclpdb1"
+                   libDir="/Path/to/your/instantclient_23_26"`
 ```
 
 #### Example (Linux)
@@ -223,7 +223,7 @@ import (
 )
 
 dataSourceName := `user="scott" password="tiger"
-        connectString="dbhost:1521/orclpdb1"`
+                   connectString="dbhost:1521/orclpdb1"`
 db, err := gorm.Open(oracle.Open(dataSourceName), &gorm.Config{})
 ```
 
