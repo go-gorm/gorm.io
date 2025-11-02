@@ -1,11 +1,37 @@
 ---
-title: Generation Configuration
+title: Workflow & Configuration
 layout: page
 ---
 
-# Generation Configuration
+# Workflow & Configuration
 
-You can run `gorm gen` with zero configuration, but declaring a package-level `genconfig.Config` lets you control output paths, type mappings, and inclusion rules.
+`gorm gen` always produces two sets of code. They live in the same package, so you can keep interface-driven queries and model-based helpers side by side.
+
+## Query API generator
+
+Give the CLI an interface and annotate the methods with SQL template comments. The generator expands those comments, binds parameters, and adds a `context.Context` parameter when it is missing.
+
+* Works with the default generics output or the `--typed=false` flag.
+* Keeps SQL next to the interface that describes it.
+* Emits plain Go implementations with no reflection.
+
+## Field helper generator
+
+Point the CLI at your model structs. The generator scans fields and relationships to build helper types.
+
+* Predicate builders like `generated.User.Name.Eq("alice")`.
+* Update helpers for `Set`, `SetExpr`, `Incr`, and related calls.
+* Association helpers for `Create`, `CreateInBatch`, `Update`, `Unlink`, and `Delete`.
+
+## Typical command
+
+```bash
+gorm gen -i ./internal/models -o ./internal/generated
+```
+
+## Configuration basics
+
+`gorm gen` works without configuration, but a package-level `genconfig.Config` lets you pick output paths, decide which interfaces or structs are included, and map custom helper types.
 
 ```go
 package examples
@@ -35,7 +61,9 @@ var _ = genconfig.Config{
 }
 ```
 
-## JSON Field Mapping Example
+Adjust the `OutPath` to pick a target package and use the include lists to focus on the interfaces and structs you want the CLI to read.
+
+### JSON field mapping example
 
 0) Declare configuration
 
@@ -109,4 +137,4 @@ got, err := gorm.G[models.User](db).
   Take(ctx)
 ```
 
-Return to [template queries](query_templates.html) or the [CLI overview](index.html).
+Re-run `gorm gen` whenever you add new interfaces or structs or adjust configuration; only the affected output files change.

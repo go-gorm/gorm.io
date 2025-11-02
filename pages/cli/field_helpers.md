@@ -5,7 +5,7 @@ layout: page
 
 # Field Helpers
 
-Field helpers give you type-safe building blocks for filtering, updating, ordering, and walking associations without writing raw SQL. They are generated from your model structs and integrate directly with `gorm.G[T]` builders.
+The CLI generates field helpers from your model structs. Use them for typed filters, updates, ordering, and association work without hand-writing SQL strings. They plug into `gorm.G[T]` builders in both the default generics output and the `--typed=false` mode.
 
 ## Supported Models & Types
 
@@ -60,7 +60,7 @@ gorm.G[User](db).
 
 ## Association Operations
 
-Association helpers surface on generated structs as `field.Struct[T]` or `field.Slice[T]` (for example, `generated.User.Pets`, `generated.User.Account`). They compose into `Set(...).Create(ctx)` or `Set(...).Update(ctx)` calls.
+Association helpers surface on generated structs as `field.Struct[T]` or `field.Slice[T]` (for example, `generated.User.Pets`, `generated.User.Account`). Combine them inside `Set(...).Create(ctx)` or `Set(...).Update(ctx)` calls.
 
 Supported operations:
 
@@ -101,4 +101,4 @@ Parent operation semantics:
 * `Create(ctx)` inserts new parent rows using your `Set(...)` values, then applies association operations
 * `Update(ctx)` updates matched parent rows, then applies association operations
 
-Continue with [template-driven query interfaces](query_templates.html) or return to the [CLI overview](index.html).
+Next: learn the [Typed Raw SQL](sql_templates.html) flow or jump back to the [CLI overview](index.html).

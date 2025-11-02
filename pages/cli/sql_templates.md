@@ -1,11 +1,11 @@
 ---
-title: Query Templates
+title: Typed Raw SQL
 layout: page
 ---
 
-# Template-Driven Query Interfaces
+# Typed Raw SQL
 
-Define Go interfaces with SQL template comments to generate concrete, type-safe query methods. Parameters bind automatically, and any method missing a `context.Context` parameter receives one in the generated implementation.
+Write Go interfaces, describe the raw SQL you want in comments, and let the CLI turn it into typed Go methods. Template variables expand into table names and parameters, while the generator binds values and inserts a `context.Context` where it is missing.
 
 ```go
 type Query[T any] interface {
@@ -91,4 +91,4 @@ SELECT * FROM @@table
 {{end}}
 ```
 
-Next, configure output paths or custom helpers with the [generation configuration guide](configuration.html), or revisit the [CLI overview](index.html).
+Next, decide which interfaces feed the generator in the [workflow & configuration guide](workflow.html#configuration-basics), or return to the [CLI overview](index.html).

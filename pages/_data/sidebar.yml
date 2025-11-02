@@ -73,8 +73,7 @@ gen:
 cli:
   getting_started:
     overview: index.html
+    workflow: workflow.html
   core_features:
     field_helpers: field_helpers.html
-    query_templates: query_templates.html
-  customization:
-    configuration: configuration.html
+    query_templates: sql_templates.html
