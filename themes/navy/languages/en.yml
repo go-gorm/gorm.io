@@ -96,6 +96,8 @@ sidebar:
     gorm_clause: GORM Clause
     transaction: Transaction
     plugins: GORM Plugins
+    reference: Reference
+    cli_vs_gen: CLI vs Gen
   cli:
     getting_started: Getting Started
     overview: Overview
@@ -106,3 +108,5 @@ sidebar:
     tutorials: Tutorials
     cli_transactions: Transactions
     cli_associations: Associations
+    reference: Reference
+    cli_vs_gen: CLI vs Gen

@@ -21,6 +21,7 @@ Two code paths are produced in the same package. Use configuration to choose whi
 * [Workflow & configuration](workflow.html)
 * [Field helpers & associations](field_helpers.html)
 * [Typed Raw SQL](sql_templates.html)
+* [CLI vs Gen](cli_vs_gen.html)
 
 ## Quick start
 
@@ -74,14 +75,16 @@ Two code paths are produced in the same package. Use configuration to choose whi
      Where(generated.User.Age.Gt(18)).
      Find(ctx)
 
-   // Association helpers
-   gorm.G[User](db).
-     Set(
-       generated.User.Name.Set("alice"),
+  // Association helpers
+  gorm.G[User](db).
+    Set(
+      generated.User.Name.Set("alice"),
        generated.User.Pets.Create(generated.Pet.Name.Set("fido")),
-     ).
-     Create(ctx)
-   ```
+  ).
+  Create(ctx)
+  ```
+
+Repository: [github.com/go-gorm/cli](https://github.com/go-gorm/cli)
 
 ## Configuration
 

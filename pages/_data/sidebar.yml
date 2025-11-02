@@ -54,6 +54,7 @@ docs:
 gen:
   getting_started:
     overview: index.html
+    cli_vs_gen: /cli/cli_vs_gen.html
   dynamic_sql:
     overview: dynamic_sql.html
     annotation: sql_annotation.html
@@ -80,3 +81,5 @@ cli:
   tutorials:
     cli_transactions: tutorials_transactions.html
     cli_associations: tutorials_associations.html
+  reference:
+    cli_vs_gen: cli_vs_gen.html
