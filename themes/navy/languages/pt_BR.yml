@@ -2,6 +2,7 @@
 menu:
   home: <i class="fa fa-home"></i>Início
   docs: <i class="fa fa-book"></i>Documentação
+  cli: <i class="fa fa-terminal"></i> CLI<i class="fa fa-fire menu-hot-icon"></i>
   gen: <i class="fa fa-tools"></i>Gen
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
@@ -24,6 +25,7 @@ sidebar:
     declaring_models: Declarando modelos
     conventions: Convenções
     connecting_to_the_database: Conectar ao banco de dados
+    cli: GORM CLI <i class="fa fa-fire menu-hot-icon"></i>
     crud_interface: Interface CRUD
     create: Criar
     query: Consulta
@@ -88,3 +90,11 @@ sidebar:
     gorm_clause: GORM Clause
     transaction: Transaction
     plugins: GORM Plugins
+  cli:
+    getting_started: Getting Started
+    overview: Overview
+    core_features: Core Features
+    field_helpers: Field Helpers
+    query_templates: Query Templates
+    customization: Customization
+    configuration: Generation Configuration
