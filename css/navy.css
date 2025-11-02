@@ -1613,6 +1613,16 @@ pre .javascript .function {
   font-size: 0.9em;
   opacity: 0.7;
 }
+#header #main-nav a .menu-hot-icon {
+  padding-right: 0;
+  margin-left: 0.3em;
+  font-size: 0.65em;
+  color: #ff6b6b;
+  opacity: 1;
+  display: inline-block;
+  position: relative;
+  top: -0.35em;
+}
 #header #main-nav #search-input {
   min-width: 16em;
 }
@@ -1620,8 +1630,25 @@ pre .javascript .function {
 #mobile-nav a .fab {
   padding-right: 0.4em;
 }
+#mobile-nav a .menu-hot-icon {
+  padding-right: 0;
+  margin-left: 0.3em;
+  font-size: 0.7em;
+  color: #ff6b6b;
+  opacity: 1;
+  display: inline-block;
+  position: relative;
+  top: -0.3em;
+}
 #sidebar .sidebar-title {
   margin-top: 30px;
+}
+#sidebar .menu-hot-icon {
+  margin-left: 0.25em;
+  font-size: 0.65em;
+  color: #ff6b6b;
+  position: relative;
+  top: -0.4em;
 }
 #banner #banner-title {
   color: #fff;

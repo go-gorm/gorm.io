@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <title>GORM CLI | GORM - The fantastic ORM library for Golang, aims to be developer friendly.</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://gorm.io/cli/index.html">
+  <!-- Alternative links -->
+  
+    
+      <link rel="alternative" hreflang="en" href="https://gorm.io/cli/index.html">
+    
+      <link rel="alternative" hreflang="zh_CN" href="https://gorm.io/zh_CN/cli/index.html">
+    
+      <link rel="alternative" hreflang="de_DE" href="https://gorm.io/de_DE/cli/index.html">
+    
+      <link rel="alternative" hreflang="id_ID" href="https://gorm.io/id_ID/cli/index.html">
+    
+      <link rel="alternative" hreflang="ja_JP" href="https://gorm.io/ja_JP/cli/index.html">
+    
+      <link rel="alternative" hreflang="ru_RU" href="https://gorm.io/ru_RU/cli/index.html">
+    
+      <link rel="alternative" hreflang="ko_KR" href="https://gorm.io/ko_KR/cli/index.html">
+    
+      <link rel="alternative" hreflang="hi_IN" href="https://gorm.io/hi_IN/cli/index.html">
+    
+      <link rel="alternative" hreflang="fr_FR" href="https://gorm.io/fr_FR/cli/index.html">
+    
+      <link rel="alternative" hreflang="it_IT" href="https://gorm.io/it_IT/cli/index.html">
+    
+      <link rel="alternative" hreflang="es_ES" href="https://gorm.io/es_ES/cli/index.html">
+    
+  
+  <!-- Icon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <!-- CSS -->
+  <!-- build:css build/css/navy.css -->
+  
+<link rel="stylesheet" href="/css/navy.css">
+
+  <!-- endbuild -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+  <!-- RSS -->
+  <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
+  <!-- Open Graph -->
+  <meta name="description" content="GORM CLI generates two complementary layers of code for your GORM projects:  Type-safe, interface-driven query APIs — from Go interfaces with powerful SQL templates Model-based field helpers — from yo">
+<meta property="og:type" content="website">
+<meta property="og:title" content="GORM CLI">
+<meta property="og:url" content="https://gorm.io/cli/index.html">
+<meta property="og:site_name" content="GORM">
+<meta property="og:description" content="GORM CLI generates two complementary layers of code for your GORM projects:  Type-safe, interface-driven query APIs — from Go interfaces with powerful SQL templates Model-based field helpers — from yo">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-11-02T02:22:51.336Z">
+<meta property="article:modified_time" content="2025-11-02T02:22:51.336Z">
+<meta property="article:author" content="Jinzhu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="zhangjinzhu">
+  <!-- Google Tag Manager -->
+  <meta name="google-adsense-account" content="ca-pub-1190038979533623">
+
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WSNPD75');</script>
+
+
+<meta name="generator" content="Hexo 7.2.0"></head>
+
+<body>
+  <div id="container">
+    <header id="header" class="wrapper">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="/" id="logo">
+        <img src="/gorm.svg" alt="GORM">
+      </a>
+    </h1>
+    <nav id="main-nav">
+      <a href="/docs/" class="main-nav-link"><i class="fa fa-book"></i>Docs</a><a href="/cli/" class="main-nav-link"><i class="fa fa-terminal"></i> CLI<i class="fa fa-fire menu-hot-icon"></i></a><a href="/gen/" class="main-nav-link"><i class="fa fa-tools"></i>Gen</a><a href="/community.html" class="main-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="main-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/contribute.html" class="main-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+      <div id="search-input-wrap">
+        <div id="search-input-icon">
+          <i class="fa fa-search"></i>
+        </div>
+        <input type="search" id="search-input" placeholder="Search documents...">
+      </div>
+    </nav>
+    <div id="lang-select-wrap">
+      <label id="lang-select-label"><i class="fa fa-globe"></i><span>English</span></label>
+      <select id="lang-select" data-canonical="">
+        
+          <option value="en" selected>English</option>
+        
+          <option value="zh_CN">简体中文</option>
+        
+          <option value="de_DE">Deutsch</option>
+        
+          <option value="id_ID">bahasa Indonesia</option>
+        
+          <option value="ja_JP">日本語</option>
+        
+          <option value="ru_RU">Русский</option>
+        
+          <option value="ko_KR">한국어</option>
+        
+          <option value="hi_IN">हिन्दी</option>
+        
+          <option value="fr_FR">French</option>
+        
+          <option value="it_IT">Italiano</option>
+        
+          <option value="es_ES">Español</option>
+        
+      </select>
+    </div>
+    <a id="mobile-nav-toggle">
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+      <span class="mobile-nav-toggle-bar"></span>
+    </a>
+  </div>
+</header>
+
+    <div id="content-wrap">
+  <div id="content" class="wrapper">
+    <div id="content-inner">
+      <article class="article-container" itemscope itemtype="http://schema.org/Article">
+        <div class="article-inner">
+          <div class="article">
+            <div class="inner">
+              <header class="article-header">
+                <h1 class="article-title" itemprop="name">GORM CLI</h1>
+                
+                <a target="_blank" rel="noopener" href="https://github.com/go-gorm/gorm.io/edit/master/pages/cli/index.md" class="article-edit-link" title="Improve this page"><i class="fa fa-pencil"></i></a>
+                
+              </header>
+              <div class="article-content" itemprop="articleBody">
+                <html><head></head><body><p>GORM CLI generates two complementary layers of code for your GORM projects:</p>
+<ul>
+<li><strong>Type-safe, interface-driven query APIs</strong> — from Go interfaces with powerful SQL templates</li>
+<li><strong>Model-based field helpers</strong> — from your model structs for filters, updates, ordering, and associations</li>
+</ul>
+<p>Together they deliver <strong>compile-time safety</strong> and a fluent, discoverable API for all database operations</p>
+<h2 id="Key-Features" class="article-heading"><a href="#Key-Features" class="headerlink" title="Key Features"></a>Key Features<a class="article-anchor" href="#Key-Features" aria-hidden="true"></a></h2><ul>
+<li><strong>Strong Type Safety (default)</strong> — Compile-time guarantees with Go generics.</li>
+<li><strong>Interface-Driven Query Generation</strong> — Define Go interfaces with SQL template comments to produce concrete, type-safe methods.</li>
+<li><strong>Model-Based Field Helpers</strong> — Generate helpers from model structs for filtering, ordering, updates, and association handling.</li>
+<li><strong>Seamless GORM Integration</strong> — Works natively with <code>gorm.io/gorm</code>—no runtime magic, just plain Go.</li>
+<li><strong>Flexible Configuration</strong> — Customize output paths, include/exclude rules, and field mappings via <code>genconfig.Config</code>.</li>
+<li><strong>Rich Association Operations</strong> — Strongly-typed <code>Create</code>, <code>CreateInBatch</code>, <code>Update</code>, <code>Unlink</code>, and <code>Delete</code> for associations.</li>
+</ul>
+<h2 id="🚀-Quick-Start" class="article-heading"><a href="#🚀-Quick-Start" class="headerlink" title="🚀 Quick Start"></a>🚀 Quick Start<a class="article-anchor" href="#🚀-Quick-Start" aria-hidden="true"></a></h2><h3 id="1-Install" class="article-heading"><a href="#1-Install" class="headerlink" title="1) Install"></a>1) Install<a class="article-anchor" href="#1-Install" aria-hidden="true"></a></h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line">go install gorm.io/cli/gorm@latest</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="2-Define-Models-a-Query-Interface" class="article-heading"><a href="#2-Define-Models-a-Query-Interface" class="headerlink" title="2) Define Models &amp; a Query Interface"></a>2) Define Models &amp; a Query Interface<a class="article-anchor" href="#2-Define-Models-a-Query-Interface" aria-hidden="true"></a></h3><figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// examples/models/user.go</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  gorm.Model</span><br><span class="line">  Name <span class="type">string</span></span><br><span class="line">  Age  <span class="type">int</span></span><br><span class="line">  Pets []Pet <span class="string">`gorm:"many2many:user_pets"`</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Pet <span class="keyword">struct</span> {</span><br><span class="line">  gorm.Model</span><br><span class="line">  Name <span class="type">string</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// examples/query.go</span></span><br><span class="line"><span class="keyword">type</span> Query[T any] <span class="keyword">interface</span> {</span><br><span class="line">  <span class="comment">// SELECT * FROM @@table WHERE id=@id</span></span><br><span class="line">  GetByID(id <span class="type">int</span>) (T, <span class="type">error</span>)</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="3-Generate-Use" class="article-heading"><a href="#3-Generate-Use" class="headerlink" title="3) Generate &amp; Use"></a>3) Generate &amp; Use<a class="article-anchor" href="#3-Generate-Use" aria-hidden="true"></a></h3><figure class="highlight bash"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment"># Default: strictly typed generics API</span></span><br><span class="line">gorm gen -i ./examples -o ./generated</span><br><span class="line"></span><br><span class="line"><span class="comment"># Standard API (still generics-based, relaxed typing for more flexibility)</span></span><br><span class="line">gorm gen -i ./examples -o ./generated --typed=<span class="literal">false</span></span><br></pre></td></tr></tbody></table></figure>
+
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Type-safe query</span></span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE id=123</span></span><br><span class="line">u, err := generated.Query[User](db).GetByID(ctx, <span class="number">123</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Field helpers</span></span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE age&gt;18</span></span><br><span class="line">users, _ := gorm.G[User](db).Where(generated.User.Age.Gt(<span class="number">18</span>)).Find(ctx)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Association helpers: create a user with a pet</span></span><br><span class="line">gorm.G[User](db).</span><br><span class="line">  Set(</span><br><span class="line">    generated.User.Name.Set(<span class="string">"alice"</span>),</span><br><span class="line">    generated.User.Pets.Create(generated.Pet.Name.Set(<span class="string">"fido"</span>)),</span><br><span class="line">  ).</span><br><span class="line">  Create(ctx)</span><br></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h2 id="Two-Generators-One-Workflow" class="article-heading"><a href="#Two-Generators-One-Workflow" class="headerlink" title="Two Generators, One Workflow"></a>Two Generators, One Workflow<a class="article-anchor" href="#Two-Generators-One-Workflow" aria-hidden="true"></a></h2><p>GORM CLI uses <strong>two generators that work together</strong>:</p>
+<h3 id="1-Query-API-generator" class="article-heading"><a href="#1-Query-API-generator" class="headerlink" title="1) Query API generator"></a>1) Query API generator<a class="article-anchor" href="#1-Query-API-generator" aria-hidden="true"></a></h3><p>Define methods with <strong>SQL template comments</strong> in Go interfaces to produce concrete, type-safe methods.</p>
+<h3 id="2-Field-helper-generator" class="article-heading"><a href="#2-Field-helper-generator" class="headerlink" title="2) Field helper generator"></a>2) Field helper generator<a class="article-anchor" href="#2-Field-helper-generator" aria-hidden="true"></a></h3><p>Generate strongly-typed helpers from your model structs for filters, updates, ordering, and associations without raw SQL.</p>
+<p>The generators can be used independently, but they shine when combined—field helpers build expressive builders, and query interfaces capture bespoke SQL. You can start with one and add the other later.</p>
+<p>Learn more:</p>
+<ul>
+<li><a href="field_helpers.html">Field helpers and associations</a></li>
+<li><a href="query_templates.html">Template-driven query interfaces</a></li>
+<li><a href="configuration.html">Configuration and customization</a></li>
+</ul>
+<hr>
+<h2 id="Next-Steps" class="article-heading"><a href="#Next-Steps" class="headerlink" title="Next Steps"></a>Next Steps<a class="article-anchor" href="#Next-Steps" aria-hidden="true"></a></h2><p>Keep exploring:</p>
+<ul>
+<li><a href="field_helpers.html">Browse field helper patterns</a> for predicates, updates, and association operations.</li>
+<li><a href="query_templates.html">Dive into the query template DSL</a> to build typed query methods.</li>
+<li><a href="configuration.html">Tune generation output</a> with <code>genconfig.Config</code>, custom field mappings, and JSON helpers.</li>
+</ul>
+</body></html>
+              </div>
+
+              
+
+              <footer class="article-footer">
+                <time class="article-footer-updated" datetime="2025-11-02T02:22:51.336Z" itemprop="dateModified">Last updated: 2025-11-02</time>
+<a href="field_helpers.html" class="article-footer-next" title="Field Helpers"><span>Next</span><i class="fa fa-chevron-right"></i></a>
+              </footer>
+
+              <div class="post_sponsors">
+                <div class="sponsors-wrapper-pc open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors gold-sponsors">
+      <h1>Gold Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://hubuc.com" target="_blank" rel="sponsored noopener" title="hubuc"> -->
+      <!--     <img src="/sponsors-imgs/hubuc.svg" alt="hubuc"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <div class="sponsor_item">
+        <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" title="Encore">
+          <img src="/sponsors-imgs/encore.png" alt="Encore">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://incident.io" target="_blank" title="Incident.io">
+          <img src="/sponsors-imgs/incident-io.svg" alt="Incident.io">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://seats.aero" target="_blank" title="Seats.aero">
+          <img src="/sponsors-imgs/seats.aero.svg" alt="Seats.aero">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://www.bytebase.com/?utm_source=gorm.io" target="_blank" title="Bytebase">
+          <img src="/sponsors-imgs/bytebase.png" alt="Bytebase">
+        </a>
+      </div>
+      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
+    </div>
+
+    <div class="sponsors platinum-sponsors">
+      <h1>Platinum Sponsors <i class="far fa-kiss-wink-heart"></i></h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
+    </div>
+  </div>
+
+  
+</div>
+
+<div class="sponsors-wrapper-mobile open-collective-sponsors">
+  <div class="inner">
+    <div class="sponsors gold-sponsors">
+      <h1>Gold Sponsors</h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://hubuc.com" target="_blank" title="hubuc"> -->
+      <!--     <img src="/sponsors-imgs/hubuc.svg" alt="hubuc"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <div class="sponsor_item">
+        <a href="https://www.encore.dev/?utm_source=github&utm_medium=github-gorm-sponsor-logo&utm_campaign=gorm-20231215" target="_blank" title="Encore">
+          <img src="/sponsors-imgs/encore.png" alt="Encore">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://incident.io" target="_blank" title="Incident.io">
+          <img src="/sponsors-imgs/incident-io.svg" alt="Incident.io">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://seats.aero" target="_blank" title="Seats.aero">
+          <img src="/sponsors-imgs/seats.aero.svg" alt="Seats.aero">
+        </a>
+      </div>
+      <div class="sponsor_item">
+        <a href="https://www.bytebase.com/?utm_source=gorm.io" target="_blank" title="Bytebase">
+          <img src="/sponsors-imgs/bytebase.png" alt="Bytebase">
+        </a>
+      </div>
+      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
+    </div>
+
+    <div class="sponsors platinum-sponsors">
+      <h1>Platinum Sponsors</h1>
+      <!-- <div class="sponsor_item"> -->
+      <!--   <a href="https://chainlinklabs.com" target="_blank" rel="sponsored noopener"> -->
+      <!--     <img src="/sponsors-imgs/chainlink.png" alt="chainlink"> -->
+      <!--   </a> -->
+      <!-- </div> -->
+      <a class="become-sponsor" href="/contribute.html#Donations" title="Help to deliver a better GORM!">Become a Sponsor!</a>
+    </div>
+  </div>
+</div>
+
+              </div>
+
+              <!--  -->
+<!-- <section id="comments"> -->
+<!-- <div id="disqus_thread"></div> -->
+<!-- </sction> -->
+
+<!-- <script> -->
+<!-- var disqus_config = function () { -->
+<!-- this.page.url = 'https://gorm.io/cli/index.html'; -->
+<!-- this.page.identifier = 'https://gorm.io/cli/index.html'; -->
+<!-- this.language = 'en'; -->
+<!-- }; -->
+
+<!-- (function() { // DON'T EDIT BELOW THIS LINE -->
+<!-- var d = document, s = d.createElement('script'); -->
+<!-- s.src = 'https://gormv2.disqus.com/embed.js'; -->
+<!-- s.setAttribute('data-timestamp', +new Date()); -->
+<!-- (d.head || d.body).appendChild(s); -->
+<!-- })(); -->
+<!-- </script> -->
+<!--  -->
+
+            </div>
+          </div>
+          <aside id="article-toc" role="navigation">
+            <div id="article-toc-inner">
+              <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
+              <strong class="sidebar-title">Contents</strong>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Key-Features"><span class="toc-text">Key Features</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%9A%80-Quick-Start"><span class="toc-text">🚀 Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Install"><span class="toc-text">1) Install</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Define-Models-a-Query-Interface"><span class="toc-text">2) Define Models &amp; a Query Interface</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Generate-Use"><span class="toc-text">3) Generate &amp; Use</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Two-Generators-One-Workflow"><span class="toc-text">Two Generators, One Workflow</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Query-API-generator"><span class="toc-text">1) Query API generator</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Field-helper-generator"><span class="toc-text">2) Field helper generator</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Next-Steps"><span class="toc-text">Next Steps</span></a></li></ol>
+
+              
+                <a href="https://github.com/go-gorm/gorm.io/edit/master/pages/cli/index.md" target="_blank" id="article-improve">
+                  Improve this page
+                </a>
+              
+              <a href="#" id="article-toc-top">Back to Top</a>
+            </div>
+          </aside>
+        </div>
+      </article>
+      <aside id="sidebar" role="navigation">
+  <div class="inner">
+    <strong class="sidebar-title">Getting Started</strong><a href="index.html" class="sidebar-link current">Overview</a><strong class="sidebar-title">Core Features</strong><a href="field_helpers.html" class="sidebar-link">Field Helpers</a><a href="query_templates.html" class="sidebar-link">Query Templates</a><strong class="sidebar-title">Customization</strong><a href="configuration.html" class="sidebar-link">Generation Configuration</a>
+  </div>
+</aside>
+
+    </div>
+  </div>
+</div>
+
+    <footer id="footer" class="wrapper">
+  <div class="inner">
+    <div id="footer-copyright">
+      &copy; 2013~2025 <a href="https://github.com/jinzhu" target="_blank">Jinzhu</a><br>
+      Documentation licensed under <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank">CC BY 4.0</a>.<br>
+      <div id="gorm.cn" style="display:none">
+      感谢 <a href="https://github.com/unknwon" target="_blank">无闻</a> 对域名 <a href="https://gorm.cn" target="_blank">gorm.cn</a> 的捐赠<br>
+      <a href="http://beian.miit.gov.cn/" target="_blank" data-spm-anchor-id="a3c00.7621333.7y9jhqsfz.112">浙ICP备2020033190号-1</a><br>
+      </div>
+
+      <script>
+        if (window.location.hostname.includes("gorm.cn")) {
+          document.getElementById("gorm.cn").style.display = 'block';
+        }
+      </script>
+    </div>
+    <div id="footer-links">
+      <a href="https://twitter.com/zhangjinzhu" class="footer-link" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="https://github.com/go-gorm/gorm" class="footer-link" target="_blank"><i class="fab fa-github-alt"></i></a>
+    </div>
+  </div>
+</footer>
+
+  </div>
+  <div id="mobile-nav-dimmer"></div>
+  <nav id="mobile-nav">
+  <div id="mobile-nav-inner">
+    <ul id="mobile-nav-list">
+      <li class="mobile-nav-item">
+        <a href="/" class="mobile-nav-link" rel="external" target="_blank"><i class="fa fa-home"></i>Home</a>
+      </li>
+      <a href="/docs/" class="mobile-nav-link"><i class="fa fa-book"></i>Docs</a><a href="/cli/" class="mobile-nav-link"><i class="fa fa-terminal"></i> CLI<i class="fa fa-fire menu-hot-icon"></i></a><a href="/gen/" class="mobile-nav-link"><i class="fa fa-tools"></i>Gen</a><a href="/community.html" class="mobile-nav-link"><i class="fab fa-slack"></i>Community</a><a href="https://pkg.go.dev/gorm.io/gorm" class="mobile-nav-link" target="_blank"><i class="fa fa-cogs"></i>API</a><a href="/contribute.html" class="mobile-nav-link"><i class="fa fa-rocket"></i>Contribute</a>
+    </ul>
+    
+      <strong class="mobile-nav-title">Getting Started</strong><a href="index.html" class="mobile-nav-link current">Overview</a><strong class="mobile-nav-title">Core Features</strong><a href="field_helpers.html" class="mobile-nav-link">Field Helpers</a><a href="query_templates.html" class="mobile-nav-link">Query Templates</a><strong class="mobile-nav-title">Customization</strong><a href="configuration.html" class="mobile-nav-link">Generation Configuration</a>
+    
+  </div>
+  <div id="mobile-lang-select-wrap">
+    <span id="mobile-lang-select-label"><i class="fa fa-globe"></i><span>English</span></span>
+    <select id="mobile-lang-select" data-canonical="">
+      
+        <option value="en" selected>English</option>
+      
+        <option value="zh_CN">简体中文</option>
+      
+        <option value="de_DE">Deutsch</option>
+      
+        <option value="id_ID">bahasa Indonesia</option>
+      
+        <option value="ja_JP">日本語</option>
+      
+        <option value="ru_RU">Русский</option>
+      
+        <option value="ko_KR">한국어</option>
+      
+        <option value="hi_IN">हिन्दी</option>
+      
+        <option value="fr_FR">French</option>
+      
+        <option value="it_IT">Italiano</option>
+      
+        <option value="es_ES">Español</option>
+      
+    </select>
+  </div>
+</nav>
+
+  <!-- Scripts -->
+<!-- build:js build/js/main.js -->
+
+<script src="/js/lang_select.js"></script>
+
+
+<script src="/js/toc.js"></script>
+
+
+<script src="/js/mobile_nav.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+
+<script src="/js/code_expander.js"></script>
+
+<!-- endbuild -->
+
+<!-- Algolia -->
+
+<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script type="text/javascript">
+document.getElementById('search-input-wrap').classList.add('on');
+docsearch({
+  appId: 'JYXXHPAUK9',
+  apiKey: 'ad3389ae8a371cb188bdee098516769c',
+  indexName: 'gorm',
+  inputSelector: '#search-input'
+});
+</script>
+
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WSNPD75"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+</body>
+</html>
