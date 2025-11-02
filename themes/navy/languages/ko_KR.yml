@@ -2,6 +2,7 @@
 menu:
   home: <i class="fa fa-home"></i>Home
   docs: <i class="fa fa-book"></i>Docs
+  cli: <i class="fa fa-terminal"></i> CLI<i class="fa fa-fire menu-hot-icon"></i>
   gen: <i class="fa fa-tools"></i>Gen
   api: <i class="fa fa-cogs"></i>API
   github: <i class="fa fa-github"></i>Github
@@ -24,6 +25,7 @@ sidebar:
     declaring_models: 구조 작성
     conventions: 규칙
     connecting_to_the_database: Database에 연결하기
+    cli: GORM CLI <i class="fa fa-fire menu-hot-icon"></i>
     crud_interface: CRUD 상호작용
     create: 생성
     query: 선택
@@ -88,3 +90,11 @@ sidebar:
     gorm_clause: GORM Clause
     transaction: Transaction
     plugins: GORM Plugins
+  cli:
+    getting_started: Getting Started
+    overview: Overview
+    core_features: Core Features
+    field_helpers: Field Helpers
+    query_templates: Query Templates
+    customization: Customization
+    configuration: Generation Configuration
