@@ -76,4 +76,7 @@ cli:
     workflow: workflow.html
   core_features:
     field_helpers: field_helpers.html
-    query_templates: sql_templates.html
+    typed_sql: sql_templates.html
+  tutorials:
+    cli_transactions: tutorials_transactions.html
+    cli_associations: tutorials_associations.html

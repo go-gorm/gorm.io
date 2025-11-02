@@ -102,4 +102,7 @@ sidebar:
     workflow: Workflow & Configuration
     core_features: Core Features
     field_helpers: Field Helpers
-    query_templates: Typed Raw SQL
+    typed_sql: Typed Raw SQL
+    tutorials: Tutorials
+    cli_transactions: Transactions
+    cli_associations: Associations
