@@ -1,4 +1,5 @@
 docs: /docs/
+cli: /cli/
 gen: /gen/
 community: /community.html
 api: https://pkg.go.dev/gorm.io/gorm

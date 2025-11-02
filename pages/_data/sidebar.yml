@@ -3,6 +3,7 @@ docs:
     overview: index.html
     declaring_models: models.html
     connecting_to_the_database: connecting_to_the_database.html
+    cli: /cli/index.html
   crud_interface:
     create: create.html
     query: query.html
@@ -69,3 +70,11 @@ gen:
     gentool: gen_tool.html
   tutorials:
     gorm_clause: clause.html
+cli:
+  getting_started:
+    overview: index.html
+  core_features:
+    field_helpers: field_helpers.html
+    query_templates: query_templates.html
+  customization:
+    configuration: configuration.html
