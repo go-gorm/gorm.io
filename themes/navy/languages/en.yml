@@ -96,11 +96,17 @@ sidebar:
     gorm_clause: GORM Clause
     transaction: Transaction
     plugins: GORM Plugins
+    reference: Reference
+    cli_vs_gen: CLI vs Gen
   cli:
     getting_started: Getting Started
     overview: Overview
+    workflow: Workflow & Configuration
     core_features: Core Features
     field_helpers: Field Helpers
-    query_templates: Query Templates
-    customization: Customization
-    configuration: Generation Configuration
+    typed_sql: Typed Raw SQL
+    tutorials: Tutorials
+    cli_transactions: Transactions
+    cli_associations: Associations
+    reference: Reference
+    cli_vs_gen: CLI vs Gen

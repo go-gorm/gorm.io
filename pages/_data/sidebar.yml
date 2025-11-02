@@ -3,6 +3,7 @@ docs:
     overview: index.html
     declaring_models: models.html
     connecting_to_the_database: connecting_to_the_database.html
+    cli: /cli/index.html
   crud_interface:
     create: create.html
     query: query.html
@@ -53,6 +54,7 @@ docs:
 gen:
   getting_started:
     overview: index.html
+    cli_vs_gen: /cli/cli_vs_gen.html
   dynamic_sql:
     overview: dynamic_sql.html
     annotation: sql_annotation.html
@@ -69,3 +71,15 @@ gen:
     gentool: gen_tool.html
   tutorials:
     gorm_clause: clause.html
+cli:
+  getting_started:
+    overview: index.html
+    workflow: workflow.html
+  core_features:
+    field_helpers: field_helpers.html
+    typed_sql: sql_templates.html
+  tutorials:
+    cli_transactions: tutorials_transactions.html
+    cli_associations: tutorials_associations.html
+  reference:
+    cli_vs_gen: cli_vs_gen.html
