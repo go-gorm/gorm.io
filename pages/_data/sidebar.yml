@@ -4,6 +4,7 @@ docs:
     declaring_models: models.html
     connecting_to_the_database: connecting_to_the_database.html
     cli: /cli/index.html
+    the_generics_way: the_generics_way.html
   crud_interface:
     create: create.html
     query: query.html
