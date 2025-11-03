@@ -26,6 +26,7 @@ sidebar:
     conventions: 규칙
     connecting_to_the_database: Database에 연결하기
     cli: GORM CLI <i class="fa fa-fire menu-hot-icon"></i>
+    the_generics_way: The Generics Way
     crud_interface: CRUD 상호작용
     create: 생성
     query: 선택
