@@ -26,6 +26,7 @@ sidebar:
     conventions: Convenciones
     connecting_to_the_database: Conectar a la base de datos
     cli: GORM CLI <i class="fa fa-fire menu-hot-icon"></i>
+    the_generics_way: The Generics Way
     crud_interface: Interfaz CRUD
     create: Crear
     query: Consulta
