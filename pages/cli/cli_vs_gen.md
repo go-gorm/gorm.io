@@ -5,7 +5,7 @@ layout: page
 
 # CLI vs Gen
 
-`gorm.io/gen` arrived before Go generics. It generates full DAO structs and its own query layer. The newer CLI (`gorm cmd`) leans on generics, keeps the generated surface small, and sticks close to existing `gorm` APIs.
+`gorm.io/gen` arrived before Go generics. It generates full DAO structs and its own query layer. The newer CLI (`gorm cmd`) leans on generics, keeps the generated surface small, and sticks close to existing `gorm` APIs. It emphasizes type safety—if it compiles, it works—and a small, predictable surface that fits the AI coding era.
 
 ## How to choose
 
