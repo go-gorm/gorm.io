@@ -123,7 +123,7 @@ users, err := gorm.G[User](DB).Raw("SELECT name FROM users WHERE id = ?", user.I
 - **1. 安装命令行工具**
 
 ```bash
-go install gorm.io/cmd/gorm@latest
+go install gorm.io/cli/gorm@latest
 ```
 
 - **2. 定义查询接口**
@@ -194,16 +194,16 @@ gorm gen -i ./examples/example.go -o query
 ```go
 import "your_project/query"
 
-company, err := query.Query[Company].GetByID(ctx, 10)
+company, err := query.Query[Company](db).GetByID(ctx, 10)
 // SELECT * FROM `companies` WHERE id=10
-user, err := query.Query[User].GetByID(ctx, 10)
+user, err := query.Query[User](db).GetByID(ctx, 10)
 // SELECT * FROM `users` WHERE id=10
 
-// 与其它的泛型 API 协作
-err := query.Query[User].FilterByNameAndAge("jinzhu", 18).Delete(ctx)
+// Combine with other Generic APIs
+err := query.Query[User](db).FilterByNameAndAge("jinzhu", 18).Delete(ctx)
 // DELETE FROM `users` WHERE name='jinzhu' AND age=18
 
-users, err := query.Query[User].FilterByNameAndAge("jinzhu", 18).Find(ctx)
+users, err := query.Query[User](db).FilterByNameAndAge("jinzhu", 18).Find(ctx)
 // SELECT * FROM `users` WHERE name='jinzhu' AND age=18
 ```
 
