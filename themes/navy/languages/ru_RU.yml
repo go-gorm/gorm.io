@@ -26,6 +26,7 @@ sidebar:
     conventions: Преобразования
     connecting_to_the_database: Подключение к базе данных
     cli: GORM CLI <i class="fa fa-fire menu-hot-icon"></i>
+    the_generics_way: The Generics Way
     crud_interface: CRUD интерфейс
     create: Создать
     query: Запрос
