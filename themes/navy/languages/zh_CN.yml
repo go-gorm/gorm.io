@@ -26,6 +26,7 @@ sidebar:
     conventions: 约定
     connecting_to_the_database: 连接到数据库
     cli: GORM CLI <i class="fa fa-fire menu-hot-icon"></i>
+    the_generics_way: The Generics Way
     crud_interface: CRUD 接口
     create: 创建
     query: 查询
