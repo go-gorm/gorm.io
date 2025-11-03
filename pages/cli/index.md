@@ -5,7 +5,7 @@ layout: page
 
 # GORM CLI Overview
 
-GORM CLI reads the interfaces and structs in your project, turns raw SQL comments into typed query methods, and generates helpers for common model operations. Everything compiles to plain Go that works with `gorm.io/gorm`.
+GORM CLI reads the interfaces and structs in your project, turns raw SQL comments into typed query methods, and generates helpers for common model operations. Everything compiles to plain Go that works with `gorm.io/gorm`, with a focus on type safety—if it compiles, it works—making the generated APIs more predictable and developer-friendly for the AI coding era.
 
 ## What you get
 
