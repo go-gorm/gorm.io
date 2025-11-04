@@ -182,32 +182,48 @@ gormDB, err := gorm.Open(gaussdb.New(gaussdb.Config{
   Conn: sqlDB,
 }), &gorm.Config{})
 ```
+
 ## Oracle Database
-The GORM Driver for Oracle provides support for Oracle databases, enabling full compatibility with GORM's ORM capabilities. It is built on top of the [Go Driver for Oracle (Godror)](https://github.com/godror/godror) and supports key features such as auto migrations, associations, transactions, and advanced querying.
+
+The GORM Driver for Oracle provides support for Oracle Database, enabling full compatibility with GORM's ORM capabilities. It is built on top of the [Go Driver for Oracle (Godror)](https://github.com/godror/godror) and supports key features such as auto migrations, associations, transactions, and advanced querying.
 
 ### Prerequisite: Install Instant Client
-To use ODPI-C with Godror, you’ll need to install the Oracle Instant Client on your system.
 
-Follow the steps on [this page](https://odpi-c.readthedocs.io/en/latest/user_guide/installation.html) to complete the installation.
+To use ODPI-C with Godror, you’ll need to install the Oracle Instant Client on your system. Follow the steps on [this page](https://odpi-c.readthedocs.io/en/latest/user_guide/installation.html) to complete the installation.
 
-After that, use a logfmt-encoded parameter list to specify the instant client directory in the `dataSourceName` when you connect to the database. For example:
+After that, you can connect to the database using the `dataSourceName`, which specifies connection parameters (such as username and password) using a logfmt-encoded parameter list.
 
-```go
-dsn := `user="scott" password="tiger" 
-        connectString="[host]:[port]/cdb1_pdb1.regress.rdbms.dev.us.oracle.com"
-        libDir="/Path/to/your/instantclient_23_8"`
+The way you specify the Instant Client directory differs by platform:
+
+- macOS and Windows: You can set the `libDir` parameter in the dataSourceName.
+- Linux: The libraries must be in the system library search path before your Go process starts, preferably configured with "ldconfig". The libDir parameter does not work on Linux.
+
+#### Example (macOS/Windows)
+
+``` go
+dataSourceName := `user="scott" password="tiger" 
+                   connectString="dbhost:1521/orclpdb1"
+                   libDir="/Path/to/your/instantclient_23_26"`
 ```
+
+#### Example (Linux)
+
+``` go
+dataSourceName := `user="scott" password="tiger" 
+                   connectString="dbhost:1521/orclpdb1"`
+```
+
 ### Getting Started
+
 ```go
 import (
   "github.com/oracle-samples/gorm-oracle/oracle"
   "gorm.io/gorm"
 )
 
-dsn := `user="scott" password="tiger"
-        connectString="[host]:[port]/cdb1_pdb1.regress.rdbms.dev.us.oracle.com"
-        libDir="/Path/to/your/instantclient_23_8"`
-db, err := gorm.Open(oracle.Open(dsn), &gorm.Config{})
+dataSourceName := `user="scott" password="tiger"
+                   connectString="dbhost:1521/orclpdb1"`
+db, err := gorm.Open(oracle.Open(dataSourceName), &gorm.Config{})
 ```
 
 ## SQLite
