@@ -26,6 +26,7 @@ sidebar:
     conventions: Standartlar
     connecting_to_the_database: Veritabanlarına bağlanma
     cli: GORM CLI <i class="fa fa-fire menu-hot-icon"></i>
+    the_generics_way: The Generics Way
     crud_interface: CRUD Şablonu
     create: Oluştur
     query: Sorgula
@@ -90,10 +91,17 @@ sidebar:
     gorm_clause: GORM Clause
     transaction: Transaction
     plugins: GORM Plugins
+    reference: Reference
+    cli_vs_gen: CLI vs Gen
   cli:
     getting_started: Getting Started
     overview: Overview
     workflow: Workflow & Configuration
     core_features: Core Features
     field_helpers: Field Helpers
-    query_templates: Typed Raw SQL
+    typed_sql: Typed Raw SQL
+    tutorials: Tutorials
+    cli_transactions: Transactions
+    cli_associations: Associations
+    reference: Reference
+    cli_vs_gen: CLI vs Gen
