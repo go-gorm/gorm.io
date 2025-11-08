@@ -34,7 +34,7 @@ In this model:
 - `CreatedAt` and `UpdatedAt` are special fields that GORM automatically populates with the current time when a record is created or updated.
 - Non-exported fields (starting with a small letter) are not mapped
 
-In addition to the fundamental features of model declaration in GORM, it's important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See [Serializer](serializer.html) for a detailed explanation
+In addition to the fundamental features of model declaration in GORM, it's important to highlight the support for serialization through the serializer tag. Cette fonctionnalité améliore la flexibilité de la manière dont les données sont stockées et récupérées de la base de données, particulièrement pour les champs qui nécessitent une logique de sérialisation personnalisée, voir [Serializer](serializer.html) pour une explication détaillée.
 
 ### Conventions
 
