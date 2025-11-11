@@ -23,7 +23,8 @@ func main() {
   // Initialize the generator with configuration
   g := gen.NewGenerator(gen.Config{
      OutPath: "../dal", // output directory, default value is ./query
-     Mode:    gen.WithDefaultQuery | gen.WithQueryInterface,
+     // Mode:    gen.WithDefaultQuery | gen.WithQueryInterface,
+     Mode:    gen.WithDefaultQuery | gen.WithGeneric,
      FieldNullable: true,
   })
 
@@ -101,6 +102,7 @@ Refer [Database To Structs](./database_to_structs.html) for more options
 | ---                    | ---                                                                                                                                                                               |
 | gen.WithDefaultQuery   | Generate global variable `Q` as DAO interface, then you can query data like: `dal.Q.User.First()`                                                                                 |
 | gen.WithQueryInterface | Generate query api interface instead of struct, usually used for mock testing                                                                                                     |
+| gen.WithGeneric | Generate code with generic and interface                                                                                                     |
 | gen.WithoutContext     | Generate code without context constrain, then you can query data without passing context like: `dal.User.First()`, or you have to query with the context, e.g: `dal.User.WithContext(ctx).First()` |
 
 
