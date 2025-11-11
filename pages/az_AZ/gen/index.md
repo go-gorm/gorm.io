@@ -40,7 +40,7 @@ type Querier interface {
 func main() {
   g := gen.NewGenerator(gen.Config{
     OutPath: "../query",
-    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
+    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface|gen.WithGeneric, // generate mode
   })
 
   // gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
