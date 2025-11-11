@@ -23,7 +23,8 @@ func main() {
   // Initialize the generator with configuration
   g := gen.NewGenerator(gen.Config{
      OutPath: "../dal", // output directory, default value is ./query
-     Mode:    gen.WithDefaultQuery | gen.WithQueryInterface,
+     // Mode:    gen.WithDefaultQuery | gen.WithQueryInterface,
+     Mode:    gen.WithDefaultQuery | gen.WithGeneric,
      FieldNullable: true,
   })
 
@@ -101,6 +102,7 @@ type Config struct {
 | ---------------------- | ------------------------------------------------------------------------------------------------------------ |
 | gen.WithDefaultQuery   | 是否生成全局变量`Q`作为DAO接口，如果开启，你可以通过这样的方式查询数据`dal.Q.User.First()`                                                   |
 | gen.WithQueryInterface | 生成查询API代码，而不是struct结构体。通常用来MOCK测试                                                                            |
+| gen.WithGeneric        | Generate code with generic and interface                                                                     |
 | gen.WithoutContext     | 生成无需传入context参数的代码。如果无需传入context，则代码调用方式如：`dal.User.First()`，否则，调用方式要像这样：`dal.User.WithContext(ctx).First()` |
 
 
