@@ -45,17 +45,7 @@ func GetAll(db *gorm.DB) ([]User, error) {
 Если вы хотите использовать другое поле для сохранения связей, вы можете изменить его при помощи тега `foreignKey`, например:
 
 ```go
-type User struct {
-  gorm.Model
-  CreditCard CreditCard `gorm:"foreignKey:UserName"`
-  // use UserName as foreign key
-}
 
-type CreditCard struct {
-  gorm.Model
-  Number   string
-  UserName string
-}
 ```
 
 ## Переопределить связи
@@ -114,4 +104,4 @@ type CreditCard struct {
 }
 ```
 
-You are also allowed to delete selected has one associations with `Select` when deleting, checkout [Delete with Select](associations.html#delete_with_select) for details
+Вы также можете удалить выбранные ассоциации has one с помощью `Select` при удалении, подробнее описывается в [Delete with Select](associations.html#delete_with_select)
