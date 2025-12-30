@@ -42,6 +42,7 @@ type User struct {
     Name2 string `gorm:"uniqueIndex:idx_name,sort:desc"`
 }
 ```
+Note that this will not work for unique composite indexes.
 
 ## Índices compostos
 
@@ -52,6 +53,16 @@ Usar o mesmo nome de índice para dois campos irá criar índices compostos, por
 type User struct {
     Name   string `gorm:"index:idx_member"`
     Number string `gorm:"index:idx_member"`
+}
+```
+
+For a unique composite index:
+
+```go
+// create unique composite index `idx_member` with columns `name`, and `number`
+type User struct {
+    Name   string `gorm:"index:idx_member,unique"`
+    Number string `gorm:"index:idx_member,unique"`
 }
 ```
 
