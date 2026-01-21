@@ -24,7 +24,7 @@
     "hexo-renderer-swig": "^2.0.0",
     "hexo-server": "^3.0.0",
     "hexo-theme-landscape": "^0.0.3",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "lunr": "^2.3.9"
   }
 }
