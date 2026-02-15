@@ -18,7 +18,7 @@ db.Save(&user)
 // UPDATE users SET name='jinzhu 2', age=100, birthday='2016-01-01', updated_at = '2013-11-17 21:34:10' WHERE id=111;
 ```
 
-`Save` is an upsert function:
+`Save` 는 upsert 함수입니다:
 - If the value contains no primary key, it performs `Create`
 - If the value has a primary key, it first executes **Update** (all fields, by `Select(*)`).
 - If `rows affected = 0` after **Update**, it automatically falls back to `Create`.
