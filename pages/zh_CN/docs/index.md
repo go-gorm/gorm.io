@@ -18,7 +18,7 @@ layout: page
 * 复合主键，索引，约束
 * Auto Migration
 * 自定义 Logger
-* Generics API for type-safe queries and operations
+* 用于类型安全查询和操作的泛型 API
 * 可扩展且灵活的插件 API：数据库解析器（支持多数据库、读写分离）或 Prometheus 集成等
 * 每个特性都经过了测试的重重考验
 * 开发者友好
@@ -32,7 +32,7 @@ go get -u gorm.io/driver/sqlite
 
 ## 快速入门
 
-### Generics API (>= v1.30.0)
+### 泛型 API (>= v1.30.0)
 
 ```go
 package main
@@ -52,32 +52,32 @@ type Product struct {
 func main() {
   db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
   if err != nil {
-    panic("failed to connect database")
+    panic("连接数据库失败")
   }
 
   ctx := context.Background()
 
-  // Migrate the schema
+  // 自动建表
   db.AutoMigrate(&Product{})
 
-  // Create
+  // 创建
   err = gorm.G[Product](db).Create(ctx, &Product{Code: "D42", Price: 100})
 
-  // Read
-  product, err := gorm.G[Product](db).Where("id = ?", 1).First(ctx) // find product with integer primary key
-  products, err := gorm.G[Product](db).Where("code = ?", "D42").Find(ctx) // find product with code D42
+  // 查询
+  product, err := gorm.G[Product](db).Where("id = ?", 1).First(ctx) // 查找对应主键的产品
+  products, err := gorm.G[Product](db).Where("code = ?", "D42").Find(ctx) // 查找 code 为 D42 的所有产品
 
-  // Update - update product's price to 200
+  // 更新 - 将产品价格更新为 200
   err = gorm.G[Product](db).Where("id = ?", product.ID).Update(ctx, "Price", 200)
-  // Update - update multiple fields
+  // 更新 - 更新多个字段
   err = gorm.G[Product](db).Where("id = ?", product.ID).Updates(ctx, Product{Code: "D42", Price: 100})
 
-  // Delete - delete product
+  // 删除 - 删除产品
   err = gorm.G[Product](db).Where("id = ?", product.ID).Delete(ctx)
 }
 ```
 
-### Traditional API
+### 传统 API
 
 ```go
 package main
@@ -96,27 +96,27 @@ type Product struct {
 func main() {
   db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
   if err != nil {
-    panic("failed to connect database")
+    panic("连接数据库失败")
   }
 
-  // Migrate the schema
+  // 自动建表
   db.AutoMigrate(&Product{})
 
-  // Create
+  // 创建
   db.Create(&Product{Code: "D42", Price: 100})
 
-  // Read
+  // 查询
   var product Product
-  db.First(&product, 1) // find product with integer primary key
-  db.First(&product, "code = ?", "D42") // find product with code D42
+  db.First(&product, 1) // 查找对应主键的产品
+  db.First(&product, "code = ?", "D42") // 查找 code 为 D42 的所有产品
 
-  // Update - update product's price to 200
+  // 更新 - 将产品价格更新为 200
   db.Model(&product).Update("Price", 200)
-  // Update - update multiple fields
-  db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // non-zero fields
+  // 更新 - 更新多个字段
+db.Model(&product).Updates(Product{Price: 200, Code: "F42"}) // 仅更新非零字段
   db.Model(&product).Updates(map[string]interface{}{"Price": 200, "Code": "F42"})
 
-  // Delete - delete product
+  // 删除 - 删除产品
   db.Delete(&product, 1)
 }
 ```
