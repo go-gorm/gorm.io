@@ -211,6 +211,6 @@ users, err := query.Query[User](db).FilterByNameAndAge("jinzhu", 18).Find(ctx)
 
 本次发布是 GORM 在泛型支持与全新 `gorm` 命令工具方向上新的一步。 该系列功能我们已筹划许久，此次终于得以抽出时间，将其初步落地并面向社区发布。
 
-接下来，我们将持续优化和迭代泛型 API 体系、全新 `gorm` 命令工具，并重构和完善 gorm.io 的官方文档，为开发者带来更清晰、更高效的使用体验。
+接下来，我们将持续优化和迭代泛型 API 体系、增强 CLI 工具，并重构和完善 [gorm.io](https://gorm.io) 的官方文档，为开发者带来更清晰、更高效的使用体验。
 
 感谢 GORM 多年来众多使用者与 Sponsors 的支持。 GORM 过去 12 年的发展离不开你们 ❤️
