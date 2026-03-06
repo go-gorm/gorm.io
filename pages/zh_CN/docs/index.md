@@ -3,7 +3,7 @@ title: GORM 指南
 layout: page
 ---
 
-The fantastic ORM library for Golang aims to be developer friendly.
+一个致力于对开发者友好的优秀 Golang ORM 库。
 
 ## 特性
 
@@ -19,7 +19,7 @@ The fantastic ORM library for Golang aims to be developer friendly.
 * Auto Migration
 * 自定义 Logger
 * Generics API for type-safe queries and operations
-* Extendable, flexible plugin API: Database Resolver (multiple databases, read/write splitting) / Prometheus...
+* 可扩展且灵活的插件 API：数据库解析器（支持多数据库、读写分离）或 Prometheus 集成等
 * 每个特性都经过了测试的重重考验
 * 开发者友好
 
