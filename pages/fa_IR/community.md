@@ -43,16 +43,17 @@ layout: صفحه
 * [zapgorm - Uber's Zap logging driver for gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber's Zap logging driver for gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 * [gorm-newrelic-telemetry-plugin - A plugin to allow telemetry by NewRelic Go Agent for GORM](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
-* [Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
-* [Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
+* [sqlite - Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
+* [permify-gorm - Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
 * [gorm-cache - GORM query cache plugin](https://github.com/liyuan1125/gorm-cache)
 * [deepgorm - Nested map filtering](https://github.com/survivorbat/gorm-deep-filtering)
-* [Go ORM Helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
+* [go-orm-helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
 * [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
-* [DuckDB- GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
+* [duckdb - GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
 * [gorm4gaussdb - GORM GaussDB Driver](https://github.com/okyer/gorm4gaussdb)
-* [GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
+* [gorm-oracle - GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
+* [sqlite - The pure-Go SQLite driver for GORM](https://github.com/libtnb/sqlite)
 
 ## <span id="contribute">مشارکت در بهبود این صفحه</span>
 
