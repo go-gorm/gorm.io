@@ -10,16 +10,16 @@ layout: page
 ```go
 user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
-// Create a single record
+// 단일 레코드 생성
 ctx := context.Background()
-err := gorm.G[User](db).Create(ctx, &user) // pass pointer of data to Create
+err := gorm.G[User](db).Create(ctx, &user) // Create로 데이터 포인터 전달
 
-// Create with result
+// 결과와 함께 생성
 result := gorm.WithResult()
 err := gorm.G[User](db, result).Create(ctx, &user)
-user.ID             // returns inserted data's primary key
-result.Error        // returns error
-result.RowsAffected // returns inserted records count
+user.ID             // 삽입된 데이터의 기본 키 반환
+result.Error        // 에러 반환
+result.RowsAffected // 삽입된 레코드 수 반환
 ```
 
 ### Traditional API
@@ -29,12 +29,12 @@ user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()}
 
 result := db.Create(&user) // 생성할 데이터의 포인터 넘기기
 
-user.ID             // 입력된 데이터의 primary key를 반환합니다
-result.Error        // 에러를 반환합니다
-result.RowsAffected // 입력된 레코드의 개수를 반환합니다.
+user.ID             // 삽입된 데이터의 기본 키 반환
+result.Error        // 에러 반환
+result.RowsAffected // 삽입된 레코드 수 반환
 ```
 
-`Create()` 함수를 통해 여러 레코드를 동시에 생성할수도 있습니다.
+`Create()` 함수를 통해 여러 레코드를 동시에 생성할 수도 있습니다.
 ```go
 users := []*User{
     {Name: "Jinzhu", Age: 18, Birthday: time.Now()},
