@@ -43,16 +43,17 @@ layout: page
 * [zapgorm - Uber 的 Zap 日志驱动程序，适用版本gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Uber 的 Zap 日志驱动程序，适用版本gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 * [gorm-newrelic-telemetry-plugin - 在 GORM 使用 NewRelic Go Agent 来进行跟踪事务，跟踪数据库调用等](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
-* [纯 Go sqlite 驱动](https://github.com/glebarez/sqlite)
-* [关联用户的角色和权限](https://github.com/Permify/permify-gorm)
+* [sqlite - Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
+* [permify-gorm - Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
 * [gorm-cache - GORM 查询缓存插件](https://github.com/liyuan1125/gorm-cache)
 * [deepgorm - 嵌套映射过滤](https://github.com/survivorbat/gorm-deep-filtering)
-* [Go ORM 助手 - GORM 代码补全 Goland 插件](https://github.com/maiqingqiang/go-orm-helper)
+* [go-orm-helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - GORM DynamoDB Driver](https://github.com/miyamo2/dynmgrm)
 * [immugorm - GORM immudb driver](https://github.com/codenotary/immugorm)
-* [DuckDB- GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
+* [duckdb - GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
 * [gorm4gaussdb - GORM GaussDB Driver](https://github.com/okyer/gorm4gaussdb)
-* [GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
+* [gorm-oracle - GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
+* [sqlite - The pure-Go SQLite driver for GORM](https://github.com/libtnb/sqlite)
 
 ## <span id="contribute">完善本页面</span>
 

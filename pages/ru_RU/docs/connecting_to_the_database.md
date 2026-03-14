@@ -228,8 +228,9 @@ db, err := gorm.Open(oracle.Open(dataSourceName), &gorm.Config{})
 
 ```go
 import (
-  "gorm.io/driver/sqlite" // Sqlite драйвер основанный на CGO
-  // "github.com/glebarez/sqlite" // Чистый go SQLite драйвер, смотрите детали https://github.com/glebarez/sqlite
+  "gorm.io/driver/sqlite" // Sqlite driver based on CGO
+  // "github.com/glebarez/sqlite" // Pure-Go SQLite driver, checkout https://github.com/glebarez/sqlite for details
+  // "github.com/libtnb/sqlite" // Pure-Go SQLite driver, checkout https://github.com/libtnb/sqlite for details
   "gorm.io/gorm"
 )
 

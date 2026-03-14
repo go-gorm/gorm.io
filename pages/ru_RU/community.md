@@ -43,16 +43,17 @@ layout: страница
 * [zapgorm - Драйвер Zap для логирования в Gorm 1 (<v1.20)](https://github.com/moul/zapgorm)
 * [zapgorm2 - Драйвер Zap для логирования в Gorm 2 (>=v1.20)](https://github.com/moul/zapgorm2)
 * [gorm-newrelic-telemetry-plugin - Плагин телеметрии для Gorm с помощью NewRelic Go Agent](https://github.com/rafaelhl/gorm-newrelic-telemetry-plugin)
-* [Sqlite драйвер на чистом Go](https://github.com/glebarez/sqlite)
-* [Связь пользователей с ролями и разрешениями](https://github.com/Permify/permify-gorm)
+* [sqlite - Pure-Go sqlite driver](https://github.com/glebarez/sqlite)
+* [permify-gorm - Associate users with roles and permissions](https://github.com/Permify/permify-gorm)
 * [gorm-cache - Плагин для кэширования запросов Gorm](https://github.com/liyuan1125/gorm-cache)
 * [deepgorm - фильтрация вложенной карты](https://github.com/survivorbat/gorm-deep-filtering)
-* [Go ORM Helper - Плагин Gorm для автодополнения кода в Goland](https://github.com/maiqingqiang/go-orm-helper)
+* [go-orm-helper - GORM Code Completion Goland Plugin](https://github.com/maiqingqiang/go-orm-helper)
 * [dynmgrm - Драйвер Gorm DynamoDB](https://github.com/miyamo2/dynmgrm)
 * [immugorm - Драйвер Gorm immudb](https://github.com/codenotary/immugorm)
-* [DuckDB - Драйвер Gorm DuckDB](https://github.com/alifiroozi80/duckdb)
+* [duckdb - GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
 * [gorm4gaussdb - Драйвер Gorm GaussDB](https://github.com/okyer/gorm4gaussdb)
-* [GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
+* [gorm-oracle - GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
+* [sqlite - The pure-Go SQLite driver for GORM](https://github.com/libtnb/sqlite)
 
 ## <span id="contribute">Внести изменения в эту страницу</span>
 
