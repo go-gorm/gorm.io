@@ -96,7 +96,7 @@ rows, err := gorm.G[User](db).Where("id = ?", 111).Updates(ctx, User{Name: "hell
 // UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 
 // Update attributes with `map`
-rows, err := gorm.G[User](db).Where("id = ?", 111).Updates(ctx, map[string]interface{}{"name": "hello", "age": 18, "active": false})
+rows, err := gorm.G[map[string]interface{}](db).Table("users").Where("id = ?", 111).Updates(ctx, map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 ```
 
