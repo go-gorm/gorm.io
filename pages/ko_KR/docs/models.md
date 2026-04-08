@@ -103,17 +103,17 @@ If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply 
 
 ```go
 type User struct {
-  CreatedAt time.Time // Set to current time if it is zero on creating
-  UpdatedAt int       // Set to current unix seconds on updating or if it is zero on creating
-  Updated   int64 `gorm:"autoUpdateTime:nano"` // Use unix nano seconds as updating time
-  Updated   int64 `gorm:"autoUpdateTime:milli"`// Use unix milli seconds as updating time
-  Created   int64 `gorm:"autoCreateTime"`      // Use unix seconds as creating time
+  CreatedAt time.Time // 생성 시 값이 0이면 현재 시각으로 설정됨
+  UpdatedAt int       // 수정 시 현재 Unix 초로 설정되며, 생성 시 값이 0이어도 현재 시각으로 설정됨
+  Updated   int64 `gorm:"autoUpdateTime:nano"`  // 수정 시각을 Unix 나노초로 저장
+  Updated   int64 `gorm:"autoUpdateTime:milli"` // 수정 시각을 Unix 밀리초로 저장
+  Created   int64 `gorm:"autoCreateTime"`       // 생성 시각을 Unix 초로 저장
 }
 ```
 
 ### <span id="embedded_struct">Embedded Struct</span>
 
-For anonymous fields, GORM will include its fields into its parent struct, for example:
+익명 필드의 경우, GORM은 그 필드의 멤버들을 상위 구조체의 필드처럼 포함해 처리한다. 예를 들면:
 
 ```go
 type Author struct {
@@ -126,7 +126,7 @@ type Blog struct {
   ID      int
   Upvotes int32
 }
-// equals
+// 동일
 type Blog struct {
   ID      int64
   Name    string
@@ -135,7 +135,7 @@ type Blog struct {
 }
 ```
 
-For a normal struct field, you can embed it with the tag `embedded`, for example:
+일반 구조체 필드에 대해, `embedded` 태그를 통해 임베딩할 수 있다. 예를 들면:
 
 ```go
 type Author struct {
@@ -177,29 +177,29 @@ type Blog struct {
 
 ### <span id="tags">Fields Tags</span>
 
-Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however `camelCase` is preferred. If multiple tags are used they should be separated by a semicolon (`;`). Characters that have special meaning to the parser can be escaped with a backslash (`\`) allowing them to be used as parameter values.
+모델을 선언할 때 태그 사용은 선택 사항이며, GORM은 다음과 같은 태그를 지원한다. 태그는 대소문자를 구분하지 않지만, `camelCase`가 권장된다. 여러 태그를 함께 사용할 경우에는 세미콜론(`;`)으로 구분해야 한다. Characters that have special meaning to the parser can be escaped with a backslash (`\`) allowing them to be used as parameter values.
 
 | 태그 이름                  | 설명                                                                                                                                                                                                                                                                                                               |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | column                 | column 이름                                                                                                                                                                                                                                                                                                        |
 | type                   | column 데이터 유형, 호환 가능한 일반 유형 (예: bool, int, uint, float, string, time, bytes)을 사용하는 것을 선호합니다. 이는 모든 데이터베이스에서 작동하며 `not null`, `size`, `autoIncrement`와 같은 태그들과 함께 사용할 수 있습니다.<br/> varbinary (8)과 같은 특정 데이터베이스의 데이터 유형도 지원됩니다. 단, 사용하게 된다면 전체 타입을 명시해주어야 합니다. 예: MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT |
-| serializer             | specifies serializer for how to serialize and deserialize data into db, e.g: `serializer:json/gob/unixtime`                                                                                                                                                                                                      |
+| serializer             | 데이터를 데이터베이스에 어떻게 직렬화하고 역직렬화할지 지정하는 serializer이다. e.g: `serializer:json/gob/unixtime`                                                                                                                                                                                                                             |
 | size                   | specifies column data size/length, e.g: `size:256`                                                                                                                                                                                                                                                               |
-| primaryKey             | specifies column as primary key                                                                                                                                                                                                                                                                                  |
+| primaryKey             | 컬럼을 기본 키로 지정한다                                                                                                                                                                                                                                                                                                   |
 | unique                 | specifies column as unique                                                                                                                                                                                                                                                                                       |
 | default                | specifies column default value                                                                                                                                                                                                                                                                                   |
 | precision              | specifies column precision                                                                                                                                                                                                                                                                                       |
 | scale                  | specifies column scale                                                                                                                                                                                                                                                                                           |
 | not null               | specifies column as NOT NULL                                                                                                                                                                                                                                                                                     |
 | autoIncrement          | specifies column auto incrementable                                                                                                                                                                                                                                                                              |
-| autoIncrementIncrement | auto increment step, controls the interval between successive column values                                                                                                                                                                                                                                      |
+| autoIncrementIncrement | 자동 증가 단계(step)를 지정하며, 연속된 컬럼 값 사이의 증가 간격을 제어합니다                                                                                                                                                                                                                                                                  |
 | embedded               | embed the field                                                                                                                                                                                                                                                                                                  |
 | embeddedPrefix         | column name prefix for embedded fields                                                                                                                                                                                                                                                                           |
 | autoCreateTime         | track current time when creating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoCreateTime:nano`                                                                                                                                            |
 | autoUpdateTime         | track current time when creating/updating, for `int` fields, it will track unix seconds, use value `nano`/`milli` to track unix nano/milli seconds, e.g: `autoUpdateTime:milli`                                                                                                                                  |
-| index                  | create index with options, use same name for multiple fields creates composite indexes, refer [Indexes](indexes.html) for details                                                                                                                                                                                |
+| index                  | 옵션을 지정해 인덱스를 생성합니다. 여러 필드에 같은 이름을 사용하면 복합 인덱스가 생성됩니다. 자세한 내용은 [Indexes](indexes.html)를 참고하세요                                                                                                                                                                                                                     |
 | uniqueIndex            | same as `index`, but create uniqued index                                                                                                                                                                                                                                                                        |
-| check                  | creates check constraint, eg: `check:age > 13`, refer [Constraints](constraints.html)                                                                                                                                                                                                                         |
+| check                  | check 제약 조건을 생성합니다. eg: `check:age > 13`, 자세한 내용은 [Constraints](constraints.html)를 참고하세요                                                                                                                                                                                                                      |
 | <-                     | set field's write permission, `<-:create` create-only field, `<-:update` update-only field, `<-:false` no write permission, `<-` create and update permission                                                                                                                                        |
 | ->                     | set field's read permission, `->:false` no read permission                                                                                                                                                                                                                                                    |
 | -                      | ignore this field, `-` no read/write permission, `-:migration` no migrate permission, `-:all` no read/write/migrate permission                                                                                                                                                                                   |
