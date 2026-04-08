@@ -9,7 +9,7 @@ GORM simplifies database interactions by mapping Go structs to database tables. 
 
 Models are defined using normal structs. These structs can contain fields with basic Go types, pointers or aliases of these types, or even custom types, as long as they implement the [Scanner](https://pkg.go.dev/database/sql/?tab=doc#Scanner) and [Valuer](https://pkg.go.dev/database/sql/driver#Valuer) interfaces from the `database/sql` package
 
-Consider the following example of a `User` model:
+아래는 `User` 모델의 예시입니다:
 
 ```go
 type User struct {
@@ -44,7 +44,7 @@ GORM에서 모델 선언의 기본적인 기능 외에도, serializer 태그를 
 
 3. **Column Names**: GORM automatically converts struct field names to `snake_case` for column names in the database.
 
-4. **Timestamp Fields**: GORM uses fields named `CreatedAt` and `UpdatedAt` to automatically track the creation and update times of records.
+4. **Timestamp Fields**: GORM은 레코드의 생성과 수정 시각을 기록하기 위해 `CreatedAt`과 `UpdatedAt`을 사용합니다.
 
 Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don't fit your requirements. You can learn more about customizing these conventions in GORM's documentation on [conventions](conventions.html).
 
@@ -62,7 +62,7 @@ type Model struct {
 }
 ```
 
-- **Embedding in Your Struct**: You can embed `gorm.Model` directly in your structs to include these fields automatically. This is useful for maintaining consistency across different models and leveraging GORM's built-in conventions, refer [Embedded Struct](#embedded_struct)
+- **구조체에 임베딩하기**: `gorm.Model`을 구조체에 직접 임베딩하면 해당 필드들을 자동으로 포함시킬 수 있습니다. This is useful for maintaining consistency across different models and leveraging GORM's built-in conventions, refer [Embedded Struct](#embedded_struct)
 
 - **Fields Included**:
   - `ID`: A unique identifier for each record (primary key).
