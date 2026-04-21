@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities. 모델 선언Models are defined">
+  <meta name="description" content="GORM은 Go 구조체와 데이터베이스 테이블을 매핑해 데이터베이스와의 상호작용을 쉽게 만들어줍니다. GORM의 기능을 제대로 활용하기 위해서는 모델 선언을 이해하는 것이 핵심입니다. 모델 선언모델은 일반적인 구조체를 사용해 정의합니다. 이 구조체들은 기본 Go 타입의 필드, 그 타입들에 대한 포인터나 별칭(alias) 타입의 필드, 또는 database&#x2F;s">
 <meta property="og:type" content="website">
 <meta property="og:title" content="모델 선언">
 <meta property="og:url" content="https://gorm.io/ko_KR/docs/models.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities. 모델 선언Models are defined">
+<meta property="og:description" content="GORM은 Go 구조체와 데이터베이스 테이블을 매핑해 데이터베이스와의 상호작용을 쉽게 만들어줍니다. GORM의 기능을 제대로 활용하기 위해서는 모델 선언을 이해하는 것이 핵심입니다. 모델 선언모델은 일반적인 구조체를 사용해 정의합니다. 이 구조체들은 기본 Go 타입의 필드, 그 타입들에 대한 포인터나 별칭(alias) 타입의 필드, 또는 database&#x2F;s">
 <meta property="og:locale" content="ko_KR">
-<meta property="article:published_time" content="2026-03-30T02:28:03.780Z">
-<meta property="article:modified_time" content="2026-03-30T02:28:03.780Z">
+<meta property="article:published_time" content="2026-04-21T13:45:03.477Z">
+<meta property="article:modified_time" content="2026-04-21T13:45:03.477Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -141,43 +141,43 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>GORM simplifies database interactions by mapping Go structs to database tables. Understanding how to declare models in GORM is fundamental for leveraging its full capabilities.</p>
-<h2 id="모델-선언" class="article-heading"><a href="#모델-선언" class="headerlink" title="모델 선언"></a>모델 선언<a class="article-anchor" href="#모델-선언" aria-hidden="true"></a></h2><p>Models are defined using normal structs. These structs can contain fields with basic Go types, pointers or aliases of these types, or even custom types, as long as they implement the <a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/?tab=doc#Scanner">Scanner</a> and <a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/driver#Valuer">Valuer</a> interfaces from the <code>database/sql</code> package</p>
-<p>Consider the following example of a <code>User</code> model:</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID           <span class="type">uint</span>           <span class="comment">// Standard field for the primary key</span></span><br><span class="line">  Name         <span class="type">string</span>         <span class="comment">// A regular string field</span></span><br><span class="line">  Email        *<span class="type">string</span>        <span class="comment">// A pointer to a string, allowing for null values</span></span><br><span class="line">  Age          <span class="type">uint8</span>          <span class="comment">// An unsigned 8-bit integer</span></span><br><span class="line">  Birthday     *time.Time     <span class="comment">// A pointer to time.Time, can be null</span></span><br><span class="line">  MemberNumber sql.NullString <span class="comment">// Uses sql.NullString to handle nullable strings</span></span><br><span class="line">  ActivatedAt  sql.NullTime   <span class="comment">// Uses sql.NullTime for nullable time fields</span></span><br><span class="line">  CreatedAt    time.Time      <span class="comment">// Automatically managed by GORM for creation time</span></span><br><span class="line">  UpdatedAt    time.Time      <span class="comment">// Automatically managed by GORM for update time</span></span><br><span class="line">  ignored      <span class="type">string</span>         <span class="comment">// fields that aren't exported are ignored</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+                <html><head></head><body><p>GORM은 Go 구조체와 데이터베이스 테이블을 매핑해 데이터베이스와의 상호작용을 쉽게 만들어줍니다. GORM의 기능을 제대로 활용하기 위해서는 모델 선언을 이해하는 것이 핵심입니다.</p>
+<h2 id="모델-선언" class="article-heading"><a href="#모델-선언" class="headerlink" title="모델 선언"></a>모델 선언<a class="article-anchor" href="#모델-선언" aria-hidden="true"></a></h2><p>모델은 일반적인 구조체를 사용해 정의합니다. 이 구조체들은 기본 Go 타입의 필드, 그 타입들에 대한 포인터나 별칭(alias) 타입의 필드, 또는 <code>database/sql</code> 패키지의  <a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/?tab=doc#Scanner">Scanner</a>와  <a target="_blank" rel="noopener" href="https://pkg.go.dev/database/sql/driver#Valuer">Valuer</a>  인터페이스를 구현한 커스텀 타입의 필드를 포함할 수 있습니다.</p>
+<p>아래는 <code>User</code> 모델의 예시입니다:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  ID           <span class="type">uint</span>           <span class="comment">// 기본 키로 사용하는 표준 필드</span></span><br><span class="line">  Name         <span class="type">string</span>         <span class="comment">// 일반적인 문자열 필드</span></span><br><span class="line">  Email        *<span class="type">string</span>        <span class="comment">// null 값을 허용하는 문자열 포인터 필드</span></span><br><span class="line">  Age          <span class="type">uint8</span>          <span class="comment">// 부호 없는 8비트 정수 필드</span></span><br><span class="line">  Birthday     *time.Time     <span class="comment">// null이 될 수 있는 time.Time 포인터 필드</span></span><br><span class="line">  MemberNumber sql.NullString <span class="comment">// nullable 문자열 처리를 위해 sql.NullString 사용</span></span><br><span class="line">  ActivatedAt  sql.NullTime   <span class="comment">// nullable 시간 필드를 위해 sql.NullTime 사용</span></span><br><span class="line">  CreatedAt    time.Time      <span class="comment">// 생성 시각을 위해 GORM이 자동으로 관리하는 필드</span></span><br><span class="line">  UpdatedAt    time.Time      <span class="comment">// 수정 시각을 위해 GORM이 자동으로 관리하는 필드</span></span><br><span class="line">  ignored      <span class="type">string</span>         <span class="comment">// export되지 않은 필드는 무시됨</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>In this model:</p>
+<p>이 모델에서:</p>
 <ul>
-<li>Basic data types like <code>uint</code>, <code>string</code>, and <code>uint8</code> are used directly.</li>
-<li>Pointers to types like <code>*string</code> and <code>*time.Time</code> indicate nullable fields.</li>
-<li><code>sql.NullString</code> and <code>sql.NullTime</code> from the <code>database/sql</code> package are used for nullable fields with more control.</li>
-<li><code>CreatedAt</code> and <code>UpdatedAt</code> are special fields that GORM automatically populates with the current time when a record is created or updated.</li>
-<li>Non-exported fields (starting with a small letter) are not mapped</li>
+<li><code>uint</code>, <code>string</code>,  <code>uint8</code> 과 같은 기본 타입들은 그대로 직접 사용됩니다.</li>
+<li><code>*string</code>, <code>*time.Time</code> 과 같은 포인터 타입은 nullable 필드를 나타냅니다.</li>
+<li><code>database/sql</code> 패키지의 <code>sql.NullString</code>, <code>sql.NullTime</code> 는 nullable 필드를 보다 세밀하게 다루기 위해 사용됩니다.</li>
+<li><code>CreatedAt</code>과 <code>UpdatedAt</code>은 GORM이 레코드가 생성될 때 자동으로 현재 시각을 기입하는 특수한 필드입니다.</li>
+<li>(소문자로 시작하는) export 되지 않은 필드들은 매핑되지 않습니다</li>
 </ul>
-<p>In addition to the fundamental features of model declaration in GORM, it’s important to highlight the support for serialization through the serializer tag. This feature enhances the flexibility of how data is stored and retrieved from the database, especially for fields that require custom serialization logic, See <a href="serializer.html">Serializer</a> for a detailed explanation</p>
+<p>GORM에서 모델 선언의 기본적인 기능 외에도, serializer 태그를 통한 직렬화 또한 중요한 요소입니다. 특히 커스텀 직렬화가 필요한 필드들에서, 이 기능은 데이터베이스에서 데이터를 가져오고 저장하는 방식의 유연성을 증가시킵니다. 자세한 설명은 <a href="serializer.html">Serializer</a>를 참고하세요</p>
 <h3 id="규칙" class="article-heading"><a href="#규칙" class="headerlink" title="규칙"></a>규칙<a class="article-anchor" href="#규칙" aria-hidden="true"></a></h3><ol>
-<li><p><strong>Primary Key</strong>: GORM uses a field named <code>ID</code> as the default primary key for each model.</p>
+<li><p><strong>Primary Key</strong>: 각각의 모델들에 대해 GORM은 <code>ID</code>라는 이름의 필드를 기본 키로 사용합니다.</p>
 </li>
-<li><p><strong>Table Names</strong>: By default, GORM converts struct names to <code>snake_case</code> and pluralizes them for table names. For instance, a <code>User</code> struct becomes <code>users</code> in the database, and a <code>GormUserName</code> becomes <code>gorm_user_names</code>.</p>
+<li><p><strong>Table Names</strong>: 기본적으로, GORM은 구조체 이름을 <code>snake_case</code>로 변환하고 복수형으로 변환해 테이블명으로 사용합니다. 예를 들어, <code>User</code> 구조체는 데이터베이스에 <code>users</code> 테이블로 변환되고, <code>GormUserName</code>은 <code>gorm_user_names</code> 테이블이 됩니다.</p>
 </li>
-<li><p><strong>Column Names</strong>: GORM automatically converts struct field names to <code>snake_case</code> for column names in the database.</p>
+<li><p><strong>Column Names</strong>: GORM은 구조체의 필드 이름을 <code>snake_case</code>로 변환하여 데이터베이스의 컬럼명으로 사용합니다.</p>
 </li>
-<li><p><strong>Timestamp Fields</strong>: GORM uses fields named <code>CreatedAt</code> and <code>UpdatedAt</code> to automatically track the creation and update times of records.</p>
+<li><p><strong>Timestamp Fields</strong>: GORM은 레코드의 생성과 수정 시각을 기록하기 위해 <code>CreatedAt</code>과 <code>UpdatedAt</code>을 사용합니다.</p>
 </li>
 </ol>
-<p>Following these conventions can greatly reduce the amount of configuration or code you need to write. However, GORM is also flexible, allowing you to customize these settings if the default conventions don’t fit your requirements. You can learn more about customizing these conventions in GORM’s documentation on <a href="conventions.html">conventions</a>.</p>
-<h3 id="gorm-Model" class="article-heading"><a href="#gorm-Model" class="headerlink" title="gorm.Model"></a><code>gorm.Model</code><a class="article-anchor" href="#gorm-Model" aria-hidden="true"></a></h3><p>GORM provides a predefined struct named <code>gorm.Model</code>, which includes commonly used fields:</p>
+<p>이러한 관례를 따르면 직접 작성해야 하는 설정이나 코드의 양을 크게 줄일 수 있습니다. 그럼에도 불구하고, GORM은 이 기본 관례가 당신의 요구 사항과 맞지 않을 때 설정을 수정할 수 있도록 유연함을 제공합니다. GORM 문서의 <a href="conventions.html">conventions</a>에서 이 관례들을 수정하는 방법에 대해 알 수 있습니다.</p>
+<h3 id="gorm-Model" class="article-heading"><a href="#gorm-Model" class="headerlink" title="gorm.Model"></a><code>gorm.Model</code><a class="article-anchor" href="#gorm-Model" aria-hidden="true"></a></h3><p>GORM은 자주 사용되는 필드를 포함한 미리 정의된 <code>gorm.Model</code> 구조체를 제공합니다:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// gorm.Model definition</span></span><br><span class="line"><span class="keyword">type</span> Model <span class="keyword">struct</span> {</span><br><span class="line">  ID        <span class="type">uint</span>           <span class="string">`gorm:"primaryKey"`</span></span><br><span class="line">  CreatedAt time.Time</span><br><span class="line">  UpdatedAt time.Time</span><br><span class="line">  DeletedAt gorm.DeletedAt <span class="string">`gorm:"index"`</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <ul>
-<li><p><strong>Embedding in Your Struct</strong>: You can embed <code>gorm.Model</code> directly in your structs to include these fields automatically. This is useful for maintaining consistency across different models and leveraging GORM’s built-in conventions, refer <a href="#embedded_struct">Embedded Struct</a></p>
+<li><p><strong>구조체에 임베딩하기</strong>: <code>gorm.Model</code>을 구조체에 직접 임베딩하면 해당 필드들을 자동으로 포함시킬 수 있습니다. 이는 여러 모델 간의 일관성을 유지하고 GORM에 내장된 관례들을 활용하는데 유용합니다. 자세한 내용은 <a href="#embedded_struct">Embedded Struct</a>를 참고하세요</p>
 </li>
-<li><p><strong>Fields Included</strong>:</p>
+<li><p><strong>포함된 필드</strong>:</p>
 <ul>
-<li><code>ID</code>: A unique identifier for each record (primary key).</li>
-<li><code>CreatedAt</code>: Automatically set to the current time when a record is created.</li>
-<li><code>UpdatedAt</code>: Automatically updated to the current time whenever a record is updated.</li>
-<li><code>DeletedAt</code>: Used for soft deletes (marking records as deleted without actually removing them from the database).</li>
+<li><code>ID</code>: 각각의 레코드에 대한 고유 식별자 (기본 키).</li>
+<li><code>CreatedAt</code>: 레코드 생성 시 자동으로 설정되는 현재 시각.</li>
+<li><code>UpdatedAt</code>: 레코드 수정 시 자동으로 설정되는 현재 시각.</li>
+<li><code>DeletedAt</code>: soft deletes에 사용 (레코드를 실제로 데이터베이스에서 삭제하는 대신 레코드에 삭제를 기록).</li>
 </ul>
 </li>
 </ul>
@@ -187,22 +187,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:create"`</span> <span class="comment">// 읽기/생성 허용</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:update"`</span> <span class="comment">// 읽기/수정 허용</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-"`</span>        <span class="comment">// 읽기/쓰기 허용 (생성 및 수정)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"&lt;-:false"`</span>  <span class="comment">// 읽기전용, 쓰기 불가능</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;"`</span>        <span class="comment">// 읽기허용 (설정되지 않은경우 쓰기 불가능)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;;&lt;-:create"`</span> <span class="comment">//읽기/생성 허용</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-&gt;:false;&lt;-:create"`</span> <span class="comment">// 생성만 가능 (읽기 불가능)</span></span><br><span class="line">  Name <span class="type">string</span> <span class="string">`gorm:"-"`</span>  <span class="comment">// gorm 에서 이 필드 무시</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Creating-Updating-Time-Unix-Milli-Nano-Seconds-Tracking-생성-업데이트-시-시간-유닉스시간-밀리-나노-기록" class="article-heading"><a href="#Creating-Updating-Time-Unix-Milli-Nano-Seconds-Tracking-생성-업데이트-시-시간-유닉스시간-밀리-나노-기록" class="headerlink" title="Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking 생성/업데이트 시 시간/유닉스시간(밀리/나노) 기록"></a><name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking 생성/업데이트 시 시간/유닉스시간(밀리/나노) 기록</name><a class="article-anchor" href="#Creating-Updating-Time-Unix-Milli-Nano-Seconds-Tracking-생성-업데이트-시-시간-유닉스시간-밀리-나노-기록" aria-hidden="true"></a></h3><p>GORM use <code>CreatedAt</code>, <code>UpdatedAt</code> to track creating/updating time by convention, and GORM will set the  <a href="gorm_config.html#now_func">current time</a> when creating/updating if the fields are defined</p>
-<p>To use fields with a different name, you can configure those fields with tag <code>autoCreateTime</code>, <code>autoUpdateTime</code></p>
-<p>If you prefer to save UNIX (milli/nano) seconds instead of time, you can simply change the field’s data type from <code>time.Time</code> to <code>int</code></p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  CreatedAt time.Time <span class="comment">// Set to current time if it is zero on creating</span></span><br><span class="line">  UpdatedAt <span class="type">int</span>       <span class="comment">// Set to current unix seconds on updating or if it is zero on creating</span></span><br><span class="line">  Updated   <span class="type">int64</span> <span class="string">`gorm:"autoUpdateTime:nano"`</span> <span class="comment">// Use unix nano seconds as updating time</span></span><br><span class="line">  Updated   <span class="type">int64</span> <span class="string">`gorm:"autoUpdateTime:milli"`</span><span class="comment">// Use unix milli seconds as updating time</span></span><br><span class="line">  Created   <span class="type">int64</span> <span class="string">`gorm:"autoCreateTime"`</span>      <span class="comment">// Use unix seconds as creating time</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="Creating-Updating-Time-Unix-Milli-Nano-Seconds-Tracking-생성-업데이트-시-시간-유닉스시간-밀리-나노-기록" class="article-heading"><a href="#Creating-Updating-Time-Unix-Milli-Nano-Seconds-Tracking-생성-업데이트-시-시간-유닉스시간-밀리-나노-기록" class="headerlink" title="Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking 생성/업데이트 시 시간/유닉스시간(밀리/나노) 기록"></a><name id="time_tracking">Creating/Updating Time/Unix (Milli/Nano) Seconds Tracking 생성/업데이트 시 시간/유닉스시간(밀리/나노) 기록</name><a class="article-anchor" href="#Creating-Updating-Time-Unix-Milli-Nano-Seconds-Tracking-생성-업데이트-시-시간-유닉스시간-밀리-나노-기록" aria-hidden="true"></a></h3><p>GORM은 관례적으로 <code>CreatedAt</code>, <code>UpdatedAt</code>을 생성/수정을 추적하는데 사용합니다. 이 필드들이 정의되어 있으면 GORM은 <a href="gorm_config.html#now_func">current time</a>을 설정합니다</p>
+<p>필드명을 다르게 하려면, 해당 필드들에 대해 <code>autoCreateTime</code>, <code>autoUpdateTime</code> 태그를 사용해 설정할 수 있습니다</p>
+<p>만약 당신이 시각 대신에 UNIX 초(또는 밀리초, 나노초)를 선호한다면, 단순히 <code>time.Time</code> 대신에 <code>int</code>를 필드의 자료형으로 사용할 수 있습니다</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">  CreatedAt time.Time <span class="comment">// 생성 시 값이 0이면 현재 시각으로 설정됨</span></span><br><span class="line">  UpdatedAt <span class="type">int</span>       <span class="comment">// 수정 시 현재 Unix 초로 설정되며, 생성 시 값이 0이어도 현재 시각으로 설정됨</span></span><br><span class="line">  Updated   <span class="type">int64</span> <span class="string">`gorm:"autoUpdateTime:nano"`</span>  <span class="comment">// 수정 시각을 Unix 나노초로 저장</span></span><br><span class="line">  Updated   <span class="type">int64</span> <span class="string">`gorm:"autoUpdateTime:milli"`</span> <span class="comment">// 수정 시각을 Unix 밀리초로 저장</span></span><br><span class="line">  Created   <span class="type">int64</span> <span class="string">`gorm:"autoCreateTime"`</span>       <span class="comment">// 생성 시각을 Unix 초로 저장</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<h3 id="Embedded-Struct" class="article-heading"><a href="#Embedded-Struct" class="headerlink" title="Embedded Struct"></a><span id="embedded_struct">Embedded Struct</span><a class="article-anchor" href="#Embedded-Struct" aria-hidden="true"></a></h3><p>For anonymous fields, GORM will include its fields into its parent struct, for example:</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Author <span class="keyword">struct</span> {</span><br><span class="line">  Name  <span class="type">string</span></span><br><span class="line">  Email <span class="type">string</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  Author</span><br><span class="line">  ID      <span class="type">int</span></span><br><span class="line">  Upvotes <span class="type">int32</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// equals</span></span><br><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  ID      <span class="type">int64</span></span><br><span class="line">  Name    <span class="type">string</span></span><br><span class="line">  Email   <span class="type">string</span></span><br><span class="line">  Upvotes <span class="type">int32</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<h3 id="Embedded-Struct" class="article-heading"><a href="#Embedded-Struct" class="headerlink" title="Embedded Struct"></a><span id="embedded_struct">Embedded Struct</span><a class="article-anchor" href="#Embedded-Struct" aria-hidden="true"></a></h3><p>익명 필드의 경우, GORM은 그 필드의 멤버들을 상위 구조체의 필드처럼 포함해 처리합니다. 예를 들면:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Author <span class="keyword">struct</span> {</span><br><span class="line">  Name  <span class="type">string</span></span><br><span class="line">  Email <span class="type">string</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  Author</span><br><span class="line">  ID      <span class="type">int</span></span><br><span class="line">  Upvotes <span class="type">int32</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// 동일</span></span><br><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  ID      <span class="type">int64</span></span><br><span class="line">  Name    <span class="type">string</span></span><br><span class="line">  Email   <span class="type">string</span></span><br><span class="line">  Upvotes <span class="type">int32</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>For a normal struct field, you can embed it with the tag <code>embedded</code>, for example:</p>
+<p>일반 구조체 필드에 대해, <code>embedded</code> 태그를 통해 임베딩할 수 있습니다. 예를 들면:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Author <span class="keyword">struct</span> {</span><br><span class="line">    Name  <span class="type">string</span></span><br><span class="line">    Email <span class="type">string</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  ID      <span class="type">int</span></span><br><span class="line">  Author  Author <span class="string">`gorm:"embedded"`</span></span><br><span class="line">  Upvotes <span class="type">int32</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// equals</span></span><br><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  ID    <span class="type">int64</span></span><br><span class="line">    Name  <span class="type">string</span></span><br><span class="line">    Email <span class="type">string</span></span><br><span class="line">  Upvotes  <span class="type">int32</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
-<p>And you can use tag <code>embeddedPrefix</code> to add prefix to embedded fields’ db name, for example:</p>
+<p>그리고 <code>embeddedPrefix</code> 태그를 사용하면 임베딩된 필드의 데이터베이스 컬럼명 앞에 접두사를 붙일 수 있습니다. 예를 들면:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  ID      <span class="type">int</span></span><br><span class="line">  Author  Author <span class="string">`gorm:"embedded;embeddedPrefix:author_"`</span></span><br><span class="line">  Upvotes <span class="type">int32</span></span><br><span class="line">}</span><br><span class="line"><span class="comment">// equals</span></span><br><span class="line"><span class="keyword">type</span> Blog <span class="keyword">struct</span> {</span><br><span class="line">  ID          <span class="type">int64</span></span><br><span class="line">    AuthorName  <span class="type">string</span></span><br><span class="line">    AuthorEmail <span class="type">string</span></span><br><span class="line">  Upvotes     <span class="type">int32</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 
-<h3 id="Fields-Tags" class="article-heading"><a href="#Fields-Tags" class="headerlink" title="Fields Tags"></a><span id="tags">Fields Tags</span><a class="article-anchor" href="#Fields-Tags" aria-hidden="true"></a></h3><p>Tags are optional to use when declaring models, GORM supports the following tags: Tags are case insensitive, however <code>camelCase</code> is preferred. If multiple tags are used they should be separated by a semicolon (<code>;</code>). Characters that have special meaning to the parser can be escaped with a backslash (<code>\</code>) allowing them to be used as parameter values.</p>
+<h3 id="Fields-Tags" class="article-heading"><a href="#Fields-Tags" class="headerlink" title="Fields Tags"></a><span id="tags">Fields Tags</span><a class="article-anchor" href="#Fields-Tags" aria-hidden="true"></a></h3><p>모델을 선언할 때 태그 사용은 선택 사항이며, GORM은 다음과 같은 태그를 지원합니다. 태그는 대소문자를 구분하지 않지만, <code>camelCase</code>가 권장됩니다. 여러 태그를 함께 사용할 경우에는 세미콜론(<code>;</code>)으로 구분해야 합니다. 파서에서 특별한 의미를 가지는 문자는 백슬래시(<code>\</code>)로 이스케이프해서 파라미터 값으로 사용할 수 있습니다.</p>
 <table>
 <thead>
 <tr>
@@ -220,90 +220,90 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </tr>
 <tr>
 <td>serializer</td>
-<td>specifies serializer for how to serialize and deserialize data into db, e.g: <code>serializer:json/gob/unixtime</code></td>
+<td>데이터를 데이터베이스에 어떻게 직렬화하고 역직렬화할지 지정하는 serializer입니다. e.g: <code>serializer:json/gob/unixtime</code></td>
 </tr>
 <tr>
 <td>size</td>
-<td>specifies column data size/length, e.g: <code>size:256</code></td>
+<td>컬럼의 데이터 크기나 길이를 지정합니다. e.g: <code>size:256</code></td>
 </tr>
 <tr>
 <td>primaryKey</td>
-<td>specifies column as primary key</td>
+<td>컬럼을 기본 키로 지정합니다</td>
 </tr>
 <tr>
 <td>unique</td>
-<td>specifies column as unique</td>
+<td>컬럼을 고유 값으로 지정합니다</td>
 </tr>
 <tr>
 <td>default</td>
-<td>specifies column default value</td>
+<td>컬럼에 기본 값을 지정합니다</td>
 </tr>
 <tr>
 <td>precision</td>
-<td>specifies column precision</td>
+<td>컬럼의 정밀도를 지정합니다</td>
 </tr>
 <tr>
 <td>scale</td>
-<td>specifies column scale</td>
+<td>컬럼의 스케일을 지정합니다</td>
 </tr>
 <tr>
 <td>not null</td>
-<td>specifies column as NOT NULL</td>
+<td>컬럼을 NOT NULL로 지정합니다</td>
 </tr>
 <tr>
 <td>autoIncrement</td>
-<td>specifies column auto incrementable</td>
+<td>컬럼을 auto increment(자동 증가)로 지정합니다</td>
 </tr>
 <tr>
 <td>autoIncrementIncrement</td>
-<td>auto increment step, controls the interval between successive column values</td>
+<td>자동 증가 단계(step)를 지정하며, 연속된 컬럼 값 사이의 증가 간격을 제어합니다</td>
 </tr>
 <tr>
 <td>embedded</td>
-<td>embed the field</td>
+<td>필드를 임베딩합니다</td>
 </tr>
 <tr>
 <td>embeddedPrefix</td>
-<td>column name prefix for embedded fields</td>
+<td>임베딩된 필드의 컬럼명 앞에 붙일 접두사를 지정합니다</td>
 </tr>
 <tr>
 <td>autoCreateTime</td>
-<td>track current time when creating, for <code>int</code> fields, it will track unix seconds, use value <code>nano</code>/<code>milli</code> to track unix nano/milli seconds, e.g: <code>autoCreateTime:nano</code></td>
+<td>생성 시 현재 시각을 기록합니다. <code>int</code> 필드에서는 Unix 초를, <code>nano</code>/<code>milli</code> 필드에서는 Unix 나노/밀리 초를 사용합니다. e.g: <code>autoCreateTime:nano</code></td>
 </tr>
 <tr>
 <td>autoUpdateTime</td>
-<td>track current time when creating/updating, for <code>int</code> fields, it will track unix seconds, use value <code>nano</code>/<code>milli</code> to track unix nano/milli seconds, e.g: <code>autoUpdateTime:milli</code></td>
+<td>생성/수정 시 현재 시각을 기록합니다. <code>int</code> 필드에서는 Unix 초를, <code>nano</code>/<code>milli</code> 필드에서는 Unix 나노/밀리 초를 사용합니다. e.g: <code>autoUpdateTime:milli</code></td>
 </tr>
 <tr>
 <td>index</td>
-<td>create index with options, use same name for multiple fields creates composite indexes, refer <a href="indexes.html">Indexes</a> for details</td>
+<td>옵션을 지정해 인덱스를 생성합니다. 여러 필드에 같은 이름을 사용하면 복합 인덱스가 생성됩니다. 자세한 내용은 <a href="indexes.html">Indexes</a>를 참고하세요</td>
 </tr>
 <tr>
 <td>uniqueIndex</td>
-<td>same as <code>index</code>, but create uniqued index</td>
+<td><code>index</code>와 같지만, unique 인덱스를 생성합니다</td>
 </tr>
 <tr>
 <td>check</td>
-<td>creates check constraint, eg: <code>check:age &gt; 13</code>, refer <a href="constraints.html">Constraints</a></td>
+<td>check 제약 조건을 생성합니다. eg: <code>check:age &gt; 13</code>, 자세한 내용은 <a href="constraints.html">Constraints</a>를 참고하세요</td>
 </tr>
 <tr>
 <td>&lt;-</td>
-<td>set field’s write permission, <code>&lt;-:create</code> create-only field, <code>&lt;-:update</code> update-only field, <code>&lt;-:false</code> no write permission, <code>&lt;-</code> create and update permission</td>
+<td>필드의 쓰기 권한을 설정합니다. <code>&lt;-:create</code>는 생성만 가능, <code>&lt;-:update</code>는 수정만 가능, <code>&lt;-:false</code>는 쓰기 권한 없음, <code>&lt;-</code> 는 생성과 수정 가능입니다</td>
 </tr>
 <tr>
 <td>-&gt;</td>
-<td>set field’s read permission, <code>-&gt;:false</code> no read permission</td>
+<td>필드의 읽기 권한을 설정합니다. <code>-&gt;:false</code>는 읽기 권한 없음입니다</td>
 </tr>
 <tr>
 <td>-</td>
-<td>ignore this field, <code>-</code> no read/write permission, <code>-:migration</code> no migrate permission, <code>-:all</code> no read/write/migrate permission</td>
+<td>이 필드를 무시합니다. <code>-</code>는 읽기/쓰기 권한 없음, <code>-:migration</code>는 마이그레이션 권한 없음, <code>-:all</code>는 읽기/쓰기/마이그레이션 권한 없음입니다</td>
 </tr>
 <tr>
 <td>comment</td>
-<td>add comment for field when migration</td>
+<td>마이그레이션 시 필드에 설명을 추가합니다</td>
 </tr>
 </tbody></table>
-<h3 id="Associations-Tags" class="article-heading"><a href="#Associations-Tags" class="headerlink" title="Associations Tags"></a>Associations Tags<a class="article-anchor" href="#Associations-Tags" aria-hidden="true"></a></h3><p>GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the <a href="associations.html#tags">Associations section</a> for details</p>
+<h3 id="Associations-Tags" class="article-heading"><a href="#Associations-Tags" class="headerlink" title="Associations Tags"></a>Associations Tags<a class="article-anchor" href="#Associations-Tags" aria-hidden="true"></a></h3><p>GORM은 연관 관계에 대한 태그를 통해 외래 키, 제약 조건, N:N 테이블을 지원합니다. 자세한 내용은 <a href="associations.html#tags">Associations section</a>를 확인하세요</p>
 </body></html>
               </div>
 
@@ -316,7 +316,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2026-03-30T02:28:03.780Z" itemprop="dateModified">마지막 수정: 2026-03-30</time>
+                <time class="article-footer-updated" datetime="2026-04-21T13:45:03.477Z" itemprop="dateModified">마지막 수정: 2026-04-21</time>
 <a href="index.html" class="article-footer-prev" title="개요"><i class="fa fa-chevron-left"></i><span>이전</span></a><a href="connecting_to_the_database.html" class="article-footer-next" title="Database에 연결하기"><span>다음</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
