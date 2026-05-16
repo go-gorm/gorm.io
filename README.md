@@ -16,7 +16,7 @@ For translations into other languages, please visit [https://translate.gorm.io](
 
 The site is developed using [hexo](https://hexo.io). Start your development with these commands:
 ```
-$ npm install
-$ npm install hexo -g
-$ hexo serve
+npm install
+npm install hexo -g
+hexo serve
 ```
