@@ -152,6 +152,7 @@ db.Model(User{ID: 10}).First(&result)
 {% note warn %}
 **NOTE:** 如果您使用 gorm 的特定字段类型（例如 `gorm.DeletedAt`），它将运行不同的查询来检索对象。
 {% endnote %}
+
 ```go
 type User struct {
   ID           string `gorm:"primarykey;size:16"`
@@ -163,6 +164,7 @@ var user = User{ID: 15}
 db.First(&user)
 //  SELECT * FROM `users` WHERE `users`.`id` = '15' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
 ```
+
 ## 检索全部对象
 
 ```go
@@ -210,14 +212,15 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 
 {% note warn %}
 如果对象设置了主键，条件查询将不会覆盖主键的值，而是用 And 连接条件。 例如：
+
 ```go
 var user = User{ID: 10}
 db.Where("id = ?", 20).First(&user)
 // SELECT * FROM users WHERE id = 10 and id = 20 ORDER BY id ASC LIMIT 1
 ```
+
 这个查询将会给出`record not found`错误 所以，在你想要使用例如 `user` 这样的变量从数据库中获取新值前，需要将例如 `id` 这样的主键设置为nil。
 {% endnote %}
-
 
 ### Struct & Map 条件
 
@@ -436,6 +439,33 @@ db.Distinct("name", "age").Order("name, age desc").Find(&results)
 
 ## Joins
 
+### Generics API
+
+The new GORM generics interface brings enhanced support for association queries (`Joins`), offering more flexible association methods, more expressive query capabilities, and a significantly simplified approach to building complex queries.
+
+- **Joins**: Easily specify different join types (e.g., `InnerJoin`, `LeftJoin`) and customize join conditions based on associations, making complex cross-table queries clearer and more intuitive.
+
+```go
+// Load only users who have a company
+users, err := gorm.G[User](db).Joins(clause.Has("Company"), nil).Find(ctx)
+
+// Use Left Join with custom filter on joined table
+user, err = gorm.G[User](db).Joins(clause.LeftJoin.Association("Company"), func(db gorm.JoinBuilder, joinTable clause.Table, curTable clause.Table) error {
+    db.Where(map[string]any{"name": company.Name})
+    return nil
+}).Where(map[string]any{"name": user.Name}).First(ctx)
+
+// Join using a subquery
+users, err = gorm.G[User](db).Joins(clause.LeftJoin.AssociationFrom("Company", gorm.G[Company](DB).Select("Name")).As("t"),
+    func(db gorm.JoinBuilder, joinTable clause.Table, curTable clause.Table) error {
+        db.Where("?.name = ?", joinTable, u.Company.Name)
+        return nil
+    },
+).Find(ctx)
+```
+
+### Traditional API
+
 Specify Joins conditions
 
 ```go
@@ -458,7 +488,7 @@ db.Table("users").Select("users.name, emails.email").Joins("left join emails on 
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
-### Joins 预加载
+#### Joins 预加载
 
 You can use `Joins` eager loading associations with a single SQL, for example:
 
@@ -480,7 +510,7 @@ db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 
 For more details, please refer to [Preloading (Eager Loading)](preload.html).
 
-### Joins 一个衍生表
+#### Joins 一个衍生表
 
 You can also use `Joins` to join a derived table.
 
@@ -499,7 +529,6 @@ query := db.Table("order").Select("MAX(order.finished_at) as latest").Joins("lef
 db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Scan(&results)
 // SELECT `order`.`user_id`,`order`.`finished_at` FROM `order` join (SELECT MAX(order.finished_at) as latest FROM `order` left join user user on order.user_id = user.id WHERE user.age > 18 GROUP BY `order`.`user_id`) q on order.finished_at = q.latest
 ```
-
 
 ## <span id="scan">Scan</span>
 

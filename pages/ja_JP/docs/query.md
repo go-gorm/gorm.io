@@ -152,6 +152,7 @@ db.Model(User{ID: 10}).First(&result)
 {% note warn %}
 **注意:** `gorm.DeletedAt` のようなGORM用のフィールドの型を使用する場合、オブジェクトの取得の際に異なるクエリが実行されます。
 {% endnote %}
+
 ```go
 type User struct {
   ID           string `gorm:"primarykey;size:16"`
@@ -163,6 +164,7 @@ var user = User{ID: 15}
 db.First(&user)
 //  SELECT * FROM `users` WHERE `users`.`id` = '15' AND `users`.`deleted_at` IS NULL ORDER BY `users`.`id` LIMIT 1
 ```
+
 ## すべてのオブジェクトを取得する
 
 ```go
@@ -210,14 +212,15 @@ db.Where("created_at BETWEEN ? AND ?", lastWeek, today).Find(&users)
 
 {% note warn %}
 オブジェクトの主キーが設定されている場合、条件には主キーの値が代わりに使用されるのではなく、AND条件として使用されます。 例:
+
 ```go
 var user = User{ID: 10}
 db.Where("id = ?", 20).First(&user)
 // SELECT * FROM users WHERE id = 10 and id = 20 ORDER BY id ASC LIMIT 1
 ```
+
 上記のクエリは `record not found` エラーになります。 そのため、データベースから新規の値を取得するときに `user` のような変数を使用したい場合は、`id` などの主キーにnilをセットしましょう。
 {% endnote %}
-
 
 ### 構造体 & マップでの条件指定
 
@@ -436,6 +439,33 @@ db.Distinct("name", "age").Order("name, age desc").Find(&results)
 
 ## Joins
 
+### Generics API
+
+The new GORM generics interface brings enhanced support for association queries (`Joins`), offering more flexible association methods, more expressive query capabilities, and a significantly simplified approach to building complex queries.
+
+- **Joins**: Easily specify different join types (e.g., `InnerJoin`, `LeftJoin`) and customize join conditions based on associations, making complex cross-table queries clearer and more intuitive.
+
+```go
+// Load only users who have a company
+users, err := gorm.G[User](db).Joins(clause.Has("Company"), nil).Find(ctx)
+
+// Use Left Join with custom filter on joined table
+user, err = gorm.G[User](db).Joins(clause.LeftJoin.Association("Company"), func(db gorm.JoinBuilder, joinTable clause.Table, curTable clause.Table) error {
+    db.Where(map[string]any{"name": company.Name})
+    return nil
+}).Where(map[string]any{"name": user.Name}).First(ctx)
+
+// Join using a subquery
+users, err = gorm.G[User](db).Joins(clause.LeftJoin.AssociationFrom("Company", gorm.G[Company](DB).Select("Name")).As("t"),
+    func(db gorm.JoinBuilder, joinTable clause.Table, curTable clause.Table) error {
+        db.Where("?.name = ?", joinTable, u.Company.Name)
+        return nil
+    },
+).Find(ctx)
+```
+
+### Traditional API
+
 テーブル結合の条件を指定します。
 
 ```go
@@ -458,7 +488,7 @@ db.Table("users").Select("users.name, emails.email").Joins("left join emails on 
 db.Joins("JOIN emails ON emails.user_id = users.id AND emails.email = ?", "jinzhu@example.org").Joins("JOIN credit_cards ON credit_cards.user_id = users.id").Where("credit_cards.number = ?", "411111111111").Find(&user)
 ```
 
-### Joins Preloading
+#### Joins Preloading
 
 `Joins` を使用することで、単一のSQLクエリで関連付けのイーガーロードを行うことができます。例:
 
@@ -480,7 +510,7 @@ db.Joins("Company", db.Where(&Company{Alive: true})).Find(&users)
 
 詳細については、[事前ローディング (イーガーローディング)](preload.html) を参照してください。
 
-### 導出表の結合
+#### 導出表の結合
 
 導出テーブルの結合にも `Joins` が使用できます。
 
@@ -499,7 +529,6 @@ query := db.Table("order").Select("MAX(order.finished_at) as latest").Joins("lef
 db.Model(&Order{}).Joins("join (?) q on order.finished_at = q.latest", query).Scan(&results)
 // SELECT `order`.`user_id`,`order`.`finished_at` FROM `order` join (SELECT MAX(order.finished_at) as latest FROM `order` left join user user on order.user_id = user.id WHERE user.age > 18 GROUP BY `order`.`user_id`) q on order.finished_at = q.latest
 ```
-
 
 ## <span id="scan">Scan</span>
 
