@@ -65,24 +65,46 @@ Using `Find` without a limit for single object `db.Find(&user)` will query the f
 var user User
 var users []User
 
-// 対象の構造体が渡されているため正しく動作
+// works because destination struct is passed in
 db.First(&user)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// `db.Model()` を使ってモデルを指定しているため正しく動作
+// works because model is specified using `db.Model()`
 result := map[string]interface{}{}
 db.Model(&User{}).First(&result)
 // SELECT * FROM `users` ORDER BY `users`.`id` LIMIT 1
 
-// 動作しない
+// doesn't work
 result := map[string]interface{}{}
 db.Table("users").First(&result)
 
-// Takeメソッドであれば動作する
+// works with Take
 result := map[string]interface{}{}
 db.Table("users").Take(&result)
 
-// 主キーが未定義のため、最初のフィールド（`Code`）で順序付けされる
+// First and Last still add primary key ordering for the current table when
+// using Table with aliases, joins, or custom projections.
+type Result struct {
+  ID   int
+  Name string
+}
+var joinResult Result
+db.Table("user_languages ul").
+  Select("l.id, l.name").
+  Joins("JOIN languages l ON l.code = ul.language_code").
+  Order("l.name DESC").
+  First(&joinResult)
+// SELECT l.id, l.name FROM user_languages ul JOIN languages l ON l.code = ul.language_code ORDER BY l.name DESC, `ul`.`id` LIMIT 1
+
+// Use Take when you provide the ordering yourself.
+db.Table("user_languages ul").
+  Select("l.id, l.name").
+  Joins("JOIN languages l ON l.code = ul.language_code").
+  Order("l.name DESC").
+  Take(&joinResult)
+// SELECT l.id, l.name FROM user_languages ul JOIN languages l ON l.code = ul.language_code ORDER BY l.name DESC LIMIT 1
+
+// no primary key defined, results will be ordered by first field (i.e., `Code`)
 type Language struct {
   Code string
   Name string
