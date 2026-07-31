@@ -82,6 +82,28 @@ db.Table("users").First(&result)
 result := map[string]interface{}{}
 db.Table("users").Take(&result)
 
+// First and Last still add primary key ordering for the current table when
+// using Table with aliases, joins, or custom projections.
+type Result struct {
+  ID   int
+  Name string
+}
+var joinResult Result
+db.Table("user_languages ul").
+  Select("l.id, l.name").
+  Joins("JOIN languages l ON l.code = ul.language_code").
+  Order("l.name DESC").
+  First(&joinResult)
+// SELECT l.id, l.name FROM user_languages ul JOIN languages l ON l.code = ul.language_code ORDER BY l.name DESC, `ul`.`id` LIMIT 1
+
+// Use Take when you provide the ordering yourself.
+db.Table("user_languages ul").
+  Select("l.id, l.name").
+  Joins("JOIN languages l ON l.code = ul.language_code").
+  Order("l.name DESC").
+  Take(&joinResult)
+// SELECT l.id, l.name FROM user_languages ul JOIN languages l ON l.code = ul.language_code ORDER BY l.name DESC LIMIT 1
+
 // no primary key defined, results will be ordered by first field (i.e., `Code`)
 type Language struct {
   Code string
