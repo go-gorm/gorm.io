@@ -39,6 +39,7 @@ package main
 
 import (
   "context"
+  "fmt"
   "gorm.io/driver/sqlite"
   "gorm.io/gorm"
 )
@@ -65,15 +66,16 @@ func main() {
 
   // Read
   product, err := gorm.G[Product](db).Where("id = ?", 1).First(ctx) // find product with integer primary key
-  products, err := gorm.G[Product](db).Where("code = ?", "D42").Find(ctx) // find product with code D42
+  products, err := gorm.G[Product](db).Where("code = ?", "D42").Find(ctx) // find products with code D42
+  fmt.Println(products)
 
   // Update - update product's price to 200
-  err = gorm.G[Product](db).Where("id = ?", product.ID).Update(ctx, "Price", 200)
+  _, err = gorm.G[Product](db).Where("id = ?", product.ID).Update(ctx, "Price", 200)
   // Update - update multiple fields
-  err = gorm.G[Product](db).Where("id = ?", product.ID).Updates(ctx, Product{Code: "D42", Price: 100})
+  _, err = gorm.G[Product](db).Where("id = ?", product.ID).Updates(ctx, Product{Code: "D42", Price: 100})
 
   // Delete - delete product
-  err = gorm.G[Product](db).Where("id = ?", product.ID).Delete(ctx)
+  _, err = gorm.G[Product](db).Where("id = ?", product.ID).Delete(ctx)
 }
 ```
 
