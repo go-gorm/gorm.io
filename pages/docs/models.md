@@ -211,6 +211,21 @@ used as parameter values.
 | -              | ignore this field, `-` no read/write permission, `-:migration` no migrate permission, `-:all` no read/write/migrate permission |
 | comment        | add comment for field when migration                                  |
 
+#### Database-specific types
+
+Column types are not portable between databases: `tinyint` exists in mysql but not in postgres, `jsonb` is the other way around. When the same model is used with more than one database, the `type` tag can be qualified with a dialector name to declare the column type per database. The qualified tag takes precedence on that database, and other databases fall back to the plain `type` tag, or to GORM's default type mapping when there is none:
+
+```go
+type User struct {
+  Level int16  `gorm:"type:tinyint;postgres:type:smallint"`
+  Extra string `gorm:"type:text;mysql:type:json;postgres:type:jsonb"`
+}
+```
+
+On the `mysql` dialector the `Level` column is created as `tinyint`, on `postgres` as `smallint` — without the qualifier, postgres would fail with `ERROR: type "tinyint" does not exist`.
+
+The qualifier is the dialector's `Name()`, so this works for every database, not only the ones shown here. Dialector names are matched case-insensitively, well-known aliases such as `postgresql`/`pg`, `mariadb`, `sqlite3`, `mssql` and `opengauss` are accepted, and any other dialector name works as-is, so third-party drivers are covered without extra configuration.
+
 ### Associations Tags
 
 GORM allows configure foreign keys, constraints, many2many table through tags for Associations, check out the [Associations section](associations.html#tags) for details
