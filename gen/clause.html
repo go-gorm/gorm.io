@@ -49,15 +49,15 @@
   <!-- RSS -->
   <link rel="alternate" href="/atom.xml" title="GORM" type="application/atom+xml">
   <!-- Open Graph -->
-  <meta name="description" content="Gen also support GORM Clauses, their use is similar to Gorm. UpsertGen provides compatible Upsert support for different databases like GORM u :&#x3D; query.Useruser :&#x3D; model.User&#123;Name: &quot;Modi&amp;quot">
+  <meta name="description" content="Gen also support GORM Clauses, but unlike raw GORM every expression passed toClauses is validated by a security check before it reaches the query builder(this is a safety guard for the type-safe API).">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Clauses">
 <meta property="og:url" content="https://gorm.io/gen/clause.html">
 <meta property="og:site_name" content="GORM">
-<meta property="og:description" content="Gen also support GORM Clauses, their use is similar to Gorm. UpsertGen provides compatible Upsert support for different databases like GORM u :&#x3D; query.Useruser :&#x3D; model.User&#123;Name: &quot;Modi&amp;quot">
+<meta property="og:description" content="Gen also support GORM Clauses, but unlike raw GORM every expression passed toClauses is validated by a security check before it reaches the query builder(this is a safety guard for the type-safe API).">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-08-04T02:25:20.238Z">
-<meta property="article:modified_time" content="2026-08-04T02:25:20.238Z">
+<meta property="article:published_time" content="2026-10-04T10:47:04.054Z">
+<meta property="article:modified_time" content="2026-10-04T10:47:04.054Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -141,22 +141,77 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 
               </header>
               <div class="article-content" itemprop="articleBody">
-                <html><head></head><body><p>Gen also support GORM Clauses, their use is similar to Gorm.</p>
+                <html><head></head><body><p>Gen also support GORM Clauses, but unlike raw GORM every expression passed to<br><code>Clauses</code> is validated by a security check before it reaches the query builder<br>(this is a safety guard for the type-safe API).</p>
 <h2 id="Upsert" class="article-heading"><a href="#Upsert" class="headerlink" title="Upsert"></a>Upsert<a class="article-anchor" href="#Upsert" aria-hidden="true"></a></h2><p>Gen provides compatible Upsert support for different databases <a href="../docs/create.html#upsert">like GORM</a></p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">u := query.User</span><br><span class="line"></span><br><span class="line">user := model.User{Name: <span class="string">"Modi"</span>, Age: <span class="number">18</span>, Birthday: time.Now()}</span><br><span class="line"></span><br><span class="line">u.Save(&amp;model)</span><br><span class="line"><span class="comment">// equal to</span></span><br><span class="line">u.Clauses(clause.OnConflict{UpdateAll: <span class="literal">true</span>}).Create(value).Error</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">u := query.User.WithContext(ctx) <span class="comment">// query.User exists in gen.WithDefaultQuery mode;</span></span><br><span class="line">                                 <span class="comment">// otherwise use query.Use(db).User.WithContext(ctx)</span></span><br><span class="line"></span><br><span class="line">user := model.User{Name: <span class="string">"Modi"</span>, Age: <span class="number">18</span>, Birthday: time.Now()}</span><br><span class="line"></span><br><span class="line"><span class="comment">// Save upserts every value; it is variadic:</span></span><br><span class="line">err := u.Save(&amp;user)</span><br><span class="line"><span class="comment">// equivalent to:</span></span><br><span class="line">err = u.Clauses(clause.OnConflict{UpdateAll: <span class="literal">true</span>}).Create(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
 
+<p>Note that the generated <code>Save</code>‘s underlying implementation is <strong>different from<br>GORM’s</strong> <code>Save</code>: it is exactly<br><code>Clauses(clause.OnConflict{UpdateAll: true}).Create(values)</code> (the generated<br>method carries this warning in its own doc comment).</p>
+<h2 id="Which-clauses-are-allowed" class="article-heading"><a href="#Which-clauses-are-allowed" class="headerlink" title="Which clauses are allowed"></a>Which clauses are allowed<a class="article-anchor" href="#Which-clauses-are-allowed" aria-hidden="true"></a></h2><p>Every expression passed to <code>Clauses</code> goes through Gen’s security check<br>(<code>gen.CheckClause</code>) before it reaches the query builder:</p>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Constraint</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>hints.Hints</code>, <code>hints.IndexHint</code> (<code>gorm.io/hints</code>)</td>
+<td>always allowed</td>
+</tr>
+<tr>
+<td><code>dbresolver.Operation</code> (<code>gorm.io/plugin/dbresolver</code>)</td>
+<td>always allowed</td>
+</tr>
+<tr>
+<td><code>clause.OnConflict</code></td>
+<td><code>DoUpdates</code> assignments must not use <code>gorm.Expr</code> (<code>OnConflict clause assignment with gorm.Expr is banned for security reasons</code>)</td>
+</tr>
+<tr>
+<td><code>clause.Locking</code></td>
+<td><code>Strength</code> (upper-cased, whitespace-trimmed) only <code>UPDATE</code> or <code>SHARE</code>; <code>Options</code> empty, <code>NOWAIT</code> or <code>SKIP LOCKED</code> (same normalization); <code>Table.Raw</code> must be false</td>
+</tr>
+<tr>
+<td><code>clause.Insert</code></td>
+<td><code>Table.Raw</code> must be false; <code>Modifier</code> must be empty, <code>IGNORE</code>, or <code>&lt;priority&gt; IGNORE</code> where <code>&lt;priority&gt;</code> is <code>LOW_PRIORITY</code>/<code>DELAYED</code>/<code>HIGH_PRIORITY</code> (upper-cased and trimmed; a priority <strong>without</strong> <code>IGNORE</code> is rejected — the parser reads the first token as the ignore slot)</td>
+</tr>
+<tr>
+<td>any other named <code>clause.Interface</code> whose <code>Name()</code> is <code>VALUES</code>, <code>SELECT</code>, <code>FROM</code>, <code>WHERE</code>, <code>GROUP BY</code>, <code>ORDER BY</code>, <code>LIMIT</code>, <code>UPDATE</code>, <code>SET</code> or <code>DELETE</code></td>
+<td><strong>banned</strong> (<code>clause &lt;name&gt; is banned</code>) — those parts of the statement belong to the type-safe API</td>
+</tr>
+<tr>
+<td>any other named <code>clause.Interface</code></td>
+<td>accepted (its name is not on the deny-list)</td>
+</tr>
+<tr>
+<td>expressions that are not named <code>clause.Interface</code> values (raw fragments, arbitrary types)</td>
+<td>rejected with <code>unknown clause &lt;value&gt;</code></td>
+</tr>
+</tbody></table>
+<p>Note the boundary: this is a name deny-list plus a few structural checks, not a<br>proof that every accepted named clause is safe for your query — pass clauses<br>from GORM’s own <code>clause</code> package and the supported plugin packages above, not<br>hand-rolled expressions or raw SQL fragments.</p>
+<p>A rejected clause does not panic: the error is attached to the statement<br>(<code>AddError</code>) and surfaces from the finishing method (<code>Find</code>, <code>Create</code>, …) like<br>any query error.</p>
 <h2 id="Hints" class="article-heading"><a href="#Hints" class="headerlink" title="Hints"></a>Hints<a class="article-anchor" href="#Hints" aria-hidden="true"></a></h2><p>Optimizer hints allow to control the query optimizer to choose a certain query execution plan, GORM supports it with <a href="../docs/hints.html">gorm.io/hints</a>, e.g:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"gorm.io/hints"</span></span><br><span class="line"></span><br><span class="line">u := query.Use(db).User</span><br><span class="line"></span><br><span class="line">users, err := u.WithContext(ctx).Clauses(hints.New(<span class="string">"MAX_EXECUTION_TIME(10000)"</span>)).Find()</span><br><span class="line"><span class="comment">// SELECT * /*+ MAX_EXECUTION_TIME(10000) */ FROM `users`</span></span><br></pre></td></tr></tbody></table></figure>
 
 <p>Index hints allow passing index hints to the database in case the query planner gets confused.</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"gorm.io/hints"</span></span><br><span class="line"></span><br><span class="line">u := query.Use(db).User</span><br><span class="line"></span><br><span class="line">users, err := u.WithContext(ctx).Clauses(hints.UseIndex(<span class="string">"idx_user_name"</span>)).Find()</span><br><span class="line"><span class="comment">// SELECT * FROM `users` USE INDEX (`idx_user_name`)</span></span><br><span class="line"></span><br><span class="line">users, err := u.WithContext(ctx).Clauses(hints.ForceIndex(<span class="string">"idx_user_name"</span>, <span class="string">"idx_user_id"</span>).ForJoin()).Find()</span><br><span class="line"><span class="comment">// SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)"</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">"gorm.io/hints"</span></span><br><span class="line"></span><br><span class="line">u := query.Use(db).User</span><br><span class="line"></span><br><span class="line">users, err := u.WithContext(ctx).Clauses(hints.UseIndex(<span class="string">"idx_user_name"</span>)).Find()</span><br><span class="line"><span class="comment">// SELECT * FROM `users` USE INDEX (`idx_user_name`)</span></span><br><span class="line"></span><br><span class="line">users, err := u.WithContext(ctx).Clauses(hints.ForceIndex(<span class="string">"idx_user_name"</span>, <span class="string">"idx_user_id"</span>).ForJoin()).Find()</span><br><span class="line"><span class="comment">// SELECT * FROM `users` FORCE INDEX FOR JOIN (`idx_user_name`,`idx_user_id`)</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="Custom-clause-validation" class="article-heading"><a href="#Custom-clause-validation" class="headerlink" title="Custom clause validation"></a>Custom clause validation<a class="article-anchor" href="#Custom-clause-validation" aria-hidden="true"></a></h2><p><code>query.Use(db, opts...)</code> / <code>query.SetDefault(db, opts...)</code> accept<br><code>gen.DOOption</code>s. <code>gen.WithClauseChecker</code> installs a custom validator that runs<br><strong>before</strong> the built-in check:</p>
+<ul>
+<li>return <code>nil</code> → the clause is accepted, skipping the built-in check;</li>
+<li>return <code>gen.ErrClauseNotHandled</code> → fall back to the built-in check;</li>
+<li>return any other error → the clause is rejected with your error.</li>
+</ul>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">query.SetDefault(db, gen.WithClauseChecker(<span class="function"><span class="keyword">func</span><span class="params">(expr clause.Expression)</span></span> <span class="type">error</span> {</span><br><span class="line">  <span class="keyword">if</span> _, ok := expr.(clause.Locking); ok {</span><br><span class="line">    <span class="keyword">return</span> errors.New(<span class="string">"row locking is disabled in this service"</span>)</span><br><span class="line">  }</span><br><span class="line">  <span class="keyword">return</span> gen.ErrClauseNotHandled <span class="comment">// everything else: default rules</span></span><br><span class="line">}))</span><br></pre></td></tr></tbody></table></figure>
+
+<p>The built-in rules are also available programmatically as<br><code>gen.CheckClause(expr) error</code>.</p>
+<p>Every generated DO also exposes <code>ReadDB()</code> / <code>WriteDB()</code> to route the statement<br>through <a target="_blank" rel="noopener" href="https://github.com/go-gorm/dbresolver">dbresolver</a> read/write pools,<br>and <code>Returning(value, columns...)</code> for PostgreSQL-style <code>RETURNING</code>.</p>
 </body></html>
               </div>
 
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2026-08-04T02:25:20.238Z" itemprop="dateModified">Last updated: 2026-08-04</time>
+                <time class="article-footer-updated" datetime="2026-10-04T10:47:04.054Z" itemprop="dateModified">Last updated: 2026-10-04</time>
 <a href="gen_tool.html" class="article-footer-prev" title="Gen Tool"><i class="fa fa-chevron-left"></i><span>Prev</span></a>
               </footer>
 
@@ -280,7 +335,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div id="article-toc-inner">
               <div id="sidebar-ad-wrapper" class="tagmanager_ad"></div>
               <strong class="sidebar-title">Contents</strong>
-              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Upsert"><span class="toc-text">Upsert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hints"><span class="toc-text">Hints</span></a></li></ol>
+              <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Upsert"><span class="toc-text">Upsert</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Which-clauses-are-allowed"><span class="toc-text">Which clauses are allowed</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Hints"><span class="toc-text">Hints</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Custom-clause-validation"><span class="toc-text">Custom clause validation</span></a></li></ol>
 
               
                 <a href="https://github.com/go-gorm/gorm.io/edit/master/pages/gen/clause.md" target="_blank" id="article-improve">

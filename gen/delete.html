@@ -56,8 +56,8 @@
 <meta property="og:site_name" content="GORM">
 <meta property="og:description" content="Delete recordWhen deleting a record, it needs to have any conditions or it will raise error ErrMissingWhereClause, for example: e :&#x3D; query.Email&#x2F;&#x2F; Email&#x27;s ID is &#96;10&#96;e.WithContext(ctx).Where(e.ID.">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-08-04T02:25:20.238Z">
-<meta property="article:modified_time" content="2026-08-04T02:25:20.238Z">
+<meta property="article:published_time" content="2026-10-04T10:47:04.054Z">
+<meta property="article:modified_time" content="2026-10-04T10:47:04.054Z">
 <meta property="article:author" content="Jinzhu">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="zhangjinzhu">
@@ -154,11 +154,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <p>When calling <code>Delete</code>, the record WON’T be removed from the database, but GORM will set the <code>DeletedAt</code>‘s value to the current time, and the data is not findable with normal Query methods anymore.</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// Batch Delete</span></span><br><span class="line">u.WithContext(ctx).Where(u.Age.Eq(<span class="number">20</span>)).Delete()</span><br><span class="line"><span class="comment">// UPDATE users SET deleted_at="2013-10-29 10:23" WHERE age = 20;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Soft deleted records will be ignored when querying</span></span><br><span class="line">users, err := u.WithContext(ctx).Where(u.Age.Eq(<span class="number">20</span>)).Find()</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;</span></span><br></pre></td></tr></tbody></table></figure>
 
+<p>The typed <code>Delete</code> also accepts the records to delete (by primary key), next to<br>condition-based deletion; the condition form still requires conditions —<br>otherwise GORM returns <code>ErrMissingWhereClause</code>:</p>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="comment">// delete by primary keys of the given records</span></span><br><span class="line">info, err := u.WithContext(ctx).Delete(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
+
 <p>If you don’t want to include <code>gorm.Model</code>, you can enable the soft delete feature like:</p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> {</span><br><span class="line">    ID      <span class="type">int</span></span><br><span class="line">    Deleted gorm.DeletedAt</span><br><span class="line">    Name    <span class="type">string</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Find-soft-deleted-records" class="article-heading"><a href="#Find-soft-deleted-records" class="headerlink" title="Find soft deleted records"></a>Find soft deleted records<a class="article-anchor" href="#Find-soft-deleted-records" aria-hidden="true"></a></h2><p>You can find soft deleted records with <code>Unscoped</code></p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">users, err := db.WithContext(ctx).Unscoped().Where(u.Age.Eq(<span class="number">20</span>)).Find()</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE age = 20;</span></span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">users, err := u.WithContext(ctx).Unscoped().Where(u.Age.Eq(<span class="number">20</span>)).Find()</span><br><span class="line"><span class="comment">// SELECT * FROM users WHERE age = 20;</span></span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="Delete-permanently" class="article-heading"><a href="#Delete-permanently" class="headerlink" title="Delete permanently"></a>Delete permanently<a class="article-anchor" href="#Delete-permanently" aria-hidden="true"></a></h2><p>You can delete matched records permanently with <code>Unscoped</code></p>
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">o.WithContext(ctx).Unscoped().Where(o.ID.Eq(<span class="number">10</span>)).Delete()</span><br><span class="line"><span class="comment">// DELETE FROM orders WHERE id=10;</span></span><br></pre></td></tr></tbody></table></figure>
@@ -167,14 +170,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">u := query.User</span><br><span class="line"></span><br><span class="line">u.Languages.Model(&amp;user).Delete(&amp;languageZH, &amp;languageEN)</span><br><span class="line"></span><br><span class="line">u.Languages.Model(&amp;user).Delete([]*Language{&amp;languageZH, &amp;languageEN}...)</span><br></pre></td></tr></tbody></table></figure>
 
 <h3 id="Delete-with-Select" class="article-heading"><a href="#Delete-with-Select" class="headerlink" title="Delete with Select"></a>Delete with Select<a class="article-anchor" href="#Delete-with-Select" aria-hidden="true"></a></h3><p>You are allowed to delete selected has one/has many/many2many relations with <code>Select</code> when deleting records, for example:</p>
-<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">u := query.User</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete user's account when deleting user</span></span><br><span class="line">u.Select(u.Account).Delete(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete user's Orders, CreditCards relations when deleting user</span></span><br><span class="line">db.Select(u.Orders.Field(), u.CreditCards.Field()).Delete(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete user's has one/many/many2many relations when deleting user</span></span><br><span class="line">db.Select(field.AssociationsFields).Delete(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
+<figure class="highlight go"><table><tbody><tr><td class="code"><pre><span class="line">u := query.User</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete user's account when deleting user</span></span><br><span class="line">u.WithContext(ctx).Select(u.Account.Field()).Delete(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete user's Orders, CreditCards relations when deleting user</span></span><br><span class="line">u.WithContext(ctx).Select(u.Orders.Field(), u.CreditCards.Field()).Delete(&amp;user)</span><br><span class="line"></span><br><span class="line"><span class="comment">// delete user's has one/many/many2many relations when deleting user</span></span><br><span class="line">u.WithContext(ctx).Select(field.AssociationFields).Delete(&amp;user)</span><br></pre></td></tr></tbody></table></figure>
 </body></html>
               </div>
 
               
 
               <footer class="article-footer">
-                <time class="article-footer-updated" datetime="2026-08-04T02:25:20.238Z" itemprop="dateModified">Last updated: 2026-08-04</time>
+                <time class="article-footer-updated" datetime="2026-10-04T10:47:04.054Z" itemprop="dateModified">Last updated: 2026-10-04</time>
 <a href="update.html" class="article-footer-prev" title="Update"><i class="fa fa-chevron-left"></i><span>Prev</span></a><a href="transaction.html" class="article-footer-next" title="Transaction"><span>Next</span><i class="fa fa-chevron-right"></i></a>
               </footer>
 
