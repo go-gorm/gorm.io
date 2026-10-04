@@ -5,12 +5,16 @@ layout: page
 
 ## Quick Start
 
-Gen 支持所有GORM Driver从数据库生成结构, 使用示例:
+Gen supports generate structs from databases following GORM conventions (skeleton — substitute your DSN):
 
 ```go
 package main
 
-import "gorm.io/gen"
+import (
+  "gorm.io/driver/sqlite"
+  "gorm.io/gen"
+  "gorm.io/gorm"
+)
 
 func main() {
   g := gen.NewGenerator(gen.Config{
@@ -18,7 +22,12 @@ func main() {
     Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
   })
 
-  // gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
+  // gormdb, err := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
+  // if err != nil { panic(err) }
+  gormdb, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+  if err != nil {
+    panic(err)
+  }
   g.UseDB(gormdb) // reuse your gorm db
 
   // Generate basic type-safe DAO API for struct `model.User` following conventions
@@ -73,10 +82,11 @@ func (m *CommonMethod) GetName() string {
     return *m.Name
 }
 
-// 为生成的 `People` 结构添加 `IsEmpty` 方法
-g.GenerateModel("people", gen.WithMethod(CommonMethod{}.IsEmpty))
+// Add IsEmpty method to the generated `People` struct
+// (note the addressable receiver — (&CommonMethod{}).IsEmpty — IsEmpty has a pointer receiver)
+g.GenerateModel("people", gen.WithMethod((&CommonMethod{}).IsEmpty))
 
-// 将 `CommonMethod` 上定义的所有方法添加到生成的 `User` 结构中
+// Add all methods defined on `CommonMethod` to the generated `User` struct
 g.GenerateModel("user", gen.WithMethod(CommonMethod{}))
 ```
 
@@ -125,24 +135,33 @@ type CommonMethod struct {
     Name *string
 }
 
-// TableName 
+// Alternative 1: fixed table name
 func (m CommonMethod) TableName() string {
     return "@@table"
 }
 
-// TableName table name with gorm NamingStrategy
-func (m CommonMethod) TableName(namer schema.Namer) string {
+// Alternative 2: table name with gorm NamingStrategy — an INDEPENDENT variant,
+// declared on a separate type (Go does not allow two methods named TableName
+// on one type):
+type CommonMethodWithNamer struct {
+    CommonMethod
+}
+
+func (m CommonMethodWithNamer) TableName(namer schema.Namer) string {
     if namer == nil {
         return "@@table"
     }
     return namer.TableName("@@table")
 }
 
-// DIY TableName method for the generated `User` struct
+// DIY TableName method (alternative 1) for the generated `User` struct
 g.GenerateModel("user", gen.WithMethod(CommonMethod{}.TableName))
 
-// DIY TableName method for the generated all struct
+// DIY TableName method (alternative 1) for all generated structs
 g.WithOpts(gen.WithMethod(CommonMethod{}.TableName))
+
+// DIY namer-aware TableName method (alternative 2) for all generated structs
+g.WithOpts(gen.WithMethod(CommonMethodWithNamer{}.TableName))
 
 // Set Default DIY TableName method for the generated all struct
 g.WithOpts(gen.WithMethod(gen.DefaultMethodTableWithNamer))
@@ -154,27 +173,50 @@ g.WithOpts(gen.WithMethod(gen.DefaultMethodTableWithNamer))
 以下是调用 `GenerateModel`/`GenerateModelAs` 时可以使用的选项
 
 ```go
-FieldNew           // 创建一个新字段
-FieldIgnore        // 忽略字段
-FieldIgnoreReg     // 忽略字段 (与正则匹配的)
-FieldRename        // 在结构中重命名字段
-FieldComment       // 在生成的结构中指定字段注释
-FieldType          // 指定字段类型
-FieldTypeReg       // 指定字段类型 (与正则匹配的)
-FieldGenType       // 指定字段 gen 类型
-FieldGenTypeReg    // 指定字段 gen 类型 (与正则匹配的)
-FieldTag           // 指定 gorm 和 json tag
-FieldJSONTag       // 指定 json tag
-FieldJSONTagWithNS // 使用命名策略指定 json tag
-FieldGORMTag       // 指定 gorm tag
-FieldNewTag        // 添加新 tag
-FieldNewTagWithNS  // 使用命令策略指定新 tag
-FieldTrimPrefix    // 去除列前缀
-FieldTrimSuffix    // 去除列后缀
-FieldAddPrefix     // 在结构字段名上添加前缀
-FieldAddSuffix     // 在结构字体名上添加后缀
-FieldRelate        // 指定与其它表的关系
-FieldRelateModel   // 指定与现有模型的关系
+FieldNew           // create new a field
+FieldIgnore        // ignore field
+FieldIgnoreReg     // ignore field (match with regexp)
+FieldRename        // rename field in the struct
+FieldComment       // specify field comment in generated struct
+FieldType          // specify the field type
+FieldTypeReg       // specify field type (match with regexp)
+FieldGenType       // specify field gen type
+FieldGenTypeReg    // specify field gen type (match with regexp)
+FieldTag           // specify gorm and json tag
+FieldJSONTag       // specify json tag
+FieldJSONTagWithNS // specify json tag with name strategy
+FieldGORMTag       // specify gorm tag
+FieldGORMTagReg    // specify gorm tag for columns matching a regexp (since v0.3.26)
+FieldNewTag        // append new tag
+FieldNewTagWithNS  // specify the new tag with name strategy
+FieldTrimPrefix    // trim column prefix
+FieldTrimSuffix    // trim column suffix
+FieldAddPrefix     // add the prefix to struct field's name
+FieldAddSuffix     // add the suffix to struct field's name
+FieldRelate        // specify relationship with other tables
+FieldRelateModel   // specify the relationship with existing models
+```
+
+Additional released field options:
+
+```go
+// FieldModify rewrites the generated field definition with a custom function
+FieldModify(opt func(Field) Field)
+
+// FieldFilter drops the field when the function returns nil
+FieldFilter(opt func(Field) Field)
+
+// WithDataTypesNullType maps basic types to datatypes.Null[T]
+// (also available as a Config/Generator option: g.WithDataTypesNullType(true), since v0.3.27)
+WithDataTypesNullType(all bool)
+```
+
+```go
+// example: prefix every generated field name
+g.GenerateModel("users", gen.FieldModify(func(f gen.Field) gen.Field {
+    f.Name = "col_" + f.Name
+    return f
+}))
 ```
 
 ## 全局生成选项
@@ -236,9 +278,27 @@ g.WithTableNameStrategy(func(tableName string) (targetTableName string) {
     })
 ```
 
+An ignored table is logged (`ignore table <x>`) and yields a `nil` entry from `GenerateAllTable`; such nil entries are safely skipped by `ApplyBasic`, so `g.ApplyBasic(g.GenerateAllTable()...)` keeps working. Passing a non-nil argument that is not a struct is still an error (and `ApplyInterface` panics with `check struct fail` in that case).
+
+### Generate From Object
+
+Besides database tables, a model can be described in code by implementing the `helper.Object` and `helper.Field` interfaces from the `gorm.io/gen/helper` package, then applied with `GenerateModelFrom`:
+
+```go
+import "gorm.io/gen/helper"
+
+// implement helper.Object (TableName/StructName/FileName/ImportPkgPaths/Fields)
+// and helper.Field (Name/Type/ColumnName/GORMTag/JSONTag/Tag/Comment) yourself,
+// e.g. backed by an API definition or a protobuf message.
+
+g.ApplyBasic(g.GenerateModelFrom(myUserObject))
+```
+
+`helper.CheckObject(obj)` validates an object before handing it to the generator. The `helper` package also exposes the clause builders used by DIY-method templates (`helper.IfClause`, `helper.WhereClause`, `helper.SetClause`, `helper.JoinWhereBuilder`, `helper.JoinSetBuilder`, `helper.JoinTrimAllBuilder`, `helper.NewJoinTblExpr`) for advanced template customization.
+
 ### 数据类型映射
 
-指定model属性类型和 db 字段类型之间的映射关系。
+指定model属性类型和 db 字段类型之间的映射关系。 Mapping keys are the database data types as reported by `gorm.ColumnType`, and the function may return pointer types.
 
 ```go
     var dataMap = map[string]func(gorm.ColumnType) (dataType string){
@@ -275,37 +335,39 @@ import (
 )
 
 func main() {
-    g := gen.NewGenerator(gen.Config{
-        OutPath: "../query",
-        Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // 生成模式
-    })
-
-    // https://github.com/go-gorm/rawsql/blob/master/tests/gen_test.go
-    gormdb, _ := gorm.Open(rawsql.New(rawsql.Config{
-        //SQL:      rawsql,                      // 建表sql
+  g := gen.NewGenerator(gen.Config{
+    OutPath: "../query",
+    Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface, // generate mode
+  })
+  // https://github.com/go-gorm/rawsql/blob/master/tests/gen_test.go
+  gormdb, err := gorm.Open(rawsql.New(rawsql.Config{
+        //SQL:      rawsql,                      //create table sql
         FilePath: []string{
-            //"./sql/user.sql", // 建表sql文件
-            "./test_sql", // 建表sql目录
+            //"./sql/user.sql", // create table sql file
+            "./test_sql", // create table sql file directory
         },
     }))
-    g.UseDB(gormdb) // 重新引用你的 gorm db
+  if err != nil {
+    panic(err)
+  }
+  g.UseDB(gormdb) // reuse your gorm db
 
-    // 按照约定为结构 `model.User` 生成基本类型安全的DAO API
-    g.ApplyBasic(
-        // 基于 `user` 表生成 `User` 结构
-        g.GenerateModel("users"),
+  // Generate basic type-safe DAO API for struct `model.User` following conventions
 
-        // 基于 `user` 表生成 `Employee` 结构
-        g.GenerateModelAs("users", "Employee"),
-    )
+  g.ApplyBasic(
+  // Generate struct `User` based on table `users`
+  g.GenerateModel("users"),
 
-    g.ApplyBasic(
-        // 从当前数据库生成所有表结构
-        g.GenerateAllTable()...,
-    )
+  // Generate struct `Employee` based on table `users`
+ g.GenerateModelAs("users", "Employee"),
 
-    // 生成代码
-    g.Execute()
-}`
+  )
+g.ApplyBasic(
+// Generate structs from all tables of current database
+g.GenerateAllTable()...,
+)
+  // Generate the code
+  g.Execute()
+}
 
 ```
