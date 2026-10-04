@@ -10,19 +10,21 @@ Gen follows the `Configuration As Code` practice to generate the DAO interface, 
 You need to write the configuration as a runnable golang program, usually, the program will be organized in a sub-directory of your application.
 
 ```go
-// configuration.go
+// configuration.go — skeleton: adjust the model import and DSN for your project
 package main
 
 import (
+  "gorm.io/driver/sqlite"
   "gorm.io/gen"
   "gorm.io/gorm"
-  "gorm.io/driver/sqlite"
+
+  "your_project/model" // your existing model package
 )
 
 func main() {
   // Initialize the generator with configuration
   g := gen.NewGenerator(gen.Config{
-     OutPath: "../dal", // output directory, default value is ./query
+     OutPath: "../dal", // output directory for the query code (see Output Options below)
      // Mode:    gen.WithDefaultQuery | gen.WithQueryInterface,
      Mode:    gen.WithDefaultQuery | gen.WithGeneric,
      FieldNullable: true,
@@ -30,6 +32,9 @@ func main() {
 
   // Initialize a *gorm.DB instance
   db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+  if err != nil {
+    panic(err)
+  }
 
   // Use the above `*gorm.DB` instance to initialize the generator,
   // which is required to generate structs from db when using `GenerateModel/GenerateModelAs`
@@ -72,38 +77,55 @@ type Config struct {
     FieldWithTypeTag  bool // generate with gorm column type tag
 
     Mode GenerateMode // generator modes
+
+    // If true, keep the unchanged generated files between runs (v0.3.28+):
+    // the generator records a hash manifest (.genmanifest.json) and skips
+    // rewriting files whose content did not change.
+    Incremental bool
+    // If true, generate a subset of tables while keeping previously generated
+    // query files (v0.3.28+); errors when the Mode differs between runs.
+    MergeQuery bool
+    // If true, rewrite `interface{}` to `any` in generated code (v0.3.29+);
+    // requires the target module to build with Go >= 1.18.
+    UseAny bool
+    // If true, generate `default` gorm tag for fields with a database default (v0.3.28+).
+    FieldWithDefaultTag bool
+    // Custom unit-test template file used when WithUnitTest is on (v0.3.28+).
+    UnitTestTemplate string
 }
 ```
 
 ### Output Options
 
-| Option Name  | Description                                                           |
-| ------------ | --------------------------------------------------------------------- |
-| OutPath      | Output destination folder for the generator, default value: `./query` |
-| OutFile      | Query code file name, default value: `gen.go`                         |
-| ModelPkgPath | Generated DAO package's package name, default value: `model`          |
-| WithUnitTest | Generate unit tests for the DAO package, default value: `false`       |
+| Option Name  | Description                                                                                                                                                                                    |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| OutPath      | Output destination folder for the generated query code. There is no useful default: if left empty, output goes to the current working directory of the generator process, so set it explicitly |
+| OutFile      | Query code file name, default value: `gen.go`                                                                                                                                                  |
+| ModelPkgPath | Where generated **model** code goes: a package name (placed next to `OutPath`, default `model`) or a directory path (when it contains a path separator, it is used as the model output dir)    |
+| WithUnitTest | Generate unit tests for the DAO package, default value: `false`                                                                                                                                |
+
+> **NOTE**: `g.Execute()` (i.e. `(*gen.Generator).Execute`) runs the generator and **panics** on failure (after printing the error). Use `g.SetLogger(logger)` to install a custom logger.
 
 ### Generate Struct Options
 
-| Option Name       | Description                                                                                                                                                                                                                |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| FieldNullable     | Generate pointer as field's type if column is nullable in database                                                                                                                                                         |
-| FieldCoverable    | Generate pointer as field's type if column has default value in database, to avoid zero-value issue, e.g: https://gorm.io/docs/create.html#Default-Values                                                                  |
-| FieldSignable     | Use signable type as field's type based on column's data type in database                                                                                                                                                  |
-| FieldWithIndexTag | Generate with `gorm index` tag                                                                                                                            | , for example: `gorm:"index:idx_name"`, default value: `false` |
-| FieldWithTypeTag  | Generate with `gorm type` tag, for example: `gorm:"type:varchar(12)"`, default value: `false`                                                                                                                              |
+| Option Name       | Description                                                                                                                                               |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FieldNullable     | Generate pointer as field's type if column is nullable in database                                                                                        |
+| FieldCoverable    | Generate pointer as field's type if column has default value in database, to avoid zero-value issue, e.g: https://gorm.io/docs/create.html#Default-Values |
+| FieldSignable     | Use signable type as field's type based on column's data type in database                                                                                 |
+| FieldWithIndexTag | Generate with `gorm index` tag, for example: `gorm:"index:idx_name"`, default value: `false`                                                              |
+| FieldWithTypeTag  | Generate with `gorm type` tag, for example: `gorm:"type:varchar(12)"`, default value: `false`                                                             |
 
 Refer [Database To Structs](./database_to_structs.html) for more options
 
 ### Generator Modes
 
-| Tag Name               | Description                                                                                                                                                                                        |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| gen.WithDefaultQuery   | Generate global variable `Q` as DAO interface, then you can query data like: `dal.Q.User.First()`                                                                                                  |
-| gen.WithQueryInterface | Generate query api interface instead of struct, usually used for mock testing                                                                                                                      |
-| gen.WithGeneric        | Generate code with generic and interface                                                                                                                                                           |
-| gen.WithoutContext     | Generate code without context constrain, then you can query data without passing context like: `dal.User.First()`, or you have to query with the context, e.g: `dal.User.WithContext(ctx).First()` |
+| Tag Name               | Description                                                                                                                                                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| gen.WithDefaultQuery   | Generate global variable `Q` as DAO interface, then you can query data like: `dal.Q.User.WithContext(ctx).First()`                                                                                                         |
+| gen.WithQueryInterface | Generate query api interface instead of struct, usually used for mock testing                                                                                                                                              |
+| gen.WithGeneric        | Generate code with generic and interface                                                                                                                                                                                   |
+| gen.WithoutContext     | Generate code without context constrain, then you can query data without passing context like: `dal.User.First()`; without this mode the DAO chain must start with `WithContext`, e.g: `dal.User.WithContext(ctx).First()` |
 
 
 ### DAO Interface
@@ -174,47 +196,134 @@ type IUserDo interface {
   Debug() IUserDo
   WithContext(ctx context.Context) IUserDo
   WithResult(fc func(tx gen.Dao)) gen.ResultInfo
+  Session(config *gorm.Session) IUserDo
+  Rows() (*sql.Rows, error)
+  Row() *sql.Row
+  UnderlyingDB() *gorm.DB
+  ReplaceDB(db *gorm.DB)
 
   ReadDB() IUserDo
   WriteDB() IUserDo
 }
 ```
 
+### The Generated Query Struct
+
+For each model, the generator emits a query struct with an **unexported** type (the variable's type is inferred; you never spell it out). You reach it through the `User` field of the object returned by `query.Use(db)` — or through the package-level `query.User` variable in `gen.WithDefaultQuery` mode. It carries one typed field per column, plus a few helpers:
+
+```go
+q := query.Use(db)
+u := q.User // field of the query struct (type is the unexported query type for User)
+// in gen.WithDefaultQuery mode you can also write: u := query.User
+// (query.User is a generated package-level *variable*, not a type)
+
+u.ID, u.Name, u.Age // typed fields: field.Int64, field.String, ...
+u.ALL               // field.Asterisk — the `users.*` expression
+
+u.TableName()            // "users"
+u.Alias()                // current alias, empty unless As() was used
+u.Table("users_archive") // re-point this DAO at another table (returns a copy)
+u.As("u")                // table alias for joins/self-joins (returns a copy)
+u.GetFieldByName("age")  // (field.OrderExpr, bool) — dynamic field lookup for ordering
+u.Columns(u.ID, u.Name)  // gen.Columns — tuple expressions, see Tuple Query
+```
+
+`Table`/`As` return a **copy** bound to the new name/alias; the original `u` is unaffected. The query type itself is unexported (constructed by the unexported `newUser`), so always obtain it from `query.Use(db)` / `query.SetDefault(db)` / the generated default variables and let Go infer the type. Note that the typed fields live on the query struct itself — after `u.WithContext(ctx)` you are holding the `userDo` chain, so keep referencing fields through `u`.
+
+## The Query Object
+
+`query.Use(db)` returns a `*query.Query` that groups one DAO per model and adds connection-level helpers; `query.SetDefault(db)` initializes the same object package-globally (it has no return value) and is what backs the generated package-level variables:
+
+```go
+q := query.Use(db, gen.WithClauseChecker(myChecker)) // ...gen.DOOption since v0.3.28
+
+q.Available()      // reports whether the Query currently holds a non-nil *gorm.DB
+q.UnderlyingDB()   // the underlying *gorm.DB
+q.ReadDB()         // route reads to replicas (gorm.io/plugin/dbresolver)
+q.WriteDB()        // force writes to the primary
+q.WithContext(ctx) // a context-bound variant of every DAO in q
+
+// ReplaceDB does not modify q — it returns a NEW Query bound to db2:
+q2 := q.ReplaceDB(db2)
+// the original q and any previously bound package-level aliases
+// (query.Q, query.User, ...) still point at the old *gorm.DB
+```
+
+Transactions are also started from the query object — see [Transaction](./transaction.html).
+
+With `gen.WithDefaultQuery` the same helpers exist on the package-level `query.Q` (and the generated package variables `query.User`, `query.Bank`, … are aliases into it).
+
 ## Usage Example
+
+The two examples below are application skeletons: add `package main`, replace `your_project/dal` with the import path of your generated DAO package, and use your application's DSN. The discarded result (`_ = user`) is illustrative; consume it in your application after checking the query error.
 
 * Use the global variable `Q` if `gen.WithDefaultQuery` is enabled
 
 ```go
-import "your_project/dal"
+import (
+  "context"
+
+  "gorm.io/driver/sqlite"
+  "gorm.io/gorm"
+
+  "your_project/dal"
+)
+
+var ctx = context.Background()
 
 func main() {
   // Initialize a *gorm.DB instance
   db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+  if err != nil {
+    panic(err)
+  }
 
   dal.SetDefault(db)
 
   // query the first user
-  user, err := dal.Q.User.First()
+  user, err := dal.Q.User.WithContext(ctx).First()
+  if err != nil {
+    return
+  }
+  _ = user
 }
 ```
 
 * Initialize DAO query interface
 
 ```go
-import "your_project/dal"
+import (
+  "context"
 
-var Q dal.Query
+  "gorm.io/driver/sqlite"
+  "gorm.io/gorm"
+
+  "your_project/dal"
+)
+
+var ctx = context.Background()
+
+var Q *dal.Query
 
 func main() {
   // Initialize a *gorm.DB instance
   db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+  if err != nil {
+    panic(err)
+  }
 
   Q = dal.Use(db)
 
   // query the first user
-  user, err := Q.User.First()
+  user, err := Q.User.WithContext(ctx).First()
+  if err != nil {
+    return
+  }
+  _ = user
 }
 ```
+
+Without `gen.WithDefaultQuery`, `query.User`-style package variables are not generated — obtain DAOs from `query.Use(db)` instead.
 
 For more usage details, please checkout
 

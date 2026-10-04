@@ -60,6 +60,13 @@ users, err := u.WithContext(ctx).Where(u.Age.Eq(20)).Find()
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
+The typed `Delete` also accepts the records to delete (by primary key), next to condition-based deletion; the condition form still requires conditions — otherwise GORM returns `ErrMissingWhereClause`:
+
+```go
+// delete by primary keys of the given records
+info, err := u.WithContext(ctx).Delete(&user)
+```
+
 如果你不想嵌入 `gorm.Model`，你也可以这样启用软删除特性：
 
 ```go
@@ -75,7 +82,7 @@ type User struct {
 你可以使用 `Unscoped` 找到被软删除的记录
 
 ```go
-users, err := db.WithContext(ctx).Unscoped().Where(u.Age.Eq(20)).Find()
+users, err := u.WithContext(ctx).Unscoped().Where(u.Age.Eq(20)).Find()
 // SELECT * FROM users WHERE age = 20;
 ```
 
@@ -107,12 +114,12 @@ u.Languages.Model(&user).Delete([]*Language{&languageZH, &languageEN}...)
 ```go
 u := query.User
 
-// 删除 user 时，也删除 user 关联的 account 数据
-u.Select(u.Account).Delete(&user)
+// delete user's account when deleting user
+u.WithContext(ctx).Select(u.Account.Field()).Delete(&user)
 
-// 删除 user 时，也删除 user 关联的 Orders, CreditCards 数据
-db.Select(u.Orders.Field(), u.CreditCards.Field()).Delete(&user)
+// delete user's Orders, CreditCards relations when deleting user
+u.WithContext(ctx).Select(u.Orders.Field(), u.CreditCards.Field()).Delete(&user)
 
-// 删除 user 时，也删除 user 关联的 has one/many/many2many 关系数据
-db.Select(field.AssociationsFields).Delete(&user)
+// delete user's has one/many/many2many relations when deleting user
+u.WithContext(ctx).Select(field.AssociationFields).Delete(&user)
 ```

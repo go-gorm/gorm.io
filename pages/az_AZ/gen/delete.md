@@ -60,6 +60,13 @@ users, err := u.WithContext(ctx).Where(u.Age.Eq(20)).Find()
 // SELECT * FROM users WHERE age = 20 AND deleted_at IS NULL;
 ```
 
+The typed `Delete` also accepts the records to delete (by primary key), next to condition-based deletion; the condition form still requires conditions — otherwise GORM returns `ErrMissingWhereClause`:
+
+```go
+// delete by primary keys of the given records
+info, err := u.WithContext(ctx).Delete(&user)
+```
+
 If you don’t want to include `gorm.Model`, you can enable the soft delete feature like:
 
 ```go
@@ -75,7 +82,7 @@ type User struct {
 You can find soft deleted records with `Unscoped`
 
 ```go
-users, err := db.WithContext(ctx).Unscoped().Where(u.Age.Eq(20)).Find()
+users, err := u.WithContext(ctx).Unscoped().Where(u.Age.Eq(20)).Find()
 // SELECT * FROM users WHERE age = 20;
 ```
 
@@ -108,11 +115,11 @@ You are allowed to delete selected has one/has many/many2many relations with `Se
 u := query.User
 
 // delete user's account when deleting user
-u.Select(u.Account).Delete(&user)
+u.WithContext(ctx).Select(u.Account.Field()).Delete(&user)
 
 // delete user's Orders, CreditCards relations when deleting user
-db.Select(u.Orders.Field(), u.CreditCards.Field()).Delete(&user)
+u.WithContext(ctx).Select(u.Orders.Field(), u.CreditCards.Field()).Delete(&user)
 
 // delete user's has one/many/many2many relations when deleting user
-db.Select(field.AssociationsFields).Delete(&user)
+u.WithContext(ctx).Select(field.AssociationFields).Delete(&user)
 ```
