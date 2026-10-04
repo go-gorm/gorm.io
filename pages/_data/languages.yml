@@ -41,3 +41,27 @@ es_ES:
   name: Español
   disqus_lang: es
   crowdin: es-ES
+ar_SA:
+  name: العربية
+  disqus_lang: ar
+  crowdin: ar
+az_AZ:
+  name: Azərbaycanca
+  disqus_lang: az
+  crowdin: az
+fa_IR:
+  name: فارسی
+  disqus_lang: fa
+  crowdin: fa
+pl_PL:
+  name: Polski
+  disqus_lang: pl
+  crowdin: pl
+pt_BR:
+  name: Português (Brasil)
+  disqus_lang: pt
+  crowdin: pt-BR
+tr_TR:
+  name: Türkçe
+  disqus_lang: tr
+  crowdin: tr
