@@ -64,15 +64,19 @@ users, err := u.WithContext(ctx).Find()
 
 Gen generates type-safe interfaces each field, you can use them to generate SQL expressions
 
-| Field Type | Supported  Interface                                                                                                                                                                                                              |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| generic    | IsNull/IsNotNull/Count/Eq/Neq/Gt/Gte/Lt/Lte/Like/Value/Sum/IfNull                                                                                                                                                                 |
-| int        | Eq/Neq/Gt/Gte/Lt/Lte/In/NotIn/Between/NotBetween/Like/NotLike/Add/Sub/Mul/Div/Mod/FloorDiv/RightShift/LeftShift/BitXor/BitAnd/BitOr/BitFlip/Value/Zero/Sum/IfNull                                                                 |
-| uint       | same with int                                                                                                                                                                                                                     |
-| float      | Eq/Neq/Gt/Gte/Lt/Lte/In/NotIn/Between/NotBetween/Like/NotLike/Add/Sub/Mul/Div/FloorDiv/Floor/Value/Zero/Sum/IfNull                                                                                                                |
-| string     | Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Like/NotLike/Regexp/NotRegxp/FindInSet/FindInSetWith/Value/Zero/IfNull                                                                                                           |
-| bool       | Not/Is/And/Or/Xor/BitXor/BitAnd/BitOr/Value/Zero                                                                                                                                                                                  |
-| time       | Eq/Neq/Gt/Gte/Lt/Lte/Between/NotBetween/In/NotIn/Add/Sub/Date/DateDiff/DateFormat/Now/CurDate/CurTime/DayName/MonthName/Month/Day/Hour/Minute/Second/MicroSecond/DayOfWeek/DayOfMonth/FromDays/FromUnixtime/Value/Zero/Sum/IfNull |
+| Field Type           | Supported  Interface                                                                                                                                                                                                                                           |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| generic (all fields) | IsNull/IsNotNull/Count/Distinct/Eq/Neq/Gt/Gte/Lt/Lte/In/NotIn/Like/NotLike/Value/Sum/IfNull/Length/Max/Min/Avg/Abs/Null/GroupConcat/EqCol/NeqCol/GtCol/GteCol/LtCol/LteCol/SetCol/AddCol/SubCol/MulCol/DivCol/ConcatCol/WithTable/ColumnName/As/Asc/Desc/Field |
+| int / uint           | generic + Between/NotBetween/Add/Sub/Mul/Div/Mod/FloorDiv/Floor/RightShift/LeftShift/BitXor/BitAnd/BitOr/BitFlip/Zero                                                                                                                                          |
+| float                | generic + Between/NotBetween/Add/Sub/Mul/Div/FloorDiv/Floor/Zero                                                                                                                                                                                               |
+| string               | generic + Between/NotBetween/Regexp/NotRegexp/FindInSet/FindInSetWith/Replace/Concat/Substring/Substr/SubstringIndex/Lower/Upper/Zero                                                                                                                          |
+| bool                 | Not/Is/And/Or/Xor/BitXor/BitAnd/BitOr/Value/Zero                                                                                                                                                                                                               |
+| time                 | generic + Between/NotBetween/Add/Sub/Date/DateDiff/DateFormat/Now/CurDate/CurTime/DayName/MonthName/Year/Month/Day/Hour/Minute/Second/MicroSecond/DayOfWeek/DayOfMonth/DayOfYear/FromDays/FromUnixTime/Zero                                                    |
+
+Notes:
+
+* The **generic** row lists what every field shares: the comparison/value methods of the underlying field type (`Eq`/`Neq`/`In`/`NotIn`/`Gt`/`Gte`/`Lt`/`Lte`/ `Like`/`NotLike`/`Value`/`Sum`/`IfNull`/`Field`) plus the expression helpers every field inherits (`IsNull`, `Count`, `Distinct`, `Length`, `Max`, `Min`, `Avg`, `Abs`, `Null`, `GroupConcat`, the column-comparison family `EqCol`…`LteCol` and `SetCol/AddCol/SubCol/MulCol/DivCol/ConcatCol`, `WithTable`, `ColumnName`, `As`, `Asc`, `Desc`).
+* `XxxCol` methods compare/combine two columns (`u.Age.GtCol(c.Age)`); `Value(x)` and `Zero()`/`Null()` produce assignment expressions for `Attrs`/`Assign`/`UpdateSimple`.
 
 Here are some usage examples:
 
@@ -100,7 +104,7 @@ users, err := u.WithContext(ctx).Where(u.Name.Eq("modi"), u.Age.Gte(17)).Find()
 // SELECT * FROM users WHERE name = 'modi' AND age >= 17;
 
 // Time
-users, err := u.WithContext(ctx).Where(u.Birthday.Gt(birthTime).Find()
+users, err := u.WithContext(ctx).Where(u.Birthday.Gt(birthTime)).Find()
 // SELECT * FROM users WHERE birthday > '2000-01-01 00:00:00';
 
 // BETWEEN
@@ -170,12 +174,18 @@ u.WithContext(ctx).Select(u.Age.Avg()).Rows()
 
 ### Tuple Query
 
+`Columns` groups several fields into a tuple expression that can be compared with `In`/`NotIn` (against `field.Values`) or `Eq`/`Neq`/`Gt`/`Gte`/`Lt`/`Lte` (against a subquery):
+
 ```go
 u := query.User
 
-users, err := u.WithContext(ctx).Where(u.WithContext(ctx).Columns(u.ID, u.Name).In(field.Values([][]interface{}{{1, "modi"}, {2, "zhangqiang"}}))).Find()
-// SELECT * FROM `users` WHERE (`id`, `name`) IN ((1,'humodi'),(2,'tom'));
+users, err := u.WithContext(ctx).
+    Where(u.Columns(u.ID, u.Name).In(field.Values([][]interface{}{{1, "modi"}, {2, "zhangqiang"}}))).
+    Find()
+// SELECT * FROM `users` WHERE (`id`,`name`) IN ((1,'modi'),(2,'zhangqiang'));
 ```
+
+`Columns` is available on both the **query struct** (`u`) and the DO chain returned by `u.WithContext(ctx)` (including `gen.IGenericsDo` in generic mode). The examples use `u.Columns(...)` for readability; `u.WithContext(ctx).Columns(...)` is also valid. Keep referencing the typed column fields through `u`.
 
 ### JSON Query
 
@@ -185,6 +195,10 @@ u := query.User
 users, err := u.WithContext(ctx).Where(gen.Cond(datatypes.JSONQuery("attributes").HasKey("role"))...).Find()
 // SELECT * FROM `users` WHERE JSON_EXTRACT(`attributes`,'$.role') IS NOT NULL;
 ```
+
+{% note info %}
+**NOTE** `gen.Cond` only accepts JSON expressions from `gorm.io/datatypes` — `*datatypes.JSONQueryExpression`, `*datatypes.JSONOverlapsExpression` and `*datatypes.JSONArrayExpression`. Any other `clause.Expression` is rejected with `unsupported Expression ... to converted to Condition`.
+{% endnote %}
 
 ### Order
 
@@ -269,7 +283,7 @@ for rows.Next() {
 
 o := query.Order
 
-rows, err := o.WithContext(ctx).Select(o.CreateAt.Date().As("date"), o.Amount.Sum().As("total")).Group(o.CreateAt.Date()).Having(u.Amount.Sum().Gt(100)).Rows()
+rows, err := o.WithContext(ctx).Select(o.CreateAt.Date().As("date"), o.Amount.Sum().As("total")).Group(o.CreateAt.Date()).Having(o.Amount.Sum().Gt(100)).Rows()
 for rows.Next() {
   ...
 }
@@ -279,7 +293,7 @@ var results []struct {
     Total int
 }
 
-o.WithContext(ctx).Select(o.CreateAt.Date().As("date"), o.WithContext(ctx).Amount.Sum().As("total")).Group(o.CreateAt.Date()).Having(u.Amount.Sum().Gt(100)).Scan(&results)
+o.WithContext(ctx).Select(o.CreateAt.Date().As("date"), o.Amount.Sum().As("total")).Group(o.CreateAt.Date()).Having(o.Amount.Sum().Gt(100)).Scan(&results)
 ```
 
 ### Distinct
@@ -337,10 +351,10 @@ var results []Result
 err := u.WithContext(ctx).Select(u.Name, e.Email).LeftJoin(e, e.UserID.EqCol(u.ID)).Scan(&results)
 
 // multiple joins with parameter
-users := u.WithContext(ctx).Join(e, e.UserID.EqCol(u.id), e.Email.Eq("modi@example.org")).Join(c, c.UserID.EqCol(u.ID)).Where(c.Number.Eq("411111111111")).Find()
+users, err := u.WithContext(ctx).Join(e, e.UserID.EqCol(u.ID), e.Email.Eq("modi@example.org")).Join(c, c.UserID.EqCol(u.ID)).Where(c.Number.Eq("411111111111")).Find()
 ```
 
-### New Field Expiression
+### New Field Expression
 
 Sometimes you may need to create a dynamic field for dynamically SQL generation
 
@@ -415,11 +429,11 @@ name.Concat("[", "]")
 #### Time Fields
 
 ```go
-birth := field.NewString("user", "birth")
+birth := field.NewTime("user", "birth")
 // `user`.`birth` = ? (now)
 birth.Eq(time.Now())
 // DATE_ADD(`user`.`birth`, INTERVAL ? MICROSECOND)
-birth.Add(time.Duration(time.Hour).Microseconds())
+birth.Add(time.Hour) // takes a time.Duration; converted to microseconds in SQL
 // DATE_FORMAT(`user`.`birth`, "%W %M %Y")
 birth.DateFormat("%W %M %Y")
 ```
@@ -436,6 +450,59 @@ active.Not()
 active.And(true)
 ```
 
+#### Number and Serializer Fields
+
+```go
+// typed numeric fields for custom model types (since v0.3.28)
+age := field.NewNumber[int16]("user", "age")
+
+// for model fields implementing gorm's serializer interface (since v0.3.26)
+data := field.NewSerializer("user", "data")
+```
+
+#### All-Columns and Raw Fields
+
+```go
+// `user`.*
+all := field.NewAsterisk("user")
+// package-level shortcuts: field.Star and field.ALL are the unqualified `*`
+```
+
+`field.NewUnsafeFieldRaw(rawSQL, vars...)` splices **raw SQL** into the expression tree wherever a field is expected. Only use it for constant fragments you control — never with user input; Gen's type safety and the clause checker cannot see into it.
+
+#### Combining Expressions
+
+```go
+// field.Or / field.And / field.Not combine expressions
+cond := field.Or(u.Age.Gt(18), field.And(u.Name.Like("modi%"), u.Active.Is(true)))
+u.WithContext(ctx).Where(cond).Find()
+```
+
+#### Subquery Helpers
+
+These helpers take a raw `*gorm.DB` (not the typed `gen.SubQuery`/DAO chain) — build one from a typed DAO with `UnderlyingDB()`:
+
+```go
+subDB := u.WithContext(ctx).Select(u.Age.Avg()).UnderlyingDB()
+
+// compare a column against a subquery
+field.ContainsSubQuery([]field.Expr{u.ID}, subDB)           // (u.id) IN (subDB)
+field.AssignSubQuery([]field.Expr{u.Age}, subDB)            // SET age = (subDB)
+field.CompareSubQuery(field.GtOp, u.Age, subDB)             // u.age > (subDB)
+// operators: field.EqOp/NeqOp/GtOp/GteOp/LtOp/LteOp/ExistsOp
+
+// tuple values (see Tuple Query)
+field.Values([][]interface{}{{1, "modi"}, {2, "zhangqiang"}})
+field.ContainsValue([]field.Expr{u.ID, u.Name}, field.Values([][]interface{}{{1, "modi"}}))
+
+// a no-op expression, useful in generated helper code
+field.EmptyExpr()
+```
+
+#### Relation Fields
+
+`field.NewRelation(name, typ)`, `field.NewRelationWithType(rel, name, typ)` and `field.NewRelationWithModel(rel, name, typ, model)` build relation expressions programmatically; generated code uses them for association fields. Two package-level shortcuts exist: `field.Associations` (a RelationField standing for "all associations", for `Preload`) and `field.AssociationFields` (an expression, for `Select`/`Omit`) — see [Associations](./associations.html).
+
 ## SubQuery
 
 A subquery can be nested within a query, GEN can generate subquery when using a `Dao` object as param
@@ -444,11 +511,11 @@ A subquery can be nested within a query, GEN can generate subquery when using a 
 o := query.Order
 u := query.User
 
-orders, err := o.WithContext(ctx).Where(o.WithContext(ctx).Columns(o.Amount).Gt(o.WithContext(ctx).Select(o.Amount.Avg())).Find()
+orders, err := o.WithContext(ctx).Where(o.Columns(o.Amount).Gt(o.WithContext(ctx).Select(o.Amount.Avg()))).Find()
 // SELECT * FROM "orders" WHERE amount > (SELECT AVG(amount) FROM "orders");
 
 subQuery := u.WithContext(ctx).Select(u.Age.Avg()).Where(u.Name.Like("name%"))
-users, err := u.WithContext(ctx).Select(u.Age.Avg().As("avgage")).Group(u.Name).Having(u.WithContext(ctx).Columns(u.Age.Avg()).Gt(subQuery).Find()
+users, err := u.WithContext(ctx).Select(u.Age.Avg().As("avgage")).Group(u.Name).Having(u.Columns(u.Age.Avg()).Gt(subQuery)).Find()
 // SELECT AVG(age) as avgage FROM `users` GROUP BY `name` HAVING AVG(age) > (SELECT AVG(age) FROM `users` WHERE name LIKE "name%")
 
 // Select users with orders between 100 and 200
@@ -466,15 +533,17 @@ GORM allows you using subquery in FROM clause with method `Table`, for example:
 u := query.User
 p := query.Pet
 
-users, err := gen.Table(u.WithContext(ctx).Select(u.Name, u.Age).As("u")).Where(u.Age.Eq(18)).Find()
+sub := u.WithContext(ctx).Select(u.Name, u.Age).As("u")
+users, err := gen.Table(sub).Where(u.Age.Eq(18)).Find()
 // SELECT * FROM (SELECT `name`,`age` FROM `users`) as u WHERE `age` = 18
 
-subQuery1 := u.WithContext(ctx).Select(u.Name)
-subQuery2 := p.WithContext(ctx).Select(p.Name)
-users, err := gen.Table(subQuery1.As("u"), subQuery2.As("p")).Find()
-db.Table("(?) as u, (?) as p", subQuery1, subQuery2).Find(&User{})
+subQuery1 := u.WithContext(ctx).Select(u.Name).As("u")
+subQuery2 := p.WithContext(ctx).Select(p.Name).As("p")
+users, err = gen.Table(subQuery1, subQuery2).Find()
 // SELECT * FROM (SELECT `name` FROM `users`) as u, (SELECT `name` FROM `pets`) as p
 ```
+
+The `Dao` returned by `gen.Table` is a **root node**: call query methods on it directly. (Its type is the generic `gen.Dao`, so finishers like `Find` return `interface{}` — scan into your destination with `Scan` when you need typed results.)
 ### FirstOrInit
 
 Initialize struct with more attributes if record not found, those `Attrs` won't be used to build the SQL query
@@ -486,7 +555,7 @@ u.WithContext(ctx).Attrs(field.Attrs(&model.User{Age: 20})).Where(u.Name.Eq("non
 // user -> User{Name: "non_existing", Age: 20}
 
 // User not found, initialize it with given conditions and Attrs
-u.WithContext(ctx).Attrs(u.Age.Value(20).Where(u.Name.Eq("non_existing")).FirstOrInit()
+u.WithContext(ctx).Attrs(u.Age.Value(20)).Where(u.Name.Eq("non_existing")).FirstOrInit()
 // SELECT * FROM USERS WHERE name = 'non_existing' ORDER BY id LIMIT 1;
 // user -> User{Name: "non_existing", Age: 20}
 
@@ -504,22 +573,21 @@ u.WithContext(ctx).Assign(field.Attrs(map[string]interface{}{"age": 20})).Where(
 // user -> User{Name: "non_existing", Age: 20}
 
 // Found user with `name` = `gen`, update it with Assign attributes
-u.WithContext(ctx).Assign(field.Attrs(&model.User{Name: "gen_assign"}).Select(dal.User.ALL)).Where(u.Name.Eq("gen")).FirstOrInit()
+u.WithContext(ctx).Assign(field.Attrs(&model.User{Name: "gen_assign"}).Select(query.User.ALL)).Where(u.Name.Eq("gen")).FirstOrInit()
 
-// SELECT * FROM USERS WHERE name = gen' ORDER BY id LIMIT 1;
+// SELECT * FROM USERS WHERE name = 'gen' ORDER BY id LIMIT 1;
 // user -> User{ID: 111, Name: "gen", Age: 20}
 ```
 
 ### FirstOrCreate
 
-Get first matched record or create a new one with given conditions (only works with struct, map conditions), `RowsAffected` returns created/updated record's count
+Get first matched record or create a new one with given conditions (only works with struct, map conditions). It returns the record and an error — not a rows-affected counter. When you need the affected-rows count of a chain, `WithResult(func(tx gen.Dao){...})` returns a `gen.ResultInfo` (with `RowsAffected` and `Error` fields) for the work done inside its callback:
 
 ```go
-
-// Found user with `name` = `gen`
-result := u.WithContext(ctx).Where(u.Name.Eq(jinzhu)).FirstOrCreate()
-// user -> User{ID: 111, Name: "gen", "Age": 18}
-// result.RowsAffected // => 0
+// Found user with `name` = `jinzhu`
+user, err := u.WithContext(ctx).Where(u.Name.Eq("jinzhu")).FirstOrCreate()
+// user -> User{ID: 111, Name: "jinzhu", Age: 18}
+// err -> nil
 ```
 
 Create struct with more attributes if record not found, those `Attrs` won't be used to build SQL query
@@ -564,7 +632,7 @@ u.WithContext(ctx).Assign(u.Age.Value(20)).Where(u.Name.Eq("gen")).FirstOrCreate
 
 ```go
 // Struct
-u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen", Age: 20})).First()
+u.WithContext(ctx).Where(field.Attrs(&model.User{Name: "gen", Age: 20})).First()
 // SELECT * FROM users WHERE name = "gen" AND age = 20 ORDER BY id LIMIT 1;
 
 // Map
@@ -578,7 +646,7 @@ u.WithContext(ctx).Where(field.Attrs(map[string]interface{}{"name": "gen", "age"
 {% endnote %}
 
 ```go
-u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen", Age: 0})).Find()
+u.WithContext(ctx).Where(field.Attrs(&model.User{Name: "gen", Age: 0})).Find()
 // SELECT * FROM users WHERE name = "gen";
 ```
 
@@ -596,9 +664,9 @@ For more details, see [Specify Struct search fields](#specify_search_fields).
 When searching with struct, you can specify which particular values from the struct to use in the query conditions by passing in the relevant  the dbname to `Attrs()`, for example:
 
 ```go
-u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen"}).Select(u.Name,u.Age)).Find()
+u.WithContext(ctx).Where(field.Attrs(&model.User{Name: "gen"}).Select(u.Name,u.Age)).Find()
 // SELECT * FROM users WHERE name = "gen" AND age = 0;
 
-u.WithContext(ctx).Where(field.Attrs(&User{Name: "gen"}).Select(u.Age)).Find()
+u.WithContext(ctx).Where(field.Attrs(&model.User{Name: "gen"}).Select(u.Age)).Find()
 // SELECT * FROM users WHERE age = 0;
 ```
