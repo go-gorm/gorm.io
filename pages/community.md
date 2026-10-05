@@ -54,6 +54,7 @@ layout: page
 * [gorm4gaussdb - GORM GaussDB Driver](https://github.com/okyer/gorm4gaussdb)
 * [gorm-oracle - GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
 * [sqlite - The pure-Go SQLite driver for GORM](https://github.com/libtnb/sqlite)
+* [gorm-dbobjects - Manage database triggers, views, and stored procedures as type-checked Go code](https://github.com/bg12345/gorm-dbobjects)
 
 ## <span id="contribute">Contribute to this page</span>
 
