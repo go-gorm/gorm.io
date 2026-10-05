@@ -17,6 +17,8 @@ layout: page
 ## Learning Resources
 
 * **Interactive Learning Platform** - [Go Interview Practice](https://app.gointerview.dev/packages/gorm) - Web-based IDE with progressive GORM challenges covering CRUD operations, associations, migrations, advanced queries, and the new Generics API. Features community leaderboards, real-world scenarios, and hands-on practice.
+* **Learning Cloud Native Go: RESTful API** - [Model, Repository & GORM CLI](https://learning-cloud-native-go.github.io/docs/model-repository-gorm-cli) covering GORM CLI and repository generation, [Completing Handlers](https://learning-cloud-native-go.github.io/docs/completing-handlers/#list-handler) covering CRUD operations.
+
 
 ## Links
 
