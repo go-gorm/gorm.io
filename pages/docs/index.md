@@ -120,3 +120,19 @@ func main() {
   db.Delete(&product, 1)
 }
 ```
+
+## AI-assisted development
+
+When working with a coding agent, use [GORM Skills](https://github.com/go-gorm/gorm-skills) for guidance on building and maintaining GORM applications. The `gorm-development` skill covers models, CRUD, associations, transactions, migrations, performance, and troubleshooting. It guides the agent to inspect your project's installed versions and conventions before making changes.
+
+Install it from your project directory:
+
+```sh
+npx skills add go-gorm/gorm-skills --skill gorm-development
+```
+
+Then ask your agent, for example:
+
+> Use the gorm-development skill to implement a profile update that distinguishes omitted fields from explicit zero values, preserves tenant scope, and includes regression tests.
+
+See the [GORM Skills README](https://github.com/go-gorm/gorm-skills#installation) for installation options and more examples. Review generated changes and validate behavior against your application's database and requirements.
