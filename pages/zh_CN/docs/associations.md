@@ -9,7 +9,7 @@ GORM在创建或更新记录时会自动地保存其关联和引用，主要使�
 
 ### 在创建时自动保存关联
 
-当你创建一条新的记录时，GORM会自动保存它的关联数据。 这个过程包括向关联表插入数据以及维护外键引用。
+当你创建一条新的记录时，GORM会自动保存它的关联数据。这个过程包括向关联表插入数据以及维护外键引用。
 
 ```go
 user := User{
@@ -53,11 +53,11 @@ db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(&user)
 
 ## 跳过自动创建、更新
 
-GORM 提供了在创建或更新操作过程中跳过自动保存关联的灵活性。 通过使用`Select`或者`Omit`方法可以允许您指定具体哪些字段在操作中被包含或者排除
+GORM 提供了在创建或更新操作过程中跳过自动保存关联的灵活性。通过使用`Select`或者`Omit`方法可以允许您指定具体哪些字段在操作中被包含或者排除
 
 ### 使用`Select` 来指定字段范围
 
-`Select`方法可以让您模型中的哪些字段应该被保存 也就是说只有被选中的字段会被包含在SQL中
+`Select`方法可以让您模型中的哪些字段应该被保存也就是说只有被选中的字段会被包含在SQL中
 
 ```go
 user := User{
@@ -71,6 +71,8 @@ db.Select("Name").Create(&user)
 
 ### 使用`Omit`来排除字段或关联
 
+相反，`Omit` 方法可以让您在保存模型时排除某些字段或关联关系。
+
 ```go
 // 创建用户时跳过字段“BillingAddress”
 db.Omit("BillingAddress").Create(&user)
@@ -80,7 +82,7 @@ db.Omit(clause.Associations).Create(&user)
 ```
 
 {% note warn %}
-**注意:** 对于多对多关联关系, GORM 会在创建连接表引用之前更新关联。 要跳过更新，可以使用`Omit`，参数为关联名后面跟着`.*`
+**注意:** 对于多对多关联关系, GORM 会在创建连接表引用之前更新关联。要跳过更新，可以使用`Omit`，参数为关联名后面跟着`.*`
 
 ```go
 // 跳过更新"Languages"关联
@@ -101,9 +103,9 @@ db.Omit("Languages").Create(&user)
 
 在GORM中创建或者更新记录时，可以使用`Select`和`Omit`方法来指定是否包含某个关联的字段
 
-使用`Select`，你能够指定关联模型中的特定字段在保存主模型的时候是否被包含 在仅保存部分关联时这非常有用
+使用`Select`，你能够指定关联模型中的特定字段在保存主模型的时候是否被包含在仅保存部分关联时这非常有用
 
-而`Omit`则能够排除关联模型的特定字段。 这可能会在你想阻止关联模型的特定部分被更新时有用
+而`Omit`则能够排除关联模型的特定字段。这可能会在你想阻止关联模型的特定部分被更新时有用
 
 
 ```go
@@ -124,7 +126,7 @@ db.Omit("BillingAddress.Address2", "BillingAddress.CreatedAt").Create(&user)
 
 ## 删除关联
 
-GORM 能在删除主模型时使用`Select`方法来删除关联关系(一对一、一对多、多对多)。 在删除时维护好数据完整性并确保关联数据被妥当管理上，这项特性非常有用。
+GORM 能在删除主模型时使用`Select`方法来删除关联关系(一对一、一对多、多对多)。在删除时维护好数据完整性并确保关联数据被妥当管理上，这项特性非常有用。
 
 你可以用`Select`来指定哪些关联应该随着主模型被删除
 
@@ -163,7 +165,7 @@ db.Select("Account").Where("name = ?", "jinzhu").Delete(&User{ID: 1})
 
 GORM 中的关联模式提供了多种辅助方法来处理模型之间的关系，为管理关联数据提供了高效的方式。
 
-要启动关联模式，您需要指定源模型和关系的字段名称。 源模型必须包含主键，并且关系的字段名称应与现有的关联字段相匹配。
+要启动关联模式，您需要指定源模型和关系的字段名称。源模型必须包含主键，并且关系的字段名称应与现有的关联字段相匹配。
 
 ```go
 var user User
@@ -190,7 +192,12 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Find(&languag
 为 `多对多`、`一对多` 添加新的关联，或者替换 `一对一`、`属于` 关系中的当前关联。
 
 ```go
+// 追加新的语言
+db.Model(&user).Association("Languages").Append([]Language{languageZH, languageEN})
 
+db.Model(&user).Association("Languages").Append(&Language{Name: "DE"})
+
+db.Model(&user).Association("CreditCard").Append(&CreditCard{Number: "411111111111"})
 ```
 
 ### 替换关联
@@ -239,7 +246,7 @@ db.Model(&user).Where("code IN ?", codes).Association("Languages").Count()
 
 ### 批量数据处理
 
-关联模式允许您批量处理多个记录的关系。 这包括查找、追加、替换、删除和计数操作，以便操作关联数据。
+关联模式允许您批量处理多个记录的关系。这包括查找、追加、替换、删除和计数操作，以便操作关联数据。
 
 - **查找关联**：检索一组记录的关联数据。
 
@@ -259,7 +266,7 @@ db.Model(&users).Association("Team").Delete(&userA)
 db.Model(&users).Association("Team").Count()
 ```
 
-- **追加/替换关联**：管理多个记录的关联。 请注意，参数的长度需要与数据匹配。
+- **追加/替换关联**：管理多个记录的关联。请注意，参数的长度需要与数据匹配。
 
 ```go
 
@@ -291,7 +298,7 @@ db.Unscoped().Model(&user).Association("Languages").Unscoped().Clear()
 
 ## <span id="tags">关联标签（Association Tags）</span>
 
-GORM中的关联标签通常用于指定如何处理模型之间的关联。 这些标签定义了一些关系细节，比如外键，引用和约束。 理解这些标签对于有效地建立和管理模型之间的关系而言至关重要。
+GORM中的关联标签通常用于指定如何处理模型之间的关联。这些标签定义了一些关系细节，比如外键，引用和约束。理解这些标签对于有效地建立和管理模型之间的关系而言至关重要。
 
 | 标签                 | 描述                                                                                            |
 | ------------------ | --------------------------------------------------------------------------------------------- |

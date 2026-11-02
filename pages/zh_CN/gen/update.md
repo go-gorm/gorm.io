@@ -31,15 +31,16 @@ u.WithContext(ctx).Where(u.Activate.Is(true)).UpdateSimple(u.Age.Zero())
 ```go
 u := query.User
 
-// 使用 `map` 更新字段
+// Update attributes with `map`
 u.WithContext(ctx).Where(u.ID.Eq(111)).Updates(map[string]interface{}{"name": "hello", "age": 18, "active": false})
 // UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// 使用 `struct` 更新字段
+// Update attributes with `struct`
+// (zero-value fields like Active:false are skipped — see the note below)
 u.WithContext(ctx).Where(u.ID.Eq(111)).Updates(model.User{Name: "hello", Age: 18, Active: false})
-// UPDATE users SET name='hello', age=18, active=false, updated_at='2013-11-17 21:34:10' WHERE id=111;
+// UPDATE users SET name='hello', age=18, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
-// 使用表达式更新
+// Update with expression
 u.WithContext(ctx).Where(u.ID.Eq(111)).UpdateSimple(u.Age.Add(1), u.Number.Add(1))
 // UPDATE users SET age=age+1,number=number+1, updated_at='2013-11-17 21:34:10' WHERE id=111;
 
@@ -78,10 +79,10 @@ err                 // error
 u := query.User
 c := query.Company
 
-u.WithContext(ctx).Update(u.CompanyName, c.Select(c.Name).Where(c.ID.EqCol(u.CompanyID)))
+u.WithContext(ctx).Update(u.CompanyName, c.WithContext(ctx).Select(c.Name).Where(c.ID.EqCol(u.CompanyID)))
 // UPDATE "users" SET "company_name" = (SELECT name FROM companies WHERE companies.id = users.company_id);
 
-u.WithContext(ctx).Where(u.Name.Eq("modi")).Update(u.CompanyName, c.Select(c.Name).Where(c.ID.EqCol(u.CompanyID)))
+u.WithContext(ctx).Where(u.Name.Eq("modi")).Update(u.CompanyName, c.WithContext(ctx).Select(c.Name).Where(c.ID.EqCol(u.CompanyID)))
 ```
 
 ## 根据子查询更新多个字段
@@ -93,7 +94,7 @@ u := query.User
 c := query.Company
 
 ua := u.As("u")
-ca := u.As("c")
+ca := c.As("c")
 
 ua.WithContext(ctx).UpdateFrom(ca.WithContext(ctx).Select(c.ID, c.Address, c.Phone).Where(c.ID.Gt(100))).
 Where(ua.CompanyID.EqCol(ca.ID)).
@@ -107,4 +108,27 @@ UpdateSimple(
 // ) AS `c`
 // SET `u`.`address`=`c`.`address`,`c`.`phone`=`c`.`phone`,`updated_at`='2021-11-11 11:11:11.111'
 // WHERE `u`.`company_id` = `c`.`id`
+```
+
+## Update without Hooks and Timestamps
+
+`UpdateColumn`, `UpdateColumnSimple` and `UpdateColumns` behave like their `Update*` counterparts but **skip hooks and do not touch `updated_at`** — the generated `UpdateColumnSimple` builds the SET clause without the auto-update tracking columns:
+
+```go
+u := query.User
+
+u.WithContext(ctx).Where(u.ID.Eq(111)).UpdateColumn(u.Name, "hello")
+// UPDATE users SET name='hello' WHERE id=111;            -- no updated_at
+
+u.WithContext(ctx).Where(u.ID.Eq(111)).UpdateColumnSimple(u.Age.Value(18))
+// UPDATE users SET age=18 WHERE id=111;                  -- no updated_at
+
+u.WithContext(ctx).Where(u.ID.Eq(111)).UpdateColumns(map[string]interface{}{"name": "hello", "age": 18})
+```
+
+`UpdateSimple` (with hooks/auto-update) assigns only the columns you list — it is built as `Omit("*")` + the given assignments, so partial updates need no map:
+
+```go
+u.WithContext(ctx).Where(u.ID.Eq(111)).UpdateSimple(u.Age.Add(1), u.Name.Value("hello"))
+// UPDATE users SET age=age+1, name='hello', updated_at=... WHERE id=111;
 ```
