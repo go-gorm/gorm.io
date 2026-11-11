@@ -34,7 +34,9 @@ func (j JSON) Value() (driver.Value, error) {
   if len(j) == 0 {
     return nil, nil
   }
-  return json.RawMessage(j).MarshalJSON()
+  // return string, not []byte: drivers treat []byte as binary, e.g. pgx with
+  // PreferSimpleProtocol sends it as a bytea literal and json/jsonb columns reject it
+  return string(j), nil
 }
 ```
 
