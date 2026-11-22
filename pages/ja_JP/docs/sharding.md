@@ -3,13 +3,13 @@ title: Sharding
 layout: page
 ---
 
-シャーディングプラグインは、巨大なテーブルを小さいテーブルに分割し、シャーディングテーブルにクエリをリダイレクトするために、SQLパーサーを使用してクエリを置き換えます。 高パフォーマンスなデータベースアクセスが可能となります。
+シャーディングプラグインは、巨大なテーブルを小さいテーブルに分割し、シャーディングテーブルにクエリをリダイレクトするために、SQLパーサーを使用してクエリを置き換えます。高パフォーマンスなデータベースアクセスが可能となります。
 
 https://github.com/go-gorm/sharding
 
 ## 特徴
 
-- シンプルなデザイン。 プラグインをロードして設定を指定するだけで使用できます。
+- シンプルなデザイン。プラグインをロードして設定を指定するだけで使用できます。
 - 高速な動作。 Goと同じくらい速く、ネットワークに依存しないミドルウェア。
 - Multiple database (PostgreSQL, MySQL) support.
 - Integrated primary key generator (Snowflake, PostgreSQL Sequence, Custom, ...).
@@ -37,7 +37,7 @@ db.Use(sharding.Register(sharding.Config{
 // This case for show up give notifications, audit_logs table use same sharding rule.
 ```
 
-通常通りdbセッションを使用します。 シャーディング対象のテーブルを操作する場合は、クエリに `Sharding Key` を持つ必要があることに注意してください。
+通常通りdbセッションを使用します。シャーディング対象のテーブルを操作する場合は、クエリに `Sharding Key` を持つ必要があることに注意してください。
 
 ```go
 // GORMでのレコード作成例。この場合 orders_02 にレコードが挿入されます。
