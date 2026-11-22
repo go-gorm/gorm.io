@@ -24,12 +24,18 @@ go get -u gorm.io/gen
 
 It is quite straightforward to use `gen` for your application, here is how it works:
 
-**1. Write the configuration in golang**
+**1. Write the configuration in golang** (skeleton — substitute your own model package, DSN and import paths):
 
 ```go
 package main
 
-import "gorm.io/gen"
+import (
+  "gorm.io/driver/sqlite"
+  "gorm.io/gen"
+  "gorm.io/gorm"
+
+  "your_project/model"
+)
 
 // Dynamic SQL
 type Querier interface {
@@ -43,7 +49,12 @@ func main() {
     Mode: gen.WithoutContext|gen.WithDefaultQuery|gen.WithQueryInterface|gen.WithGeneric, // generate mode
   })
 
-  // gormdb, _ := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
+  // gormdb, err := gorm.Open(mysql.Open("root:@(127.0.0.1:3306)/demo?charset=utf8mb4&parseTime=True&loc=Local"))
+  // if err != nil { panic(err) }
+  gormdb, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+  if err != nil {
+    panic(err)
+  }
   g.UseDB(gormdb) // reuse your gorm db
 
   // Generate basic type-safe DAO API for struct `model.User` following conventions
@@ -61,16 +72,40 @@ func main() {
 
 `go run main.go`
 
-**3. Use the generated code in your project**
+**3. Use the generated code in your project** (usage skeleton — the prerequisites shown in `main` are required for the snippets below: open your application's `*gorm.DB` and register it with `query.SetDefault(db)` before any `query.User`-style default-variable call; results are consumed via `err`/the returned values)
 
 ```go
-import "your_project/query"
+import (
+  "gorm.io/driver/sqlite"
+  "gorm.io/gorm"
+
+  "your_project/query"
+)
 
 func main() {
-  // Basic DAO API
-  user, err := query.User.Where(u.Name.Eq("modi")).First()
+  // application runtime DB — separate from the generator's schema connection
+  // in step 1: both call gorm.Open, but this one runs in your service
+  db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+  if err != nil {
+    panic(err)
+  }
+  query.SetDefault(db) // required for the query.User default variables
+
+  // Basic DAO API (direct calls work in the WithoutContext mode generated above;
+  // in the default mode start from query.Use(db).User.WithContext(ctx))
+  user, err := query.User.Where(query.User.Name.Eq("modi")).First()
+  if err != nil {
+    return
+  }
+  _ = user // illustrative skeleton: consume the result in your application
 
   // Dynamic SQL API
   users, err := query.User.FilterWithNameAndRole("modi", "admin")
+  if err != nil {
+    return
+  }
+  _ = users
 }
 ```
+
+> **NOTE**: `g.UseDB(db)` must be called in the **generator** program before `GenerateModel`/`GenerateModelAs` — those read the database schema through the connection and fail with `UseDB() is necessary to generate model struct [...] from database table [...]` when it is missing. `GenerateAllTable` equally requires a real database connection (it lists the tables through the DB), but does not carry that specific guard — without `UseDB` it fails later, at listing the tables. (`GenerateModelFrom` and `ApplyBasic` applied to existing structs do not query the database schema and are exempt.) In the default (context-aware) mode, generated methods are reached through the model's `WithContext`, e.g. `query.User.WithContext(ctx).FilterWithNameAndRole("modi", "admin")`.

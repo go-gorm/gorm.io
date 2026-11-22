@@ -104,7 +104,7 @@ customer := g.GenerateModel("customers", gen.FieldRelateModel(field.HasMany, "Cr
     }),
 )
 
-g.ApplyBasic(custormer)
+g.ApplyBasic(customer)
 ```
 
 ### Relate Config
@@ -116,12 +116,14 @@ type RelateConfig struct {
     RelateSlice        bool // ex: CreditCards []CreditCard
     RelateSlicePointer bool // ex: CreditCards []*CreditCard
 
-    JSONTag      string // related field's JSON tag
-    GORMTag      string // related field's GORM tag
-    NewTag       string // related field's new tag
-    OverwriteTag string // related field's tag
+    JSONTag      string  // related field's JSON tag
+    GORMTag      GormTag // related field's GORM tag, e.g. field.GormTag{"foreignKey": []string{"CustomerRefer"}}
+    Tag          Tag     // extra struct tags appended to the generated field
+    OverwriteTag Tag     // when non-nil, replaces all generated tags
 }
 ```
+
+Without `RelatePointer`/`RelateSlice`/`RelateSlicePointer`, the field shape follows the relationship: `HasMany` and `Many2Many` default to slices, `HasOne`/`BelongsTo` to plain values.
 
 ## Operation
 
@@ -145,7 +147,7 @@ user := model.User{
 u := query.Use(db).User
 
 u.WithContext(ctx).Select(u.Name).Create(&user)
-// INSERT INTO "users" (name) VALUES ("jinzhu", 1, 2);
+// INSERT INTO "users" (name) VALUES ("modi");
 
 u.WithContext(ctx).Omit(u.BillingAddress.Field()).Create(&user)
 // Skip create BillingAddress when creating a user
@@ -175,7 +177,7 @@ Find associations with conditions
 q := query.Use(db)
 u := q.User
 
-languages, err = u.Languages.Where(q.Language.Name.In([]string{"ZH","EN"})).Model(&user).Find()
+languages, err = u.Languages.Where(q.Language.Name.In("ZH", "EN")).Model(&user).Find()
 ```
 
 ### Append Associations
@@ -236,14 +238,16 @@ You are allowed to delete selected has one/has many/many2many relations with `Se
 u := query.Use(db).User
 
 // delete user's account when deleting user
-u.Select(u.Account).Delete(&user)
+u.WithContext(ctx).Select(u.Account.Field()).Delete(&user)
 
 // delete user's Orders, CreditCards relations when deleting user
-db.Select(u.Orders.Field(), u.CreditCards.Field()).Delete(&user)
+u.WithContext(ctx).Select(u.Orders.Field(), u.CreditCards.Field()).Delete(&user)
 
 // delete user's has one/many/many2many relations when deleting user
-db.Select(field.AssociationFields).Delete(&user)
+u.WithContext(ctx).Select(field.AssociationFields).Delete(&user)
 ```
+
+Association operations run through `Model(...)`: `Find`, `Append`, `Replace`, `Delete`, `Clear`, `Count` — each also has an `Unscoped()` variant; before `Model`, the relation chain additionally accepts `Where`, `WithContext`, `Session` and `Unscoped`.
 
 ## Preloading
 
@@ -284,7 +288,7 @@ users, err := u.WithContext(ctx).Preload(u.Orders).Preload(u.Profile).Preload(u.
 
 ### Preload All
 
-`clause.Associations` can work with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
+`field.Associations` can work with `Preload` similar like `Select` when creating/updating, you can use it to `Preload` all associations, for example:
 
 ```go
 type User struct {
@@ -299,8 +303,7 @@ type User struct {
 users, err := u.WithContext(ctx).Preload(field.Associations).Find()
 ```
 
-`clause.Associations` won’t preload nested associations, but you can use it with [Nested Preloading](#nested-preloading) together, e.g:
-
+`field.Associations` won’t preload nested associations, but you can use it with [Nested Preloading](#nested-preloading) together, e.g:
 ```go
 users, err := u.WithContext(ctx).Preload(u.Orders.OrderItems.Product).Find()
 ```
@@ -310,6 +313,8 @@ To include soft deleted records in all associations use relation scope `field.Re
 ```go
 users, err := u.WithContext(ctx).Preload(field.Associations.Scopes(field.RelationFieldUnscoped)).Find()
 ```
+
+> **NOTE** `field.Associations` (a `RelationField`, for `Preload`) and `field.AssociationFields` (an expression, for `Select`/`Omit`) are two different helpers. `Preload(field.Associations)` preloads every first-level association; `Select(field.AssociationFields)` / `Omit(field.AssociationFields)` include or skip associations when creating/updating/deleting.
 
 ### Preload with select
 
@@ -327,13 +332,14 @@ type CreditCard struct {
   UserRefer uint
 }
 
+q := query.Use(db)
 u := q.User
 cc := q.CreditCard
 
-// !!! Foregin key "cc.UserRefer" must be selected
-users, err := u.WithContext(ctx).Where(c.ID.Eq(1)).Preload(u.CreditCards.Select(cc.Number, cc.UserRefer)).Find()
-// SELECT * FROM `credit_cards` WHERE `credit_cards`.`customer_refer` = 1 AND `credit_cards`.`deleted_at` IS NULL
-// SELECT * FROM `customers` WHERE `customers`.`id` = 1 AND `customers`.`deleted_at` IS NULL LIMIT 1
+// !!! Foreign key "cc.UserRefer" must be selected
+users, err := u.WithContext(ctx).Where(u.ID.Eq(1)).Preload(u.CreditCards.Select(cc.Number, cc.UserRefer)).Find()
+// SELECT * FROM `users` WHERE `users`.`id` = 1 AND `users`.`deleted_at` IS NULL
+// SELECT * FROM `credit_cards` WHERE `credit_cards`.`user_refer` IN (1) AND `credit_cards`.`deleted_at` IS NULL
 ```
 
 ### Preload with conditions
@@ -346,19 +352,19 @@ u := q.User
 o := q.Order
 
 // Preload Orders with conditions
-users, err := u.WithContext(ctx).Preload(u.Orders.On(o.State.NotIn("cancelled")).Find()
+users, err := u.WithContext(ctx).Preload(u.Orders.On(o.State.NotIn("cancelled"))).Find()
 // SELECT * FROM users;
 // SELECT * FROM orders WHERE user_id IN (1,2,3,4) AND state NOT IN ('cancelled');
 
-users, err := u.WithContext(ctx).Where(u.State.Eq("active")).Preload(u.Orders.On(o.State.NotIn("cancelled")).Find()
+users, err := u.WithContext(ctx).Where(u.State.Eq("active")).Preload(u.Orders.On(o.State.NotIn("cancelled"))).Find()
 // SELECT * FROM users WHERE state = 'active';
 // SELECT * FROM orders WHERE user_id IN (1,2) AND state NOT IN ('cancelled');
 
-users, err := u.WithContext(ctx).Preload(u.Orders.Order(o.ID.Desc(), o.CreateTime).Find()
+users, err := u.WithContext(ctx).Preload(u.Orders.Order(o.ID.Desc(), o.CreateTime)).Find()
 // SELECT * FROM users;
 // SELECT * FROM orders WHERE user_id IN (1,2) Order By id DESC, create_time;
 
-users, err := u.WithContext(ctx).Preload(u.Orders.On(o.State.Eq("on")).Order(o.ID.Desc()).Find()
+users, err := u.WithContext(ctx).Preload(u.Orders.On(o.State.Eq("on")).Order(o.ID.Desc())).Find()
 // SELECT * FROM users;
 // SELECT * FROM orders WHERE user_id IN (1,2) AND state = "on" Order By id DESC;
 
@@ -371,14 +377,60 @@ user, err := u.WithContext(ctx).Where(u.ID.Eq(1)).Preload(u.Orders.Offset(100).L
 // SELECT * FROM `users` WHERE `users`.`id` = 1 LIMIT 1
 ```
 
-### Nested Preloading
+### <span id="nested-preloading">Nested Preloading</span>
 
 GEN supports nested preloading, for example:
 
 ```go
-db.Preload(u.Orders.OrderItems.Product).Preload(u.CreditCard).Find(&users)
+u.WithContext(ctx).Preload(u.Orders.OrderItems.Product).Preload(u.CreditCard).Find()
 
 // Customize Preload conditions for `Orders`
 // And GEN won't preload unmatched order's OrderItems then
-db.Preload(u.Orders.On(o.State.Eq("paid"))).Preload(u.Orders.OrderItems).Find(&users)
+u.WithContext(ctx).Preload(u.Orders.On(o.State.Eq("paid"))).Preload(u.Orders.OrderItems).Find()
 ```
+
+### Relation Modifiers
+
+Association fields (`u.Orders`, `u.Account`, …) are `field.RelationField` values. Besides the modifiers shown above, a relation field supports the query-shaped modifiers you already know from the chain API:
+
+```go
+u.WithContext(ctx).
+    Preload(u.Orders.
+        On(o.State.Eq("paid")).            // conditions on the association query
+        Select(o.ID, o.UserID, o.Amount).  // selected columns (keep the FK!)
+        Order(o.Amount.Desc()).            // ordering
+        Clauses(hints.UseIndex("idx_order_user")). // hint clauses
+        Offset(100).Limit(20).             // pagination
+        Scopes(field.RelationFieldUnscoped),      // include soft-deleted rows
+    ).
+    Find()
+```
+
+`Join`/`LeftJoin`/`RightJoin` on a relation field attach an extra JOIN **to the association query** (`Join(table, on...)` — the joined table plus ON conditions): the association is still loaded by GORM's second query, but that query gains the JOIN (useful for join tables or filtering on a joined table):
+
+```go
+q := query.Use(db)
+u := q.User
+o := q.Order
+oi := q.OrderItem
+
+// preloaded Orders are loaded with a LEFT JOIN on order_items
+users, err := u.WithContext(ctx).
+    Preload(u.Orders.LeftJoin(oi, oi.OrderID.EqCol(o.ID))).
+    Find()
+```
+
+Separately, the DAO-level `Joins` method performs **single-query (single JOIN) eager loading** of one-to-one relations — it does not go through `Preload`:
+
+```go
+q := query.Use(db)
+u := q.User
+a := q.Account
+
+// load the has-one Account in the same SELECT via JOIN, with a condition
+user, err := u.WithContext(ctx).
+    Joins(u.Account.On(a.Name.Eq("modi-account"))).
+    Take()
+```
+
+Like GORM's `Joins` preloading, join-based loading suits **one-to-one** relations (has one / belongs to); for has-many and many2many associations use `Preload` (with the relation modifiers above, including relation `Join` when the association query needs extra tables).
