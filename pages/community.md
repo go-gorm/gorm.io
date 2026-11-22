@@ -53,6 +53,7 @@ layout: page
 * [duckdb - GORM DuckDB driver](https://github.com/alifiroozi80/duckdb)
 * [gorm4gaussdb - GORM GaussDB Driver](https://github.com/okyer/gorm4gaussdb)
 * [gorm-oracle - GORM driver for Oracle](https://github.com/oracle-samples/gorm-oracle)
+* [gorm-driver-kingbase - GORM v2 KingbaseES driver using gokb](https://github.com/lonely-goat/gorm-driver-kingbase)
 * [sqlite - The pure-Go SQLite driver for GORM](https://github.com/libtnb/sqlite)
 
 ## <span id="contribute">Contribute to this page</span>
